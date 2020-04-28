@@ -6,7 +6,7 @@ import {
 } from "teselagen-react-components";
 import { map, get } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
-import enzymeList from "../../redux/utils/defaultEnzymeList.json";
+import enzymeList from "../../redux/utils/defaultEnzymeList.js";
 import CutsiteFilter from "../../CutsiteFilter";
 import { Button } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";

@@ -8,16 +8,18 @@ import React from "react";
 import { Button } from "@blueprintjs/core";
 import { InfoHelper, MultiSelectSideBySide } from "teselagen-react-components";
 
-import enzymeListFull from "../redux/utils/expandedEnzymeList.json";
-import defaultEnzymeList from "../redux/utils/defaultEnzymeList.json";
+import defaultEnzymeList from "../redux/utils/defaultEnzymeList.js";
 // import './style.css';
 import { cutSequenceByRestrictionEnzyme } from "ve-sequence-utils";
 // import QuestionTooltip from '../../components/QuestionTooltip';
-import { getReverseComplementSequenceString } from "ve-sequence-utils";
+import {
+  getReverseComplementSequenceString,
+  enzymeList as enzymeListFull
+} from "ve-sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
 import { createYourOwnEnzymeClose } from "../redux/createYourOwnEnzyme";
 import s from "../selectors";
-import "./style.css"
+import "./style.css";
 
 let CreateYouOwnEnzyme = function(props) {
   const paddingStart = "-------";
@@ -293,12 +295,12 @@ class ManageEnzymes extends React.Component {
     const {
       dispatch,
       createYourOwnEnzymeClose: hideModal,
-      inputSequenceToTestAgainst = "",
+      // inputSequenceToTestAgainst = "",
       selectedEnzymes
     } = this.props;
 
     const selectedItems = [];
-     const allEnzymes = map(enzymeListFull, function(enzyme) {
+    const allEnzymes = map(enzymeListFull, function(enzyme) {
       const inList = selectedEnzymes[enzyme.name.toLowerCase()];
       const o = {
         label: enzyme.name,

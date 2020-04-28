@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-// import defaultEnzymeList from "./utils/defaultEnzymeList.json";
+// import defaultEnzymeList from "./utils/defaultEnzymeList.js";
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -37,33 +37,4 @@ export default combineReducers({
     },
     initialState
   )
-
-  // restrictionEnzymeGroups: createReducer(
-  //   {
-  //     [addRestrictionEnzyme]: function(state, payload) {
-  //       return {
-  //         ...state,
-  //         [payload.name]: payload
-  //       };
-  //     },
-  //     [allRestrictionEnzymesUpdate]: (state, payload) => payload
-  //   },
-  //   [{
-  //     name: "my special enzymes",
-  //     enzymes: ["bamhi", "bsmbi"]
-  //   }, ...userEnzymeGroups]
-  // ),
-
-  // allRestrictionEnzymes: createReducer(
-  //   {
-  //     [addRestrictionEnzyme]: function(state, payload) {
-  //       return {
-  //         ...state,
-  //         [payload.name]: payload
-  //       };
-  //     },
-  //     [allRestrictionEnzymesUpdate]: (state, payload) => payload
-  //   },
-  //   defaultEnzymeList
-  // )
 });

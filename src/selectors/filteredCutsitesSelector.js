@@ -13,20 +13,23 @@ export default createSelector(
     };
 
     const hiddenEnzymesByName = {};
-    const filteredEnzymes = [];
+    let filteredEnzymes = [];
+    //handle adding enzymes that are included in user created groups
     filteredRestrictionEnzymes.forEach(e => {
       if (e.value.includes("__userCreatedGroup")) {
         const groupName = e.value.replace("__userCreatedGroup", "");
+
         const enzymes = window.getExistingEnzymeGroups()[groupName] || [];
-        filteredEnzymes.concat(enzymes.map(e => ({ value: e })));
-      }
-      if (e.isHidden) {
+
+        filteredEnzymes = filteredEnzymes.concat(
+          enzymes.map(e => ({ value: e }))
+        );
+      } else if (e.isHidden) {
         hiddenEnzymesByName[e.value] = e;
       } else {
         filteredEnzymes.push(e);
       }
     });
-
     if (!filteredEnzymes || filteredEnzymes.length === 0) {
       returnVal.cutsitesByName = cutsitesByName;
     } else {

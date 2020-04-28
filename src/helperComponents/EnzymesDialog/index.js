@@ -14,16 +14,21 @@ import {
   Menu,
   Position,
   Tooltip,
-  AnchorButton
+  AnchorButton,
+  Intent
 } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
-import defaultEnzymeList from "../../redux/utils/defaultEnzymeList.json";
-import expandedEnzymeList from "../../redux/utils/expandedEnzymeList.json";
+import defaultEnzymeList from "../../redux/utils/defaultEnzymeList.js";
+
 import EnzymeViewer from "../../EnzymeViewer";
 import "./style.css";
-import { map, flatMap, countBy, reduce, uniq, omitBy } from "lodash";
-import { getCutsitesFromSequence } from "ve-sequence-utils/lib";
+
+import { map, flatMap, countBy, forEach, reduce, uniq, omitBy } from "lodash";
+import {
+  getCutsitesFromSequence,
+  enzymeList as expandedEnzymeList
+} from "ve-sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
 
 const upsertLocalEnzymeGroups = newGroups => {
@@ -48,6 +53,14 @@ window.createNewEnzymeGroup =
     return upsertLocalEnzymeGroups({
       [newName]: []
     });
+  });
+window.editEnzymeGroupName =
+  window.editEnzymeGroupName ||
+  ((oldName, newName) => {
+    upsertLocalEnzymeGroups({
+      [newName]: window.getExistingEnzymeGroups()[oldName]
+    });
+    window.deleteEnzymeGroup(oldName);
   });
 window.deleteEnzymeGroup =
   window.deleteEnzymeGroup ||
@@ -80,6 +93,22 @@ window.getExistingEnzymeGroups =
     return existingGroups;
   });
 
+window.getExistingEnzymeGroupsWithEnzymeData = () => {
+  const toRet = {};
+  forEach(window.getExistingEnzymeGroups(), (group, name) => {
+    toRet[name] = flatMap(group, enzymeName => {
+      const enzyme = expandedEnzymeList[enzymeName.toLowerCase()];
+      if (!enzyme) {
+        console.warn("ruh roh");
+        return [];
+      } else {
+        return enzyme;
+      }
+    });
+  });
+  return toRet;
+};
+
 const easyStore = store({ hoveredEnzyme: "" });
 export class EnzymesDialog extends React.Component {
   state = {
@@ -92,6 +121,12 @@ export class EnzymesDialog extends React.Component {
   refreshEnzymeGroups = () => {
     const { sequenceData } = this.props;
     const existingGroups = window.getExistingEnzymeGroups();
+    const orderedExistingGroups = {};
+    Object.keys(existingGroups)
+      .sort()
+      .forEach(function(key) {
+        orderedExistingGroups[key] = existingGroups[key];
+      });
     this.enzymeGroups = {
       "Common Enzymes": {
         protected: true,
@@ -105,7 +140,7 @@ export class EnzymesDialog extends React.Component {
         enzymes: map(expandedEnzymeList)
       },
       ...reduce(
-        existingGroups,
+        orderedExistingGroups,
         (acc, val, key) => {
           acc[key] = {
             name: key,
@@ -252,7 +287,7 @@ export class EnzymesDialog extends React.Component {
                           className="veNewEnzymeGroupName"
                         ></InputGroup>
                         <AnchorButton
-                          // className={ Classes.POPOVER_DISMISS}
+                          className={Classes.POPOVER_DISMISS}
                           onClick={() => {
                             const newName = document.querySelector(
                               ".veNewEnzymeGroupName input"
@@ -289,18 +324,74 @@ export class EnzymesDialog extends React.Component {
                   ></AnchorButton>
                 </Popover>
               </Tooltip>
-              <Tooltip position="bottom" content="Edit Group Name">
-                <AnchorButton
-                  disabled={this.enzymeGroups[selectedEnzymeGroup].protected}
-                  minimal
-                  icon="edit"
-                ></AnchorButton>
-              </Tooltip>
+              <Popover
+                content={
+                  <div
+                    className="veEditEnzymeGroupPopover"
+                    style={{ padding: 10 }}
+                  >
+                    <h5>Edit group name</h5>
+                    <div style={{ display: "flex" }}>
+                      <InputGroup
+                        defaultValue={selectedEnzymeGroup}
+                        autoFocus
+                        className="veEditEnzymeGroupName"
+                      ></InputGroup>
+                      <AnchorButton
+                        className={Classes.POPOVER_DISMISS}
+                        onClick={() => {
+                          const newName = document.querySelector(
+                            ".veEditEnzymeGroupName input"
+                          ).value;
+                          if (!newName) {
+                            return window.toastr.error("Invalid name");
+                          }
+                          if (this.enzymeGroups[newName]) {
+                            window.toastr.error(
+                              "Choose a different group name"
+                            );
+                          } else {
+                            window.toastr.success("Edit Successful");
+                            window.editEnzymeGroupName(
+                              selectedEnzymeGroup,
+                              newName
+                            );
+                            this.refreshEnzymeGroups();
+                            this.setState({
+                              selectedEnzymeGroup: newName
+                            });
+                          }
+                        }}
+                        icon="tick"
+                        intent="success"
+                      ></AnchorButton>
+                    </div>
+                  </div>
+                }
+              >
+                <Tooltip position="bottom" content="Edit Group Name">
+                  <AnchorButton
+                    disabled={this.enzymeGroups[selectedEnzymeGroup].protected}
+                    minimal
+                    icon="edit"
+                  ></AnchorButton>
+                </Tooltip>
+              </Popover>
               <Tooltip position="bottom" content="Delete Group">
                 <AnchorButton
                   disabled={this.enzymeGroups[selectedEnzymeGroup].protected}
-                  onClick={() => {
-                    window.deleteEnzymeGroup(selectedEnzymeGroup);
+                  onClick={async () => {
+                    const confirm = await showConfirmationDialog({
+                      text: `Are you sure you want to delete this group, ${selectedEnzymeGroup}?`,
+                      intent: Intent.DANGER
+                    });
+                    if (confirm) {
+                      window.deleteEnzymeGroup(selectedEnzymeGroup);
+                      this.refreshEnzymeGroups();
+                      this.setState({
+                        selectedEnzymeGroup: "Common Enzymes"
+                      });
+                    }
                   }}
                   minimal
                   icon="trash"
@@ -347,9 +438,10 @@ export class EnzymesDialog extends React.Component {
                 flexWrap: "wrap"
               }}
             >
+              {/* <span style={{fontSize: 10}}>{this.enzymeGroups[selectedEnzymeGroup].message || "Enzymes added here can be filtered for in the Cutsite Filter"}  </span> */}
               {enzymeList.length
                 ? enzymeList
-                : "No enzymes found. Add enzymes from other groups to your custom group"}
+                : "Copy enzymes from other groups to your custom group"}
             </div>
             <HoverView></HoverView>
             <ButtonGroup>
@@ -396,7 +488,8 @@ export class EnzymesDialog extends React.Component {
                     className="veRemoveEnzymeFromGroupBtn"
                     onClick={async () => {
                       const confirm = await showConfirmationDialog({
-                        text: `Are you sure you want to remove ${selectedCount} enzyme(s) from ${selectedEnzymeGroup}`
+                        text: `Are you sure you want to remove ${selectedCount} enzyme(s) from ${selectedEnzymeGroup}`,
+                        intent: Intent.DANGER
                       });
                       if (confirm) {
                         const enzymes = flatMap(
@@ -428,7 +521,20 @@ export class EnzymesDialog extends React.Component {
                     <Menu>
                       {createMenu([
                         {
-                          text: "All"
+                          text: "All",
+                          onClick: () => {
+                            const selectedEnzymes = {};
+                            forEach(
+                              this.enzymeGroups[selectedEnzymeGroup].enzymes,
+                              enzyme => {
+                                selectedEnzymes[enzyme.name] = true;
+                              }
+                            );
+
+                            this.setState({
+                              [selectedEnzymesKey]: selectedEnzymes
+                            });
+                          }
                         },
                         {
                           text: "Single cutters"
@@ -539,27 +645,7 @@ export class EnzymesDialog extends React.Component {
                   position={Position.RIGHT_TOP}
                 >
                   <AnchorButton>Select...</AnchorButton>
-
-                  {/* <AnchorButton className="bp3-select">
-                          Cut once (1) &nbsp; &nbsp;
-                        </AnchorButton> */}
                 </Popover>
-                {/* <Popover
-                  canEscapeKeyClose
-                  // targetClassName={"veEnzymeDialogEnzymeAddIcon"}
-                  // targetProps={{style: {flex: "0 0 auto"}}}
-                  // wrapperTagName="div"
-                  position="top"
-                  content={
-                    <div style={{ padding: 10 }}>
-                      <h5>Select enzymes:</h5>
-
-                  
-                      <AnchorButton intent="success" icon="tick"></AnchorButton>
-                    </div>
-                  }
-                  target={<AnchorButton icon="select"></AnchorButton>}
-                >Hey</Popover>  */}
               </div>
               <AnchorButton
                 onClick={() => {
