@@ -6,11 +6,10 @@ import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  TextareaField,
   withDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent, Classes } from "@blueprintjs/core";
+import { Button, Intent, Classes, EditableText } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
@@ -18,11 +17,26 @@ import {
 } from "ve-range-utils";
 import { tidyUpAnnotation, featureColors } from "ve-sequence-utils";
 import classNames from "classnames";
+import { store, view } from "@risingstack/react-easy-state";
 
 import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
+import { map, flatMap } from "lodash";
+import "./style.css";
 
 class AddOrEditAnnotationDialog extends React.Component {
+  componentDidMount() {
+    const initialNotes =
+      (this.props.initialValues && this.props.initialValues.notes) || {};
+    this.notes = store(
+      flatMap(initialNotes, (noteValues, noteType) => {
+        return map(noteValues, value => ({
+          key: noteType,
+          value: value
+        }));
+      })
+    );
+  }
   formatStart = val => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
@@ -157,6 +171,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       hideModal,
       sequenceData = { sequence: "" },
       handleSubmit,
+      beforeAnnotationCreate,
       renderTypes,
       annotationTypePlural,
       annotationVisibilityShow,
@@ -225,29 +240,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         {renderLocations ? (
           <FieldArray component={this.renderLocations} name="locations" />
         ) : null}
-        <TextareaField
-          inlineLabel
-          tooltipError
-          name="notes"
-          label="Notes:"
-          format={v => {
-            let toReturn = v;
-            if (typeof v !== "string" && v) {
-              toReturn = "";
-              Object.keys(v).forEach(key => {
-                let stringVal;
-                try {
-                  stringVal = JSON.stringify(v[key]);
-                } catch (e) {
-                  stringVal = v[key];
-                }
-                toReturn += `- ${key}: ${stringVal} \n`;
-              });
-            }
-            return toReturn;
-          }}
-          placeholder="Enter notes here.."
-        />
+        <Notes notes={this.notes}></Notes>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
@@ -273,6 +266,11 @@ class AddOrEditAnnotationDialog extends React.Component {
               } else {
                 updatedData = data;
               }
+              updatedData.notes = {};
+              this.notes.forEach(({ key, value }) => {
+                if (!updatedData.notes[key]) updatedData.notes[key] = [];
+                updatedData.notes[key].push(value || "");
+              });
               if (annotationTypePlural === "features") {
                 updatedData.color = featureColors[updatedData.type];
               }
@@ -300,6 +298,12 @@ class AddOrEditAnnotationDialog extends React.Component {
                   annotationType: "features"
                 }
               );
+              beforeAnnotationCreate &&
+                beforeAnnotationCreate({
+                  annotationTypePlural,
+                  annotation: newFeat,
+                  props: this.props
+                });
               upsertAnnotation(newFeat);
               annotationVisibilityShow(annotationTypePlural);
               hideModal();
@@ -405,3 +409,87 @@ export default ({ formName, getProps, dialogProps }) => {
     formValues("start", "end", "locations")
   )(AddOrEditAnnotationDialog);
 };
+
+const Notes = view(({ notes }) => {
+  return (
+    <div>
+      <div style={{ display: "flex" }}>
+        <h4>Notes </h4>{" "}
+        <span style={{ marginLeft: 15, fontSize: 10, color: "grey" }}>
+          (Key -- Value)
+        </span>{" "}
+      </div>
+      {map(notes, (note, i) => {
+        const { value, key } = note || {};
+        return (
+          <div
+            key={i}
+            data-test={"note-" + i}
+            style={{ display: "flex", padding: "4px 2px" }}
+          >
+            <EditableText
+              onConfirm={string => {
+                if (string === "") {
+                  if (!note.value) {
+                    notes.splice(i, 1);
+                  } else {
+                    note.key = "note";
+                  }
+                }
+              }}
+              placeholder="Add key here"
+              maxLines={5}
+              multiline
+              className="addAnnNoteKey"
+              // style={{marginRight: 20}}
+              onChange={string => {
+                note.key = string.replace(" ", "_").replace(/\n/g, "");
+              }}
+              value={key}
+            ></EditableText>
+            <EditableText
+              maxLines={10}
+              className="addAnnNoteValue"
+              multiline
+              // style={{
+              //   paddingTop: 6,
+              //   height: 30,
+              //   minHeight: 30,
+              //   minWidth: 200,
+              //   maxWidth: 200,
+              // }}
+              onChange={string => {
+                note.value = string.replace(/\n/g, "");
+              }}
+              value={value}
+            ></EditableText>{" "}
+            &nbsp;
+            <div>
+              <Button
+                style={{ padding: 2 }}
+                onClick={() => {
+                  notes.splice(i, 1);
+                }}
+                minimal
+                icon="trash"
+              ></Button>
+            </div>
+          </div>
+        );
+      })}
+      <Button
+        onClick={() => {
+          notes.push({
+            key: "note",
+            value: ""
+          });
+        }}
+        minimal
+        icon="plus"
+      >
+        {" "}
+        Add Note
+      </Button>
+    </div>
+  );
+});

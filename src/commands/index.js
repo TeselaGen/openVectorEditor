@@ -399,7 +399,14 @@ const editCommandDefs = {
       })
   },
   versionNumber: {
-    name: "OVE Version:  " + packageJson.version
+    name: "OVE Version:  " + packageJson.version,
+    handler: () => {
+      const win = window.open(
+        "https://github.com/TeselaGen/openVectorEditor/commits/master",
+        "_blank"
+      );
+      win.focus();
+    }
   },
 
   goTo: {
@@ -1111,6 +1118,11 @@ const toolCommandDefs = {
   }
 };
 
+const labelIntensities = {
+  Low: 0.1,
+  Medium: 0.4,
+  High: 0.9
+};
 const labelCommandDefs = {
   toggleExternalLabels: {
     name: "External Labels",
@@ -1122,6 +1134,15 @@ const labelCommandDefs = {
         props.toggleExternalLabels("true");
       }
     }
+  },
+  adjustLabelLineIntensity: {
+    name: "Label Line Intensity",
+    submenu: props =>
+      map(Object.keys(labelIntensities), key => ({
+        text: key,
+        checked: props.labelLineIntensity === labelIntensities[key],
+        onClick: () => props.changeLabelLineIntensity(labelIntensities[key])
+      }))
   }
 };
 

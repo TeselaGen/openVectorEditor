@@ -12,6 +12,8 @@ import { withDialog } from "teselagen-react-components";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
 import RemoveDuplicatesDialog from "../helperComponents/RemoveDuplicates";
+import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 import _EnzymesDialog from "../helperComponents/EnzymesDialog";
 
 const EnzymesDialog = withDialog({
@@ -21,9 +23,6 @@ const EnzymesDialog = withDialog({
   height: 500,
   width: 500
 })(_EnzymesDialog);
-
-// const ManageEnzymes = withDialog({
-//   title: "Manage Enzymes",
 
 // })(_ManageEnzymes);
 
@@ -37,12 +36,19 @@ export const dialogOverrides = [
   "AddOrEditPrimerDialogOverride"
 ];
 
-export default ({
-  editorName,
-  AddOrEditFeatureDialogOverride,
-  AddOrEditPartDialogOverride,
-  AddOrEditPrimerDialogOverride
-}) => {
+export default props => {
+  const {
+    editorName,
+    AddOrEditFeatureDialogOverride,
+    AddOrEditPartDialogOverride,
+    AddOrEditPrimerDialogOverride
+  } = props;
+
+  const pickedUserDefinedHandlersAndOpts = pick(
+    props,
+    userDefinedHandlersAndOpts
+  );
+
   const AddOrEditFeatureDialog =
     AddOrEditFeatureDialogOverride || AddOrEditFeatureDialogDefault;
   const AddOrEditPartDialog =
@@ -51,20 +57,16 @@ export default ({
     AddOrEditPrimerDialogOverride || AddOrEditPrimerDialogDefault;
   return (
     <div>
-      {/* <ManageEnzymes
-          noTarget
-          editorName={editorName}
-          dialogName="ManageEnzymesDialog"
-        /> */}
+      {/* <AddAdditionalEnzymes
+        noTarget
+        dialogProps={{
+          isOpen: addAdditionalEnzymesOpen,
+          onClose: addAdditionalEnzymesClose
+        }}
+      /> */}
       <CreateAlignmentDialog
         editorName={editorName}
         dialogName="CreateAlignmentDialog"
-        noTarget
-      />
-      <EnzymesDialog
-        isOpen
-        editorName={editorName}
-        dialogName="ManageEnzymesDialog"
         noTarget
       />
       <PrintDialog editorName={editorName} dialogName="PrintDialog" noTarget />
@@ -73,19 +75,28 @@ export default ({
         dialogName="RemoveDuplicatesDialog"
         noTarget
       />
+      <EnzymesDialog
+        isOpen
+        editorName={editorName}
+        dialogName="ManageEnzymesDialog"
+        noTarget
+      />
 
       <AddOrEditFeatureDialog
+        {...pickedUserDefinedHandlersAndOpts}
         editorName={editorName}
         dialogName="AddOrEditFeatureDialog"
         noTarget
       />
 
       <AddOrEditPartDialog
+        {...pickedUserDefinedHandlersAndOpts}
         editorName={editorName}
         dialogName="AddOrEditPartDialog"
         noTarget
       />
       <AddOrEditPrimerDialog
+        {...pickedUserDefinedHandlersAndOpts}
         editorName={editorName}
         dialogName="AddOrEditPrimerDialog"
         noTarget

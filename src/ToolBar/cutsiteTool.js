@@ -49,14 +49,15 @@ function CutsiteToolDropDown({
   toggleDropdown,
   annotationVisibilityShow,
   withDigestTool,
-  createNewDigest
+  createNewDigest,
+  showManageEnzymesDialog
 }) {
   return (
     <div className="veToolbarCutsiteFilterHolder">
       <h6>
-        Filter Cut Sites{" "}
+        Filter Cutsites{" "}
         <span style={{ fontSize: 12, color: "grey" }}>
-          (Search by name or number of cuts)
+          (Search by name or # of cuts)
         </span>
       </h6>
       <CutsiteFilter
@@ -66,6 +67,18 @@ function CutsiteToolDropDown({
         }}
         closeDropDown={toggleDropdown}
       />
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <a
+        onClick={() => {
+          showManageEnzymesDialog({
+            // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
+          });
+          toggleDropdown();
+        }}
+        style={{ fontSize: 11 }}
+      >
+        Manage Enzymes...
+      </a>
       {withDigestTool && (
         <Button
           onClick={() => {

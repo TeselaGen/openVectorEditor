@@ -75,4 +75,16 @@ describe("editor", function() {
       .find(`path[fill="#006FEF"]`)
       .should("not.exist");
   });
+  it("should be able to edit a feature/part via double clicking", () => {
+    cy.contains(".veRowViewPart", "Part 0").dblclick();
+    cy.get(".tg-test-name input").should("have.value", "Part 0");
+    cy.get(".bp3-dialog-close-button").click();
+    cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
+    cy.contains(".veLabelText", "araD").dblclick();
+    cy.get(".tg-test-name input").should("have.value", "araD");
+    cy.get(".bp3-dialog-close-button").click();
+    cy.contains(".veLabelText", "Example Primer 1").dblclick();
+    cy.get(".tg-test-name input").should("have.value", "Example Primer 1");
+    cy.get(".bp3-dialog-close-button").click();
+  });
 });

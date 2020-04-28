@@ -24,7 +24,7 @@ import EnzymeViewer from "../../EnzymeViewer";
 import "./style.css";
 import { map, flatMap, countBy, reduce, uniq, omitBy } from "lodash";
 import { getCutsitesFromSequence } from "ve-sequence-utils/lib";
-import { store, view } from "react-easy-state";
+import { store, view } from "@risingstack/react-easy-state";
 
 const upsertLocalEnzymeGroups = newGroups => {
   const existingGroups = window.getExistingEnzymeGroups();
@@ -289,7 +289,7 @@ export class EnzymesDialog extends React.Component {
                   ></AnchorButton>
                 </Popover>
               </Tooltip>
-              <Tooltip position="bottom" content="Edit Group">
+              <Tooltip position="bottom" content="Edit Group Name">
                 <AnchorButton
                   disabled={this.enzymeGroups[selectedEnzymeGroup].protected}
                   minimal
@@ -315,7 +315,7 @@ export class EnzymesDialog extends React.Component {
             >
               <InputGroup
                 round
-                placeholder="Search by name or number of cuts"
+                placeholder="Search by name or # of cuts"
                 onChange={e => {
                   this.setState({
                     searchInput: e.target.value

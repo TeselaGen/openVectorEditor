@@ -152,7 +152,7 @@ export class CutsiteFilter extends React.Component {
               {this.getManageEnzymesLink()}
             </div>
           }
-          placeholder="Filter cut sites..."
+          placeholder="Filter cutsites..."
           options={options}
           filteredRestrictionEnzymes={filteredRestrictionEnzymes}
           filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}

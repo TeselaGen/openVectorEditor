@@ -1,5 +1,3 @@
-// import dragMock from 'drag-mock'
-
 describe("copyPaste", function() {
   beforeEach(() => {
     cy.visit("");

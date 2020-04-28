@@ -43,10 +43,18 @@ export function showAddOrEditPartDialog(annotation, { editorName }) {
     }
   };
 }
-export function showPrintDialog() {
+export function showPrintDialog(props) {
   return {
     type: "TG_SHOW_MODAL",
-    name: "PrintDialog" //you'll need to pass a unique dialogName prop to the compoennt
+    name: "PrintDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props
+  };
+}
+export function hidePrintDialog(props) {
+  return {
+    type: "TG_HIDE_MODAL",
+    name: "PrintDialog", //you'll need to pass a unique dialogName prop to the compoennt
+    props
   };
 }
 export function showManageEnzymesDialog() {

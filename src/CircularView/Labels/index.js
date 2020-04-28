@@ -12,6 +12,7 @@ function Labels({
   radius: outerRadius,
   editorName,
   textScalingFactor,
+  labelLineIntensity,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
@@ -95,7 +96,8 @@ function Labels({
             fontWidth,
             fontHeight,
             condenseOverflowingXLabels,
-            outerRadius
+            outerRadius,
+            labelLineIntensity
           }}
         />
       </g>
@@ -123,6 +125,7 @@ const DrawLabelGroup = withHover(function({
   circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
+  labelLineIntensity,
   // labelIds,
   multipleLabels
   // isIdHashmap,
@@ -218,7 +221,7 @@ const DrawLabelGroup = withHover(function({
         //   : {},
         label
       ],
-      { style: { opacity: 1 } }
+      { style: { opacity: 1 }, strokeWidth: 2 }
     );
     content = [
       line,
@@ -296,7 +299,9 @@ const DrawLabelGroup = withHover(function({
           label.outerPoint,
           label
         ],
-        hovered ? { style: { opacity: 1 } } : {}
+        hovered
+          ? { style: { opacity: 1 }, strokeWidth: 2 }
+          : { style: { opacity: labelLineIntensity } }
       )
     ];
   }
@@ -305,6 +310,7 @@ const DrawLabelGroup = withHover(function({
       {...{ onMouseLeave, onMouseOver }}
       {...{
         onClick: label.onClick,
+        onDoubleClick: label.onDoubleClick,
         onContextMenu: label.onContextMenu || noop
       }}
     >
@@ -342,9 +348,6 @@ function LabelLine(pointArray, options) {
           stroke: "black",
           fill: "none",
           strokeWidth: 1,
-          // style: {
-          //   opacity: 0.2
-          // },
           className: "veLabelLine",
           ...options
         }}
@@ -361,6 +364,7 @@ const DrawGroupInnerLabel = withHover(
         textLength={label.text.length * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
+        onDoubleClick={label.onDoubleClick}
         onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
         style={{
@@ -385,7 +389,8 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   fontHeight,
   condenseOverflowingXLabels,
   outerRadius,
-  editorName
+  editorName,
+  labelLineIntensity
 }) {
   return groupedLabels.map(function(label) {
     let { labelAndSublabels, labelIds } = label;
@@ -407,7 +412,8 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
           editorName,
           fontHeight,
           condenseOverflowingXLabels,
-          outerRadius
+          outerRadius,
+          labelLineIntensity
         }}
       />
     );

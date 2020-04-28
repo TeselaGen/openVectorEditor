@@ -2,7 +2,6 @@
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import omit from "lodash/omit";
-import randomColor from "randomcolor";
 
 // ------------------------------------
 // Actions
@@ -23,7 +22,7 @@ export default createReducer(
       return {
         ...state,
         [payload.id]: {
-          color: randomColor({ hue: "green", luminosity: "dark" }),
+          color: "darkolivegreen",
           id: payload.id,
           ...payload.range
         }

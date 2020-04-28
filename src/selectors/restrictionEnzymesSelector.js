@@ -8,10 +8,10 @@ export default () => {
     ...defaultEnzymeList,
     ...reduce(
       userEnzymeGroups,
-      (acc, key) => {
+      (acc /* key */) => {
         // tnrtodo: more work needed here to return user created enzymes + default enzymes
         // const group = userEnzymeGroups[key];
-        acc[key] = "";
+        // acc[key] = "";
         return acc;
       },
       {}

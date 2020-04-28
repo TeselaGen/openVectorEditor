@@ -52,6 +52,11 @@ const links = [
     </div>
   );
 });
+links.push(
+  <a style={{ marginLeft: 10 }} href="/UMDDemo.html">
+    UMD demo
+  </a>
+);
 
 class Demo extends React.Component {
   constructor(props) {

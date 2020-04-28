@@ -4,7 +4,9 @@ describe("rowView", function() {
   });
   it("inserting bps at the end of the seq shouldn't cause the new selection to wrap the origin by default", function() {
     cy.selectRange(5299, 5299);
-    cy.get(".veRowViewSelectionLayer").trigger("contextmenu");
+    cy.get(
+      ".veRowViewSelectionLayer:not(.cutsiteLabelSelectionLayer)"
+    ).rightclick();
     cy.contains(".bp3-menu-item", "Replace").click();
     cy.focused().type("agagagagag{enter}");
     cy.contains("Selecting 10 bps from 5299 to 5308").should("exist");

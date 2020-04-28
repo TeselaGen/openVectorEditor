@@ -41,7 +41,8 @@ function getPropsForType(props, type, pluralType) {
       props.annotationLabelVisibility &&
       props.annotationLabelVisibility[pluralType],
     onClick: props[type + "Clicked"],
-    onRightClick: props[type + "RightClicked"]
+    onRightClick: props[type + "RightClicked"],
+    onDoubleClick: props[type + "DoubleClicked"]
   };
 
   return toRet;
@@ -94,7 +95,8 @@ export class RowItem extends React.PureComponent {
       bpsPerRow = sequenceLength,
       editorName,
       externalLabels,
-      onlyShowLabelsThatDoNotFit
+      onlyShowLabelsThatDoNotFit,
+      labelLineIntensity
     } = this.props;
 
     let {
@@ -180,7 +182,8 @@ export class RowItem extends React.PureComponent {
           ? map(row[pluralType], a =>
               assign(a, {
                 onClick: this.props[type + "Clicked"],
-                onRightClick: this.props[type + "RightClicked"]
+                onRightClick: this.props[type + "RightClicked"],
+                onDoubleClick: this.props[type + "DoubleClicked"]
               })
             )
           : [];
@@ -188,6 +191,7 @@ export class RowItem extends React.PureComponent {
         <Labels
           {...annotationCommonProps}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
+          labelLineIntensity={labelLineIntensity}
           rangeMax={bpsPerRow}
           annotationRanges={ranges}
           annotationHeight={cutsiteLabelHeight}
