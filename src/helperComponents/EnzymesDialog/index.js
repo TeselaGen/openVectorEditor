@@ -3,7 +3,7 @@ import React from "react";
 
 // import { reduxForm, formValues } from "redux-form";
 
-import { showConfirmationDialog, createMenu } from "teselagen-react-components";
+import { showConfirmationDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import {
   Classes,
@@ -11,8 +11,6 @@ import {
   InputGroup,
   Popover,
   HTMLSelect,
-  Menu,
-  Position,
   Tooltip,
   AnchorButton,
   Intent
@@ -514,7 +512,7 @@ export class EnzymesDialog extends React.Component {
               </div>
 
               <div>
-                <Popover
+                {/* <Popover
                   autoFocus={false}
                   captureDismiss
                   content={
@@ -645,7 +643,7 @@ export class EnzymesDialog extends React.Component {
                   position={Position.RIGHT_TOP}
                 >
                   <AnchorButton>Select...</AnchorButton>
-                </Popover>
+                </Popover> */}
               </div>
               <AnchorButton
                 onClick={() => {
