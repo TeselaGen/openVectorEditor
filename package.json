@@ -28,10 +28,10 @@
     "test-e2e": "yarn cypress run --record --key 0dcf0c08-68ce-4547-aaaa-ac33af76e4a9"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.25.0",
-    "@blueprintjs/datetime": "^3.16.0",
-    "@blueprintjs/select": "^3.12.1",
-    "@risingstack/react-easy-state": "^6.2.4",
+    "@blueprintjs/core": "^3.26.1",
+    "@blueprintjs/datetime": "^3.17.0",
+    "@blueprintjs/select": "^3.12.3",
+    "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "^0.8.18",
     "axios": "^0.18.0",
     "bio-parsers": "^6.0.4",
@@ -47,7 +47,7 @@
     "pluralize": "^7.0.0",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
-    "react-beautiful-dnd": "^10.1.0",
+    "react-beautiful-dnd": "^13.0.0",
     "react-draggable": "^3.2.1",
     "react-dropzone": "^4.2.11",
     "react-measure": "^2.2.4",
@@ -61,7 +61,7 @@
     "redux-ignore": "^1.2.5",
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
-    "teselagen-react-components": "^29.0.2",
+    "teselagen-react-components": "^29.0.16",
     "tg-client-query-builder": "^2.12.2",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
@@ -75,20 +75,18 @@
   },
   "devDependencies": {
     "@types/lodash": "npm:@types/lodash-es",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.1.6",
-    "cypress": "^4.4.0",
+    "cypress": "^4.5.0",
     "drag-mock": "^1.4.0",
     "eslint": "^6.8.0",
     "eslint-config-teselagen": "^5.0.5",
     "gh-pages": "^2.2.0",
     "husky": "^3.0.4",
     "in-publish": "^2.0.1",
-    "lint-staged": "9.4.2",
-    "nwb": "0.23.0",
-    "prettier": "1.19.1",
+    "lint-staged": "10.2.2",
+    "nwb": "0.24.6",
+    "prettier": "2.0.5",
     "react": "^16.10.2",
     "react-addons-perf": "^15.4.2",
     "react-dom": "^16.9.0",
@@ -121,12 +119,5 @@
     "vector",
     "editor",
     "teselagen"
-  ],
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-0",
-      "react"
-    ]
-  }
+  ]
 }
