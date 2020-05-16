@@ -82,7 +82,7 @@
     "eslint": "^6.8.0",
     "eslint-config-teselagen": "^5.0.5",
     "gh-pages": "^2.2.0",
-    "husky": "^3.0.4",
+    "husky": "^4.2.5",
     "in-publish": "^2.0.1",
     "lint-staged": "10.2.2",
     "nwb": "0.24.6",
