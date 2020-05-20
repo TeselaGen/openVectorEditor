@@ -15,6 +15,8 @@ import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
 import RemoveDuplicatesDialog from "../helperComponents/RemoveDuplicates";
+import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 
 const AddAdditionalEnzymes = withDialog({
   title: "Add Additional Enzymes"
@@ -40,79 +42,83 @@ export default connect(
   {
     addAdditionalEnzymesClose
   }
-)(
-  ({
+)(props => {
+  const {
     editorName,
     addAdditionalEnzymesOpen,
     addAdditionalEnzymesClose,
     AddOrEditFeatureDialogOverride,
     AddOrEditPartDialogOverride,
     AddOrEditPrimerDialogOverride
-  }) => {
-    const AddOrEditFeatureDialog =
-      AddOrEditFeatureDialogOverride || AddOrEditFeatureDialogDefault;
-    const AddOrEditPartDialog =
-      AddOrEditPartDialogOverride || AddOrEditPartDialogDefault;
-    const AddOrEditPrimerDialog =
-      AddOrEditPrimerDialogOverride || AddOrEditPrimerDialogDefault;
-    return (
-      <div>
-        <AddAdditionalEnzymes
-          noTarget
-          dialogProps={{
-            isOpen: addAdditionalEnzymesOpen,
-            onClose: addAdditionalEnzymesClose
-          }}
-        />
-        <CreateAlignmentDialog
-          editorName={editorName}
-          dialogName="CreateAlignmentDialog"
-          noTarget
-        />
-        <PrintDialog
-          editorName={editorName}
-          dialogName="PrintDialog"
-          noTarget
-        />
-        <RemoveDuplicatesDialog
-          editorName={editorName}
-          dialogName="RemoveDuplicatesDialog"
-          noTarget
-        />
+  } = props;
 
-        <AddOrEditFeatureDialog
-          editorName={editorName}
-          dialogName="AddOrEditFeatureDialog"
-          noTarget
-        />
+  const pickedUserDefinedHandlersAndOpts = pick(
+    props,
+    userDefinedHandlersAndOpts
+  );
 
-        <AddOrEditPartDialog
-          editorName={editorName}
-          dialogName="AddOrEditPartDialog"
-          noTarget
-        />
-        <AddOrEditPrimerDialog
-          editorName={editorName}
-          dialogName="AddOrEditPrimerDialog"
-          noTarget
-        />
-        <MergeFeaturesDialog
-          editorName={editorName}
-          dialogName="MergeFeaturesDialog"
-          noTarget
-        />
-        <RenameSequenceDialog
-          editorName={editorName}
-          dialogName="RenameSeqDialog"
-          noTarget
-        />
-        <GoToDialog editorName={editorName} dialogName="GoToDialog" noTarget />
-        <SelectDialog
-          editorName={editorName}
-          dialogName="SelectDialog"
-          noTarget
-        />
-      </div>
-    );
-  }
-);
+  const AddOrEditFeatureDialog =
+    AddOrEditFeatureDialogOverride || AddOrEditFeatureDialogDefault;
+  const AddOrEditPartDialog =
+    AddOrEditPartDialogOverride || AddOrEditPartDialogDefault;
+  const AddOrEditPrimerDialog =
+    AddOrEditPrimerDialogOverride || AddOrEditPrimerDialogDefault;
+  return (
+    <div>
+      <AddAdditionalEnzymes
+        noTarget
+        dialogProps={{
+          isOpen: addAdditionalEnzymesOpen,
+          onClose: addAdditionalEnzymesClose
+        }}
+      />
+      <CreateAlignmentDialog
+        editorName={editorName}
+        dialogName="CreateAlignmentDialog"
+        noTarget
+      />
+      <PrintDialog editorName={editorName} dialogName="PrintDialog" noTarget />
+      <RemoveDuplicatesDialog
+        editorName={editorName}
+        dialogName="RemoveDuplicatesDialog"
+        noTarget
+      />
+
+      <AddOrEditFeatureDialog
+        {...pickedUserDefinedHandlersAndOpts}
+        editorName={editorName}
+        dialogName="AddOrEditFeatureDialog"
+        noTarget
+      />
+
+      <AddOrEditPartDialog
+        {...pickedUserDefinedHandlersAndOpts}
+        editorName={editorName}
+        dialogName="AddOrEditPartDialog"
+        noTarget
+      />
+      <AddOrEditPrimerDialog
+        {...pickedUserDefinedHandlersAndOpts}
+        editorName={editorName}
+        dialogName="AddOrEditPrimerDialog"
+        noTarget
+      />
+      <MergeFeaturesDialog
+        editorName={editorName}
+        dialogName="MergeFeaturesDialog"
+        noTarget
+      />
+      <RenameSequenceDialog
+        editorName={editorName}
+        dialogName="RenameSeqDialog"
+        noTarget
+      />
+      <GoToDialog editorName={editorName} dialogName="GoToDialog" noTarget />
+      <SelectDialog
+        editorName={editorName}
+        dialogName="SelectDialog"
+        noTarget
+      />
+    </div>
+  );
+});

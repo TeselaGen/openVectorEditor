@@ -1,4 +1,3 @@
-// import dragMock from 'drag-mock'
 
 describe("tabs", function() {
   beforeEach(() => {

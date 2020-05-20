@@ -13,7 +13,7 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import { Loading, showContextMenu } from "teselagen-react-components";
-import { store } from "react-easy-state";
+import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
 import PropTypes from "prop-types";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";

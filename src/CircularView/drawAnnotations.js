@@ -26,6 +26,7 @@ function drawAnnotations({
   positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
   allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
   onRightClicked = noop,
+  onDoubleClick = noop,
   showLabels,
   labelOptions,
   annotationProps,
@@ -124,6 +125,12 @@ function drawAnnotations({
           annotation.onRightClick({ event, annotation });
         }
       }
+      function _onDoubleClick(event) {
+        onDoubleClick && onDoubleClick({ event, annotation });
+        if (annotation.onDoubleClick) {
+          annotation.onDoubleClick({ event, annotation });
+        }
+      }
 
       const {
         startAngle,
@@ -151,6 +158,7 @@ function drawAnnotations({
           title: titleText,
           className: annotation.labelClassName || "",
           onClick: _onClick,
+          onDoubleClick: _onDoubleClick,
           fontStyle: fontStyle || "normal",
           color:
             annotation.labelColor ||
@@ -180,6 +188,7 @@ function drawAnnotations({
             locationAngles,
             reverseAnnotations,
             onClick: _onClick,
+            onDoubleClick: _onDoubleClick,
             onContextMenu,
             annotation,
             totalAngle,
@@ -214,6 +223,7 @@ const DrawAnnotation = withHover(function({
   startAngle,
   endAngle,
   onClick,
+  onDoubleClick,
   onContextMenu,
   titleText,
   locationAngles,
@@ -234,6 +244,7 @@ const DrawAnnotation = withHover(function({
     className: className,
     onContextMenu: onContextMenu,
     onClick: onClick,
+    onDoubleClick: onDoubleClick,
     onMouseLeave,
     onMouseOver
   };

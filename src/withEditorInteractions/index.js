@@ -462,9 +462,12 @@ function VectorInteractionHOC(Component /* options */) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
-    warningClicked_localOverride = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
+
+    warningDoubleClicked = ({ event, annotation, doNotStopPropagation }) => {
+      if (!doNotStopPropagation) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       const { annotationSelect, annotationDeselectAll } = this.props;
       showConfirmationDialog({
         cancelButtonText: "Cancel",
@@ -833,6 +836,27 @@ function VectorInteractionHOC(Component /* options */) {
         "viewPartProperties"
       ];
     }, "partRightClicked");
+    warningRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return [
+        {
+          text: "View Warning Details",
+          onClick: event => {
+            this.warningDoubleClicked({
+              event,
+              annotation,
+              doNotStopPropagation: true
+            });
+          }
+        },
+
+        "--",
+        ...this.getSelectionMenuOptions(annotation)
+      ];
+    }, "partRightClicked");
     featureRightClicked = this.enhanceRightClickAction(
       ({ annotation, event }) => {
         this.props.selectionLayerUpdate({
@@ -979,6 +1003,16 @@ function VectorInteractionHOC(Component /* options */) {
       "translationRightClicked"
     );
 
+    featureDoubleClicked = ({ annotation }) => {
+      this.props.showAddOrEditFeatureDialog(annotation);
+    };
+    partDoubleClicked = ({ annotation }) => {
+      this.props.showAddOrEditPartDialog(annotation);
+    };
+    primerDoubleClicked = ({ annotation }) => {
+      this.props.showAddOrEditPrimerDialog(annotation);
+    };
+
     render() {
       const {
         closePanelButton,
@@ -1012,11 +1046,16 @@ function VectorInteractionHOC(Component /* options */) {
           backgroundRightClicked: this.backgroundRightClicked,
           featureRightClicked: this.featureRightClicked,
           partRightClicked: this.partRightClicked,
+          primerRightClicked: this.primerRightClicked,
+          featureDoubleClicked: this.featureDoubleClicked,
+          partDoubleClicked: this.partDoubleClicked,
+          primerDoubleClicked: this.primerDoubleClicked,
+          warningDoubleClicked: this.warningDoubleClicked,
+          warningRightClicked: this.warningRightClicked,
           orfRightClicked: this.orfRightClicked,
           deletionLayerRightClicked: this.deletionLayerRightClicked,
           cutsiteRightClicked: this.cutsiteRightClicked,
           translationRightClicked: this.translationRightClicked,
-          primerRightClicked: this.primerRightClicked,
           ...annotationClickHandlers.reduce((acc, handler) => {
             acc[handler] = this[handler];
             return acc;

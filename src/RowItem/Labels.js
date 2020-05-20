@@ -19,7 +19,8 @@ function Labels(props) {
     onlyShowLabelsThatDoNotFit,
     annotationHeight,
     textWidth = 6,
-    editorName
+    editorName,
+    labelLineIntensity
   } = props;
   if (annotationRanges.length === 0) {
     return null;
@@ -131,10 +132,12 @@ function Labels(props) {
           } veLabel `,
           xStartOriginal,
           onClick: annotationRange.onClick,
+          onDoubleClick: annotationRange.onDoubleClick,
           onRightClick: annotationRange.onRightClick,
           height,
           xStart,
-          xEnd
+          xEnd,
+          labelLineIntensity
         }}
       />
     );
@@ -164,6 +167,8 @@ export default onlyUpdateForKeys([
   "annotationHeight",
   "spaceBetweenAnnotations",
   "onClick",
+  "onRightClick",
+  "onDoubleClick",
   "textWidth",
   "editorName"
 ])(Labels);
@@ -176,12 +181,14 @@ const DrawLabel = withHover(
         className,
         annotation,
         onClick,
+        onDoubleClick,
         onRightClick,
         height,
         xStartOriginal,
         xStart,
         onMouseLeave,
-        onMouseOver
+        onMouseOver,
+        labelLineIntensity
       } = this.props;
       let heightToUse = height;
       let bottom = 0;
@@ -221,6 +228,12 @@ const DrawLabel = withHover(
               onClick({ event, annotation });
               event.stopPropagation();
             }}
+            onDoubleClick={function(event) {
+              if (onDoubleClick) {
+                onDoubleClick({ event, annotation });
+                event.stopPropagation();
+              }
+            }}
             onContextMenu={function(event) {
               onRightClick({ event, annotation });
               event.stopPropagation();
@@ -256,8 +269,8 @@ const DrawLabel = withHover(
               bottom,
               height: Math.max(heightToUse, 3),
               width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : 0.2,
-              background: hovered ? "black" : "grey"
+              opacity: hovered ? 1 : labelLineIntensity,
+              background: "black"
             }}
           />
         </div>

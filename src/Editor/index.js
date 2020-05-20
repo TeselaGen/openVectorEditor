@@ -46,42 +46,12 @@ import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
+import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
 //   whyDidYouUpdate(React);
 // }
-
-const userDefinedHandlersAndOpts = [
-  "readOnly",
-  "shouldAutosave",
-  "hideSingleImport",
-  "disableSetReadOnly",
-  "showReadOnly",
-  "showCircularity",
-  "showAvailability",
-  "showGCContent",
-  "GCDecimalDigits",
-  "onlyShowLabelsThatDoNotFit",
-  "fullscreenMode",
-  "onNew",
-  "onImport",
-  "onSave",
-  "onSaveAs",
-  "alwaysAllowSave",
-  "onRename",
-  "getVersionList",
-  "getSequenceAtVersion",
-  "onDuplicate",
-  "onSelectionOrCaretChanged",
-  "beforeSequenceInsertOrDelete",
-  "onDelete",
-  "onCopy",
-  "onCreateNewFromSubsequence",
-  "onPaste",
-  "menuFilter",
-  "externalLabels"
-];
 
 const _panelMap = {
   circular: CircularView,
@@ -797,6 +767,7 @@ export class Editor extends React.Component {
       >
         <Dialogs
           editorName={editorName}
+          {...pickedUserDefinedHandlersAndOpts}
           {...pick(this.props, dialogOverrides)}
         />
         <ToolBar

@@ -131,6 +131,18 @@ describe("editor", function() {
       "be.visible"
     );
   });
+  it(`should fire the beforeAnnotationCreate callback if one is passed`, function() {
+    cy.tgToggle("beforeAnnotationCreate");
+    cy.get(".veRowViewSelectionLayer")
+      .first()
+      .rightclick();
+
+    cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "New Primer").click();
+    cy.focused().type("new primer");
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains("beforeAnnotationCreate callback triggered for primers");
+  });
   it(`should handle rightClickOverrides correctly if they are passed`, function() {
     cy.tgToggle("overrideRightClickExample");
 
