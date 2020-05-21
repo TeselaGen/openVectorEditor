@@ -48,7 +48,7 @@
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react-beautiful-dnd": "^13.0.0",
-    "react-draggable": "^3.2.1",
+    "react-draggable": "^4.4.2",
     "react-dropzone": "^4.2.11",
     "react-measure": "^2.2.4",
     "react-redux": "^5",
