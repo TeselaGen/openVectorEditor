@@ -1,5 +1,6 @@
 import React from "react";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import { cleanRest } from "./utils/cleanRest";
 
 export default function Feature({
   color = "orange",
@@ -10,6 +11,7 @@ export default function Feature({
   totalAngle,
   ...rest
 }) {
+  const cleanedRest = cleanRest(rest);
   if (containsLocations) {
     let path = drawDirectedPiePiece({
       radius: radius,
@@ -20,7 +22,7 @@ export default function Feature({
     });
     return (
       <path
-        {...rest}
+        {...cleanedRest}
         className="veFeature veCircularViewFeature"
         strokeWidth=".5"
         stroke="black"
@@ -38,7 +40,7 @@ export default function Feature({
   });
   return (
     <path
-      {...rest}
+      {...cleanedRest}
       className="veFeature veCircularViewFeature"
       strokeWidth=".5"
       stroke="black"

@@ -55,8 +55,9 @@ class PointedAnnotation extends React.PureComponent {
       path = `
           M 0,0 
           L ${width - pointiness / 2},0
-          Q ${width + pointiness / 2},${height / 2} ${width -
-        pointiness / 2},${height}
+          Q ${width + pointiness / 2},${height / 2} ${
+        width - pointiness / 2
+      },${height}
           L ${0},${height}
           Q ${pointiness},${height / 2} ${0},${0}
           z`;
@@ -64,8 +65,9 @@ class PointedAnnotation extends React.PureComponent {
       path = `
           M 0,0 
           L ${width - pointiness / 2},0 
-          Q ${width + pointiness / 2},${height / 2} ${width -
-        pointiness / 2},${height}
+          Q ${width + pointiness / 2},${height / 2} ${
+        width - pointiness / 2
+      },${height}
           L 0,${height} 
           z`;
     } else if (rangeType === "beginningAndEnd") {
@@ -107,15 +109,15 @@ class PointedAnnotation extends React.PureComponent {
       <g
         {...{ onMouseLeave, onMouseOver }}
         className={" clickable " + className}
-        dataId={id}
-        onClick={function(event) {
+        data-id={id}
+        onClick={function (event) {
           onClick({ annotation, event, gapsBefore, gapsInside });
         }}
-        onDoubleClick={function(event) {
+        onDoubleClick={function (event) {
           onDoubleClick &&
             onDoubleClick({ annotation, event, gapsBefore, gapsInside });
         }}
-        onContextMenu={function(event) {
+        onContextMenu={function (event) {
           onRightClick({ annotation, event, gapsBefore, gapsInside });
         }}
       >

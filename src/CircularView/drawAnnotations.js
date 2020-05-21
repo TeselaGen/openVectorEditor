@@ -39,10 +39,10 @@ function drawAnnotations({
   const labels = {};
 
   if (!Object.keys(annotations).length) return null;
-  sortBy(annotations, a => {
+  sortBy(annotations, (a) => {
     return -getRangeLength(a, sequenceLength);
   })
-    .map(annotation => {
+    .map((annotation) => {
       let {
         startAngle,
         endAngle,
@@ -111,7 +111,7 @@ function drawAnnotations({
 
       return annotationCopy;
     })
-    .forEach(function(annotation, index) {
+    .forEach(function (annotation, index) {
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
         onClick({ event, annotation });
@@ -218,7 +218,7 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = withHover(function({
+const DrawAnnotation = withHover(function ({
   className,
   startAngle,
   endAngle,

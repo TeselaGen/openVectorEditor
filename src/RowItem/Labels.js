@@ -67,7 +67,7 @@ function Labels(props) {
     )
   );
 
-  filter(annotationRanges, r => {
+  filter(annotationRanges, (r) => {
     if (onlyShowLabelsThatDoNotFit) {
       //tnrtodo: more work needs to be done here to make this actually configurable
       //check if annotation name will fit
@@ -82,7 +82,7 @@ function Labels(props) {
       );
     }
     return true;
-  }).forEach(function(annotationRange, index) {
+  }).forEach(function (annotationRange, index) {
     const pluralType = annotationRange.annotation.annotationTypePlural;
     let annotation = annotationRange.annotation;
     if (!annotation) {
@@ -205,7 +205,7 @@ const DrawLabel = withHover(
                 ? isRowView
                   ? ".cutsiteLabelSelectionLayer"
                   : ".veRowViewAxis"
-                : `[dataId="${annotation.id}"].veRowView${startCase(
+                : `[data-id="${annotation.id}"].veRowView${startCase(
                     annotation.annotationTypePlural.slice(0, -1)
                   )}`
             );
@@ -224,17 +224,17 @@ const DrawLabel = withHover(
           <div
             {...{ onMouseLeave, onMouseOver }}
             className={className + " ve-monospace-font"}
-            onClick={function(event) {
+            onClick={function (event) {
               onClick({ event, annotation });
               event.stopPropagation();
             }}
-            onDoubleClick={function(event) {
+            onDoubleClick={function (event) {
               if (onDoubleClick) {
                 onDoubleClick({ event, annotation });
                 event.stopPropagation();
               }
             }}
-            onContextMenu={function(event) {
+            onContextMenu={function (event) {
               onRightClick({ event, annotation });
               event.stopPropagation();
             }}
@@ -259,7 +259,7 @@ const DrawLabel = withHover(
           </div>
 
           <div
-            ref={n => {
+            ref={(n) => {
               if (n) this.n = n;
             }}
             style={{
