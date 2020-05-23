@@ -79,7 +79,7 @@
     "cross-env": "^5.1.6",
     "cypress": "^4.6.0",
     "drag-mock": "^1.4.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.1.0",
     "eslint-config-teselagen": "^5.0.5",
     "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
