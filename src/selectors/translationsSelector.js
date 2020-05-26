@@ -1,5 +1,5 @@
 import { reduce } from "lodash";
-import uuid from "uniqid";
+import uuid from "shortid";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";

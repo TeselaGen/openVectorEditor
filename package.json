@@ -61,11 +61,11 @@
     "redux-ignore": "^1.2.5",
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
+    "shortid": "^2.2.15",
     "teselagen-react-components": "^29.1.4",
     "tg-client-query-builder": "^2.12.2",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
-    "uniqid": "^5.2.0",
     "ve-range-utils": "^2.5.8",
     "ve-sequence-utils": "^3.3.54"
   },

@@ -10,7 +10,7 @@ import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import axios from "axios";
-import uniqid from "uniqid";
+import uniqid from "shortid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
 
