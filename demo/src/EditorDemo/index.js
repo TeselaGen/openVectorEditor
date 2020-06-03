@@ -742,7 +742,7 @@ sequenceData: {
                 type: "showLineageAnnotations",
                 label: "Show Lineage Annotations in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Lineage Annotations (aka the input parts that went into the assembly) can be displayed directly in the editor like so: 
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -804,7 +804,8 @@ sequenceData: {
                 type: "showAssemblyPieces",
                 label: "Show AssemblyPieces  in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Input Parts get turned into assembly pieces by j5, which then have the proper overlaps / overhangs and are ready for assembly
+Assembly Pieces can be displayed directly in the editor like so: 
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
