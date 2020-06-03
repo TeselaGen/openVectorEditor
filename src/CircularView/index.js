@@ -217,7 +217,6 @@ export class CircularView extends React.Component {
       },
       {
         zIndex: 20,
-        arrowheadLength: 0,
         layerName: "warnings",
         isAnnotation: true,
         spaceBefore: 10,
@@ -237,7 +236,7 @@ export class CircularView extends React.Component {
     const paredDownMessages = [];
 
     let output = layersToDraw
-      .map(opts => {
+      .map((opts) => {
         const {
           layerName,
           maxToDisplay,
@@ -328,11 +327,11 @@ export class CircularView extends React.Component {
           zIndex
         };
       })
-      .filter(function(i) {
+      .filter(function (i) {
         return !!i;
       });
 
-    annotationsSvgs = sortBy(output, "zIndex").reduce(function(
+    annotationsSvgs = sortBy(output, "zIndex").reduce(function (
       arr,
       { result }
     ) {
@@ -353,7 +352,7 @@ export class CircularView extends React.Component {
         ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
       ];
       return selectionLayers
-        .map(function(selectionLayer, index) {
+        .map(function (selectionLayer, index) {
           if (
             selectionLayer.start >= 0 &&
             selectionLayer.end >= 0 &&
@@ -384,7 +383,7 @@ export class CircularView extends React.Component {
             return null;
           }
         })
-        .filter(el => {
+        .filter((el) => {
           return !!el;
         });
     }
@@ -428,14 +427,14 @@ export class CircularView extends React.Component {
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          onDrag={event => {
+          onDrag={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               event,
               sequenceLength,
               editorDragged
             );
           }}
-          onStart={event => {
+          onStart={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               event,
               sequenceLength,
@@ -471,7 +470,7 @@ export class CircularView extends React.Component {
             )}
             <svg
               key="circViewSvg"
-              onClick={event => {
+              onClick={(event) => {
                 instantiated &&
                   this.getNearestCursorPositionToMouseEvent(
                     event,
@@ -479,7 +478,7 @@ export class CircularView extends React.Component {
                     editorClicked
                   );
               }}
-              onContextMenu={e => {
+              onContextMenu={(e) => {
                 this.getNearestCursorPositionToMouseEvent(
                   e,
                   sequenceLength,
@@ -491,9 +490,9 @@ export class CircularView extends React.Component {
               height={heightToUse}
               ref="circularView"
               className="circularViewSvg"
-              viewBox={`-${radius * scale} -${radius * scale} ${radius *
-                2 *
-                scale} ${radius * 2 * scale}`}
+              viewBox={`-${radius * scale} -${radius * scale} ${
+                radius * 2 * scale
+              } ${radius * 2 * scale}`}
             >
               {annotationsSvgs}
             </svg>
@@ -521,12 +520,12 @@ function pareDownAnnotations(annotations, max) {
   let paredDown = false;
   if (Object.keys(annotations).length > max) {
     paredDown = true;
-    let sortedAnnotations = sortBy(annotations, function(annotation) {
+    let sortedAnnotations = sortBy(annotations, function (annotation) {
       return -getRangeLength(annotation);
     });
     annotationsToPass = sortedAnnotations
       .slice(0, max)
-      .reduce(function(obj, item) {
+      .reduce(function (obj, item) {
         obj[item.id] = item;
         return obj;
       }, {});

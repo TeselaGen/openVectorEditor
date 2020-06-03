@@ -43,7 +43,7 @@ function StackedAnnotations(props) {
   }
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
-  forEach(annotationRanges, function(annotationRange, index) {
+  forEach(annotationRanges, function (annotationRange, index) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
@@ -97,11 +97,16 @@ function StackedAnnotations(props) {
           charWidth={charWidth}
           forward={annotation.forward}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
-          rangeType={getAnnotationRangeType(
-            annotationRange,
-            annotation,
-            annotation.forward
-          )}
+          rangeType={
+            annotation.noDirectionality
+              ? "middle"
+              : getAnnotationRangeType(
+                  annotationRange,
+                  annotation,
+                  annotation.forward
+                )
+          }
+          {...(annotation.noDirectionality && { pointiness: 0 })}
           height={
             annotationRange.containsLocations && !disregardLocations
               ? anotationHeightNoSpace / 8

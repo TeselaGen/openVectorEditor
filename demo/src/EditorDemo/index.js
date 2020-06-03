@@ -19,7 +19,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   return {
     sequenceData
   };
-})(function(props) {
+})(function (props) {
   console.info("These are the props passed to our Custom Tab:", props);
   return (
     <div>
@@ -78,7 +78,7 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    window.ove_updateEditor = vals => {
+    window.ove_updateEditor = (vals) => {
       updateEditor(store, "DemoEditor", vals);
     };
     updateEditor(store, "DemoEditor", {
@@ -90,11 +90,11 @@ export default class EditorDemo extends React.Component {
     setParamsIfNecessary({ that: this, defaultState });
   }
 
-  changeFullscreenMode = e =>
+  changeFullscreenMode = (e) =>
     this.setState({
       isFullscreen: e.target.checked
     });
-  changeReadOnly = e =>
+  changeReadOnly = (e) =>
     this.setState({
       readOnly: e.target.checked
     });
@@ -127,7 +127,7 @@ export default class EditorDemo extends React.Component {
   };
   rightClickOverridesExample = {
     rightClickOverrides: {
-      partRightClicked: items => {
+      partRightClicked: (items) => {
         return [
           ...items,
           {
@@ -157,10 +157,10 @@ export default class EditorDemo extends React.Component {
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
-      menuDef => {
+      (menuDef) => {
         menuDef.push({ text: "Custom", submenu: ["copy"] });
         menuDef[0].submenu
-          .find(i => i.text && i.text.includes("Export"))
+          .find((i) => i.text && i.text.includes("Export"))
           .submenu.push({
             text: "Custom export option!",
             onClick: () => window.toastr.success("Custom export hit!")
@@ -351,7 +351,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
 
                 `,
-                hook: isProtein => {
+                hook: (isProtein) => {
                   isProtein
                     ? updateEditor(store, "DemoEditor", {
                         readOnly: false,
@@ -389,7 +389,7 @@ ToolBarProps: {
                 that: this,
                 label: "Customize tabs",
                 type: "customizeTabs",
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       panelsShown: [
@@ -658,7 +658,7 @@ updateEditor(store, "DemoEditor", {
                 `,
                 type: "setDefaultVisibilities",
                 label: "Set Default Visibilities",
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
@@ -688,7 +688,8 @@ sequenceData: {
       start: 10,
       end: 400,
       labelColor: "red",
-      color: "red"
+      color: "red",
+      noDirectionality: true
     },
     {
       id: "error2",
@@ -697,13 +698,14 @@ sequenceData: {
       start: 600,
       end: 950,
       labelColor: "gold",
-      color: "yellow"
+      color: "yellow",
+      noDirectionality: true
     }
   ]
 }
 \`\`\`
 `,
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
                     sequenceData: {
                       ...exampleSequenceData,
@@ -716,7 +718,8 @@ sequenceData: {
                               start: 10,
                               end: 400,
                               labelColor: "red",
-                              color: "red"
+                              color: "red",
+                              noDirectionality: true
                             },
                             {
                               id: "error2",
@@ -725,7 +728,8 @@ sequenceData: {
                               start: 600,
                               end: 950,
                               labelColor: "gold",
-                              color: "yellow"
+                              color: "yellow",
+                              noDirectionality: true
                             }
                           ]
                         : []
@@ -749,7 +753,8 @@ sequenceData: {
       start: 900,
       end: 400,
       labelColor: "green",
-      color: "green"
+      color: "green",
+      noDirectionality: true
     },
     {
       id: "18711jja1",
@@ -764,7 +769,7 @@ sequenceData: {
 \`\`\`
 `,
 
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       sequenceData: {
@@ -785,7 +790,8 @@ sequenceData: {
                                 start: 401,
                                 end: 899,
                                 labelColor: "blue",
-                                color: "blue"
+                                color: "blue",
+                                noDirectionality: true
                               }
                             ]
                           : []
@@ -809,7 +815,8 @@ sequenceData: {
       start: 900,
       end: 400,
       labelColor: "green",
-      color: "green"
+      color: "green",
+      noDirectionality: true,
     },
     {
       id: "18711jja1",
@@ -817,14 +824,15 @@ sequenceData: {
       start: 401,
       end: 899,
       labelColor: "blue",
-      color: "blue"
+      color: "blue",
+      noDirectionality: true,
     }
   ]
 }
 \`\`\`
 `,
 
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
                     sequenceData: {
                       ...exampleSequenceData,
@@ -836,7 +844,8 @@ sequenceData: {
                               start: 900,
                               end: 400,
                               labelColor: "darkorange",
-                              color: "darkorange"
+                              color: "darkorange",
+                              noDirectionality: true
                             },
                             {
                               id: "18711jja1",
@@ -844,7 +853,8 @@ sequenceData: {
                               start: 401,
                               end: 899,
                               labelColor: "darkblue",
-                              color: "darkblue"
+                              color: "darkblue",
+                              noDirectionality: true
                             }
                           ]
                         : []
@@ -860,7 +870,7 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "readOnly",
-                hook: readOnly => {
+                hook: (readOnly) => {
                   updateEditor(store, "DemoEditor", {
                     readOnly
                   });
@@ -1139,7 +1149,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               onNew: () => window.toastr.success("onNew callback triggered")
             })}
             {...(this.state.onImport && {
-              onImport: sequence => {
+              onImport: (sequence) => {
                 window.toastr.success(
                   `onImport callback triggered for sequence: ${sequence.name}`
                 );
@@ -1164,7 +1174,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onSave && {
-              onSave: function(
+              onSave: function (
                 opts,
                 sequenceDataToSave,
                 editorState,
@@ -1183,7 +1193,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onSaveAs && {
-              onSaveAs: function(
+              onSaveAs: function (
                 opts,
                 sequenceDataToSave,
                 editorState,
@@ -1204,7 +1214,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               alwaysAllowSave: true
             })}
             {...(this.state.onRename && {
-              onRename: newName =>
+              onRename: (newName) =>
                 window.toastr.success("onRename callback triggered: " + newName)
             })}
             {...(this.state.onDuplicate && {
@@ -1259,7 +1269,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                     ...["parts", "features", "primers"].reduce((acc, key) => {
                       const annotations = existingSequenceData[key];
                       acc[key] = annotations.filter(
-                        a =>
+                        (a) =>
                           !isRangeOrPositionWithinRange(
                             caretPositionOrRange,
                             a,
@@ -1274,7 +1284,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onCopy && {
-              onCopy: function(/* event, copiedSequenceData, editorState */) {
+              onCopy: function (/* event, copiedSequenceData, editorState */) {
                 window.toastr.success("onCopy callback triggered");
 
                 // console.info(editorState);
@@ -1295,7 +1305,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onPaste && {
-              onPaste: function(event /* editorState */) {
+              onPaste: function (event /* editorState */) {
                 //the onPaste here must return sequenceData in the teselagen data format
                 window.toastr.success("onPaste callback triggered");
                 const clipboardData = event.clipboardData;
@@ -1323,7 +1333,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(withVersionHistory && {
-              getSequenceAtVersion: versionId => {
+              getSequenceAtVersion: (versionId) => {
                 if (versionId === 2) {
                   return {
                     sequence: "thomaswashere"

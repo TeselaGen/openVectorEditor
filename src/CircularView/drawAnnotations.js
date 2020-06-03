@@ -137,8 +137,16 @@ function drawAnnotations({
         endAngle,
         totalAngle,
         centerAngle,
-        locationAngles
+        locationAngles,
+        noDirectionality,
+        ...rest
       } = annotation;
+
+      const _annotationProps = {
+        ...annotationProps,
+        ...(noDirectionality && { arrowheadLength: 0 }),
+        ...rest
+      };
 
       const titleText = getAnnotationNameAndStartStopString(annotation);
 
@@ -195,7 +203,7 @@ function drawAnnotations({
             annotationColor,
             annotationRadius,
             annotationHeight,
-            annotationProps
+            annotationProps: _annotationProps
           }}
           id={annotation.id}
           key={"veAnnotation-" + annotationType + index}
