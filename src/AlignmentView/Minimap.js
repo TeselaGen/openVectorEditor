@@ -15,12 +15,12 @@ export default class Minimap extends React.Component {
         "scrollAlignmentView",
         "laneHeight",
         "laneSpacing"
-      ].some(key => props[key] !== newProps[key])
+      ].some((key) => props[key] !== newProps[key])
     )
       return true;
     return false;
   }
-  handleMinimapClick = e => {
+  handleMinimapClick = (e) => {
     if (
       this.isDragging ||
       (e.target && e.target.classList.contains("minimapCaret"))
@@ -65,11 +65,11 @@ export default class Minimap extends React.Component {
     );
     return Math.min(width, dimensions.width);
   };
-  getXPositionOfClickInMinimap = e => {
+  getXPositionOfClickInMinimap = (e) => {
     const leftStart = this.minimap.getBoundingClientRect().left;
     return Math.max(e.clientX - leftStart, 0);
   };
-  getYPositionOfClickInMinimap = e => {
+  getYPositionOfClickInMinimap = (e) => {
     const topStart = this.minimap.getBoundingClientRect().top;
     return Math.max(e.clientY + this.minimapTracks.scrollTop - topStart, 0);
   };
@@ -78,7 +78,7 @@ export default class Minimap extends React.Component {
       this.isDragging = false;
     }, 150);
   };
-  handleDrag = e => {
+  handleDrag = (e) => {
     const {
       onMinimapScrollX,
       dimensions: { width = 200 }
@@ -90,7 +90,7 @@ export default class Minimap extends React.Component {
   itemSizeGetter = () => {
     return this.props.laneHeight;
   };
-  renderItem = i => {
+  renderItem = (i) => {
     const {
       alignmentTracks = [],
       dimensions: { width = 200 },
@@ -102,7 +102,7 @@ export default class Minimap extends React.Component {
     const { matchHighlightRanges } = alignmentTracks[i];
     //need to get the chunks that can be rendered
     let redPath = ""; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
-    let greyPath = "";
+    let bluePath = "";
     // draw one grey rectangle then draw red/mismatching regions on top of it
     const height = laneHeight - laneSpacing;
     const y = 0;
@@ -114,16 +114,19 @@ export default class Minimap extends React.Component {
       matchHighlightRanges[matchHighlightRanges.length - 1],
       charWidth
     );
-    greyPath += `M${firstRange.xStart},${y} L${lastRange.xStart +
-      lastRange.width},${y} L${lastRange.xStart + lastRange.width},${y +
-      height} L${firstRange.xStart},${y + height}`;
-    matchHighlightRanges.forEach(range => {
+    bluePath += `M${firstRange.xStart},${y} L${
+      lastRange.xStart + lastRange.width
+    },${y} L${lastRange.xStart + lastRange.width},${y + height} L${
+      firstRange.xStart
+    },${y + height}`;
+    matchHighlightRanges.forEach((range) => {
       const { xStart, width } = getXStartAndWidthFromNonCircularRange(
         range,
         charWidth
       );
-      const toAdd = `M${xStart},${y} L${xStart + width},${y} L${xStart +
-        width},${y + height} L${xStart},${y + height}`;
+      const toAdd = `M${xStart},${y} L${xStart + width},${y} L${
+        xStart + width
+      },${y + height} L${xStart},${y + height}`;
       if (!range.isMatch) {
         redPath += toAdd;
       }
@@ -138,7 +141,7 @@ export default class Minimap extends React.Component {
           width={width}
           shapeRendering="geometricPrecision"
         >
-          <path d={greyPath} fill="grey" />
+          <path d={bluePath} fill="#9abeff" />
           <path d={redPath} fill="red" />
         </svg>
       </div>
@@ -163,7 +166,7 @@ export default class Minimap extends React.Component {
 
     return (
       <div
-        ref={ref => (this.minimap = ref)}
+        ref={(ref) => (this.minimap = ref)}
         className="alignmentMinimap"
         style={{
           position: "relative",
@@ -174,7 +177,7 @@ export default class Minimap extends React.Component {
         onClick={this.handleMinimapClick}
       >
         <div
-          ref={ref => {
+          ref={(ref) => {
             if (ref) {
               this.minimapTracks = ref;
             }
@@ -317,10 +320,10 @@ const YellowScrollHandle = view(
                 opacity: ".3",
                 zIndex: "10",
                 width: scrollHandleWidth,
-                background: "yellow"
+                background: "blue"
               }}
             >
-              {/* this is the blue vertical scroll position display element */}
+              {/* this is the vertical scroll position display element */}
               <div
                 className="verticalScrollDisplay"
                 style={{
@@ -331,7 +334,7 @@ const YellowScrollHandle = view(
                     laneHeight,
 
                   zIndex: "-10",
-                  background: "blue",
+                  background: "yellow",
                   position: "relative",
                   top: verticalVisibleRange.start * laneHeight
                 }}
