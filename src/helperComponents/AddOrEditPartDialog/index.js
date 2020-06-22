@@ -8,27 +8,28 @@ const renderTypes = (
     inlineLabel
     tooltipError
     defaultValue="misc_feature"
-    options={featureTypes.map(type => {
+    options={featureTypes.map((type) => {
       return {
-        label: (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginRight: 10
-            }}
-          >
-            <div
-              style={{
-                // background: featureColors[type], add back in if we want colors. import from vesequtils
-                height: 15,
-                width: 15,
-                marginRight: 5
-              }}
-            />
-            {type}
-          </div>
-        ),
+        label: type,
+        // label: (
+        //   <div
+        //     style={{
+        //       display: "flex",
+        //       alignItems: "center",
+        //       marginRight: 10
+        //     }}
+        //   >
+        //     <div
+        //       style={{
+        //         // background: featureColors[type], add back in if we want colors. import from vesequtils
+        //         height: 15,
+        //         width: 15,
+        //         marginRight: 5
+        //       }}
+        //     />
+        //     {type}
+        //   </div>
+        // ),
         value: type
       };
     })}
@@ -39,7 +40,11 @@ const renderTypes = (
 
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPartDialog",
-  getProps: props => ({
+  dialogProps: {
+    height: 450,
+    width: 400
+  },
+  getProps: (props) => ({
     upsertAnnotation: props.upsertPart,
     renderTypes,
     annotationTypePlural: "parts"
