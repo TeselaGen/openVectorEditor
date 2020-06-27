@@ -65,7 +65,7 @@ class AlignmentView extends React.Component {
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
-  handleAlignmentCopy = event => {
+  handleAlignmentCopy = (event) => {
     if (
       event.key === "c" &&
       (event.metaKey === true || event.ctrlKey === true)
@@ -92,7 +92,7 @@ class AlignmentView extends React.Component {
       ].selectionLayer || {};
     const { alignmentTracks } = this.props;
     let seqDataOfAllTracksToCopy = [];
-    alignmentTracks.forEach(track => {
+    alignmentTracks.forEach((track) => {
       const seqDataToCopy = getSequenceDataBetweenRange(
         track.alignmentData,
         selectionLayer
@@ -185,7 +185,7 @@ class AlignmentView extends React.Component {
     });
   };
 
-  caretPositionUpdate = position => {
+  caretPositionUpdate = (position) => {
     let { caretPosition = -1, alignmentId, alignmentRunUpdate } = this.props;
     if (caretPosition === position) {
       return;
@@ -197,7 +197,7 @@ class AlignmentView extends React.Component {
     });
   };
 
-  selectionLayerUpdate = newSelection => {
+  selectionLayerUpdate = (newSelection) => {
     let {
       selectionLayer = { start: -1, end: -1 },
       // ignoreGapsOnHighlight,
@@ -289,7 +289,7 @@ class AlignmentView extends React.Component {
       window.localStorage.getItem("charWidthInLinearViewDefault")
     );
   };
-  updateXScrollPercentage = scrollPercentage => {
+  updateXScrollPercentage = (scrollPercentage) => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
@@ -301,7 +301,7 @@ class AlignmentView extends React.Component {
           this.alignmentHolderTop.clientWidth);
     }
   };
-  scrollYToTrack = trackIndex => {
+  scrollYToTrack = (trackIndex) => {
     this.InfiniteScroller.scrollTo(trackIndex);
   };
 
@@ -358,7 +358,7 @@ class AlignmentView extends React.Component {
 
     function getGapMap(sequence) {
       const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-      sequence.split("").forEach(char => {
+      sequence.split("").forEach((char) => {
         if (char === "-") {
           gapMap[Math.max(0, gapMap.length - 1)] =
             (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
@@ -399,7 +399,7 @@ class AlignmentView extends React.Component {
       if (i !== 0) {
         sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData);
         let refSeqCdsFeaturesBpPos = [];
-        alignmentTracks[0].sequenceData.features.forEach(feature => {
+        alignmentTracks[0].sequenceData.features.forEach((feature) => {
           if (feature.type === "CDS") {
             let editedFeature = cloneDeep(feature);
             // in seq reads, ref seq's CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
@@ -701,7 +701,6 @@ class AlignmentView extends React.Component {
             vectorInteractionWrapperStyle: {
               overflowY: "hidden"
             },
-
             charWidth: charWidthInLinearView,
             ignoreGapsOnHighlight: true,
             // editorDragged: (vals) => {
@@ -721,7 +720,8 @@ class AlignmentView extends React.Component {
             dimensions: {
               width: linearViewWidth
             },
-            width: linearViewWidth
+            width: linearViewWidth,
+            paddingBottom: 5
             // scrollData: {
             //   viewportWidth: trackWidth,
             //   fractionScrolled: this.easyStore
@@ -777,7 +777,7 @@ class AlignmentView extends React.Component {
               // width: trackWidth
               width: this.state.width
             }}
-            ref={ref => {
+            ref={(ref) => {
               this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] = ref;
             }}
             dataname="scrollGroup"
@@ -788,7 +788,7 @@ class AlignmentView extends React.Component {
               this.renderItem(0, 0, isTemplate)
             ) : (
               <ReactList
-                ref={c => {
+                ref={(c) => {
                   this.InfiniteScroller = c;
                 }}
                 type="variable"
@@ -919,7 +919,7 @@ class AlignmentView extends React.Component {
               )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
-                  onRelease={val => {
+                  onRelease={(val) => {
                     this.setCharWidthInLinearView({
                       charWidthInLinearView: val
                     });
@@ -1085,7 +1085,7 @@ export default compose(
         "dnaColors"
       ];
       let togglableAlignmentAnnotationSettings = {};
-      map(alignmentAnnotationsToToggle, annotation => {
+      map(alignmentAnnotationsToToggle, (annotation) => {
         if (annotation in alignmentAnnotationVisibility) {
           togglableAlignmentAnnotationSettings[annotation] =
             alignmentAnnotationVisibility[annotation];
@@ -1096,7 +1096,7 @@ export default compose(
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;
         let totalNumOfParts = 0;
-        alignmentTracks.forEach(seq => {
+        alignmentTracks.forEach((seq) => {
           if (seq.sequenceData.features) {
             totalNumOfFeatures += seq.sequenceData.features.length;
           }
@@ -1109,10 +1109,10 @@ export default compose(
           parts: totalNumOfParts
         });
       } else if (pairwiseAlignments) {
-        pairwiseAlignments.forEach(pairwise => {
+        pairwiseAlignments.forEach((pairwise) => {
           let totalNumOfFeatures = 0;
           let totalNumOfParts = 0;
-          pairwise.forEach(seq => {
+          pairwise.forEach((seq) => {
             if (seq.sequenceData.features) {
               totalNumOfFeatures += seq.sequenceData.features.length;
             }
@@ -1147,7 +1147,7 @@ export default compose(
         alignmentVisibilityToolOptions: {
           alignmentAnnotationVisibility,
           alignmentAnnotationLabelVisibility,
-          alignmentAnnotationVisibilityToggle: name => {
+          alignmentAnnotationVisibilityToggle: (name) => {
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationVisibility: {
@@ -1156,7 +1156,7 @@ export default compose(
               }
             });
           },
-          alignmentAnnotationLabelVisibilityToggle: name => {
+          alignmentAnnotationLabelVisibilityToggle: (name) => {
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationLabelVisibility: {
@@ -1190,7 +1190,7 @@ export default compose(
   ),
   branch(
     ({ pairwiseAlignments }) => pairwiseAlignments,
-    renderComponent(props => {
+    renderComponent((props) => {
       return <PairwiseAlignmentView {...props} />;
     })
   )
@@ -1236,7 +1236,7 @@ class UncontrolledSliderWithPlusMinusBtns extends React.Component {
         />
         <Slider
           {...{ ...rest, value }}
-          onChange={value => {
+          onChange={(value) => {
             this.setState({ value });
           }}
         />
@@ -1311,7 +1311,7 @@ class PairwiseAlignmentView extends React.Component {
             isFullyZoomedOut: true,
             noClickDragHandlers: true,
             linearViewOptions: getPairwiseOverviewLinearViewOptions,
-            handleSelectTrack: trackIndex => {
+            handleSelectTrack: (trackIndex) => {
               //set currentPairwiseAlignmentIndex
               this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
             }
