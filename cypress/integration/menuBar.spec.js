@@ -2,6 +2,24 @@ describe("menuBar", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it("Should be able to change circular/linear from the menu bar", () => {
+    cy.contains(".tg-menu-bar button", "Edit").click();
+    cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
+      "mouseover"
+    );
+    cy.get(":nth-child(2) > .bp3-menu-item").click();
+    cy.contains("Truncate Annotations").click();
+    cy.contains(".tg-menu-bar button", "Edit").click();
+    cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
+      "mouseover"
+    );
+    cy.get(
+      ".bp3-menu > :nth-child(1) > .bp3-menu-item > .bp3-icon > svg"
+    ).should("have.attr", "data-icon", "blank");
+    cy.get(
+      ".bp3-menu > :nth-child(2) > .bp3-menu-item > .bp3-icon > svg"
+    ).should("have.attr", "data-icon", "small-tick");
+  });
   it(`should be able to use the search/shortcut bar to translate the sequence`, () => {
     cy.get(".veRowViewTranslationsContainer")
       .first()
@@ -247,11 +265,6 @@ describe("menuBar", function () {
   //   cy.get(`.dialog-buttons`).contains("OK").click()
   //   cy.get(".veStatusBar").contains(`10 to 20`)
   // });
-  it("Should be able to change circular/linear from the menu bar", () => {
-    cy.contains(".tg-menu-bar button", "Edit").click();
-    cy.contains(".bp3-menu-item", "Change Cirular/Linear").click();
-    cy.contains(".bp3-menu-item", "/^Linear/").click();
-  });
 });
 
 // Cypress.on('uncaught:exception', (err, runnable) => {
