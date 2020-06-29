@@ -11,7 +11,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          # record: true
+          record: true
           start: yarn start
           wait-on: http://localhost:3344
         env:
