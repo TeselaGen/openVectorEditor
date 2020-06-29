@@ -34,10 +34,10 @@ describe("partTypes", function () {
       "test feature"
     ).trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Make a Part from Feature").click();
+    cy.get(".bp3-menu").should("not.exist");
     cy.contains(".veRowViewPart title", "test feature").trigger("contextmenu", {
       force: true
     });
-    cy.get(".bp3-menu").should("not.exist");
     cy.contains(".bp3-menu-item", "Edit Part", { timeout: 15000 }).click();
     cy.get(".bp3-dialog-body").contains(".tg-select", "misc_RNA");
   });
