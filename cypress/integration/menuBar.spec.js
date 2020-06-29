@@ -1,6 +1,24 @@
-describe("menuBar", function() {
+describe("menuBar", function () {
   beforeEach(() => {
     cy.visit("");
+  });
+  it("Should be able to change circular/linear from the menu bar", () => {
+    cy.contains(".tg-menu-bar button", "Edit").click();
+    cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
+      "mouseover"
+    );
+    cy.get(":nth-child(2) > .bp3-menu-item").click();
+    cy.contains("Truncate Annotations").click();
+    cy.contains(".tg-menu-bar button", "Edit").click();
+    cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
+      "mouseover"
+    );
+    cy.get(
+      ".bp3-menu > :nth-child(1) > .bp3-menu-item > .bp3-icon > svg"
+    ).should("have.attr", "data-icon", "blank");
+    cy.get(
+      ".bp3-menu > :nth-child(2) > .bp3-menu-item > .bp3-icon > svg"
+    ).should("have.attr", "data-icon", "small-tick");
   });
   it(`should be able to use the search/shortcut bar to translate the sequence`, () => {
     cy.get(".veRowViewTranslationsContainer")
@@ -17,16 +35,12 @@ describe("menuBar", function() {
       .should("have.length", 2);
   });
   it(`should be able permanently change sequence case`, () => {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
     cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
     cy.contains(".bp3-menu-item", "Upper Case Sequence").click();
     cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
     cy.contains(".bp3-menu-item", "Lower Case Sequence").click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
@@ -53,9 +67,7 @@ describe("menuBar", function() {
   // });
 
   it(`should be able to filter by feature`, () => {
-    cy.get(".tg-menu-bar")
-      .contains("View")
-      .click();
+    cy.get(".tg-menu-bar").contains("View").click();
     cy.contains(".bp3-menu-item", "Feature Types")
       .contains("9/9")
       .trigger("mouseover");
@@ -91,26 +103,16 @@ describe("menuBar", function() {
     cy.contains(".veLabelText", "araD").should("not.exist");
   });
 
-  it("should not be able to select a range in a length 0 sequence", function() {
+  it("should not be able to select a range in a length 0 sequence", function () {
     function shouldBeDisabled(text) {
       cy.contains(".bp3-menu-item", text).closest(".bp3-disabled");
     }
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select All")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select All").click();
 
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Cut")
-      .click();
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click({ force: true });
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Cut").click();
+    cy.get(".tg-menu-bar").contains("Edit").click({ force: true });
 
     [
       "Find...",
@@ -140,58 +142,30 @@ describe("menuBar", function() {
     //   .contains("10 to 20")
     //   .should("be.visible");
   });
-  it("should have the select range tool initialized correctly", function() {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select")
-      .click();
+  it("should have the select range tool initialized correctly", function () {
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select").click();
     cy.get(`.tg-test-from input`).should("have.value", "1");
     cy.get(`.tg-test-to input`).should("have.value", "1");
     cy.contains("Selecting 1 bp from 1 to 1").should("exist");
   });
-  it(`select range should be initialized from a previous selection or caret pos correctly`, function() {
+  it(`select range should be initialized from a previous selection or caret pos correctly`, function () {
     cy.contains(".veRowViewPart", "Part 0").click({ force: true });
     cy.contains(".veStatusBarItem", "11 to 31");
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select")
-      .click();
-    cy.get(`[label="From:"]`)
-      .should("have.value", "11")
-      .clear()
-      .type("10");
-    cy.get(`[label="To:"]`)
-      .should("have.value", "31")
-      .clear()
-      .type("20");
-    cy.get(".tg-min-width-dialog")
-      .contains("Select 11 BPs")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select").click();
+    cy.get(`[label="From:"]`).should("have.value", "11").clear().type("10");
+    cy.get(`[label="To:"]`).should("have.value", "31").clear().type("20");
+    cy.get(".tg-min-width-dialog").contains("Select 11 BPs").click();
     cy.contains(".veStatusBarItem", "10 to 20").should("be.visible");
   });
-  it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function() {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select")
-      .click();
-    cy.get(`[label="From:"]`)
-      .clear()
-      .type("10");
-    cy.get(`[label="To:"]`)
-      .clear()
-      .type("20");
-    cy.get(".tg-min-width-dialog")
-      .contains("Select 11 BPs")
-      .click();
-    cy.get(".veStatusBarItem")
-      .contains("10 to 20")
-      .should("be.visible");
+  it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function () {
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select").click();
+    cy.get(`[label="From:"]`).clear().type("10");
+    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(".tg-min-width-dialog").contains("Select 11 BPs").click();
+    cy.get(".veStatusBarItem").contains("10 to 20").should("be.visible");
   });
 
   it(`save tool should be disabled initially and then enabled after an edit is made`, () => {
@@ -199,20 +173,14 @@ describe("menuBar", function() {
     cy.get(`[cmd="saveSequence"]`).should("have.class", "bp3-disabled");
 
     cy.selectRange(2, 5);
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .trigger("mouseover");
-    cy.get(".tg-menu-bar-popover")
-      .contains("Cut")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").trigger("mouseover");
+    cy.get(".tg-menu-bar-popover").contains("Cut").click();
 
-    cy.get(".tg-menu-bar")
-      .contains("File")
-      .click();
+    cy.get(".tg-menu-bar").contains("File").click();
     cy.get(`[cmd="saveSequence"]`).should("not.have.class", "bp3-disabled");
   });
 
-  it("menubar can be optionally displayed above or on the same line as the shortcuts", function() {
+  it("menubar can be optionally displayed above or on the same line as the shortcuts", function () {
     cy.tgToggle("showDemoOptions");
     cy.tgToggle("displayMenuBarAboveTools");
 
@@ -226,77 +194,35 @@ describe("menuBar", function() {
   -can go to a position inside the sequence 
   -can rotate the sequence to that position
   `, () => {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Go To")
-      .click();
-    cy.focused()
-      .clear()
-      .type("0");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .should("be.enabled");
-    cy.focused()
-      .clear()
-      .type("5299");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .should("be.enabled");
-    cy.focused()
-      .clear()
-      .type("2000000");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .should("be.disabled");
-    cy.focused()
-      .clear()
-      .type("20");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Go To").click();
+    cy.focused().clear().type("0");
+    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.focused().clear().type("5299");
+    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.focused().clear().type("2000000");
+    cy.get(".bp3-dialog").contains("OK").should("be.disabled");
+    cy.focused().clear().type("20");
+    cy.get(".bp3-dialog").contains("OK").click();
     cy.contains("Caret Between Bases 20 and 21");
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Rotate To Caret Position")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Rotate To Caret Position").click();
     cy.contains("Caret Between Bases 5299 and 1");
   });
 
   it(`you can go to a position or a range and then directly type in bps
   `, () => {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Go To")
-      .click();
-    cy.focused()
-      .clear()
-      .type("10");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Go To").click();
+    cy.focused().clear().type("10");
+    cy.get(".bp3-dialog").contains("OK").click();
     cy.focused().type("a");
     cy.contains(".sequenceInputBubble", "Press ENTER to insert");
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select")
-      .click();
-    cy.get(`[label="From:"]`)
-      .clear()
-      .type("10");
-    cy.get(`[label="To:"]`)
-      .clear()
-      .type("20");
-    cy.get(`.dialog-buttons`)
-      .contains("Select 11 BPs")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select").click();
+    cy.get(`[label="From:"]`).clear().type("10");
+    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`.dialog-buttons`).contains("Select 11 BPs").click();
     cy.focused().type("a");
 
     cy.contains(".sequenceInputBubble", "Press ENTER to replace");
@@ -307,50 +233,26 @@ describe("menuBar", function() {
     -can select a valid range 
     -can copy the select bps
     -can cut the selected bps
-  `, function() {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select")
-      .click();
-    cy.get(`[label="From:"]`)
-      .clear()
-      .type("10");
+  `, function () {
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select").click();
+    cy.get(`[label="From:"]`).clear().type("10");
 
     cy.get(`[label="To:"]`).clear();
-    cy.get(`.dialog-buttons`)
-      .contains("Select 0 BPs")
-      .should("be.disabled");
-    cy.get(`[label="To:"]`)
-      .clear()
-      .type("20000000");
-    cy.get(`.dialog-buttons`)
-      .contains("Select 0 BPs")
-      .should("be.disabled");
+    cy.get(`.dialog-buttons`).contains("Select 0 BPs").should("be.disabled");
+    cy.get(`[label="To:"]`).clear().type("20000000");
+    cy.get(`.dialog-buttons`).contains("Select 0 BPs").should("be.disabled");
 
-    cy.get(`[label="To:"]`)
-      .clear()
-      .type("20");
-    cy.get(`.dialog-buttons`)
-      .contains("Select 11 BPs")
-      .click();
+    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`.dialog-buttons`).contains("Select 11 BPs").click();
     cy.get(".veStatusBar").contains(`10 to 20`);
 
     cy.get(".veStatusBar").contains(`5299`);
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Copy")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Copy").click();
     cy.contains("Selection Copied");
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Cut")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Cut").click();
     cy.contains("Selection Cut");
     cy.get(".veStatusBar").contains(`5288`);
   });
