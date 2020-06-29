@@ -1,4 +1,4 @@
-describe("partTypes", function() {
+describe("partTypes", function () {
   beforeEach(() => {
     cy.visit("");
   });
@@ -12,9 +12,7 @@ describe("partTypes", function() {
     cy.get(".tg-test-name input").type("test part");
     cy.get(".tg-test-end input").type("0");
 
-    cy.get(".bp3-dialog-body")
-      .contains("Save")
-      .click();
+    cy.get(".bp3-dialog-body").contains("Save").click();
     cy.contains(".veRowViewPart text", "test part").trigger("contextmenu", {
       force: true
     });
@@ -30,17 +28,16 @@ describe("partTypes", function() {
     cy.get(".tg-test-end input").type("0");
     cy.get(".tg-select").click();
     cy.contains(".tg-select-option", "misc_RNA").click();
-    cy.get(".bp3-dialog-body")
-      .contains("Save")
-      .click();
-    cy.contains(".veRowViewFeaturesContainer text", "test feature").trigger(
-      "contextmenu",
-      { force: true }
-    );
+    cy.get(".bp3-dialog-body").contains("Save").click();
+    cy.contains(
+      ".veRowViewFeaturesContainer text",
+      "test feature"
+    ).trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Make a Part from Feature").click();
     cy.contains(".veRowViewPart title", "test feature").trigger("contextmenu", {
       force: true
     });
+    cy.get(".bp3-menu").should("not.exist");
     cy.contains(".bp3-menu-item", "Edit Part", { timeout: 15000 }).click();
     cy.get(".bp3-dialog-body").contains(".tg-select", "misc_RNA");
   });
