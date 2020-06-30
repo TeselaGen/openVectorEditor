@@ -8,7 +8,7 @@ import { divideBy3 } from "../utils/proteinUtils";
 
 // import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
 
-let Axis = function(props) {
+let Axis = function (props) {
   let {
     row,
     tickSpacing,
@@ -19,7 +19,8 @@ let Axis = function(props) {
     sequenceLength,
     showAxisNumbers = true,
     getGaps,
-    isProtein
+    isProtein,
+    style
   } = props;
   if (row.start === 0 && row.end === 0) {
     return null;
@@ -45,7 +46,7 @@ let Axis = function(props) {
   });
   let tickMarkSVG = [];
 
-  tickMarkPositions.forEach(function(tickMarkPosition, i) {
+  tickMarkPositions.forEach(function (tickMarkPosition, i) {
     // var xCenter = getXCenterOfRowAnnotation({
     //     start: tickMarkPosition,
     //     end: tickMarkPosition
@@ -99,7 +100,7 @@ let Axis = function(props) {
       className="veRowViewAxis veAxis"
       width="100%"
       height={annotationHeight}
-      style={{ marginTop, overflow: "visible", display: "block" }}
+      style={{ marginTop, overflow: "visible", display: "block", ...style }}
     >
       {tickMarkSVG}
       <path

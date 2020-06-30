@@ -171,8 +171,10 @@ export default class Minimap extends React.Component {
         style={{
           position: "relative",
           width,
-          overflowX: "visible",
-          overflowY: "hidden"
+          display: "flex",
+          flexDirection: "column"
+          // overflowX: "visible",
+          // overflowY: "hidden"
         }}
         onClick={this.handleMinimapClick}
       >
@@ -183,7 +185,7 @@ export default class Minimap extends React.Component {
             }
           }}
           style={{
-            maxHeight: 150,
+            // maxHeight: 350,
             overflowY: "auto",
             position: "relative"
           }}
@@ -222,7 +224,10 @@ export default class Minimap extends React.Component {
             bpsPerRow: seqLength,
             charWidth,
             annotationHeight: 15,
-            sequenceLength: seqLength
+            sequenceLength: seqLength,
+            style: {
+              height: 17
+            }
           }}
         />
       </div>
