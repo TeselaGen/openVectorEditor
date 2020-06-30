@@ -209,7 +209,30 @@ const fileCommandDefs = {
                 text: "No Features To Filter",
                 disabled: true
               }
-            ])
+            ]),
+        "--",
+        {
+          name: (props) => {
+            return (
+              <div data-test="feat-length-filter" style={{ display: "flex" }}>
+                Filter By Length:
+                <input
+                  type="number"
+                  //className={classnames(Classes.INPUT, "minOrfSizeInput")}
+                  onChange={function (event) {
+                    let minimumFeatLength = parseInt(event.target.value, 10);
+                    if (!(minimumFeatLength > -1)) return;
+                    if (minimumFeatLength > props.sequenceLength) return;
+                    //tricky part is we need to get the length of each feature
+                    //props.annotationVisibilityShow("orfs");
+                    //props.minimumOrfSizeUpdate(minimumFeatLength);
+                  }}
+                  value={props.minimumFeatLength}
+                />
+              </div>
+            );
+          }
+        }
       ];
     }
     // isDisabled:
