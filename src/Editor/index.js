@@ -47,38 +47,12 @@ import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
+import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
 //   whyDidYouUpdate(React);
 // }
-
-const userDefinedHandlersAndOpts = [
-  "readOnly",
-  "shouldAutosave",
-  "hideSingleImport",
-  "disableSetReadOnly",
-  "showReadOnly",
-  "showCircularity",
-  "showAvailability",
-  "showGCContent",
-  "GCDecimalDigits",
-  "fullscreenMode",
-  "onNew",
-  "onImport",
-  "onSave",
-  "onRename",
-  "getVersionList",
-  "getSequenceAtVersion",
-  "onDuplicate",
-  "onSelectionOrCaretChanged",
-  "beforeSequenceInsertOrDelete",
-  "onDelete",
-  "onCopy",
-  "onCreateNewFromSubsequence",
-  "onPaste",
-  "menuFilter"
-];
 
 const _panelMap = {
   circular: CircularView,
@@ -111,7 +85,7 @@ const getListStyle = (isDraggingOver /* isDragging */) => {
     alignItems: "flex-end",
     flex: "0 0 auto",
     flexDirection: "row",
-    overflowX: "scroll",
+    overflowX: "auto", //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
     borderBottom: "1px solid lightgray",
     borderTop: "1px solid lightgray",
     paddingTop: 3,
@@ -182,7 +156,7 @@ export class Editor extends React.Component {
     this.setState({ tabDragging: true });
   };
 
-  onTabDragEnd = result => {
+  onTabDragEnd = (result) => {
     this.setState({ tabDragging: false });
     const { panelsShownUpdate, panelsShown } = this.props;
     // dropped outside the list
@@ -206,7 +180,7 @@ export class Editor extends React.Component {
           ) {
             //we're adding to this group
             return insertItem(
-              panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
+              panelGroup.map((tabPanel) => ({ ...tabPanel, active: false })),
               { ...panelToMove, active: true },
               result.destination.index
             );
@@ -250,7 +224,7 @@ export class Editor extends React.Component {
         return panelGroup;
       });
     }
-    filter(newPanelsShown, panelGroup => {
+    filter(newPanelsShown, (panelGroup) => {
       return panelGroup.length;
     });
     panelsShownUpdate(newPanelsShown);
@@ -261,7 +235,7 @@ export class Editor extends React.Component {
     return map(panelsShown);
   };
 
-  onPreviewModeButtonContextMenu = e => {
+  onPreviewModeButtonContextMenu = (e) => {
     const { previewModeButtonMenu } = this.props;
     e.preventDefault();
     if (previewModeButtonMenu) {
@@ -299,12 +273,7 @@ export class Editor extends React.Component {
       extraRightSidePanel,
       editorName,
       height: _height,
-      showReadOnly,
-      disableSetReadOnly,
       showCircularity,
-      showAvailability,
-      showGCContent,
-      GCDecimalDigits,
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
@@ -313,6 +282,7 @@ export class Editor extends React.Component {
       readOnly,
       setPanelAsActive,
       style = {},
+      maxAnnotationsToDisplay = {},
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
@@ -327,6 +297,7 @@ export class Editor extends React.Component {
       withPreviewMode,
       isFullscreen,
       handleFullscreenClose,
+      onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu
     } = this.props;
@@ -440,7 +411,7 @@ export class Editor extends React.Component {
     };
     const reflexElementProps = {
       propagateDimensions: true,
-      resizeHeight: true,
+      // resizeHeight: true,
       renderOnResizeRate: 50,
       renderOnResize: true,
       className: "ve-panel"
@@ -448,18 +419,22 @@ export class Editor extends React.Component {
 
     const panelsToShow = this.getPanelsToShow();
     this.hasFullscreenPanel = false;
-    map(panelsToShow, panelGroup => {
+    map(panelsToShow, (panelGroup) => {
       panelGroup.forEach(({ fullScreen }) => {
         if (fullScreen) this.hasFullscreenPanel = true;
       });
     });
+    const pickedUserDefinedHandlersAndOpts = pick(
+      this.props,
+      userDefinedHandlersAndOpts
+    );
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
       // let activePanelId
       let activePanelId;
       let activePanelType;
       let isFullScreen;
       let panelPropsToSpread = {};
-      panelGroup.forEach(panelProps => {
+      panelGroup.forEach((panelProps) => {
         const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
@@ -495,19 +470,21 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
-          {...pick(this.props, userDefinedHandlersAndOpts)}
+          {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&
             panelSpecificPropsToSpread.reduce((acc, key) => {
               acc = { ...acc, ...get(this.props, key) };
               return acc;
             }, {}))}
+          maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}
           editorName={editorName}
           isProtein={sequenceData.isProtein}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
           {...editorDimensions}
           isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
@@ -558,7 +535,6 @@ export class Editor extends React.Component {
           />
         );
       }
-
       toReturn.push(
         <ReflexElement
           key={activePanelId}
@@ -599,7 +575,7 @@ export class Editor extends React.Component {
                             }}
                           >
                             <div
-                              onContextMenu={e => {
+                              onContextMenu={(e) => {
                                 showTabRightClickContextMenu(e, id);
                               }}
                               ref={provided.innerRef}
@@ -792,9 +768,11 @@ export class Editor extends React.Component {
       >
         <Dialogs
           editorName={editorName}
+          {...pickedUserDefinedHandlersAndOpts}
           {...pick(this.props, dialogOverrides)}
         />
         <ToolBar
+          {...pickedUserDefinedHandlersAndOpts}
           openHotkeyDialog={this.openHotkeyDialog}
           key="toolbar"
           showMenuBar={showMenuBar}
@@ -803,11 +781,7 @@ export class Editor extends React.Component {
             handleFullscreenClose || this.togglePreviewFullscreen
           }
           isProtein={sequenceData.isProtein}
-          {...pick(this.props, userDefinedHandlersAndOpts)}
           userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
-          onSave={onSave}
-          showGCContent={showGCContent}
-          GCDecimalDigits={GCDecimalDigits}
           closeFullscreen={
             !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
           }
@@ -827,12 +801,17 @@ export class Editor extends React.Component {
             isOpen: this.state.isHotkeyDialogOpen,
             onClose: this.closeHotkeyDialog
           }}
-          {...pick(this.props, userDefinedHandlersAndOpts)}
+          {...pickedUserDefinedHandlersAndOpts}
           editorName={editorName}
         />
 
         <div
-          style={{ position: "relative", flexGrow: "1" }}
+          style={{
+            position: "relative",
+            flexGrow: "1",
+            minHeight: 0,
+            display: "flex"
+          }}
           className="tg-editor-container"
           id="section-to-print"
         >
@@ -852,14 +831,9 @@ export class Editor extends React.Component {
         </div>
 
         <StatusBar
-          showAvailability={showAvailability}
-          showGCContent={showGCContent}
-          GCDecimalDigits={GCDecimalDigits}
-          onSave={onSave}
+          {...pickedUserDefinedHandlersAndOpts}
           isProtein={sequenceData.isProtein}
           showCircularity={showCircularity && !sequenceData.isProtein}
-          disableSetReadOnly={disableSetReadOnly}
-          showReadOnly={showReadOnly}
           editorName={editorName}
           {...StatusBarProps}
         />

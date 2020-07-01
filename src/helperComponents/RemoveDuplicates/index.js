@@ -49,7 +49,7 @@ export class RemoveDuplicatesDialog extends React.Component {
     this.recomputeDups();
   }
 
-  checkboxStyle = { marginBottom: 0 };
+  checkboxStyle = { marginTop: 0, marginBottom: 0 };
 
   delayedRecomputeDups = () => {
     setTimeout(() => {
@@ -73,7 +73,7 @@ export class RemoveDuplicatesDialog extends React.Component {
     const annotations = sequenceData[type];
     const dups = [];
     const seqsHashByStartEndStrandName = {};
-    forEach(annotations, a => {
+    forEach(annotations, (a) => {
       const hash = `${ignoreStartAndEnd ? "" : a.start}&${
         ignoreStartAndEnd ? "" : a.end
       }&${ignoreStrand ? "" : a.strand}&${ignoreName ? "" : a.name}`;
@@ -88,7 +88,7 @@ export class RemoveDuplicatesDialog extends React.Component {
   render() {
     const { duplicatesToRemoveSelectedEntities, hideModal, type } = this.props;
 
-    const selectedIds = this.state.dups.map(d => d.id);
+    const selectedIds = this.state.dups.map((d) => d.id);
     // const sequenceLength = sequenceData.sequence.length;
     // const isCirc = (this.state || {}).circular;
     return (
@@ -125,34 +125,39 @@ export class RemoveDuplicatesDialog extends React.Component {
           }}
         >
           <InfoHelper isButton isPopover icon="settings">
-            <h5>Ignore These Fields While Finding Duplicates:</h5>
-            <SwitchField
-              //delay the call to recompute dups until redux has had time to update
-              onFieldSubmit={this.delayedRecomputeDups}
-              style={this.checkboxStyle}
-              name="ignoreName"
-              label="Name"
-            ></SwitchField>
-            <SwitchField
-              //delay the call to recompute dups until redux has had time to update
-              onFieldSubmit={this.delayedRecomputeDups}
-              style={this.checkboxStyle}
-              name="ignoreStrand"
-              label="Strand"
-            ></SwitchField>
-            <SwitchField
-              //delay the call to recompute dups until redux has had time to update
-              onFieldSubmit={this.delayedRecomputeDups}
-              style={this.checkboxStyle}
-              name="ignoreStartAndEnd"
-              label="Start and End"
-            ></SwitchField>
+            <div style={{ maxWidth: 200 }}>
+              <h5>Ignore These Fields While Finding Duplicates:</h5>
+              <SwitchField
+                containerStyle={{ marginBottom: 2 }}
+                //delay the call to recompute dups until redux has had time to update
+                onFieldSubmit={this.delayedRecomputeDups}
+                style={this.checkboxStyle}
+                name="ignoreName"
+                label="Name"
+              ></SwitchField>
+              <SwitchField
+                containerStyle={{ marginBottom: 2 }}
+                //delay the call to recompute dups until redux has had time to update
+                onFieldSubmit={this.delayedRecomputeDups}
+                style={this.checkboxStyle}
+                name="ignoreStrand"
+                label="Strand"
+              ></SwitchField>
+              <SwitchField
+                containerStyle={{ marginBottom: 2 }}
+                //delay the call to recompute dups until redux has had time to update
+                onFieldSubmit={this.delayedRecomputeDups}
+                style={this.checkboxStyle}
+                name="ignoreStartAndEnd"
+                label="Start and End"
+              ></SwitchField>
+            </div>
           </InfoHelper>
           <Button
             intent="primary"
             onClick={() => {
               this.props[camelCase(`delete_${type}`).slice(0, -1)](
-                duplicatesToRemoveSelectedEntities.map(d => d.id)
+                duplicatesToRemoveSelectedEntities.map((d) => d.id)
               );
               window.toastr.success(
                 `Successfully Deleted ${

@@ -22,6 +22,7 @@ function StackedAnnotations(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     onClick,
+    onDoubleClick,
     disregardLocations,
     InnerComp,
     onRightClick,
@@ -31,7 +32,9 @@ function StackedAnnotations(props) {
     getGaps,
     marginTop,
     marginBottom,
-    getExtraInnerCompProps
+    getExtraInnerCompProps,
+    onlyShowLabelsThatDoNotFit,
+    externalLabels
   } = props;
 
   const InnerCompToUse = InnerComp || PointedAnnotation;
@@ -40,7 +43,7 @@ function StackedAnnotations(props) {
   }
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
-  forEach(annotationRanges, function(annotationRange, index) {
+  forEach(annotationRanges, function (annotationRange, index) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
@@ -76,11 +79,13 @@ function StackedAnnotations(props) {
         left={result.xStart}
       >
         <InnerCompToUse
+          externalLabels={externalLabels}
           key={index}
-          className={camelCase("veRowView-" + type)}
+          className={`${camelCase("veRowView-" + type)}`}
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
+          onDoubleClick={onDoubleClick}
           type={type}
           onRightClick={onRightClick}
           annotation={annotation}
@@ -91,11 +96,17 @@ function StackedAnnotations(props) {
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           forward={annotation.forward}
-          rangeType={getAnnotationRangeType(
-            annotationRange,
-            annotation,
-            annotation.forward
-          )}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
+          rangeType={
+            annotation.noDirectionality
+              ? "middle"
+              : getAnnotationRangeType(
+                  annotationRange,
+                  annotation,
+                  annotation.forward
+                )
+          }
+          {...(annotation.noDirectionality && { pointiness: 0 })}
           height={
             annotationRange.containsLocations && !disregardLocations
               ? anotationHeightNoSpace / 8
@@ -103,8 +114,8 @@ function StackedAnnotations(props) {
           }
           hideName={annotationRange.containsLocations && !disregardLocations}
           name={annotation.name}
-          {...getExtraInnerCompProps &&
-            getExtraInnerCompProps(annotationRange, props)}
+          {...(getExtraInnerCompProps &&
+            getExtraInnerCompProps(annotationRange, props))}
         />
       </AnnotationPositioner>
     );

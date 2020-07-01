@@ -5,7 +5,9 @@ import {
   Switch,
   Popover,
   Position,
-  HTMLSelect
+  HTMLSelect,
+  TextArea,
+  Tooltip
 } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
 import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
@@ -31,13 +33,13 @@ export class FindBar extends React.Component {
     const {
       toggleFindTool,
       toggleHighlightAll,
+      toggleIsInline,
       // highlightAll,
       updateSearchText,
       annotationVisibilityShow,
       updateAmbiguousOrLiteral,
       updateDnaOrAA,
       updateMatchNumber,
-      isInline,
       selectionLayerUpdate,
       annotationSearchMatches,
       findTool = {}
@@ -49,7 +51,8 @@ export class FindBar extends React.Component {
       highlightAll,
       ambiguousOrLiteral,
       matchesTotal = 0,
-      matchNumber = 0
+      matchNumber = 0,
+      isInline
     } = findTool;
     const findOptionsEls = [
       <HTMLSelect
@@ -57,7 +60,7 @@ export class FindBar extends React.Component {
         options={opts}
         name="dnaOrAA"
         value={dnaOrAA}
-        onChange={e => {
+        onChange={(e) => {
           updateDnaOrAA(e.target.value);
         }}
       />,
@@ -69,7 +72,7 @@ export class FindBar extends React.Component {
             { label: "Ambiguous", value: "AMBIGUOUS" }
           ]}
           value={ambiguousOrLiteral}
-          onChange={e => {
+          onChange={(e) => {
             updateAmbiguousOrLiteral(e.target.value);
           }}
         />
@@ -115,14 +118,77 @@ export class FindBar extends React.Component {
         onChange={toggleHighlightAll}
         disabled={matchesTotal > MAX_MATCHES_DISPLAYED}
       >
-        Highlight All{" "}
-        {matchesTotal > MAX_MATCHES_DISPLAYED && (
-          <div>
-            (Disabled because there are >{MAX_MATCHES_DISPLAYED} matches)
-          </div>
-        )}
+        <Tooltip
+          disabled={matchesTotal <= MAX_MATCHES_DISPLAYED}
+          content={
+            "Disabled because there are >{MAX_MATCHES_DISPLAYED} matches"
+          }
+        >
+          Highlight All
+        </Tooltip>
+      </Switch>,
+      <Switch key="isInline" checked={!isInline} onChange={toggleIsInline}>
+        Expanded
       </Switch>
     ];
+    const InputToUse = !isInline ? TextArea : InputGroup;
+    const rightEl = (
+      <span>
+        {isInline && (
+          <Popover
+            autoFocus={false}
+            position={Position.BOTTOM}
+            target={
+              <Button
+                data-test="veFindBarOptionsToggle"
+                minimal
+                icon="wrench"
+              />
+            }
+            content={
+              <div
+                className="ve-find-options-popover"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingLeft: 20,
+                  paddingBottom: 10,
+                  paddingTop: 10,
+                  paddingRight: 20
+                }}
+              >
+                {findOptionsEls}
+              </div>
+            }
+          />
+        )}
+        <span style={{ marginRight: 3, color: "lightgrey" }}>
+          {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
+        </span>
+        <Button
+          data-test="veFindPreviousMatchButton"
+          minimal
+          disabled={matchesTotal <= 0}
+          onClick={() => {
+            updateMatchNumber(
+              matchesTotal <= 0 ? 0 : mod(matchNumber - 1, matchesTotal)
+            );
+          }}
+          icon="caret-up"
+        />
+        <Button
+          data-test="veFindNextMatchButton"
+          minimal
+          disabled={matchesTotal <= 0}
+          onClick={() => {
+            updateMatchNumber(
+              matchesTotal <= 0 ? 0 : mod(matchNumber + 1, matchesTotal)
+            );
+          }}
+          icon="caret-down"
+        />
+      </span>
+    );
 
     return (
       <div
@@ -150,15 +216,19 @@ export class FindBar extends React.Component {
         }
         className="veFindBar"
       >
-        <Button onClick={toggleFindTool} icon="cross" />
+        {isInline && <Button onClick={toggleFindTool} icon="cross" />}
         <Popover
           target={
-            <InputGroup
+            <InputToUse
               autoFocus
-              inputRef={n => {
+              style={{
+                resize: "vertical",
+                ...(!isInline && { width: 350, minHeight: 70 })
+              }}
+              inputRef={(n) => {
                 if (n) this.inputEl = n;
               }}
-              onKeyDown={e => {
+              onKeyDown={(e) => {
                 e.persist();
                 if (e.metaKey && e.keyCode === 70) {
                   //cmd-f
@@ -175,68 +245,8 @@ export class FindBar extends React.Component {
                   toggleFindTool();
                 }
               }}
-              rightElement={
-                <span>
-                  {isInline && (
-                    <Popover
-                      autoFocus={false}
-                      position={Position.BOTTOM}
-                      target={
-                        <Button
-                          data-test="veFindBarOptionsToggle"
-                          minimal
-                          icon="wrench"
-                        />
-                      }
-                      content={
-                        <div
-                          className="ve-find-options-popover"
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            paddingLeft: 20,
-                            paddingBottom: 10,
-                            paddingTop: 10,
-                            paddingRight: 20
-                          }}
-                        >
-                          {findOptionsEls}
-                        </div>
-                      }
-                    />
-                  )}
-                  <span style={{ marginRight: 3, color: "lightgrey" }}>
-                    {matchesTotal > 0 ? matchNumber + 1 : 0}/{matchesTotal}
-                  </span>
-                  <Button
-                    data-test="veFindPreviousMatchButton"
-                    minimal
-                    disabled={matchesTotal <= 0}
-                    onClick={() => {
-                      updateMatchNumber(
-                        matchesTotal <= 0
-                          ? 0
-                          : mod(matchNumber - 1, matchesTotal)
-                      );
-                    }}
-                    icon="caret-up"
-                  />
-                  <Button
-                    data-test="veFindNextMatchButton"
-                    minimal
-                    disabled={matchesTotal <= 0}
-                    onClick={() => {
-                      updateMatchNumber(
-                        matchesTotal <= 0
-                          ? 0
-                          : mod(matchNumber + 1, matchesTotal)
-                      );
-                    }}
-                    icon="caret-down"
-                  />
-                </span>
-              }
-              onChange={e => {
+              rightElement={rightEl}
+              onChange={(e) => {
                 return updateSearchText(e.target.value);
               }}
               value={searchText}
@@ -247,7 +257,7 @@ export class FindBar extends React.Component {
           minimal
           isOpen={
             annotationSearchMatches &&
-            annotationSearchMatches.filter(m => m.length).length
+            annotationSearchMatches.filter((m) => m.length).length
           }
           content={
             <AnnotationSearchMatchComp
@@ -259,7 +269,29 @@ export class FindBar extends React.Component {
           }
         />
 
-        {!isInline && findOptionsEls}
+        {!isInline && (
+          <div
+            style={{
+              display: "flex",
+              maxWidth: "400px",
+              flexWrap: "wrap",
+              justifyContent: "space-around",
+              alignItems: "stretch",
+              height: "76px"
+            }}
+          >
+            {rightEl}
+            {findOptionsEls}
+          </div>
+        )}
+        {!isInline && (
+          <Button
+            minimal
+            style={{ position: "absolute", bottom: 0, right: -10 }}
+            onClick={toggleFindTool}
+            icon="cross"
+          />
+        )}
       </div>
     );
   }
@@ -269,8 +301,6 @@ const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
   FindBar
 );
 export default withEditorProps(wrapped);
-
-
 
 function AnnotationSearchMatchComp({
   annotationSearchMatches,

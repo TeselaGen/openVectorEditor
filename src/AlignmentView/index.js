@@ -11,7 +11,7 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import { Loading, showContextMenu } from "teselagen-react-components";
-import { store } from "react-easy-state";
+import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
 import PropTypes from "prop-types";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
@@ -64,7 +64,7 @@ class AlignmentView extends React.Component {
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
-  handleAlignmentCopy = event => {
+  handleAlignmentCopy = (event) => {
     if (
       event.key === "c" &&
       (event.metaKey === true || event.ctrlKey === true)
@@ -91,7 +91,7 @@ class AlignmentView extends React.Component {
       ].selectionLayer || {};
     const { alignmentTracks } = this.props;
     let seqDataOfAllTracksToCopy = [];
-    alignmentTracks.forEach(track => {
+    alignmentTracks.forEach((track) => {
       const seqDataToCopy = getSequenceDataBetweenRange(
         track.alignmentData,
         selectionLayer
@@ -184,7 +184,7 @@ class AlignmentView extends React.Component {
     });
   };
 
-  caretPositionUpdate = position => {
+  caretPositionUpdate = (position) => {
     let { caretPosition = -1, alignmentId, alignmentRunUpdate } = this.props;
     if (caretPosition === position) {
       return;
@@ -196,7 +196,7 @@ class AlignmentView extends React.Component {
     });
   };
 
-  selectionLayerUpdate = newSelection => {
+  selectionLayerUpdate = (newSelection) => {
     let {
       selectionLayer = { start: -1, end: -1 },
       // ignoreGapsOnHighlight,
@@ -288,7 +288,7 @@ class AlignmentView extends React.Component {
       window.localStorage.getItem("charWidthInLinearViewDefault")
     );
   };
-  updateXScrollPercentage = scrollPercentage => {
+  updateXScrollPercentage = (scrollPercentage) => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
@@ -300,7 +300,7 @@ class AlignmentView extends React.Component {
           this.alignmentHolderTop.clientWidth);
     }
   };
-  scrollYToTrack = trackIndex => {
+  scrollYToTrack = (trackIndex) => {
     this.InfiniteScroller.scrollTo(trackIndex);
   };
 
@@ -357,7 +357,7 @@ class AlignmentView extends React.Component {
 
     function getGapMap(sequence) {
       const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-      sequence.split("").forEach(char => {
+      sequence.split("").forEach((char) => {
         if (char === "-") {
           gapMap[Math.max(0, gapMap.length - 1)] =
             (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
@@ -398,7 +398,7 @@ class AlignmentView extends React.Component {
       if (i !== 0) {
         sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData);
         let refSeqCdsFeaturesBpPos = [];
-        alignmentTracks[0].sequenceData.features.forEach(feature => {
+        alignmentTracks[0].sequenceData.features.forEach((feature) => {
           if (feature.type === "CDS") {
             let editedFeature = cloneDeep(feature);
             // in seq reads, ref seq's CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
@@ -649,6 +649,37 @@ class AlignmentView extends React.Component {
                       );
                     },
                     onClick: () => {
+                      window.toastr.success("Selection Copied As Fasta");
+                    }
+                  },
+                  {
+                    text: `Copy Selection of ${name}`,
+                    className: "copySpecificAlignmentAsPlainClipboardHelper",
+                    willUnmount: () => {
+                      this.copySpecificAlignmentAsPlainClipboardHelper &&
+                        this.copySpecificAlignmentAsPlainClipboardHelper.destroy();
+                    },
+                    didMount: () => {
+                      this.copySpecificAlignmentAsPlainClipboardHelper = new Clipboard(
+                        `.copySpecificAlignmentAsPlainClipboardHelper`,
+                        {
+                          action: "copySpecificAlignmentFasta",
+                          text: () => {
+                            const { selectionLayer } =
+                              this.props.store.getState().VectorEditor
+                                .__allEditorsOptions.alignments[
+                                this.props.id
+                              ] || {};
+                            const seqDataToCopy = getSequenceDataBetweenRange(
+                              alignmentData,
+                              selectionLayer
+                            ).sequence;
+                            return seqDataToCopy;
+                          }
+                        }
+                      );
+                    },
+                    onClick: () => {
                       window.toastr.success("Selection Copied");
                     }
                   }
@@ -669,7 +700,6 @@ class AlignmentView extends React.Component {
             vectorInteractionWrapperStyle: {
               overflowY: "hidden"
             },
-
             charWidth: charWidthInLinearView,
             ignoreGapsOnHighlight: true,
             // editorDragged: (vals) => {
@@ -689,7 +719,8 @@ class AlignmentView extends React.Component {
             dimensions: {
               width: linearViewWidth
             },
-            width: linearViewWidth
+            width: linearViewWidth,
+            paddingBottom: 5
             // scrollData: {
             //   viewportWidth: trackWidth,
             //   fractionScrolled: this.easyStore
@@ -745,7 +776,7 @@ class AlignmentView extends React.Component {
               // width: trackWidth
               width: this.state.width
             }}
-            ref={ref => {
+            ref={(ref) => {
               this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] = ref;
             }}
             dataname="scrollGroup"
@@ -756,7 +787,7 @@ class AlignmentView extends React.Component {
               this.renderItem(0, 0, isTemplate)
             ) : (
               <ReactList
-                ref={c => {
+                ref={(c) => {
                   this.InfiniteScroller = c;
                 }}
                 type="variable"
@@ -887,7 +918,7 @@ class AlignmentView extends React.Component {
               )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
-                  onRelease={val => {
+                  onRelease={(val) => {
                     this.setCharWidthInLinearView({
                       charWidthInLinearView: val
                     });
@@ -962,7 +993,8 @@ class AlignmentView extends React.Component {
               className="alignmentViewBottomBar"
               style={{
                 // flexGrow: 1,
-                minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
+                // minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
+                maxHeight: 210,
                 marginTop: 4,
                 paddingTop: 4,
                 borderTop: "1px solid lightgrey",
@@ -1053,7 +1085,7 @@ export default compose(
         "dnaColors"
       ];
       let togglableAlignmentAnnotationSettings = {};
-      map(alignmentAnnotationsToToggle, annotation => {
+      map(alignmentAnnotationsToToggle, (annotation) => {
         if (annotation in alignmentAnnotationVisibility) {
           togglableAlignmentAnnotationSettings[annotation] =
             alignmentAnnotationVisibility[annotation];
@@ -1064,7 +1096,7 @@ export default compose(
       if (alignmentTracks) {
         let totalNumOfFeatures = 0;
         let totalNumOfParts = 0;
-        alignmentTracks.forEach(seq => {
+        alignmentTracks.forEach((seq) => {
           if (seq.sequenceData.features) {
             totalNumOfFeatures += seq.sequenceData.features.length;
           }
@@ -1077,10 +1109,10 @@ export default compose(
           parts: totalNumOfParts
         });
       } else if (pairwiseAlignments) {
-        pairwiseAlignments.forEach(pairwise => {
+        pairwiseAlignments.forEach((pairwise) => {
           let totalNumOfFeatures = 0;
           let totalNumOfParts = 0;
-          pairwise.forEach(seq => {
+          pairwise.forEach((seq) => {
             if (seq.sequenceData.features) {
               totalNumOfFeatures += seq.sequenceData.features.length;
             }
@@ -1115,7 +1147,7 @@ export default compose(
         alignmentVisibilityToolOptions: {
           alignmentAnnotationVisibility,
           alignmentAnnotationLabelVisibility,
-          alignmentAnnotationVisibilityToggle: name => {
+          alignmentAnnotationVisibilityToggle: (name) => {
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationVisibility: {
@@ -1124,7 +1156,7 @@ export default compose(
               }
             });
           },
-          alignmentAnnotationLabelVisibilityToggle: name => {
+          alignmentAnnotationLabelVisibilityToggle: (name) => {
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationLabelVisibility: {
@@ -1158,11 +1190,75 @@ export default compose(
   ),
   branch(
     ({ pairwiseAlignments }) => pairwiseAlignments,
-    renderComponent(props => {
+    renderComponent((props) => {
       return <PairwiseAlignmentView {...props} />;
     })
   )
 )(AlignmentView);
+
+// class UncontrolledSliderWithPlusMinusBtns extends React.Component {
+//   state = { value: 0 };
+
+//   static getDerivedStateFromProps(nextProps, prevState) {
+//     if (prevState.oldInitialValue !== nextProps.initialValue) {
+//       return {
+//         value: nextProps.initialValue, //set the state value if a new initial value comes in!
+//         oldInitialValue: nextProps.initialValue
+//       };
+//     } else {
+//       return null;
+//     }
+//   }
+
+//   render() {
+//     const { value } = this.state;
+//     const { title, initialValue, style, ...rest } = this.props;
+
+//     return (
+//       <div
+//         title={title}
+//         style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
+//       >
+//         <Icon
+//           onClick={() => {
+//             const newVal = Math.max(
+//               this.state.value - (this.props.max - this.props.min) / 10,
+//               this.props.min
+//             );
+//             this.setState({
+//               value: newVal
+//             });
+//             this.props.onRelease(newVal);
+//           }}
+//           style={{ cursor: "pointer", marginRight: 5 }}
+//           intent={Intent.PRIMARY}
+//           icon="minus"
+//         />
+//         <Slider
+//           {...{ ...rest, value }}
+//           onChange={(value) => {
+//             this.setState({ value });
+//           }}
+//         />
+//         <Icon
+//           onClick={() => {
+//             const newVal = Math.min(
+//               this.state.value + (this.props.max - this.props.min) / 10,
+//               this.props.max
+//             );
+//             this.setState({
+//               value: newVal
+//             });
+//             this.props.onRelease(newVal);
+//           }}
+//           style={{ cursor: "pointer", marginLeft: 5 }}
+//           intent={Intent.PRIMARY}
+//           icon="plus"
+//         />
+//       </div>
+//     );
+//   }
+// }
 
 //this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {
@@ -1215,7 +1311,7 @@ class PairwiseAlignmentView extends React.Component {
             isFullyZoomedOut: true,
             noClickDragHandlers: true,
             linearViewOptions: getPairwiseOverviewLinearViewOptions,
-            handleSelectTrack: trackIndex => {
+            handleSelectTrack: (trackIndex) => {
               //set currentPairwiseAlignmentIndex
               this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
             }

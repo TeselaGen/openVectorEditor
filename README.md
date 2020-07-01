@@ -29,6 +29,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Using this module in React](#using-this-module-in-react)
+  - [Example CRA repo with OVE](#example-cra-repo-with-ove)
   - [Installation (react)](#installation-react)
   - [Code (react)](#code-react)
     - [Editor](#editor)
@@ -40,12 +41,14 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Installation (Universal)](#installation-universal)
     - [via npm:](#via-npm)
     - [Or via CDN:](#or-via-cdn)
+    - [Full Example:](#full-example)
   - [Code (Universal)](#code-universal)
     - [Accessing the editor state:](#accessing-the-editor-state)
   - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
 - [Data Model](#data-model)
+  - [Feature Locations (aka Feature Joins)](#feature-locations-aka-feature-joins)
 - [Protein Editor](#protein-editor)
 - [Alignments](#alignments)
   - [Integrating your own alignment data (only necessary if not using the built in alignment creation tool)](#integrating-your-own-alignment-data-only-necessary-if-not-using-the-built-in-alignment-creation-tool)
@@ -79,21 +82,30 @@ Upgrade instructions for any major or minor change can be found here:
 [Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
 
 # Using this module in React
+## Example CRA repo with OVE 
+Here is where you can see how to run the `<Editor/>` in a Create-React-App environment: https://github.com/tnrich/ove-react-demo-repo
+
+If you clone that repo you can see it working and see how to set up the redux store/provider and initialize the editor. You should just clone it and run:
+```
+yarn
+yarn start
+```
+
 ## Installation (react)
 ```
-yarn add install-peerdeps open-vector-editor
-```
-Add peer-dependencies: 
-```
-install-peerdeps open-vector-editor --dev --only-peers
+yarn add open-vector-editor
 ```
 
 ## Code (react)
 Require the following components like: 
 ```
-import {Editor, RowView} from "open-vector-editor
+import {Editor, RowView} from "open-vector-editor"
 ```
+
 ### Editor
+To use the <Editor> component, you'll need to do a bit more work to set up a redux store. 
+You can see an example repo where this works here: https://github.com/tnrich/ove-react-demo-repo
+
 The `<Editor {...editorProps}/>` component gives you a full blown editor.
 It takes in a list of editorProps as detailed below. 
 ### CircularView/CircularViewUnconnected
@@ -124,6 +136,10 @@ then add the links
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/open-vector-editor/umd/main.css"> 
 <script type="text/javascript" src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
 ```
+
+### Full Example: 
+A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/openVectorEditor/blob/master/demo/src/UMDDemo.html
+Demo here http://teselagen.github.io/openVectorEditor/UMDDemo.html
 
 ## Code (Universal)
 
@@ -259,7 +275,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 ```js
 {
 
-	//note, sequence data passed here will be coerced to fit the Teselagen data model
+	//note, sequence data passed here will be coerced to fit the Teselagen data model (Teselagen JSON)
 	sequenceData: { Open Vector Editor data model
 		sequence: "atagatagagaggcccg",
 		features: [
@@ -314,6 +330,28 @@ These are the options to the `updateEditor()` action (the most generic redux act
 The data model can be interactively inspected by installing the redux devtools for your browser: [devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
 Here is the top level editor state:
 [Example Editor State](./editorStateExample.js)
+## Feature Locations (aka Feature Joins)
+Features can have multiple internal locations. You can see an example of a joined feature in the ./editorStateExample.js file linked above. 
+They look like this: 
+```js
+{
+	name: "GFP_with_locations"
+	start: 10,
+	end: 40,
+	locations: [{
+		start: 10, //this must match the .start property of the feature,
+		end: 15
+	}, 
+	{
+		start: 18, end: 19
+	},
+	{
+		start: 35,
+		end: 40 //this must match the .end property of the feature,
+	}
+	]
+}
+```
 
 # Protein Editor
 OVE can be set up to view and edit proteins (Amino Acid sequences) as first class citizens. 

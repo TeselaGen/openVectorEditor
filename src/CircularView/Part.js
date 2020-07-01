@@ -1,8 +1,9 @@
 import React from "react";
 import { startsWith } from "lodash";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import { cleanRest } from "./utils/cleanRest";
 
-export default function CircularPart({
+export default function Part({
   radius,
   arrowheadLength = 0.5,
   annotationHeight,
@@ -22,7 +23,7 @@ export default function CircularPart({
     : "purple";
   return (
     <path
-      {...rest}
+      {...cleanRest(rest)}
       className="vePart veCircularViewPart"
       strokeWidth="0.5"
       stroke={colorToUse}

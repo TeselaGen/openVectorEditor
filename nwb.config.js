@@ -6,9 +6,6 @@ module.exports = {
     esModules: true,
     umd: {}
   },
-  babel: {
-    presets: ["es2015", "react", "stage-0"]
-  },
   webpack: {
     aliases: {
       // **** You can comment one or more of these in to override an npm module with a local module. *****
@@ -28,15 +25,10 @@ module.exports = {
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||
       //   path.resolve("../teselagen-react-components/src/"),
-      // "@teselagen/apollo-methods":
-      //   console.log("comment me back out!") ||
-      //   path.resolve("../teselagen-common/apollo-methods/src/"),
-      
       //don't comment this out!
       react: path.resolve(__dirname, "node_modules/react")
       
     },
-    uglify: false,
     extra: {
       devtool: "source-map"
     },

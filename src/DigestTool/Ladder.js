@@ -15,6 +15,7 @@ export default class Ladder extends React.Component {
       // gelDigestEnzymes = [],
       boxHeight = 550,
       lanes = [],
+      digestLaneRightClicked,
       selectedFragment,
       selectedLadder = "geneRuler1KB",
       ladders = [
@@ -67,7 +68,7 @@ export default class Ladder extends React.Component {
     } = this.props;
     const { highlightedFragment } = this.state;
     let ladderInfo;
-    ladders.forEach(ladder => {
+    ladders.forEach((ladder) => {
       if (ladder.value === selectedLadder)
         ladderInfo = {
           ...ladder,
@@ -160,7 +161,7 @@ export default class Ladder extends React.Component {
                 <Lane
                   key={index}
                   {...{
-                    onMouseOver: fragment => {
+                    onMouseOver: (fragment) => {
                       this.setState({
                         highlightedFragment: fragment
                       });
@@ -170,6 +171,7 @@ export default class Ladder extends React.Component {
                         highlightedFragment: undefined
                       });
                     },
+                    digestLaneRightClicked,
                     laneNumber: index + 1,
                     fragments,
                     highlightedFragment,
@@ -191,6 +193,7 @@ function Lane({
   laneNumber,
   onMouseOver,
   onMouseOut,
+  digestLaneRightClicked,
   fragments,
   highlightedFragment,
   selectedFragment,
@@ -204,7 +207,7 @@ function Lane({
     >
       <div className="ve-digest-header">Lane {laneNumber} </div>
       {fragments.map((fragment, index) => {
-        const { size, id } = fragment;
+        const { size, id, name } = fragment;
         const isHighlighted =
           (highlightedFragment && id === highlightedFragment.id) ||
           (selectedFragment && id === highlightedFragment.id);
@@ -220,6 +223,11 @@ function Lane({
             onClick={() => {
               fragment.onFragmentSelect();
             }}
+            onContextMenu={(e) => {
+              fragment.onFragmentSelect();
+              digestLaneRightClicked(e);
+            }}
+            data-test={name}
             style={{
               fontSize: 12,
               position: "absolute",
@@ -234,13 +242,7 @@ function Lane({
           >
             <Tooltip
               className="ve-digest-fragment-tooltip"
-              content={
-                <div>
-                  {fragment.cut1.restrictionEnzyme.name} &nbsp; -- &nbsp;
-                  {fragment.cut2.restrictionEnzyme.name} &nbsp; &nbsp;
-                  {fragment.size} bps
-                </div>
-              }
+              content={<div>{name}</div>}
             >
               <div
                 style={{

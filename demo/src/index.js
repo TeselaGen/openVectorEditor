@@ -54,6 +54,11 @@ const links = [
     </div>
   );
 });
+links.push(
+  <a key="umdDemo" style={{ marginLeft: 10 }} href="/UMDDemo.html">
+    UMD demo
+  </a>
+);
 
 class Demo extends React.Component {
   constructor(props) {
@@ -120,7 +125,7 @@ class Demo extends React.Component {
                       exitVersionHistoryView={() => {
                         window.alert("exit requested!");
                       }}
-                      getSequenceAtVersion={versionId => {
+                      getSequenceAtVersion={(versionId) => {
                         // in a real version we'd go to server and get a real sequence based on the version id
                         // const seq = await api.getSeqAtVersion()
                         // return seq
@@ -143,7 +148,7 @@ class Demo extends React.Component {
                       }}
                       getVersionList={() => {
                         //fake talking to some api
-                        return new Promise(resolve => {
+                        return new Promise((resolve) => {
                           setTimeout(() => {
                             resolve([
                               {

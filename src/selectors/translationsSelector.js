@@ -1,5 +1,5 @@
 import { reduce } from "lodash";
-import uuid from "uniqid";
+import uuid from "shortid";
 import sequenceSelector from "./sequenceSelector";
 import orfsSelector from "./orfsSelector";
 import { createSelector } from "reselect";
@@ -95,7 +95,7 @@ function translationsSelector(
       {}
     )
   };
-  each(translationsToPass, function(translation) {
+  each(translationsToPass, function (translation) {
     translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
       sequence,
       translation.forward,
@@ -109,14 +109,14 @@ export default createSelector(
   translationSearchMatchesSelector,
   sequenceSelector,
   orfsSelector,
-  state => state.annotationVisibility.orfTranslations,
-  state => state.annotationVisibility.orfs,
+  (state) => state.annotationVisibility.orfTranslations,
+  (state) => state.annotationVisibility.orfs,
   cdsFeaturesSelector,
-  state => state.annotationVisibility.cdsFeatureTranslations,
-  state => state.annotationVisibility.features,
+  (state) => state.annotationVisibility.cdsFeatureTranslations,
+  (state) => state.annotationVisibility.features,
   translationsRawSelector,
-  state => state.frameTranslations,
-  state => state.sequenceData.isProtein,
-  state => state.sequenceData.proteinSequence,
+  (state) => state.frameTranslations,
+  (state) => state.sequenceData.isProtein,
+  (state) => state.sequenceData.proteinSequence,
   translationsSelector
 );

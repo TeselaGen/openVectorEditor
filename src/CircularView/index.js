@@ -79,7 +79,7 @@ export class CircularView extends React.Component {
       width = 400,
       height = 400,
       sequenceData = {},
-      hideName = false,
+      // hideName = false,
       editorName,
       selectionLayer = { start: -1, end: -1 },
       annotationHeight = 15,
@@ -99,11 +99,12 @@ export class CircularView extends React.Component {
       searchLayerRightClicked = noop,
       selectionLayerRightClicked = noop,
       searchLayerClicked = noop,
-      instantiated
+      instantiated,
+      labelLineIntensity
     } = this.props;
-    let { sequence = "atgc", circular } = sequenceData;
+    let { sequence = "atgc" /* circular */ } = sequenceData;
     let sequenceLength = sequence.length;
-    let sequenceName = hideName ? "" : sequenceData.name || "";
+    // let sequenceName = hideName ? "" : sequenceData.name || "";
     circularAndLinearTickSpacing =
       circularAndLinearTickSpacing ||
       (sequenceLength < 10
@@ -170,6 +171,7 @@ export class CircularView extends React.Component {
       {
         zIndex: 10,
         layerName: "cutsites",
+        fontStyle: "italic",
         Comp: Cutsite,
         useStartAngle: true,
         allOnSameLevel: true,
@@ -218,7 +220,6 @@ export class CircularView extends React.Component {
       },
       {
         zIndex: 20,
-        arrowheadLength: 0,
         layerName: "warnings",
         isAnnotation: true,
         spaceBefore: 10,
@@ -231,17 +232,19 @@ export class CircularView extends React.Component {
         Comp: Labels,
         circularViewWidthVsHeightRatio: width / height,
         passLabels: true,
+        labelLineIntensity: labelLineIntensity,
         textScalingFactor: 700 / Math.min(width, height)
       }
     ];
     const paredDownMessages = [];
 
     let output = layersToDraw
-      .map(opts => {
+      .map((opts) => {
         const {
           layerName,
           maxToDisplay,
           Comp,
+          fontStyle,
           alwaysShow,
           isAnnotation,
           spaceBefore = 0,
@@ -265,7 +268,9 @@ export class CircularView extends React.Component {
           zoomLevel,
           rotationDegrees,
           rotation: rotationDegrees * 0.0174533, //get radians
+          isProtein,
           onClick: this.props[singularName + "Clicked"],
+          onDoubleClick: this.props[singularName + "DoubleClicked"],
           onRightClicked: this.props[singularName + "RightClicked"],
           sequenceLength,
           editorName,
@@ -296,8 +301,8 @@ export class CircularView extends React.Component {
             );
           }
           results = drawAnnotations({
-            isProtein,
             Annotation: Comp || Feature,
+            fontStyle: fontStyle,
             annotationType: singularName,
             reverseAnnotations: true,
             showLabels: !(annotationLabelVisibility[layerName] === false),
@@ -317,7 +322,8 @@ export class CircularView extends React.Component {
         if (results) {
           // //update the radius, labels, and svg
           radius += results.height || 0;
-          labels = { ...labels, ...(results.labels || {}) };
+          //tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
+          labels = [...map(labels), ...map(results.labels || {})];
           comp = results.component || results;
         }
         radius += spaceAfter;
@@ -327,11 +333,11 @@ export class CircularView extends React.Component {
           zIndex
         };
       })
-      .filter(function(i) {
+      .filter(function (i) {
         return !!i;
       });
 
-    annotationsSvgs = sortBy(output, "zIndex").reduce(function(
+    annotationsSvgs = sortBy(output, "zIndex").reduce(function (
       arr,
       { result }
     ) {
@@ -352,7 +358,7 @@ export class CircularView extends React.Component {
         ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
       ];
       return selectionLayers
-        .map(function(selectionLayer, index) {
+        .map(function (selectionLayer, index) {
           if (
             selectionLayer.start >= 0 &&
             selectionLayer.end >= 0 &&
@@ -383,7 +389,7 @@ export class CircularView extends React.Component {
             return null;
           }
         })
-        .filter(el => {
+        .filter((el) => {
           return !!el;
         });
     }
@@ -427,14 +433,14 @@ export class CircularView extends React.Component {
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          onDrag={event => {
+          onDrag={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               event,
               sequenceLength,
               editorDragged
             );
           }}
-          onStart={event => {
+          onStart={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               event,
               sequenceLength,
@@ -444,10 +450,9 @@ export class CircularView extends React.Component {
           onStop={editorDragStopped}
         >
           <div>
-            
             <svg
               key="circViewSvg"
-              onClick={event => {
+              onClick={(event) => {
                 instantiated &&
                   this.getNearestCursorPositionToMouseEvent(
                     event,
@@ -455,7 +460,7 @@ export class CircularView extends React.Component {
                     editorClicked
                   );
               }}
-              onContextMenu={e => {
+              onContextMenu={(e) => {
                 this.getNearestCursorPositionToMouseEvent(
                   e,
                   sequenceLength,
@@ -478,13 +483,31 @@ export class CircularView extends React.Component {
                 {annotationsSvgs}
               </g>
             </svg>
-            
           </div>
         </Draggable>
       </div>
     );
   }
 }
+
+function pareDownAnnotations(annotations, max) {
+  let annotationsToPass = annotations;
+  let paredDown = false;
+  if (Object.keys(annotations).length > max) {
+    paredDown = true;
+    let sortedAnnotations = sortBy(annotations, function (annotation) {
+      return -getRangeLength(annotation);
+    });
+    annotationsToPass = sortedAnnotations
+      .slice(0, max)
+      .reduce(function (obj, item) {
+        obj[item.id] = item;
+        return obj;
+      }, {});
+  }
+  return [annotationsToPass, paredDown];
+}
+
 export default withEditorInteractions(CircularView);
 
 function positionCutsites(annotation) {

@@ -1,5 +1,6 @@
 import React from "react";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import { cleanRest } from "./utils/cleanRest";
 
 export default function CircularPrimer({
   color = "orange",
@@ -21,7 +22,7 @@ export default function CircularPrimer({
         arrowheadLength: 0.4,
         tailThickness: 0.4
       }).print()}
-      {...rest}
+      {...cleanRest(rest)}
     />
   );
 }

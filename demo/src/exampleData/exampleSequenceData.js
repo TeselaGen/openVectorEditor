@@ -1001,7 +1001,8 @@ export default {
     {
       name: "pj5_00001",
       start: 0,
-      end: 5298
+      end: 5298,
+      id: "10"
     },
     {
       start: 10,
@@ -1176,7 +1177,7 @@ export default {
       },
       type: "misc_feature",
       strand: -1,
-      name: "CmR",
+      name: "CmR I'm a real long label",
       start: 4513,
       end: 5172
     },

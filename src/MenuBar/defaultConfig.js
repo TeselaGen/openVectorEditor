@@ -37,6 +37,7 @@ export default [
       },
       "renameSequence",
       "saveSequence",
+      "saveSequenceAs",
       "deleteSequence",
       "duplicateSequence",
       "--",
@@ -83,12 +84,18 @@ export default [
       "selectInverse",
       {
         text: "Change Case",
+        cmd: "changeCaseCmd",
         submenu: [
+          "flipCaseSequence",
           "upperCaseSequence",
           "lowerCaseSequence",
           "upperCaseSelection",
           "lowerCaseSelection"
         ]
+      },
+      {
+        text: "Change Circular/Linear",
+        submenu: ["toggleCircular", "toggleLinear"]
       },
       // {
       //   text: "Change Sequence Case For Selection",

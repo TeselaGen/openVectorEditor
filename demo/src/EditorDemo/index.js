@@ -19,7 +19,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   return {
     sequenceData
   };
-})(function(props) {
+})(function (props) {
   console.info("These are the props passed to our Custom Tab:", props);
   return (
     <div>
@@ -41,6 +41,7 @@ const defaultState = {
   showCircularity: true,
   showGCContent: false,
   GCDecimalDigits: 1,
+  onlyShowLabelsThatDoNotFit: true,
   overrideToolbarOptions: false,
   menuOverrideExample: false,
   propertiesOverridesExample: false,
@@ -50,6 +51,7 @@ const defaultState = {
   showAvailability: true,
   showDemoOptions: true,
   shouldAutosave: false,
+  generatePng: false,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
@@ -57,7 +59,9 @@ const defaultState = {
   setDefaultVisibilities: false,
   onNew: true,
   onImport: true,
+  beforeAnnotationCreate: true,
   onSave: true,
+  onSaveAs: false,
   onRename: true,
   onDuplicate: true,
   onSelectionOrCaretChanged: false,
@@ -65,6 +69,7 @@ const defaultState = {
   onDelete: true,
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
+  maxAnnotationsToDisplayAdjustment: false,
   onCopy: true,
   onPaste: true
 };
@@ -73,7 +78,7 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    window.ove_updateEditor = vals => {
+    window.ove_updateEditor = (vals) => {
       updateEditor(store, "DemoEditor", vals);
     };
     updateEditor(store, "DemoEditor", {
@@ -85,11 +90,11 @@ export default class EditorDemo extends React.Component {
     setParamsIfNecessary({ that: this, defaultState });
   }
 
-  changeFullscreenMode = e =>
+  changeFullscreenMode = (e) =>
     this.setState({
       isFullscreen: e.target.checked
     });
-  changeReadOnly = e =>
+  changeReadOnly = (e) =>
     this.setState({
       readOnly: e.target.checked
     });
@@ -122,7 +127,7 @@ export default class EditorDemo extends React.Component {
   };
   rightClickOverridesExample = {
     rightClickOverrides: {
-      partRightClicked: items => {
+      partRightClicked: (items) => {
         return [
           ...items,
           {
@@ -152,10 +157,10 @@ export default class EditorDemo extends React.Component {
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
-      menuDef => {
+      (menuDef) => {
         menuDef.push({ text: "Custom", submenu: ["copy"] });
         menuDef[0].submenu
-          .find(i => i.text && i.text.includes("Export"))
+          .find((i) => i.text && i.text.includes("Export"))
           .submenu.push({
             text: "Custom export option!",
             onClick: () => window.toastr.success("Custom export hit!")
@@ -219,6 +224,7 @@ export default class EditorDemo extends React.Component {
       forceHeightMode,
       withVersionHistory,
       shouldAutosave,
+      generatePng,
       isFullscreen,
       withPreviewMode
     } = this.state;
@@ -239,7 +245,8 @@ export default class EditorDemo extends React.Component {
             display: "flex",
             position: "relative",
             // flexDirection: "column",
-            flexGrow: "1"
+            flexGrow: "1",
+            minHeight: 0
           }}
         >
           {this.state.showDemoOptions && (
@@ -344,7 +351,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
 
                 `,
-                hook: isProtein => {
+                hook: (isProtein) => {
                   isProtein
                     ? updateEditor(store, "DemoEditor", {
                         readOnly: false,
@@ -382,7 +389,7 @@ ToolBarProps: {
                 that: this,
                 label: "Customize tabs",
                 type: "customizeTabs",
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       panelsShown: [
@@ -651,7 +658,7 @@ updateEditor(store, "DemoEditor", {
                 `,
                 type: "setDefaultVisibilities",
                 label: "Set Default Visibilities",
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
@@ -681,7 +688,8 @@ sequenceData: {
       start: 10,
       end: 400,
       labelColor: "red",
-      color: "red"
+      color: "red",
+      noDirectionality: true
     },
     {
       id: "error2",
@@ -690,13 +698,14 @@ sequenceData: {
       start: 600,
       end: 950,
       labelColor: "gold",
-      color: "yellow"
+      color: "yellow",
+      noDirectionality: true
     }
   ]
 }
 \`\`\`
 `,
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
                     sequenceData: {
                       ...exampleSequenceData,
@@ -709,7 +718,8 @@ sequenceData: {
                               start: 10,
                               end: 400,
                               labelColor: "red",
-                              color: "red"
+                              color: "red",
+                              noDirectionality: true
                             },
                             {
                               id: "error2",
@@ -718,7 +728,8 @@ sequenceData: {
                               start: 600,
                               end: 950,
                               labelColor: "gold",
-                              color: "yellow"
+                              color: "yellow",
+                              noDirectionality: true
                             }
                           ]
                         : []
@@ -731,7 +742,7 @@ sequenceData: {
                 type: "showLineageAnnotations",
                 label: "Show Lineage Annotations in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Lineage Annotations (aka the input parts that went into the assembly) can be displayed directly in the editor like so: 
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -742,7 +753,8 @@ sequenceData: {
       start: 900,
       end: 400,
       labelColor: "green",
-      color: "green"
+      color: "green",
+      noDirectionality: true
     },
     {
       id: "18711jja1",
@@ -757,32 +769,34 @@ sequenceData: {
 \`\`\`
 `,
 
-                hook: shouldUpdate => {
-                  updateEditor(store, "DemoEditor", {
-                    sequenceData: {
-                      ...exampleSequenceData,
-                      lineageAnnotations: shouldUpdate
-                        ? [
-                            {
-                              id: "22oing211",
-                              name: "Lineage Annotation 1",
-                              start: 900,
-                              end: 400,
-                              labelColor: "green",
-                              color: "green"
-                            },
-                            {
-                              id: "18711jja1",
-                              name: "Lineage Annotation 2",
-                              start: 401,
-                              end: 899,
-                              labelColor: "blue",
-                              color: "blue"
-                            }
-                          ]
-                        : []
-                    }
-                  });
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      sequenceData: {
+                        ...exampleSequenceData,
+                        lineageAnnotations: shouldUpdate
+                          ? [
+                              {
+                                id: "22oing211",
+                                name: "Lineage Annotation 1",
+                                start: 900,
+                                end: 400,
+                                labelColor: "green",
+                                color: "green"
+                              },
+                              {
+                                id: "18711jja1",
+                                name: "Lineage Annotation 2",
+                                start: 401,
+                                end: 899,
+                                labelColor: "blue",
+                                color: "blue",
+                                noDirectionality: true
+                              }
+                            ]
+                          : []
+                      }
+                    });
                 }
               })}
               {renderToggle({
@@ -790,7 +804,8 @@ sequenceData: {
                 type: "showAssemblyPieces",
                 label: "Show AssemblyPieces  in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Input Parts get turned into assembly pieces by j5, which then have the proper overlaps / overhangs and are ready for assembly
+Assembly Pieces can be displayed directly in the editor like so: 
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -801,7 +816,8 @@ sequenceData: {
       start: 900,
       end: 400,
       labelColor: "green",
-      color: "green"
+      color: "green",
+      noDirectionality: true,
     },
     {
       id: "18711jja1",
@@ -809,14 +825,15 @@ sequenceData: {
       start: 401,
       end: 899,
       labelColor: "blue",
-      color: "blue"
+      color: "blue",
+      noDirectionality: true,
     }
   ]
 }
 \`\`\`
 `,
 
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
                     sequenceData: {
                       ...exampleSequenceData,
@@ -828,7 +845,8 @@ sequenceData: {
                               start: 900,
                               end: 400,
                               labelColor: "darkorange",
-                              color: "darkorange"
+                              color: "darkorange",
+                              noDirectionality: true
                             },
                             {
                               id: "18711jja1",
@@ -836,7 +854,8 @@ sequenceData: {
                               start: 401,
                               end: 899,
                               labelColor: "darkblue",
-                              color: "darkblue"
+                              color: "darkblue",
+                              noDirectionality: true
                             }
                           ]
                         : []
@@ -852,7 +871,7 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "readOnly",
-                hook: readOnly => {
+                hook: (readOnly) => {
                   updateEditor(store, "DemoEditor", {
                     readOnly
                   });
@@ -981,6 +1000,16 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                info: `When enabled AND the user has selected View -> External Labels, only labels that can't fit in a pointed annotation will be external.`,
+                type: "onlyShowLabelsThatDoNotFit"
+              })}
+              {renderToggle({
+                that: this,
+                type: "maxAnnotationsToDisplayAdjustment",
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+              })}
+              {renderToggle({
+                that: this,
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
@@ -996,7 +1025,25 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "beforeAnnotationCreate"
+              })}
+              {renderToggle({
+                that: this,
                 type: "onSave"
+              })}
+              {renderToggle({
+                that: this,
+                type: "onSaveAs"
+              })}
+              {renderToggle({
+                that: this,
+                type: "alwaysAllowSave"
+              })}
+              {renderToggle({
+                that: this,
+                type: "generatePng",
+                info:
+                  "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
               })}
               {renderToggle({
                 that: this,
@@ -1091,6 +1138,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             }}
             {...(this.state.readOnly && { readOnly: true })}
             editorName="DemoEditor"
+            maxAnnotationsToDisplay={
+              this.state.maxAnnotationsToDisplayAdjustment
+                ? { features: 5 }
+                : {}
+            }
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
@@ -1098,22 +1150,58 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               onNew: () => window.toastr.success("onNew callback triggered")
             })}
             {...(this.state.onImport && {
-              onImport: sequence => {
+              onImport: (sequence) => {
                 window.toastr.success(
                   `onImport callback triggered for sequence: ${sequence.name}`
                 );
                 return sequence;
               }
             })}
+            {...(this.state.beforeAnnotationCreate && {
+              beforeAnnotationCreate: ({
+                props,
+                annotationTypePlural,
+                annotation
+              }) => {
+                console.info(
+                  `props, annotation, annotationTypePlural`,
+                  props,
+                  annotation,
+                  annotationTypePlural
+                );
+                window.toastr.success(
+                  `beforeAnnotationCreate callback triggered for ${annotationTypePlural}`
+                );
+              }
+            })}
             {...(this.state.onSave && {
-              onSave: function(
-                event,
+              onSave: function (
+                opts,
                 sequenceDataToSave,
                 editorState,
                 onSuccessCallback
               ) {
+                console.info("opts:", opts);
+                if (window.Cypress) window.Cypress.pngFile = opts.pngFile;
+                console.info("sequenceData:", sequenceDataToSave);
+                console.info("editorState:", editorState);
                 window.toastr.success("onSave callback triggered");
-                console.info("event:", event);
+                // To disable the save button after successful saving
+                // either call the onSuccessCallback or return a successful promise :)
+                onSuccessCallback();
+                //or
+                // return myPromiseBasedApiCall()
+              }
+            })}
+            {...(this.state.onSaveAs && {
+              onSaveAs: function (
+                opts,
+                sequenceDataToSave,
+                editorState,
+                onSuccessCallback
+              ) {
+                window.toastr.success("onSaveAs callback triggered");
+                console.info("opts:", opts);
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
                 // To disable the save button after successful saving
@@ -1123,8 +1211,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 // return myPromiseBasedApiCall()
               }
             })}
+            {...(this.state.alwaysAllowSave && {
+              alwaysAllowSave: true
+            })}
             {...(this.state.onRename && {
-              onRename: newName =>
+              onRename: (newName) =>
                 window.toastr.success("onRename callback triggered: " + newName)
             })}
             {...(this.state.onDuplicate && {
@@ -1179,7 +1270,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                     ...["parts", "features", "primers"].reduce((acc, key) => {
                       const annotations = existingSequenceData[key];
                       acc[key] = annotations.filter(
-                        a =>
+                        (a) =>
                           !isRangeOrPositionWithinRange(
                             caretPositionOrRange,
                             a,
@@ -1194,7 +1285,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onCopy && {
-              onCopy: function(/* event, copiedSequenceData, editorState */) {
+              onCopy: function (/* event, copiedSequenceData, editorState */) {
                 window.toastr.success("onCopy callback triggered");
 
                 // console.info(editorState);
@@ -1215,7 +1306,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onPaste && {
-              onPaste: function(event /* editorState */) {
+              onPaste: function (event /* editorState */) {
                 //the onPaste here must return sequenceData in the teselagen data format
                 window.toastr.success("onPaste callback triggered");
                 const clipboardData = event.clipboardData;
@@ -1240,9 +1331,10 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
+            generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(withVersionHistory && {
-              getSequenceAtVersion: versionId => {
+              getSequenceAtVersion: (versionId) => {
                 if (versionId === 2) {
                   return {
                     sequence: "thomaswashere"
@@ -1282,6 +1374,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showGCContent={this.state.showGCContent}
+            onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={

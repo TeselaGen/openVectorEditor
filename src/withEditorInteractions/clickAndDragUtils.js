@@ -13,11 +13,10 @@ import {
 
 let draggingEnd = false;
 let dragInProgress = false;
-let caretPositionOnDragStart;
 let selectionStartGrabbed;
 let selectionEndGrabbed;
-
-export const editorDragged = function({ nearestCaretPos }) {
+let caretPositionOnDragStart;
+export const editorDragged = function ({ nearestCaretPos }) {
   const {
     caretPosition = -1,
     selectionLayer = { start: -1, end: -1 },
@@ -28,7 +27,7 @@ export const editorDragged = function({ nearestCaretPos }) {
     //we're starting the drag, so update the caret position!
     if (!selectionStartGrabbed && !selectionEndGrabbed) {
       //we're not dragging the caret or selection handles
-      this.caretPositionOnDragStart = nearestCaretPos;
+      // caretPositionOnDragStart = nearestCaretPos;
       // this.caretPositionUpdate(nearestCaretPos);
     }
     dragInProgress = true;
@@ -62,30 +61,29 @@ export const editorDragged = function({ nearestCaretPos }) {
     // }
     //dragging somewhere within the sequence
     //pass the caret position of the drag start
-
     handleCaretDrag({
       caretPosition: caretPositionOnDragStart,
-      selectionLayer: this.caretPositionOnDragStart
+      selectionLayer: caretPositionOnDragStart
         ? { start: -1, end: -1 }
         : selectionLayer,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength
     });
-    if (this.caretPositionOnDragStart !== null) {
-      this.caretPositionOnDragStart = null;
-    }
+    // if (caretPositionOnDragStart !== null && !selectionLayer.start) {
+    //   caretPositionOnDragStart = null;
+    // }
   }
 };
 
-export const editorClicked = function({ nearestCaretPos, shiftHeld }) {
+export const editorClicked = function ({ nearestCaretPos, shiftHeld }) {
   if (!dragInProgress) {
     //we're not dragging the caret or selection handles
     this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
   }
 };
 
-export const editorDragStarted = function(opts) {
+export const editorDragStarted = function (opts) {
   document.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
   caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
@@ -106,10 +104,11 @@ export const editorDragStarted = function(opts) {
   // if (document.body)
   //   addClassName(document.body, "react-draggable-transparent-selection");
 };
-export const editorDragStopped = function() {
+export const editorDragStopped = function () {
   document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = false;
-  setTimeout(function() {
+  caretPositionOnDragStart = null;
+  setTimeout(function () {
     dragInProgress = false;
   });
 
@@ -432,9 +431,11 @@ export function handleNoSelectionLayerYet({
   ) {
     draggingEnd = true; //the caret becomes the "selection end"
     selectionLayerUpdate(dragEnd);
+    caretPositionOnDragStart = null;
   } else {
     draggingEnd = false; //the caret becomes the "selection end"
     selectionLayerUpdate(dragStart);
+    caretPositionOnDragStart = null;
   }
 }
 export function handleCaretDrag({
@@ -547,6 +548,7 @@ export function updateSelectionOrCaret({
         }
       } else {
         //new range passed
+        // return selectionLayerUpdate(newRange);
         let selectionFullyContained = !trimRangeByAnotherRange(
           selectionLayer,
           newRange
@@ -570,16 +572,19 @@ export function updateSelectionOrCaret({
           newRange.end + 1,
           sequenceLength
         ); //+1 to go from range end to position
-        let range1Shorter = getRangeLength(range1) < getRangeLength(range2);
+        let range1Shorter =
+          getRangeLength(range1, sequenceLength) <
+          getRangeLength(range2, sequenceLength);
 
         if (newRangeFullyContained) {
           range1Shorter
             ? selectionLayerUpdate(range1)
             : selectionLayerUpdate(range2);
         } else {
-          range1Shorter
-            ? selectionLayerUpdate(range2)
-            : selectionLayerUpdate(range1);
+          selectionLayerUpdate({
+            start: selectionLayer.start,
+            end: newRange.end
+          });
         }
       }
     } else {

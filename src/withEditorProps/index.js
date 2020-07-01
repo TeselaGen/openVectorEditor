@@ -22,21 +22,84 @@ import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
+import { defaultMemoize } from "reselect";
+import domtoimage from "dom-to-image";
 
 // const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
 // const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
-export const handleSave = props => e => {
-  const { onSave, readOnly, sequenceData, lastSavedIdUpdate } = props;
+async function getSaveDialogEl(props) {
+  return new Promise((resolve) => {
+    props.showPrintDialog({
+      dialogProps: {
+        title: "Generating Image to Save...",
+        isCloseButtonShown: false
+      },
+      addPaddingBottom: true,
+      hideLinearCircularToggle: true,
+      hidePrintButton: true
+    });
+
+    const id = setInterval(() => {
+      const componentToPrint = document.querySelector(".bp3-dialog");
+      if (componentToPrint) {
+        clearInterval(id);
+        resolve(componentToPrint);
+      }
+    }, 1000);
+  });
+}
+/**
+ * Function to generate a png
+ *
+ * @return {object} - Blob (png) | Error
+ */
+const generatePngFromPrintDialog = async (props) => {
+  const saveDialog = await getSaveDialogEl(props);
+
+  const printArea = saveDialog.querySelector(".bp3-dialog-body");
+
+  const result = await domtoimage
+    .toBlob(printArea)
+    .then((blob) => {
+      return blob;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+  props.hidePrintDialog();
+  return result;
+};
+
+export const handleSave = (props) => async (opts = {}) => {
+  const {
+    onSave,
+    onSaveAs,
+    generatePng,
+    readOnly,
+    alwaysAllowSave,
+    sequenceData,
+    lastSavedIdUpdate
+  } = props;
+  const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
+
   const updateLastSavedIdToCurrent = () => {
     lastSavedIdUpdate(sequenceData.stateTrackingId);
   };
+
+  // Optionally generate png
+  if (generatePng) {
+    opts.pngFile = await generatePngFromPrintDialog(props);
+  }
+
+  // TODO: pass additionalProps (blob or error) to the user
   const promiseOrVal =
-    !readOnly &&
-    onSave &&
-    onSave(
-      e,
+    (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
+    saveHandler &&
+    saveHandler(
+      opts,
       tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
       props,
       updateLastSavedIdToCurrent
@@ -47,7 +110,7 @@ export const handleSave = props => e => {
   }
 };
 
-export const handleInverse = props => () => {
+export const handleInverse = (props) => () => {
   const {
     sequenceLength,
     selectionLayer,
@@ -85,7 +148,7 @@ export const handleInverse = props => () => {
   }
 };
 
-export const updateCircular = props => async isCircular => {
+export const updateCircular = (props) => async (isCircular) => {
   const { _updateCircular, updateSequenceData, sequenceData } = props;
   if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
     const doAction = await showConfirmationDialog({
@@ -103,24 +166,21 @@ export const updateCircular = props => async isCircular => {
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
 
-export const importSequenceFromFile = props => (file, opts = {}) => {
+export const importSequenceFromFile = (props) => (file, opts = {}) => {
   const { updateSequenceData, onImport } = props;
   let reader = new FileReader();
   reader.readAsText(file, "UTF-8");
-  reader.onload = function(evt) {
+  reader.onload = function (evt) {
     const content = evt.target.result;
     anyToJson(
       content,
-      async result => {
+      async (result) => {
         // TODO maybe handle import errors/warnings better
         const failed = !result[0].success;
         const messages = result[0].messages;
         if (messages && messages.length) {
-          messages.forEach(msg => {
-            const type = msg
-              .substr(0, 20)
-              .toLowerCase()
-              .includes("error")
+          messages.forEach((msg) => {
+            const type = msg.substr(0, 20).toLowerCase().includes("error")
               ? failed
                 ? "error"
                 : "warning"
@@ -145,12 +205,12 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
       { acceptParts: true, ...opts }
     );
   };
-  reader.onerror = function() {
+  reader.onerror = function () {
     window.toastr.error("Could not read file.");
   };
 };
 
-export const exportSequenceToFile = props => format => {
+export const exportSequenceToFile = (props) => (format) => {
   const { sequenceData } = props;
   let convert, fileExt;
 
@@ -181,14 +241,9 @@ export const exportSequenceToFile = props => format => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToActions,
-    null,
-    { pure: false }
-  ),
+  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
-    wrappedInsertSequenceDataAtPositionOrRange: props => {
+    wrappedInsertSequenceDataAtPositionOrRange: (props) => {
       return (
         _sequenceDataToInsert,
         _existingSequenceData,
@@ -220,13 +275,13 @@ export default compose(
       };
     },
 
-    upsertTranslation: props => {
-      return async translationToUpsert => {
+    upsertTranslation: (props) => {
+      return async (translationToUpsert) => {
         if (!translationToUpsert) return;
         const { _upsertTranslation, sequenceData } = props;
         if (
           !translationToUpsert.id &&
-          some(sequenceData.translations || [], existingTranslation => {
+          some(sequenceData.translations || [], (existingTranslation) => {
             if (
               //check if an identical existingTranslation exists already
               existingTranslation.translationType === "User Created" &&
@@ -257,7 +312,7 @@ export default compose(
     exportSequenceToFile,
     updateCircular,
     //add additional "computed handlers here"
-    selectAll: props => () => {
+    selectAll: (props) => () => {
       const { sequenceLength, selectionLayerUpdate } = props;
       sequenceLength > 0 &&
         selectionLayerUpdate({
@@ -266,7 +321,7 @@ export default compose(
         });
     },
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
-      acc[`handleNew${key}`] = props => () => {
+      acc[`handleNew${key}`] = (props) => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
         const handler = props[`showAddOrEdit${key}Dialog`];
 
@@ -290,13 +345,16 @@ export default compose(
                   end: sequenceData.isProtein ? 2 : 0
                 };
 
-          handler({ ...rangeToUse, forward: true });
+          handler({
+            ...rangeToUse,
+            forward: !(selectionLayer.forward === false)
+          });
         }
       };
       return acc;
     }, {}),
 
-    handleRotateToCaretPosition: props => () => {
+    handleRotateToCaretPosition: (props) => () => {
       const {
         caretPosition,
         readOnly,
@@ -314,7 +372,7 @@ export default compose(
       caretPositionUpdate(0);
     },
 
-    handleReverseComplementSelection: props => () => {
+    handleReverseComplementSelection: (props) => () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -341,7 +399,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleComplementSelection: props => () => {
+    handleComplementSelection: (props) => () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -365,7 +423,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleReverseComplementSequence: props => () => {
+    handleReverseComplementSequence: (props) => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(
         getReverseComplementSequenceAndAnnotations(sequenceData)
@@ -373,7 +431,7 @@ export default compose(
       window.toastr.success("Reverse Complemented Sequence Successfully");
     },
 
-    handleComplementSequence: props => () => {
+    handleComplementSequence: (props) => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
       window.toastr.success("Complemented Sequence Successfully");
@@ -497,6 +555,10 @@ function mapStateToProps(state, ownProps) {
 
   let sequenceDataToUse = {
     ...sequenceData,
+    sequence: getUpperOrLowerSeq(
+      uppercaseSequenceMapFont,
+      sequenceData.sequence
+    ),
     filteredFeatures,
     cutsites,
     orfs,
@@ -504,7 +566,10 @@ function mapStateToProps(state, ownProps) {
   };
   return {
     ...toReturn,
-    selectionLayer: (Array.isArray(toReturn.selectionLayer) ? toReturn.selectionLayer : [toReturn.selectionLayer]).map((s) => ({...s, color: s.color || "#0099ff"})),
+    selectionLayer: (Array.isArray(toReturn.selectionLayer)
+      ? toReturn.selectionLayer
+      : [toReturn.selectionLayer]
+    ).map((s) => ({ ...s, color: s.color || "#0099ff" })),
     selectedCutsites,
     sequenceLength,
     allCutsites,
@@ -542,7 +607,7 @@ export function mapDispatchToActions(dispatch, ownProps) {
   return {
     ...actionsToPass,
     selectionLayerUpdate: ownProps.onSelectionOrCaretChanged
-      ? selectionLayer => {
+      ? (selectionLayer) => {
           ownProps.onSelectionOrCaretChanged({
             selectionLayer,
             caretPosition: -1
@@ -551,7 +616,7 @@ export function mapDispatchToActions(dispatch, ownProps) {
         }
       : updateSel,
     caretPositionUpdate: ownProps.onSelectionOrCaretChanged
-      ? caretPosition => {
+      ? (caretPosition) => {
           ownProps.onSelectionOrCaretChanged({
             caretPosition,
             selectionLayer: { start: -1, end: -1 }
@@ -617,9 +682,9 @@ export function getCombinedActions(
   return bindActionCreators(actionsToPass, dispatch);
 }
 
-const getTypesToOmit = annotationsToSupport => {
+const getTypesToOmit = (annotationsToSupport) => {
   let typesToOmit = {};
-  allTypes.forEach(type => {
+  allTypes.forEach((type) => {
     if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
   return typesToOmit;
@@ -664,7 +729,7 @@ function truncateOriginSpanningAnnotations(seqData) {
 }
 
 function truncateOriginSpanners(annotations, sequenceLength) {
-  return map(annotations, annotation => {
+  return map(annotations, (annotation) => {
     const { start = 0, end = 0 } = annotation;
     if (start > end) {
       return {
@@ -696,27 +761,24 @@ function doAnySpanOrigin(annotations) {
   });
 }
 
-export const connectToEditor = fn => {
-  return connect(
-    (state, ownProps, ...rest) => {
-      return fn
-        ? fn(
-            state.VectorEditor[ownProps.editorName] || {},
-            ownProps,
-            ...rest,
-            state
-          )
-        : {};
-    },
-    mapDispatchToActions
-  );
+export const connectToEditor = (fn) => {
+  return connect((state, ownProps, ...rest) => {
+    const editor = state.VectorEditor[ownProps.editorName] || {};
+    editor.sequenceData = editor.sequenceData || {};
+    editor.sequenceData.sequence = getUpperOrLowerSeq(
+      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+      editor.sequenceData.sequence
+    );
+
+    return fn ? fn(editor, ownProps, ...rest, state) : {};
+  }, mapDispatchToActions);
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView
 //so they can still render things like translations, ..etc
 
 //Currently only supporting translations
-export const withEditorPropsNoRedux = withProps(props => {
+export const withEditorPropsNoRedux = withProps((props) => {
   const {
     sequenceData,
     sequenceDataWithRefSeqCdsFeatures,
@@ -744,3 +806,12 @@ export const withEditorPropsNoRedux = withProps(props => {
   //   }
   // };
 });
+
+const getUpperOrLowerSeq = defaultMemoize(
+  (uppercaseSequenceMapFont, sequence = "") =>
+    uppercaseSequenceMapFont === "uppercase"
+      ? sequence.toUpperCase()
+      : uppercaseSequenceMapFont === "lowercase"
+      ? sequence.toLowerCase()
+      : sequence
+);

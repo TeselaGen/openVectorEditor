@@ -48,9 +48,11 @@ function searchLayersSelector(
   }).sort(({ start }, { start: start2 }) => {
     return start - start2;
   });
-  return matches.map(match => ({
+  return matches.map((match) => ({
     ...match,
-    className: "veSearchLayer",
+    className:
+      "veSearchLayer " +
+      (match.bottomStrand ? " veSearchLayerBottomStrand" : ""),
     isSearchLayer: true
   }));
 }
@@ -58,11 +60,11 @@ function searchLayersSelector(
 export default createSelector(
   sequenceSelector,
   circularSelector,
-  state => state.findTool && state.findTool.isOpen,
-  state => state.findTool && state.findTool.searchText,
-  state => state.findTool && state.findTool.ambiguousOrLiteral,
-  state => state.findTool && state.findTool.dnaOrAA,
-  state => state.sequenceData.isProtein,
-  state => state.sequenceData.proteinSequence,
+  (state) => state.findTool && state.findTool.isOpen,
+  (state) => state.findTool && state.findTool.searchText,
+  (state) => state.findTool && state.findTool.ambiguousOrLiteral,
+  (state) => state.findTool && state.findTool.dnaOrAA,
+  (state) => state.sequenceData.isProtein,
+  (state) => state.sequenceData.proteinSequence,
   searchLayersSelector
 );

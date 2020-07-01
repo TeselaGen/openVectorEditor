@@ -68,7 +68,7 @@ class CircularViewWithZoom extends React.Component {
     rotationDegrees: 0
   };
   cachedLayers = {};
-  memoedDrawAnnotations = p => {
+  memoedDrawAnnotations = (p) => {
     const layerKey =
       p.radius +
       p.rotation +
@@ -165,7 +165,7 @@ class CircularViewWithZoom extends React.Component {
               : Math.ceil(rangeToShowLength / 100) * 10,
           sequenceLength,
           isProtein
-        }).map(pos => {
+        }).map((pos) => {
           return {
             tickPosition: pos,
             start: pos,
@@ -213,7 +213,7 @@ class CircularViewWithZoom extends React.Component {
           ...additionalSelectionLayers,
           ...searchLayers,
           ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
-        ].filter(s => {
+        ].filter((s) => {
           return s.start >= 0 && s.end >= 0 && sequenceLength > 0;
         }),
         allOnSameLevel: true,
@@ -242,7 +242,7 @@ class CircularViewWithZoom extends React.Component {
       {
         annotationType: "orf",
         getColor: getOrfColor,
-        perAnnotationProps: a => ({
+        perAnnotationProps: (a) => ({
           stroke: a.color
         }),
         annotationProps: {
@@ -250,7 +250,7 @@ class CircularViewWithZoom extends React.Component {
         },
         maxToDisplay: 50
       },
-      ...["lineageAnnotation", "assemblyPiece", "warning"].map(t => ({
+      ...["lineageAnnotation", "assemblyPiece", "warning"].map((t) => ({
         annotationType: t,
         ...sharedAnnotationProps,
         spaceBefore: 10
@@ -272,7 +272,7 @@ class CircularViewWithZoom extends React.Component {
         }
         const trimmedAnnotations = flatMap(
           layer.annotations || sequenceData[layer.annotationType + "s"] || [],
-          range => {
+          (range) => {
             const trimmedRange = getOverlapsOfPotentiallyCircularRanges(
               range,
               rangeToShow,
@@ -352,14 +352,14 @@ class CircularViewWithZoom extends React.Component {
           <Draggable
             // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
             bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-            onDrag={event => {
+            onDrag={(event) => {
               this.getNearestCursorPositionToMouseEvent(
                 event,
                 sequenceLength,
                 editorDragged
               );
             }}
-            onStart={event => {
+            onStart={(event) => {
               this.getNearestCursorPositionToMouseEvent(
                 event,
                 sequenceLength,
@@ -369,7 +369,7 @@ class CircularViewWithZoom extends React.Component {
             onStop={editorDragStopped}
           >
             <svg
-              onClick={event => {
+              onClick={(event) => {
                 instantiated &&
                   this.getNearestCursorPositionToMouseEvent(
                     event,
@@ -377,7 +377,7 @@ class CircularViewWithZoom extends React.Component {
                     editorClicked
                   );
               }}
-              onContextMenu={e => {
+              onContextMenu={(e) => {
                 this.getNearestCursorPositionToMouseEvent(
                   e,
                   sequenceLength,
@@ -386,10 +386,12 @@ class CircularViewWithZoom extends React.Component {
               }}
               ref="circularView"
               className="circularViewSvg"
-              viewBox={`${-svgWidth / 2},${-svgHeight / 2 -
+              viewBox={`${-svgWidth / 2},${
+                -svgHeight / 2 -
                 (this.state.zoomLevel === 1
                   ? 0
-                  : initialRadius + BASE_RADIUS * 2)},${svgWidth},${svgHeight}`}
+                  : initialRadius + BASE_RADIUS * 2)
+              },${svgWidth},${svgHeight}`}
               width={svgHeight}
               height={svgWidth}
             >
@@ -401,12 +403,12 @@ class CircularViewWithZoom extends React.Component {
         </div>
         <div style={{ position: "absolute", left: 10, top: 5 }}>
           <UncontrolledSliderWithPlusMinusBtns
-            onChange={val => {
+            onChange={(val) => {
               this.setState({
                 zoomLevel: val
               });
             }}
-            onRelease={val => {
+            onRelease={(val) => {
               this.setState({
                 zoomLevel: val
               });
@@ -421,19 +423,19 @@ class CircularViewWithZoom extends React.Component {
             min={1}
           />
           <UncontrolledSliderWithPlusMinusBtns
-            onChange={val => {
+            onChange={(val) => {
               this.setState({
                 rotationDegrees: val
               });
             }}
-            onRelease={val => {
+            onRelease={(val) => {
               this.setState({
                 rotationDegrees: val
               });
             }}
             leftIcon="arrow-left"
             rightIcon="arrow-right"
-            title="Adjust Zoom Level"
+            title="Rotate"
             style={{ paddingTop: "4px", width: 100 }}
             className="alignment-zoom-slider"
             labelRenderer={false}

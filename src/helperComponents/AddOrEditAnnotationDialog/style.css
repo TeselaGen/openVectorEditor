@@ -1,0 +1,11 @@
+.addAnnNoteKey {
+  margin-top: 5px;
+  margin-right: 10px;
+  max-width: 110px;
+  min-width: 110px;
+}
+.addAnnNoteValue {
+  margin-top: 5px;
+  max-width: 200px;
+  min-width: 200px;
+}

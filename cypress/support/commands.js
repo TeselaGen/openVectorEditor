@@ -35,11 +35,10 @@ function getCenter(el) {
 
 Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
-
   cy.clock();
-  getOrWrap(dragSelector).then(el => {
+  getOrWrap(dragSelector).then((el) => {
     let dragSelectDomEl = el.get(0);
-    getOrWrap(dropSelector).then(el2 => {
+    getOrWrap(dropSelector).then((el2) => {
       let dropSelectDomEl = el2.get(0);
       const [x, y] = getCenter(dragSelectDomEl);
       const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
@@ -109,6 +108,21 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   });
 });
 
+Cypress.Commands.add("dragBetweenSimple", (dragSelector, dropSelector) => {
+  const getOrWrap = (selector) =>
+    isString(selector)
+      ? cy.get(selector).then((el) => {
+          return el.first();
+        })
+      : cy.wrap(selector);
+  getOrWrap(dragSelector)
+    .trigger("mousedown", { force: true })
+    .trigger("mousemove", 10, 10, { force: true });
+  getOrWrap(dropSelector)
+    .trigger("mousemove", { force: true })
+    .trigger("mouseup", { force: true });
+});
+
 Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
   /* eslint-disable no-unexpected-multiline*/
 
@@ -116,6 +130,19 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
     .get(`[data-test="${type}"]`)
     [onOrOff ? "check" : "uncheck"]({ force: true });
   /* eslint-enable no-unexpected-multiline*/
+});
+
+/**
+ * Triggers a cmd using the Help menu search
+ * @memberOf Cypress.Chainable#
+ * @name triggerFileCmd
+ * @function
+ * @param {String} text - the file cmd to trigger
+ */
+
+Cypress.Commands.add("triggerFileCmd", (text) => {
+  cy.get("body").type("{meta}/");
+  cy.focused().type(`${text}{enter}`);
 });
 
 /**
@@ -132,7 +159,7 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
   return cy
     .fixture(fileUrl, "base64")
     .then(Cypress.Blob.base64StringToBlob)
-    .then(blob => {
+    .then((blob) => {
       const name = fileUrl.split("/").pop();
       const testFile = new File([blob], name, { type });
       const event = { dataTransfer: { files: [testFile] } };
@@ -141,7 +168,7 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
 });
 
 Cypress.Commands.add("selectRange", (start, end) => {
-  cy.window().then(win => {
+  cy.window().then((win) => {
     win.ove_updateEditor({
       selectionLayer: {
         start: start - 1,
@@ -153,7 +180,7 @@ Cypress.Commands.add("selectRange", (start, end) => {
 Cypress.Commands.add("closeDialog", () => {
   cy.get(`.bp3-dialog [aria-label="Close"]`).click();
 });
-Cypress.Commands.add("replaceSelection", sequenceString => {
+Cypress.Commands.add("replaceSelection", (sequenceString) => {
   cy.get(".veRowViewSelectionLayer")
     .first()
     .trigger("contextmenu", { force: true });

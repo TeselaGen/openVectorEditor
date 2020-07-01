@@ -8,14 +8,15 @@ const defaultFontWidth = 8;
 const fontWidthToFontSize = 1.75;
 
 function Labels({
-  labels = {},
+  labels = [],
   radius: outerRadius,
   editorName,
   textScalingFactor,
+  labelLineIntensity,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
-  if (!Object.keys(labels).length) return null;
+  if (!labels.length) return null;
   outerRadius += 25;
   let radius = outerRadius;
   let outerPointRadius = outerRadius - 20;
@@ -25,9 +26,8 @@ function Labels({
     defaultFontWidth * (textScalingFactor < 1 ? textScalingFactor : 1);
 
   let fontHeight = fontWidth * 2.4;
-  let labelPoints = Object.keys(labels)
-    .map(function(key) {
-      let label = labels[key];
+  let labelPoints = labels
+    .map(function (label) {
       let { annotationCenterAngle, annotationCenterRadius } = label;
       return {
         ...label,
@@ -59,7 +59,7 @@ function Labels({
         angle: annotationCenterAngle
       };
     })
-    .map(function(label) {
+    .map(function (label) {
       label.labelAndSublabels = [label];
       label.labelIds = { [label.id]: true };
       return label;
@@ -68,7 +68,7 @@ function Labels({
     labelPoints,
     fontHeight,
     outerRadius
-  ).filter(l => !!l);
+  ).filter((l) => !!l);
   // let groupedLabels = relaxLabelAngles(
   //   labelPoints,
   //   fontHeight,
@@ -96,7 +96,8 @@ function Labels({
             fontWidth,
             fontHeight,
             condenseOverflowingXLabels,
-            outerRadius
+            outerRadius,
+            labelLineIntensity
           }}
         />
       </g>
@@ -110,7 +111,7 @@ function Labels({
 }
 export default Labels;
 
-const DrawLabelGroup = withHover(function({
+const DrawLabelGroup = withHover(function ({
   hovered,
   className,
   label,
@@ -124,6 +125,7 @@ const DrawLabelGroup = withHover(function({
   circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
+  labelLineIntensity,
   // labelIds,
   multipleLabels
   // isIdHashmap,
@@ -140,7 +142,7 @@ const DrawLabelGroup = withHover(function({
   }
 
   let labelLength = text.length * fontWidth;
-  let maxLabelLength = labelAndSublabels.reduce(function(
+  let maxLabelLength = labelAndSublabels.reduce(function (
     currentLength,
     { text = "Unlabeled" }
   ) {
@@ -186,7 +188,7 @@ const DrawLabelGroup = withHover(function({
     if (groupLabelXStart !== undefined) {
       labelXStart = groupLabelXStart;
     }
-    labelAndSublabels.some(function(label) {
+    labelAndSublabels.some(function (label) {
       if (label.id === hoveredId) {
         hoveredLabel = label;
         return true;
@@ -219,7 +221,7 @@ const DrawLabelGroup = withHover(function({
         //   : {},
         label
       ],
-      { style: { opacity: 1 } }
+      { style: { opacity: 1 }, strokeWidth: 2 }
     );
     content = [
       line,
@@ -240,9 +242,12 @@ const DrawLabelGroup = withHover(function({
           <text
             /* zIndex={11} */ x={labelXStart}
             y={labelYStart}
-            style={{ fontSize: fontWidth * fontWidthToFontSize }}
+            style={{
+              fontSize: fontWidth * fontWidthToFontSize,
+              fontStyle: label.fontStyle
+            }}
           >
-            {labelAndSublabels.map(function(label, index) {
+            {labelAndSublabels.map(function (label, index) {
               return (
                 <DrawGroupInnerLabel
                   isSubLabel
@@ -278,6 +283,7 @@ const DrawLabelGroup = withHover(function({
         y={textYStart}
         style={{
           fontSize: fontWidth * fontWidthToFontSize,
+          fontStyle: label.fontStyle,
           fill: label.color || "black"
           // stroke: label.color ? label.color : "black"
         }}
@@ -293,7 +299,9 @@ const DrawLabelGroup = withHover(function({
           label.outerPoint,
           label
         ],
-        hovered ? { style: { opacity: 1 } } : {}
+        hovered
+          ? { style: { opacity: 1 }, strokeWidth: 2 }
+          : { style: { opacity: labelLineIntensity } }
       )
     ];
   }
@@ -302,6 +310,7 @@ const DrawLabelGroup = withHover(function({
       {...{ onMouseLeave, onMouseOver }}
       {...{
         onClick: label.onClick,
+        onDoubleClick: label.onDoubleClick,
         onContextMenu: label.onContextMenu || noop
       }}
     >
@@ -312,7 +321,7 @@ const DrawLabelGroup = withHover(function({
 
 function LabelLine(pointArray, options) {
   let points = "";
-  pointArray.forEach(function({ x, y }) {
+  pointArray.forEach(function ({ x, y }) {
     if (!x && x !== 0) return;
     points += `${x},${y} `;
   });
@@ -339,9 +348,6 @@ function LabelLine(pointArray, options) {
           stroke: "black",
           fill: "none",
           strokeWidth: 1,
-          // style: {
-          //   opacity: 0.2
-          // },
           className: "veLabelLine",
           ...options
         }}
@@ -358,9 +364,13 @@ const DrawGroupInnerLabel = withHover(
         textLength={label.text.length * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
+        onDoubleClick={label.onDoubleClick}
         onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
-        style={{ fill: label.color ? label.color : "black" }}
+        style={{
+          fill: label.color ? label.color : "black",
+          fontStyle: label.fontStyle
+        }}
         {...{ onMouseOver }}
         className={className}
       >
@@ -379,9 +389,10 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   fontHeight,
   condenseOverflowingXLabels,
   outerRadius,
-  editorName
+  editorName,
+  labelLineIntensity
 }) {
-  return groupedLabels.map(function(label) {
+  return groupedLabels.map(function (label) {
     let { labelAndSublabels, labelIds } = label;
     let multipleLabels = labelAndSublabels.length > 1;
     return (
@@ -401,7 +412,8 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
           editorName,
           fontHeight,
           condenseOverflowingXLabels,
-          outerRadius
+          outerRadius,
+          labelLineIntensity
         }}
       />
     );

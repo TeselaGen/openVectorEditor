@@ -1,8 +1,8 @@
-describe("statusBar", function() {
+describe("statusBar", function () {
   beforeEach(() => {
     cy.visit("");
   });
-  it("can change to linear mode via the status bar and get a warning that annotations will be truncated", function() {
+  it("can change to linear mode via the status bar and get a warning that annotations will be truncated", function () {
     cy.get(`[data-test="veStatusBar-circularity"]`)
       .find("select")
       .select("Linear");
@@ -19,16 +19,11 @@ describe("statusBar", function() {
     cy.contains("Truncate Annotations").click();
     cy.get(`[data-test="ve-warning-circular-to-linear"]`);
   });
-  it(`should display optional gc content`, function() {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".bp3-menu-item")
-      .contains("Select...")
-      .click();
-    cy.focused()
-      .type("{selectall}1")
-      .get("div.tg-test-to .bp3-input")
+  it(`should display optional gc content`, function () {
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".bp3-menu-item").contains("Select...").click();
+    cy.focused().type("{selectall}1");
+    cy.get("div.tg-test-to .bp3-input")
       .type("{selectall}100")
       .get(".bp3-intent-primary")
       .contains("Select 100 BPs")

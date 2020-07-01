@@ -38,7 +38,7 @@ export default compose(
   formValues("from", "to")
 )(
   class SelectDialog extends React.Component {
-    updateTempHighlight = ({ isStart, isEnd } = {}) => val => {
+    updateTempHighlight = ({ isStart, isEnd } = {}) => (val) => {
       const { selectionLayerUpdate, from, to, invalid } = this.props;
       if (invalid) return;
       selectionLayerUpdate(
@@ -70,8 +70,8 @@ export default compose(
       } = this.props;
       const selectionLength = getRangeLength(
         {
-          start: from,
-          end: to
+          start: Number(from),
+          end: Number(to)
         },
         sequenceLength
       );
@@ -117,15 +117,15 @@ export default compose(
                   });
                 }
                 hideModal();
-                tryToRefocusEditor()
+                tryToRefocusEditor();
               }}
               text="Cancel"
             />
             <Button
-              onClick={handleSubmit(data => {
+              onClick={handleSubmit((data) => {
                 if (onSubmit) onSubmit(data);
                 hideModal();
-                tryToRefocusEditor()
+                tryToRefocusEditor();
               })}
               intent={Intent.PRIMARY}
               text={`Select ${invalid ? 0 : selectionLength} ${
@@ -140,7 +140,7 @@ export default compose(
   }
 );
 
-const normalizeToInt = val => {
+const normalizeToInt = (val) => {
   const int = Math.round(val);
   const normalizedVal = `${int >= 0 ? int : 1}`;
   return normalizedVal;

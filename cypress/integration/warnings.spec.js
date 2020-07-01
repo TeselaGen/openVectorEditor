@@ -1,13 +1,14 @@
-describe("editor", function() {
+describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
   });
   it(`should be able to visualize warnings on the circular and row views and click them`, () => {
     cy.tgToggle("showWarningFeature");
-    cy.get(".veAnnotations-warning")
-      .contains("J5 Error")
-      .first()
-      .click({ force: true });
-    cy.contains(".bp3-dialog", "I'm a fake error!");
+    cy.get(".veLabelText").contains("J5 Warning").first().dblclick();
+    cy.contains(".bp3-dialog", "I'm a fake warning!");
+    cy.contains(".bp3-button", "OK").click();
+    cy.get(".veLabelText").contains("J5 Warning").first().rightclick();
+    cy.contains(".bp3-menu-item", "View Warning Details").click();
+    cy.contains(".bp3-dialog", "I'm a fake warning!");
   });
 });

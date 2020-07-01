@@ -94,6 +94,7 @@ export class LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
+      paddingBottom,
       charWidth,
       annotationVisibilityOverrides,
       isProtein,
@@ -107,14 +108,14 @@ export class LinearView extends React.Component {
     let rowData = this.getRowData();
     // width = innerWidth * this.state.zoomLevel
     // maxWidth = this.getMaxLength() * 12
-    
+
     // maxzoomLevel = this.getMaxLength() * 12 /innerWidth
 
-const maxZoom = this.getMaxLength() * 11 /innerWidth
+    const maxZoom = (this.getMaxLength() * 11) / innerWidth;
     return (
       <React.Fragment>
         <UncontrolledSliderWithPlusMinusBtns
-          onChange={val => {
+          onChange={(val) => {
             this.setState({
               zoomLevel: val
             });
@@ -125,7 +126,7 @@ const maxZoom = this.getMaxLength() * 11 /innerWidth
               ).scrollIntoView({ inline: "center" });
             }, 0);
           }}
-          onRelease={val => {
+          onRelease={(val) => {
             this.setState({
               zoomLevel: val
             });
@@ -142,14 +143,14 @@ const maxZoom = this.getMaxLength() * 11 /innerWidth
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          onDrag={event => {
+          onDrag={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
               editorDragged
             );
           }}
-          onStart={event => {
+          onClick={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
@@ -159,22 +160,22 @@ const maxZoom = this.getMaxLength() * 11 /innerWidth
           onStop={editorDragStopped}
         >
           <div
-            ref={ref => (this.linearView = ref)}
+            ref={(ref) => (this.linearView = ref)}
             className="veLinearView"
             style={{
               width,
               ...(height && { height }),
-              paddingLeft: marginWidth / 2
+              paddingLeft: marginWidth / 2,
+              ...(paddingBottom && { paddingBottom })
             }}
-            onContextMenu={event => {
+            onContextMenu={(event) => {
               this.getNearestCursorPositionToMouseEvent(
                 rowData,
                 event,
                 backgroundRightClicked
               );
             }}
-            onClick={event => {
-              console.log(`onClick`);
+            onClick={(event) => {
               this.getNearestCursorPositionToMouseEvent(
                 rowData,
                 event,

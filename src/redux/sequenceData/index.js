@@ -1,6 +1,6 @@
 import deepEqual from "deep-equal";
 import { tidyUpSequenceData } from "ve-sequence-utils";
-import uuid from "uniqid";
+import uuid from "shortid";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";
@@ -32,7 +32,7 @@ export * from "./translations";
 // ------------------------------------
 
 const _updateSequenceData = createAction("SEQUENCE_DATA_UPDATE");
-export const updateSequenceData = function(seqData, ...rest) {
+export const updateSequenceData = function (seqData, ...rest) {
   //tnrtodo: currently we're not using that type variable for anything
   return _updateSequenceData(
     tidyUpSequenceData(seqData, { annotationsAsObjects: true }),
@@ -58,7 +58,7 @@ const coreReducer = combineReducersDontIgnoreKeys({
   fromFileUpload: createReducer({}, false)
 });
 
-export default function(state, action) {
+export default function (state, action) {
   let stateToPass = state;
   if (action.type === "SEQUENCE_DATA_UPDATE") {
     stateToPass = action.payload;

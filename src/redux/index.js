@@ -25,7 +25,9 @@ import * as selectionLayer from "./selectionLayer";
 import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
-// import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
+import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
+import * as externalLabels from "./externalLabels";
+import * as labelLineIntensity from "./labelLineIntensity";
 
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
@@ -57,8 +59,10 @@ const subReducers = {
   selectionLayer,
   sequenceDataHistory,
   sequenceData,
-  useAdditionalOrfStartCodons
-  // uppercaseSequenceMapFont
+  useAdditionalOrfStartCodons,
+  uppercaseSequenceMapFont,
+  externalLabels,
+  labelLineIntensity
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
@@ -115,7 +119,7 @@ export default function reducerFactory(initialState = {}) {
   //     "Please pass an initial state to the vector editor reducer like: {DemoEditor: {}}!"
   //   );
   // }
-  return function(state = initialState, action) {
+  return function (state = initialState, action) {
     let editorNames;
     let newState = {};
     if (action.meta && action.meta.editorName) {
@@ -126,7 +130,7 @@ export default function reducerFactory(initialState = {}) {
     let stateToReturn;
     if (editorNames) {
       //we're dealing with an action specific to a given editor
-      editorNames.forEach(function(editorName) {
+      editorNames.forEach(function (editorName) {
         let currentState = state[editorName];
         if (action.type === "VECTOR_EDITOR_UPDATE") {
           //deep merge certain parts of the exisiting state with the new payload of props
@@ -144,7 +148,7 @@ export default function reducerFactory(initialState = {}) {
       };
     } else {
       //just a normal action
-      Object.keys(state).forEach(function(editorName) {
+      Object.keys(state).forEach(function (editorName) {
         if (editorName === "__allEditorsOptions") return; //we deal with __allEditorsOptions below so don't pass it here
         newState[editorName] = editorReducer(state[editorName], action);
       });
@@ -160,12 +164,24 @@ export default function reducerFactory(initialState = {}) {
             : state.__allEditorsOptions.addAdditionalEnzymes,
           action
         ),
-        // uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
-        //   !state.__allEditorsOptions
-        //     ? undefined
-        //     : state.__allEditorsOptions.uppercaseSequenceMapFont,
-        //   action
-        // ),
+        uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
+          !state.__allEditorsOptions
+            ? undefined
+            : state.__allEditorsOptions.uppercaseSequenceMapFont,
+          action
+        ),
+        externalLabels: externalLabels.default(
+          !state.__allEditorsOptions
+            ? undefined
+            : state.__allEditorsOptions.externalLabels,
+          action
+        ),
+        labelLineIntensity: labelLineIntensity.default(
+          !state.__allEditorsOptions
+            ? undefined
+            : state.__allEditorsOptions.labelLineIntensity,
+          action
+        ),
         alignments: alignments.default(
           !state.__allEditorsOptions
             ? undefined

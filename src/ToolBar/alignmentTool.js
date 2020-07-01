@@ -10,7 +10,7 @@ import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import axios from "axios";
-import uniqid from "uniqid";
+import uniqid from "shortid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
 
@@ -94,7 +94,7 @@ class AlignmentTool extends React.Component {
   state = {
     templateSeqIndex: 0
   };
-  sendSelectedDataToBackendForAlignment = async values => {
+  sendSelectedDataToBackendForAlignment = async (values) => {
     const {
       addedSequences,
       isPairwiseAlignment,
@@ -126,6 +126,7 @@ class AlignmentTool extends React.Component {
               i
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
             const elementsToTrim = ["baseCalls", "basePos", "qualNums"];
+            // eslint-disable-next-line no-unused-vars
             for (let element in addedSequencesToUseTrimmed[i]
               .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
@@ -168,7 +169,7 @@ class AlignmentTool extends React.Component {
     // const j5server = process.env.REMOTE_J5 || "http://j5server.teselagen.com"
 
     window.toastr.success("Alignment submitted.");
-    const replaceProtocol = url => {
+    const replaceProtocol = (url) => {
       return url.replace("http://", window.location.protocol + "//");
     };
 
@@ -218,7 +219,7 @@ class AlignmentTool extends React.Component {
         }),
       alignmentTracks:
         alignedSequences &&
-        alignedSequences.map(alignmentData => {
+        alignedSequences.map((alignmentData) => {
           return {
             sequenceData:
               seqsToAlign[
@@ -245,12 +246,12 @@ class AlignmentTool extends React.Component {
 
   handleFileUpload = (files, onChange) => {
     const { array } = this.props;
-    flatMap(files, async file => {
+    flatMap(files, async (file) => {
       const results = await anyToJson(file.originalFileObj, {
         fileName: file.name,
         acceptParts: true
       });
-      return results.forEach(result => {
+      return results.forEach((result) => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
         } else {
@@ -269,7 +270,7 @@ class AlignmentTool extends React.Component {
         <h6>Or enter sequences in plain text format</h6>
         <div>
           <AddYourOwnSeqForm
-            addSeq={newSeq => {
+            addSeq={(newSeq) => {
               fields.push(newSeq);
             }}
           />
@@ -318,7 +319,7 @@ class AlignmentTool extends React.Component {
                   )}
 
                   <Button
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
                       fields.remove(index);
@@ -446,7 +447,7 @@ const AddYourOwnSeqForm = reduxForm({
       />
       <Button
         disabled={pristine || error}
-        onClick={handleSubmit(vals => {
+        onClick={handleSubmit((vals) => {
           reset();
           addSeq(vals);
         })}
@@ -492,7 +493,7 @@ function mottTrim(qualNums) {
       totalScore = 0;
     }
   }
-  const firstPositiveValue = totalScoreInfo.find(e => {
+  const firstPositiveValue = totalScoreInfo.find((e) => {
     return e > 0;
   });
   startPos = totalScoreInfo.indexOf(firstPositiveValue);

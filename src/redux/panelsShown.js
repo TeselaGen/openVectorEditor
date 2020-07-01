@@ -22,7 +22,7 @@ export const propertiesViewOpen = (unused, meta) => {
   return setPanelAsActive("properties", meta);
 };
 export const createNewDigest = (unused, meta) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
@@ -39,7 +39,7 @@ export const createNewDigest = (unused, meta) => {
 };
 
 export const createNewAlignment = (payload, meta) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
@@ -57,7 +57,7 @@ export const createNewAlignment = (payload, meta) => {
 };
 
 export const createNewMismatchesList = (payload, meta) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(
       addPanelIfItDoesntAlreadyExist(
         {
@@ -75,7 +75,7 @@ export const createNewMismatchesList = (payload, meta) => {
 };
 
 export const collapseSplitScreen = (activePanelId, meta) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(_collapseSplitScreen(activePanelId, meta));
     dispatch(setPanelAsActive(activePanelId, meta));
   };
@@ -88,7 +88,7 @@ export default createReducer(
   {
     [addPanelIfItDoesntAlreadyExist]: (state, panelToAdd) => {
       if (
-        !state.some(panelGroup => {
+        !state.some((panelGroup) => {
           return panelGroup.some(({ id }) => {
             return id === panelToAdd.id;
           });
@@ -102,10 +102,10 @@ export default createReducer(
       return state;
     },
     [panelsShownUpdate]: (state, payload) => {
-      return payload.filter(group => group.length); //filter out any empty groups
+      return payload.filter((group) => group.length); //filter out any empty groups
     },
     [closePanel]: (state, idToClose) => {
-      const newState = state.map(group => {
+      const newState = state.map((group) => {
         let indexToClose;
         group.forEach(({ id }, i) => {
           if (id === idToClose) indexToClose = i;
@@ -120,11 +120,11 @@ export default createReducer(
         }
         return group;
       });
-      return newState.filter(group => group.length); //filter out any empty groups
+      return newState.filter((group) => group.length); //filter out any empty groups
     },
-    [_collapseSplitScreen]: state => {
+    [_collapseSplitScreen]: (state) => {
       return [
-        flatMap(state, panelGroup => {
+        flatMap(state, (panelGroup) => {
           return panelGroup;
         })
       ];
@@ -133,7 +133,7 @@ export default createReducer(
       let panelToMove;
       return [
         state[0]
-          .filter(panel => {
+          .filter((panel) => {
             if (panel.id === activePanelId) {
               panelToMove = panel;
               return false;
@@ -147,11 +147,11 @@ export default createReducer(
       ];
     },
     [setPanelAsActive]: (state, panelId) => {
-      return map(state, panelGroup => {
+      return map(state, (panelGroup) => {
         const isPanelInGroup = panelGroup.some(({ id }) => {
           return panelId === id;
         });
-        return panelGroup.map(panel => {
+        return panelGroup.map((panel) => {
           return {
             ...panel,
             active:
@@ -165,11 +165,11 @@ export default createReducer(
       });
     },
     [togglePanelFullScreen]: (state, panelId) => {
-      return map(state, panelGroup => {
+      return map(state, (panelGroup) => {
         const isPanelInGroup = panelGroup.some(({ id }) => {
           return panelId === id;
         });
-        return panelGroup.map(panel => {
+        return panelGroup.map((panel) => {
           return {
             ...panel,
             active:
@@ -190,9 +190,9 @@ export default createReducer(
     },
     [collapsePanel]: (state, panelToCloseId) => {
       return [
-        flatMap(state, panelGroup => {
+        flatMap(state, (panelGroup) => {
           return panelGroup;
-        }).map(panel => {
+        }).map((panel) => {
           if (panel.id === panelToCloseId) {
             return {
               ...panel,
@@ -210,6 +210,7 @@ export default createReducer(
         id: "circular",
         name: "Circular Map",
         active: true
+        //   canClose: true
       },
       {
         id: "rail",

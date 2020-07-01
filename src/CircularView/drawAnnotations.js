@@ -14,6 +14,7 @@ function drawAnnotations({
   // Annotation,
   annotationType,
   radius,
+  isProtein,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
@@ -26,9 +27,11 @@ function drawAnnotations({
   positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
   allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
   onRightClicked = noop,
+  onDoubleClick = noop,
   showLabels,
   labelOptions,
-  ...rest
+  annotationProps,
+  fontStyle
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -37,10 +40,10 @@ function drawAnnotations({
   const labels = {};
 
   if (!Object.keys(annotations).length) return null;
-  sortBy(annotations, a => {
+  sortBy(annotations, (a) => {
     return -getRangeLength(a, sequenceLength);
   })
-    .map(annotation => {
+    .map((annotation) => {
       let {
         startAngle,
         endAngle,
@@ -109,7 +112,7 @@ function drawAnnotations({
 
       return annotationCopy;
     })
-    .forEach(function(annotation, index) {
+    .forEach(function (annotation, index) {
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
         onClick({ event, annotation });
@@ -123,8 +126,28 @@ function drawAnnotations({
           annotation.onRightClick({ event, annotation });
         }
       }
+      function _onDoubleClick(event) {
+        onDoubleClick && onDoubleClick({ event, annotation });
+        if (annotation.onDoubleClick) {
+          annotation.onDoubleClick({ event, annotation });
+        }
+      }
 
-      const { startAngle, centerAngle } = annotation;
+      const {
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        locationAngles,
+        noDirectionality,
+        ...rest
+      } = annotation;
+
+      const _annotationProps = {
+        ...annotationProps,
+        ...(noDirectionality && { arrowheadLength: 0 }),
+        ...rest
+      };
 
       const titleText = getAnnotationNameAndStartStopString(annotation);
 
@@ -144,6 +167,8 @@ function drawAnnotations({
           title: titleText,
           className: annotation.labelClassName || "",
           onClick: _onClick,
+          onDoubleClick: _onDoubleClick,
+          fontStyle: fontStyle || "normal",
           color:
             annotation.labelColor ||
             (annotationType === "part" ? "purple" : "black"),
@@ -163,11 +188,15 @@ function drawAnnotations({
             ...annotation,
             annotationHeight,
             annotationRadius,
+            isProtein,
             titleText,
             onClick: _onClick,
+            onDoubleClick: _onDoubleClick,
             onContextMenu,
             annotation,
-            annotationColor
+            annotationColor,
+            totalAngle,
+            annotationProps: _annotationProps
           }}
           id={annotation.id}
           key={"veAnnotation-" + annotationType + index}
@@ -190,37 +219,37 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = withHover(function(props) {
-  const {
-    className,
-    startAngle,
-    endAngle,
-    onClick,
-    onContextMenu,
-    titleText,
-    locationAngles,
-    annotation,
-    isProtein,
-    reverseAnnotations,
-    Annotation = Feature,
-    totalAngle,
-    addHeight,
-    annotationColor,
-    annotationRadius,
-    annotationHeight,
-    perAnnotationProps,
-    onMouseLeave,
-    passAnnotation,
-    rotation,
-    onMouseOver,
-    annotationProps
-  } = props;
-
+const DrawAnnotation = withHover(function ({
+  className,
+  startAngle,
+  endAngle,
+  onClick,
+  onDoubleClick,
+  onContextMenu,
+  titleText,
+  locationAngles,
+  annotation,
+  reverseAnnotations,
+  Annotation = Feature,
+  totalAngle,
+  annotationColor,
+  isProtein,
+  annotationRadius,
+  annotationHeight,
+  onMouseLeave,
+  onMouseOver,
+  annotationProps,
+  addHeight,
+  perAnnotationProps,
+  passAnnotation,
+  rotation
+}) {
   const sharedProps = {
     style: { cursor: "pointer" },
     className: className,
     onContextMenu: onContextMenu,
     onClick: onClick,
+    onDoubleClick: onDoubleClick,
     onMouseLeave,
     onMouseOver
   };
@@ -255,7 +284,7 @@ const DrawAnnotation = withHover(function(props) {
           annotationHeight={annotationHeight}
           rotation={rotation}
           {...annotationProps}
-          {...perAnnotationProps && perAnnotationProps(annotation)}
+          {...(perAnnotationProps && perAnnotationProps(annotation))}
         />
       </g>
     );
