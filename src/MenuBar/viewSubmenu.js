@@ -59,7 +59,8 @@ export default [
   { cmd: "toggleWarnings", shouldDismissPopover: false },
   { cmd: "toggleAssemblyPieces", shouldDismissPopover: false },
   { cmd: "toggleLineageAnnotations", shouldDismissPopover: false },
-  { cmd: "toggleFeatures", shouldDismissPopover: false },
+  //deprecating
+  //{ cmd: "toggleFeatures", shouldDismissPopover: false },
   {
     cmd: "featureTypesCmd"
   },

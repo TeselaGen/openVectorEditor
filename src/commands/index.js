@@ -153,7 +153,7 @@ const fileCommandDefs = {
       ).length;
       return (
         <span>
-          Feature Types &nbsp;
+          Features &nbsp;
           <Tag round style={{ marginLeft: 4 }}>
             {total - toHideCount}/{total}
           </Tag>
