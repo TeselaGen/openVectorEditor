@@ -11,6 +11,7 @@ function Labels({
   labels = [],
   radius: outerRadius,
   editorName,
+  rotationRadians,
   textScalingFactor,
   labelLineIntensity,
   circularViewWidthVsHeightRatio, //width of the circular view
@@ -27,8 +28,13 @@ function Labels({
 
   let fontHeight = fontWidth * 2.4;
   let labelPoints = labels
-    .map(function(label) {
-      let { annotationCenterAngle, annotationCenterRadius } = label;
+    .map(function (label) {
+      let {
+        annotationCenterAngle: _annotationCenterAngle,
+        annotationCenterRadius
+      } = label;
+      const annotationCenterAngle =
+        _annotationCenterAngle + (rotationRadians || 0);
       return {
         ...label,
         width: (label.text || "Unlabeled").length * fontWidth,
@@ -59,7 +65,7 @@ function Labels({
         angle: annotationCenterAngle
       };
     })
-    .map(function(label) {
+    .map(function (label) {
       label.labelAndSublabels = [label];
       label.labelIds = { [label.id]: true };
       return label;
@@ -68,7 +74,7 @@ function Labels({
     labelPoints,
     fontHeight,
     outerRadius
-  ).filter(l => !!l);
+  ).filter((l) => !!l);
   // let groupedLabels = relaxLabelAngles(
   //   labelPoints,
   //   fontHeight,
@@ -111,7 +117,7 @@ function Labels({
 }
 export default Labels;
 
-const DrawLabelGroup = withHover(function({
+const DrawLabelGroup = withHover(function ({
   hovered,
   className,
   label,
@@ -142,7 +148,7 @@ const DrawLabelGroup = withHover(function({
   }
 
   let labelLength = text.length * fontWidth;
-  let maxLabelLength = labelAndSublabels.reduce(function(
+  let maxLabelLength = labelAndSublabels.reduce(function (
     currentLength,
     { text = "Unlabeled" }
   ) {
@@ -188,7 +194,7 @@ const DrawLabelGroup = withHover(function({
     if (groupLabelXStart !== undefined) {
       labelXStart = groupLabelXStart;
     }
-    labelAndSublabels.some(function(label) {
+    labelAndSublabels.some(function (label) {
       if (label.id === hoveredId) {
         hoveredLabel = label;
         return true;
@@ -247,7 +253,7 @@ const DrawLabelGroup = withHover(function({
               fontStyle: label.fontStyle
             }}
           >
-            {labelAndSublabels.map(function(label, index) {
+            {labelAndSublabels.map(function (label, index) {
               return (
                 <DrawGroupInnerLabel
                   isSubLabel
@@ -321,7 +327,7 @@ const DrawLabelGroup = withHover(function({
 
 function LabelLine(pointArray, options) {
   let points = "";
-  pointArray.forEach(function({ x, y }) {
+  pointArray.forEach(function ({ x, y }) {
     if (!x && x !== 0) return;
     points += `${x},${y} `;
   });
@@ -392,7 +398,7 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   editorName,
   labelLineIntensity
 }) {
-  return groupedLabels.map(function(label) {
+  return groupedLabels.map(function (label) {
     let { labelAndSublabels, labelIds } = label;
     let multipleLabels = labelAndSublabels.length > 1;
     return (
