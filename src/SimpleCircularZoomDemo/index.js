@@ -1,6 +1,8 @@
 import React from "react";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import exampleSequenceData from "../../demo/src/exampleData/exampleSequenceData";
+import CircularViewWithZoom from "../CircularView/CircularViewWithZoom";
+
 // import drawDirectedPiePiece from "../CircularView/drawDirectedPiePiece";
 // import PositionAnnotationOnCircle from "../CircularView/PositionAnnotationOnCircle";
 
@@ -21,20 +23,20 @@ export default class SimpleCircZoom extends React.Component {
         hello werld
         <h1>yooooo</h1>
         <UncontrolledSliderWithPlusMinusBtns
-          onChange={val => {
+          onChange={(val) => {
             // console.log(`val:`, val);
             this.setState({
               svgWidth: val
             });
           }}
-          onRelease={val => {
+          onRelease={(val) => {
             // console.log(`val:`, val);
             this.setState({
               svgWidth: val
             });
           }}
           title="Adjust Zoom Level"
-          style={{ paddingTop: "4px", width: 100 }}
+          style={{ paddingTop: "4px", width: 120 }}
           className="alignment-zoom-slider"
           labelRenderer={false}
           stepSize={1}

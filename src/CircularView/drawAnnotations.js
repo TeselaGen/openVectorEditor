@@ -11,7 +11,6 @@ import Feature from "./Feature";
 
 //annotations coming ine can be positioned either by caretPosition or range
 function drawAnnotations({
-  // Annotation,
   annotationType,
   radius,
   isProtein,
@@ -29,9 +28,11 @@ function drawAnnotations({
   onRightClicked = noop,
   onDoubleClick = noop,
   showLabels,
+  title,
   labelOptions,
   annotationProps,
-  fontStyle
+  fontStyle,
+  ...restTop
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -149,7 +150,8 @@ function drawAnnotations({
         ...rest
       };
 
-      const titleText = getAnnotationNameAndStartStopString(annotation);
+      const titleText =
+        title || getAnnotationNameAndStartStopString(annotation);
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
@@ -184,6 +186,7 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            ...restTop,
             ...rest,
             ...annotation,
             annotationHeight,

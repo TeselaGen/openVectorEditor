@@ -1,6 +1,6 @@
-import isNumber from "lodash/isNumber";
-import { getRangeAngles } from "ve-range-utils";
-import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
+// import isNumber from "lodash/isNumber";
+// import { getRangeAngles } from "ve-range-utils";
+// import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 import pureNoFunc from "../utils/pureNoFunc";
@@ -12,25 +12,25 @@ function Caret({
   className,
   onClick,
   isSelection,
-  innerRadius,
-  outerRadius,
+  radius,
+  annotationHeight,
   isProtein,
   selectionMessage
 }) {
-  let { startAngle, endAngle } = getRangeAngles(
-    { start: caretPosition, end: caretPosition },
-    sequenceLength || 1
-  );
-  if (!isNumber(startAngle)) {
-    console.error("we've got a problem!");
-  }
+  // let { startAngle, endAngle } = getRangeAngles(
+  //   { start: caretPosition, end: caretPosition },
+  //   sequenceLength || 1
+  // );
+  // if (!isNumber(startAngle)) {
+  //   console.error("we've got a problem!");
+  // }
   return (
     <g
-      {...PositionAnnotationOnCircle({
-        sAngle: startAngle,
-        eAngle: endAngle,
-        height: 0,
-      })}
+      // {...PositionAnnotationOnCircle({
+      //   sAngle: startAngle,
+      //   eAngle: endAngle,
+      //   height: 0,
+      // })}
       onClick={onClick}
       className={className + " veCaret " + draggableClassnames.caret}
     >
@@ -41,17 +41,18 @@ function Caret({
       <line
         strokeWidth="1.5px"
         x1={0}
-        y1={-innerRadius}
+        y1={-radius}
         x2={0}
-        y2={-outerRadius}
+        y2={-(radius + annotationHeight)}
         // stroke="black"
       />
       {isSelection ? (
         <polygon
           className="vePolygonCaretHandle"
           fill="black"
-          points={`0,${-outerRadius + 2} 5,${-outerRadius -
-            10} -5,${-outerRadius - 10}`}
+          points={`0,${-(radius + annotationHeight) + 2} 5,${
+            -(radius + annotationHeight) - 10
+          } -5,${-(radius + annotationHeight) - 10}`}
         />
       ) : null}
     </g>

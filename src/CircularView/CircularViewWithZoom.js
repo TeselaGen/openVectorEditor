@@ -19,6 +19,8 @@ import { pareDownAnnotations } from "../utils/editorUtils";
 import VeWarning from "../helperComponents/VeWarning";
 import Draggable from "react-draggable";
 import draggableClassnames from "../constants/draggableClassnames";
+// import Labels from "./Labels";
+import Caret from "./Caret";
 
 const BASE_RADIUS = 70;
 const sharedAnnotationProps = {
@@ -104,7 +106,9 @@ class CircularViewWithZoom extends React.Component {
       additionalSelectionLayers = [],
       annotationHeight = 15,
       spaceBetweenAnnotations = 2,
+      caretPosition,
       isProtein
+      // labelLineIntensity
     } = this.props;
     const percentOfCircle = 1 / this.state.zoomLevel;
     const sequenceLength = sequenceData.sequence.length;
@@ -112,6 +116,28 @@ class CircularViewWithZoom extends React.Component {
     const svgHeight = Math.max(Number(height) || 300);
     // if (percentOfCircle === 1) {
     //   return "normal"
+    // }
+    // function drawCaret() {
+    //   //DRAW CARET
+    //   if (
+    //     caretPosition !== -1 &&
+    //     selectionLayer.start < 0 &&
+    //     sequenceLength >= 0
+    //   ) {
+    //     //only render if there is no selection layer
+    //     return (
+    //       <Caret
+    //         {...{
+    //           caretPosition,
+    //           sequenceLength,
+    //           isProtein,
+    //           innerRadius,
+    //           outerRadius: radius,
+    //           key: "veCircularViewCaret"
+    //         }}
+    //       />
+    //     );
+    //   }
     // }
 
     // const numBpsToShow = Math.ceil(sequenceLength / this.state.zoomLevel);
@@ -167,18 +193,21 @@ class CircularViewWithZoom extends React.Component {
           isProtein
         }).map((pos) => {
           return {
+            name: "Tick Mark",
             tickPosition: pos,
             start: pos,
             end: pos
           };
         }),
         annotationProps: {
-          hideNumbers: !annotationVisibility.axisNumbers
+          hideNumbers: !annotationVisibility.axisNumbers,
+          arrowheadLength: 0
         },
         Annotation: AxisNumbers,
         passAnnotation: true,
         allOnSameLevel: true,
         addHeight: true,
+        onlyShow: true,
         showLabels: false,
         spaceBefore: annotationVisibility.axisNumbers ? 0 : -10,
         spaceAfter: -5,
@@ -186,14 +215,16 @@ class CircularViewWithZoom extends React.Component {
       },
       {
         annotationType: "axis",
-        annotations: [rangeToShow],
+        annotations: [{ ...rangeToShow, name: "Axis" }],
         annotationProps: {
           color: "white",
           stroke: "black",
           arrowheadLength: 0
         },
+
         annotationHeight: 5,
         spaceAfter: 10,
+        onlyShow: true,
         showLabels: false,
         show: annotationVisibility.axis
       },
@@ -201,6 +232,7 @@ class CircularViewWithZoom extends React.Component {
         annotationType: "selectionLayer",
         annotationProps: {
           color: "blue",
+          opacity: 0.4,
           stroke: "black",
           arrowheadLength: 0
         },
@@ -209,6 +241,7 @@ class CircularViewWithZoom extends React.Component {
             initialRadius + (radius - initialRadius) / 2 - annotationHeight / 2,
           annotationHeight: radius - initialRadius
         }),
+        onlyShow: true,
         annotations: [
           ...additionalSelectionLayers,
           ...searchLayers,
@@ -220,11 +253,26 @@ class CircularViewWithZoom extends React.Component {
         noHeight: true
       },
       {
+        layerName: "caret",
+        drawProps: ({ radius }) => ({
+          radius: initialRadius - annotationHeight / 2,
+          annotationHeight: radius - initialRadius
+        }),
+        zIndex: 15,
+        alwaysShow: true,
+        onlyShow: true,
+        allOnSameLevel: true,
+        annotations:
+          caretPosition > -1
+            ? [{ start: caretPosition, end: caretPosition }]
+            : [],
+        Annotation: Caret
+      },
+
+      {
         annotationType: "cutsite",
         annotationProps: {
-          // color: "white",
-          stroke: "black",
-          arrowheadLength: 0
+          stroke: "black"
         },
         addHeight: true,
         Annotation: Cutsites,
@@ -255,6 +303,16 @@ class CircularViewWithZoom extends React.Component {
         ...sharedAnnotationProps,
         spaceBefore: 10
       }))
+      // {
+      //   zIndex: 30,
+      //   alwaysShow: true,
+      //   layerName: "labels",
+      //   Comp: Labels,
+      //   circularViewWidthVsHeightRatio: width / height,
+      //   passLabels: true,
+      //   labelLineIntensity: labelLineIntensity,
+      //   textScalingFactor: 700 / Math.min(width, height)
+      // }
     ].map(
       ({
         spaceAfter = 0,
@@ -263,10 +321,14 @@ class CircularViewWithZoom extends React.Component {
         alwaysShow,
         noHeight,
         isAnnotation,
+        onlyShow,
+        Comp,
+        Annotation,
         spaceBefore = 0,
         ...layer
       }) => {
-        const layerNamePlural = pluralize(layer.annotationType);
+        // if (!onlyShow) return null;
+        const layerNamePlural = pluralize(layer.annotationType || "");
         if (annotationVisibility[layerNamePlural] === false) {
           return null;
         }
@@ -303,12 +365,13 @@ class CircularViewWithZoom extends React.Component {
           );
         }
         radius += spaceBefore;
-        const returnVal = drawAnnotations({
-          // const returnVal = this.memoedDrawAnnotations({
+
+        const sharedProps = {
           annotationProps: {
             ...layer.annotationProps,
             isProtein
           },
+          Annotation,
           rotation,
           radius,
           annotations: trimmedAndParedAnns,
@@ -319,9 +382,18 @@ class CircularViewWithZoom extends React.Component {
           onRightClicked: this.props[layer.annotationType + "RightClicked"],
           editorName,
           arrowheadLength: 10,
+          caretPosition,
+          innerRadius: BASE_RADIUS,
+          outerRadius: radius,
           ...(drawProps && drawProps({ radius })),
           ...layer
-        });
+        };
+        // const returnVal = Comp ? (
+        //   <Comp {...sharedProps}></Comp>
+        // ) : (
+        //   );
+        // const { component, height, labels } = Comp ? {component: returnVal} : returnVal;
+        const returnVal = drawAnnotations(sharedProps);
         if (!returnVal) return null;
         const { component, height, labels } = returnVal;
         radius += noHeight ? 0 : height;
@@ -414,7 +486,7 @@ class CircularViewWithZoom extends React.Component {
               });
             }}
             title="Adjust Zoom Level"
-            style={{ paddingTop: "4px", width: 100 }}
+            style={{ paddingTop: "4px", width: 120 }}
             className="alignment-zoom-slider"
             labelRenderer={false}
             stepSize={1}
@@ -436,7 +508,7 @@ class CircularViewWithZoom extends React.Component {
             leftIcon="arrow-left"
             rightIcon="arrow-right"
             title="Rotate"
-            style={{ paddingTop: "4px", width: 100 }}
+            style={{ paddingTop: "4px", width: 120 }}
             className="alignment-zoom-slider"
             labelRenderer={false}
             stepSize={3}
@@ -483,6 +555,7 @@ function AxisNumbers({
     </g>
   );
 }
+
 function Cutsites() {
   return <rect width={2} height={10} fill="black"></rect>;
 }

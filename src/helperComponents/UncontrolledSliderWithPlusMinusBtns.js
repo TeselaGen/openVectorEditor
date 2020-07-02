@@ -18,7 +18,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
 
   render() {
     const { value } = this.state;
-    const { title, initialValue,label, style, ...rest } = this.props;
+    const { title, initialValue, label, style, ...rest } = this.props;
 
     const stepSize =
       this.props.stepSize || (this.props.max - this.props.min) / 10;
@@ -45,13 +45,13 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             });
             (this.props.onChange || this.props.onRelease)(newVal);
           }}
-          style={{ cursor: "pointer", marginRight: 5 }}
+          style={{ cursor: "pointer", marginRight: 10 }}
           intent={Intent.PRIMARY}
           icon={this.props.leftIcon || "minus"}
         />
         <Slider
           {...{ ...rest, value }}
-          onChange={value => {
+          onChange={(value) => {
             this.setState({ value });
             this.props.onChange && this.props.onChange(value);
           }}
@@ -67,7 +67,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             });
             (this.props.onChange || this.props.onRelease)(newVal);
           }}
-          style={{ cursor: "pointer", marginLeft: 5 }}
+          style={{ cursor: "pointer", marginLeft: 10 }}
           intent={Intent.PRIMARY}
           icon={this.props.rightIcon || "plus"}
         />
@@ -75,4 +75,3 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     );
   }
 }
-
