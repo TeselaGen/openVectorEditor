@@ -38,7 +38,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
           onClick={() => {
             let newVal = this.state.value - stepSize;
             if (newVal < this.props.min) {
-              newVal = this.props.max + stepSize;
+              newVal = this.props.max - stepSize;
             }
             this.setState({
               value: newVal
