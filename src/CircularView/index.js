@@ -71,15 +71,15 @@ export class CircularView extends React.Component {
       )
     });
   }
+  state = {};
 
   render() {
     let {
       //set defaults for all of these vars
       width = 400,
       height = 400,
-      scale = 1,
       sequenceData = {},
-      hideName = false,
+      // hideName = false,
       editorName,
       selectionLayer = { start: -1, end: -1 },
       annotationHeight = 15,
@@ -102,9 +102,9 @@ export class CircularView extends React.Component {
       instantiated,
       labelLineIntensity
     } = this.props;
-    let { sequence = "atgc", circular } = sequenceData;
+    let { sequence = "atgc" /* circular */ } = sequenceData;
     let sequenceLength = sequence.length;
-    let sequenceName = hideName ? "" : sequenceData.name || "";
+    // let sequenceName = hideName ? "" : sequenceData.name || "";
     circularAndLinearTickSpacing =
       circularAndLinearTickSpacing ||
       (sequenceLength < 10
@@ -113,7 +113,10 @@ export class CircularView extends React.Component {
         ? Math.ceil(sequenceLength / 5)
         : Math.ceil(sequenceLength / 100) * 10);
 
-    const baseRadius = 80;
+    const zoomLevel = this.state.zoomLevel || this.props.zoomLevel;
+    const rotationDegrees =
+      this.state.rotationDegrees || this.props.rotationDegrees || 0;
+    const baseRadius = 80 * zoomLevel;
     let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
     let radius = baseRadius;
     let annotationsSvgs = [];
@@ -262,6 +265,9 @@ export class CircularView extends React.Component {
         radius += spaceBefore;
         const sharedProps = {
           radius,
+          zoomLevel,
+          rotationDegrees,
+          rotation: rotationDegrees * 0.0174533, //get radians
           isProtein,
           onClick: this.props[singularName + "Clicked"],
           onDoubleClick: this.props[singularName + "DoubleClicked"],
@@ -444,30 +450,6 @@ export class CircularView extends React.Component {
           onStop={editorDragStopped}
         >
           <div>
-            {!hideName && (
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none"
-                }}
-              >
-                <div
-                  key="circViewSvgCenterText"
-                  className="veCircularViewMiddleOfVectorText"
-                  style={{ width: innerRadius, textAlign: "center" }}
-                >
-                  <span>{sequenceName} </span>
-                  <br />
-                  <span style={{ fontSize: 10 }}>
-                    {isProtein
-                      ? `${Math.floor(sequenceLength / 3)} AAs`
-                      : `${sequenceLength} bps`}
-                  </span>
-                </div>
-              </div>
-            )}
             <svg
               key="circViewSvg"
               onClick={(event) => {
@@ -485,29 +467,22 @@ export class CircularView extends React.Component {
                   backgroundRightClicked
                 );
               }}
-              style={{ overflow: "visible", display: "block" }}
+              style={{
+                overflow: zoomLevel !== 1 ? "hidden" : "visible",
+                display: "block"
+              }}
               width={widthToUse}
               height={heightToUse}
               ref="circularView"
               className="circularViewSvg"
-              viewBox={`-${radius * scale} -${radius * scale} ${
-                radius * 2 * scale
-              } ${radius * 2 * scale}`}
+              viewBox={`-${radius / zoomLevel} -${
+                zoomLevel === 1 ? radius : radius - radius / zoomLevel
+              } ${(radius / zoomLevel) * 2} ${(radius / zoomLevel) * 2}`}
             >
-              {annotationsSvgs}
+              <g transform={`rotate(${-this.state.rotationDegrees || 0})`}>
+                {annotationsSvgs}
+              </g>
             </svg>
-            <div className="veCircularViewWarningContainer">
-              {!circular && (
-                <VeWarning
-                  data-test="ve-warning-circular-to-linear"
-                  intent="warning"
-                  tooltip={
-                    "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
-                  }
-                />
-              )}
-              {paredDownMessages}
-            </div>
           </div>
         </Draggable>
       </div>

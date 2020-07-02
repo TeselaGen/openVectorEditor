@@ -33,7 +33,8 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 import { flatMap, map, filter, pick, camelCase } from "lodash";
 
 import ToolBar from "../ToolBar";
-import CircularView from "../CircularView";
+// import CircularView from "../CircularView";
+import CircularView from "../CircularView/CircularViewWithZoom";
 import LinearView from "../LinearView";
 import RowView from "../RowView";
 import StatusBar from "../StatusBar";
@@ -155,7 +156,7 @@ export class Editor extends React.Component {
     this.setState({ tabDragging: true });
   };
 
-  onTabDragEnd = result => {
+  onTabDragEnd = (result) => {
     this.setState({ tabDragging: false });
     const { panelsShownUpdate, panelsShown } = this.props;
     // dropped outside the list
@@ -179,7 +180,7 @@ export class Editor extends React.Component {
           ) {
             //we're adding to this group
             return insertItem(
-              panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
+              panelGroup.map((tabPanel) => ({ ...tabPanel, active: false })),
               { ...panelToMove, active: true },
               result.destination.index
             );
@@ -223,7 +224,7 @@ export class Editor extends React.Component {
         return panelGroup;
       });
     }
-    filter(newPanelsShown, panelGroup => {
+    filter(newPanelsShown, (panelGroup) => {
       return panelGroup.length;
     });
     panelsShownUpdate(newPanelsShown);
@@ -234,7 +235,7 @@ export class Editor extends React.Component {
     return map(panelsShown);
   };
 
-  onPreviewModeButtonContextMenu = e => {
+  onPreviewModeButtonContextMenu = (e) => {
     const { previewModeButtonMenu } = this.props;
     e.preventDefault();
     if (previewModeButtonMenu) {
@@ -418,7 +419,7 @@ export class Editor extends React.Component {
 
     const panelsToShow = this.getPanelsToShow();
     this.hasFullscreenPanel = false;
-    map(panelsToShow, panelGroup => {
+    map(panelsToShow, (panelGroup) => {
       panelGroup.forEach(({ fullScreen }) => {
         if (fullScreen) this.hasFullscreenPanel = true;
       });
@@ -433,7 +434,7 @@ export class Editor extends React.Component {
       let activePanelType;
       let isFullScreen;
       let panelPropsToSpread = {};
-      panelGroup.forEach(panelProps => {
+      panelGroup.forEach((panelProps) => {
         const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
@@ -574,7 +575,7 @@ export class Editor extends React.Component {
                             }}
                           >
                             <div
-                              onContextMenu={e => {
+                              onContextMenu={(e) => {
                                 showTabRightClickContextMenu(e, id);
                               }}
                               ref={provided.innerRef}

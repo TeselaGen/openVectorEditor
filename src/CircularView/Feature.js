@@ -6,8 +6,10 @@ export default function Feature({
   color = "orange",
   radius,
   containsLocations,
-  arrowheadLength = 0.5,
+  arrowheadLength,
   annotationHeight,
+  strokeColor,
+  tailThickness = 1,
   totalAngle,
   ...rest
 }) {
@@ -43,9 +45,19 @@ export default function Feature({
       {...cleanedRest}
       className="veFeature veCircularViewFeature"
       strokeWidth=".5"
-      stroke="black"
+      stroke={strokeColor || "black"}
       fill={color}
-      d={path.print()}
+      d={drawDirectedPiePiece({
+        radius,
+        annotationHeight: containsLocations
+          ? annotationHeight / 8
+          : annotationHeight,
+        totalAngle,
+        arrowheadLength:
+          arrowheadLength !== undefined ? arrowheadLength : 80 / radius,
+        tailThickness
+      }).print()}
+      {...rest}
     />
   );
 }

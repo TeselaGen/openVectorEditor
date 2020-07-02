@@ -12,16 +12,16 @@ function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
   let cutsitesByName = getCutsitesFromSequence(
     sequence,
     circular,
-    Object.keys(enzymeList).map(function(enzymeName) {
+    Object.keys(enzymeList).map(function (enzymeName) {
       return enzymeList[enzymeName];
     })
   );
   //tag each cutsite with a unique id
   let cutsitesById = {};
 
-  Object.keys(cutsitesByName).forEach(function(enzymeName) {
+  Object.keys(cutsitesByName).forEach(function (enzymeName) {
     let cutsitesForEnzyme = cutsitesByName[enzymeName];
-    cutsitesForEnzyme.forEach(function(cutsite) {
+    cutsitesForEnzyme.forEach(function (cutsite) {
       const numberOfCuts = cutsitesByName[enzymeName].length;
       const uniqueId = bsonObjectid().str;
       cutsite.id = uniqueId;
@@ -45,7 +45,7 @@ function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
     });
   });
   // create an array of the cutsites
-  let cutsitesArray = flatmap(cutsitesByName, function(cutsitesForEnzyme) {
+  let cutsitesArray = flatmap(cutsitesByName, function (cutsitesForEnzyme) {
     return cutsitesForEnzyme;
   });
   return {
@@ -60,7 +60,7 @@ export default createSelector(
   circularSelector,
   restrictionEnzymesSelector,
   cutsiteLabelColorSelector,
-  function() {
+  function () {
     return cutsitesSelector(...arguments);
   }
 );

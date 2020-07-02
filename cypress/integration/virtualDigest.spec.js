@@ -1,4 +1,4 @@
-describe("virtualDigest", function() {
+describe("virtualDigest", function () {
   beforeEach(() => {
     cy.visit("#Editor");
   });
@@ -23,9 +23,7 @@ describe("virtualDigest", function() {
     cy.triggerFileCmd("Digest");
     cy.contains(".bp3-tab", "Digest Info").click();
     cy.contains(".rt-td", "AvrII").click();
-    cy.get(".veSelectionLayer")
-      .first()
-      .rightclick();
+    cy.get(".veSelectionLayer").first().rightclick();
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Feature").click();
 

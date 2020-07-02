@@ -16,6 +16,9 @@ module.exports = {
       // "ve-sequence-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-sequence-utils/src/"),
+      // "react-table":
+      //   console.log("comment me back out!") ||
+      //   path.resolve("../react-table/src/"),
       // "bio-parsers":
       //   console.log("comment me back out!") ||
       //   path.resolve("../ve-sequence-parsers/src/parsers/"),
@@ -24,6 +27,7 @@ module.exports = {
       //   path.resolve("../teselagen-react-components/src/"),
       //don't comment this out!
       react: path.resolve(__dirname, "node_modules/react")
+      
     },
     extra: {
       devtool: "source-map"

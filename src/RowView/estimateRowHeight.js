@@ -23,7 +23,7 @@ export const rowHeights = {
 
 rowHeights.primaryProteinSequence = rowHeights.translations;
 
-Object.keys(rowHeights).forEach(k => {
+Object.keys(rowHeights).forEach((k) => {
   rowHeights[k].type = k;
   rowHeights[k].marginTop = rowHeights[k].marginTop || 0;
   rowHeights[k].marginBottom = rowHeights[k].marginBottom || 0;
@@ -31,7 +31,7 @@ Object.keys(rowHeights).forEach(k => {
     rowHeights[k].spaceBetweenAnnotations || 0;
 });
 const translations = {
-  getHeight: props => {
+  getHeight: (props) => {
     if (props.annotationVisibility.aminoAcidNumbers) {
       return [rowHeights.aminoAcidNumbers.type, rowHeights.translations.type];
     }
@@ -83,7 +83,7 @@ const annotationsToCompute = {
   }
 };
 
-export default props => {
+export default (props) => {
   let {
     index,
     cache,
@@ -105,40 +105,44 @@ export default props => {
   if (showJumpButtons && (index === 0 || index === rowCount - 1)) {
     totalHeight += rowHeights.rowJumpButtons.height;
   }
-  forEach(annotationsToCompute, (
-    { height: _height, alwaysVisible, getHeight, hasYOffset, typeOverride },
-    key
-    // i
-  ) => {
-    const heightKeys = getHeight ? getHeight(props) : _height;
-    const [annotationHeight, marginHeight] = getSummedHeights(
-      heightKeys,
-      props
-    );
+  forEach(
+    annotationsToCompute,
+    (
+      { height: _height, alwaysVisible, getHeight, hasYOffset, typeOverride },
+      key
+      // i
+    ) => {
+      const heightKeys = getHeight ? getHeight(props) : _height;
+      const [annotationHeight, marginHeight] = getSummedHeights(
+        heightKeys,
+        props
+      );
 
-    const shouldShow =
-      alwaysVisible || annotationVisibility[typeOverride || key];
+      const shouldShow =
+        alwaysVisible || annotationVisibility[typeOverride || key];
 
-    if (!shouldShow) return;
-    let heightToAdd = annotationHeight;
-    if (hasYOffset) {
-      const annotations = row[typeOverride || key];
+      if (!shouldShow) return;
+      let heightToAdd = annotationHeight;
       if (hasYOffset) {
-        let maxYOffset = 0;
-        annotations &&
-          annotations.forEach(a => {
-            if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
-          });
-        heightToAdd = maxYOffset * annotationHeight;
+        const annotations = row[typeOverride || key];
+        if (hasYOffset) {
+          let maxYOffset = 0;
+          annotations &&
+            annotations.forEach((a) => {
+              if (a.yOffset + 1 > maxYOffset) maxYOffset = a.yOffset + 1;
+            });
+          heightToAdd = maxYOffset * annotationHeight;
+        }
       }
-    }
-    if (heightToAdd > 0) heightToAdd += marginHeight;
+      if (heightToAdd > 0) heightToAdd += marginHeight;
 
-    if (debug) {
-      heightToAdd !== 0 && console.info(`heightToAdd, key:`, heightToAdd, key);
+      if (debug) {
+        heightToAdd !== 0 &&
+          console.info(`heightToAdd, key:`, heightToAdd, key);
+      }
+      totalHeight += heightToAdd;
     }
-    totalHeight += heightToAdd;
-  });
+  );
   if (debug) {
     console.info(`totalHeight:`, totalHeight);
   }
@@ -163,7 +167,7 @@ function getHeights(heightKey, props) {
 function getSummedHeights(heightKeys, props) {
   let height = 0;
   let marginHeight = 0;
-  (Array.isArray(heightKeys) ? heightKeys : [heightKeys]).forEach(k => {
+  (Array.isArray(heightKeys) ? heightKeys : [heightKeys]).forEach((k) => {
     const [h, m] = getHeights(k, props);
     height += h;
     marginHeight += m;

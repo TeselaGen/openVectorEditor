@@ -24,7 +24,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
             {
               path: "color",
               type: "string",
-              render: color => {
+              render: (color) => {
                 return (
                   <div style={{ height: 20, width: 20, background: color }} />
                   // <ColorPickerPopover>
@@ -69,7 +69,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
         selectedAnnotationId
       } = this.props;
       const annotationPropertiesSelectedEntities = _annotationPropertiesSelectedEntities.filter(
-        a => annotations[a.id]
+        (a) => annotations[a.id]
       );
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
@@ -80,7 +80,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
         `showAddOrEdit${annotationTypeUpper}Dialog`
       ];
 
-      const annotationsToUse = map(annotations, annotation => {
+      const annotationsToUse = map(annotations, (annotation) => {
         return {
           ...annotation,
           ...(annotation.strand === undefined && {

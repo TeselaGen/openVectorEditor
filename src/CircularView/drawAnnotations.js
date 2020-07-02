@@ -9,8 +9,8 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import Feature from "./Feature";
 
+//annotations coming ine can be positioned either by caretPosition or range
 function drawAnnotations({
-  Annotation,
   annotationType,
   radius,
   isProtein,
@@ -18,8 +18,8 @@ function drawAnnotations({
   annotationHeight,
   spaceBetweenAnnotations,
   sequenceLength,
-  reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
-  editorName,
+  // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
+  // editorName,
   getColor,
   useStartAngle, //use the startAngle instead of the centerAngle to position the labels
   onClick = noop,
@@ -28,9 +28,11 @@ function drawAnnotations({
   onRightClicked = noop,
   onDoubleClick = noop,
   showLabels,
+  title,
   labelOptions,
   annotationProps,
-  fontStyle
+  fontStyle,
+  ...restTop
 }) {
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -148,7 +150,8 @@ function drawAnnotations({
         ...rest
       };
 
-      const titleText = getAnnotationNameAndStartStopString(annotation);
+      const titleText =
+        title || getAnnotationNameAndStartStopString(annotation);
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
@@ -175,7 +178,6 @@ function drawAnnotations({
           ...labelOptions
         };
       }
-
       let annotationColor = getColor
         ? getColor(annotation)
         : annotation.color || "purple";
@@ -184,25 +186,19 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            ...restTop,
+            ...rest,
+            ...annotation,
+            annotationHeight,
+            annotationRadius,
             isProtein,
             titleText,
-            editorName,
-            annotationType,
-            showLabels,
-            Annotation,
-            labelCenter: centerAngle,
-            startAngle,
-            endAngle,
-            locationAngles,
-            reverseAnnotations,
             onClick: _onClick,
             onDoubleClick: _onDoubleClick,
             onContextMenu,
             annotation,
-            totalAngle,
             annotationColor,
-            annotationRadius,
-            annotationHeight,
+            totalAngle,
             annotationProps: _annotationProps
           }}
           id={annotation.id}
@@ -245,7 +241,11 @@ const DrawAnnotation = withHover(function ({
   annotationHeight,
   onMouseLeave,
   onMouseOver,
-  annotationProps
+  annotationProps,
+  addHeight,
+  perAnnotationProps,
+  passAnnotation,
+  rotation
 }) {
   const sharedProps = {
     style: { cursor: "pointer" },
@@ -257,13 +257,21 @@ const DrawAnnotation = withHover(function ({
     onMouseOver
   };
   const title = <title>{titleText}</title>;
-  return (
-    <React.Fragment>
+  function getInner({ startAngle, endAngle, totalAngle, isNotLocation }, i) {
+    return (
       <g
+        key={
+          isNotLocation
+            ? "notLocation"
+            : "location--" + annotation.id + "--" + i
+        }
         {...PositionAnnotationOnCircle({
           sAngle: startAngle,
           eAngle: endAngle,
-          forward: reverseAnnotations ? !annotation.forward : annotation.forward
+          forward: reverseAnnotations
+            ? !annotation.forward
+            : annotation.forward,
+          height: addHeight ? annotationRadius : undefined
         })}
         {...sharedProps}
       >
@@ -271,39 +279,28 @@ const DrawAnnotation = withHover(function ({
         <Annotation
           {...(locationAngles &&
             locationAngles.length && { containsLocations: true })}
+          {...(passAnnotation && { annotation })}
           totalAngle={totalAngle}
-          color={annotationColor}
           isProtein={isProtein}
+          color={annotationColor}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
+          rotation={rotation}
           {...annotationProps}
+          {...(perAnnotationProps && perAnnotationProps(annotation))}
         />
       </g>
-      );
-      {locationAngles &&
-        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
-          return (
-            <g
-              key={"location--" + annotation.id + "--" + i}
-              {...PositionAnnotationOnCircle({
-                sAngle: startAngle,
-                eAngle: endAngle,
-                forward: reverseAnnotations
-                  ? !annotation.forward
-                  : annotation.forward
-              })}
-              {...sharedProps}
-            >
-              {title}
-              <Annotation
-                totalAngle={totalAngle}
-                color={annotationColor}
-                radius={annotationRadius}
-                annotationHeight={annotationHeight}
-              />
-            </g>
-          );
-        })}
+    );
+  }
+  return (
+    <React.Fragment>
+      {getInner({
+        startAngle,
+        endAngle,
+        totalAngle,
+        i: 0
+      })}
+      {locationAngles && locationAngles.map(getInner)}
     </React.Fragment>
   );
 });

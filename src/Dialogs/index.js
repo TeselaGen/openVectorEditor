@@ -33,7 +33,7 @@ export const dialogOverrides = [
 ];
 
 export default connect(
-  state => {
+  (state) => {
     return {
       addAdditionalEnzymesOpen:
         state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes.isOpen
@@ -42,7 +42,7 @@ export default connect(
   {
     addAdditionalEnzymesClose
   }
-)(props => {
+)((props) => {
   const {
     editorName,
     addAdditionalEnzymesOpen,

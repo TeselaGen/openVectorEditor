@@ -19,19 +19,19 @@ export const updateMatchNumber = createAction("updateMatchNumber");
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    [toggleFindTool]: state => {
+    [toggleFindTool]: (state) => {
       return {
         ...state,
         isOpen: !state.isOpen
       };
     },
-    [toggleHighlightAll]: state => {
+    [toggleHighlightAll]: (state) => {
       return {
         ...state,
         highlightAll: !state.highlightAll
       };
     },
-    [toggleIsInline]: state => {
+    [toggleIsInline]: (state) => {
       localStorage.setItem("veFindBarIsExpanded", state.isInline);
       return {
         ...state,

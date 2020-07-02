@@ -15,7 +15,7 @@ import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash";
 import { sizeSchema } from "../PropertiesDialog/utils";
-import { getRangeLength } from "ve-range-utils/lib";
+import { getRangeLength } from "ve-range-utils";
 
 const schema = {
   fields: [
@@ -73,7 +73,7 @@ export class RemoveDuplicatesDialog extends React.Component {
     const annotations = sequenceData[type];
     const dups = [];
     const seqsHashByStartEndStrandName = {};
-    forEach(annotations, a => {
+    forEach(annotations, (a) => {
       const hash = `${ignoreStartAndEnd ? "" : a.start}&${
         ignoreStartAndEnd ? "" : a.end
       }&${ignoreStrand ? "" : a.strand}&${ignoreName ? "" : a.name}`;
@@ -88,7 +88,7 @@ export class RemoveDuplicatesDialog extends React.Component {
   render() {
     const { duplicatesToRemoveSelectedEntities, hideModal, type } = this.props;
 
-    const selectedIds = this.state.dups.map(d => d.id);
+    const selectedIds = this.state.dups.map((d) => d.id);
     // const sequenceLength = sequenceData.sequence.length;
     // const isCirc = (this.state || {}).circular;
     return (
@@ -157,7 +157,7 @@ export class RemoveDuplicatesDialog extends React.Component {
             intent="primary"
             onClick={() => {
               this.props[camelCase(`delete_${type}`).slice(0, -1)](
-                duplicatesToRemoveSelectedEntities.map(d => d.id)
+                duplicatesToRemoveSelectedEntities.map((d) => d.id)
               );
               window.toastr.success(
                 `Successfully Deleted ${

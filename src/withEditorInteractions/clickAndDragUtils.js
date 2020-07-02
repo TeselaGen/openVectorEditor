@@ -16,7 +16,7 @@ let dragInProgress = false;
 let selectionStartGrabbed;
 let selectionEndGrabbed;
 let caretPositionOnDragStart;
-export const editorDragged = function({ nearestCaretPos }) {
+export const editorDragged = function ({ nearestCaretPos }) {
   const {
     caretPosition = -1,
     selectionLayer = { start: -1, end: -1 },
@@ -76,14 +76,14 @@ export const editorDragged = function({ nearestCaretPos }) {
   }
 };
 
-export const editorClicked = function({ nearestCaretPos, shiftHeld }) {
+export const editorClicked = function ({ nearestCaretPos, shiftHeld }) {
   if (!dragInProgress) {
     //we're not dragging the caret or selection handles
     this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
   }
 };
 
-export const editorDragStarted = function(opts) {
+export const editorDragStarted = function (opts) {
   document.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
   caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
@@ -104,11 +104,11 @@ export const editorDragStarted = function(opts) {
   // if (document.body)
   //   addClassName(document.body, "react-draggable-transparent-selection");
 };
-export const editorDragStopped = function() {
+export const editorDragStopped = function () {
   document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = false;
   caretPositionOnDragStart = null;
-  setTimeout(function() {
+  setTimeout(function () {
     dragInProgress = false;
   });
 

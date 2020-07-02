@@ -21,7 +21,7 @@ class Sequence extends React.Component {
         "isReverse",
         "scrollData",
         "showDnaColors"
-      ].some(key => props[key] !== newProps[key])
+      ].some((key) => props[key] !== newProps[key])
     )
       return true;
     if (!!props.alignmentData !== !!newProps.alignmentData) return true;
@@ -95,7 +95,7 @@ class Sequence extends React.Component {
             className="rowViewTextContainer"
             height={Math.max(0, Number(height))}
           >
-            {times(numChunks, i => {
+            {times(numChunks, (i) => {
               const seqChunk = getChunk(sequence, chunkSize, i);
 
               const textLength = charWidth * seqChunk.length - fudge;
@@ -189,7 +189,7 @@ class ColoredSequence extends React.Component {
     const { props } = this;
     if (
       ["charWidth", "sequence", "height", "isReverse", "width"].some(
-        key => props[key] !== newProps[key]
+        (key) => props[key] !== newProps[key]
       )
     )
       return true;
@@ -213,8 +213,9 @@ class ColoredSequence extends React.Component {
       const y = 0;
       colorPaths[getDnaColor(char, isReverse)] =
         (colorPaths[getDnaColor(char, isReverse)] || "") +
-        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${y +
-          height}`;
+        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
+          y + height
+        }`;
     });
     return (
       <g>

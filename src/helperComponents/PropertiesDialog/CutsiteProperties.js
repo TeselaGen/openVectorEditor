@@ -33,7 +33,7 @@ class CutsiteProperties extends React.Component {
       }
     });
   };
-  SubComponent = row => {
+  SubComponent = (row) => {
     // const { selectionLayerUpdate } = this.props;
     const { name, cutsiteGroup } = row.original;
     const entities = cutsiteGroup
@@ -205,7 +205,7 @@ class CutsiteProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor(editorState => {
+  connectToEditor((editorState) => {
     const cutsites = selectors.filteredCutsitesSelector(editorState);
     return {
       annotationVisibility: editorState.annotationVisibility || {},

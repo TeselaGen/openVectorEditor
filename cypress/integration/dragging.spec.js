@@ -13,19 +13,19 @@ describe("dragging", () => {
     cy.wait(100);
     cy.get(".veRowViewAxis path")
       .eq(1)
-      .then(el => {
+      .then((el) => {
         cy.get(".veRowViewAxis path")
           .eq(2)
-          .then(el2 => {
+          .then((el2) => {
             cy.dragBetweenSimple(el, el2);
           });
       });
     cy.wait(100);
 
-    cy.get(`[title="Caret Between Bases 19 and 20"]`).then(el => {
+    cy.get(`[title="Caret Between Bases 19 and 20"]`).then((el) => {
       cy.get(".veRowViewAxis path")
         .eq(5)
-        .then(el2 => {
+        .then((el2) => {
           cy.dragBetweenSimple(el, el2);
         });
     });
@@ -35,10 +35,10 @@ describe("dragging", () => {
 
     cy.get(".veRowViewAxis path")
       .eq(6)
-      .then(el => {
+      .then((el) => {
         cy.get(".veRowViewAxis path")
           .eq(7)
-          .then(el2 => {
+          .then((el2) => {
             cy.dragBetweenSimple(el, el2);
           });
       });

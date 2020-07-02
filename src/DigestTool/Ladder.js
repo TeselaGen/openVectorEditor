@@ -68,7 +68,7 @@ export default class Ladder extends React.Component {
     } = this.props;
     const { highlightedFragment } = this.state;
     let ladderInfo;
-    ladders.forEach(ladder => {
+    ladders.forEach((ladder) => {
       if (ladder.value === selectedLadder)
         ladderInfo = {
           ...ladder,
@@ -161,7 +161,7 @@ export default class Ladder extends React.Component {
                 <Lane
                   key={index}
                   {...{
-                    onMouseOver: fragment => {
+                    onMouseOver: (fragment) => {
                       this.setState({
                         highlightedFragment: fragment
                       });
@@ -223,7 +223,7 @@ function Lane({
             onClick={() => {
               fragment.onFragmentSelect();
             }}
-            onContextMenu={e => {
+            onContextMenu={(e) => {
               fragment.onFragmentSelect();
               digestLaneRightClicked(e);
             }}

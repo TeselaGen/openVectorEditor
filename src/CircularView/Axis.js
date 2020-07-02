@@ -8,6 +8,7 @@ import { divideBy3 } from "../utils/proteinUtils";
 function Axis({
   radius,
   sequenceLength,
+  rotation,
   showAxisNumbers,
   circularAndLinearTickSpacing,
   tickMarkHeight = 5,
@@ -16,11 +17,15 @@ function Axis({
   ringThickness = 4,
   isProtein
 }) {
+  // const percentToShow = zoomLevel/
+  // sequenceLength
+
+
   let height =
-    ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
-  const radiusToUse = showAxisNumbers
+    (ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0)) / zoomLevel; 
+  const radiusToUse = (showAxisNumbers
     ? radius + textOffset + tickMarkHeight
-    : radius;
+    : radius);
   let tickPositions = calculateTickMarkPositionsForGivenRange({
     range: {
       start: 0,
@@ -30,26 +35,29 @@ function Axis({
     sequenceLength,
     isProtein
   });
+
   let tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function(tickPosition, index) {
         let tickAngle = getAngleForPositionMidpoint(
           tickPosition,
           sequenceLength
         );
+
         return (
           <g
+            
             key={"axis" + index}
             {...PositionAnnotationOnCircle({
               sAngle: tickAngle,
               eAngle: tickAngle,
-              height: radiusToUse
+              height: radiusToUse,
             })}
           >
             <text
               transform={
-                (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
+                (shouldFlipText(tickAngle - rotation) ? "rotate(180)" : "") +
                 ` translate(0, ${
-                  shouldFlipText(tickAngle) ? -textOffset : textOffset
+                  shouldFlipText(tickAngle - rotation) ? -textOffset : textOffset
                 })`
               }
               style={{
@@ -60,7 +68,7 @@ function Axis({
             >
               {divideBy3(tickPosition + 1, isProtein) + ""}
             </text>
-            <rect width={tickMarkWidth} height={tickMarkHeight} />
+            <rect width={tickMarkWidth} height={tickMarkHeight } />
           </g>
         );
       })

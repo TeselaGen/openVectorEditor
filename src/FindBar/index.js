@@ -17,6 +17,7 @@ import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { featureColors } from "ve-sequence-utils";
+import { mod } from "../utils/editorUtils";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -59,7 +60,7 @@ export class FindBar extends React.Component {
         options={opts}
         name="dnaOrAA"
         value={dnaOrAA}
-        onChange={e => {
+        onChange={(e) => {
           updateDnaOrAA(e.target.value);
         }}
       />,
@@ -71,7 +72,7 @@ export class FindBar extends React.Component {
             { label: "Ambiguous", value: "AMBIGUOUS" }
           ]}
           value={ambiguousOrLiteral}
-          onChange={e => {
+          onChange={(e) => {
             updateAmbiguousOrLiteral(e.target.value);
           }}
         />
@@ -224,10 +225,10 @@ export class FindBar extends React.Component {
                 resize: "vertical",
                 ...(!isInline && { width: 350, minHeight: 70 })
               }}
-              inputRef={n => {
+              inputRef={(n) => {
                 if (n) this.inputEl = n;
               }}
-              onKeyDown={e => {
+              onKeyDown={(e) => {
                 e.persist();
                 if (e.metaKey && e.keyCode === 70) {
                   //cmd-f
@@ -245,7 +246,7 @@ export class FindBar extends React.Component {
                 }
               }}
               rightElement={rightEl}
-              onChange={e => {
+              onChange={(e) => {
                 return updateSearchText(e.target.value);
               }}
               value={searchText}
@@ -256,7 +257,7 @@ export class FindBar extends React.Component {
           minimal
           isOpen={
             annotationSearchMatches &&
-            annotationSearchMatches.filter(m => m.length).length
+            annotationSearchMatches.filter((m) => m.length).length
           }
           content={
             <AnnotationSearchMatchComp
@@ -300,10 +301,6 @@ const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
   FindBar
 );
 export default withEditorProps(wrapped);
-
-function mod(n, m) {
-  return ((n % m) + m) % m;
-}
 
 function AnnotationSearchMatchComp({
   annotationSearchMatches,
