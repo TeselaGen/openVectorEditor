@@ -28,7 +28,7 @@ import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
-import * as visibleFeatLengthRange from "./visibleFeatLengthRange";
+import * as featureLengthsToHide from "./featureLengthsToHide";
 
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
@@ -64,7 +64,7 @@ const subReducers = {
   uppercaseSequenceMapFont,
   externalLabels,
   labelLineIntensity,
-  visibleFeatLengthRange
+  featureLengthsToHide
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
