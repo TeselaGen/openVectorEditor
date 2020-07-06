@@ -84,6 +84,7 @@ export class CircularView extends React.Component {
       sequenceData = {},
       hideName = false,
       editorName,
+      withRotateCircularView,
       selectionLayer = { start: -1, end: -1 },
       annotationHeight = 15,
       spaceBetweenAnnotations = 2,
@@ -428,11 +429,13 @@ export class CircularView extends React.Component {
         // tabIndex="0"
         className="veCircularView"
       >
-        <RotateCircularView
-          setRotationRadians={(rotationRadians) => {
-            this.setState({ rotationRadians });
-          }}
-        ></RotateCircularView>
+        {withRotateCircularView && (
+          <RotateCircularView
+            setRotationRadians={(rotationRadians) => {
+              this.setState({ rotationRadians });
+            }}
+          ></RotateCircularView>
+        )}
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
