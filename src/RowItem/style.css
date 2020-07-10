@@ -44,3 +44,8 @@
   user-select: none;
 }  */
 /*# sourceMappingURL= style.css.map */
+
+.veRowViewPrimaryProteinSequenceContainer {
+  /* needs a z-index less than the selection layer so you can right click the selection above a sequence https://github.com/TeselaGen/openVectorEditor/issues/625 */
+  z-index: 1;
+}
