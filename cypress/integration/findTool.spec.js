@@ -1,4 +1,4 @@
-describe("find tool", function() {
+describe("find tool", function () {
   beforeEach(() => {
     cy.visit("");
   });
@@ -9,6 +9,8 @@ describe("find tool", function() {
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
     cy.contains(".ve-find-options-popover .bp3-switch", "Expanded").click();
     cy.get(".veFindBar textarea").should("have.value", "gataca");
+    cy.focused().type("{enter}"); //this should cause the next region to be selected
+    cy.contains("2/2");
   });
   it(`find parts/primers/features`, () => {
     cy.get(".ve-tool-container-featureTool").click();
@@ -47,9 +49,7 @@ describe("find tool", function() {
     cy.contains(".bp3-radio", "Positive")
       .find("input")
       .should("not.be.checked");
-    cy.contains(".bp3-radio", "Negative")
-      .find("input")
-      .should("be.checked");
+    cy.contains(".bp3-radio", "Negative").find("input").should("be.checked");
   });
   it(`clear search layers when closed and retain the previous search and be selected when re-opened`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
@@ -67,40 +67,30 @@ describe("find tool", function() {
   -it can find dna letters
   -it can toggle the find options and highlight all
   -and toggle finding Amino acids
-  `, function() {
+  `, function () {
     cy.clock();
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.tick(500);
     cy.get(".veFindBar").contains("0/0");
-    cy.get(".veFindBar")
-      .contains("1/1")
-      .should("not.exist");
+    cy.get(".veFindBar").contains("1/1").should("not.exist");
     cy.focused().type("gattac");
     cy.get(".veFindBar").contains("1/1");
     cy.focused().type("c");
     cy.get(".veFindBar").contains("0/0");
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
-    cy.get(".ve-find-options-popover")
-      .contains("Highlight All")
-      .click();
+    cy.get(".ve-find-options-popover").contains("Highlight All").click();
 
-    cy.get(".veFindBar input")
-      .clear()
-      .type("gat");
+    cy.get(".veFindBar input").clear().type("gat");
     cy.get(".selectionLayerCaret").should("have.length.greaterThan", 100);
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
     cy.get(`.ve-find-options-popover [type="checkbox"]`).should("be.checked");
     cy.get(`[name="dnaOrAA"]`).select("Amino Acids");
     cy.get(".veFindBar").contains("1/2");
-    cy.get(".veRowViewSelectionLayer")
-      .first()
-      .click({ force: true });
+    cy.get(".veRowViewSelectionLayer").first().click({ force: true });
     cy.contains("372 to 380");
 
     cy.get(`[data-test="veFindNextMatchButton"]`).click();
-    cy.get(".veRowViewSelectionLayer")
-      .first()
-      .click({ force: true });
+    cy.get(".veRowViewSelectionLayer").first().click({ force: true });
     cy.contains("3999 to 4007");
   });
 });
