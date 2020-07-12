@@ -2,6 +2,19 @@ describe("menuBar", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it("Should be able to filter features by length", () => {
+    cy.contains(".tg-menu-bar button", "View").click();
+    cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
+    cy.get("[data-test=filter-feature-length]").click("top");
+    cy.contains(".veLabelText", "pSC101**").should("not.exist");
+    cy.contains(".veLabelText", "araD").should("not.exist");
+    cy.contains(".veLabelText", "araC").should("not.exist");
+    cy.get('[data-test="max-feature-length"]').type("{selectall}900");
+    cy.contains(".veLabelText", "araD").should("exist");
+    cy.contains(".veLabelText", "araC").should("exist");
+    cy.get("[data-test=filter-feature-length]").click("top");
+    cy.contains(".veLabelText", "pSC101**").should("exist");
+  });
   it("Should be able to change circular/linear from the menu bar", () => {
     cy.contains(".tg-menu-bar button", "Edit").click();
     cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(

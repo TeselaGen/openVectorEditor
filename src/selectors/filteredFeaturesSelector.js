@@ -7,15 +7,15 @@ import featureLengthsToHideSelector from "./featureLengthsToHideSelector";
 function filteredFeaturesSelector(
   features,
   featureTypesToHide,
-  featureLengthsToHide
+  updateFeatureLengthsToHide
 ) {
   return omitBy(features, (feat) => {
     const featLength = feat.end - feat.start;
     const hideFeaturesByType = featureTypesToHide[feat.type];
     const hideFeaturesByLength =
-      featureLengthsToHide.enabled &&
-      (featLength < featureLengthsToHide.min ||
-        featLength > featureLengthsToHide.max);
+      updateFeatureLengthsToHide.enabled &&
+      (featLength < updateFeatureLengthsToHide.min ||
+        featLength > updateFeatureLengthsToHide.max);
     return hideFeaturesByLength || hideFeaturesByType;
   });
 }

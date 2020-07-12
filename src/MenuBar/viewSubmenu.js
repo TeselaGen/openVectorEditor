@@ -62,7 +62,23 @@ export default [
   //deprecating
   //{ cmd: "toggleFeatures", shouldDismissPopover: false },
   {
-    cmd: "featureTypesCmd"
+    cmd: "toggleFeatures",
+    onClick: () => {}, //override this click so that they have to hit the submenu
+    shouldDismissPopover: false,
+    submenu: [
+      {
+        cmd: "toggleFeatures",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "featureTypesCmd",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "filterFeatureLengthsCmd",
+        shouldDismissPopover: false
+      }
+    ]
   },
   {
     cmd: "toggleTranslations",
