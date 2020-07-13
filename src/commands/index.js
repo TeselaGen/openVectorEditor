@@ -146,11 +146,14 @@ const fileCommandDefs = {
                 let minimumFilterLength = parseInt(valueAsNumber, 10);
                 if (!(minimumFilterLength > -1)) return;
                 if (minimumFilterLength > props.sequenceLength) return;
-                props.updateFeatureLengthsToHide({ min: minimumFilterLength });
+                props.updateFeatureLengthsToHide({
+                  enabled: true,
+                  min: minimumFilterLength
+                });
               }}
               value={props.featureLengthsToHide.min}
               min={0}
-              max={props.featureLengthsToHide.max}
+              // max={props.featureLengthsToHide.max} //tnr: I think it is better to not bound the max
               fill={true}
               clampValueOnBlur={true}
               data-test="min-feature-length"
@@ -160,11 +163,14 @@ const fileCommandDefs = {
                 let maximumFilterLength = parseInt(valueAsNumber, 10);
                 if (!(maximumFilterLength > -1)) return;
                 if (maximumFilterLength > props.sequenceLength) return;
-                props.updateFeatureLengthsToHide({ max: maximumFilterLength });
+                props.updateFeatureLengthsToHide({
+                  enabled: true,
+                  max: maximumFilterLength
+                });
               }}
               value={props.featureLengthsToHide.max}
-              min={props.featureLengthsToHide.min}
-              max={props.sequenceLength}
+              min={0}
+              // max={props.sequenceLength} //tnr: I think it is better to not bound the max
               fill={true}
               clampValueOnBlur={true}
               data-test="max-feature-length"
