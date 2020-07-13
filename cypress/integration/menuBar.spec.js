@@ -81,16 +81,17 @@ describe("menuBar", function () {
 
   it(`should be able to filter by feature`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
-    cy.contains(".bp3-menu-item", "Feature Types")
+    cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Filter By Type")
       .contains("9/9")
       .trigger("mouseover");
     cy.contains(".veLabelText", "araD");
     cy.contains(".veLabelText", "araC");
     cy.contains(".bp3-menu-item", "misc_feature").click();
     cy.contains(".veLabelText", "araD").should("not.exist");
-    cy.contains(".bp3-menu-item", "Feature Types").contains("8/9");
+    cy.contains(".bp3-menu-item", "Filter By Type").contains("8/9");
     cy.contains(".bp3-menu-item", "Uncheck All").click();
-    cy.contains(".bp3-menu-item", "Feature Types").contains("0/9");
+    cy.contains(".bp3-menu-item", "Filter By Type").contains("0/9");
     cy.contains(".veLabelText", "araC").should("not.exist");
     cy.contains(".bp3-menu-item", "Check All").click({ force: true });
     cy.contains(".veLabelText", "araC").should("exist");

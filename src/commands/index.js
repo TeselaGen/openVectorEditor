@@ -17,7 +17,8 @@ import {
   startCase,
   get,
   filter,
-  camelCase
+  camelCase,
+  reduce
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
@@ -185,7 +186,29 @@ const fileCommandDefs = {
     }
   },
   featureTypesCmd: {
-    name: "Filter By Type",
+    name: (props) => {
+      const total = Object.keys(
+        reduce(
+          props.sequenceData.features,
+          (acc, feat) => {
+            acc[feat.type] = true;
+            return acc;
+          },
+          {}
+        )
+      ).length;
+      const toHideCount = Object.keys(
+        props.annotationVisibility.featureTypesToHide
+      ).length;
+      return (
+        <span>
+          Filter By Type &nbsp;
+          <Tag round style={{ marginLeft: 4 }}>
+            {total - toHideCount}/{total}
+          </Tag>
+        </span>
+      );
+    },
     submenu: (props) => {
       const types = {};
       forEach(props.sequenceData.features, (feat) => {
