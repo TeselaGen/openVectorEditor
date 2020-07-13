@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag, Classes } from "@blueprintjs/core";
+import { Tag, Classes, NumericInput } from "@blueprintjs/core";
 import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
@@ -14,7 +14,6 @@ import {
   upperFirst,
   map,
   forEach,
-  reduce,
   startCase,
   get,
   filter,
@@ -136,30 +135,51 @@ const fileCommandDefs = {
       });
     }
   },
-  featureTypesCmd: {
+  filterFeatureLengthsCmd: {
     name: (props) => {
-      const total = Object.keys(
-        reduce(
-          props.sequenceData.features,
-          (acc, feat) => {
-            acc[feat.type] = true;
-            return acc;
-          },
-          {}
-        )
-      ).length;
-      const toHideCount = Object.keys(
-        props.annotationVisibility.featureTypesToHide
-      ).length;
       return (
-        <span>
-          Feature Types &nbsp;
-          <Tag round style={{ marginLeft: 4 }}>
-            {total - toHideCount}/{total}
-          </Tag>
-        </span>
+        <div data-test="filter-feature-length">
+          Filter By Length
+          <div onClick={(e) => e.stopPropagation()}>
+            <NumericInput
+              onValueChange={function (valueAsNumber) {
+                let minimumFilterLength = parseInt(valueAsNumber, 10);
+                if (!(minimumFilterLength > -1)) return;
+                if (minimumFilterLength > props.sequenceLength) return;
+                props.updateFeatureLengthsToHide({ min: minimumFilterLength });
+              }}
+              value={props.featureLengthsToHide.min}
+              min={0}
+              max={props.featureLengthsToHide.max}
+              fill={true}
+              clampValueOnBlur={true}
+              data-test="min-feature-length"
+            />
+            <NumericInput
+              onValueChange={function (valueAsNumber) {
+                let maximumFilterLength = parseInt(valueAsNumber, 10);
+                if (!(maximumFilterLength > -1)) return;
+                if (maximumFilterLength > props.sequenceLength) return;
+                props.updateFeatureLengthsToHide({ max: maximumFilterLength });
+              }}
+              value={props.featureLengthsToHide.max}
+              min={props.featureLengthsToHide.min}
+              max={props.sequenceLength}
+              fill={true}
+              clampValueOnBlur={true}
+              data-test="max-feature-length"
+            />
+          </div>
+        </div>
       );
     },
+    isActive: (props) => props.featureLengthsToHide.enabled,
+    handler: (props) => {
+      props.toggleFeatureLengthsToHide();
+    }
+  },
+  featureTypesCmd: {
+    name: "Filter By Type",
     submenu: (props) => {
       const types = {};
       forEach(props.sequenceData.features, (feat) => {
@@ -214,7 +234,6 @@ const fileCommandDefs = {
     }
     // isDisabled:
   },
-
   exportSequenceAsGenbank: {
     name: (props) =>
       isProtein(props) ? "Download GenPept File" : "Download Genbank File",
