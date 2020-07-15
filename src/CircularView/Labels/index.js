@@ -11,6 +11,7 @@ function Labels({
   labels = [],
   radius: outerRadius,
   editorName,
+  noRedux,
   rotationRadians,
   textScalingFactor,
   labelLineIntensity,
@@ -97,6 +98,7 @@ function Labels({
         <DrawGroupedLabels
           {...{
             editorName,
+            noRedux,
             groupedLabels,
             circularViewWidthVsHeightRatio,
             fontWidth,
@@ -123,6 +125,7 @@ const DrawLabelGroup = withHover(function ({
   label,
   labelAndSublabels,
   fontWidth,
+  noRedux,
   fontHeight,
   outerRadius,
   onMouseLeave,
@@ -257,6 +260,7 @@ const DrawLabelGroup = withHover(function ({
               return (
                 <DrawGroupInnerLabel
                   isSubLabel
+                  noRedux={noRedux}
                   editorName={editorName}
                   logHover
                   key={"labelItem" + index}
@@ -392,6 +396,7 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   groupedLabels,
   circularViewWidthVsHeightRatio,
   fontWidth,
+  noRedux,
   fontHeight,
   condenseOverflowingXLabels,
   outerRadius,
@@ -407,6 +412,7 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
         id={labelIds}
         {...{
           label,
+          noRedux,
           passHoveredId: true, //needed to get the hoveredId
           isLabelGroup: true,
           className: "DrawLabelGroup",

@@ -52,6 +52,7 @@ export class RowItem extends React.PureComponent {
   const;
   render() {
     let {
+      noRedux,
       charWidth = 12,
       selectionLayer = { start: -1, end: -1 },
       deletionLayers = {},
@@ -162,6 +163,7 @@ export class RowItem extends React.PureComponent {
       };
     }
     let annotationCommonProps = {
+      noRedux,
       editorName,
       charWidth,
       bpsPerRow,

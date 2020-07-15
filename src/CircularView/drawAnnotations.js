@@ -28,6 +28,7 @@ function drawAnnotations({
   onRightClicked = noop,
   onDoubleClick = noop,
   showLabels,
+  noRedux,
   labelOptions,
   annotationProps,
   fontStyle
@@ -186,6 +187,7 @@ function drawAnnotations({
           {...{
             isProtein,
             titleText,
+            noRedux,
             editorName,
             annotationType,
             showLabels,

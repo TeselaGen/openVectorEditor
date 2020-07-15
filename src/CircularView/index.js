@@ -81,6 +81,7 @@ export class CircularView extends React.Component {
       width = 400,
       height = 400,
       scale = 1,
+      noRedux,
       sequenceData = {},
       hideName = false,
       editorName,
@@ -266,6 +267,7 @@ export class CircularView extends React.Component {
         radius += spaceBefore;
         const sharedProps = {
           radius,
+          noRedux,
           isProtein,
           onClick: this.props[singularName + "Clicked"],
           onDoubleClick: this.props[singularName + "DoubleClicked"],

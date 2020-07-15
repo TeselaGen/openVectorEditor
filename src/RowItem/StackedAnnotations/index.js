@@ -28,6 +28,7 @@ function StackedAnnotations(props) {
     onRightClick,
     editorName,
     type,
+    noRedux,
     alignmentType,
     getGaps,
     marginTop,
@@ -79,6 +80,7 @@ function StackedAnnotations(props) {
         left={result.xStart}
       >
         <InnerCompToUse
+          noRedux={noRedux}
           externalLabels={externalLabels}
           key={index}
           className={`${camelCase("veRowView-" + type)}`}
