@@ -1,7 +1,13 @@
-describe("editor", function() {
+describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
     cy.tgToggle("isProtein");
+  });
+  it(`annotations shouldn't have a strand field to edit and all annotations be 'forward'`, () => {
+    cy.contains(".veRowViewPart", "Part 0").rightclick();
+    cy.contains(".bp3-menu-item", "Edit Part").click();
+    cy.contains(".bp3-dialog", "Add Note"); //dialog should exist, but strand shouldn't
+    cy.contains(".bp3-dialog", "Strand").should("not.exist");
   });
   it(`should have non protein actions hidden from the menu search`, () => {
     cy.get("body").type("{meta}/");
@@ -14,9 +20,7 @@ describe("editor", function() {
     cy.contains("Length: 5299 bps").should("exist");
   });
   it(`feature/part add/edit should be AA indexed`, () => {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Feature").click();
     cy.focused().type("NF");
@@ -75,10 +79,7 @@ describe("editor", function() {
     cy.get(".sequenceInputBubble input").type("{enter}");
     cy.contains("Selecting 9 AAs from 1 to 9");
     cy.contains("Length: 1392 AAs");
-    cy.get(`[data-test="ve-find-tool-toggle"]`)
-      .click()
-      .focused()
-      .type(".*-ma");
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type(".*-ma");
 
     cy.get(`[title="Selecting 5 AAs from 1 to 5"]`).should("exist");
   });
@@ -100,12 +101,8 @@ describe("editor", function() {
     cy.get(".veRowViewSelectionLayer")
       .first()
       .trigger("contextmenu", { force: true });
-    cy.get(".bp3-menu-item")
-      .contains("Cut")
-      .click();
-    cy.get(".bp3-toast .bp3-icon-cross")
-      .first()
-      .click();
+    cy.get(".bp3-menu-item").contains("Cut").click();
+    cy.get(".bp3-toast .bp3-icon-cross").first().click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
       .focused()
@@ -116,22 +113,12 @@ describe("editor", function() {
     cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
   });
 
-  it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function() {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Select")
-      .click();
-    cy.get(`[label="From:"]`)
-      .clear()
-      .type("10");
-    cy.get(`[label="To:"]`)
-      .clear()
-      .type("20");
-    cy.get(".tg-min-width-dialog")
-      .contains("Select 11 AAs")
-      .click();
+  it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function () {
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Select").click();
+    cy.get(`[label="From:"]`).clear().type("10");
+    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(".tg-min-width-dialog").contains("Select 11 AAs").click();
     cy.get(".veStatusBarItem")
       .contains("Selecting 11 AAs from 10 to 20")
       .should("be.visible");
@@ -142,40 +129,18 @@ describe("editor", function() {
   -can go to a position inside the sequence 
   // -can rotate the sequence to that position
   `, () => {
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("Go To")
-      .click();
-    cy.focused()
-      .clear()
-      .type("0");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .should("be.enabled");
-    cy.focused()
-      .clear()
-      .type("1384");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .should("be.enabled");
-    cy.focused()
-      .clear()
-      .type("2000000");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .should("be.disabled");
-    cy.focused()
-      .clear()
-      .type("20");
-    cy.get(".bp3-dialog")
-      .contains("OK")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
+    cy.get(".tg-menu-bar-popover").contains("Go To").click();
+    cy.focused().clear().type("0");
+    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.focused().clear().type("1384");
+    cy.get(".bp3-dialog").contains("OK").should("be.enabled");
+    cy.focused().clear().type("2000000");
+    cy.get(".bp3-dialog").contains("OK").should("be.disabled");
+    cy.focused().clear().type("20");
+    cy.get(".bp3-dialog").contains("OK").click();
     cy.contains("Caret Between AAs 20 and 21");
-    cy.get(".tg-menu-bar")
-      .contains("Edit")
-      .click();
+    cy.get(".tg-menu-bar").contains("Edit").click();
     // cy.get(".tg-menu-bar-popover")
     //   .contains("Rotate To Caret Position")
     //   .click();
@@ -195,10 +160,7 @@ describe("editor", function() {
   -can find AA's by default in the search bar
   
   `, () => {
-    cy.get(`[data-test="ve-find-tool-toggle"]`)
-      .click()
-      .focused()
-      .type("mmh");
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type("mmh");
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
 
     cy.get(`[name="dnaOrAA"]`).select("DNA");
@@ -242,9 +204,7 @@ describe("editor", function() {
     cy.get(`[data-tab-id="orfs"]`).should("not.exist");
     cy.get(`[data-tab-id="cutsites"]`).should("not.exist");
     cy.get(`[data-tab-id="translations"]`).should("not.exist");
-    cy.get(".ve-propertiesPanel")
-      .contains("Circular")
-      .should("not.exist");
+    cy.get(".ve-propertiesPanel").contains("Circular").should("not.exist");
     cy.get(".ve-propertiesPanel").contains("1384");
     //features and parts are correctly indexed in the properties panel
     cy.get(`[data-tab-id="features"]`).click();
@@ -268,7 +228,7 @@ describe("editor", function() {
   -should not show options to update restriction enzymes or simulate digestion
   -not show options to view cutsites, orfs, translations, full sequence translations
   -be able to hide/show the underlying dna sequence
-  `, function() {
+  `, function () {
     cy.log("show the AA count");
     cy.contains("1384 AAs");
 
@@ -281,9 +241,7 @@ describe("editor", function() {
     cy.log(
       "should not show options to update restriction enzymes or simulate digestion"
     );
-    cy.get(".tg-menu-bar")
-      .contains("Tools")
-      .should("not.exist");
+    cy.get(".tg-menu-bar").contains("Tools").should("not.exist");
 
     //comment this in again once the tools menu exists again
     // cy.contains(".bp3-menu", "Restriction Enzymes Manager")
@@ -292,30 +250,16 @@ describe("editor", function() {
     //   .should("not.exist");
 
     cy.log("not show options to view cutsites, orfs, translations ");
-    cy.get(".tg-menu-bar")
-      .contains("View")
-      .click();
-    cy.get(".bp3-menu")
-      .contains("ORFs")
-      .should("not.exist");
-    cy.get(".bp3-menu")
-      .contains("Amino Acid Numbers")
-      .should("not.exist");
-    cy.get(".bp3-menu")
-      .contains("Translations")
-      .should("not.exist");
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".bp3-menu").contains("ORFs").should("not.exist");
+    cy.get(".bp3-menu").contains("Amino Acid Numbers").should("not.exist");
+    cy.get(".bp3-menu").contains("Translations").should("not.exist");
     cy.get(".bp3-menu")
       .contains("Full Sequence Translation")
       .should("not.exist");
-    cy.get(".bp3-menu")
-      .contains("Sequence Case")
-      .should("not.exist");
-    cy.get(".bp3-menu")
-      .contains("Cutsites")
-      .should("not.exist");
-    cy.get(".bp3-menu")
-      .contains("Cutsite Labels")
-      .should("not.exist");
+    cy.get(".bp3-menu").contains("Sequence Case").should("not.exist");
+    cy.get(".bp3-menu").contains("Cutsites").should("not.exist");
+    cy.get(".bp3-menu").contains("Cutsite Labels").should("not.exist");
     cy.log("be able to hide/show the underlying dna sequence");
     cy.get(`[cmd="toggleSequence"]`).click();
     cy.get(".ve-row-item-sequence").should("exist");

@@ -30,42 +30,42 @@ class AddOrEditAnnotationDialog extends React.Component {
       (this.props.initialValues && this.props.initialValues.notes) || {};
     this.notes = store(
       flatMap(initialNotes, (noteValues, noteType) => {
-        return map(noteValues, value => ({
+        return map(noteValues, (value) => ({
           key: noteType,
           value: value
         }));
       })
     );
   }
-  formatStart = val => {
+  formatStart = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return (val + 2) / 3;
     }
     return val;
   };
-  formatEnd = val => {
+  formatEnd = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val / 3;
     }
     return val;
   };
-  parseStart = val => {
+  parseStart = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3 - 2;
     }
     return val;
   };
-  parseEnd = val => {
+  parseEnd = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3;
     }
     return val;
   };
-  renderLocations = props => {
+  renderLocations = (props) => {
     const { fields } = props;
     const { sequenceData = { sequence: "" }, start, end } = this.props;
     const sequenceLength = sequenceData.sequence.length;
@@ -179,6 +179,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       locations,
       upsertAnnotation
     } = this.props;
+    const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
     return (
       <div
@@ -197,19 +198,21 @@ class AddOrEditAnnotationDialog extends React.Component {
           name="name"
           label="Name:"
         />
-        <RadioGroupField
-          inlineLabel
-          tooltipError
-          options={[
-            { label: "Positive", value: "true" },
-            { label: "Negative", value: "false" }
-          ]}
-          normalize={value => value === "true" || false}
-          format={value => (value ? "true" : "false")}
-          name="forward"
-          label="Strand:"
-          defaultValue={true}
-        />
+        {!isProtein && (
+          <RadioGroupField
+            inlineLabel
+            tooltipError
+            options={[
+              { label: "Positive", value: "true" },
+              { label: "Negative", value: "false" }
+            ]}
+            normalize={(value) => value === "true" || false}
+            format={(value) => (value ? "true" : "false")}
+            name="forward"
+            label="Strand:"
+            defaultValue={true}
+          />
+        )}
         {renderTypes || null}
         {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
@@ -247,7 +250,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         >
           <Button
             style={{ marginRight: 15 }}
-            onMouseDown={e => {
+            onMouseDown={(e) => {
               //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
               e.preventDefault();
               e.stopPropagation();
@@ -257,7 +260,7 @@ class AddOrEditAnnotationDialog extends React.Component {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit(data => {
+            onClick={handleSubmit((data) => {
               let updatedData;
               if (data.forward === true && data.strand !== 1) {
                 updatedData = { ...data, strand: 1 };
@@ -428,7 +431,7 @@ const Notes = view(({ notes }) => {
             style={{ display: "flex", padding: "4px 2px" }}
           >
             <EditableText
-              onConfirm={string => {
+              onConfirm={(string) => {
                 if (string === "") {
                   if (!note.value) {
                     notes.splice(i, 1);
@@ -442,7 +445,7 @@ const Notes = view(({ notes }) => {
               multiline
               className="addAnnNoteKey"
               // style={{marginRight: 20}}
-              onChange={string => {
+              onChange={(string) => {
                 note.key = string.replace(" ", "_").replace(/\n/g, "");
               }}
               value={key}
@@ -458,7 +461,7 @@ const Notes = view(({ notes }) => {
               //   minWidth: 200,
               //   maxWidth: 200,
               // }}
-              onChange={string => {
+              onChange={(string) => {
                 note.value = string.replace(/\n/g, "");
               }}
               value={value}
