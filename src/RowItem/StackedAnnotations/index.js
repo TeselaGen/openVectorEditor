@@ -22,6 +22,7 @@ function StackedAnnotations(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     onClick,
+    isProtein,
     onDoubleClick,
     disregardLocations,
     InnerComp,
@@ -91,6 +92,7 @@ function StackedAnnotations(props) {
           type={type}
           onRightClick={onRightClick}
           annotation={annotation}
+          isProtein={isProtein}
           gapsInside={gapsInside}
           gapsBefore={gapsBefore}
           color={annotationColor}

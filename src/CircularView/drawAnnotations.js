@@ -149,7 +149,9 @@ function drawAnnotations({
         ...rest
       };
 
-      const titleText = getAnnotationNameAndStartStopString(annotation);
+      const titleText = getAnnotationNameAndStartStopString(annotation, {
+        isProtein
+      });
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;

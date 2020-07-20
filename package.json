@@ -67,7 +67,7 @@
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
     "ve-range-utils": "^2.5.8",
-    "ve-sequence-utils": "^3.3.55"
+    "ve-sequence-utils": "^3.3.56"
   },
   "peerDependencies": {
     "react": "^16.10.2",

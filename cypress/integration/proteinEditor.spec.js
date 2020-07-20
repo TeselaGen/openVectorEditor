@@ -53,20 +53,24 @@ describe("editor", function () {
     cy.get(`.tg-test-end [value="31"]`);
   });
   it(`should be able to insert AAs correctly via typing in the editor`, () => {
+    cy.contains("Part - pj5_00001 - Start: 1 End: 1384");
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
+
     cy.get(".veVectorInteractionWrapper")
       .first()
       .type("{rightarrow}{rightarrow}");
     cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Insert").click();
     cy.contains("Press ENTER to insert 0 AAs after AA 2");
-    cy.get(".sequenceInputBubble input").type("{enter}");
+    cy.get(".sequenceInputBubble input").type("gg{enter}");
     //we don't want to see the insert successful message because no bps were entered
-    cy.contains("Sequence Inserted Successfully").should("not.exist", {
-      timeout: 1000
-    });
+    cy.contains("Sequence Inserted Successfully");
+    cy.contains("Part - pj5_00001 - Start: 1 End: 1386"); //the part should have its length increased by 2 aa's
+    // .should("not.exist", {
+    //   timeout: 1000
+    // });
 
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
@@ -75,10 +79,10 @@ describe("editor", function () {
     cy.contains(".bp3-menu-item", "Replace").click();
 
     cy.get(".sequenceInputBubble input").type(".*-masdzz,");
-    cy.contains("Press ENTER to replace 1 AAs between 1384 and 2");
+    cy.contains("Press ENTER to replace 1 AAs between 1386 and 2");
     cy.get(".sequenceInputBubble input").type("{enter}");
     cy.contains("Selecting 9 AAs from 1 to 9");
-    cy.contains("Length: 1392 AAs");
+    cy.contains("Length: 1394 AAs");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type(".*-ma");
 
     cy.get(`[title="Selecting 5 AAs from 1 to 5"]`).should("exist");

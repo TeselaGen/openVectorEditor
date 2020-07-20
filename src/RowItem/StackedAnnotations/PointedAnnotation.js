@@ -18,6 +18,7 @@ class PointedAnnotation extends React.PureComponent {
       name = "",
       onMouseLeave,
       onMouseOver,
+      isProtein,
       id,
       hideName,
       pointiness = 8,
@@ -121,7 +122,9 @@ class PointedAnnotation extends React.PureComponent {
           onRightClick({ annotation, event, gapsBefore, gapsInside });
         }}
       >
-        <title>{getAnnotationNameAndStartStopString(annotation)}</title>
+        <title>
+          {getAnnotationNameAndStartStopString(annotation, { isProtein })}
+        </title>
         <path
           strokeWidth="1"
           stroke={stroke || "black"}
