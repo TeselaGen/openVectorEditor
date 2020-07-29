@@ -74,7 +74,9 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.8.1",
     "@types/lodash": "npm:@types/lodash-es",
+    "babel-plugin-istanbul": "^6.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.1.6",
     "cypress": "^4.10.0",

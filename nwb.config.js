@@ -6,6 +6,11 @@ module.exports = {
     esModules: true,
     umd: {}
   },
+  ...(process.env.WITH_COVERAGE && {
+    babel: {
+      plugins: ["istanbul"]
+    }
+  }),
   webpack: {
     aliases: {
       // **** You can comment one or more of these in to override an npm module with a local module. *****
