@@ -31,7 +31,7 @@ jobs:
         with:
           directory: ./coverage/
           name: codecov-umbrella
-          fail_ci_if_error: true
+          # fail_ci_if_error: true
           path_to_write_report: ./coverage/codecov_report.gz
       # - name: Upload coverage result
       #   uses: actions/upload-artifact@v2
