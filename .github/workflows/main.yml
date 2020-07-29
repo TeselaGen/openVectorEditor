@@ -26,8 +26,15 @@ jobs:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: 0dcf0c08-68ce-4547-aaaa-ac33af76e4a9
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload coverage result
-        uses: actions/upload-artifact@v2
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
         with:
-          name: cypress-coverage
-          path: coverage
+          directory: ./coverage/
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          path_to_write_report: ./coverage/codecov_report.gz
+      # - name: Upload coverage result
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: cypress-coverage
+      #     path: coverage
