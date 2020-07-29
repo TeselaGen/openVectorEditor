@@ -27,6 +27,7 @@ jobs:
           CYPRESS_RECORD_KEY: 0dcf0c08-68ce-4547-aaaa-ac33af76e4a9
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload coverage to Codecov
+        if: always()
         uses: codecov/codecov-action@v1
         with:
           directory: ./coverage/
