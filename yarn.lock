@@ -10930,10 +10930,10 @@ terser@^4.6.12:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^29.1.4:
-  version "29.1.4"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-29.1.4.tgz#aeec8241c18238e6f3e974d079d7c3843395972a"
-  integrity sha512-PLNGMScrkvRfiPE+SwGK5nTyOCUbpbowMIg/GQ+V0PqqNECux4eFI6L/Bk1iEuwEe6eH8ijOkGzgNBbXwy0fvw==
+teselagen-react-components@^29.2.17:
+  version "29.2.17"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-29.2.17.tgz#e92946dc317cde86e4cacd0abea13cab933dbdbf"
+  integrity sha512-QPy04y4mzYnvpgQkt05qpYYom/3F8104c1omA1f4b3j6caoKGtBoKCUe9dxSXytJBC5+vzVaFXMMj3BjalN8oA==
   dependencies:
     "@blueprintjs/core" "^3.26.0"
     "@blueprintjs/datetime" "^3.16.1"
