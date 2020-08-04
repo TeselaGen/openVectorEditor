@@ -29,6 +29,10 @@
 .bp3-dark .veLabels .veAnnotationHovered rect {
   fill: rgb(64, 64, 92) !important;
 }
+
+.partWithSelectedTag {
+  font-weight: 900;
+}
 /* .veLabelLine {
   opacity: 0.1;
 } */
