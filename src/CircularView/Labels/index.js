@@ -76,6 +76,17 @@ function Labels({
     fontHeight,
     outerRadius
   ).filter((l) => !!l);
+
+  // .map((originalLabel) => {
+  //   if (originalLabel is highPriority) {
+  //     return originalLabel
+  //   } else if (one of labelAndSublabels is highPriority) {
+  //     const toRet = first high priority label in labelAndSublabels
+  //     toRet.labelAndSublabels = originalLabel.labelAndSublabels
+  //     return toRet
+  //   }
+  // })
+
   // let groupedLabels = relaxLabelAngles(
   //   labelPoints,
   //   fontHeight,
