@@ -202,7 +202,7 @@ const fileCommandDefs = {
       return (
         <span>
           Filter By Type &nbsp;
-          <Tag round style={{ marginLeft: 4 }}>
+          <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
             {total - toHideCount}/{total}
           </Tag>
         </span>
@@ -231,7 +231,7 @@ const fileCommandDefs = {
         types[feat.type].text = (
           <span>
             {feat.type} &nbsp;
-            <Tag round style={{ marginLeft: 4 }}>
+            <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
               {types[feat.type].count}
             </Tag>
           </span>
@@ -1098,7 +1098,7 @@ const annotationToggleCommandDefs = {};
           {obj.text || startCase(type)}
           &nbsp;
           {hasCount && (
-            <Tag round style={{ marginLeft: 4 }}>
+            <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
               {count}
             </Tag>
           )}

@@ -7,7 +7,7 @@ describe("partTypes", function () {
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Part").click();
-    cy.get(".tg-select").click();
+    cy.get(".tg-test-type").click();
     cy.contains(".tg-select-option", "misc_RNA").click();
     cy.get(".tg-test-name input").type("test part");
     cy.get(".tg-test-end input").type("0");

@@ -1002,13 +1002,15 @@ export default {
       name: "pj5_00001",
       start: 0,
       end: 5298,
-      id: "10"
+      id: "10",
+      tags: ["1:2", "5"]
     },
     {
       start: 10,
       end: 30,
       name: "Part 0",
-      id: "0"
+      id: "0",
+      tags: ["8"]
     }
   ],
   primers: [

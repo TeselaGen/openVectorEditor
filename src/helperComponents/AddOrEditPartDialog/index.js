@@ -1,6 +1,9 @@
 import React from "react";
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
-import { ReactSelectField } from "teselagen-react-components";
+import {
+  ReactSelectField,
+  getTagsAndTagOptions
+} from "teselagen-react-components";
 import { FeatureTypes as featureTypes } from "ve-sequence-utils";
 
 const renderTypes = (
@@ -37,16 +40,35 @@ const renderTypes = (
     label="Type:"
   />
 );
-
+const getRenderTags = ({ editTagsLink, tags }) => {
+  return (
+    <ReactSelectField
+      inlineLabel
+      rightElement={editTagsLink}
+      isTagSelect
+      multi
+      tooltipError
+      options={tags}
+      name="tags"
+      label="Tags:"
+    />
+  );
+};
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPartDialog",
   dialogProps: {
-    height: 450,
-    width: 400
+    height: 550,
+    width: 450
   },
   getProps: (props) => ({
     upsertAnnotation: props.upsertPart,
     renderTypes,
+    renderTags:
+      props.allPartTags &&
+      getRenderTags({
+        editTagsLink: props.editTagsLink,
+        tags: getTagsAndTagOptions(props.allPartTags)
+      }),
     annotationTypePlural: "parts"
   })
 });

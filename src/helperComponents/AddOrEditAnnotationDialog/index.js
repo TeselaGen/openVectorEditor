@@ -173,6 +173,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       handleSubmit,
       beforeAnnotationCreate,
       renderTypes,
+      renderTags,
       annotationTypePlural,
       annotationVisibilityShow,
       renderLocations,
@@ -214,6 +215,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           />
         )}
         {renderTypes || null}
+        {renderTags || null}
         {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
             <NumericInputField

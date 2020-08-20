@@ -13,6 +13,7 @@ import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
+import { showConfirmationDialog } from "teselagen-react-components";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -70,6 +71,7 @@ const defaultState = {
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
   maxAnnotationsToDisplayAdjustment: false,
+  withPartTags: true,
   onCopy: true,
   onPaste: true
 };
@@ -1010,6 +1012,47 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "withPartTags",
+                info: `Passing allPartTags to the <Editor/> allows the tags to be rendered in the Edit Part dialog. You can optionally pass a editTagsLink prop too!
+                \`\`\` 
+                editTagsLink={<Button style={{height: 30}} icon="edit" href={"google.com"}></Button>}
+                allPartTags={[{
+                id: "1",
+                name: "status",
+                description: "the status of the part",
+                color: "blue",
+                tagOptions: [
+                  {
+                    id: "2",
+                    name: "ready",
+                    description: "this part is ready to use in a design",
+                    color: "green"
+                  },
+                  {
+                    id: "3",
+                    name: "in progress",
+                    description: "this part is being worked on",
+                    color: "orange"
+                  },
+                  {
+                    id: "4",
+                    name: "broken",
+                    description: "this part is broken",
+                    color: "orange"
+                  }
+                ]
+              },
+              {
+                id: "5",
+                name: "tag2",
+                description: "tag 2 description",
+                color: "red"
+              }]} 
+              \`\`\`
+              to the <Editor> and pass parts[x].tags = ["1:2","5"]`
+              })}
+              {renderToggle({
+                that: this,
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
@@ -1142,6 +1185,70 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               this.state.maxAnnotationsToDisplayAdjustment
                 ? { features: 5 }
                 : {}
+            }
+            editTagsLink={
+              <Button
+                className="example-editTagsLink"
+                style={{ height: 30 }}
+                icon="edit"
+                onClick={() => {
+                  showConfirmationDialog({ text: "You hit the editTagsLink!" });
+                }}
+              ></Button>
+            }
+            allPartTags={
+              this.state.withPartTags && [
+                {
+                  id: "1",
+                  name: "status",
+                  description: "the status of the part",
+                  color: "blue",
+                  tagOptions: [
+                    {
+                      id: "2",
+                      name: "ready",
+                      description: "this part is ready to use in a design",
+                      color: "green"
+                    },
+                    {
+                      id: "3",
+                      name: "in progress",
+                      description: "this part is being worked on",
+                      color: "orange"
+                    },
+                    {
+                      id: "4",
+                      name: "broken",
+                      description: "this part is broken",
+                      color: "orange"
+                    }
+                  ]
+                },
+                {
+                  id: "5",
+                  name: "tag2",
+                  description: "tag 2 description",
+                  color: "red"
+                },
+                {
+                  id: "8",
+                  name: "zoink",
+                  description: "tag 2 description",
+                  color: "blue"
+                },
+                {
+                  id: "100",
+                  name: "something else",
+                  description: "tag 2 description",
+                  color: "lightblue"
+                },
+                {
+                  id: "500",
+                  name: "new tag ",
+                  description: "tag 2 description",
+                  color: "gray"
+                }
+              ]
             }
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}

@@ -74,8 +74,7 @@
 .preview-mode-view-fullscreen:hover {
   background: #0e5a8a;
 }
-
-.bp3-menu-item span.bp3-tag {
+.bp3-tag.tg-smallTag {
   transform: scale(0.8);
 }
 

@@ -62,7 +62,7 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.15",
-    "teselagen-react-components": "^29.1.4",
+    "teselagen-react-components": "^29.2.26",
     "tg-client-query-builder": "^2.12.2",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
