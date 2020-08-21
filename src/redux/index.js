@@ -29,6 +29,7 @@ import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
 import * as featureLengthsToHide from "./featureLengthsToHide";
+import * as selectedPartTags from "./selectedPartTags";
 
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
@@ -64,7 +65,8 @@ const subReducers = {
   uppercaseSequenceMapFont,
   externalLabels,
   labelLineIntensity,
-  featureLengthsToHide
+  featureLengthsToHide,
+  selectedPartTags
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");

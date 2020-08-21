@@ -13,6 +13,7 @@ import annotationSearchSelector from "./annotationSearchSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import filteredFeaturesSelector from "./filteredFeaturesSelector";
 import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
+import filteredPartsSelector from "./filteredPartsSelector";
 
 export default {
   translationsSelector,
@@ -27,6 +28,7 @@ export default {
   filteredCutsitesSelector,
   filteredRestrictionEnzymesSelector,
   filteredFeaturesSelector,
+  filteredPartsSelector,
   restrictionEnzymesSelector,
   sequenceSelector,
   cutsiteLabelColorSelector

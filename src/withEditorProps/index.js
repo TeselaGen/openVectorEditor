@@ -526,6 +526,7 @@ function mapStateToProps(state, ownProps) {
   let allCutsites = s.cutsitesSelector(editorState);
   let translations = s.translationsSelector(editorState);
   let filteredFeatures = s.filteredFeaturesSelector(editorState);
+  let filteredParts = s.filteredPartsSelector(editorState);
   let sequenceLength = s.sequenceLengthSelector(editorState);
 
   let matchedSearchLayer = { start: -1, end: -1 };
@@ -559,6 +560,7 @@ function mapStateToProps(state, ownProps) {
       uppercaseSequenceMapFont,
       sequenceData.sequence
     ),
+    parts: filteredParts,
     filteredFeatures,
     cutsites,
     orfs,

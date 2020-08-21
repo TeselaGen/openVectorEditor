@@ -197,6 +197,7 @@ export default class EditorDemo extends React.Component {
         "redoTool",
         "cutsiteTool",
         "featureTool",
+        "partTool",
         "oligoTool",
         "orfTool",
         "versionHistoryTool",

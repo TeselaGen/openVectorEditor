@@ -2,6 +2,31 @@ describe("partTypes", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`Should highlight part labels based on selected tags in the part options tool`, () => {
+    cy.get(`[data-test="partToolDropdown"]`).click();
+    cy.contains("Search Parts By Tag:");
+    cy.get("example-editTagsLink").should("exist");
+    cy.focused().type("status: ready{enter}");
+    cy.contains(".veCircularView", "pj5_00001").should(
+      "have.class",
+      "partWithSelectedTag"
+    );
+  });
+
+  it(`the part tag search dropdown should only show existing tags on parts as options to search`, () => {
+    cy.get(`[data-test="partToolDropdown"]`).click();
+    cy.focused().click();
+    cy.contains(".bp3-tag", "zoink");
+    cy.get(`.bp3-tag:contains("tag2")`).should("have.length", 1);
+    cy.contains(".bp3-tag", "status: ready");
+    cy.contains(".bp3-tag", "status: broken").should("not.exist");
+    cy.contains(".bp3-tag", "something else").should("not.exist");
+  });
+  it(`if allPartTags isn't passed in, no the search for part tags should show up from the part tool dropdown`, () => {
+    cy.get(`[data-test="partToolDropdown"]`).should("exist");
+    cy.tgToggle("withPartTags", false);
+    cy.get(`[data-test="partToolDropdown"]`).should("not.exist");
+  });
 
   it(`should be able to see and search for part tags in the properties window`, () => {
     cy.get(".veTabProperties").click();
