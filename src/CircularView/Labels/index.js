@@ -3,6 +3,7 @@ import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import React from "react";
+import { cloneDeep } from "lodash";
 
 const defaultFontWidth = 8;
 const fontWidthToFontSize = 1.75;
@@ -74,13 +75,38 @@ function Labels({
   let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
     .filter((l) => !!l)
     .map((originalLabel) => {
-      if (originalLabel.highPriority) {
+      //we need to search the labelGroup to see if any of the sub labels are highPriorityLabels
+      //if they are, they should take precedence as the main group identifier
+      if (originalLabel.highPriorityLabel) {
+        //if the originalLabel is a highPriorityLabel, just return it
         return originalLabel;
       }
-      const highPrioritySublabel = originalLabel.labelAndSublabels.find(
-        (l) => l.highPriority
+
+      const _highPrioritySublabel = originalLabel.labelAndSublabels.find(
+        (l) => l.highPriorityLabel
       );
-      if (highPrioritySublabel) {
+      if (_highPrioritySublabel) {
+        const highPrioritySublabel = cloneDeep(_highPrioritySublabel);
+        //there is a high priority sub label, so we need to return it
+        // but first we need to give it the sub-labels
+
+        [
+          "angle",
+          "annotationCenterAngle",
+          "annotationCenterRadius",
+          "innerPoint",
+          "labelAndSublabels",
+          "labelIds",
+          "outerPoint",
+          "radius",
+          "truncatedInnerPoint",
+          "x",
+          "y"
+        ].forEach((k) => {
+          highPrioritySublabel[k] = originalLabel[k];
+        });
+
+        delete originalLabel.labelAndSublabels;
         return highPrioritySublabel;
       }
       return originalLabel;

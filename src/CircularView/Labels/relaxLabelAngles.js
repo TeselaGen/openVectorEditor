@@ -59,7 +59,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     let lastLabelYPosition = 0 - spacing / 2; // spacing to count label height
     let lastlabel;
     return labels
-      .map(function(label /* index */) {
+      .map(function (label /* index */) {
         if (Math.abs(lastLabelYPosition) > maxradius + 80) {
           lastlabel.labelAndSublabels.push(label);
           lastlabel.labelIds[label.id] = true;
@@ -81,7 +81,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
         }
         return label;
       })
-      .filter(function(l) {
+      .filter(function (l) {
         return !!l;
       });
   }
@@ -114,7 +114,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
   return labelsToReturn;
 
   function flipLabelYs(labels) {
-    return labels.map(function(label) {
+    return labels.map(function (label) {
       label.y = -label.y;
       return label;
     });
@@ -126,22 +126,18 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
 // }
 
 function sortLabelsByAngle(a, b) {
-  return a.highPriority || a.angle - b.angle;
+  return a.angle - b.angle;
 }
 function sortLabelsByAngleReverse(b, a) {
-  return a.highPriority || a.angle - b.angle;
+  return a.angle - b.angle;
 }
 
 //function that groups labels that fall within the same angle together
 function combineLabels(labels, numberOfBuckets) {
   let buckets = {};
-  let highPriorityLabels = [];
-  Object.keys(labels).forEach(function(key) {
+  Object.keys(labels).forEach(function (key) {
     let label = labels[key];
-    if (label.highPriority) {
-      highPriorityLabels.push(label);
-      return;
-    }
+
     let bucket = Math.floor(
       (label.annotationCenterAngle / 6.29) * numberOfBuckets
     );
@@ -152,10 +148,8 @@ function combineLabels(labels, numberOfBuckets) {
       buckets[bucket].labelIds[label.id] = true;
     }
   });
-  let combinedLabels = Object.keys(buckets)
-    .map(function(key) {
-      return buckets[key];
-    })
-    .concat(highPriorityLabels);
+  let combinedLabels = Object.keys(buckets).map(function (key) {
+    return buckets[key];
+  });
   return combinedLabels;
 }

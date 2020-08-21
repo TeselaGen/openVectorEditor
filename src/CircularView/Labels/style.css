@@ -33,7 +33,7 @@
 .partWithSelectedTag {
   font-weight: 900;
   text-decoration: underline;
-  font-size: large;
+  font-size: large !important;
 }
 /* .veLabelLine {
   opacity: 0.1;

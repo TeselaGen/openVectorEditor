@@ -168,7 +168,7 @@ function drawAnnotations({
           id: annotation.id,
           title: titleText,
           className: annotation.labelClassName || "",
-          highPriority: annotation.highPriorityLabel,
+          highPriorityLabel: annotation.highPriorityLabel,
           onClick: _onClick,
           onDoubleClick: _onDoubleClick,
           fontStyle: fontStyle || "normal",

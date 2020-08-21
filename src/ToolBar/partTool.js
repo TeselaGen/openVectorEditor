@@ -1,6 +1,9 @@
 import { Icon } from "@blueprintjs/core";
 // import { Checkbox, Button } from "@blueprintjs/core";
-import { TgSelect } from "teselagen-react-components";
+import {
+  TgSelect,
+  getKeyedTagsAndTagOptions
+} from "teselagen-react-components";
 import React from "react";
 // import { connect } from "react-redux";
 // import { convertRangeTo1Based } from "ve-range-utils";
@@ -8,6 +11,7 @@ import React from "react";
 import ToolbarItem from "./ToolbarItem";
 import withEditorProps, { connectToEditor } from "../withEditorProps";
 import { flatMap } from "lodash";
+import { uniqBy } from "lodash";
 
 export default connectToEditor(
   ({ annotationVisibility = {}, toolBar = {} }) => {
@@ -16,31 +20,45 @@ export default connectToEditor(
       isOpen: toolBar.openItem === "partTool"
     };
   }
-)(({ toolbarItemProps, toggled, annotationVisibilityToggle, isOpen }) => {
-  return (
-    <ToolbarItem
-      {...{
-        Icon: <Icon icon="doughnut-chart" />,
-        onIconClick: function () {
-          annotationVisibilityToggle("parts");
-        },
-        toggled,
-        tooltip: "Show parts",
-        tooltipToggled: "Hide parts",
-        Dropdown: PartToolDropdownConnected,
-        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
-        ...toolbarItemProps
-      }}
-    />
-  );
-});
+)(
+  ({
+    allPartTags,
+    editTagsLink,
+    toolbarItemProps,
+    toggled,
+    annotationVisibilityToggle,
+    isOpen
+  }) => {
+    return (
+      <ToolbarItem
+        {...{
+          Icon: <Icon icon="doughnut-chart" />,
+          onIconClick: function () {
+            annotationVisibilityToggle("parts");
+          },
+          toggled,
+          editTagsLink,
+          keyedTags: getKeyedTagsAndTagOptions(allPartTags),
+          tooltip: "Show parts",
+          tooltipToggled: "Hide parts",
+          noDropdownIcon: !allPartTags,
+          Dropdown: PartToolDropdownConnected,
+          dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
+          ...toolbarItemProps
+        }}
+      />
+    );
+  }
+);
 
 const PartToolDropdownConnected = withEditorProps(PartToolDropdown);
 
 function PartToolDropdown({
   sequenceData,
   updateSelectedPartTags,
-  selectedPartTags
+  selectedPartTags,
+  keyedTags,
+  editTagsLink
 }) {
   // dispatch,
   // readOnly,
@@ -49,25 +67,30 @@ function PartToolDropdown({
   // toggleDropdown,
   // annotationLabelVisibility,
   if (!sequenceData) return <div>No Parts Present</div>;
-  const tags = flatMap(sequenceData.parts, ({ tags }) => {
-    return flatMap(tags, (t) => {
-      if (t.tagOptions)
-        return t.tagOptions.map((to) => {
-          return { ...to, name: `${t.name}:${to.name}` };
-        });
-      return t;
-    });
-  }).map((t) => ({ ...t, label: t.name, value: t.name }));
+  const tags = uniqBy(
+    flatMap(sequenceData.parts, ({ tags }) => {
+      return flatMap(tags, (t) => {
+        const tag = keyedTags[t];
+        if (!tag) return [];
+        return tag;
+      });
+    }),
+    "value"
+  );
   return (
-    <>
-      <TgSelect
-        value={selectedPartTags.parts}
-        onChange={updateSelectedPartTags}
-        isTagSelect
-        multi
-        options={tags}
-        autoFocus
-      ></TgSelect>
-    </>
+    <div>
+      <h6>Search Parts By Tag: </h6>
+      <div style={{ display: "flex" }}>
+        <TgSelect
+          value={selectedPartTags.parts}
+          onChange={updateSelectedPartTags}
+          isTagSelect
+          multi
+          options={tags}
+          autoFocus
+        ></TgSelect>
+        {editTagsLink || null}
+      </div>
+    </div>
   );
 }

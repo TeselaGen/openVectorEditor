@@ -2,14 +2,7 @@ describe("toolbar", function () {
   beforeEach(() => {
     cy.visit("");
   });
-  it(`Should highlight part labels based on selected tags in the part options tool`, () => {
-    cy.get(`[data-test="partToolDropdown"]`).click();
-    cy.focused().type("status:ready{enter}");
-    cy.contains("text", "partWithTags").should(
-      "have.class",
-      "partWithSelectedTag"
-    );
-  });
+
   it(`save tool should be disabled initially and then enabled after an edit is made`, () => {
     cy.get(`[data-test="saveTool"]`)
       .parent()

@@ -1011,6 +1011,13 @@ export default {
       name: "Part 0",
       id: "0",
       tags: ["8"]
+    },
+    {
+      start: 1000,
+      end: 3000,
+      name: "Curtis' Part",
+      id: "9",
+      tags: ["1:2", "5"]
     }
   ],
   primers: [
