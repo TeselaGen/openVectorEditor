@@ -1003,51 +1003,14 @@ export default {
       start: 0,
       end: 5298,
       id: "10",
-      tags: [
-        { name: "isSpecial", color: "red", description: "special description" },
-        {
-          name: "securityLevel",
-          value: 3,
-          color: "blue",
-          description: "not so special description"
-        }
-      ]
+      tags: ["1:2", "5"]
     },
     {
       start: 10,
       end: 30,
       name: "Part 0",
-      id: "0"
-    },
-    {
-      name: "partWithTags",
-      start: 10,
-      end: 20,
-      tags: [
-        {
-          name: "status",
-          description: "the status of the part",
-          color: "blue",
-          tagOptions: [
-            {
-              name: "ready",
-              description: "this part is ready to use in a design",
-              color: "green"
-            },
-            {
-              name: "in progress",
-              description: "this part is being worked on",
-              color: "orange"
-            },
-            {
-              name: "broken",
-              description: "this part is broken",
-              color: "orange"
-            }
-          ]
-        },
-        { name: "tag2", description: "tag 2 description", color: "red" }
-      ]
+      id: "0",
+      tags: ["8"]
     }
   ],
   primers: [

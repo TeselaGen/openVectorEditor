@@ -54,7 +54,7 @@ const getNewTranslationHandler = (isReverse) => ({
 const fileCommandDefs = {
   newSequence: {
     isHidden: (props) => !props.onNew,
-    handler: (props) => props.onNew()
+    handler: (props, ...rest) => props.onNew(props, ...rest)
   },
 
   renameSequence: {
@@ -102,9 +102,7 @@ const fileCommandDefs = {
 
   deleteSequence: {
     isDisabled: (props) =>
-      (props.readOnly && readOnlyDisabledTooltip) ||
-      noSelection(props) ||
-      !props.onDelete,
+      (props.readOnly && readOnlyDisabledTooltip) || !props.onDelete,
     isHidden: (props) => !props.onDelete,
     handler: (props) => props.onDelete(props.sequenceData)
   },
@@ -112,7 +110,8 @@ const fileCommandDefs = {
   duplicateSequence: {
     isDisabled: (props) => !props.onDuplicate,
     isHidden: (props) => !props.onDuplicate,
-    handler: (props) => props.onDuplicate(props.sequenceData),
+    handler: (props, ...rest) =>
+      props.onDuplicate(props.sequenceData, props, ...rest),
     hotkey: "alt+shift+d"
   },
 
@@ -203,7 +202,7 @@ const fileCommandDefs = {
       return (
         <span>
           Filter By Type &nbsp;
-          <Tag round style={{ marginLeft: 4 }}>
+          <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
             {total - toHideCount}/{total}
           </Tag>
         </span>
@@ -232,7 +231,7 @@ const fileCommandDefs = {
         types[feat.type].text = (
           <span>
             {feat.type} &nbsp;
-            <Tag round style={{ marginLeft: 4 }}>
+            <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
               {types[feat.type].count}
             </Tag>
           </span>
@@ -1099,7 +1098,7 @@ const annotationToggleCommandDefs = {};
           {obj.text || startCase(type)}
           &nbsp;
           {hasCount && (
-            <Tag round style={{ marginLeft: 4 }}>
+            <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
               {count}
             </Tag>
           )}

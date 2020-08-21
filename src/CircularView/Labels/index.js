@@ -412,12 +412,12 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   editorName,
   labelLineIntensity
 }) {
-  return groupedLabels.map(function (label) {
+  return groupedLabels.map(function (label, i) {
     let { labelAndSublabels, labelIds } = label;
     let multipleLabels = labelAndSublabels.length > 1;
     return (
       <DrawLabelGroup
-        key={label.id}
+        key={i}
         id={labelIds}
         {...{
           label,

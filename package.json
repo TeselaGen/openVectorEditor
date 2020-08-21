@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "10.1.87",
+  "version": "10.1.91",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -62,7 +62,7 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.15",
-    "teselagen-react-components": "^29.2.17",
+    "teselagen-react-components": "^29.2.26",
     "tg-client-query-builder": "^2.12.2",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
@@ -74,7 +74,9 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.8.1",
     "@types/lodash": "npm:@types/lodash-es",
+    "babel-plugin-istanbul": "^6.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.1.6",
     "cypress": "^4.10.0",

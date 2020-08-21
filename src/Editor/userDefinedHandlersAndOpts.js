@@ -1,4 +1,6 @@
 export const userDefinedHandlersAndOpts = [
+  "allPartTags",
+  "editTagsLink",
   "readOnly",
   "shouldAutosave",
   "hideSingleImport",

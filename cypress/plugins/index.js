@@ -11,7 +11,13 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
+// cypress/plugins/index.js
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-}
+  process.env.WITH_COVERAGE &&
+    require("@cypress/code-coverage/task")(on, config);
+  // include any other plugin code...
+
+  // It's IMPORTANT to return the config object
+  // with any changed environment variables
+  return config;
+};

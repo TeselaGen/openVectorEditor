@@ -69,6 +69,12 @@ const annotationClickHandlers = [
   "partClicked",
   "searchLayerClicked"
 ];
+//tnr: because this menu is being rendered outside the main render tree (by blueprint)
+//we need to make sure it re-renders whenever the redux state changes (so things like tick-marks will toggle properly etc..)
+const ConnectedMenu = withEditorProps(({ children, ...rest }) => (
+  <Menu changingProps={rest}>{children}</Menu>
+));
+
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
@@ -88,9 +94,6 @@ function VectorInteractionHOC(Component /* options */) {
         };
       });
 
-      const ConnectedMenu = withEditorProps(({ children }) => (
-        <Menu>{children}</Menu>
-      ));
       this.ConnectedMenu = (props) => (
         <ConnectedMenu store={this.props.store} {...props} />
       );
