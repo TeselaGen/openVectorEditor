@@ -44,7 +44,7 @@ const getRenderTags = ({ editTagsLink, tags }) => {
   return (
     <ReactSelectField
       inlineLabel
-      rightElement={editTagsLink}
+      rightEl={editTagsLink}
       isTagSelect
       multi
       tooltipError
