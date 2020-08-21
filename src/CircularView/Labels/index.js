@@ -71,11 +71,21 @@ function Labels({
       label.labelIds = { [label.id]: true };
       return label;
     });
-  let groupedLabels = relaxLabelAngles(
-    labelPoints,
-    fontHeight,
-    outerRadius
-  ).filter((l) => !!l);
+  let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
+    .filter((l) => !!l)
+    .map((originalLabel) => {
+      if (originalLabel.highPriority) {
+        return originalLabel;
+      }
+      const highPrioritySublabel = originalLabel.labelAndSublabels.find(
+        (l) => l.highPriority
+      );
+      if (highPrioritySublabel) {
+        return highPrioritySublabel;
+      }
+      return originalLabel;
+    });
+
   // let groupedLabels = relaxLabelAngles(
   //   labelPoints,
   //   fontHeight,
