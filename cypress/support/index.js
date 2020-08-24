@@ -23,11 +23,11 @@ import "./commands";
 //filter out socketIO requests here
 beforeEach(function () {
   cy.server({
-    whitelist: (xhr) => {
+    ignore: (xhr) => {
       //filter out socketIO requests here
       if (xhr.url.indexOf("socket.io/") > -1) return true;
       if (xhr.url.indexOf("sockjs-node/") > -1) return true;
-      //return the default cypress whitelist filer
+      //return the default cypress ignore filer
       return xhr.method === "GET" && /\.(jsx?|html|css)(\?.*)?$/.test(xhr.url);
     }
   });
