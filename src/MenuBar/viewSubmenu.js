@@ -108,7 +108,21 @@ export default [
   //   //submenu of checklist of all feature types here
   //   submenu: [{ text: "TO DO...", disabled: true }]
   // },
-  { cmd: "toggleParts", shouldDismissPopover: false },
+  {
+    cmd: "toggleParts",
+    onClick: () => {},
+    shouldDismissPopover: false,
+    submenu: [
+      {
+        cmd: "toggleParts",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "filterPartsByTagCmd",
+        shouldDismissPopover: false
+      }
+    ]
+  },
   { cmd: "toggleCutsites", shouldDismissPopover: false },
   // TODO translations, cds feature translations?
   {

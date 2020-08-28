@@ -1,4 +1,5 @@
 import Color from "color";
+import classnames from "classnames";
 import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
@@ -135,7 +136,10 @@ class PointedAnnotation extends React.PureComponent {
         />
         {!hideName && nameToDisplay && (
           <text
-            className="ve-monospace-font"
+            className={classnames(
+              "ve-monospace-font",
+              annotation.labelClassName
+            )}
             style={{
               fontSize: ".9em",
               fill: textColor || (Color(color).isDark() ? "white" : "black")

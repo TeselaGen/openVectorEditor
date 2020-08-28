@@ -1,17 +1,12 @@
 import { Icon } from "@blueprintjs/core";
 // import { Checkbox, Button } from "@blueprintjs/core";
-import {
-  TgSelect,
-  getKeyedTagsAndTagOptions
-} from "teselagen-react-components";
 import React from "react";
 // import { connect } from "react-redux";
 // import { convertRangeTo1Based } from "ve-range-utils";
 //import { partIcon } from "teselagen-react-components";
 import ToolbarItem from "./ToolbarItem";
-import withEditorProps, { connectToEditor } from "../withEditorProps";
-import { flatMap } from "lodash";
-import { uniqBy } from "lodash";
+import { connectToEditor } from "../withEditorProps";
+import { PartTagSearch } from "../helperComponents/partTagSearch";
 
 export default connectToEditor(
   ({ annotationVisibility = {}, toolBar = {} }) => {
@@ -38,11 +33,11 @@ export default connectToEditor(
           },
           toggled,
           editTagsLink,
-          keyedTags: getKeyedTagsAndTagOptions(allPartTags),
+          allPartTags,
           tooltip: "Show parts",
           tooltipToggled: "Hide parts",
           noDropdownIcon: !allPartTags,
-          Dropdown: PartToolDropdownConnected,
+          Dropdown: PartTagSearch,
           dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
           ...toolbarItemProps
         }}
@@ -50,47 +45,3 @@ export default connectToEditor(
     );
   }
 );
-
-const PartToolDropdownConnected = withEditorProps(PartToolDropdown);
-
-function PartToolDropdown({
-  sequenceData,
-  updateSelectedPartTags,
-  selectedPartTags,
-  keyedTags,
-  editTagsLink
-}) {
-  // dispatch,
-  // readOnly,
-  // editorName,
-  // selectionLayer,
-  // toggleDropdown,
-  // annotationLabelVisibility,
-  if (!sequenceData) return <div>No Parts Present</div>;
-  const tags = uniqBy(
-    flatMap(sequenceData.parts, ({ tags }) => {
-      return flatMap(tags, (t) => {
-        const tag = keyedTags[t];
-        if (!tag) return [];
-        return tag;
-      });
-    }),
-    "value"
-  );
-  return (
-    <div>
-      <h6>Search Parts By Tag: </h6>
-      <div style={{ display: "flex" }}>
-        <TgSelect
-          value={selectedPartTags.parts}
-          onChange={updateSelectedPartTags}
-          isTagSelect
-          multi
-          options={tags}
-          autoFocus
-        ></TgSelect>
-        {editTagsLink || null}
-      </div>
-    </div>
-  );
-}

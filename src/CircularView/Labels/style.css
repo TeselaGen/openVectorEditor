@@ -31,9 +31,20 @@
 }
 
 .partWithSelectedTag {
+  font-size: 14px !important;
   font-weight: 900;
   text-decoration: underline;
+}
+.vePartLabel.partWithSelectedTag {
   font-size: large !important;
+}
+.veLabelText.partWithSelectedTag {
+  font-size: large !important;
+}
+
+.partWithSelectedTag path,
+path.partWithSelectedTag {
+  stroke-width: 1.5 !important;
 }
 /* .veLabelLine {
   opacity: 0.1;

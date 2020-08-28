@@ -6,8 +6,6 @@ import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkP
 import pureNoFunc from "../utils/pureNoFunc";
 import { divideBy3 } from "../utils/proteinUtils";
 
-// import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
-
 let Axis = function (props) {
   let {
     row,
@@ -25,14 +23,14 @@ let Axis = function (props) {
   if (row.start === 0 && row.end === 0) {
     return null;
   }
-  let { xStart, width } = getXStartAndWidthOfRangeWrtRow(
+
+  let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
     row,
-    row,
-    bpsPerRow,
+    range: row,
     charWidth,
     sequenceLength,
-    ...(getGaps ? [getGaps(row).gapsBefore, getGaps(row).gapsInside] : [])
-  );
+    ...(getGaps ? getGaps(row) : {})
+  });
   //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
   //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
   let xEnd = xStart + width;
@@ -47,10 +45,6 @@ let Axis = function (props) {
   let tickMarkSVG = [];
 
   tickMarkPositions.forEach(function (tickMarkPosition, i) {
-    // var xCenter = getXCenterOfRowAnnotation({
-    //     start: tickMarkPosition,
-    //     end: tickMarkPosition
-    // }, row, bpsPerRow, charWidth, sequenceLength);
     let xCenter =
       (tickMarkPosition -
         (isProtein ? 1 : 0) +

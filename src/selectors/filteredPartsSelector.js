@@ -2,25 +2,26 @@ import { createSelector } from "reselect";
 import partsSelector from "./partsSelector";
 import tagsToBoldSelector from "./tagsToBoldSelector";
 import { some, keyBy } from "lodash";
+import { map } from "lodash";
 function filteredPartsSelector(parts, tagsToBold) {
   if (tagsToBold) {
     const keyedTagsToBold = keyBy(tagsToBold, "value");
 
-    Object.keys(parts || {}).forEach((key) => {
-      const p = parts[key];
+    return map(parts || {}, (p) => {
       if (p.tags) {
-        //["1:2", "5"]
-
         if (
           some(p.tags, (tagId) => {
             return keyedTagsToBold[tagId];
           })
         ) {
-          p.labelClassName = "partWithSelectedTag";
-          p.highPriorityLabel = true;
+          return {
+            ...p,
+            className: "partWithSelectedTag",
+            labelClassName: "partWithSelectedTag",
+            highPriorityLabel: true
+          };
         } else {
-          delete p.labelClassName;
-          delete p.highPriorityLabel;
+          return p;
         }
       }
     });

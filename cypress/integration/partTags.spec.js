@@ -5,9 +5,13 @@ describe("partTypes", function () {
   it(`Should highlight part labels based on selected tags in the part options tool`, () => {
     cy.get(`[data-test="partToolDropdown"]`).click();
     cy.contains("Search Parts By Tag:");
-    cy.get("example-editTagsLink").should("exist");
+    cy.get(".example-editTagsLink").should("exist");
     cy.focused().type("status: ready{enter}");
-    cy.contains(".veCircularView", "pj5_00001").should(
+    cy.contains(".veCircularView .veLabelText", "pj5_00001").should(
+      "have.class",
+      "partWithSelectedTag"
+    );
+    cy.contains(".veRowView text", "pj5_00001").should(
       "have.class",
       "partWithSelectedTag"
     );

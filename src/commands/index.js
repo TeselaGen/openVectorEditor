@@ -24,6 +24,7 @@ import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 import packageJson from "../../package.json";
+import { PartTagSearch } from "../helperComponents/partTagSearch";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
 
@@ -134,6 +135,19 @@ const fileCommandDefs = {
         }
       });
     }
+  },
+  filterPartsByTagCmd: {
+    name: (props) => {
+      return (
+        <div style={{ padding: 3 }} data-test="filter-parts-by-tag">
+          <PartTagSearch {...props}></PartTagSearch>
+        </div>
+      );
+    },
+    component: (props) => {
+      return <div {...props}></div>;
+    },
+    handler: () => {}
   },
   filterFeatureLengthsCmd: {
     name: (props) => {

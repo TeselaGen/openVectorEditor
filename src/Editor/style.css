@@ -177,3 +177,7 @@
   color: #48aff0 !important;
   border-bottom-color: #48aff0 !important;
 }
+
+[cmd="filterPartsByTagCmd"] > .bp3-text-overflow-ellipsis {
+  overflow: visible;
+}
