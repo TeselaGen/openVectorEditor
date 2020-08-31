@@ -222,7 +222,7 @@ describe("editor", function () {
 
     cy.get(`[data-tab-id="genbank"]`).click();
     cy.contains("protein_bind 1124..1162");
-    cy.contains("complement(join(7..25,29..49,501..885))");
+    cy.contains("join(7..25,29..49,501..885)");
   });
 
   it(`should 
