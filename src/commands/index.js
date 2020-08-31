@@ -137,6 +137,7 @@ const fileCommandDefs = {
     }
   },
   filterPartsByTagCmd: {
+    isHidden: (props) => !props.allPartTags,
     name: (props) => {
       return (
         <div style={{ padding: 3 }} data-test="filter-parts-by-tag">
@@ -1210,6 +1211,25 @@ const labelCommandDefs = {
 };
 
 const commandDefs = {
+  togglePartsWithSubmenu: {
+    ...annotationToggleCommandDefs.toggleParts,
+    submenu: (props) => {
+      if (props.allPartTags) {
+        return [
+          {
+            cmd: "toggleParts",
+            shouldDismissPopover: false
+          },
+          {
+            cmd: "filterPartsByTagCmd",
+            shouldDismissPopover: false
+          }
+        ];
+      } else {
+        return;
+      }
+    }
+  },
   ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,
   ...cirularityCommandDefs,

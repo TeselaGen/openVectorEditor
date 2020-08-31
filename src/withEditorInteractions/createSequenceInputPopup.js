@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";
-import { Hotkey, Hotkeys, HotkeysTarget, Classes } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 import { getNodeToRefocus } from "../utils/editorUtils";
 
 let div;
@@ -34,7 +34,7 @@ class SequenceInputNoHotkeys extends React.Component {
       this.handleUnmountIfClickOustidePopup
     );
   }
-  handleUnmountIfClickOustidePopup = e => {
+  handleUnmountIfClickOustidePopup = (e) => {
     const n = findDOMNode(this);
     if (!n) return;
     const node = n.parentNode;
@@ -69,19 +69,6 @@ class SequenceInputNoHotkeys extends React.Component {
           sequence: charsToInsert
         };
     handleInsert(seqToInsert);
-  }
-  renderHotkeys() {
-    return (
-      <Hotkeys>
-        <Hotkey
-          global={true}
-          combo="esc"
-          label="Escape"
-          onKeyDown={this.handleUnmount}
-        />
-        <Hotkey combo="enter" label="Enter" onKeyDown={this.handleInsert} />
-      </Hotkeys>
-    );
   }
   render() {
     const {
@@ -133,7 +120,7 @@ class SequenceInputNoHotkeys extends React.Component {
       <div className="sequenceInputBubble">
         <input
           autoCorrect="off"
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.keyCode === 27) {
               this.handleUnmount();
             }
@@ -146,9 +133,9 @@ class SequenceInputNoHotkeys extends React.Component {
           value={charsToInsert}
           autoFocus
           style={hasTempError ? { borderColor: "red" } : {}}
-          onChange={e => {
+          onChange={(e) => {
             let sanitizedVal = "";
-            e.target.value.split("").forEach(letter => {
+            e.target.value.split("").forEach((letter) => {
               if (acceptedChars.includes(letter.toLowerCase())) {
                 sanitizedVal += letter;
               }
@@ -177,14 +164,14 @@ class SequenceInputNoHotkeys extends React.Component {
         <div style={{ marginTop: 10 }}>{message}</div>
         <div style={{ marginTop: 10 }}>
           Press <span style={{ fontWeight: "bolder" }}>ESC</span> to{" "}
-          <a onClick={this.handleUnmount}>cancel</a>
+          <button className="link-button" onClick={this.handleUnmount}>
+            cancel
+          </button>
         </div>
       </div>
     );
   }
 }
-
-const SequenceInput = HotkeysTarget(SequenceInputNoHotkeys);
 
 export default function createSequenceInputPopup(props) {
   const { useEventPositioning } = props;
@@ -238,7 +225,7 @@ export default function createSequenceInputPopup(props) {
   document.body.appendChild(div);
 
   const innerEl = (
-    <SequenceInput
+    <SequenceInputNoHotkeys
       nodeToReFocus={caretEl.nodeToRefocus || getNodeToRefocus(caretEl)}
       {...props}
     />
@@ -260,7 +247,7 @@ export default function createSequenceInputPopup(props) {
   });
 }
 
-const getActiveElement = function(document) {
+const getActiveElement = function (document) {
   document = document || window.document;
 
   // Check if the active element is in the main web or iframe

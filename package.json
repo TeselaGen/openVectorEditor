@@ -85,7 +85,7 @@
     "husky": "^4.2.5",
     "in-publish": "^2.0.1",
     "lint-staged": "10.2.13",
-    "nwb": "0.25.2",
+    "nwb": "^0.24",
     "prettier": "2.1.1",
     "react": "^16.10.2",
     "react-addons-perf": "^15.4.2",

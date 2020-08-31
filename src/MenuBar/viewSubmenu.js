@@ -109,19 +109,9 @@ export default [
   //   submenu: [{ text: "TO DO...", disabled: true }]
   // },
   {
-    cmd: "toggleParts",
+    cmd: "togglePartsWithSubmenu",
     onClick: () => {},
-    shouldDismissPopover: false,
-    submenu: [
-      {
-        cmd: "toggleParts",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "filterPartsByTagCmd",
-        shouldDismissPopover: false
-      }
-    ]
+    shouldDismissPopover: false
   },
   { cmd: "toggleCutsites", shouldDismissPopover: false },
   // TODO translations, cds feature translations?
