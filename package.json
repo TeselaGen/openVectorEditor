@@ -64,7 +64,7 @@
     "shortid": "^2.2.15",
     "teselagen-react-components": "^29.2.29",
     "tg-react-reflex": "^2.0.10",
-    "typeface-ubuntu-mono": "^0.0.54",
+    "typeface-ubuntu-mono": "^0.0.72",
     "ve-range-utils": "^2.5.8",
     "ve-sequence-utils": "^3.3.56"
   },
