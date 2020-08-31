@@ -55,7 +55,7 @@ function PartToolDropdown({
             }
           }}
           options={tags}
-          autoFocus
+          autoOpen
         ></TgSelect>
         {editTagsLink || null}
       </div>
