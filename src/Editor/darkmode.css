@@ -14,11 +14,14 @@
 .bp3-dark .veCaretSVG,
 .bp3-dark .veRowViewAxis path,
 .bp3-dark .veRowViewFeature path,
-.bp3-dark .veRowViewPartsContainer path,
 .bp3-dark .veLabelLine,
-.bp3-dark .veFeature,
-.bp3-dark .vePart {
+.bp3-dark .veFeature {
   stroke: #f5f8fa !important;
+}
+.bp3-dark .veRowViewPartsContainer path,
+.bp3-dark .vePart {
+  fill: transparent !important;
+  stroke: #df7ff1 !important;
 }
 
 .bp3-dark .veEditor .veRowViewCaret {
