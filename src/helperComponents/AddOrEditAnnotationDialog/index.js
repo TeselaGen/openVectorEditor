@@ -96,6 +96,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                   <div style={{}} key={index}>
                     <div style={{ display: "flex", marginBottom: 10 }}>
                       <NumericInputField
+                        disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
                         tooltipError
@@ -107,6 +108,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                         label="Start:"
                       />
                       <NumericInputField
+                        disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
                         tooltipError
@@ -118,6 +120,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                         label="End:"
                       />
                       <Button
+                        disabled={this.props.readOnly}
                         onClick={() => {
                           if (locations.length === 2) {
                             fields.remove(0);
@@ -137,6 +140,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           </div>
         )}
         <Button
+          disabled={this.props.readOnly}
           style={{ marginBottom: 10, left: "50%" }}
           // intent="primary"
           onClick={() => {
@@ -191,6 +195,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         )}
       >
         <InputField
+          disabled={this.props.readOnly}
           inlineLabel
           tooltipError
           autoFocus
@@ -201,6 +206,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         />
         {!isProtein && (
           <RadioGroupField
+            disabled={this.props.readOnly}
             inlineLabel
             tooltipError
             options={[
@@ -220,6 +226,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           <React.Fragment>
             <NumericInputField
               inlineLabel
+              disabled={this.props.readOnly}
               format={this.formatStart}
               parse={this.parseStart}
               tooltipError
@@ -230,6 +237,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               label="Start:"
             />
             <NumericInputField
+              disabled={this.props.readOnly}
               format={this.formatEnd}
               parse={this.parseEnd}
               inlineLabel
@@ -245,7 +253,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         {renderLocations ? (
           <FieldArray component={this.renderLocations} name="locations" />
         ) : null}
-        <Notes notes={this.notes}></Notes>
+        <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
@@ -262,6 +270,7 @@ class AddOrEditAnnotationDialog extends React.Component {
             Cancel
           </Button>
           <Button
+            disabled={this.props.readOnly}
             onClick={handleSubmit((data) => {
               let updatedData;
               if (data.forward === true && data.strand !== 1) {
@@ -415,7 +424,7 @@ export default ({ formName, getProps, dialogProps }) => {
   )(AddOrEditAnnotationDialog);
 };
 
-const Notes = view(({ notes }) => {
+const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
       <div style={{ display: "flex" }}>
@@ -442,6 +451,7 @@ const Notes = view(({ notes }) => {
                   }
                 }
               }}
+              disabled={readOnly}
               placeholder="Add key here"
               maxLines={5}
               multiline
@@ -453,6 +463,7 @@ const Notes = view(({ notes }) => {
               value={key}
             ></EditableText>
             <EditableText
+              disabled={readOnly}
               maxLines={10}
               className="addAnnNoteValue"
               multiline
@@ -471,6 +482,7 @@ const Notes = view(({ notes }) => {
             &nbsp;
             <div>
               <Button
+                disabled={readOnly}
                 style={{ padding: 2 }}
                 onClick={() => {
                   notes.splice(i, 1);
@@ -483,6 +495,7 @@ const Notes = view(({ notes }) => {
         );
       })}
       <Button
+        disabled={readOnly}
         onClick={() => {
           notes.push({
             key: "note",

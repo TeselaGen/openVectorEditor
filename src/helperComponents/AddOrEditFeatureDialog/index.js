@@ -4,10 +4,11 @@ import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { ReactSelectField } from "teselagen-react-components";
 
-const renderTypes = (
+const renderTypes = ({ readOnly }) => (
   <ReactSelectField
     inlineLabel
     tooltipError
+    disabled={readOnly}
     defaultValue="misc_feature"
     options={featureTypes.map((type) => {
       return {
@@ -47,7 +48,7 @@ export default AddOrEditAnnotationDialog({
   getProps: (props) => ({
     upsertAnnotation: props.upsertFeature,
     renderLocations: !props.sequenceData.isProtein,
-    renderTypes,
+    renderTypes: renderTypes({ readOnly: props.readOnly }),
     annotationTypePlural: "features"
   })
 });

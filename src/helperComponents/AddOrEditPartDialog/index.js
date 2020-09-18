@@ -6,10 +6,11 @@ import {
 } from "teselagen-react-components";
 import { FeatureTypes as featureTypes } from "ve-sequence-utils";
 
-const renderTypes = (
+const renderTypes = ({ readOnly }) => (
   <ReactSelectField
     inlineLabel
     tooltipError
+    disabled={readOnly}
     defaultValue="misc_feature"
     options={featureTypes.map((type) => {
       return {
@@ -40,9 +41,10 @@ const renderTypes = (
     label="Type:"
   />
 );
-const getRenderTags = ({ editTagsLink, tags }) => {
+const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
   return (
     <ReactSelectField
+      disabled={readOnly}
       inlineLabel
       rightEl={editTagsLink}
       isTagSelect
@@ -62,10 +64,11 @@ export default AddOrEditAnnotationDialog({
   },
   getProps: (props) => ({
     upsertAnnotation: props.upsertPart,
-    renderTypes,
+    renderTypes: renderTypes({ readOnly: props.readOnly }),
     renderTags:
       props.allPartTags &&
       getRenderTags({
+        readOnly: props.readOnly,
         editTagsLink: props.editTagsLink,
         tags: getTagsAndTagOptions(props.allPartTags)
       }),
