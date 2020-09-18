@@ -1,5 +1,5 @@
 import React from "react";
-import uuid from "uniqid";
+import uuid from "shortid";
 
 import { reduxForm, formValues } from "redux-form";
 

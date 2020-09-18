@@ -1,4 +1,4 @@
-// import uniqid from "uniqid";
+// import uniqid from "shortid";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
 import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";

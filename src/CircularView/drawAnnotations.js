@@ -28,6 +28,7 @@ function drawAnnotations({
   onRightClicked = noop,
   onDoubleClick = noop,
   showLabels,
+  noRedux,
   labelOptions,
   annotationProps,
   fontStyle
@@ -39,10 +40,10 @@ function drawAnnotations({
   const labels = {};
 
   if (!Object.keys(annotations).length) return null;
-  sortBy(annotations, a => {
+  sortBy(annotations, (a) => {
     return -getRangeLength(a, sequenceLength);
   })
-    .map(annotation => {
+    .map((annotation) => {
       let {
         startAngle,
         endAngle,
@@ -111,7 +112,7 @@ function drawAnnotations({
 
       return annotationCopy;
     })
-    .forEach(function(annotation, index) {
+    .forEach(function (annotation, index) {
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
         onClick({ event, annotation });
@@ -137,10 +138,20 @@ function drawAnnotations({
         endAngle,
         totalAngle,
         centerAngle,
-        locationAngles
+        locationAngles,
+        noDirectionality,
+        ...rest
       } = annotation;
 
-      const titleText = getAnnotationNameAndStartStopString(annotation);
+      const _annotationProps = {
+        ...annotationProps,
+        ...(noDirectionality && { arrowheadLength: 0 }),
+        ...rest
+      };
+
+      const titleText = getAnnotationNameAndStartStopString(annotation, {
+        isProtein
+      });
 
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
@@ -157,6 +168,7 @@ function drawAnnotations({
           id: annotation.id,
           title: titleText,
           className: annotation.labelClassName || "",
+          highPriorityLabel: annotation.highPriorityLabel,
           onClick: _onClick,
           onDoubleClick: _onDoubleClick,
           fontStyle: fontStyle || "normal",
@@ -178,6 +190,7 @@ function drawAnnotations({
           {...{
             isProtein,
             titleText,
+            noRedux,
             editorName,
             annotationType,
             showLabels,
@@ -195,7 +208,7 @@ function drawAnnotations({
             annotationColor,
             annotationRadius,
             annotationHeight,
-            annotationProps
+            annotationProps: _annotationProps
           }}
           id={annotation.id}
           key={"veAnnotation-" + annotationType + index}
@@ -218,7 +231,7 @@ function drawAnnotations({
 
 export default drawAnnotations;
 
-const DrawAnnotation = withHover(function({
+const DrawAnnotation = withHover(function ({
   className,
   startAngle,
   endAngle,

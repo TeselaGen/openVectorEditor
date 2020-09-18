@@ -11,3 +11,4 @@ npm-debug.log*
 .linkEnv
 .idea
 .DS_Store
+.nyc_output

@@ -8,6 +8,7 @@ import pureNoFunc from "../utils/pureNoFunc";
 
 function Cutsites({
   radius,
+  noRedux,
   editorName,
   showCutsiteLabels,
   cutsiteClicked,
@@ -22,7 +23,7 @@ function Cutsites({
   let labels = {};
   let index = 0;
   if (!Object.keys(cutsites).length) return null;
-  each(cutsites, function(annotation /* key */) {
+  each(cutsites, function (annotation /* key */) {
     index++;
 
     if (!(annotation.topSnipPosition > -1)) {
@@ -41,11 +42,11 @@ function Cutsites({
         color: annotation.restrictionEnzyme.color,
         className: " veCutsiteLabel",
         id: annotation.id,
-        onClick: event => {
+        onClick: (event) => {
           cutsiteClicked({ event, annotation });
           event.stopPropagation();
         },
-        onContextMenu: event => {
+        onContextMenu: (event) => {
           cutsiteRightClicked({ event, annotation });
           event.stopPropagation();
         }
@@ -55,6 +56,7 @@ function Cutsites({
       <DrawCutsite
         key={"cutsite" + index}
         {...{
+          noRedux,
           editorName,
           id: annotation.id,
           startAngle,
@@ -79,7 +81,7 @@ function Cutsites({
 export default Cutsites;
 
 const DrawCutsite = pureNoFunc(
-  withHover(function({
+  withHover(function ({
     className,
     startAngle,
     radius,

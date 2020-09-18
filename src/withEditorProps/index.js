@@ -30,7 +30,7 @@ import domtoimage from "dom-to-image";
 // const addPartSelector = formValueSelector("AddOrEditPartDialog");
 
 async function getSaveDialogEl(props) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     props.showPrintDialog({
       dialogProps: {
         title: "Generating Image to Save...",
@@ -55,24 +55,25 @@ async function getSaveDialogEl(props) {
  *
  * @return {object} - Blob (png) | Error
  */
-const generatePngFromPrintDialog = async props => {
+const generatePngFromPrintDialog = async (props) => {
   const saveDialog = await getSaveDialogEl(props);
 
   const printArea = saveDialog.querySelector(".bp3-dialog-body");
 
   const result = await domtoimage
     .toBlob(printArea)
-    .then(blob => {
+    .then((blob) => {
       return blob;
     })
-    .catch(error => {
+    .catch((error) => {
+      console.error(error);
       return error;
     });
   props.hidePrintDialog();
   return result;
 };
 
-export const handleSave = props => async (opts = {}) => {
+export const handleSave = (props) => async (opts = {}) => {
   const {
     onSave,
     onSaveAs,
@@ -109,7 +110,7 @@ export const handleSave = props => async (opts = {}) => {
   }
 };
 
-export const handleInverse = props => () => {
+export const handleInverse = (props) => () => {
   const {
     sequenceLength,
     selectionLayer,
@@ -147,7 +148,7 @@ export const handleInverse = props => () => {
   }
 };
 
-export const updateCircular = props => async isCircular => {
+export const updateCircular = (props) => async (isCircular) => {
   const { _updateCircular, updateSequenceData, sequenceData } = props;
   if (!isCircular && hasAnnotationThatSpansOrigin(sequenceData)) {
     const doAction = await showConfirmationDialog({
@@ -165,24 +166,21 @@ export const updateCircular = props => async isCircular => {
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
 
-export const importSequenceFromFile = props => (file, opts = {}) => {
+export const importSequenceFromFile = (props) => (file, opts = {}) => {
   const { updateSequenceData, onImport } = props;
   let reader = new FileReader();
   reader.readAsText(file, "UTF-8");
-  reader.onload = function(evt) {
+  reader.onload = function (evt) {
     const content = evt.target.result;
     anyToJson(
       content,
-      async result => {
+      async (result) => {
         // TODO maybe handle import errors/warnings better
         const failed = !result[0].success;
         const messages = result[0].messages;
         if (messages && messages.length) {
-          messages.forEach(msg => {
-            const type = msg
-              .substr(0, 20)
-              .toLowerCase()
-              .includes("error")
+          messages.forEach((msg) => {
+            const type = msg.substr(0, 20).toLowerCase().includes("error")
               ? failed
                 ? "error"
                 : "warning"
@@ -207,12 +205,12 @@ export const importSequenceFromFile = props => (file, opts = {}) => {
       { acceptParts: true, ...opts }
     );
   };
-  reader.onerror = function() {
+  reader.onerror = function () {
     window.toastr.error("Could not read file.");
   };
 };
 
-export const exportSequenceToFile = props => format => {
+export const exportSequenceToFile = (props) => (format) => {
   const { sequenceData } = props;
   let convert, fileExt;
 
@@ -245,7 +243,7 @@ export const exportSequenceToFile = props => format => {
 export default compose(
   connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
   withHandlers({
-    wrappedInsertSequenceDataAtPositionOrRange: props => {
+    wrappedInsertSequenceDataAtPositionOrRange: (props) => {
       return (
         _sequenceDataToInsert,
         _existingSequenceData,
@@ -277,13 +275,13 @@ export default compose(
       };
     },
 
-    upsertTranslation: props => {
-      return async translationToUpsert => {
+    upsertTranslation: (props) => {
+      return async (translationToUpsert) => {
         if (!translationToUpsert) return;
         const { _upsertTranslation, sequenceData } = props;
         if (
           !translationToUpsert.id &&
-          some(sequenceData.translations || [], existingTranslation => {
+          some(sequenceData.translations || [], (existingTranslation) => {
             if (
               //check if an identical existingTranslation exists already
               existingTranslation.translationType === "User Created" &&
@@ -314,7 +312,7 @@ export default compose(
     exportSequenceToFile,
     updateCircular,
     //add additional "computed handlers here"
-    selectAll: props => () => {
+    selectAll: (props) => () => {
       const { sequenceLength, selectionLayerUpdate } = props;
       sequenceLength > 0 &&
         selectionLayerUpdate({
@@ -323,7 +321,7 @@ export default compose(
         });
     },
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
-      acc[`handleNew${key}`] = props => () => {
+      acc[`handleNew${key}`] = (props) => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
         const handler = props[`showAddOrEdit${key}Dialog`];
 
@@ -356,7 +354,7 @@ export default compose(
       return acc;
     }, {}),
 
-    handleRotateToCaretPosition: props => () => {
+    handleRotateToCaretPosition: (props) => () => {
       const {
         caretPosition,
         readOnly,
@@ -374,7 +372,7 @@ export default compose(
       caretPositionUpdate(0);
     },
 
-    handleReverseComplementSelection: props => () => {
+    handleReverseComplementSelection: (props) => () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -401,7 +399,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleComplementSelection: props => () => {
+    handleComplementSelection: (props) => () => {
       const {
         sequenceData,
         updateSequenceData,
@@ -425,7 +423,7 @@ export default compose(
       updateSequenceData(newSeqData);
     },
 
-    handleReverseComplementSequence: props => () => {
+    handleReverseComplementSequence: (props) => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(
         getReverseComplementSequenceAndAnnotations(sequenceData)
@@ -433,7 +431,7 @@ export default compose(
       window.toastr.success("Reverse Complemented Sequence Successfully");
     },
 
-    handleComplementSequence: props => () => {
+    handleComplementSequence: (props) => () => {
       const { sequenceData, updateSequenceData } = props;
       updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
       window.toastr.success("Complemented Sequence Successfully");
@@ -528,6 +526,7 @@ function mapStateToProps(state, ownProps) {
   let allCutsites = s.cutsitesSelector(editorState);
   let translations = s.translationsSelector(editorState);
   let filteredFeatures = s.filteredFeaturesSelector(editorState);
+  let filteredParts = s.filteredPartsSelector(editorState);
   let sequenceLength = s.sequenceLengthSelector(editorState);
 
   let matchedSearchLayer = { start: -1, end: -1 };
@@ -561,6 +560,7 @@ function mapStateToProps(state, ownProps) {
       uppercaseSequenceMapFont,
       sequenceData.sequence
     ),
+    parts: filteredParts,
     filteredFeatures,
     cutsites,
     orfs,
@@ -605,7 +605,7 @@ export function mapDispatchToActions(dispatch, ownProps) {
   return {
     ...actionsToPass,
     selectionLayerUpdate: ownProps.onSelectionOrCaretChanged
-      ? selectionLayer => {
+      ? (selectionLayer) => {
           ownProps.onSelectionOrCaretChanged({
             selectionLayer,
             caretPosition: -1
@@ -614,7 +614,7 @@ export function mapDispatchToActions(dispatch, ownProps) {
         }
       : updateSel,
     caretPositionUpdate: ownProps.onSelectionOrCaretChanged
-      ? caretPosition => {
+      ? (caretPosition) => {
           ownProps.onSelectionOrCaretChanged({
             caretPosition,
             selectionLayer: { start: -1, end: -1 }
@@ -680,9 +680,9 @@ export function getCombinedActions(
   return bindActionCreators(actionsToPass, dispatch);
 }
 
-const getTypesToOmit = annotationsToSupport => {
+const getTypesToOmit = (annotationsToSupport) => {
   let typesToOmit = {};
-  allTypes.forEach(type => {
+  allTypes.forEach((type) => {
     if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
   return typesToOmit;
@@ -727,7 +727,7 @@ function truncateOriginSpanningAnnotations(seqData) {
 }
 
 function truncateOriginSpanners(annotations, sequenceLength) {
-  return map(annotations, annotation => {
+  return map(annotations, (annotation) => {
     const { start = 0, end = 0 } = annotation;
     if (start > end) {
       return {
@@ -759,7 +759,7 @@ function doAnySpanOrigin(annotations) {
   });
 }
 
-export const connectToEditor = fn => {
+export const connectToEditor = (fn) => {
   return connect((state, ownProps, ...rest) => {
     const editor = state.VectorEditor[ownProps.editorName] || {};
     editor.sequenceData = editor.sequenceData || {};
@@ -776,7 +776,7 @@ export const connectToEditor = fn => {
 //so they can still render things like translations, ..etc
 
 //Currently only supporting translations
-export const withEditorPropsNoRedux = withProps(props => {
+export const withEditorPropsNoRedux = withProps((props) => {
   const {
     sequenceData,
     sequenceDataWithRefSeqCdsFeatures,

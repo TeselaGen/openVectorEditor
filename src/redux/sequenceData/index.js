@@ -1,6 +1,6 @@
 import deepEqual from "deep-equal";
 import { tidyUpSequenceData } from "ve-sequence-utils";
-import uuid from "uniqid";
+import uuid from "shortid";
 
 import createAction from "../utils/createMetaAction";
 import features from "./features";

@@ -1,9 +1,9 @@
-describe("onSavePng", function() {
+describe("onSavePng", function () {
   beforeEach(() => {
     cy.visit("");
   });
   it(`generate a png onSave if pngGenerate option is set to true`, () => {
-    cy.window().then(win => {
+    cy.window().then((win) => {
       cy.spy(win.console, "log");
     });
     cy.tgToggle("alwaysAllowSave");
@@ -11,7 +11,7 @@ describe("onSavePng", function() {
     cy.get(`[data-test="saveTool"]`).click();
     cy.contains(".bp3-dialog", "Generating Image to Save");
     cy.get(".bp3-dialog .veCircularView");
-    cy.contains("onSave callback triggered").then(() => {
+    cy.contains("onSave callback triggered", { timeout: 20000 }).then(() => {
       // eslint-disable-next-line no-unused-expressions
       expect(window.Cypress.pngFile).to.exist;
       expect(window.Cypress.pngFile.type).to.eq("image/png");

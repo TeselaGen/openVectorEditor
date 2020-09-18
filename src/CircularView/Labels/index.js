@@ -3,6 +3,7 @@ import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import React from "react";
+import { cloneDeep } from "lodash";
 
 const defaultFontWidth = 8;
 const fontWidthToFontSize = 1.75;
@@ -11,6 +12,8 @@ function Labels({
   labels = [],
   radius: outerRadius,
   editorName,
+  noRedux,
+  rotationRadians,
   textScalingFactor,
   labelLineIntensity,
   circularViewWidthVsHeightRatio, //width of the circular view
@@ -27,8 +30,13 @@ function Labels({
 
   let fontHeight = fontWidth * 2.4;
   let labelPoints = labels
-    .map(function(label) {
-      let { annotationCenterAngle, annotationCenterRadius } = label;
+    .map(function (label) {
+      let {
+        annotationCenterAngle: _annotationCenterAngle,
+        annotationCenterRadius
+      } = label;
+      const annotationCenterAngle =
+        _annotationCenterAngle + (rotationRadians || 0);
       return {
         ...label,
         width: (label.text || "Unlabeled").length * fontWidth,
@@ -59,16 +67,51 @@ function Labels({
         angle: annotationCenterAngle
       };
     })
-    .map(function(label) {
+    .map(function (label) {
       label.labelAndSublabels = [label];
       label.labelIds = { [label.id]: true };
       return label;
     });
-  let groupedLabels = relaxLabelAngles(
-    labelPoints,
-    fontHeight,
-    outerRadius
-  ).filter(l => !!l);
+  let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
+    .filter((l) => !!l)
+    .map((originalLabel) => {
+      //we need to search the labelGroup to see if any of the sub labels are highPriorityLabels
+      //if they are, they should take precedence as the main group identifier
+      if (originalLabel.highPriorityLabel) {
+        //if the originalLabel is a highPriorityLabel, just return it
+        return originalLabel;
+      }
+
+      const _highPrioritySublabel = originalLabel.labelAndSublabels.find(
+        (l) => l.highPriorityLabel
+      );
+      if (_highPrioritySublabel) {
+        const highPrioritySublabel = cloneDeep(_highPrioritySublabel);
+        //there is a high priority sub label, so we need to return it
+        // but first we need to give it the sub-labels
+
+        [
+          "angle",
+          "annotationCenterAngle",
+          "annotationCenterRadius",
+          "innerPoint",
+          "labelAndSublabels",
+          "labelIds",
+          "outerPoint",
+          "radius",
+          "truncatedInnerPoint",
+          "x",
+          "y"
+        ].forEach((k) => {
+          highPrioritySublabel[k] = originalLabel[k];
+        });
+
+        delete originalLabel.labelAndSublabels;
+        return highPrioritySublabel;
+      }
+      return originalLabel;
+    });
+
   // let groupedLabels = relaxLabelAngles(
   //   labelPoints,
   //   fontHeight,
@@ -91,6 +134,7 @@ function Labels({
         <DrawGroupedLabels
           {...{
             editorName,
+            noRedux,
             groupedLabels,
             circularViewWidthVsHeightRatio,
             fontWidth,
@@ -111,12 +155,13 @@ function Labels({
 }
 export default Labels;
 
-const DrawLabelGroup = withHover(function({
+const DrawLabelGroup = withHover(function ({
   hovered,
   className,
   label,
   labelAndSublabels,
   fontWidth,
+  noRedux,
   fontHeight,
   outerRadius,
   onMouseLeave,
@@ -142,7 +187,7 @@ const DrawLabelGroup = withHover(function({
   }
 
   let labelLength = text.length * fontWidth;
-  let maxLabelLength = labelAndSublabels.reduce(function(
+  let maxLabelLength = labelAndSublabels.reduce(function (
     currentLength,
     { text = "Unlabeled" }
   ) {
@@ -178,8 +223,7 @@ const DrawLabelGroup = withHover(function({
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
 
   let content;
-  const labelClass =
-    " veLabelText veCircularViewLabelText clickable " + label.color;
+  const labelClass = ` veLabelText veCircularViewLabelText clickable ${label.color} `;
 
   if ((multipleLabels || groupLabelXStart !== undefined) && hovered) {
     //HOVERED: DRAW MULTIPLE LABELS IN A RECTANGLE
@@ -188,7 +232,7 @@ const DrawLabelGroup = withHover(function({
     if (groupLabelXStart !== undefined) {
       labelXStart = groupLabelXStart;
     }
-    labelAndSublabels.some(function(label) {
+    labelAndSublabels.some(function (label) {
       if (label.id === hoveredId) {
         hoveredLabel = label;
         return true;
@@ -247,10 +291,11 @@ const DrawLabelGroup = withHover(function({
               fontStyle: label.fontStyle
             }}
           >
-            {labelAndSublabels.map(function(label, index) {
+            {labelAndSublabels.map(function (label, index) {
               return (
                 <DrawGroupInnerLabel
                   isSubLabel
+                  noRedux={noRedux}
                   editorName={editorName}
                   logHover
                   key={"labelItem" + index}
@@ -321,7 +366,7 @@ const DrawLabelGroup = withHover(function({
 
 function LabelLine(pointArray, options) {
   let points = "";
-  pointArray.forEach(function({ x, y }) {
+  pointArray.forEach(function ({ x, y }) {
     if (!x && x !== 0) return;
     points += `${x},${y} `;
   });
@@ -386,21 +431,23 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   groupedLabels,
   circularViewWidthVsHeightRatio,
   fontWidth,
+  noRedux,
   fontHeight,
   condenseOverflowingXLabels,
   outerRadius,
   editorName,
   labelLineIntensity
 }) {
-  return groupedLabels.map(function(label) {
+  return groupedLabels.map(function (label, i) {
     let { labelAndSublabels, labelIds } = label;
     let multipleLabels = labelAndSublabels.length > 1;
     return (
       <DrawLabelGroup
-        key={label.id}
+        key={i}
         id={labelIds}
         {...{
           label,
+          noRedux,
           passHoveredId: true, //needed to get the hoveredId
           isLabelGroup: true,
           className: "DrawLabelGroup",

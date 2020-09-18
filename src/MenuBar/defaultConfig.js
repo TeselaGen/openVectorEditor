@@ -93,6 +93,10 @@ export default [
           "lowerCaseSelection"
         ]
       },
+      {
+        text: "Change Circular/Linear",
+        submenu: ["toggleCircular", "toggleLinear"]
+      },
       // {
       //   text: "Change Sequence Case For Selection",
       //   submenu: [

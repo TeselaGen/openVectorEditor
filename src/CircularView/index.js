@@ -29,6 +29,8 @@ import { getOrfColor } from "../constants/orfFrameToColorMap";
 import { getSingular } from "../utils/annotationTypes";
 import { upperFirst, map } from "lodash";
 
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
+
 function noop() {}
 
 // function toDegrees(radians) {
@@ -46,7 +48,8 @@ export class CircularView extends React.Component {
     let clickY = event.clientY - boundingRect.top - boundingRect.height / 2;
 
     //get angle
-    let angle = Math.atan2(clickY, clickX) + Math.PI / 2;
+    let angle =
+      Math.atan2(clickY, clickX) + Math.PI / 2 - this.state.rotationRadians;
     if (angle < 0) angle += Math.PI * 2; //normalize the angle if necessary
     let nearestCaretPos =
       sequenceLength === 0
@@ -71,16 +74,18 @@ export class CircularView extends React.Component {
       )
     });
   }
-
+  state = { rotationRadians: 0 };
   render() {
     let {
       //set defaults for all of these vars
       width = 400,
       height = 400,
       scale = 1,
+      noRedux,
       sequenceData = {},
       hideName = false,
       editorName,
+      withRotateCircularView,
       selectionLayer = { start: -1, end: -1 },
       annotationHeight = 15,
       spaceBetweenAnnotations = 2,
@@ -217,7 +222,6 @@ export class CircularView extends React.Component {
       },
       {
         zIndex: 20,
-        arrowheadLength: 0,
         layerName: "warnings",
         isAnnotation: true,
         spaceBefore: 10,
@@ -237,7 +241,7 @@ export class CircularView extends React.Component {
     const paredDownMessages = [];
 
     let output = layersToDraw
-      .map(opts => {
+      .map((opts) => {
         const {
           layerName,
           maxToDisplay,
@@ -263,6 +267,7 @@ export class CircularView extends React.Component {
         radius += spaceBefore;
         const sharedProps = {
           radius,
+          noRedux,
           isProtein,
           onClick: this.props[singularName + "Clicked"],
           onDoubleClick: this.props[singularName + "DoubleClicked"],
@@ -310,6 +315,7 @@ export class CircularView extends React.Component {
         } else {
           //we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
           results = Comp({
+            rotationRadians: this.state.rotationRadians,
             ...(passLabels && { labels }),
             ...sharedProps
           });
@@ -328,11 +334,11 @@ export class CircularView extends React.Component {
           zIndex
         };
       })
-      .filter(function(i) {
+      .filter(function (i) {
         return !!i;
       });
 
-    annotationsSvgs = sortBy(output, "zIndex").reduce(function(
+    annotationsSvgs = sortBy(output, "zIndex").reduce(function (
       arr,
       { result }
     ) {
@@ -353,7 +359,7 @@ export class CircularView extends React.Component {
         ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
       ];
       return selectionLayers
-        .map(function(selectionLayer, index) {
+        .map(function (selectionLayer, index) {
           if (
             selectionLayer.start >= 0 &&
             selectionLayer.end >= 0 &&
@@ -384,7 +390,7 @@ export class CircularView extends React.Component {
             return null;
           }
         })
-        .filter(el => {
+        .filter((el) => {
           return !!el;
         });
     }
@@ -425,17 +431,24 @@ export class CircularView extends React.Component {
         // tabIndex="0"
         className="veCircularView"
       >
+        {withRotateCircularView && (
+          <RotateCircularView
+            setRotationRadians={(rotationRadians) => {
+              this.setState({ rotationRadians });
+            }}
+          ></RotateCircularView>
+        )}
         <Draggable
           // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
           bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          onDrag={event => {
+          onDrag={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               event,
               sequenceLength,
               editorDragged
             );
           }}
-          onStart={event => {
+          onStart={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               event,
               sequenceLength,
@@ -471,7 +484,7 @@ export class CircularView extends React.Component {
             )}
             <svg
               key="circViewSvg"
-              onClick={event => {
+              onClick={(event) => {
                 instantiated &&
                   this.getNearestCursorPositionToMouseEvent(
                     event,
@@ -479,7 +492,7 @@ export class CircularView extends React.Component {
                     editorClicked
                   );
               }}
-              onContextMenu={e => {
+              onContextMenu={(e) => {
                 this.getNearestCursorPositionToMouseEvent(
                   e,
                   sequenceLength,
@@ -491,9 +504,9 @@ export class CircularView extends React.Component {
               height={heightToUse}
               ref="circularView"
               className="circularViewSvg"
-              viewBox={`-${radius * scale} -${radius * scale} ${radius *
-                2 *
-                scale} ${radius * 2 * scale}`}
+              viewBox={`-${radius * scale} -${radius * scale} ${
+                radius * 2 * scale
+              } ${radius * 2 * scale}`}
             >
               {annotationsSvgs}
             </svg>
@@ -521,12 +534,12 @@ function pareDownAnnotations(annotations, max) {
   let paredDown = false;
   if (Object.keys(annotations).length > max) {
     paredDown = true;
-    let sortedAnnotations = sortBy(annotations, function(annotation) {
+    let sortedAnnotations = sortBy(annotations, function (annotation) {
       return -getRangeLength(annotation);
     });
     annotationsToPass = sortedAnnotations
       .slice(0, max)
-      .reduce(function(obj, item) {
+      .reduce(function (obj, item) {
         obj[item.id] = item;
         return obj;
       }, {});
@@ -574,3 +587,35 @@ function positionCutsites(annotation) {
 //     });
 //   }
 // }
+
+function RotateCircularView({ setRotationRadians }) {
+  return (
+    <div style={{ zIndex: 1000, position: "absolute" }}>
+      <UncontrolledSliderWithPlusMinusBtns
+        onChange={(val) => {
+          const el = document.querySelector(".circularViewSvg");
+          el.style.transform = `rotate(${val}deg)`;
+          el.classList.add("veHideLabels");
+          document.querySelector(
+            ".circularViewSvg .veLabels"
+          ).style.transform = `rotate(-${val}deg)`;
+        }}
+        onRelease={(val) => {
+          setRotationRadians((val * Math.PI) / 180);
+          const el = document.querySelector(".circularViewSvg");
+          el.classList.remove("veHideLabels");
+        }}
+        leftIcon="arrow-left"
+        rightIcon="arrow-right"
+        title="Rotate"
+        style={{ paddingTop: "4px", width: 120 }}
+        className="alignment-zoom-slider"
+        labelRenderer={false}
+        stepSize={3}
+        initialValue={0}
+        max={360}
+        min={0}
+      ></UncontrolledSliderWithPlusMinusBtns>
+    </div>
+  );
+}

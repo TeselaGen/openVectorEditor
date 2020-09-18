@@ -9,7 +9,7 @@ const renderTypes = (
     inlineLabel
     tooltipError
     defaultValue="misc_feature"
-    options={featureTypes.map(type => {
+    options={featureTypes.map((type) => {
       return {
         label: (
           <div
@@ -44,9 +44,9 @@ export default AddOrEditAnnotationDialog({
     height: 500,
     width: 400
   },
-  getProps: props => ({
+  getProps: (props) => ({
     upsertAnnotation: props.upsertFeature,
-    renderLocations: true,
+    renderLocations: !props.sequenceData.isProtein,
     renderTypes,
     annotationTypePlural: "features"
   })

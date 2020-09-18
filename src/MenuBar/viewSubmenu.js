@@ -59,9 +59,26 @@ export default [
   { cmd: "toggleWarnings", shouldDismissPopover: false },
   { cmd: "toggleAssemblyPieces", shouldDismissPopover: false },
   { cmd: "toggleLineageAnnotations", shouldDismissPopover: false },
-  { cmd: "toggleFeatures", shouldDismissPopover: false },
+  //deprecating
+  //{ cmd: "toggleFeatures", shouldDismissPopover: false },
   {
-    cmd: "featureTypesCmd"
+    cmd: "toggleFeatures",
+    onClick: () => {}, //override this click so that they have to hit the submenu
+    shouldDismissPopover: false,
+    submenu: [
+      {
+        cmd: "toggleFeatures",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "featureTypesCmd",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "filterFeatureLengthsCmd",
+        shouldDismissPopover: false
+      }
+    ]
   },
   {
     cmd: "toggleTranslations",
@@ -91,7 +108,11 @@ export default [
   //   //submenu of checklist of all feature types here
   //   submenu: [{ text: "TO DO...", disabled: true }]
   // },
-  { cmd: "toggleParts", shouldDismissPopover: false },
+  {
+    cmd: "togglePartsWithSubmenu",
+    onClick: () => {},
+    shouldDismissPopover: false
+  },
   { cmd: "toggleCutsites", shouldDismissPopover: false },
   // TODO translations, cds feature translations?
   {
