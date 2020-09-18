@@ -31,19 +31,20 @@ describe("editor", function () {
     cy.contains(".veRowViewFeature", "NF").click({ force: true });
     cy.contains("Selecting 2 AAs from 1 to 2");
 
-    cy.get(".veLabelText")
-      .contains("araC")
-      .trigger("contextmenu", { force: true });
-    cy.contains(".bp3-menu-item", "Edit Feature").click();
-    cy.get(`.tg-test-locations-2-start input[value="501"]`);
-    cy.contains("Add Joined Feature Span").click();
-    cy.get(`.tg-test-locations-3-start input[value="886"]`).type(
-      "{selectall}3"
-    );
-    cy.get(`.tg-test-locations-3-end input[value="886"]`).type("{selectall}3");
-    cy.contains(".bp3-dialog button", "Save").click();
-    cy.get(`.tg-test-locations-3-end .bp3-intent-danger`).should("exist");
-    cy.closeDialog();
+    //tnr commenting this out for now. I've disabled editing feature locations
+    // cy.get(".veLabelText")
+    //   .contains("araC")
+    //   .trigger("contextmenu", { force: true });
+    // cy.contains(".bp3-menu-item", "Edit Feature").click();
+    // cy.get(`.tg-test-locations-2-start input[value="501"]`);
+    // cy.contains("Add Joined Feature Span").click();
+    // cy.get(`.tg-test-locations-3-start input[value="886"]`).type(
+    //   "{selectall}3"
+    // );
+    // cy.get(`.tg-test-locations-3-end input[value="886"]`).type("{selectall}3");
+    // cy.contains(".bp3-dialog button", "Save").click();
+    // cy.get(`.tg-test-locations-3-end .bp3-intent-danger`).should("exist");
+    // cy.closeDialog();
 
     cy.get(".veLabelText")
       .contains("Part 0")
