@@ -10,6 +10,7 @@ import { addAlignment, AlignmentView /* updateEditor */ } from "../../src/";
 // import { caretPositionUpdate } from "../../src/redux/caretPosition";
 import renderToggle from "./utils/renderToggle";
 import { BPSelect } from "teselagen-react-components";
+import pairwiseAlignment2 from "./exampleData/pairwiseAlignment2.json";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
@@ -45,6 +46,7 @@ export default class AlignmentDemo extends React.Component {
   componentDidMount() {
     addAlignment(store, msaAlignment);
     addAlignment(store, pairwiseAlignment);
+    addAlignment(store, pairwiseAlignment2);
     addAlignment(store, sangerAlignment);
     addAlignment(store, msaAlignmentWithGaps);
   }
@@ -84,7 +86,7 @@ export default class AlignmentDemo extends React.Component {
               }}
             >
               <BPSelect
-                onChange={val => {
+                onChange={(val) => {
                   this.setState({ alignmentDataId: val });
                 }}
                 options={[
@@ -93,6 +95,10 @@ export default class AlignmentDemo extends React.Component {
                     value: msaAlignment.id
                   },
                   { label: "Pairwise Alignment", value: pairwiseAlignment.id },
+                  {
+                    label: "Pairwise Alignment 2",
+                    value: pairwiseAlignment2.id
+                  },
                   { label: "Sanger Alignment", value: sangerAlignment.id },
                   { label: "MSA with gaps", value: msaAlignmentWithGaps.id }
                 ]}
