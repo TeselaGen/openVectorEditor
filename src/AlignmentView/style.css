@@ -25,3 +25,19 @@
   margin-left: 4px;
   margin-right: 4px;
 }
+
+.veAlignmentSelectionLayer {
+  /* z-index: unset; */
+  top: 0;
+  height: 100% !important;
+  overflow: hidden;
+}
+.alignmentView .veSelectionLayer {
+  top: 0;
+}
+
+.veTracksAndAlignmentHolder {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}

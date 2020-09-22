@@ -96,6 +96,7 @@ export class RowItem extends React.PureComponent {
       bpsPerRow = sequenceLength,
       editorName,
       externalLabels,
+      scrollData,
       onlyShowLabelsThatDoNotFit,
       labelLineIntensity
     } = this.props;
@@ -405,15 +406,16 @@ export class RowItem extends React.PureComponent {
               <Sequence
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
                 showDnaColors={showDnaColors}
+                scrollData={scrollData}
                 hideBps={charWidth < 7}
                 sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
                 height={sequenceHeight}
                 showCutsites={showCutsites}
-                length={
-                  alignmentData
-                    ? alignmentData.sequence.length
-                    : row.sequence.length
-                }
+                // length={
+                //   alignmentData
+                //     ? alignmentData.sequence.length
+                //     : row.sequence.length
+                // }
                 charWidth={charWidth}
                 alignmentData={alignmentData}
                 {...annotationCommonProps}

@@ -1,32 +1,12 @@
 import React from "react";
 import { times, map } from "lodash";
 import { DNAComplementMap } from "ve-sequence-utils";
+import { view } from "@risingstack/react-easy-state";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
 const realCharWidth = 8;
 class Sequence extends React.Component {
-  shouldComponentUpdate(newProps) {
-    const { props } = this;
-    if (
-      [
-        "hideBps",
-        "cutsites",
-        "sequence",
-        "showCutsites",
-        "charWidth",
-        "length",
-        "height",
-        "width",
-        "isReverse",
-        "scrollData",
-        "showDnaColors"
-      ].some(key => props[key] !== newProps[key])
-    )
-      return true;
-    if (!!props.alignmentData !== !!newProps.alignmentData) return true;
-    return false;
-  }
   render() {
     let {
       sequence,
@@ -35,47 +15,43 @@ class Sequence extends React.Component {
       containerStyle = {},
       children,
       isReverse,
-      length,
       height,
       className,
       startOffset = 0,
       chunkSize = 100,
       scrollData,
       showDnaColors,
-      getGaps,
+      // getGaps,
       alignmentData
     } = this.props;
-    // const fudge = 0
-    const fudge = charWidth - realCharWidth; // the fudge factor is used to position the sequence in the middle of the
-    // const fudge = charWidth * 0.4; // the fudge factor is used to position the sequence in the middle of the
+    // the fudge factor is used to position the sequence in the middle of the <text> element
+    const fudge = charWidth - realCharWidth;
     let gapsBeforeSequence = 0;
     let seqReadWidth = 0;
+    const seqLen = sequence.length;
+
     if (alignmentData) {
-      gapsBeforeSequence = getGaps(0).gapsBefore;
-      sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
-      seqReadWidth = charWidth * sequence.length;
+      // gapsBeforeSequence = getGaps(0).gapsBefore;
+      // sequence = sequence.replace(/-/g, " ")
+      // seqReadWidth = charWidth * sequence.length;
     }
     let style = {
       position: "relative",
       height,
       left: gapsBeforeSequence * charWidth,
-      display: alignmentData ? "inline-block" : "",
       ...containerStyle
     };
-    let width = length * charWidth;
-    const seqLen = sequence.length;
+
+    let width = seqLen * charWidth;
     let coloredRects = null;
     if (showDnaColors) {
       coloredRects = <ColoredSequence {...{ ...this.props, width }} />;
     }
     const numChunks = Math.ceil(seqLen / chunkSize);
-    // const chunkWidth = width / numChunks;
     const chunkWidth = chunkSize * charWidth;
     if (scrollData) {
-      const {
-        fractionScrolled: { percentScrolled },
-        viewportWidth
-      } = scrollData;
+      //we're in the alignment view alignments only
+      const { percentScrolled, viewportWidth } = scrollData;
 
       const visibleStart = percentScrolled * (width - viewportWidth);
       const visibleEnd = visibleStart + viewportWidth;
@@ -85,44 +61,45 @@ class Sequence extends React.Component {
           style={style}
           className={(className ? className : "") + " ve-row-item-sequence"}
         >
-          <svg
-            style={{
-              left: startOffset * charWidth,
-              height,
-              position: "absolute"
-            }}
-            ref="rowViewTextContainer"
-            className="rowViewTextContainer"
-            height={Math.max(0, Number(height))}
-          >
-            {times(numChunks, i => {
-              const seqChunk = getChunk(sequence, chunkSize, i);
+          {!hideBps && (
+            <svg
+              style={{
+                left: startOffset * charWidth,
+                height,
+                position: "absolute"
+              }}
+              ref="rowViewTextContainer"
+              className="rowViewTextContainer"
+              height={Math.max(0, Number(height))}
+            >
+              {times(numChunks, (i) => {
+                const seqChunk = getChunk(sequence, chunkSize, i);
 
-              const textLength = charWidth * seqChunk.length - fudge;
-              const x = i * chunkWidth;
-
-              if (x > visibleEnd || x + textLength < visibleStart) return null;
-              return (
-                <text
-                  key={i}
-                  className={
-                    "ve-monospace-font " +
-                    (isReverse ? " ve-sequence-reverse" : "")
-                  }
-                  {...{
-                    // x: i * chunkWidth + i/2 * charWidth ,
-                    // textLength: charWidth * seqChunk.length - charWidth,
-                    x,
-                    textLength: alignmentData ? seqReadWidth : textLength,
-                    y: height / 2,
-                    lengthAdjust: "spacing"
-                  }}
-                >
-                  {seqChunk}
-                </text>
-              );
-            })}
-          </svg>
+                const textLength = charWidth * seqChunk.length;
+                const x = i * chunkWidth;
+                if (x > visibleEnd || x + textLength < visibleStart)
+                  return null;
+                return (
+                  <text
+                    key={i}
+                    className={
+                      "ve-monospace-font " +
+                      (isReverse ? " ve-sequence-reverse" : "")
+                    }
+                    {...{
+                      textLength: textLength - fudge,
+                      x: x + fudge / 2,
+                      y: height - height / 4,
+                      lengthAdjust: "spacing"
+                    }}
+                  >
+                    {seqChunk}
+                  </text>
+                );
+              })}
+            </svg>
+          )}
+          {coloredRects}
           {children}
         </div>
       );
@@ -135,7 +112,6 @@ class Sequence extends React.Component {
           {!hideBps && (
             <svg
               style={{
-                // marginTop: -height,
                 left: startOffset * charWidth,
                 height,
                 position: "absolute"
@@ -152,8 +128,7 @@ class Sequence extends React.Component {
                 {...{
                   x: 0 + fudge / 2,
                   y: height - height / 4,
-                  textLength: (alignmentData ? seqReadWidth : width) - fudge,
-                  lengthAdjust: "spacing"
+                  textLength: (alignmentData ? seqReadWidth : width) - fudge
                 }}
               >
                 {sequence}
@@ -168,7 +143,8 @@ class Sequence extends React.Component {
   }
 }
 
-export default Sequence;
+export default view(Sequence);
+
 const dnaToColor = {
   a: "lightgreen",
   c: "#658fff",
@@ -189,7 +165,7 @@ class ColoredSequence extends React.Component {
     const { props } = this;
     if (
       ["charWidth", "sequence", "height", "isReverse", "width"].some(
-        key => props[key] !== newProps[key]
+        (key) => props[key] !== newProps[key]
       )
     )
       return true;
@@ -213,8 +189,9 @@ class ColoredSequence extends React.Component {
       const y = 0;
       colorPaths[getDnaColor(char, isReverse)] =
         (colorPaths[getDnaColor(char, isReverse)] || "") +
-        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${y +
-          height}`;
+        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
+          y + height
+        }`;
     });
     return (
       <g>

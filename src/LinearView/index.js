@@ -85,6 +85,7 @@ export class LinearView extends React.Component {
       editorDragStopped = noop,
       width = 400,
       tickSpacing,
+      scrollData,
       caretPosition,
       backgroundRightClicked = noop,
       RowItemProps = {},
@@ -161,6 +162,7 @@ export class LinearView extends React.Component {
             {...{
               ...rest,
               charWidth,
+              scrollData,
               caretPosition,
               isProtein: sequenceData.isProtein,
               alignmentData,

@@ -20,6 +20,7 @@ function SelectionLayer(props) {
     row,
     sequenceLength,
     regions,
+    leftMargin = 0,
     isProtein,
     getGaps,
     hideTitle: topLevelHideTitle,
@@ -105,6 +106,7 @@ function SelectionLayer(props) {
                 overlap.start === start && (
                   <Caret
                     {...{
+                      leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
                       charWidth,
@@ -124,6 +126,7 @@ function SelectionLayer(props) {
                 overlap.end === end && (
                   <Caret
                     {...{
+                      leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
                       charWidth,
@@ -156,7 +159,7 @@ function SelectionLayer(props) {
                 }
                 style={{
                   width,
-                  left: xStart,
+                  left: leftMargin + xStart,
                   ...style,
                   background: color || topLevelColor,
                   height

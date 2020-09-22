@@ -12,6 +12,7 @@ function Caret(props) {
     caretPosition,
     isProtein,
     onClick,
+    leftMargin,
     onRightClick,
     selectionMessage,
     className = ""
@@ -31,7 +32,7 @@ function Caret(props) {
         onClick={onClick}
         onContextMenu={
           onRightClick
-            ? e => {
+            ? (e) => {
                 onRightClick(e);
               }
             : undefined
@@ -42,7 +43,7 @@ function Caret(props) {
         }
         className={"veCaret veRowViewCaret " + className}
         style={{
-          left: (caretPosition - row.start) * charWidth - 2
+          left: leftMargin + (caretPosition - row.start) * charWidth - 2
         }}
       />
     );
