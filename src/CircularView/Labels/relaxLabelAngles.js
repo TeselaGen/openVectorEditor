@@ -15,7 +15,9 @@ function normalizeAngle(angle) {
 //this pure function allows the labels to spread out around the circle
 //and groups overlapping labels together if necessary
 function relaxLabelAngles(_labelPoints, spacing, maxradius) {
-  // spacing = 18;
+  console.info("relaxLabelAngles", _labelPoints, spacing, maxradius);
+  spacing = spacing * 0.8;
+
   let maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
   let labels = cloneDeep(_labelPoints);
   if (labels.length > maxLabelsPerQuadrant * 4) {
@@ -58,6 +60,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     let extraSpaces = Math.max(maxLabelsPerQuadrant - labels.length, 0);
     let lastLabelYPosition = 0 - spacing / 2; // spacing to count label height
     let lastlabel;
+    console.info("labels", labels);
     return labels
       .map(function (label /* index */) {
         if (Math.abs(lastLabelYPosition) > maxradius + 80) {
@@ -151,5 +154,6 @@ function combineLabels(labels, numberOfBuckets) {
   let combinedLabels = Object.keys(buckets).map(function (key) {
     return buckets[key];
   });
+  console.info("combinedLabels>>>>>", combinedLabels);
   return combinedLabels;
 }

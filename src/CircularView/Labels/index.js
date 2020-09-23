@@ -5,7 +5,7 @@ import "./style.css";
 import React from "react";
 import { cloneDeep } from "lodash";
 
-const defaultFontWidth = 8;
+const defaultFontWidth = 4;
 const fontWidthToFontSize = 1.75;
 
 function Labels({
@@ -19,6 +19,7 @@ function Labels({
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
+  console.info("scaling factor", textScalingFactor);
   if (!labels.length) return null;
   outerRadius += 25;
   let radius = outerRadius;
