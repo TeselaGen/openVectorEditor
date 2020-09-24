@@ -1,8 +1,3 @@
-// import { getRangeLength } from "ve-range-utils";
-// import {  } from "ve-range-utils";
-// import { normalizePositionByRangeLength } from "ve-range-utils";
-// import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
-
 import {
   getRangeLength,
   trimRangeByAnotherRange,
@@ -11,7 +6,6 @@ import {
   expandOrContractRangeToPosition
 } from "ve-range-utils";
 
-// let draggingEnd = false;
 let dragInProgress = false;
 let selectionStartOrEndGrabbed;
 
@@ -29,11 +23,6 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
   }
   if (!dragInProgress) {
     //we're starting the drag, so update the caret position!
-    if (!selectionStartOrEndGrabbed) {
-      //we're not dragging the caret or selection handles
-      // caretPositionOnDragStart = nearestCaretPos;
-      // this.caretPositionUpdate(nearestCaretPos);
-    }
     dragInProgress = new Date().getTime();
     return;
   }
@@ -62,7 +51,6 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
       doNotWrapOrigin
     });
   } else {
-    // } else if (caretPosition > -1) {
     handleNoSelectionLayerYet({
       caretPosition: caretPositionOnDragStart,
       selectionLayer: caretPositionOnDragStart
@@ -74,10 +62,6 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
       doNotWrapOrigin
     });
   }
-  // else {
-  //   debugger;
-  //   console.warn("we should never be here...");
-  // }
 };
 
 export const editorClicked = function ({ nearestCaretPos, shiftHeld }) {
