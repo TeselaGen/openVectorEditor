@@ -39,6 +39,9 @@ export class LinearView extends React.Component {
     }
     if (this.props.sequenceLength === 0) nearestCaretPos = 0;
     const callbackVals = {
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       event,
       shiftHeld: event.shiftKey,
       nearestCaretPos,

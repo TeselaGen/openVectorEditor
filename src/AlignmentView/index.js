@@ -43,6 +43,7 @@ import draggableClassnames from "../constants/draggableClassnames";
 import Caret from "../RowItem/Caret";
 import { debounce } from "lodash";
 import { view } from "@risingstack/react-easy-state";
+import { noop } from "lodash";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -118,6 +119,7 @@ class AlignmentView extends React.Component {
   }
 
   componentWillUnmount() {
+    if (window.Cypress) delete window.Cypress.updateAlignmentSelection;
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
@@ -173,9 +175,9 @@ class AlignmentView extends React.Component {
     verticalVisibleRange: { start: 0, end: 0 }
   });
 
-  getMinCharWidth = () => {
+  getMinCharWidth = (noNameDiv) => {
     const toReturn = Math.min(
-      Math.max(this.state.width - nameDivWidth - 5, 1) /
+      Math.max(this.state.width - (noNameDiv ? 0 : nameDivWidth) - 5, 1) /
         this.getSequenceLength(),
       10
     );
@@ -197,19 +199,17 @@ class AlignmentView extends React.Component {
     }
   }
   componentDidMount() {
-    setTimeout(() => {
-      this.setVerticalScrollRange();
-    }, 500);
-
-    // const userAlignmentViewPercentageHeight =
-    //   this.alignmentHolder.clientHeight / this.alignmentHolder.scrollHeight;
-    // this.setState({ userAlignmentViewPercentageHeight });
-  }
-  UNSAFE_componentWillMount() {
+    if (window.Cypress)
+      window.Cypress.updateAlignmentSelection = (newRangeOrCaret) => {
+        this.updateSelectionOrCaret(false, newRangeOrCaret);
+      };
     this.editorDragged = editorDragged.bind(this);
     this.editorClicked = editorClicked.bind(this);
     this.editorDragStarted = editorDragStarted.bind(this);
     this.editorDragStopped = editorDragStopped.bind(this);
+    setTimeout(() => {
+      this.setVerticalScrollRange();
+    }, 500);
   }
 
   annotationClicked = ({
@@ -285,7 +285,6 @@ class AlignmentView extends React.Component {
     this.easyStore.selectionLayer = newSelection;
 
     this.debouncedAlignmentRunUpdate({
-      // alignmentRunUpdate({
       alignmentId,
       selectionLayer: newSelection,
       caretPosition: -1
@@ -311,7 +310,10 @@ class AlignmentView extends React.Component {
       this.InfiniteScroller.getFractionalVisibleRange &&
       this.easyStore
     ) {
-      const [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
+      let [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
+      if (this.props.hasTemplate) {
+        end = end + 1;
+      }
       if (
         this.easyStore.verticalVisibleRange.start !== start ||
         this.easyStore.verticalVisibleRange.end !== end
@@ -575,7 +577,8 @@ class AlignmentView extends React.Component {
 
     return (
       <div
-        className={`alignmentViewTrackContainer alignmentViewTrackContainerNumber${i}`}
+        className="alignmentViewTrackContainer"
+        data-alignment-track-index={i}
         style={{
           boxShadow: isTemplate
             ? "red 0px -1px 0px 0px inset, red 0px 1px 0px 0px inset"
@@ -713,7 +716,6 @@ class AlignmentView extends React.Component {
     );
   };
   handleResize = throttle(([e]) => {
-    // console.log(`resizin!`);
     this.easyStore.viewportWidth = e.contentRect.width - nameDivWidth || 400;
     this.setState({ width: e.contentRect.width });
   }, 200);
@@ -733,6 +735,7 @@ class AlignmentView extends React.Component {
       updateAlignmentSortOrder,
       alignmentSortOrder,
       handleBackButtonClicked,
+      noClickDragHandlers,
       alignmentVisibilityToolOptions
     } = this.props;
     const sequenceLength = this.getMaxLength();
@@ -751,10 +754,6 @@ class AlignmentView extends React.Component {
         <div
           className="alignmentTracks "
           style={{ overflowY: "auto", display: "flex", zIndex: 10 }}
-          // onClick={() => {
-          //   // tnrtodo
-          //   console.log(`parent clicked!`);
-          // }}
         >
           <div
             style={{
@@ -770,43 +769,55 @@ class AlignmentView extends React.Component {
           >
             <Draggable
               bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-              onDrag={(event) => {
-                this.getNearestCursorPositionToMouseEvent(
-                  rowData,
-                  event,
-                  this.editorDragged
-                );
-              }}
-              onStart={(event) => {
-                this.getNearestCursorPositionToMouseEvent(
-                  rowData,
-                  event,
-                  this.editorDragStarted
-                );
-              }}
-              onStop={this.editorDragStopped}
+              onDrag={
+                noClickDragHandlers
+                  ? noop
+                  : (event) => {
+                      this.getNearestCursorPositionToMouseEvent(
+                        rowData,
+                        event,
+                        this.editorDragged
+                      );
+                    }
+              }
+              onStart={
+                noClickDragHandlers
+                  ? noop
+                  : (event) => {
+                      this.getNearestCursorPositionToMouseEvent(
+                        rowData,
+                        event,
+                        this.editorDragStarted
+                      );
+                    }
+              }
+              onStop={noClickDragHandlers ? noop : this.editorDragStopped}
             >
               <div
                 ref={(ref) => (this.veTracksAndAlignmentHolder = ref)}
                 className="veTracksAndAlignmentHolder"
-                onContextMenu={(event) => {
-                  this.getNearestCursorPositionToMouseEvent(
-                    rowData,
-                    event,
-                    () => {
-                      //tnrtodo!!
-                      // backgroundRightClicked:
-                      // console.log(`background right clicked!`);
-                    }
-                  );
-                }}
-                onClick={(event) => {
-                  this.getNearestCursorPositionToMouseEvent(
-                    rowData,
-                    event,
-                    this.editorClicked
-                  );
-                }}
+                // onContextMenu={
+                //tnrtodo add copy single track/all tracks logic here
+                // (event) => {
+                // this.getNearestCursorPositionToMouseEvent(
+                //   rowData,
+                //   event,
+                //   () => {
+                //   }
+                // );
+                // }
+                // }
+                onClick={
+                  noClickDragHandlers
+                    ? noop
+                    : (event) => {
+                        this.getNearestCursorPositionToMouseEvent(
+                          rowData,
+                          event,
+                          this.editorClicked
+                        );
+                      }
+                }
               >
                 {/* <div className={"veTracksAndAlignmentHolder"}> */}
                 <PerformantSelectionLayer
@@ -831,24 +842,14 @@ class AlignmentView extends React.Component {
                           t.getBoundingClientRect().top +
                             t.getBoundingClientRect().height
                       ) {
-                        t.classList.forEach((cn) => {
-                          if (
-                            cn.includes("alignmentViewTrackContainerNumber")
-                          ) {
-                            const index = Number(
-                              cn.replace(
-                                "alignmentViewTrackContainerNumber",
-                                ""
-                              )
-                            );
-                            track = alignmentTracks[index];
-                          }
-                        });
+                        const index = t.getAttribute(
+                          "data-alignment-track-index"
+                        );
+                        track = alignmentTracks[index];
                         return true;
                       }
                     });
 
-                    //tnrtodo fix the selection of the name
                     const alignmentData = track.alignmentData;
                     const { name } = alignmentData;
                     showContextMenu(
@@ -959,20 +960,17 @@ class AlignmentView extends React.Component {
                   charWidth={this.getCharWidthInLinearView()}
                   row={{ start: 0, end: sequenceLength - 1 }}
                   easyStore={this.easyStore}
-                  // caretPosition={this.props.caretPosition}
                 />
 
                 {isTemplate ? (
                   this.renderItem(0, 0, isTemplate)
                 ) : (
-                  //tnrtodo
                   <ReactList
                     ref={(c) => {
                       this.InfiniteScroller = c;
                     }}
                     type="variable"
                     itemSizeEstimator={this.estimateRowHeight}
-                    // itemSizeGetter={itemSizeGetter}
                     itemRenderer={this.renderItem}
                     length={alignmentTracks.length}
                   />
@@ -1186,6 +1184,29 @@ class AlignmentView extends React.Component {
             >
               <Minimap
                 {...{
+                  selectionLayerComp: (
+                    <React.Fragment>
+                      <PerformantSelectionLayer
+                        is
+                        hideCarets
+                        className="veAlignmentSelectionLayer veMinimapSelectionLayer"
+                        easyStore={this.easyStore}
+                        sequenceLength={sequenceLength}
+                        charWidth={this.getMinCharWidth(true)}
+                        row={{ start: 0, end: sequenceLength - 1 }}
+                      ></PerformantSelectionLayer>
+                      <PerformantCaret
+                        style={{
+                          opacity: 0.2
+                        }}
+                        className="veAlignmentSelectionLayer veMinimapSelectionLayer"
+                        sequenceLength={sequenceLength}
+                        charWidth={this.getMinCharWidth(true)}
+                        row={{ start: 0, end: sequenceLength - 1 }}
+                        easyStore={this.easyStore}
+                      />
+                    </React.Fragment>
+                  ),
                   alignmentTracks,
                   dimensions: {
                     width: Math.max(this.state.width, 10) || 10
@@ -1261,7 +1282,6 @@ export default compose(
         "sequence",
         "reverseSequence",
         "axis",
-        "axisNumbers",
         "translations",
         "cdsFeatureTranslations",
         "chromatogram",
@@ -1330,12 +1350,17 @@ export default compose(
         alignmentVisibilityToolOptions: {
           alignmentAnnotationVisibility,
           alignmentAnnotationLabelVisibility,
-          alignmentAnnotationVisibilityToggle: (name) => {
+          alignmentAnnotationVisibilityToggle: (
+            name,
+            { useChecked, checked } = {}
+          ) => {
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationVisibility: {
                 ...alignment.alignmentAnnotationVisibility,
-                [name]: !alignment.alignmentAnnotationVisibility[name]
+                [name]: useChecked
+                  ? checked
+                  : !alignment.alignmentAnnotationVisibility[name]
               }
             });
           },

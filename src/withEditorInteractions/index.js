@@ -205,6 +205,7 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       updateSelectionOrCaret({
+        doNotWrapOrigin: !sequenceData.circular,
         shiftHeld,
         sequenceLength,
         newRangeOrCaret,

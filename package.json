@@ -115,6 +115,13 @@
     "plasmid",
     "vector",
     "editor",
+    "alignment",
+    "sequence",
+    "sequence-alignment",
+    "msa",
+    "multiple-sequence-alignment",
+    "pairwise",
+    "pairwise-alignment",
     "teselagen"
   ]
 }

@@ -89,7 +89,7 @@ export class RowView extends React.Component {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
 
-    some(visibleRowsContainer.childNodes, function(rowDomNode) {
+    some(visibleRowsContainer.childNodes, function (rowDomNode) {
       let boundingRowRect = rowDomNode.getBoundingClientRect();
       if (
         event.clientY > boundingRowRect.top &&
@@ -119,11 +119,11 @@ export class RowView extends React.Component {
       let numbers = [top, bottom];
       let target = event.clientY;
       let topOrBottom = numbers
-        .map(function(value, index) {
+        .map(function (value, index) {
           return [Math.abs(value - target), index];
         })
         .sort()
-        .map(function(value) {
+        .map(function (value) {
           return numbers[value[1]];
         })[0];
       let rowDomNode;
@@ -148,6 +148,9 @@ export class RowView extends React.Component {
     }
     if (sequenceLength === 0) nearestCaretPos = 0;
     callback({
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       event,
       className: event.target.className,
       shiftHeld: event.shiftKey,
@@ -289,7 +292,7 @@ export class RowView extends React.Component {
     return this.rowData;
   };
 
-  renderItem = index => {
+  renderItem = (index) => {
     if (this.cache[index]) return this.cache[index];
     let {
       //currently found in props
@@ -321,7 +324,7 @@ export class RowView extends React.Component {
           <div style={rowJumpButtonStyle}>
             <Button
               data-test="jumpToEndButton"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 this.InfiniteScroller &&
                   this.InfiniteScroller.scrollTo(rowData.length);
@@ -336,7 +339,7 @@ export class RowView extends React.Component {
           <div style={rowJumpButtonStyle}>
             <Button
               data-test="jumpToStartButton"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);
               }}
@@ -376,7 +379,7 @@ export class RowView extends React.Component {
       return null;
     }
   };
-  onDrag = event => {
+  onDrag = (event) => {
     this.dragging = true;
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(
@@ -385,7 +388,7 @@ export class RowView extends React.Component {
       this.props.editorDragged
     );
   };
-  onStart = event => {
+  onStart = (event) => {
     this.dragging = true;
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(
@@ -395,21 +398,21 @@ export class RowView extends React.Component {
     );
   };
 
-  onStop = e => {
+  onStop = (e) => {
     this.dragging = false;
     this.props.editorDragStopped(e);
   };
 
-  getRef = ref => (this.node = ref);
+  getRef = (ref) => (this.node = ref);
 
-  onContextMenu = event => {
+  onContextMenu = (event) => {
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       event,
       this.props.backgroundRightClicked
     );
   };
-  onClick = event => {
+  onClick = (event) => {
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       event,
@@ -417,7 +420,7 @@ export class RowView extends React.Component {
     );
   };
 
-  getReactListRef = c => {
+  getReactListRef = (c) => {
     this.InfiniteScroller = c;
     !this.calledUpdateScrollOnce && this.updateScrollPosition({}, this.props); //trigger the scroll here as well because now we actually have the infinite scroller component accessible
   };
@@ -532,7 +535,7 @@ const endScroll = debounce(() => {
 
 function setIntervalX(callback, delay, repetitions) {
   let x = 0;
-  let intervalID = window.setInterval(function() {
+  let intervalID = window.setInterval(function () {
     callback();
 
     if (++x === repetitions) {

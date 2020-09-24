@@ -68,9 +68,10 @@ let Axis = function (props) {
         ) + (isProtein ? 0 : 1);
 
       const positionLength = position.toString().length * 4;
-
+      const textInner = divideBy3(position + (isProtein ? 1 : 0), isProtein);
       tickMarkSVG.push(
         <text
+          data-tick-mark={textInner}
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
           stroke="black"
           x={
@@ -83,7 +84,7 @@ let Axis = function (props) {
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
         >
-          {divideBy3(position + (isProtein ? 1 : 0), isProtein)}
+          {textInner}
         </text>
       );
     }

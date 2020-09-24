@@ -142,7 +142,7 @@ export default class AlignmentDemo extends React.Component {
               {renderToggle({
                 that: this,
                 type: "noClickDragHandlers",
-                label: "Disable Click-Drag Highlighting",
+                label: "Disable Clicks, Dragging and Highlighting",
                 description:
                   "You can disable click-drag highlighting by setting noClickDragHandlers:true"
               })}
@@ -172,7 +172,8 @@ export default class AlignmentDemo extends React.Component {
         </div>
         <AlignmentView
           style={{
-            ...(this.state.showDemoOptions && { paddingLeft: 250 })
+            ...(this.state.showDemoOptions && { paddingLeft: 250 }),
+            marginRight: 10
           }}
           {...{
             id: this.state.alignmentDataId,

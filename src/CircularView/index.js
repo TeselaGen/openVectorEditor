@@ -63,6 +63,9 @@ export class CircularView extends React.Component {
     }
     callback({
       event,
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       className: event.target.parentNode.className.animVal,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
