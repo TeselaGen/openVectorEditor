@@ -116,35 +116,7 @@ export default class Minimap extends React.Component {
       (width - scrollHandleWidth);
     onMinimapScrollX(percent);
     this.scrollMinimapVertical({ e });
-
-    // if (!this.hasSetDirection) {
-    //   const deltaX = Math.abs(e.clientX - this.originalX)
-    //   const deltaY = Math.abs(e.clientY - this.originalY)
-    //   console.log(`e.clientX, this.originalX:`,e.clientX, this.originalX)
-    //   console.log(`deltaX,deltaY:`,deltaX,deltaY)
-    //   if (deltaX > 5 ) {
-    //     this.hasSetDirection = "x";
-    //   }
-    //   if (deltaY > 5) {
-    //     this.hasSetDirection = "y";
-    //   }
-    // }
-    // console.log(`this.hasSetDirection:`,this.hasSetDirection)
-    // if (this.hasSetDirection === "x") {
-    //   const scrollHandleWidth = this.getScrollHandleWidth();
-    //   const percent =
-    //     (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
-    //     (width - scrollHandleWidth);
-    //   onMinimapScrollX(percent);
-    // } else if (this.hasSetDirection === "y") {
-    //   this.scrollMinimapVertical({ e });
-    // }
   };
-  // handleDragStart = (e) => {
-  //   console.log(`e:`,e)
-  //   this.originalX = e.clientX
-  //   this.originalY = e.clientY
-  // };
   itemSizeGetter = () => {
     return this.props.laneHeight;
   };
@@ -407,7 +379,6 @@ const YellowScrollHandle = view(
 
                   zIndex: "-10",
                   background: "white",
-                  // background: "yellow",
                   position: "relative",
                   top: verticalVisibleRange.start * laneHeight
                 }}

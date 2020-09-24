@@ -411,11 +411,6 @@ export class RowItem extends React.PureComponent {
                 sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
                 height={sequenceHeight}
                 showCutsites={showCutsites}
-                // length={
-                //   alignmentData
-                //     ? alignmentData.sequence.length
-                //     : row.sequence.length
-                // }
                 charWidth={charWidth}
                 alignmentData={alignmentData}
                 {...annotationCommonProps}

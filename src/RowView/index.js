@@ -164,9 +164,6 @@ export class RowView extends React.Component {
     });
   };
 
-  // componentDidMount() {
-  //   this.mounted=true
-  // }
   UNSAFE_componentWillReceiveProps(props) {
     //we haven't yet called this function yet, so to make sure it jumps to the selected bps we just set a variable on the class
     this.updateScrollPosition(
@@ -500,30 +497,6 @@ export class RowView extends React.Component {
 
 export default withEditorInteractions(RowView);
 
-// function itemSizeEstimator(index, cache) {
-//   if (cache[index]) {
-//     return cache[index];
-//   }
-//   return 400;
-// }
-
-// const disablePointers = () => {
-//   clearTimeout(this.timer);
-//   if(!document.body.classList.contains('disable-hover')) {
-//     document.body.classList.add('disable-hover')
-//   }
-
-//   this.timer = setTimeout(function(){
-//     document.body.classList.remove('disable-hover')
-//   },0);
-// }
-
-// function onScroll() {
-//   window.__veScrolling = true;
-//   setTimeout(() => {
-//     window.__veScrolling = false;
-//   });
-// }
 function onScroll() {
   window.__veScrolling = true;
   setTimeout(endScroll);

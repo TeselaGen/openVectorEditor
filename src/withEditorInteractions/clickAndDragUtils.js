@@ -83,20 +83,6 @@ export const editorDragStarted = function (opts) {
     : opts.selectionEndGrabbed
     ? "end"
     : null;
-
-  // let styleEl = document.getElementById("react-draggable-style-el");
-  // if (!styleEl) {
-  //   styleEl = document.createElement("style");
-  //   styleEl.type = "text/css";
-  //   styleEl.id = "react-draggable-style-el";
-  //   styleEl.innerHTML =
-  //     ".react-draggable-transparent-selection *::-moz-selection {background: transparent;}\n";
-  //   styleEl.innerHTML +=
-  //     ".react-draggable-transparent-selection *::selection {background: transparent;}\n";
-  //   document.getElementsByTagName("head")[0].appendChild(styleEl);
-  // }
-  // if (document.body)
-  //   addClassName(document.body, "react-draggable-transparent-selection");
 };
 export const editorDragStopped = function () {
   document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
@@ -105,57 +91,12 @@ export const editorDragStopped = function () {
   setTimeout(function () {
     dragInProgress = false;
   });
-
-  // //
-  // try {
-  //   if (document && document.body)
-  //     removeClassName(document.body, "react-draggable-transparent-selection");
-  //   // $FlowIgnore: IE
-  //   if (document.selection) {
-  //     // $FlowIgnore: IE
-  //     document.selection.empty();
-  //   } else {
-  //     const selection = window.getSelection();
-
-  //     if (
-  //       selection.focusNode &&
-  //       selection.focusNode.classList.contains("sequenceInputBubble")
-  //     ) {
-  //       return; //don't remove the selection if we're focused in the sequenceInputBubble!
-  //     }
-  //     selection.removeAllRanges(); // remove selection caused by scroll
-  //   }
-  // } catch (e) {
-  //   // probably IE
-  // }
 };
-
-// function addClassName(el: HTMLElement, className: string) {
-//   if (el.classList) {
-//     el.classList.add(className);
-//   } else {
-//     if (!el.className.match(new RegExp(`(?:^|\\s)${className}(?!\\S)`))) {
-//       el.className += ` ${className}`;
-//     }
-//   }
-// }
-
-// function removeClassName(el: HTMLElement, className: string) {
-//   if (el.classList) {
-//     el.classList.remove(className);
-//   } else {
-//     el.className = el.className.replace(
-//       new RegExp(`(?:^|\\s)${className}(?!\\S)`, "g"),
-//       ""
-//     );
-//   }
-// }
 
 export function handleCaretMoved({
   moveBy,
   circular,
   sequenceLength,
-  // bpsPerRow,
   caretPosition,
   selectionLayer,
   shiftHeld,
@@ -360,31 +301,14 @@ export function handleSelectionStartGrabbed({
       doNotWrapOrigin
     });
   } else {
-    // console.log(
-    //   `doNotWrapOrigin, caretPosition, selectionLayer.end+1:`,
-    //   doNotWrapOrigin,
-    //   caretPosition,
-    //   selectionLayer.end + 1
-    // );
-
     if (
       doNotWrapOrigin &&
       selectionLayer.end > -1 &&
       nearestCaretPos === selectionLayer.end + 1
     ) {
-      // console.log(
-      //   `start grabbed 1 nearestCaretPos, selectionLayer.start:`,
-      //   nearestCaretPos,
-      //   selectionLayer.end + 1
-      // );
       caretPositionUpdate(nearestCaretPos);
       caretPositionOnDragStart = nearestCaretPos;
     } else if (doNotWrapOrigin && nearestCaretPos > selectionLayer.end + 1) {
-      // console.log(
-      //   `start grabbed 2 nearestCaretPos, selectionLayer.start:`,
-      //   nearestCaretPos,
-      //   selectionLayer.end + 1
-      // );
       caretPositionOnDragStart = selectionLayer.end + 1;
       selectionLayerUpdate({
         start: selectionLayer.end + 1,
@@ -640,38 +564,3 @@ function getMinRangeLength(start, end, sequenceLength, doNotWrapOrigin) {
   }
   return range1 < range2 ? range1 : range2;
 }
-
-// export function handleNoSelectionLayerYet({
-//   caretPosition,
-//   selectionLayerUpdate,
-//   nearestCaretPos,
-//   sequenceLength
-// }) {
-//   //no selection layer yet, so we'll start one if necessary
-//   // 0 1 2 3 4 5 6 7 8 9
-//   //    c
-//   //        n
-//   //
-//   let dragEnd = {
-//     start: caretPosition,
-//     end: normalizePositionByRangeLength(
-//       nearestCaretPos - 1,
-//       sequenceLength,
-//       true
-//     )
-//   };
-//   let dragStart = {
-//     start: nearestCaretPos,
-//     end: normalizePositionByRangeLength(caretPosition - 1, sequenceLength, true)
-//   };
-//   if (caretPosition === nearestCaretPos) {
-//     return; // do nothing because nearestCaretPos === caretPosition
-//   } else if (
-//     getRangeLength(dragEnd, sequenceLength) <
-//     getRangeLength(dragStart, sequenceLength)
-//   ) {
-//     selectionLayerUpdate(dragEnd);
-//   } else {
-//     selectionLayerUpdate(dragStart);
-//   }
-// }

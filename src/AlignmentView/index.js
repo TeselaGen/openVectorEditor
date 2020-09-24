@@ -228,11 +228,6 @@ class AlignmentView extends React.Component {
   };
 
   updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
-    // const {
-    //   // selectionLayer,
-    //   // caretPosition
-    //   // sequenceData = { sequence: "" }
-    // } = this.props;
     const sequenceLength = this.getSequenceLength();
 
     updateSelectionOrCaret({
@@ -248,10 +243,7 @@ class AlignmentView extends React.Component {
   };
 
   caretPositionUpdate = (position) => {
-    let {
-      caretPosition = -1,
-      alignmentId /* , alignmentRunUpdate  */
-    } = this.props;
+    let { caretPosition = -1, alignmentId } = this.props;
     if (caretPosition === position) {
       return;
     }
@@ -269,12 +261,7 @@ class AlignmentView extends React.Component {
   });
 
   selectionLayerUpdate = (newSelection) => {
-    let {
-      selectionLayer = { start: -1, end: -1 },
-      // ignoreGapsOnHighlight,
-      alignmentId
-      // alignmentRunUpdate
-    } = this.props;
+    let { selectionLayer = { start: -1, end: -1 }, alignmentId } = this.props;
     if (!newSelection) return;
     const { start, end } = newSelection;
 
@@ -667,17 +654,11 @@ class AlignmentView extends React.Component {
             searchLayerClicked: this.annotationClicked,
             hideName: true,
             sequenceData,
-            // sequenceData: {
-            //   sequence: "gtgaggagagagagagagagttagttgatgatgatgagtatgtagtgaggagagagagagagagttagttgatgatgatgagtatgta"
-            // },
             sequenceDataWithRefSeqCdsFeatures,
             tickSpacing: Math.ceil(120 / charWidthInLinearView),
             allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
             alignmentData,
-            // alignmentData: {
-            //   sequence: "gtgaggagagagagagagagttagttgatgatgatgagtatgtagtgaggagagagagagagagttagttgatgatgatgagtatgta"
-            // },
             chromatogramData,
             height: "100%",
             vectorInteractionWrapperStyle: {
@@ -686,8 +667,6 @@ class AlignmentView extends React.Component {
             marginWidth: 0,
             charWidth: charWidthInLinearView,
             ignoreGapsOnHighlight: true,
-            // editorDragged: (vals) => {
-            // },
             ...(linearViewOptions &&
               (isFunction(linearViewOptions)
                 ? linearViewOptions({
@@ -706,10 +685,6 @@ class AlignmentView extends React.Component {
             width: linearViewWidth,
             paddingBottom: 5,
             scrollData: this.easyStore
-            // scrollData: {
-            //   viewportWidth: this.state.width - nameDivWidth || 400,
-            //   fractionScrolled: this.easyStore
-            // }
           }}
         />
       </div>
@@ -819,7 +794,6 @@ class AlignmentView extends React.Component {
                       }
                 }
               >
-                {/* <div className={"veTracksAndAlignmentHolder"}> */}
                 <PerformantSelectionLayer
                   leftMargin={140}
                   className="veAlignmentSelectionLayer"
@@ -1025,10 +999,7 @@ class AlignmentView extends React.Component {
                 borderBottom: "1px solid",
                 display: "flex",
                 minHeight: "32px",
-                // maxHeight: "32px",
-                // height: "32px",
                 width: "100%",
-                // overflowX: "scroll",
                 flexWrap: "nowrap",
                 flexDirection: "row",
                 flex: "0 0 auto"
@@ -1232,10 +1203,7 @@ class AlignmentView extends React.Component {
   }
 }
 
-// export const AlignmentView = withEditorInteractions(_AlignmentView);
-
 export default compose(
-  // export const AlignmentView = withEditorInteractions(_AlignmentView);
   getContext({
     store: PropTypes.object
   }),
