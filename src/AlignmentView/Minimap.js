@@ -6,6 +6,7 @@ import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthF
 import { view } from "@risingstack/react-easy-state";
 import { some } from "lodash";
 import isPositionWithinRange from "ve-range-utils/lib/isPositionWithinRange";
+import { massageTickSpacing } from "../utils/massageTickSpacing";
 
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
@@ -257,7 +258,7 @@ export default class Minimap extends React.Component {
         <Axis
           {...{
             row: { start: 0, end: seqLength },
-            tickSpacing: Math.floor(seqLength / 10),
+            tickSpacing: massageTickSpacing(Math.floor(seqLength / 10)),
             bpsPerRow: seqLength,
             charWidth,
             annotationHeight: 15,
@@ -378,7 +379,7 @@ const YellowScrollHandle = view(
                     laneHeight,
 
                   zIndex: "-10",
-                  background: "white",
+                  background: "yellow",
                   position: "relative",
                   top: verticalVisibleRange.start * laneHeight
                 }}

@@ -44,6 +44,7 @@ import Caret from "../RowItem/Caret";
 import { debounce } from "lodash";
 import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash";
+import { massageTickSpacing } from "../utils/massageTickSpacing";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -62,6 +63,9 @@ try {
 class AlignmentView extends React.Component {
   constructor(props) {
     super(props);
+    window.scrollAlignmentToPercent = this.scrollAlignmentToPercent;
+    if (window.Cypress)
+      window.Cypress.scrollAlignmentToPercent = this.scrollAlignmentToPercent;
     this.onShortcutCopy = document.addEventListener(
       "keydown",
       this.handleAlignmentCopy
@@ -119,7 +123,12 @@ class AlignmentView extends React.Component {
   }
 
   componentWillUnmount() {
-    if (window.Cypress) delete window.Cypress.updateAlignmentSelection;
+    if (window.Cypress) {
+      delete window.scrollAlignmentToPercent;
+      delete window.Cypress.scrollAlignmentToPercent;
+      delete window.updateAlignmentSelection;
+      delete window.Cypress.updateAlignmentSelection;
+    }
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
@@ -195,14 +204,18 @@ class AlignmentView extends React.Component {
         this.props.scrollPercentageToJumpTo &&
       this.props.scrollPercentageToJumpTo !== undefined
     ) {
-      this.updateXScrollPercentage(this.props.scrollPercentageToJumpTo);
+      this.scrollAlignmentToPercent(this.props.scrollPercentageToJumpTo);
     }
   }
   componentDidMount() {
+    const updateAlignmentSelection = (newRangeOrCaret) => {
+      this.updateSelectionOrCaret(false, newRangeOrCaret, {
+        forceReduxUpdate: true
+      });
+    };
+    window.updateAlignmentSelection = updateAlignmentSelection;
     if (window.Cypress)
-      window.Cypress.updateAlignmentSelection = (newRangeOrCaret) => {
-        this.updateSelectionOrCaret(false, newRangeOrCaret);
-      };
+      window.Cypress.updateAlignmentSelection = updateAlignmentSelection;
     this.editorDragged = editorDragged.bind(this);
     this.editorClicked = editorClicked.bind(this);
     this.editorDragStarted = editorDragStarted.bind(this);
@@ -227,7 +240,11 @@ class AlignmentView extends React.Component {
     });
   };
 
-  updateSelectionOrCaret = (shiftHeld, newRangeOrCaret) => {
+  updateSelectionOrCaret = (
+    shiftHeld,
+    newRangeOrCaret,
+    { forceReduxUpdate } = {}
+  ) => {
     const sequenceLength = this.getSequenceLength();
 
     updateSelectionOrCaret({
@@ -237,7 +254,9 @@ class AlignmentView extends React.Component {
       newRangeOrCaret,
       caretPosition: this.easyStore.caretPosition,
       selectionLayer: this.easyStore.selectionLayer,
-      selectionLayerUpdate: this.selectionLayerUpdate,
+      selectionLayerUpdate: forceReduxUpdate
+        ? this.forceReduxSelectionLayerUpdate
+        : this.selectionLayerUpdate,
       caretPositionUpdate: this.caretPositionUpdate
     });
   };
@@ -256,11 +275,13 @@ class AlignmentView extends React.Component {
     });
   };
 
-  debouncedAlignmentRunUpdate = debounce(this.props.alignmentRunUpdate, 1000, {
-    leading: false
-  });
+  debouncedAlignmentRunUpdate = debounce(this.props.alignmentRunUpdate, 1000);
 
-  selectionLayerUpdate = (newSelection) => {
+  forceReduxSelectionLayerUpdate = (newSelection) => {
+    this.selectionLayerUpdate(newSelection, { forceReduxUpdate: true });
+  };
+
+  selectionLayerUpdate = (newSelection, { forceReduxUpdate } = {}) => {
     let { selectionLayer = { start: -1, end: -1 }, alignmentId } = this.props;
     if (!newSelection) return;
     const { start, end } = newSelection;
@@ -271,7 +292,9 @@ class AlignmentView extends React.Component {
     this.easyStore.caretPosition = -1;
     this.easyStore.selectionLayer = newSelection;
 
-    this.debouncedAlignmentRunUpdate({
+    (forceReduxUpdate
+      ? this.props.alignmentRunUpdate
+      : this.debouncedAlignmentRunUpdate)({
       alignmentId,
       selectionLayer: newSelection,
       caretPosition: -1
@@ -339,7 +362,7 @@ class AlignmentView extends React.Component {
     this.blockScroll = true;
     this.setCharWidthInLinearView({ charWidthInLinearView: newCharWidth });
     setTimeout(() => {
-      this.updateXScrollPercentage(newPercent);
+      this.scrollAlignmentToPercent(newPercent);
       this.blockScroll = false;
     });
   };
@@ -354,7 +377,7 @@ class AlignmentView extends React.Component {
       window.localStorage.getItem("charWidthInLinearViewDefault")
     );
   };
-  updateXScrollPercentage = (scrollPercentage) => {
+  scrollAlignmentToPercent = (scrollPercentage) => {
     this.easyStore.percentScrolled = scrollPercentage;
     this.alignmentHolder.scrollLeft =
       Math.min(Math.max(scrollPercentage, 0), 1) *
@@ -561,6 +584,9 @@ class AlignmentView extends React.Component {
         }
       }
     }
+    const tickSpacing = massageTickSpacing(
+      Math.ceil(120 / charWidthInLinearView)
+    );
 
     return (
       <div
@@ -655,7 +681,7 @@ class AlignmentView extends React.Component {
             hideName: true,
             sequenceData,
             sequenceDataWithRefSeqCdsFeatures,
-            tickSpacing: Math.ceil(120 / charWidthInLinearView),
+            tickSpacing,
             allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
             alignmentData,
@@ -711,6 +737,9 @@ class AlignmentView extends React.Component {
       alignmentSortOrder,
       handleBackButtonClicked,
       noClickDragHandlers,
+      additionalSelectionLayerRightClickedOptions,
+      selectionLayerRightClicked,
+      additionalTopEl,
       alignmentVisibilityToolOptions
     } = this.props;
     const sequenceLength = this.getMaxLength();
@@ -798,129 +827,148 @@ class AlignmentView extends React.Component {
                   leftMargin={140}
                   className="veAlignmentSelectionLayer"
                   isDraggable
-                  selectionLayerRightClicked={({ event }) => {
-                    const trackContainers = document.querySelectorAll(
-                      ".alignmentViewTrackContainer"
-                    );
-                    let track;
-                    trackContainers.forEach((t) => {
-                      const mouseX = event.clientX + document.body.scrollLeft;
-                      const mouseY = event.clientY + document.body.scrollTop;
-                      if (
-                        mouseX >= t.getBoundingClientRect().left &&
-                        mouseX <=
-                          t.getBoundingClientRect().left +
-                            t.getBoundingClientRect().width &&
-                        mouseY >= t.getBoundingClientRect().top &&
-                        mouseY <=
-                          t.getBoundingClientRect().top +
-                            t.getBoundingClientRect().height
-                      ) {
-                        const index = t.getAttribute(
-                          "data-alignment-track-index"
-                        );
-                        track = alignmentTracks[index];
-                        return true;
-                      }
-                    });
-
-                    const alignmentData = track.alignmentData;
-                    const { name } = alignmentData;
-                    showContextMenu(
-                      [
-                        {
-                          text: "Copy Selection of All Alignments as Fasta",
-                          className: "copyAllAlignmentsFastaClipboardHelper",
-                          hotkey: "cmd+c",
-                          willUnmount: () => {
-                            this.copyAllAlignmentsFastaClipboardHelper &&
-                              this.copyAllAlignmentsFastaClipboardHelper.destroy();
-                          },
-                          didMount: () => {
-                            this.copyAllAlignmentsFastaClipboardHelper = new Clipboard(
-                              `.copyAllAlignmentsFastaClipboardHelper`,
-                              {
-                                action: "copyAllAlignmentsFasta",
-                                text: () => {
-                                  return this.getAllAlignmentsFastaText();
-                                }
-                              }
-                            );
-                          },
-                          onClick: () => {
-                            window.toastr.success("Selection Copied");
-                          }
-                        },
-                        {
-                          text: `Copy Selection of ${name} as Fasta`,
-                          className:
-                            "copySpecificAlignmentFastaClipboardHelper",
-                          willUnmount: () => {
-                            this.copySpecificAlignmentFastaClipboardHelper &&
-                              this.copySpecificAlignmentFastaClipboardHelper.destroy();
-                          },
-                          didMount: () => {
-                            this.copySpecificAlignmentFastaClipboardHelper = new Clipboard(
-                              `.copySpecificAlignmentFastaClipboardHelper`,
-                              {
-                                action: "copySpecificAlignmentFasta",
-                                text: () => {
-                                  const { selectionLayer } =
-                                    this.props.store.getState().VectorEditor
-                                      .__allEditorsOptions.alignments[
-                                      this.props.id
-                                    ] || {};
-                                  const seqDataToCopy = getSequenceDataBetweenRange(
-                                    alignmentData,
-                                    selectionLayer
-                                  ).sequence;
-                                  const seqDataToCopyAsFasta = `>${name}\r\n${seqDataToCopy}\r\n`;
-                                  return seqDataToCopyAsFasta;
-                                }
-                              }
-                            );
-                          },
-                          onClick: () => {
-                            window.toastr.success("Selection Copied As Fasta");
-                          }
-                        },
-                        {
-                          text: `Copy Selection of ${name}`,
-                          className:
-                            "copySpecificAlignmentAsPlainClipboardHelper",
-                          willUnmount: () => {
-                            this.copySpecificAlignmentAsPlainClipboardHelper &&
-                              this.copySpecificAlignmentAsPlainClipboardHelper.destroy();
-                          },
-                          didMount: () => {
-                            this.copySpecificAlignmentAsPlainClipboardHelper = new Clipboard(
-                              `.copySpecificAlignmentAsPlainClipboardHelper`,
-                              {
-                                action: "copySpecificAlignmentFasta",
-                                text: () => {
-                                  const { selectionLayer } =
-                                    this.props.store.getState().VectorEditor
-                                      .__allEditorsOptions.alignments[
-                                      this.props.id
-                                    ] || {};
-                                  const seqDataToCopy = getSequenceDataBetweenRange(
-                                    alignmentData,
-                                    selectionLayer
-                                  ).sequence;
-                                  return seqDataToCopy;
-                                }
-                              }
-                            );
-                          },
-                          onClick: () => {
-                            window.toastr.success("Selection Copied");
-                          }
+                  selectionLayerRightClicked={
+                    selectionLayerRightClicked
+                      ? (...args) => {
+                          selectionLayerRightClicked(...args, this.props);
                         }
-                      ],
-                      undefined,
-                      event
-                    );
-                  }}
+                      : (...args) => {
+                          const { event } = args[0];
+                          const trackContainers = document.querySelectorAll(
+                            ".alignmentViewTrackContainer"
+                          );
+                          let track;
+                          trackContainers.forEach((t) => {
+                            const mouseX =
+                              event.clientX + document.body.scrollLeft;
+                            const mouseY =
+                              event.clientY + document.body.scrollTop;
+                            if (
+                              mouseX >= t.getBoundingClientRect().left &&
+                              mouseX <=
+                                t.getBoundingClientRect().left +
+                                  t.getBoundingClientRect().width &&
+                              mouseY >= t.getBoundingClientRect().top &&
+                              mouseY <=
+                                t.getBoundingClientRect().top +
+                                  t.getBoundingClientRect().height
+                            ) {
+                              const index = t.getAttribute(
+                                "data-alignment-track-index"
+                              );
+                              track = alignmentTracks[index];
+                              return true;
+                            }
+                          });
+
+                          const alignmentData = track.alignmentData;
+                          const { name } = alignmentData;
+                          showContextMenu(
+                            [
+                              ...(additionalSelectionLayerRightClickedOptions
+                                ? additionalSelectionLayerRightClickedOptions(
+                                    ...args,
+                                    this.props
+                                  )
+                                : []),
+                              {
+                                text:
+                                  "Copy Selection of All Alignments as Fasta",
+                                className:
+                                  "copyAllAlignmentsFastaClipboardHelper",
+                                hotkey: "cmd+c",
+                                willUnmount: () => {
+                                  this.copyAllAlignmentsFastaClipboardHelper &&
+                                    this.copyAllAlignmentsFastaClipboardHelper.destroy();
+                                },
+                                didMount: () => {
+                                  this.copyAllAlignmentsFastaClipboardHelper = new Clipboard(
+                                    `.copyAllAlignmentsFastaClipboardHelper`,
+                                    {
+                                      action: "copyAllAlignmentsFasta",
+                                      text: () => {
+                                        return this.getAllAlignmentsFastaText();
+                                      }
+                                    }
+                                  );
+                                },
+                                onClick: () => {
+                                  window.toastr.success("Selection Copied");
+                                }
+                              },
+                              {
+                                text: `Copy Selection of ${name} as Fasta`,
+                                className:
+                                  "copySpecificAlignmentFastaClipboardHelper",
+                                willUnmount: () => {
+                                  this
+                                    .copySpecificAlignmentFastaClipboardHelper &&
+                                    this.copySpecificAlignmentFastaClipboardHelper.destroy();
+                                },
+                                didMount: () => {
+                                  this.copySpecificAlignmentFastaClipboardHelper = new Clipboard(
+                                    `.copySpecificAlignmentFastaClipboardHelper`,
+                                    {
+                                      action: "copySpecificAlignmentFasta",
+                                      text: () => {
+                                        const { selectionLayer } =
+                                          this.props.store.getState()
+                                            .VectorEditor.__allEditorsOptions
+                                            .alignments[this.props.id] || {};
+                                        const seqDataToCopy = getSequenceDataBetweenRange(
+                                          alignmentData,
+                                          selectionLayer
+                                        ).sequence;
+                                        const seqDataToCopyAsFasta = `>${name}\r\n${seqDataToCopy}\r\n`;
+                                        return seqDataToCopyAsFasta;
+                                      }
+                                    }
+                                  );
+                                },
+                                onClick: () => {
+                                  window.toastr.success(
+                                    "Selection Copied As Fasta"
+                                  );
+                                }
+                              },
+                              {
+                                text: `Copy Selection of ${name}`,
+                                className:
+                                  "copySpecificAlignmentAsPlainClipboardHelper",
+                                willUnmount: () => {
+                                  this
+                                    .copySpecificAlignmentAsPlainClipboardHelper &&
+                                    this.copySpecificAlignmentAsPlainClipboardHelper.destroy();
+                                },
+                                didMount: () => {
+                                  this.copySpecificAlignmentAsPlainClipboardHelper = new Clipboard(
+                                    `.copySpecificAlignmentAsPlainClipboardHelper`,
+                                    {
+                                      action: "copySpecificAlignmentFasta",
+                                      text: () => {
+                                        const { selectionLayer } =
+                                          this.props.store.getState()
+                                            .VectorEditor.__allEditorsOptions
+                                            .alignments[this.props.id] || {};
+                                        const seqDataToCopy = getSequenceDataBetweenRange(
+                                          alignmentData,
+                                          selectionLayer
+                                        ).sequence;
+                                        return seqDataToCopy;
+                                      }
+                                    }
+                                  );
+                                },
+                                onClick: () => {
+                                  window.toastr.success("Selection Copied");
+                                }
+                              }
+                            ],
+                            undefined,
+                            event
+                          );
+                        }
+                  }
                   easyStore={this.easyStore}
                   sequenceLength={sequenceLength}
                   charWidth={this.getCharWidthInLinearView()}
@@ -1078,7 +1126,7 @@ class AlignmentView extends React.Component {
                     const percentScrollage = this.easyStore.percentScrolled;
                     setTimeout(() => {
                       this.blockScroll = false;
-                      this.updateXScrollPercentage(percentScrollage);
+                      this.scrollAlignmentToPercent(percentScrollage);
                     });
                   }}
                   title="Adjust Zoom Level"
@@ -1128,6 +1176,7 @@ class AlignmentView extends React.Component {
                   }
                 />
               )}
+              {additionalTopEl}
             </div>
             {hasTemplate ? (
               <React.Fragment>
@@ -1193,7 +1242,7 @@ class AlignmentView extends React.Component {
                   numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
                   scrollAlignmentView: this.state.scrollAlignmentView
                 }}
-                onMinimapScrollX={this.updateXScrollPercentage}
+                onMinimapScrollX={this.scrollAlignmentToPercent}
               />
             </div>
           )}

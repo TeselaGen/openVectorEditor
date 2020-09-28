@@ -175,6 +175,12 @@ Cypress.Commands.add("selectRange", (start, end) => {
     });
   });
 });
+Cypress.Commands.add("selectAlignmentRange", (start, end) => {
+  window.Cypress.updateAlignmentSelection({ start: start - 1, end: end - 1 });
+});
+Cypress.Commands.add("scrollAlignmentToPercent", (percent) => {
+  window.Cypress.scrollAlignmentToPercent(percent);
+});
 Cypress.Commands.add("closeDialog", () => {
   cy.get(`.bp3-dialog [aria-label="Close"]`).click();
 });

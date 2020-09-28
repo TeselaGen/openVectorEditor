@@ -612,6 +612,7 @@ export class RowItem extends React.PureComponent {
           {drawLabels("cutsite", isRowView)}
           {showAxis && (
             <Axis
+              scrollData={scrollData}
               tickSpacing={tickSpacing}
               showAxisNumbers={showAxisNumbers}
               annotationHeight={axisHeight}

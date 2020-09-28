@@ -2,6 +2,7 @@ import React from "react";
 import { times, map } from "lodash";
 import { DNAComplementMap } from "ve-sequence-utils";
 import { view } from "@risingstack/react-easy-state";
+import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
@@ -51,10 +52,10 @@ class Sequence extends React.Component {
     const chunkWidth = chunkSize * charWidth;
     if (scrollData) {
       //we're in the alignment view alignments only
-      const { percentScrolled, viewportWidth } = scrollData;
-
-      const visibleStart = percentScrolled * (width - viewportWidth);
-      const visibleEnd = visibleStart + viewportWidth;
+      const { visibleStart, visibleEnd } = getVisibleStartEnd({
+        scrollData,
+        width
+      });
 
       return (
         <div

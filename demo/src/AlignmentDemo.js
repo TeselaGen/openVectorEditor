@@ -11,6 +11,7 @@ import { addAlignment, AlignmentView /* updateEditor */ } from "../../src/";
 import renderToggle from "./utils/renderToggle";
 import { BPSelect } from "teselagen-react-components";
 import pairwiseAlignment2 from "./exampleData/pairwiseAlignment2.json";
+import { Button } from "@blueprintjs/core";
 
 // import { upsertPart } from "../../src/redux/sequenceData";
 // import { MenuItem } from "@blueprintjs/core";
@@ -156,9 +157,9 @@ export default class AlignmentDemo extends React.Component {
               {renderToggle({
                 that: this,
                 type: "setTickSpacing",
-                label: "Set Tick Spacing 10 bps",
+                label: "Force Tick Spacing 5 bps",
                 description:
-                  "You can set spacing of tick marks on the axis by setting linearViewOptions:{tickSpacing:10}"
+                  "You can set force the spacing of tick marks on the axis by setting linearViewOptions:{tickSpacing:5}"
               })}
               {renderToggle({
                 that: this,
@@ -166,6 +167,23 @@ export default class AlignmentDemo extends React.Component {
                 label: "Disable Visibility Options",
                 description:
                   "You can disable the visibility options menu by setting noVisibilityOptions:true"
+              })}
+              {renderToggle({
+                that: this,
+                type: "overrideSelectionRightClick",
+                label: "Override Selection Right Click",
+                description:
+                  "You can override the selection right click by passing a selectionLayerRightClicked={(event)={}} prop"
+              })}
+              {renderToggle({
+                that: this,
+                type: "addSelectionRightClickOptions",
+                label: "Add Selection Right Click Options",
+                description: `You can add options to the selection right click by passing additionalSelectionLayerRightClickedOptions={(event)=>({
+                    text: "I'm an additional option",
+                    className: "createDiversityRegion",
+                    onClick: () => this.addDiversityRegionIfPossible()
+                  })} prop`
               })}
             </div>
           )}
@@ -176,6 +194,21 @@ export default class AlignmentDemo extends React.Component {
             marginRight: 10
           }}
           {...{
+            ...(this.state.addSelectionRightClickOptions && {
+              additionalSelectionLayerRightClickedOptions: () => [
+                {
+                  text: "I'm an additional option",
+                  className: "createDiversityRegion",
+                  onClick: () => window.toastr.success("You did it!")
+                }
+              ]
+            }),
+            ...(this.state.overrideSelectionRightClick && {
+              selectionLayerRightClicked: () => {
+                window.toastr.success("lezzz goooo!");
+              }
+            }),
+            additionalTopEl: <Button>Additional Top El</Button>,
             id: this.state.alignmentDataId,
             height: this.state.forceHeightMode ? 500 : undefined,
             isFullyZoomedOut: this.state.isFullyZoomedOut,
@@ -190,7 +223,7 @@ export default class AlignmentDemo extends React.Component {
             hasTemplate: this.state.hasTemplate,
             noVisibilityOptions: this.state.noVisibilityOptions,
             linearViewOptions: {
-              tickSpacing: this.state.setTickSpacing ? 10 : undefined
+              ...(this.state.setTickSpacing && { tickSpacing: 10 })
             }
           }}
         />
