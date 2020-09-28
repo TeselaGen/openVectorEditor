@@ -5,7 +5,6 @@ import "./style.css";
 import React from "react";
 import { cloneDeep } from "lodash";
 
-const defaultFontWidth = 4;
 const fontWidthToFontSize = 1.75;
 
 function Labels({
@@ -16,20 +15,21 @@ function Labels({
   rotationRadians,
   textScalingFactor,
   labelLineIntensity,
+  labelSize = 8,
+  fontHeightMultiplier = 2.4,
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
-  console.info("scaling factor", textScalingFactor);
+  console.info("FONT HTIGHT", fontHeightMultiplier);
   if (!labels.length) return null;
   outerRadius += 25;
   let radius = outerRadius;
   let outerPointRadius = outerRadius - 20;
   //we don't want the labels to grow too large on large screen devices,
   //so we start to decrease the fontWidth if the textScalingFactor is less than 1
-  let fontWidth =
-    defaultFontWidth * (textScalingFactor < 1 ? textScalingFactor : 1);
+  let fontWidth = labelSize * (textScalingFactor < 1 ? textScalingFactor : 1);
 
-  let fontHeight = fontWidth * 2.4;
+  let fontHeight = fontWidth * fontHeightMultiplier;
   let labelPoints = labels
     .map(function (label) {
       let {

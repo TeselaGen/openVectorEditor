@@ -56,6 +56,7 @@ const defaultState = {
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
+  adjustCircularLabelSpacing: false,
   withVersionHistory: true,
   setDefaultVisibilities: false,
   onNew: true,
@@ -225,6 +226,7 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      adjustCircularLabelSpacing,
       withVersionHistory,
       shouldAutosave,
       generatePng,
@@ -610,6 +612,13 @@ rightClickOverrides: {
                 label: "Force Height 500px",
                 info:
                   "You can force a height for the editor by passing `height:500` (same for width) "
+              })}
+              {renderToggle({
+                that: this,
+                type: "adjustCircularLabelSpacing",
+                label: "Adjust circular label spacing",
+                info:
+                  "You can adjust the spacing between labels in circular view as a function of the multiple of font height (default is 2.4, 2.0 when toggle is true)"
               })}
               {renderToggle({
                 that: this,
@@ -1441,6 +1450,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             shouldAutosave={shouldAutosave}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
+            {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
             {...(withVersionHistory && {
               getSequenceAtVersion: (versionId) => {
                 if (versionId === 2) {

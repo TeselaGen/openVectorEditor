@@ -298,9 +298,10 @@ export class Editor extends React.Component {
       handleFullscreenClose,
       onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
-      previewModeButtonMenu
+      previewModeButtonMenu,
+      fontHeightMultiplier
     } = this.props;
-
+    console.info("FONTHEIGHT@@@@@@@@@@@@@@@", fontHeightMultiplier);
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&
@@ -479,6 +480,7 @@ export class Editor extends React.Component {
             }, {}))}
           maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
+          fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}

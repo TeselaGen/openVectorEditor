@@ -28,6 +28,7 @@ import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
+import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
 
@@ -65,6 +66,7 @@ const subReducers = {
   uppercaseSequenceMapFont,
   externalLabels,
   labelLineIntensity,
+  labelSize,
   featureLengthsToHide,
   selectedPartTags
 };
@@ -184,6 +186,12 @@ export default function reducerFactory(initialState = {}) {
           !state.__allEditorsOptions
             ? undefined
             : state.__allEditorsOptions.labelLineIntensity,
+          action
+        ),
+        labelSize: labelSize.default(
+          !state.__allEditorsOptions
+            ? undefined
+            : state.__allEditorsOptions.labelSize,
           action
         ),
         alignments: alignments.default(

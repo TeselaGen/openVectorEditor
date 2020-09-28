@@ -1187,6 +1187,15 @@ const labelIntensities = {
   Medium: 0.4,
   High: 0.9
 };
+const labelSizes = {
+  "33%": 3,
+  "50%": 4,
+  "75%": 6,
+  "100%": 8,
+  "125%": 10,
+  "150%": 12,
+  "200%": 16
+};
 const labelCommandDefs = {
   toggleExternalLabels: {
     name: "External Labels",
@@ -1206,6 +1215,15 @@ const labelCommandDefs = {
         text: key,
         checked: props.labelLineIntensity === labelIntensities[key],
         onClick: () => props.changeLabelLineIntensity(labelIntensities[key])
+      }))
+  },
+  adjustLabelSize: {
+    name: "Circular Label Size",
+    submenu: (props) =>
+      map(Object.keys(labelSizes), (key) => ({
+        text: key,
+        checked: props.labelSize === labelSizes[key],
+        onClick: () => props.changeLabelSize(labelSizes[key])
       }))
   }
 };
