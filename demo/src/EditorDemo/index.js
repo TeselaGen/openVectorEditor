@@ -618,7 +618,7 @@ rightClickOverrides: {
                 type: "adjustCircularLabelSpacing",
                 label: "Adjust circular label spacing",
                 info:
-                  "You can adjust the spacing between labels in circular view as a function of the multiple of font height (default is 2.4, 2.0 when toggle is true)"
+                  "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
               })}
               {renderToggle({
                 that: this,

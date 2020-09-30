@@ -3,7 +3,7 @@ import relaxLabelAngles from "./relaxLabelAngles";
 import withHover from "../../helperComponents/withHover";
 import "./style.css";
 import React from "react";
-import { cloneDeep } from "lodash";
+import { cloneDeep, clamp } from "lodash";
 
 const fontWidthToFontSize = 1.75;
 
@@ -20,7 +20,6 @@ function Labels({
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
-  console.info("FONT HTIGHT", fontHeightMultiplier);
   if (!labels.length) return null;
   outerRadius += 25;
   let radius = outerRadius;
@@ -29,7 +28,7 @@ function Labels({
   //so we start to decrease the fontWidth if the textScalingFactor is less than 1
   let fontWidth = labelSize * (textScalingFactor < 1 ? textScalingFactor : 1);
 
-  let fontHeight = fontWidth * fontHeightMultiplier;
+  let fontHeight = fontWidth * clamp(fontHeightMultiplier, 1.5, 3.5);
   let labelPoints = labels
     .map(function (label) {
       let {

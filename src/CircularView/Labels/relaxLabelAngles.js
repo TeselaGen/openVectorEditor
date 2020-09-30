@@ -15,8 +15,6 @@ function normalizeAngle(angle) {
 //this pure function allows the labels to spread out around the circle
 //and groups overlapping labels together if necessary
 function relaxLabelAngles(_labelPoints, spacing, maxradius) {
-  // console.info("relaxLabelAngles", _labelPoints, spacing, maxradius);
-
   let maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
   let labels = cloneDeep(_labelPoints);
   if (labels.length > maxLabelsPerQuadrant * 4) {
@@ -59,25 +57,9 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     let extraSpaces = Math.max(maxLabelsPerQuadrant - labels.length, 0);
     let lastLabelYPosition = 0 - spacing / 2; // spacing to count label height
     let lastlabel;
-    console.info(
-      "labels",
-      lastLabelYPosition,
-      labels,
-      maxLabelsPerQuadrant,
-      extraSpaces,
-      spacing
-    );
-    const retVal = labels
-      .map(function (label /* index */, idx) {
+    return labels
+      .map(function (label, idx) {
         if (Math.abs(lastLabelYPosition) > maxradius + 80) {
-          console.info(
-            "FIRST************************",
-            extraSpaces,
-            label.y,
-            lastLabelYPosition,
-            spacing,
-            label.text
-          );
           lastlabel.labelAndSublabels.push(label);
           lastlabel.labelIds[label.id] = true;
           return false;
@@ -85,19 +67,8 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
         lastlabel = label;
         if (label.y < lastLabelYPosition) {
           let naturalSlot = Math.floor(Math.abs(label.y / spacing));
-          console.info(
-            idx,
-            maxLabelsPerQuadrant - idx,
-            "NATURAL",
-            naturalSlot,
-            extraSpaces,
-            label.y,
-            lastLabelYPosition,
-            spacing,
-            label.text
-          );
           if (naturalSlot > extraSpaces) {
-            if (maxLabelsPerQuadrant - idx >= naturalSlot) {
+            if (idx < naturalSlot && extraSpaces > 0) {
               lastLabelYPosition = label.y;
             }
             label.y = lastLabelYPosition;
@@ -107,15 +78,6 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
           label.x = label.x > 0 ? x : -x;
           lastLabelYPosition = label.y - spacing;
         } else {
-          console.info(
-            "NOT<<<<<<",
-            Math.floor(Math.abs(label.y / spacing)),
-            extraSpaces,
-            label.y,
-            lastLabelYPosition,
-            spacing,
-            label.text
-          );
           label.y = lastLabelYPosition;
           lastLabelYPosition = label.y - spacing;
         }
@@ -124,35 +86,29 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
       .filter(function (l) {
         return !!l;
       });
-    // console.info("RETVAL", retVal)
-    return retVal;
   }
 
   // Scale Right Top Labels
   let labelsToReturn = [];
   rightTopLabels = rightTopLabels.sort(sortLabelsByAngleReverse);
-  console.info("RIGHT TOP");
   labelsToReturn = labelsToReturn.concat(
     repositionAndGroupLabels(rightTopLabels, true)
   );
 
   // Scale Right Bottom Labels
   rightBottomLabels = rightBottomLabels.sort(sortLabelsByAngle);
-  console.info("RIGHT BOTTOM");
   labelsToReturn = labelsToReturn.concat(
     flipLabelYs(repositionAndGroupLabels(flipLabelYs(rightBottomLabels)))
   );
 
   // Scale Left Bottom Labels
   leftBottomLabels = leftBottomLabels.sort(sortLabelsByAngleReverse);
-  console.info("LEFT BOTTOM");
   labelsToReturn = labelsToReturn.concat(
     flipLabelYs(repositionAndGroupLabels(flipLabelYs(leftBottomLabels)))
   );
 
   // Scale Left Top Labels
   leftTopLabels = leftTopLabels.sort(sortLabelsByAngle);
-  console.info("LEFT TOP");
   labelsToReturn = labelsToReturn.concat(
     repositionAndGroupLabels(leftTopLabels)
   );
@@ -197,6 +153,5 @@ function combineLabels(labels, numberOfBuckets) {
   let combinedLabels = Object.keys(buckets).map(function (key) {
     return buckets[key];
   });
-  console.info("combinedLabels>>>>>", combinedLabels);
   return combinedLabels;
 }

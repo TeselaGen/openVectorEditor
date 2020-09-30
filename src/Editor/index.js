@@ -298,10 +298,9 @@ export class Editor extends React.Component {
       handleFullscreenClose,
       onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
-      previewModeButtonMenu,
-      fontHeightMultiplier
+      previewModeButtonMenu
     } = this.props;
-    console.info("FONTHEIGHT@@@@@@@@@@@@@@@", fontHeightMultiplier);
+
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&

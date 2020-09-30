@@ -109,7 +109,7 @@ export class CircularView extends React.Component {
       fontHeightMultiplier,
       labelSize
     } = this.props;
-    console.info("multiplier((((((((((((((((((((", fontHeightMultiplier);
+
     let { sequence = "atgc", circular } = sequenceData;
     let sequenceLength = sequence.length;
     let sequenceName = hideName ? "" : sequenceData.name || "";
