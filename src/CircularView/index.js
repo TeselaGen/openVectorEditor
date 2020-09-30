@@ -1,5 +1,4 @@
 import VeWarning from "../helperComponents/VeWarning";
-// import PassThrough from "../utils/PassThrough";
 import Labels from "./Labels";
 import SelectionLayer from "./SelectionLayer";
 import Caret from "./Caret";
@@ -7,12 +6,8 @@ import Axis from "./Axis";
 import Orf from "./Orf";
 import Feature from "./Feature";
 import Primer from "./Primer";
-// import DeletionLayer from "./DeletionLayer";
-// import ReplacementLayer from "./ReplacementLayer";
 import Cutsite from "./Cutsite";
 import sortBy from "lodash/sortBy";
-// import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
-// import getAngleForPositionMidpoint from "./getAngleForPositionMidpoint";
 import {
   normalizePositionByRangeLength,
   getPositionFromAngle,
@@ -63,6 +58,9 @@ export class CircularView extends React.Component {
     }
     callback({
       event,
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       className: event.target.parentNode.className.animVal,
       shiftHeld: event.shiftKey,
       nearestCaretPos,

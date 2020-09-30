@@ -4,6 +4,9 @@ import ReactList from "@teselagen/react-list";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "@risingstack/react-easy-state";
+import { some } from "lodash";
+import isPositionWithinRange from "ve-range-utils/lib/isPositionWithinRange";
+import { massageTickSpacing } from "../utils/massageTickSpacing";
 
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
@@ -30,8 +33,6 @@ export default class Minimap extends React.Component {
     }
     const {
       onMinimapScrollX,
-      laneHeight,
-      scrollYToTrack,
       dimensions: { width = 200 }
     } = this.props;
     const scrollHandleWidth = this.getScrollHandleWidth();
@@ -39,11 +40,7 @@ export default class Minimap extends React.Component {
       (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
       (width - scrollHandleWidth);
     onMinimapScrollX(percent);
-
-    //scroll vertically
-    const y = this.getYPositionOfClickInMinimap(e);
-    const trackIndex = Math.floor(y / laneHeight);
-    scrollYToTrack(trackIndex);
+    this.scrollMinimapVertical({ e, force: true });
   };
 
   getCharWidth = () => {
@@ -73,7 +70,36 @@ export default class Minimap extends React.Component {
     const topStart = this.minimap.getBoundingClientRect().top;
     return Math.max(e.clientY + this.minimapTracks.scrollTop - topStart, 0);
   };
+
+  scrollMinimapVertical = ({ e, force }) => {
+    try {
+      if (
+        !force &&
+        isPositionWithinRange(e.clientY, {
+          start: this.lastYPosition - 5,
+          end: this.lastYPosition + 5
+        })
+      ) {
+        // this.lastYPosition = e.clientY
+        return;
+      }
+      const lanes = document.querySelectorAll(".minimapLane");
+
+      some(lanes, (lane) => {
+        const rect = lane.getBoundingClientRect();
+        if (rect.top > e.clientY && rect.top - rect.height < e.clientY) {
+          this.props.scrollYToTrack(lane.getAttribute("data-lane-index"));
+          return true;
+        }
+        return false;
+      });
+      this.lastYPosition = e.clientY;
+    } catch (error) {
+      console.error(`error in scrollMinimapVertical:`, error);
+    }
+  };
   handleDragStop = () => {
+    // this.hasSetDirection = false;
     setTimeout(() => {
       this.isDragging = false;
     }, 150);
@@ -84,8 +110,13 @@ export default class Minimap extends React.Component {
       dimensions: { width = 200 }
     } = this.props;
     this.isDragging = true; //needed to block erroneous click events from being triggered!
-    const percent = this.getXPositionOfClickInMinimap(e) / width;
+
+    const scrollHandleWidth = this.getScrollHandleWidth();
+    const percent =
+      (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
+      (width - scrollHandleWidth);
     onMinimapScrollX(percent);
+    this.scrollMinimapVertical({ e });
   };
   itemSizeGetter = () => {
     return this.props.laneHeight;
@@ -134,6 +165,8 @@ export default class Minimap extends React.Component {
     return (
       <div
         key={i + "-lane"}
+        className="minimapLane"
+        data-lane-index={i}
         style={{ height: laneHeight, maxHeight: laneHeight }}
       >
         <svg
@@ -156,14 +189,15 @@ export default class Minimap extends React.Component {
       onSizeAdjust,
       minSliderSize,
       onMinimapScrollX,
-      easyStore
+      easyStore,
+      selectionLayerComp
     } = this.props;
 
     const [template /* ...nonTemplates */] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
     const charWidth = this.getCharWidth();
     const scrollHandleWidth = this.getScrollHandleWidth();
-
+    const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
     return (
       <div
         ref={(ref) => (this.minimap = ref)}
@@ -178,6 +212,7 @@ export default class Minimap extends React.Component {
         }}
         onClick={this.handleMinimapClick}
       >
+        {selectionLayerComp}
         <div
           ref={(ref) => {
             if (ref) {
@@ -186,13 +221,16 @@ export default class Minimap extends React.Component {
           }}
           style={{
             // maxHeight: 350,
-            overflowY: "auto",
+            overflowY: minimapTracksPartialHeight > 190 ? "auto" : "hidden",
+            // overflowY: "auto",
+            overflowX: "hidden",
             position: "relative"
           }}
           className="alignmentMinimapTracks"
         >
           <YellowScrollHandle
             width={width}
+            handleDragStart={this.handleDragStart}
             handleDrag={this.handleDrag}
             handleDragStop={this.handleDragStop}
             onMinimapScrollX={onMinimapScrollX}
@@ -202,7 +240,7 @@ export default class Minimap extends React.Component {
             scrollHandleWidth={scrollHandleWidth}
             alignmentTracks={alignmentTracks}
             laneHeight={laneHeight}
-            minimapTracksPartialHeight={laneHeight * alignmentTracks.length}
+            minimapTracksPartialHeight={minimapTracksPartialHeight}
           />
           <ReactList
             itemsRenderer={(items, ref) => (
@@ -220,7 +258,7 @@ export default class Minimap extends React.Component {
         <Axis
           {...{
             row: { start: 0, end: seqLength },
-            tickSpacing: Math.floor(seqLength / 10),
+            tickSpacing: massageTickSpacing(Math.floor(seqLength / 10)),
             bpsPerRow: seqLength,
             charWidth,
             annotationHeight: 15,
@@ -246,6 +284,7 @@ const YellowScrollHandle = view(
         minSliderSize,
         laneHeight,
         onSizeAdjust,
+        handleDragStart,
         minimapTracksPartialHeight
       } = this.props;
       const { verticalVisibleRange, percentScrolled } = easyStore;
@@ -262,6 +301,7 @@ const YellowScrollHandle = view(
           // onStart={this.onStart}
           onStop={handleDragStop}
           onDrag={handleDrag}
+          onStart={handleDragStart}
         >
           <div
             style={{
@@ -316,16 +356,16 @@ const YellowScrollHandle = view(
             </Draggable>
             {/* the actual handle component */}
             <div
-              className="handle"
+              className="handle alignmentMinimapScrollHandle"
               dataname="scrollGroup"
               style={{
                 height: minimapTracksPartialHeight || 0,
                 border: "none",
                 cursor: "move",
-                opacity: ".3",
+                opacity: ".4",
                 zIndex: "10",
                 width: scrollHandleWidth,
-                background: "blue"
+                background: "transparent"
               }}
             >
               {/* this is the vertical scroll position display element */}

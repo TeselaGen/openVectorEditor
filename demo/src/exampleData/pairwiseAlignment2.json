@@ -1,0 +1,507 @@
+{
+  "id": "iceAlignment",
+  "pairwiseAlignments": [
+    [
+      {
+        "sequenceData": {
+          "id": 1,
+          "name": "randomName",
+          "sequence": "ccatggctaattcccatgtcagccgttaagtgttcctgtgtcactcaaaattgctttgagaggctctaagggcttctcagtgcgttacatccctggcttgttgtccacaaccgttaaaccttaaaagctttaaaagccttatatattcttttttttcttataaaacttaaaaccttagaggctatttaagttgctgatttatattaattttattgttcaaacatgagagcttagtacgtgaaacatgagagcttagtacgttagccatgagagcttagtacgttagccatgagggtttagttcgttaaacatgagagcttagtacgttaaacatgagagcttagtacgtgaaacatgagagcttagtacgtactatcaacaggttgaactgctgatcttcagatcctctacgccggacgcatcgtggccggatcttgcggccgcgatctcgtaaaagcagcagatagtggtagcatcgttttaactcatttgagcaaaattcgtcttgtcggataaaatatttatcagcccagctctctgggctgatatttctaaaagatcgcactaaatagctacgcggaatagtgctctactttcgtttagccctttcagaggtaagacattagggcaatttcactgtatgactgcgcagtcatcgagtctgtggggtgttgctccttttgcaacgtatcacttgtcaataaatagaaagtgtagatgtattaggcgcagctatttagtctatatggcaagtagtaattatttacttcttttttttctacgaacagcgctatcgaaagcttgttttacatcttcattttttaaagaccattgatttaaaatagtatcaaccaaagcatcttgactcattgttgctacacgatattttttattttgattatttatctcaaactctgacatttgaataaaatcccatagcggttcgataagttcattaactgctacaaccttatttttccacccatcattcggaacagagtcattaattagctcaaccaacttcagttgaatgatatggtacacttccgctttgcttttgccacccttctttcctgcactccgcctgacttctgataattttttttgattacaaacagagatgttaaaccaagtcatacctatgcacttatcaaataactccgcagcccgatgaaatgctttaaaggcaacgttttcattttcagacatgatagattttccccagaaaaaagagattgaggcgaacataaggtgtgccttgaaaatgtcattaatggaaaatggctcgataacaagaggtaaaaacgtttccttggtaaggtttgaacttagatttttccagcattcttgagctggatcatataattcagtgtattcttcctttatctccagttgcccattcactgtatggtgccttgtttcccatggtacatcgcaggaatatttacgccccgccctgccactcatcgcagtactgttgtaattcattaagcattctgccgacatggaagccatcacaaacggcatgatgaacctgaatcgccagcggcatcagcaccttgtcgccttgcgtataatatttgcccatggtgaaaacgggggcgaagaagttgtccatattggccacgtttaaatcaaaactggtgaaactcacccagggattggctgagacgaaaaacatattctcaataaaccctttagggaaataggccaggttttcaccgtaacacgccacatcttgcgaatatatgtgtagaaactgccggaaatcgtcgtggtattcactccagagcgatgaaaacgtttcagtttgctcatggaaaacggtgtaacaagggtgaacactatcccatatcaccagctcaccgtctttcattgccatacgaaattccggatgagcattcatcaggcgggcaagaatgtgaataaaggccggataaaacttgtgcttatttttctttacggtctttaaaaaggccgtaatatccagctgaacggtctggttataggtacattgagcaactgactgaaatgcctcaaaatgttctttacgatgccattgggatatatcaacggtggtatatccagtgatttttttctccattttagcttccttagctcctgaaaatctcgataactcaaaaaatacgcccggtagtgatcttatttcattatggtgaaagttggaacctcttacgtgccgatcaacgtctcattttcgccagatatcgacgtcggtgcctaatgagtgagctaacttacattaagatcttccccatcggtgatgagccagtgtgactctagtagagagcgttcaccgacaaacaacagataaaacgaaaggcccagtctttcgactgagcctttcgttttatttgatgcctggctctagtagcggccgcttaccaggacagggtgcccgggcagtatttgtcaatcaggccttggtagtatgggcgcagggattcaacatctggcaggtcagggcatttggtatacaggtcgaatttattgaactcctgaacccacggcagcatatccagatcctgctgagagcacagctgacgataatcgccaccggtatgccacgggtagaaggagtgaaaacggatcatgtaaaatgcctcggacggcagggagaatttgttgaatttcatcatctgatacaggtactcgtcgtgaccccaagacatcagaacgttctccaggccgcaatgcggctggtacatgcccagttcggtggaatagcgcggatcctggagatccgggttatcctggaaggtagagtcgcagaagaccacggatgcctgtgggcggcagcccaccgggaaagtatcgcccactaccgcccattgtggttcgccccacagcgccatgatcttacccaggtcgtgcagcagaccgaccaggtggaaccaatctttatcaggatgagctttacgaataccttcggcggtctgaaatgcatggaaagagttagggaagtcaacgtcagggtcgctttcgtcaaccaggtcatccagcataccaacagcctccataatggtcatctttttgtaagagaaagaaccatactggatgcgcttgcggctcacgaaatcaacggtctgatgggtgtgcatcagtttgtaggtcgtgaaaacgcgatccagcagcggaccagaagtgtagttacggaaagagtctttgctctttgccatctccggatccacgtctggacgataaaccagagacggatcaggaccaacatcaactttcatgagctctctcctctgttgggtaacgcctttaattttaaaaattgcacgtgctagcataataactgaatcaataaagactgtaaagtcggcgatataggcgccagcaaccgcacctgtggcgccggtgatgccggccacgatgcgtccggcgtagaggatctgctcatgtttgacagcttatcgagagcgttcaccgacaaacaacagataaaacgaaaggcccagtctttcgactgagcctttcgttttatttgatgcctggctcgagttgacggctagctcagtcctaggtatagtgctagcattcgtgcaatttttatgaggtaccgaattctcacacaggaaagtactagatgattatgggtaggaaacaacaatacggaaccctcgcgtccatcgccgcgaaactaggtatctcaaggaccacagtgtccaacgcctacaaccggccggagcaactctccgcagaacttcgccaacgcatcctcgacaccgctgaagatatgggctatctcggccctgatccggtggcccgcagccttcgtacacgcagagcaggcgcaatcggagtgctgcttactgaggacctcacttatgccttcgaagatatggcctccgtggactttcttgccggggtggctcaagctgctggagacacccaactaacgctgattcctgcctcgcccgcgagcagcgttgaccatgtctcggctcaacaattagtcaacaacgctgcagttgacggagtggttatttactccgttgccaagggtgatccacacatcgatgccatccgtgcccgtggtttgcccgcagtcatcgccgaccagcctgcacgcgaagaaggcatgccgtttattgccccaaataaccgcaaagccatcgcccctgcagctcaagcgctaatcgacgccggccaccgcaaaatcggcatcctgtccatccgcctagaccgcgcaaacaacgacggcgaagtcacccgcgagcgcctcgaaaacgcccaataccaggtacaacgcgaccgagtcaggggtgccatggaagtctttatcgaagcgggaatcgatcccggcaccgtgccgatcatggaatgctggatcaacaaccgccaacacaacttcgaagtggccaaagaacttctagaaacacacccagacctcaccgcagtactctgtaccgtcgatgcactggcattcggcgttctggaataccttaaaagcgtaggtaaatcagcgcctgcagatctatccctcactggtttcgatggcacccacatggcactcgcacgggatctcaccaccgtcatccaacccaacaaactcaaagggttcaaagccggcgaaacactgttgaaaatgattgacaaagaatacgtggaaccagaagtggaattggaaacttccttccacccaggttccacggttgcgccaatctagta",
+          "features": [
+            {
+              "start": 2286,
+              "end": 2305,
+              "fid": 33,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "B0015 PBS",
+              "notes": "#f58a5e",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 2286,
+              "end": 2385,
+              "fid": 34,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "B0015 Double Terminator",
+              "notes": "#c6c9d1",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 444,
+              "end": 1443,
+              "fid": 35,
+              "forward": true,
+              "type": "gene",
+              "name": "ecoli_DH1_intA_locus",
+              "notes": "ecoli_DH1_intA_locus",
+              "annotationType": "gene"
+            },
+            {
+              "start": 3274,
+              "end": 3343,
+              "fid": 36,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "J23101 sp",
+              "notes": "J23101 sp",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 4696,
+              "end": 4697,
+              "fid": 37,
+              "forward": true,
+              "type": "terminator",
+              "name": "dbl term",
+              "notes": "dbl term",
+              "annotationType": "terminator"
+            },
+            {
+              "start": 4,
+              "end": 24,
+              "fid": 38,
+              "forward": false,
+              "type": "primer_bind",
+              "name": "DVA05764_dsDVA00566_reverse",
+              "notes": "DVA05764_dsDVA00566_reverse",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 2235,
+              "end": 2253,
+              "fid": 39,
+              "forward": true,
+              "type": "primer_bind",
+              "name": "DVA05763_dsDVA00566_forward",
+              "notes": "DVA05763_dsDVA00566_forward",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 3442,
+              "end": 3521,
+              "fid": 40,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "rrnB Terminator",
+              "notes": "#f58a5e",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3578,
+              "end": 3597,
+              "fid": 41,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "ipsA Start 2",
+              "notes": "#faac61",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 2402,
+              "end": 3259,
+              "fid": 42,
+              "forward": false,
+              "type": "CDS",
+              "name": "MIOX",
+              "notes": "#d6b295",
+              "annotationType": "CDS"
+            },
+            {
+              "start": 3613,
+              "end": 4695,
+              "fid": 43,
+              "forward": true,
+              "type": "CDS",
+              "name": "IpsA",
+              "notes": "#f58a5e",
+              "annotationType": "CDS"
+            },
+            {
+              "start": 4676,
+              "end": 4695,
+              "fid": 44,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "AG_002",
+              "notes": "#ffef86",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3607,
+              "end": 3631,
+              "fid": 45,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "ipsA Start PBS",
+              "notes": "#9eafd2",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3344,
+              "end": 3360,
+              "fid": 46,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "pHH rrnB PBS",
+              "notes": "#ffef86",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 2267,
+              "end": 2285,
+              "fid": 47,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "pHH backbone PBS 2",
+              "notes": "pHH backbone PBS 2",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3321,
+              "end": 3336,
+              "fid": 48,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "cg0044",
+              "notes": "cg0044",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 4696,
+              "end": 24,
+              "fid": 49,
+              "forward": true,
+              "type": "primer_bind",
+              "name": "DVA05761_(R6Kori_intA_CmR)_forward",
+              "notes": "DVA05761_(R6Kori_intA_CmR)_forward",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 2231,
+              "end": 2276,
+              "fid": 50,
+              "forward": false,
+              "type": "primer_bind",
+              "name": "DVA05762_(R6Kori_intA_CmR)_reverse",
+              "notes": "DVA05762_(R6Kori_intA_CmR)_reverse",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 3513,
+              "end": 3527,
+              "fid": 51,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "Term Start PBS",
+              "notes": "#f58a5e",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 1444,
+              "end": 2103,
+              "fid": 52,
+              "forward": false,
+              "type": "misc_marker",
+              "name": "CmR",
+              "notes": "CmR",
+              "annotationType": "misc_marker"
+            },
+            {
+              "start": 0,
+              "end": 443,
+              "fid": 53,
+              "forward": true,
+              "type": "rep_origin",
+              "name": "R6k ori",
+              "notes": "R6k ori",
+              "annotationType": "rep_origin"
+            },
+            {
+              "start": 3528,
+              "end": 3562,
+              "fid": 54,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "J23111",
+              "notes": "#d59687",
+              "annotationType": "misc_feature"
+            }
+          ]
+        },
+        "alignmentData": {
+          "id": 1,
+          "sequence": "TTGCTTTGAGAGGCTCTAAGGGCTTCTCAGTGCGTTACATCCCTGGCTTGTTGTCCACAACCGTTAAACCTTAAAAGCTTTAAAAGCCTTATATATTCTTTTTTTTCTTATAAAACTTAAAACCTTAGAGGCTATTTAAGTTGCTGATTTATATTAATTTTATTGTTCAAACATGAGAGCTTAGTACGTGAAACATGAGAGCTTAGTACGTTAGCCATGAGAGCTTAGTACGTTAGCCATGAGGGTTTAGTTCGTTAAACATGAGAGCTTAGTACGTTAAACATGAGAGCTTAGTACGTGAAACATGAGAGCTTAGTACGTACTATCAACAGGTTGAACTGCTGATCTTCAGATCCTCTACGCCGGACGCATCGTGGCCGGATCTTGCGGCCGCGATCTCGTAAAAGCAGCAGATAGTGGTAGCATCGTTTTAACTCATTTGAGCAAAATTCGTCTTGTCGGATAAAATATTTATCAGCCCAGCTCTCTGGGCTGATATTTCTAAAAGATCGCACTAAATAGCTACGCGGAATAGTGCTCTACTTTCGTTTAGCCCTTTCAGAGGTAAGACATTAGGGCAATTTCACTGTATGACTGCGCAGTCATCGAGTCTGTGGGGTGTTGCTCCTTTTGCAACGTATCACTTGTCAATAAATAGAAAGTGTAGATGTATTAGGCGCAGCTATTTAGTCTATATGGCAAGTAGTAATTATTTACTTCTTTTTTTTCTACGAACAGCGCTATCGAAAGCTTGTTTTACATCTTCATTTTTTAAAGACCATTGATTTAAAATAGTATCAACCAAAGCATCTTGACTCATTGTTGCTACACGATATTTTTTATTTTGATTATTTATCTCAAACTCTGACATTTGAATAAAATCCCATAGCGGTTCGATAAGTTCATTAACTGCTACAACCTTATTTTTCCACCCATCATTCGGAACAGAGTC",
+          "matchStart": 51,
+          "matchEnd": 1002
+        }
+      },
+      {
+        "sequenceData": {
+          "id": 1,
+          "name": "pDVA3035_col2_05761-DVA05761_R6Kori_intA_CmR_forward.ab1",
+          "sequence": "nnnnnnnncngngtcntcnnnttgctttgagaggctctaagggcttctcagtgcgttacatccctggcttgttgtccacaaccgttaaaccttaaaagctttaaaagccttatatattcttttttttcttataaaacttaaaaccttagaggctatttaagttgctgatttatattaattttattgttcaaacatgagagcttagtacgtgaaacatgagagcttagtacgttagccatgagagcttagtacgttagccattagggtttagttcgttaaacatgagagcttagtacgttaaacatgagagcttagtacgtgaaacatgagagcttagtacgtactatcaacaggttgaactgctgatcttcagatcctctacgccggacgcatcgtggccggatcttgcggccgcgatctcgtaaaagcagcagatagtggtagcatcgttttaactcatttgagcaaaattcgtcttgtcggataaaatatttatcagcccagctctctgggctgatatttctaaaagatcgcactaaatagctacgcggaatagtgctctactttcgtttagccctttcagaggtaagacattagggcaatttcactgtatgactgcgcagtcatcgagtctgtggggtgttgctccttttgcaacgtatcacttgtcaataaatagaaagtgtagatgtattangcgcagctatttagtctatatggcaagtagtaattatttacttcttttttttctacgaacagcgctatcgaaagcttgttttacatcttcattttttaaagaccattgatttaaaatagtatcaaccaaagcatcttgactcattgntgctacacgatattttttattttgattatttatctcaaactctgacatttgannaaaatcccatagcggntcgatnagttcattaactgctannnnnatttttccacccatcattcgnancagagtcnnnnnnctcannnntcagnganganangnncnnnnncttgctttgcnncnnntncngnantcnncngantnnganantttttnatnnnacnnanangnnnnnnnnnnnncnatgnnntntnnanantcnnnnnnnnnnnngnnnnnnnncnnntcnttcnannnnnnnnttccnnnnnnn"
+        },
+        "alignmentData": {
+          "id": 1,
+          "sequence": "TTGCTTTGAGAGGCTCTAAGGGCTTCTCAGTGCGTTACATCCCTGGCTTGTTGTCCACAACCGTTAAACCTTAAAAGCTTTAAAAGCCTTATATATTCTTTTTTTTCTTATAAAACTTAAAACCTTAGAGGCTATTTAAGTTGCTGATTTATATTAATTTTATTGTTCAAACATGAGAGCTTAGTACGTGAAACATGAGAGCTTAGTACGTTAGCCATGAGAGCTTAGTACGTTAGCCATTAGGGTTTAGTTCGTTAAACATGAGAGCTTAGTACGTTAAACATGAGAGCTTAGTACGTGAAACATGAGAGCTTAGTACGTACTATCAACAGGTTGAACTGCTGATCTTCAGATCCTCTACGCCGGACGCATCGTGGCCGGATCTTGCGGCCGCGATCTCGTAAAAGCAGCAGATAGTGGTAGCATCGTTTTAACTCATTTGAGCAAAATTCGTCTTGTCGGATAAAATATTTATCAGCCCAGCTCTCTGGGCTGATATTTCTAAAAGATCGCACTAAATAGCTACGCGGAATAGTGCTCTACTTTCGTTTAGCCCTTTCAGAGGTAAGACATTAGGGCAATTTCACTGTATGACTGCGCAGTCATCGAGTCTGTGGGGTGTTGCTCCTTTTGCAACGTATCACTTGTCAATAAATAGAAAGTGTAGATGTATTANGCGCAGCTATTTAGTCTATATGGCAAGTAGTAATTATTTACTTCTTTTTTTTCTACGAACAGCGCTATCGAAAGCTTGTTTTACATCTTCATTTTTTAAAGACCATTGATTTAAAATAGTATCAACCAAAGCATCTTGACTCATTGNTGCTACACGATATTTTTTATTTTGATTATTTATCTCAAACTCTGACATTTGANNAAAATCCCATAGCGGNTCGATNAGTTCATTAACTGCTANNNNN--ATTTTTCCACCCATCATTCGNANCAGAGTC",
+          "matchStart": 22,
+          "strand": 1,
+          "matchEnd": 971
+        }
+      }
+    ],
+    [
+      {
+        "sequenceData": {
+          "id": 2,
+          "name": "randomName",
+          "sequence": "ccatggctaattcccatgtcagccgttaagtgttcctgtgtcactcaaaattgctttgagaggctctaagggcttctcagtgcgttacatccctggcttgttgtccacaaccgttaaaccttaaaagctttaaaagccttatatattcttttttttcttataaaacttaaaaccttagaggctatttaagttgctgatttatattaattttattgttcaaacatgagagcttagtacgtgaaacatgagagcttagtacgttagccatgagagcttagtacgttagccatgagggtttagttcgttaaacatgagagcttagtacgttaaacatgagagcttagtacgtgaaacatgagagcttagtacgtactatcaacaggttgaactgctgatcttcagatcctctacgccggacgcatcgtggccggatcttgcggccgcgatctcgtaaaagcagcagatagtggtagcatcgttttaactcatttgagcaaaattcgtcttgtcggataaaatatttatcagcccagctctctgggctgatatttctaaaagatcgcactaaatagctacgcggaatagtgctctactttcgtttagccctttcagaggtaagacattagggcaatttcactgtatgactgcgcagtcatcgagtctgtggggtgttgctccttttgcaacgtatcacttgtcaataaatagaaagtgtagatgtattaggcgcagctatttagtctatatggcaagtagtaattatttacttcttttttttctacgaacagcgctatcgaaagcttgttttacatcttcattttttaaagaccattgatttaaaatagtatcaaccaaagcatcttgactcattgttgctacacgatattttttattttgattatttatctcaaactctgacatttgaataaaatcccatagcggttcgataagttcattaactgctacaaccttatttttccacccatcattcggaacagagtcattaattagctcaaccaacttcagttgaatgatatggtacacttccgctttgcttttgccacccttctttcctgcactccgcctgacttctgataattttttttgattacaaacagagatgttaaaccaagtcatacctatgcacttatcaaataactccgcagcccgatgaaatgctttaaaggcaacgttttcattttcagacatgatagattttccccagaaaaaagagattgaggcgaacataaggtgtgccttgaaaatgtcattaatggaaaatggctcgataacaagaggtaaaaacgtttccttggtaaggtttgaacttagatttttccagcattcttgagctggatcatataattcagtgtattcttcctttatctccagttgcccattcactgtatggtgccttgtttcccatggtacatcgcaggaatatttacgccccgccctgccactcatcgcagtactgttgtaattcattaagcattctgccgacatggaagccatcacaaacggcatgatgaacctgaatcgccagcggcatcagcaccttgtcgccttgcgtataatatttgcccatggtgaaaacgggggcgaagaagttgtccatattggccacgtttaaatcaaaactggtgaaactcacccagggattggctgagacgaaaaacatattctcaataaaccctttagggaaataggccaggttttcaccgtaacacgccacatcttgcgaatatatgtgtagaaactgccggaaatcgtcgtggtattcactccagagcgatgaaaacgtttcagtttgctcatggaaaacggtgtaacaagggtgaacactatcccatatcaccagctcaccgtctttcattgccatacgaaattccggatgagcattcatcaggcgggcaagaatgtgaataaaggccggataaaacttgtgcttatttttctttacggtctttaaaaaggccgtaatatccagctgaacggtctggttataggtacattgagcaactgactgaaatgcctcaaaatgttctttacgatgccattgggatatatcaacggtggtatatccagtgatttttttctccattttagcttccttagctcctgaaaatctcgataactcaaaaaatacgcccggtagtgatcttatttcattatggtgaaagttggaacctcttacgtgccgatcaacgtctcattttcgccagatatcgacgtcggtgcctaatgagtgagctaacttacattaagatcttccccatcggtgatgagccagtgtgactctagtagagagcgttcaccgacaaacaacagataaaacgaaaggcccagtctttcgactgagcctttcgttttatttgatgcctggctctagtagcggccgcttaccaggacagggtgcccgggcagtatttgtcaatcaggccttggtagtatgggcgcagggattcaacatctggcaggtcagggcatttggtatacaggtcgaatttattgaactcctgaacccacggcagcatatccagatcctgctgagagcacagctgacgataatcgccaccggtatgccacgggtagaaggagtgaaaacggatcatgtaaaatgcctcggacggcagggagaatttgttgaatttcatcatctgatacaggtactcgtcgtgaccccaagacatcagaacgttctccaggccgcaatgcggctggtacatgcccagttcggtggaatagcgcggatcctggagatccgggttatcctggaaggtagagtcgcagaagaccacggatgcctgtgggcggcagcccaccgggaaagtatcgcccactaccgcccattgtggttcgccccacagcgccatgatcttacccaggtcgtgcagcagaccgaccaggtggaaccaatctttatcaggatgagctttacgaataccttcggcggtctgaaatgcatggaaagagttagggaagtcaacgtcagggtcgctttcgtcaaccaggtcatccagcataccaacagcctccataatggtcatctttttgtaagagaaagaaccatactggatgcgcttgcggctcacgaaatcaacggtctgatgggtgtgcatcagtttgtaggtcgtgaaaacgcgatccagcagcggaccagaagtgtagttacggaaagagtctttgctctttgccatctccggatccacgtctggacgataaaccagagacggatcaggaccaacatcaactttcatgagctctctcctctgttgggtaacgcctttaattttaaaaattgcacgtgctagcataataactgaatcaataaagactgtaaagtcggcgatataggcgccagcaaccgcacctgtggcgccggtgatgccggccacgatgcgtccggcgtagaggatctgctcatgtttgacagcttatcgagagcgttcaccgacaaacaacagataaaacgaaaggcccagtctttcgactgagcctttcgttttatttgatgcctggctcgagttgacggctagctcagtcctaggtatagtgctagcattcgtgcaatttttatgaggtaccgaattctcacacaggaaagtactagatgattatgggtaggaaacaacaatacggaaccctcgcgtccatcgccgcgaaactaggtatctcaaggaccacagtgtccaacgcctacaaccggccggagcaactctccgcagaacttcgccaacgcatcctcgacaccgctgaagatatgggctatctcggccctgatccggtggcccgcagccttcgtacacgcagagcaggcgcaatcggagtgctgcttactgaggacctcacttatgccttcgaagatatggcctccgtggactttcttgccggggtggctcaagctgctggagacacccaactaacgctgattcctgcctcgcccgcgagcagcgttgaccatgtctcggctcaacaattagtcaacaacgctgcagttgacggagtggttatttactccgttgccaagggtgatccacacatcgatgccatccgtgcccgtggtttgcccgcagtcatcgccgaccagcctgcacgcgaagaaggcatgccgtttattgccccaaataaccgcaaagccatcgcccctgcagctcaagcgctaatcgacgccggccaccgcaaaatcggcatcctgtccatccgcctagaccgcgcaaacaacgacggcgaagtcacccgcgagcgcctcgaaaacgcccaataccaggtacaacgcgaccgagtcaggggtgccatggaagtctttatcgaagcgggaatcgatcccggcaccgtgccgatcatggaatgctggatcaacaaccgccaacacaacttcgaagtggccaaagaacttctagaaacacacccagacctcaccgcagtactctgtaccgtcgatgcactggcattcggcgttctggaataccttaaaagcgtaggtaaatcagcgcctgcagatctatccctcactggtttcgatggcacccacatggcactcgcacgggatctcaccaccgtcatccaacccaacaaactcaaagggttcaaagccggcgaaacactgttgaaaatgattgacaaagaatacgtggaaccagaagtggaattggaaacttccttccacccaggttccacggttgcgccaatctagta",
+          "features": [
+            {
+              "start": 2286,
+              "end": 2305,
+              "fid": 33,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "B0015 PBS",
+              "notes": "#f58a5e",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 2286,
+              "end": 2385,
+              "fid": 34,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "B0015 Double Terminator",
+              "notes": "#c6c9d1",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 444,
+              "end": 1443,
+              "fid": 35,
+              "forward": true,
+              "type": "gene",
+              "name": "ecoli_DH1_intA_locus",
+              "notes": "ecoli_DH1_intA_locus",
+              "annotationType": "gene"
+            },
+            {
+              "start": 3274,
+              "end": 3343,
+              "fid": 36,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "J23101 sp",
+              "notes": "J23101 sp",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 4696,
+              "end": 4697,
+              "fid": 37,
+              "forward": true,
+              "type": "terminator",
+              "name": "dbl term",
+              "notes": "dbl term",
+              "annotationType": "terminator"
+            },
+            {
+              "start": 4,
+              "end": 24,
+              "fid": 38,
+              "forward": false,
+              "type": "primer_bind",
+              "name": "DVA05764_dsDVA00566_reverse",
+              "notes": "DVA05764_dsDVA00566_reverse",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 2235,
+              "end": 2253,
+              "fid": 39,
+              "forward": true,
+              "type": "primer_bind",
+              "name": "DVA05763_dsDVA00566_forward",
+              "notes": "DVA05763_dsDVA00566_forward",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 3442,
+              "end": 3521,
+              "fid": 40,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "rrnB Terminator",
+              "notes": "#f58a5e",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3578,
+              "end": 3597,
+              "fid": 41,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "ipsA Start 2",
+              "notes": "#faac61",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 2402,
+              "end": 3259,
+              "fid": 42,
+              "forward": false,
+              "type": "CDS",
+              "name": "MIOX",
+              "notes": "#d6b295",
+              "annotationType": "CDS"
+            },
+            {
+              "start": 3613,
+              "end": 4695,
+              "fid": 43,
+              "forward": true,
+              "type": "CDS",
+              "name": "IpsA",
+              "notes": "#f58a5e",
+              "annotationType": "CDS"
+            },
+            {
+              "start": 4676,
+              "end": 4695,
+              "fid": 44,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "AG_002",
+              "notes": "#ffef86",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3607,
+              "end": 3631,
+              "fid": 45,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "ipsA Start PBS",
+              "notes": "#9eafd2",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3344,
+              "end": 3360,
+              "fid": 46,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "pHH rrnB PBS",
+              "notes": "#ffef86",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 2267,
+              "end": 2285,
+              "fid": 47,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "pHH backbone PBS 2",
+              "notes": "pHH backbone PBS 2",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 3321,
+              "end": 3336,
+              "fid": 48,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "cg0044",
+              "notes": "cg0044",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 4696,
+              "end": 24,
+              "fid": 49,
+              "forward": true,
+              "type": "primer_bind",
+              "name": "DVA05761_(R6Kori_intA_CmR)_forward",
+              "notes": "DVA05761_(R6Kori_intA_CmR)_forward",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 2231,
+              "end": 2276,
+              "fid": 50,
+              "forward": false,
+              "type": "primer_bind",
+              "name": "DVA05762_(R6Kori_intA_CmR)_reverse",
+              "notes": "DVA05762_(R6Kori_intA_CmR)_reverse",
+              "annotationType": "primer_bind"
+            },
+            {
+              "start": 3513,
+              "end": 3527,
+              "fid": 51,
+              "forward": false,
+              "type": "misc_feature",
+              "name": "Term Start PBS",
+              "notes": "#f58a5e",
+              "annotationType": "misc_feature"
+            },
+            {
+              "start": 1444,
+              "end": 2103,
+              "fid": 52,
+              "forward": false,
+              "type": "misc_marker",
+              "name": "CmR",
+              "notes": "CmR",
+              "annotationType": "misc_marker"
+            },
+            {
+              "start": 0,
+              "end": 443,
+              "fid": 53,
+              "forward": true,
+              "type": "rep_origin",
+              "name": "R6k ori",
+              "notes": "R6k ori",
+              "annotationType": "rep_origin"
+            },
+            {
+              "start": 3528,
+              "end": 3562,
+              "fid": 54,
+              "forward": true,
+              "type": "misc_feature",
+              "name": "J23111",
+              "notes": "#d59687",
+              "annotationType": "misc_feature"
+            }
+          ]
+        },
+        "alignmentData": {
+          "id": 2,
+          "sequence": "CCTCGCGTCCATCGCCGCGAAACTAGGTATCTCAAGGACCACAGTGTCCAACGCCTACAACCGGCCGGAGCAACTCTCCGCAGAACTTCGCCAACGCATCCTCGACACCGCTGAAGATATGGGCTATCTCGGCCCTGATCCGGTGGCCCGCAGCCTTCGTACACGCAGAGCAGGCGCAATCGGAGTGCTGCTTACTGAGGACCTCACTTATGCCTT-CGAAGATATGGCCTCCGTGGACTTTCTTGCCGGGGTGGCTCAAGCTGCTGGAGACACCCAACTAACGCTGATTCCTGCCTCGCCCGCGAGCAGCGTTGACCATGTCTCGGCTCAACAATTAGTCAACAACGCTGCAGTTGACGGAGTGGTTATTTACTCCGTTGCCAAGGGTGATCCACACATCGATGCCATCCGTGCCCGTGGTTTGCCCGCAGTCATCGCCGACCAGCCTGCACGCGAAGAAGGCATGCCGTTTATTGCCCCAAATAACCGCAAAGCCATCGCCCCTGCAGCTCAAGCGCTAATCGACGCCGGCCACCGCAAAATCGGCATCCTGTCCATCCGCCTAGACCGCGCAAACAACGACGGCGAAGTCACCCGCGAGCGCCTCGAAAACGCCCAATACCAGGTACAACGCGACCGAGTCAGGGGTGCCATGGAAGTCTTTATCGAAGCGGGAATCGATCCCGGCACCGTGCCGATCATGGAATGCTGGATCAACAACCGCCAACACAACTTCGAAGTGGCCAAAGAACTTCTAGAAACACACCCAGACCTCACCGCAGTACTCTGTACCGTCGATGCACTGGCATTCGGCGTTCTGGAATACCTTAAAAGCGTAGGTAAATCAGCGCCTGCAGATCTATCCCTCACTGGTTTCGATGGCACCCACATGGCACTCGCACGGGATCTCACCACCGTCATCCAACCCAACAAACTCAAAGGGTTCAAAGCCGGCGAAACACTGTTGAAAATGATTGACAAAGAATACGTGGAACCAGAAGTGGAATTGGAAACTTCCTTCCACCCAG",
+          "matchStart": 3646,
+          "matchEnd": 4673
+        }
+      },
+      {
+        "sequenceData": {
+          "id": 2,
+          "name": "pDVA3035_col2_05764-DVA05764_dsDVA00566_reverse.ab1",
+          "sequence": "nnnnnnnnncncgnggnnctgggtggaggaagtttccaattccacttctggttccacgtattctttgtcaatcattttcaacagtgtttcgccggctttgaaccctttgagtttgttgggttggatgacggtggtgagatcccgtgcgagtgccatgtgggtgccatcgaaaccagtgagggatagatctgcaggcgctgatttacctacgcttttaaggtattccagaacgccgaatgccagtgcatcgacggtacagagtactgcggtgaggtctgggtgtgtttctagaagttctttggccacttcgaagttgtgttggcggttgttgatccagcattccatgatcggcacggtgccgggatcgattcccgcttcgataaagacttccatggcacccctgactcggtcgcgttgtacctggtattgggcgttttcgaggcgctcgcgggtgacttcgccgtcgttgtttgcgcggtctaggcggatggacaggatgccgattttgcggtggccggcgtcgattagcgcttgagctgcaggggcgatggctttgcggttatttggggcaataaacggcatgccttcttcgcgtgcaggctggtcggcgatgactgcgggcaaaccacgggcacggatggcatcgatgtgtggatcacccttggcaacggagtaaataaccactccgtcaactgcagcgttgttgactaattgttgagccgagacatggtcaacgctgctcgcgggcgangcaggaatcagcgttagttgggtgtctccagcagcttgagccaccccggcaagaaagtccacggaggccatatcttcgaaaggnataagtgaggtcctcagtaagcagcactccgattgcgcctgctctgcgtgtacgaanctgcgggccaccggatcngnccgagatagcccatatcttcagcggtgtcgaggatgcgttngcganttctgcgganagtgctccggccggttgtnncgtnganactgtggtcnnanatactagttcgcgncgatggncgcnaggnncgtatgtgntncnaccanancatctannactttcngnnntgagatngnactcntnaaannnncnangctagcactatncnnnnntgnnctnnnntcacnnnnncnggnntnnnnaannaannnnnnncnannannngnnnnn"
+        },
+        "alignmentData": {
+          "id": 2,
+          "sequence": "CCTNGCGNCCATCGNCGCGAA-CTA-GTATNT--NNGACCACAGTNTC-NACG-NNACAACCGGCCGGAGCA-CTNTCCGCAGAA-NTCGCNAACGCATCCTCGACACCGCTGAAGATATGGGCTATCTCGG-NCNGATCCGGTGGCCCGCAG-NTTCGTACACGCAGAGCAGGCGCAATCGGAGTGCTGCTTACTGAGGACCTCACTTATNCCTTTCGAAGATATGGCCTCCGTGGACTTTCTTGCCGGGGTGGCTCAAGCTGCTGGAGACACCCAACTAACGCTGATTCCTGCNTCGCCCGCGAGCAGCGTTGACCATGTCTCGGCTCAACAATTAGTCAACAACGCTGCAGTTGACGGAGTGGTTATTTACTCCGTTGCCAAGGGTGATCCACACATCGATGCCATCCGTGCCCGTGGTTTGCCCGCAGTCATCGCCGACCAGCCTGCACGCGAAGAAGGCATGCCGTTTATTGCCCCAAATAACCGCAAAGCCATCGCCCCTGCAGCTCAAGCGCTAATCGACGCCGGCCACCGCAAAATCGGCATCCTGTCCATCCGCCTAGACCGCGCAAACAACGACGGCGAAGTCACCCGCGAGCGCCTCGAAAACGCCCAATACCAGGTACAACGCGACCGAGTCAGGGGTGCCATGGAAGTCTTTATCGAAGCGGGAATCGATCCCGGCACCGTGCCGATCATGGAATGCTGGATCAACAACCGCCAACACAACTTCGAAGTGGCCAAAGAACTTCTAGAAACACACCCAGACCTCACCGCAGTACTCTGTACCGTCGATGCACTGGCATTCGGCGTTCTGGAATACCTTAAAAGCGTAGGTAAATCAGCGCCTGCAGATCTATCCCTCACTGGTTTCGATGGCACCCACATGGCACTCGCACGGGATCTCACCACCGTCATCCAACCCAACAAACTCAAAGGGTTCAAAGCCGGCGAAACACTGTTGAAAATGATTGACAAAGAATACGTGGAACCAGAAGTGGAATTGGAAACTTCCT-CCACCCAG",
+          "matchStart": 1036,
+          "strand": -1,
+          "matchEnd": 19
+        }
+      }
+    ]
+  ]
+}

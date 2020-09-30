@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "10.1.101",
+  "version": "10.2.0",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -115,6 +115,13 @@
     "plasmid",
     "vector",
     "editor",
+    "alignment",
+    "sequence",
+    "sequence-alignment",
+    "msa",
+    "multiple-sequence-alignment",
+    "pairwise",
+    "pairwise-alignment",
     "teselagen"
   ]
 }
