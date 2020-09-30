@@ -166,41 +166,40 @@ export class Editor extends React.Component {
     let newPanelsShown;
     if (result.destination.droppableId !== result.source.droppableId) {
       //we're moving a tab from one group to another group
-      newPanelsShown = map(
-        [...panelsShown, ...(panelsShown.length === 1 && [[]])],
-        (panelGroup, groupIndex) => {
-          const panelToMove =
-            panelsShown[
-              Number(result.source.droppableId.replace("droppable-id-", ""))
-            ][result.source.index];
-          if (
-            Number(groupIndex) ===
-            Number(result.destination.droppableId.replace("droppable-id-", ""))
-          ) {
-            //we're adding to this group
-            return insertItem(
-              panelGroup.map((tabPanel) => ({ ...tabPanel, active: false })),
-              { ...panelToMove, active: true },
-              result.destination.index
-            );
-          } else if (
-            Number(groupIndex) ===
+      const secondPanel = panelsShown.length === 1 ? [[]] : [];
+      const panelsToMapOver = [...panelsShown, ...secondPanel];
+      newPanelsShown = map(panelsToMapOver, (panelGroup, groupIndex) => {
+        const panelToMove =
+          panelsShown[
             Number(result.source.droppableId.replace("droppable-id-", ""))
-          ) {
-            // we're removing from this group
-            return removeItem(panelGroup, result.source.index).map(
-              (tabPanel, index) => {
-                return {
-                  ...tabPanel,
-                  ...(panelToMove.active && index === 0 && { active: true })
-                };
-              }
-            );
-          } else {
-            return panelGroup;
-          }
+          ][result.source.index];
+        if (
+          Number(groupIndex) ===
+          Number(result.destination.droppableId.replace("droppable-id-", ""))
+        ) {
+          //we're adding to this group
+          return insertItem(
+            panelGroup.map((tabPanel) => ({ ...tabPanel, active: false })),
+            { ...panelToMove, active: true },
+            result.destination.index
+          );
+        } else if (
+          Number(groupIndex) ===
+          Number(result.source.droppableId.replace("droppable-id-", ""))
+        ) {
+          // we're removing from this group
+          return removeItem(panelGroup, result.source.index).map(
+            (tabPanel, index) => {
+              return {
+                ...tabPanel,
+                ...(panelToMove.active && index === 0 && { active: true })
+              };
+            }
+          );
+        } else {
+          return panelGroup;
         }
-      );
+      });
     } else {
       //we're moving tabs within the same group
       newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
