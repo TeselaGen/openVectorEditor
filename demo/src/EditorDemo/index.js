@@ -897,6 +897,23 @@ updateEditor(store, "DemoEditor", {
 `
               })}
               {renderToggle({
+                that: this,
+                type: "linear",
+                hook: (linear) => {
+                  updateEditor(store, "DemoEditor", {
+                    sequenceData: { ...exampleSequenceData, circular: !linear }
+                  });
+                },
+                label: "Toggle Linear",
+                description: `The editor can be put into linear mode like so: 
+\`\`\`
+updateEditor(store, "DemoEditor", {
+  sequenceData: {...exampleSequenceData, circular: false}
+});
+\`\`\`
+`
+              })}
+              {renderToggle({
                 info: `Any panel can be programatically focused from outside the editor. 
 Here is how to do that for the linear view:
 \`\`\`js

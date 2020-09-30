@@ -1,8 +1,3 @@
-// import { getRangeLength } from "ve-range-utils";
-// import {  } from "ve-range-utils";
-// import { normalizePositionByRangeLength } from "ve-range-utils";
-// import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
-
 import {
   getRangeLength,
   trimRangeByAnotherRange,
@@ -11,157 +6,97 @@ import {
   expandOrContractRangeToPosition
 } from "ve-range-utils";
 
-let draggingEnd = false;
 let dragInProgress = false;
-let selectionStartGrabbed;
-let selectionEndGrabbed;
+let selectionStartOrEndGrabbed;
+
 let caretPositionOnDragStart;
-export const editorDragged = function({ nearestCaretPos }) {
-  const {
+export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
+  let {
     caretPosition = -1,
     selectionLayer = { start: -1, end: -1 },
     sequenceLength = this.getSequenceLength && this.getSequenceLength()
   } = this.props;
 
+  if (this.easyStore && this.easyStore.selectionLayer) {
+    caretPosition = this.easyStore.caretPosition;
+    selectionLayer = this.easyStore.selectionLayer;
+  }
   if (!dragInProgress) {
     //we're starting the drag, so update the caret position!
-    if (!selectionStartGrabbed && !selectionEndGrabbed) {
-      //we're not dragging the caret or selection handles
-      // caretPositionOnDragStart = nearestCaretPos;
-      // this.caretPositionUpdate(nearestCaretPos);
-    }
-    dragInProgress = true;
+    dragInProgress = new Date().getTime();
     return;
   }
-  if (selectionStartGrabbed) {
+
+  if (selectionLayer.start > -1 && selectionStartOrEndGrabbed === "start") {
     handleSelectionStartGrabbed({
       caretPosition,
       selectionLayer,
+      caretPositionUpdate: this.caretPositionUpdate,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
-      sequenceLength
+      sequenceLength,
+      doNotWrapOrigin
     });
-  } else if (selectionEndGrabbed) {
+  } else if (
+    selectionLayer.start > -1 &&
+    selectionStartOrEndGrabbed === "end"
+  ) {
     handleSelectionEndGrabbed({
       caretPosition,
       selectionLayer,
+      caretPositionUpdate: this.caretPositionUpdate,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
-      sequenceLength
+      sequenceLength,
+      doNotWrapOrigin
     });
   } else {
-    // else if (caretGrabbed) {
-    //     handleCaretDrag({
-    //         caretPosition,
-    //         selectionLayer,
-    //         selectionLayerUpdate,
-    //         nearestCaretPos,
-    //         sequenceLength
-    //     })
-    // }
-    //dragging somewhere within the sequence
-    //pass the caret position of the drag start
-    handleCaretDrag({
+    handleNoSelectionLayerYet({
       caretPosition: caretPositionOnDragStart,
       selectionLayer: caretPositionOnDragStart
         ? { start: -1, end: -1 }
         : selectionLayer,
       selectionLayerUpdate: this.selectionLayerUpdate,
       nearestCaretPos,
-      sequenceLength
+      sequenceLength,
+      doNotWrapOrigin
     });
-    // if (caretPositionOnDragStart !== null && !selectionLayer.start) {
-    //   caretPositionOnDragStart = null;
-    // }
   }
 };
 
-export const editorClicked = function({ nearestCaretPos, shiftHeld }) {
-  if (!dragInProgress) {
+export const editorClicked = function ({ nearestCaretPos, shiftHeld }) {
+  const timeDif = new Date().getTime() - dragInProgress;
+  if (!dragInProgress || 200 > timeDif) {
+    //if the drag is less than 200 ms it probably isn't a real drag!
     //we're not dragging the caret or selection handles
     this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
   }
 };
 
-export const editorDragStarted = function(opts) {
+export const editorDragStarted = function (opts) {
   document.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
-  caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
-  selectionStartGrabbed = opts.selectionStartGrabbed;
-  selectionEndGrabbed = opts.selectionEndGrabbed;
 
-  // let styleEl = document.getElementById("react-draggable-style-el");
-  // if (!styleEl) {
-  //   styleEl = document.createElement("style");
-  //   styleEl.type = "text/css";
-  //   styleEl.id = "react-draggable-style-el";
-  //   styleEl.innerHTML =
-  //     ".react-draggable-transparent-selection *::-moz-selection {background: transparent;}\n";
-  //   styleEl.innerHTML +=
-  //     ".react-draggable-transparent-selection *::selection {background: transparent;}\n";
-  //   document.getElementsByTagName("head")[0].appendChild(styleEl);
-  // }
-  // if (document.body)
-  //   addClassName(document.body, "react-draggable-transparent-selection");
+  caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
+  selectionStartOrEndGrabbed = opts.selectionStartGrabbed
+    ? "start"
+    : opts.selectionEndGrabbed
+    ? "end"
+    : null;
 };
-export const editorDragStopped = function() {
+export const editorDragStopped = function () {
   document.body.classList.remove("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = false;
   caretPositionOnDragStart = null;
-  setTimeout(function() {
+  setTimeout(function () {
     dragInProgress = false;
   });
-
-  // //
-  // try {
-  //   if (document && document.body)
-  //     removeClassName(document.body, "react-draggable-transparent-selection");
-  //   // $FlowIgnore: IE
-  //   if (document.selection) {
-  //     // $FlowIgnore: IE
-  //     document.selection.empty();
-  //   } else {
-  //     const selection = window.getSelection();
-
-  //     if (
-  //       selection.focusNode &&
-  //       selection.focusNode.classList.contains("sequenceInputBubble")
-  //     ) {
-  //       return; //don't remove the selection if we're focused in the sequenceInputBubble!
-  //     }
-  //     selection.removeAllRanges(); // remove selection caused by scroll
-  //   }
-  // } catch (e) {
-  //   // probably IE
-  // }
 };
-
-// function addClassName(el: HTMLElement, className: string) {
-//   if (el.classList) {
-//     el.classList.add(className);
-//   } else {
-//     if (!el.className.match(new RegExp(`(?:^|\\s)${className}(?!\\S)`))) {
-//       el.className += ` ${className}`;
-//     }
-//   }
-// }
-
-// function removeClassName(el: HTMLElement, className: string) {
-//   if (el.classList) {
-//     el.classList.remove(className);
-//   } else {
-//     el.className = el.className.replace(
-//       new RegExp(`(?:^|\\s)${className}(?!\\S)`, "g"),
-//       ""
-//     );
-//   }
-// }
 
 export function handleCaretMoved({
   moveBy,
   circular,
   sequenceLength,
-  // bpsPerRow,
   caretPosition,
   selectionLayer,
   shiftHeld,
@@ -352,7 +287,9 @@ export function handleSelectionStartGrabbed({
   selectionLayer,
   selectionLayerUpdate,
   nearestCaretPos,
-  sequenceLength
+  sequenceLength,
+  doNotWrapOrigin,
+  caretPositionUpdate
 }) {
   if (selectionLayer.start < 0) {
     handleNoSelectionLayerYet({
@@ -360,15 +297,33 @@ export function handleSelectionStartGrabbed({
       selectionLayer,
       selectionLayerUpdate,
       nearestCaretPos,
-      sequenceLength
+      sequenceLength,
+      doNotWrapOrigin
     });
   } else {
-    //there must be a selection layer
-    //we need to move the selection layer
-    selectionLayerUpdate({
-      start: nearestCaretPos,
-      end: selectionLayer.end
-    });
+    if (
+      doNotWrapOrigin &&
+      selectionLayer.end > -1 &&
+      nearestCaretPos === selectionLayer.end + 1
+    ) {
+      caretPositionUpdate(nearestCaretPos);
+      caretPositionOnDragStart = nearestCaretPos;
+    } else if (doNotWrapOrigin && nearestCaretPos > selectionLayer.end + 1) {
+      caretPositionOnDragStart = selectionLayer.end + 1;
+      selectionLayerUpdate({
+        start: selectionLayer.end + 1,
+        end: nearestCaretPos
+      });
+      selectionStartOrEndGrabbed = "end";
+    } else {
+      selectionStartOrEndGrabbed = "start";
+      //there must be a selection layer
+      //we need to move the selection layer
+      selectionLayerUpdate({
+        start: nearestCaretPos,
+        end: selectionLayer.end
+      });
+    }
   }
 }
 
@@ -377,40 +332,62 @@ function handleSelectionEndGrabbed({
   selectionLayer,
   selectionLayerUpdate,
   nearestCaretPos,
-  sequenceLength
+  sequenceLength,
+  doNotWrapOrigin,
+  caretPositionUpdate
 }) {
   if (selectionLayer.start < 0) {
     handleNoSelectionLayerYet({
       caretPosition,
       selectionLayerUpdate,
       nearestCaretPos,
-      sequenceLength
+      sequenceLength,
+      doNotWrapOrigin
     });
   } else {
-    //there must be a selection layer
-    //we need to move the selection layer
-    let newEnd = normalizePositionByRangeLength(
-      nearestCaretPos - 1,
-      sequenceLength
-    );
-    selectionLayerUpdate({
-      start: selectionLayer.start,
-      end: newEnd,
-      cursorAtEnd: true
-    });
+    if (
+      doNotWrapOrigin &&
+      selectionLayer.start > -1 &&
+      nearestCaretPos === selectionLayer.start
+    ) {
+      caretPositionUpdate(nearestCaretPos);
+      caretPositionOnDragStart = nearestCaretPos;
+    } else if (doNotWrapOrigin && nearestCaretPos < selectionLayer.start) {
+      selectionLayerUpdate({
+        start: nearestCaretPos,
+        end: selectionLayer.start - 1
+      });
+      caretPositionOnDragStart = selectionLayer.start;
+      selectionStartOrEndGrabbed = "start";
+    } else {
+      selectionStartOrEndGrabbed = "end";
+      //there must be a selection layer
+      //we need to move the selection layer
+      let newEnd = normalizePositionByRangeLength(
+        nearestCaretPos - 1,
+        sequenceLength
+      );
+      selectionLayerUpdate({
+        start: selectionLayer.start,
+        end: newEnd,
+        cursorAtEnd: true
+      });
+    }
   }
 }
 export function handleNoSelectionLayerYet({
   caretPosition,
   selectionLayerUpdate,
   nearestCaretPos,
-  sequenceLength
+  sequenceLength,
+  doNotWrapOrigin
 }) {
   //no selection layer yet, so we'll start one if necessary
   // 0 1 2 3 4 5 6 7 8 9
   //    c
   //        n
   //
+
   let dragEnd = {
     start: caretPosition,
     end: normalizePositionByRangeLength(
@@ -426,52 +403,18 @@ export function handleNoSelectionLayerYet({
   if (caretPosition === nearestCaretPos) {
     return; // do nothing because nearestCaretPos === caretPosition
   } else if (
-    getRangeLength(dragEnd, sequenceLength) <
-    getRangeLength(dragStart, sequenceLength)
+    (doNotWrapOrigin && caretPosition < nearestCaretPos) ||
+    (!doNotWrapOrigin &&
+      getRangeLength(dragEnd, sequenceLength) <
+        getRangeLength(dragStart, sequenceLength))
   ) {
-    draggingEnd = true; //the caret becomes the "selection end"
+    selectionStartOrEndGrabbed = "end";
     selectionLayerUpdate(dragEnd);
     caretPositionOnDragStart = null;
   } else {
-    draggingEnd = false; //the caret becomes the "selection end"
+    selectionStartOrEndGrabbed = "start";
     selectionLayerUpdate(dragStart);
     caretPositionOnDragStart = null;
-  }
-}
-export function handleCaretDrag({
-  caretPosition,
-  selectionLayer,
-  selectionLayerUpdate,
-  nearestCaretPos,
-  sequenceLength
-}) {
-  if (selectionLayer.start > -1) {
-    //there is a selection layer
-    draggingEnd
-      ? handleSelectionEndGrabbed({
-          caretPosition,
-          selectionLayer,
-          selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        })
-      : handleSelectionStartGrabbed({
-          caretPosition,
-          selectionLayer,
-          selectionLayerUpdate,
-          nearestCaretPos,
-          sequenceLength
-        });
-  } else if (caretPosition > -1) {
-    handleNoSelectionLayerYet({
-      caretPosition,
-      selectionLayer,
-      selectionLayerUpdate,
-      nearestCaretPos,
-      sequenceLength
-    });
-  } else {
-    console.warn("we should never be here...");
   }
 }
 
@@ -482,7 +425,8 @@ export function updateSelectionOrCaret({
   caretPosition,
   selectionLayer,
   selectionLayerUpdate,
-  caretPositionUpdate
+  caretPositionUpdate,
+  doNotWrapOrigin
 }) {
   let newCaret;
   let newRange;
@@ -505,15 +449,9 @@ export function updateSelectionOrCaret({
           selectionLayer,
           selectionLayerUpdate,
           nearestCaretPos: newCaret,
-          sequenceLength
+          sequenceLength,
+          doNotWrapOrigin
         });
-        // if (newCaret === caretPosition) {
-        //     //do nothing
-        //     return
-        // }
-        // isRangeShorterIfFlipped(newCaret,caretPosition, sequenceLength)
-        //     ? selectionLayerUpdate(caretPosition, newCaret)
-        //     : selectionLayerUpdate(caretPosition, newCaret)
       } else {
         simpleUpdate();
       }
@@ -524,12 +462,14 @@ export function updateSelectionOrCaret({
         let distanceFromStart = getMinRangeLength(
           selectionLayer.start,
           newCaret,
-          sequenceLength
+          sequenceLength,
+          doNotWrapOrigin
         );
         let distanceFromEnd = getMinRangeLength(
           selectionLayer.end,
           newCaret,
-          sequenceLength
+          sequenceLength,
+          doNotWrapOrigin
         );
         if (distanceFromStart < distanceFromEnd) {
           selectionLayerUpdate({
@@ -612,43 +552,15 @@ export function updateSelectionOrCaret({
 //   );
 // }
 
-function getMinRangeLength(start, end, sequenceLength) {
+function getMinRangeLength(start, end, sequenceLength, doNotWrapOrigin) {
   let range1 = getRangeLength({ start, end }, sequenceLength);
   let range2 = getRangeLength({ start: end, end: start }, sequenceLength);
+  if (doNotWrapOrigin) {
+    if (start < end) {
+      return range1;
+    } else {
+      return range2;
+    }
+  }
   return range1 < range2 ? range1 : range2;
 }
-
-// export function handleNoSelectionLayerYet({
-//   caretPosition,
-//   selectionLayerUpdate,
-//   nearestCaretPos,
-//   sequenceLength
-// }) {
-//   //no selection layer yet, so we'll start one if necessary
-//   // 0 1 2 3 4 5 6 7 8 9
-//   //    c
-//   //        n
-//   //
-//   let dragEnd = {
-//     start: caretPosition,
-//     end: normalizePositionByRangeLength(
-//       nearestCaretPos - 1,
-//       sequenceLength,
-//       true
-//     )
-//   };
-//   let dragStart = {
-//     start: nearestCaretPos,
-//     end: normalizePositionByRangeLength(caretPosition - 1, sequenceLength, true)
-//   };
-//   if (caretPosition === nearestCaretPos) {
-//     return; // do nothing because nearestCaretPos === caretPosition
-//   } else if (
-//     getRangeLength(dragEnd, sequenceLength) <
-//     getRangeLength(dragStart, sequenceLength)
-//   ) {
-//     selectionLayerUpdate(dragEnd);
-//   } else {
-//     selectionLayerUpdate(dragStart);
-//   }
-// }

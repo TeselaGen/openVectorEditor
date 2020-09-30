@@ -28,8 +28,9 @@ function addDashesForMatchStartAndEnd(
   if (strand === -1) {
     sequenceData = getReverseComplementSequenceAndAnnotations(sequenceData);
     const oldMatchEnd = matchEnd;
-    matchEnd = matchStart;
-    matchStart = oldMatchEnd;
+    const oldMatchStart = matchStart;
+    matchStart = sequenceData.sequence.length - oldMatchStart;
+    matchEnd = sequenceData.sequence.length - oldMatchEnd;
   }
   const {
     matchStart: matchStartTemplate = 0,

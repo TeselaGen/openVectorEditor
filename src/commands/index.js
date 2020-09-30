@@ -938,12 +938,15 @@ const labelToggleCommandDefs = {};
 const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
   (acc, key) => {
     acc[`edit${upperFirst(key)}`] = {
-      name: `Edit ${upperFirst(key)}`,
+      name: (props) =>
+        props.readOnly
+          ? `View ${upperFirst(key)} Details`
+          : `Edit ${upperFirst(key)}`,
       handler: (props, state, ctxInfo) => {
         const annotation = get(ctxInfo, "context.annotation");
         props[`showAddOrEdit${upperFirst(key)}Dialog`](annotation);
-      },
-      isHidden: (props) => props.readOnly
+      }
+      // isHidden: (props) => props.readOnly
     };
     return acc;
   },

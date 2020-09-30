@@ -39,6 +39,9 @@ export class LinearView extends React.Component {
     }
     if (this.props.sequenceLength === 0) nearestCaretPos = 0;
     const callbackVals = {
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       event,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
@@ -85,6 +88,7 @@ export class LinearView extends React.Component {
       editorDragStopped = noop,
       width = 400,
       tickSpacing,
+      scrollData,
       caretPosition,
       backgroundRightClicked = noop,
       RowItemProps = {},
@@ -161,6 +165,7 @@ export class LinearView extends React.Component {
             {...{
               ...rest,
               charWidth,
+              scrollData,
               caretPosition,
               isProtein: sequenceData.isProtein,
               alignmentData,
