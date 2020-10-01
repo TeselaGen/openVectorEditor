@@ -15,7 +15,6 @@ function normalizeAngle(angle) {
 //this pure function allows the labels to spread out around the circle
 //and groups overlapping labels together if necessary
 function relaxLabelAngles(_labelPoints, spacing, maxradius) {
-  // spacing = 18;
   let maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
   let labels = cloneDeep(_labelPoints);
   if (labels.length > maxLabelsPerQuadrant * 4) {
@@ -59,7 +58,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
     let lastLabelYPosition = 0 - spacing / 2; // spacing to count label height
     let lastlabel;
     return labels
-      .map(function (label /* index */) {
+      .map(function (label, idx) {
         if (Math.abs(lastLabelYPosition) > maxradius + 80) {
           lastlabel.labelAndSublabels.push(label);
           lastlabel.labelIds[label.id] = true;
@@ -69,6 +68,9 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
         if (label.y < lastLabelYPosition) {
           let naturalSlot = Math.floor(Math.abs(label.y / spacing));
           if (naturalSlot > extraSpaces) {
+            if (idx < naturalSlot && extraSpaces > 0) {
+              lastLabelYPosition = label.y;
+            }
             label.y = lastLabelYPosition;
           }
           let x = Math.sqrt(Math.pow(maxradius, 2) - Math.pow(label.y, 2));

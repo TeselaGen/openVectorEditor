@@ -478,6 +478,7 @@ export class Editor extends React.Component {
             }, {}))}
           maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
+          fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}
