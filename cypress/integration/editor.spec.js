@@ -1,3 +1,5 @@
+import { inRange } from "lodash";
+
 describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
@@ -236,5 +238,66 @@ describe("editor", function () {
     cy.get(`[data-test="onlyShowLabelsThatDoNotFit"]`).click({ force: true });
     cy.contains(".vePartLabel", "pj5_00001");
     cy.contains(".veFeatureLabel", "pSC101**");
+  });
+  it(`should handle adjusting label line intensity.`, () => {
+    cy.get(".veLabelLine").should("have.css", "opacity", "0.1");
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Label Line Intensity").click();
+    cy.get(".tg-menu-bar-popover").contains("High").click();
+    cy.get(".veLabelLine").should("have.css", "opacity", "0.9");
+  });
+  it(`should handle adjusting circular map label size.`, () => {
+    cy.get(".veCircularViewLabelText").then((labelText) => {
+      const fullFontSize = parseFloat(
+        labelText[0].style.getPropertyValue("font-size").replace("px", "")
+      );
+      cy.get(".tg-menu-bar").contains("View").click();
+      cy.get(".tg-menu-bar-popover").contains("Circular Label Size").click();
+      cy.get(".tg-menu-bar-popover").contains("50%").click();
+      cy.get(".veCircularViewLabelText").then((fiftyPercentText) => {
+        const halfFontSize = parseFloat(
+          fiftyPercentText[0].style
+            .getPropertyValue("font-size")
+            .replace("px", "")
+        );
+        expect(
+          inRange(
+            halfFontSize,
+            (fullFontSize / 2) * 0.9,
+            (fullFontSize / 2) * 1.1
+          )
+        ).to.equal(true);
+      });
+    });
+  });
+  it(`should handle adjusting circular map label spacing.`, () => {
+    cy.get(".veCircularViewLabelText")
+      .contains("Example Primer 1")
+      .then((preLabelText1) => {
+        cy.get(".veCircularViewLabelText")
+          .contains("araD")
+          .then((preLabelText2) => {
+            const preLabelTextDiff = Math.abs(
+              parseFloat(preLabelText1[0].attributes.y.value) -
+                parseFloat(preLabelText2[0].attributes.y.value)
+            );
+            cy.get(`[data-test="adjustCircularLabelSpacing"]`).click({
+              force: true
+            });
+            cy.get(".veCircularViewLabelText")
+              .contains("Example Primer 1")
+              .then((postLabelText1) => {
+                cy.get(".veCircularViewLabelText")
+                  .contains("araD")
+                  .then((postLabelText2) => {
+                    const postLabelTextDiff = Math.abs(
+                      parseFloat(postLabelText1[0].attributes.y.value) -
+                        parseFloat(postLabelText2[0].attributes.y.value)
+                    );
+                    expect(preLabelTextDiff > postLabelTextDiff).to.equal(true);
+                  });
+              });
+          });
+      });
   });
 });
