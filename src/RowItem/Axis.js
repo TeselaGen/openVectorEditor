@@ -21,13 +21,11 @@ let Axis = function (props) {
     isProtein,
     style
   } = props;
-  if (row.start === 0 && row.end === 0) {
-    return null;
-  }
-  /* eslint-disable react-hooks/rules-of-hooks */
+  const noRows = row.start === 0 && row.end === 0;
   /* eslint-disable react-hooks/exhaustive-deps */
   //memoize this function because it does the heavy lifting
   let tickMarkPositions = useMemo(() => {
+    if (noRows) return [];
     return calculateTickMarkPositionsForGivenRange({
       tickSpacing,
       range: row,
@@ -43,10 +41,19 @@ let Axis = function (props) {
         xCenter
       };
     });
-  }, [tickSpacing, row.start, row.end, sequenceLength, isProtein, charWidth]);
-  /* eslint-enable react-hooks/rules-of-hooks*/
+  }, [
+    noRows,
+    tickSpacing,
+    row.start,
+    row.end,
+    sequenceLength,
+    isProtein,
+    charWidth
+  ]);
   /* eslint-enable react-hooks/exhaustive-deps*/
-
+  if (noRows) {
+    return null;
+  }
   let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
     row,
     range: row,

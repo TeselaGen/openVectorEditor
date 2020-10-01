@@ -214,16 +214,14 @@ describe("editor", function () {
     //features and parts are correctly indexed in the properties panel
     cy.get(`[data-tab-id="features"]`).click();
     cy.contains(".rt-td", "879");
-    cy.contains(".rt-td", "(7-25)");
-    cy.contains(".rt-td", "(29-49)");
-    cy.contains(".rt-td", "(501-885)");
+    cy.contains(".rt-td", "(7-885)");
     cy.get(`[data-tab-id="parts"]`).click();
     cy.contains(".rt-td", "21");
     cy.contains(".rt-td", "(11-31)");
 
     cy.get(`[data-tab-id="genbank"]`).click();
     cy.contains("protein_bind 1124..1162");
-    cy.contains("join(7..25,29..49,501..885)");
+    // cy.contains("join(7..25,29..49,501..885)"); //tnr: not allowing locations in proteins for the moment
   });
 
   it(`should 
