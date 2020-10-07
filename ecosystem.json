@@ -1,8 +1,0 @@
-{
-  "apps" : [{
-    "name": "webhook",
-    "cwd": "/app",
-    "script": "github-webhook",
-    "args": "--config /app/.github-webhook"
-  }]
-}

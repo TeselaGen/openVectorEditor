@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Icon, Classes } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
@@ -24,33 +24,33 @@ export class CutsiteFilter extends React.Component {
     }
   };
 
-  getManageEnzymesLink = () => (
-    <span
-      onClick={() => {
-        // e.stopPropagation();
-        const {
-          createYourOwnEnzymeReset,
-          showManageEnzymesDialog,
-          sequenceData,
-          closeDropDown
-        } = this.props;
-        closeDropDown();
-        createYourOwnEnzymeReset();
-        showManageEnzymesDialog({
-          inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
-        });
-      }}
-      className={"ta_link " + Classes.POPOVER_DISMISS}
-    >
-      Manage enzymes &nbsp;
-      <Icon iconSize={14} icon="cut" />
-    </span>
-  );
+  // getManageEnzymesLink = () => (
+  //   <span
+  //     onClick={() => {
+  //       // e.stopPropagation();
+  //       const {
+  //         createYourOwnEnzymeReset,
+  //         showManageEnzymesDialog,
+  //         sequenceData,
+  //         closeDropDown
+  //       } = this.props;
+  //       closeDropDown();
+  //       createYourOwnEnzymeReset();
+  //       showManageEnzymesDialog({
+  //         inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
+  //       });
+  //     }}
+  //     className={"ta_link " + Classes.POPOVER_DISMISS}
+  //   >
+  //     Manage enzymes &nbsp;
+  //     <Icon iconSize={14} icon="cut" />
+  //   </span>
+  // );
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
-    if (value === "manageEnzymes") {
-      return this.getManageEnzymesLink();
-    }
+    // if (value === "manageEnzymes") {
+    //   return this.getManageEnzymesLink();
+    // }
     const {
       filteredRestrictionEnzymes,
       filteredRestrictionEnzymesUpdate
@@ -67,11 +67,11 @@ export class CutsiteFilter extends React.Component {
         {label}{" "}
         {canBeHidden && (
           <Icon
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
 
               filteredRestrictionEnzymesUpdate(
-                flatMap(filteredRestrictionEnzymes, e => {
+                flatMap(filteredRestrictionEnzymes, (e) => {
                   if (e.value === value) return [];
                   return e;
                 }).concat({
@@ -107,7 +107,7 @@ export class CutsiteFilter extends React.Component {
     const userEnzymeGroups = window.getExistingEnzymeGroups();
     // var {handleOpen, handleClose} = this
     let options = [
-      ...map(specialCutsiteFilterOptions, opt => opt),
+      ...map(specialCutsiteFilterOptions, (opt) => opt),
       ...map(userEnzymeGroups, (g, name) => {
         return {
           label: (
@@ -119,7 +119,7 @@ export class CutsiteFilter extends React.Component {
         };
       }),
 
-      ...Object.keys(cutsitesByName).map(function(key) {
+      ...Object.keys(cutsitesByName).map(function (key) {
         const label = getLabel(cutsitesByName[key], key);
         return {
           canBeHidden: true,
@@ -149,7 +149,7 @@ export class CutsiteFilter extends React.Component {
           noResultsText={
             <div className="noResultsTextPlusButton">
               No matching enzymes found that cut in the sequence.{" "}
-              {this.getManageEnzymesLink()}
+              {/* {this.getManageEnzymesLink()} */}
             </div>
           }
           placeholder="Filter cutsites..."
@@ -158,21 +158,21 @@ export class CutsiteFilter extends React.Component {
           filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
           optionRenderer={this.renderOptions}
           isSimpleSearch
-          onChange={filteredRestrictionEnzymes => {
-            if (
-              filteredRestrictionEnzymes &&
-              filteredRestrictionEnzymes.some(
-                enzyme =>
-                  enzyme.value ===
-                  specialCutsiteFilterOptions.manageEnzymes.value
-              )
-            ) {
-              return;
-            }
+          onChange={(filteredRestrictionEnzymes) => {
+            // if (
+            //   filteredRestrictionEnzymes &&
+            //   filteredRestrictionEnzymes.some(
+            //     enzyme =>
+            //       enzyme.value ===
+            //       specialCutsiteFilterOptions.manageEnzymes.value
+            //   )
+            // ) {
+            //   return;
+            // }
             onChangeHook && onChangeHook(filteredRestrictionEnzymes);
             filteredRestrictionEnzymesUpdate(filteredRestrictionEnzymes);
           }}
-          value={filteredRestrictionEnzymes.map(filteredOpt => {
+          value={filteredRestrictionEnzymes.map((filteredOpt) => {
             if (filteredOpt.cutsThisManyTimes) {
               return filteredOpt;
             }

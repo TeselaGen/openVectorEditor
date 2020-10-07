@@ -1,5 +1,6 @@
 import { featureColors } from "ve-sequence-utils";
 import { camelCase } from "lodash";
+import classnames from "classnames";
 import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
@@ -22,12 +23,15 @@ function StackedAnnotations(props) {
     annotationHeight,
     spaceBetweenAnnotations,
     onClick,
+    isProtein,
+
     onDoubleClick,
     disregardLocations,
     InnerComp,
     onRightClick,
     editorName,
     type,
+    noRedux,
     alignmentType,
     getGaps,
     marginTop,
@@ -43,7 +47,7 @@ function StackedAnnotations(props) {
   }
   let maxAnnotationYOffset = 0;
   let annotationsSVG = [];
-  forEach(annotationRanges, function(annotationRange, index) {
+  forEach(annotationRanges, function (annotationRange, index) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
     }
@@ -79,9 +83,13 @@ function StackedAnnotations(props) {
         left={result.xStart}
       >
         <InnerCompToUse
+          noRedux={noRedux}
           externalLabels={externalLabels}
           key={index}
-          className={`${camelCase("veRowView-" + type)}`}
+          className={classnames(
+            `${camelCase("veRowView-" + type)}`,
+            annotation.className
+          )}
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
@@ -89,6 +97,7 @@ function StackedAnnotations(props) {
           type={type}
           onRightClick={onRightClick}
           annotation={annotation}
+          isProtein={isProtein}
           gapsInside={gapsInside}
           gapsBefore={gapsBefore}
           color={annotationColor}
@@ -97,11 +106,16 @@ function StackedAnnotations(props) {
           charWidth={charWidth}
           forward={annotation.forward}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
-          rangeType={getAnnotationRangeType(
-            annotationRange,
-            annotation,
-            annotation.forward
-          )}
+          rangeType={
+            annotation.noDirectionality
+              ? "middle"
+              : getAnnotationRangeType(
+                  annotationRange,
+                  annotation,
+                  annotation.forward
+                )
+          }
+          {...(annotation.noDirectionality && { pointiness: 0 })}
           height={
             annotationRange.containsLocations && !disregardLocations
               ? anotationHeightNoSpace / 8

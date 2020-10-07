@@ -12,8 +12,10 @@ import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
 import { connectToEditor } from "../../withEditorProps";
 import "./style.css";
+import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 
-const PropertiesContainer = Comp => props => {
+const PropertiesContainer = (Comp) => (props) => {
   const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
   return (
     <React.Fragment>
@@ -64,12 +66,12 @@ export class PropertiesDialog extends React.Component {
     let { tabId, selectedAnnotationId } = propertiesTool;
     if (
       propertiesList
-        .map(nameOrOverride => nameOrOverride.name || nameOrOverride)
+        .map((nameOrOverride) => nameOrOverride.name || nameOrOverride)
         .indexOf(tabId) === -1
     ) {
       tabId = propertiesList[0].name || propertiesList[0];
     }
-    const propertiesTabs = propertiesList.map(nameOrOverride => {
+    const propertiesTabs = propertiesList.map((nameOrOverride) => {
       const name = nameOrOverride.name || nameOrOverride;
       const Comp = nameOrOverride.Comp || allTabs[name];
       if (isProtein) {
@@ -96,6 +98,7 @@ export class PropertiesDialog extends React.Component {
           panel={
             <Comp
               {...{
+                ...pick(this.props, userDefinedHandlersAndOpts),
                 editorName,
                 onSave,
                 isProtein,

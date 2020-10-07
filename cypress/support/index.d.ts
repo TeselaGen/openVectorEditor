@@ -29,6 +29,41 @@ declare namespace Cypress {
      * //user would see this as: "Selecting 11 bps from 10 to 20"
      */
     selectRange(start, end): void;
+    /**
+     * dragBetweenSimple
+     * drags between 2 els
+     * @example
+     * cy.dragBetweenSimple('.someEl', '.anotherEl') 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    dragBetweenSimple(startEl, endEl): void;
+    /**
+     * dragBetween
+     * drags between 2 els
+     * @example
+     * cy.dragBetween('.someEl', '.anotherEl') 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    dragBetween(startEl, endEl): void;
+    
+    /**
+     * selectAlignmentRange
+     * selects a 1 based range of the alignment
+     * @example
+     * cy.selectAlignmentRange(10, 20) 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    selectAlignmentRange(start, end): void;
+
+    
+    /**
+     * scrollAlignmentToPercent
+     * selects a 1 based range of the alignment
+     * @example
+     * cy.scrollAlignmentToPercent(10, 20) 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    scrollAlignmentToPercent(percent): void;
 
     
 

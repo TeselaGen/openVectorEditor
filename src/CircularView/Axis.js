@@ -8,6 +8,7 @@ import { divideBy3 } from "../utils/proteinUtils";
 function Axis({
   radius,
   sequenceLength,
+  rotationRadians,
   showAxisNumbers,
   circularAndLinearTickSpacing,
   tickMarkHeight = 5,
@@ -31,11 +32,12 @@ function Axis({
     isProtein
   });
   let tickMarksAndLabels = showAxisNumbers
-    ? tickPositions.map(function(tickPosition, index) {
+    ? tickPositions.map(function (tickPosition, index) {
         let tickAngle = getAngleForPositionMidpoint(
           tickPosition,
           sequenceLength
         );
+        const tickAnglePlusRotation = tickAngle + rotationRadians;
         return (
           <g
             key={"axis" + index}
@@ -47,9 +49,11 @@ function Axis({
           >
             <text
               transform={
-                (shouldFlipText(tickAngle) ? "rotate(180)" : "") +
+                (shouldFlipText(tickAnglePlusRotation) ? "rotate(180)" : "") +
                 ` translate(0, ${
-                  shouldFlipText(tickAngle) ? -textOffset : textOffset
+                  shouldFlipText(tickAnglePlusRotation)
+                    ? -textOffset
+                    : textOffset
                 })`
               }
               style={{

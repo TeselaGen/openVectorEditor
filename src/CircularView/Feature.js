@@ -1,4 +1,5 @@
 import React from "react";
+import classnames from "classnames";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
 export default function Feature({
@@ -7,9 +8,14 @@ export default function Feature({
   containsLocations,
   arrowheadLength = 0.5,
   annotationHeight,
-  totalAngle,
-  ...rest
+  className,
+  totalAngle
 }) {
+  const classNameToUse = classnames(
+    "veFeature veCircularViewFeature",
+    className
+  );
+  // const cleanedRest = cleanRest(rest);
   if (containsLocations) {
     let path = drawDirectedPiePiece({
       radius: radius,
@@ -20,8 +26,8 @@ export default function Feature({
     });
     return (
       <path
-        {...rest}
-        className="veFeature veCircularViewFeature"
+        // {...cleanedRest}
+        className={classNameToUse}
         strokeWidth=".5"
         stroke="black"
         fill={color}
@@ -38,8 +44,8 @@ export default function Feature({
   });
   return (
     <path
-      {...rest}
-      className="veFeature veCircularViewFeature"
+      // {...cleanedRest}
+      className={classNameToUse}
       strokeWidth=".5"
       stroke="black"
       fill={color}

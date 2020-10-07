@@ -30,42 +30,42 @@ class AddOrEditAnnotationDialog extends React.Component {
       (this.props.initialValues && this.props.initialValues.notes) || {};
     this.notes = store(
       flatMap(initialNotes, (noteValues, noteType) => {
-        return map(noteValues, value => ({
+        return map(noteValues, (value) => ({
           key: noteType,
           value: value
         }));
       })
     );
   }
-  formatStart = val => {
+  formatStart = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return (val + 2) / 3;
     }
     return val;
   };
-  formatEnd = val => {
+  formatEnd = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val / 3;
     }
     return val;
   };
-  parseStart = val => {
+  parseStart = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3 - 2;
     }
     return val;
   };
-  parseEnd = val => {
+  parseEnd = (val) => {
     const { isProtein } = this.props.sequenceData || {};
     if (isProtein) {
       return val * 3;
     }
     return val;
   };
-  renderLocations = props => {
+  renderLocations = (props) => {
     const { fields } = props;
     const { sequenceData = { sequence: "" }, start, end } = this.props;
     const sequenceLength = sequenceData.sequence.length;
@@ -96,6 +96,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                   <div style={{}} key={index}>
                     <div style={{ display: "flex", marginBottom: 10 }}>
                       <NumericInputField
+                        disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
                         tooltipError
@@ -107,6 +108,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                         label="Start:"
                       />
                       <NumericInputField
+                        disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
                         tooltipError
@@ -118,6 +120,7 @@ class AddOrEditAnnotationDialog extends React.Component {
                         label="End:"
                       />
                       <Button
+                        disabled={this.props.readOnly}
                         onClick={() => {
                           if (locations.length === 2) {
                             fields.remove(0);
@@ -137,6 +140,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           </div>
         )}
         <Button
+          disabled={this.props.readOnly}
           style={{ marginBottom: 10, left: "50%" }}
           // intent="primary"
           onClick={() => {
@@ -173,12 +177,14 @@ class AddOrEditAnnotationDialog extends React.Component {
       handleSubmit,
       beforeAnnotationCreate,
       renderTypes,
+      renderTags,
       annotationTypePlural,
       annotationVisibilityShow,
       renderLocations,
       locations,
       upsertAnnotation
     } = this.props;
+    const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
     return (
       <div
@@ -189,6 +195,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         )}
       >
         <InputField
+          disabled={this.props.readOnly}
           inlineLabel
           tooltipError
           autoFocus
@@ -197,24 +204,29 @@ class AddOrEditAnnotationDialog extends React.Component {
           name="name"
           label="Name:"
         />
-        <RadioGroupField
-          inlineLabel
-          tooltipError
-          options={[
-            { label: "Positive", value: "true" },
-            { label: "Negative", value: "false" }
-          ]}
-          normalize={value => value === "true" || false}
-          format={value => (value ? "true" : "false")}
-          name="forward"
-          label="Strand:"
-          defaultValue={true}
-        />
+        {!isProtein && (
+          <RadioGroupField
+            disabled={this.props.readOnly}
+            inlineLabel
+            tooltipError
+            options={[
+              { label: "Positive", value: "true" },
+              { label: "Negative", value: "false" }
+            ]}
+            normalize={(value) => value === "true" || false}
+            format={(value) => (value ? "true" : "false")}
+            name="forward"
+            label="Strand:"
+            defaultValue={true}
+          />
+        )}
         {renderTypes || null}
+        {renderTags || null}
         {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
             <NumericInputField
               inlineLabel
+              disabled={this.props.readOnly}
               format={this.formatStart}
               parse={this.parseStart}
               tooltipError
@@ -225,6 +237,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               label="Start:"
             />
             <NumericInputField
+              disabled={this.props.readOnly}
               format={this.formatEnd}
               parse={this.parseEnd}
               inlineLabel
@@ -240,14 +253,14 @@ class AddOrEditAnnotationDialog extends React.Component {
         {renderLocations ? (
           <FieldArray component={this.renderLocations} name="locations" />
         ) : null}
-        <Notes notes={this.notes}></Notes>
+        <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
         >
           <Button
             style={{ marginRight: 15 }}
-            onMouseDown={e => {
+            onMouseDown={(e) => {
               //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
               e.preventDefault();
               e.stopPropagation();
@@ -257,7 +270,8 @@ class AddOrEditAnnotationDialog extends React.Component {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit(data => {
+            disabled={this.props.readOnly}
+            onClick={handleSubmit((data) => {
               let updatedData;
               if (data.forward === true && data.strand !== 1) {
                 updatedData = { ...data, strand: 1 };
@@ -410,7 +424,7 @@ export default ({ formName, getProps, dialogProps }) => {
   )(AddOrEditAnnotationDialog);
 };
 
-const Notes = view(({ notes }) => {
+const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
       <div style={{ display: "flex" }}>
@@ -428,7 +442,7 @@ const Notes = view(({ notes }) => {
             style={{ display: "flex", padding: "4px 2px" }}
           >
             <EditableText
-              onConfirm={string => {
+              onConfirm={(string) => {
                 if (string === "") {
                   if (!note.value) {
                     notes.splice(i, 1);
@@ -437,17 +451,19 @@ const Notes = view(({ notes }) => {
                   }
                 }
               }}
+              disabled={readOnly}
               placeholder="Add key here"
               maxLines={5}
               multiline
               className="addAnnNoteKey"
               // style={{marginRight: 20}}
-              onChange={string => {
+              onChange={(string) => {
                 note.key = string.replace(" ", "_").replace(/\n/g, "");
               }}
               value={key}
             ></EditableText>
             <EditableText
+              disabled={readOnly}
               maxLines={10}
               className="addAnnNoteValue"
               multiline
@@ -458,7 +474,7 @@ const Notes = view(({ notes }) => {
               //   minWidth: 200,
               //   maxWidth: 200,
               // }}
-              onChange={string => {
+              onChange={(string) => {
                 note.value = string.replace(/\n/g, "");
               }}
               value={value}
@@ -466,6 +482,7 @@ const Notes = view(({ notes }) => {
             &nbsp;
             <div>
               <Button
+                disabled={readOnly}
                 style={{ padding: 2 }}
                 onClick={() => {
                   notes.splice(i, 1);
@@ -478,6 +495,7 @@ const Notes = view(({ notes }) => {
         );
       })}
       <Button
+        disabled={readOnly}
         onClick={() => {
           notes.push({
             key: "note",

@@ -10,6 +10,7 @@ import downloadTool from "./downloadTool";
 import importTool from "./importTool";
 import cutsiteTool from "./cutsiteTool";
 import featureTool from "./featureTool";
+import partTool from "./partTool";
 import oligoTool from "./oligoTool";
 import orfTool from "./orfTool";
 import editTool from "./editTool";
@@ -28,6 +29,7 @@ const allTools = {
   cutsiteTool,
   alignmentTool,
   featureTool,
+  partTool,
   oligoTool,
   orfTool,
   editTool,
@@ -62,6 +64,7 @@ export class ToolBar extends React.PureComponent {
         "redoTool",
         "cutsiteTool",
         "featureTool",
+        "partTool",
         "oligoTool",
         "orfTool",
         "alignmentTool",
@@ -114,7 +117,7 @@ export class ToolBar extends React.PureComponent {
           />
         );
       })
-      .filter(tool => !!tool);
+      .filter((tool) => !!tool);
 
     if (modifyTools) {
       items = modifyTools(items);
@@ -178,7 +181,7 @@ export class ToolBar extends React.PureComponent {
 export default ToolBar;
 // export default connectToEditor()  ToolBar
 
-const CloseFullscreenButton = props => {
+const CloseFullscreenButton = (props) => {
   return (
     <Tooltip content="Close Fullscreen Mode">
       <Button
@@ -194,4 +197,3 @@ const CloseFullscreenButton = props => {
     </Tooltip>
   );
 };
-

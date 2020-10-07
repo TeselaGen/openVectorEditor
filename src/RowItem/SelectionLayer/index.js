@@ -16,11 +16,11 @@ import {
 function SelectionLayer(props) {
   let {
     charWidth,
-    bpsPerRow,
     isDraggable,
     row,
     sequenceLength,
     regions,
+    leftMargin = 0,
     isProtein,
     getGaps,
     hideTitle: topLevelHideTitle,
@@ -35,9 +35,9 @@ function SelectionLayer(props) {
 
   const toReturn = (
     <React.Fragment>
-      {regions.map(function(selectionLayer, topIndex) {
+      {regions.map(function (selectionLayer, topIndex) {
         const _onClick = onClick
-          ? function(event) {
+          ? function (event) {
               onClick({
                 event,
                 annotation: selectionLayer
@@ -65,7 +65,7 @@ function SelectionLayer(props) {
                 sequenceLength,
                 isProtein
               });
-        const onSelectionContextMenu = function(event) {
+        const onSelectionContextMenu = function (event) {
           selectionLayerRightClicked &&
             selectionLayerRightClicked({
               event,
@@ -82,7 +82,7 @@ function SelectionLayer(props) {
           );
           //DRAW SELECTION LAYER
           if (overlaps.length) hasSelection = true;
-          return overlaps.map(function(overlap, index) {
+          return overlaps.map(function (overlap, index) {
             const key = topIndex + "-" + index;
             let isTrueStart = false;
             let isTrueEnd = false;
@@ -92,14 +92,13 @@ function SelectionLayer(props) {
             if (overlap.end === selectionLayer.end) {
               isTrueEnd = true;
             }
-            let { xStart, width } = getXStartAndWidthOfRangeWrtRow(
-              overlap,
+            let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
+              range: overlap,
               row,
-              bpsPerRow,
               charWidth,
               sequenceLength,
               ...(ignoreGaps ? {} : getGaps(overlap))
-            );
+            });
             let caretSvgs = [];
             if (!(hideCarets || topLevelHideCarets)) {
               //DRAW CARETS
@@ -107,11 +106,13 @@ function SelectionLayer(props) {
                 overlap.start === start && (
                   <Caret
                     {...{
+                      leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
                       charWidth,
                       row,
                       getGaps,
+                      isDraggable,
                       ignoreGaps,
                       key: key + "caret1",
                       sequenceLength,
@@ -126,9 +127,11 @@ function SelectionLayer(props) {
                 overlap.end === end && (
                   <Caret
                     {...{
+                      leftMargin,
                       onClick: _onClick || preventDefaultStopPropagation,
                       onRightClick: onSelectionContextMenu,
                       charWidth,
+                      isDraggable,
                       row,
                       getGaps,
                       ignoreGaps,
@@ -158,7 +161,7 @@ function SelectionLayer(props) {
                 }
                 style={{
                   width,
-                  left: xStart,
+                  left: leftMargin + xStart,
                   ...style,
                   background: color || topLevelColor,
                   height

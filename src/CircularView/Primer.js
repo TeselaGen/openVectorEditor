@@ -1,5 +1,6 @@
 import React from "react";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import { cleanRest } from "./utils/cleanRest";
 
 export default function CircularPrimer({
   color = "orange",
@@ -18,10 +19,10 @@ export default function CircularPrimer({
   });
   return (
     <path
-      {...rest}
+      {...cleanRest(rest)}
       className="vePrimer veCircularViewPrimer"
       strokeWidth=".5"
-      stroke={"black"}
+      stroke="black"
       fill={color}
       d={path.print()}
     />

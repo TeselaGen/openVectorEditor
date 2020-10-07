@@ -12,6 +12,7 @@ function Orf(props) {
     annotation,
     width,
     onClick,
+    isProtein,
     onRightClick,
     charWidth,
     gapsInside,
@@ -32,10 +33,9 @@ function Orf(props) {
   if (rangeType === "end" || rangeType === "beginningAndEnd") {
     arrow = (
       <path
-        transform={`translate(${width +
-          gapsInside -
-          Math.max(charWidth, 5)},0) scale(${Math.max(charWidth, 8) /
-          64},${heightToUse / 64})`}
+        transform={`translate(${
+          width + gapsInside - Math.max(charWidth, 5)
+        },0) scale(${Math.max(charWidth, 8) / 64},${heightToUse / 64})`}
         d={
           rangeType === "start"
             ? "M0 16 L0 48 L16 64 L48 64 L64 48 L64 16 L48 0 L16 0 Z"
@@ -48,7 +48,7 @@ function Orf(props) {
     endCircle = circle;
   }
   let internalStartCodonCircles = normalizedInternalStartCodonIndices.map(
-    function(internalStartCodon, index) {
+    function (internalStartCodon, index) {
       return React.cloneElement(circle, {
         key: index,
         transform: `translate(${charWidth * internalStartCodon},0)`
@@ -57,10 +57,10 @@ function Orf(props) {
   );
   return (
     <g
-      onClick={function(event) {
+      onClick={function (event) {
         onClick({ annotation, event, gapsInside, gapsBefore });
       }}
-      onContextMenu={function(event) {
+      onContextMenu={function (event) {
         onRightClick({ annotation, event, gapsInside, gapsBefore });
       }}
       className={`veRowViewOrf clickable frame${frame}`}
@@ -75,10 +75,9 @@ function Orf(props) {
       <path
         transform={
           (rangeType === "start" ? `translate(${charWidth},0)` : "") +
-          `scale(${(width +
-            gapsInside -
-            (rangeType === "middle" ? 0 : charWidth)) /
-            64},${heightToUse / 64})`
+          `scale(${
+            (width + gapsInside - (rangeType === "middle" ? 0 : charWidth)) / 64
+          },${heightToUse / 64})`
         }
         d="M0 40 L64 40 L64 20 L0 20 Z"
       />
@@ -88,7 +87,8 @@ function Orf(props) {
       <title>
         {" "}
         {getAnnotationNameAndStartStopString(annotation, {
-          startText: "Open Reading Frame:"
+          startText: "Open Reading Frame:",
+          isProtein
         })}{" "}
       </title>
     </g>

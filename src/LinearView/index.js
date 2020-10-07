@@ -39,6 +39,9 @@ export class LinearView extends React.Component {
     }
     if (this.props.sequenceLength === 0) nearestCaretPos = 0;
     const callbackVals = {
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       event,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
@@ -85,11 +88,13 @@ export class LinearView extends React.Component {
       editorDragStopped = noop,
       width = 400,
       tickSpacing,
+      scrollData,
       caretPosition,
       backgroundRightClicked = noop,
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
+      paddingBottom,
       charWidth,
       annotationVisibilityOverrides,
       isProtein,
@@ -105,14 +110,14 @@ export class LinearView extends React.Component {
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        onDrag={event => {
+        onDrag={(event) => {
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
             editorDragged
           );
         }}
-        onStart={event => {
+        onStart={(event) => {
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
@@ -122,21 +127,22 @@ export class LinearView extends React.Component {
         onStop={editorDragStopped}
       >
         <div
-          ref={ref => (this.linearView = ref)}
+          ref={(ref) => (this.linearView = ref)}
           className="veLinearView"
           style={{
             width,
             ...(height && { height }),
-            paddingLeft: marginWidth / 2
+            paddingLeft: marginWidth / 2,
+            ...(paddingBottom && { paddingBottom })
           }}
-          onContextMenu={event => {
+          onContextMenu={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
               backgroundRightClicked
             );
           }}
-          onClick={event => {
+          onClick={(event) => {
             this.getNearestCursorPositionToMouseEvent(
               rowData,
               event,
@@ -159,6 +165,7 @@ export class LinearView extends React.Component {
             {...{
               ...rest,
               charWidth,
+              scrollData,
               caretPosition,
               isProtein: sequenceData.isProtein,
               alignmentData,

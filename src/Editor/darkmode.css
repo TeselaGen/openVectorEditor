@@ -14,11 +14,14 @@
 .bp3-dark .veCaretSVG,
 .bp3-dark .veRowViewAxis path,
 .bp3-dark .veRowViewFeature path,
-.bp3-dark .veRowViewPartsContainer path,
 .bp3-dark .veLabelLine,
-.bp3-dark .veFeature,
-.bp3-dark .vePart {
+.bp3-dark .veFeature {
   stroke: #f5f8fa !important;
+}
+.bp3-dark .veRowViewPartsContainer path,
+.bp3-dark .vePart {
+  fill: #30404d !important;
+  stroke: #df7ff1 !important;
 }
 
 .bp3-dark .veEditor .veRowViewCaret {
@@ -75,11 +78,13 @@
   background: none !important;
 }
 
-.bp3-dark .alignmentViewTrackContainer text,
+.bp3-dark .alignmentViewTrackContainer text {
+  fill: #f5f8fa !important;
+}
+
 .bp3-dark .veRowViewAxis text,
 .bp3-dark .translationLayer text {
   stroke: #f5f8fa !important;
-  -webkit-font-smoothing: antialiased;
 }
 
 .bp3-dark .step-group.active .step-text {
@@ -93,10 +98,6 @@
 
 .bp3-dark .tool-select-item:hover {
   background: #0e5a8a !important;
-}
-
-.bp3-dark .alignmentViewTrackContainer .rowViewTextContainer text {
-  fill: #182026 !important;
 }
 
 .bp3-dark .veWhiteBackground {

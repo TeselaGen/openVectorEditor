@@ -155,7 +155,7 @@ export class Editor extends React.Component {
     this.setState({ tabDragging: true });
   };
 
-  onTabDragEnd = result => {
+  onTabDragEnd = (result) => {
     this.setState({ tabDragging: false });
     const { panelsShownUpdate, panelsShown } = this.props;
     // dropped outside the list
@@ -166,41 +166,40 @@ export class Editor extends React.Component {
     let newPanelsShown;
     if (result.destination.droppableId !== result.source.droppableId) {
       //we're moving a tab from one group to another group
-      newPanelsShown = map(
-        [...panelsShown, ...(panelsShown.length === 1 && [[]])],
-        (panelGroup, groupIndex) => {
-          const panelToMove =
-            panelsShown[
-              Number(result.source.droppableId.replace("droppable-id-", ""))
-            ][result.source.index];
-          if (
-            Number(groupIndex) ===
-            Number(result.destination.droppableId.replace("droppable-id-", ""))
-          ) {
-            //we're adding to this group
-            return insertItem(
-              panelGroup.map(tabPanel => ({ ...tabPanel, active: false })),
-              { ...panelToMove, active: true },
-              result.destination.index
-            );
-          } else if (
-            Number(groupIndex) ===
+      const secondPanel = panelsShown.length === 1 ? [[]] : [];
+      const panelsToMapOver = [...panelsShown, ...secondPanel];
+      newPanelsShown = map(panelsToMapOver, (panelGroup, groupIndex) => {
+        const panelToMove =
+          panelsShown[
             Number(result.source.droppableId.replace("droppable-id-", ""))
-          ) {
-            // we're removing from this group
-            return removeItem(panelGroup, result.source.index).map(
-              (tabPanel, index) => {
-                return {
-                  ...tabPanel,
-                  ...(panelToMove.active && index === 0 && { active: true })
-                };
-              }
-            );
-          } else {
-            return panelGroup;
-          }
+          ][result.source.index];
+        if (
+          Number(groupIndex) ===
+          Number(result.destination.droppableId.replace("droppable-id-", ""))
+        ) {
+          //we're adding to this group
+          return insertItem(
+            panelGroup.map((tabPanel) => ({ ...tabPanel, active: false })),
+            { ...panelToMove, active: true },
+            result.destination.index
+          );
+        } else if (
+          Number(groupIndex) ===
+          Number(result.source.droppableId.replace("droppable-id-", ""))
+        ) {
+          // we're removing from this group
+          return removeItem(panelGroup, result.source.index).map(
+            (tabPanel, index) => {
+              return {
+                ...tabPanel,
+                ...(panelToMove.active && index === 0 && { active: true })
+              };
+            }
+          );
+        } else {
+          return panelGroup;
         }
-      );
+      });
     } else {
       //we're moving tabs within the same group
       newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
@@ -223,7 +222,7 @@ export class Editor extends React.Component {
         return panelGroup;
       });
     }
-    filter(newPanelsShown, panelGroup => {
+    filter(newPanelsShown, (panelGroup) => {
       return panelGroup.length;
     });
     panelsShownUpdate(newPanelsShown);
@@ -234,7 +233,7 @@ export class Editor extends React.Component {
     return map(panelsShown);
   };
 
-  onPreviewModeButtonContextMenu = e => {
+  onPreviewModeButtonContextMenu = (e) => {
     const { previewModeButtonMenu } = this.props;
     e.preventDefault();
     if (previewModeButtonMenu) {
@@ -418,7 +417,7 @@ export class Editor extends React.Component {
 
     const panelsToShow = this.getPanelsToShow();
     this.hasFullscreenPanel = false;
-    map(panelsToShow, panelGroup => {
+    map(panelsToShow, (panelGroup) => {
       panelGroup.forEach(({ fullScreen }) => {
         if (fullScreen) this.hasFullscreenPanel = true;
       });
@@ -433,7 +432,7 @@ export class Editor extends React.Component {
       let activePanelType;
       let isFullScreen;
       let panelPropsToSpread = {};
-      panelGroup.forEach(panelProps => {
+      panelGroup.forEach((panelProps) => {
         const { type, id, active, fullScreen } = panelProps;
         if (fullScreen) isFullScreen = true;
         if (active) {
@@ -469,6 +468,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
+          withRotateCircularView
           {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&
@@ -478,6 +478,7 @@ export class Editor extends React.Component {
             }, {}))}
           maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
+          fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}
@@ -574,7 +575,7 @@ export class Editor extends React.Component {
                             }}
                           >
                             <div
-                              onContextMenu={e => {
+                              onContextMenu={(e) => {
                                 showTabRightClickContextMenu(e, id);
                               }}
                               ref={provided.innerRef}
