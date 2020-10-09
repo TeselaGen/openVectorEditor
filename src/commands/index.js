@@ -1175,12 +1175,16 @@ const toolCommandDefs = {
   restrictionEnzymesManager: {
     name: "Manage Enzymes",
     handler: (props) => {
-      props.createYourOwnEnzymeReset();
-      props.showManageEnzymesDialog({
-        inputSequenceToTestAgainst: props.sequenceData
-          ? props.sequenceData.sequence
-          : ""
-      });
+      if (props.enzymeManageOverride) {
+        props.enzymeManageOverride(props);
+      } else {
+        props.createYourOwnEnzymeReset();
+        props.showManageEnzymesDialog({
+          inputSequenceToTestAgainst: props.sequenceData
+            ? props.sequenceData.sequence
+            : ""
+        });
+      }
     },
     isHidden: (props) => isProtein(props)
   },
@@ -1190,6 +1194,13 @@ const toolCommandDefs = {
       props.openToolbarItemUpdate("cutsiteTool");
     },
     isHidden: (props) => isProtein(props)
+  },
+  openCreateCustomEnzyme: {
+    name: "Create Custom Enzyme",
+    handler: (props) => {
+      props.showCreateCustomEnzymeDialog();
+    },
+    isHidden: (props) => props.overrideManageEnzymes
   }
 };
 

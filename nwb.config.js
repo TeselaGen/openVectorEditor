@@ -33,6 +33,7 @@ module.exports = {
       
       //don't comment this out!
       react: path.resolve(__dirname, "node_modules/react"),
+      "@blueprintjs/core": path.resolve(__dirname, "node_modules/@blueprintjs/core"),
       "react-dom": path.resolve(__dirname, "node_modules/react-dom")
     },
     extra: {

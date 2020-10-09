@@ -516,14 +516,17 @@ function mapStateToProps(state, ownProps) {
   }
 
   let sequenceData = s.sequenceDataSelector(editorState);
-  const filteredCutsites = s.filteredCutsitesSelector(editorState);
+  const filteredCutsites = s.filteredCutsitesSelector(
+    editorState,
+    ownProps.additionalEnzymes
+  );
   let cutsites = filteredCutsites.cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
   );
   let orfs = s.orfsSelector(editorState);
   let selectedCutsites = s.selectedCutsitesSelector(editorState);
-  let allCutsites = s.cutsitesSelector(editorState);
+  let allCutsites = s.cutsitesSelector(editorState, ownProps.additionalEnzymes);
   let translations = s.translationsSelector(editorState);
   let filteredFeatures = s.filteredFeaturesSelector(editorState);
   let filteredParts = s.filteredPartsSelector(editorState);

@@ -1,6 +1,10 @@
 /// <reference types="cypress" />
 
 
+interface waitForOptions {
+  timeout?: number;
+}
+
 declare namespace Cypress {
   interface Chainable<Subject = any> {
     // /**
@@ -20,6 +24,41 @@ declare namespace Cypress {
      * cy.triggerFileCmd("Digest")
      */
     triggerFileCmd(text: string): void;
+    
+    /**
+     * waits for .bp3-dialog to not exist
+     * @example
+     * cy.waitForDialogClose()
+     */
+    waitForDialogClose(options: waitForOptions): void;
+    /**
+     * waits for .bp3-menu to not exist
+     * @example
+     * cy.waitForMenuClose()
+     */
+    waitForMenuClose(options: waitForOptions): void;
+
+    /**
+     * closes the dialog and waits for .bp3-dialog to not exist
+     * @example
+     * cy.closeDialog()
+     */
+    closeDialog(options: waitForOptions): void;
+
+
+    /**
+     * This command will close all open toastr messages by clicking each one's X
+     * @example
+     * cy.closeToasts()
+     */
+    closeToasts(): void;
+
+    /**
+     * Hides an open .bp3-menu or popover
+     * @example
+     * cy.hideMenu()
+     */
+    hideMenu(): void;
     
     /**
      * selectRange

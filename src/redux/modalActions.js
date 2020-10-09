@@ -63,6 +63,12 @@ export function showManageEnzymesDialog() {
     name: "ManageEnzymesDialog" //you'll need to pass a unique dialogName prop to the compoennt
   };
 }
+export function showCreateCustomEnzymeDialog() {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "CreateCustomEnzymeDialog" //you'll need to pass a unique dialogName prop to the compoennt
+  };
+}
 export function showRemoveDuplicatesDialog(props) {
   return {
     type: "TG_SHOW_MODAL",

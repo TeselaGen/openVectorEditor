@@ -47,6 +47,7 @@ import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
+import { getCustomEnzymes } from "../utils/editorUtils";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -847,12 +848,22 @@ Editor.childContextTypes = {
 };
 
 export default compose(
-  connectToEditor(({ panelsShown, versionHistory, sequenceData = {} }) => {
-    return {
-      panelsShown,
-      versionHistory,
-      sequenceData
-    };
-  }),
+  connectToEditor(
+    (
+      { panelsShown, versionHistory, sequenceData = {} },
+      { additionalEnzymes }
+    ) => {
+      const addEnzs = {
+        ...additionalEnzymes,
+        ...getCustomEnzymes()
+      };
+      return {
+        additionalEnzymes: addEnzs,
+        panelsShown,
+        versionHistory,
+        sequenceData
+      };
+    }
+  ),
   withHandlers({ handleSave, importSequenceFromFile })
 )(Editor);

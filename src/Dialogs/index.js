@@ -7,7 +7,6 @@ import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 import RenameSequenceDialog from "../helperComponents/RenameSequenceDialog";
 import GoToDialog from "../helperComponents/GoToDialog";
 import SelectDialog from "../helperComponents/SelectDialog";
-// import _ManageEnzymes from "../ManageEnzymes";
 import { withDialog } from "teselagen-react-components";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
@@ -15,16 +14,20 @@ import RemoveDuplicatesDialog from "../helperComponents/RemoveDuplicates";
 import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
 import _EnzymesDialog from "../helperComponents/EnzymesDialog";
+import CreateCustomEnzyme from "../CreateCustomEnzyme";
 
 const EnzymesDialog = withDialog({
-  title: "Manage Enzymes",
+  title: "Manage Enzymes"
   // isOpen: true,
-  isDraggable: true,
-  height: 500,
-  width: 500
+  // isDraggable: true,
+  // height: 500,
+  // width: 500
 })(_EnzymesDialog);
 
-// })(_ManageEnzymes);
+const CreateCustomEnzymeDialog = withDialog({
+  title: "Create Custom Enzyme"
+  // isOpen: true,
+})(CreateCustomEnzyme);
 
 const CreateAlignmentDialog = withDialog({
   title: "Create New Alignment"
@@ -36,7 +39,7 @@ export const dialogOverrides = [
   "AddOrEditPrimerDialogOverride"
 ];
 
-export default props => {
+export default (props) => {
   const {
     editorName,
     AddOrEditFeatureDialogOverride,
@@ -80,6 +83,14 @@ export default props => {
         editorName={editorName}
         dialogName="ManageEnzymesDialog"
         noTarget
+        {...pickedUserDefinedHandlersAndOpts}
+      />
+      <CreateCustomEnzymeDialog
+        isOpen
+        editorName={editorName}
+        dialogName="CreateCustomEnzymeDialog"
+        noTarget
+        {...pickedUserDefinedHandlersAndOpts}
       />
 
       <AddOrEditFeatureDialog

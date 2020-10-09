@@ -3,6 +3,8 @@ import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
+import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 
 export default connectToEditor(
   ({ readOnly, annotationVisibility = {}, toolBar = {} }) => {
@@ -17,7 +19,7 @@ export default connectToEditor(
     <ToolbarItem
       {...{
         Icon: <Icon data-test="cutsiteHideShowTool" icon="cut" />,
-        onIconClick: function() {
+        onIconClick: function () {
           annotationVisibilityToggle("cutsites");
         },
         toggled,
@@ -50,7 +52,8 @@ function CutsiteToolDropDown({
   annotationVisibilityShow,
   withDigestTool,
   createNewDigest,
-  showManageEnzymesDialog
+
+  ...rest
 }) {
   return (
     <div className="veToolbarCutsiteFilterHolder">
@@ -61,24 +64,13 @@ function CutsiteToolDropDown({
         </span>
       </h6>
       <CutsiteFilter
+        {...pick(rest, userDefinedHandlersAndOpts)}
         editorName={editorName}
-        onChangeHook={function() {
+        onChangeHook={function () {
           annotationVisibilityShow("cutsites");
         }}
         closeDropDown={toggleDropdown}
       />
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a
-        onClick={() => {
-          showManageEnzymesDialog({
-            // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
-          });
-          toggleDropdown();
-        }}
-        style={{ fontSize: 11 }}
-      >
-        Manage Enzymes...
-      </a>
       {withDigestTool && (
         <Button
           onClick={() => {

@@ -882,6 +882,21 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "overrideManageEnzymes",
+                description: `overrideManageEnzymes`
+              })}
+              {renderToggle({
+                that: this,
+                type: "enzymeGroupsOverride",
+                description: `enzymeGroupsOverride`
+              })}
+              {renderToggle({
+                that: this,
+                type: "additionalEnzymes",
+                description: `additionalEnzymes`
+              })}
+              {renderToggle({
+                that: this,
                 type: "readOnly",
                 hook: (readOnly) => {
                   updateEditor(store, "DemoEditor", {
@@ -1280,6 +1295,40 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
+            {...(this.state.overrideManageEnzymes && {
+              enzymeManageOverride: () => {
+                window.toastr.success("enzyme manage override hit!");
+              }
+            })}
+            {...((this.state.overrideManageEnzymes ||
+              this.state.enzymeGroupsOverride ||
+              this.state.additionalEnzymes) && {
+              additionalEnzymes: {
+                specialenzyme1: {
+                  name: "specialEnzyme1",
+                  site: "attttttaaatacccgcg",
+                  forwardRegex: "attttttaaatacccgcg",
+                  reverseRegex: "cgcgggtatttaaaaaat",
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                },
+                specialenzyme2: {
+                  name: "specialEnzyme2",
+                  site: "gacggctacatcat",
+                  forwardRegex: "gacggctacatcat",
+                  reverseRegex: "atgatgtagccgtc",
+                  topSnipOffset: 2,
+                  bottomSnipOffset: 4
+                }
+              }
+            })}
+            {...((this.state.overrideManageEnzymes ||
+              this.state.enzymeGroupsOverride) && {
+              enzymeGroupsOverride: {
+                someGroup: ["specialEnzyme1", "bamhi"],
+                anothaGroup: ["specialenzyme2", "bsmbi"] //case shouldn't matter here
+              }
+            })}
             {...(this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
             })}

@@ -1,0 +1,102 @@
+.inputHolder {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.inputHolder.error input {
+  background: pink;
+}
+.inputHolder.error .errorMessage {
+  color: red;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 95px;
+}
+.inputHolder > div {
+  display: flex;
+  align-items: center;
+}
+.inputHolder > div > span {
+  width: 210px;
+  margin-right: 0.5em;
+  text-align: right;
+}
+
+.addAdditionalEnzymeBtn {
+  width: 120px !important;
+  margin: 10px;
+}
+
+.addAdditionalEnzyme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.addAdditionalEnzyme > span {
+  max-width: 350px;
+}
+
+.createYourOwnEnzyme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.createYourOwnEnzyme .inputHolder input {
+  flex: 1;
+  display: block;
+  min-width: 0;
+  margin: 10px;
+}
+.createYourOwnEnzyme .buttonHolder {
+  display: flex;
+}
+.createYourOwnEnzyme .cutnumber.invalid {
+  color: red;
+}
+
+.ta_useCutsite {
+  margin: 10px;
+}
+.ta_useCutsite.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.labelWithIcon {
+  display: flex;
+  justify-content: flex-end;
+}
+.labelWithIcon > div {
+  padding-right: 10px;
+}
+
+.createYourOwnButton {
+  padding-top: 40px;
+  display: flex;
+  align-items: center;
+}
+.createYourOwnButton > span {
+  width: 250px;
+}
+
+.filterAndButton {
+  display: flex;
+  align-items: center;
+}
+
+.taLine {
+  text-align: left;
+}
+
+.taLineHolder {
+  width: 100%;
+}
+.taLineHolder div {
+  width: 100%;
+}
+
+/*# sourceMappingURL=style.css.map */

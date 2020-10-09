@@ -6,13 +6,14 @@ import {
 } from "teselagen-react-components";
 import { map, get } from "lodash";
 import EnzymeViewer from "../../EnzymeViewer";
-import enzymeList from "../../redux/utils/defaultEnzymeList.js";
 import CutsiteFilter from "../../CutsiteFilter";
 import { Button } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
 import commands from "../../commands";
+import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 
 // import { Button } from "@blueprintjs/core";
 // import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
@@ -33,7 +34,7 @@ class CutsiteProperties extends React.Component {
       }
     });
   };
-  SubComponent = row => {
+  SubComponent = (row, props) => {
     // const { selectionLayerUpdate } = this.props;
     const { name, cutsiteGroup } = row.original;
     const entities = cutsiteGroup
@@ -62,6 +63,8 @@ class CutsiteProperties extends React.Component {
           };
         }
       );
+    const enzymeList = props.enzymeList;
+    if (!enzymeList) throw new Error("no enzyme list!");
     const enzyme = enzymeList[name.toLowerCase()];
     // return <div>yooo</div>
     return (
@@ -136,7 +139,8 @@ class CutsiteProperties extends React.Component {
 
     const { cutsitesByName, cutsitesById } = allCutsites;
 
-    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup, name) => {
+    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
+      const name = cutsiteGroup[0].restrictionEnzyme.name;
       return {
         cutsiteGroup,
         id: name,
@@ -163,6 +167,7 @@ class CutsiteProperties extends React.Component {
             icon="filter"
           />
           <CutsiteFilter
+            {...pick(this.props, userDefinedHandlersAndOpts)}
             style={{ flexGrow: 2 }}
             editorName={editorName}
             onChangeHook={this.onChangeHook}
@@ -205,7 +210,7 @@ class CutsiteProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor(editorState => {
+  connectToEditor((editorState) => {
     const cutsites = selectors.filteredCutsitesSelector(editorState);
     return {
       annotationVisibility: editorState.annotationVisibility || {},

@@ -25,12 +25,12 @@ export function getSelectionMessage({
         getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence
       ).toFixed(numDecimalDigits);
     const seqLen = divideBy3(length, isProtein);
-    return `${customTitle || "Selecting"} ${seqLen} ${(isProtein
-      ? "AA"
-      : "bp") + (seqLen === 1 ? "" : "s")} from ${divideBy3(
-      selectionLayer.start,
+    return `${customTitle || "Selecting"} ${seqLen} ${
+      (isProtein ? "AA" : "bp") + (seqLen === 1 ? "" : "s")
+    } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
+      selectionLayer.end + 1,
       isProtein
-    ) + 1} to ${divideBy3(selectionLayer.end + 1, isProtein)}${
+    )}${
       showGCContent && !isProtein ? ` (${GCContent(GCDecimalDigits)}% GC)` : ""
     }`;
   } else if (caretPosition > -1) {
@@ -62,7 +62,11 @@ export function preventDefaultStopPropagation(e) {
 
 export function getNodeToRefocus(caretEl) {
   let nodeToReFocus;
-  if (caretEl && caretEl.closest && caretEl.closest(".veVectorInteractionWrapper")) {
+  if (
+    caretEl &&
+    caretEl.closest &&
+    caretEl.closest(".veVectorInteractionWrapper")
+  ) {
     nodeToReFocus = caretEl.closest(".veVectorInteractionWrapper");
   }
   return nodeToReFocus;
@@ -75,6 +79,26 @@ export function getEmptyText({ sequenceData, caretPosition }) {
 }
 
 export function tryToRefocusEditor() {
-  const ed = document.querySelector(".veVectorInteractionWrapper")
-  ed && ed.focus()
+  const ed = document.querySelector(".veVectorInteractionWrapper");
+  ed && ed.focus();
+}
+export function getCustomEnzymes() {
+  try {
+    const customEnzymes = JSON.parse(
+      window.localStorage.getItem("customEnzymes") || "{}"
+    );
+    return customEnzymes;
+  } catch (error) {
+    return {};
+  }
+}
+export function addCustomEnzyme(newEnz) {
+  const customEnzymes = getCustomEnzymes();
+  window.localStorage.setItem(
+    "customEnzymes",
+    JSON.stringify({
+      ...customEnzymes,
+      [newEnz.name.toLowerCase()]: newEnz
+    })
+  );
 }
