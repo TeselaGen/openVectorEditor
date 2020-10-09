@@ -313,11 +313,6 @@ function bpsToRegexString(bps) {
   return regexString;
 }
 
-// function CustomInput({name, type, label, onInput}) {
-// return <Field name={name} label={label} type={type} onInput={onInput} component={RenderInput} >
-// </Field>
-// }
-
 function CustomInput({ name, value, onChange, onInput, label, error, type }) {
   return (
     <div className={"inputHolder " + (error && "error")}>
