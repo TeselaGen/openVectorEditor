@@ -1,5 +1,5 @@
 import { merge } from "lodash";
-import * as addAdditionalEnzymes from "./addAdditionalEnzymes";
+import * as createYourOwnEnzyme from "./createYourOwnEnzyme";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
@@ -38,7 +38,7 @@ import createAction from "./utils/createMetaAction";
 export { default as vectorEditorMiddleware } from "./middleware";
 
 const subReducers = {
-  addAdditionalEnzymes,
+  createYourOwnEnzyme,
   annotationLabelVisibility,
   annotationsToSupport,
   annotationVisibility,
@@ -164,10 +164,10 @@ export default function reducerFactory(initialState = {}) {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
       __allEditorsOptions: {
-        addAdditionalEnzymes: addAdditionalEnzymes.default(
+        createYourOwnEnzyme: createYourOwnEnzyme.default(
           !state.__allEditorsOptions
             ? undefined
-            : state.__allEditorsOptions.addAdditionalEnzymes,
+            : state.__allEditorsOptions.createYourOwnEnzyme,
           action
         ),
         uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(

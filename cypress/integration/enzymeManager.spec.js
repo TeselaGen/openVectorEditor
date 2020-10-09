@@ -1,0 +1,35 @@
+describe("manage enzymes dialog", () => {
+  it(`should be able to add a new group and add enzymes to it`, () => {
+    cy.visit("");
+    cy.window().then(win => {
+      win.localStorage.clear();
+    });
+    cy.triggerFileCmd("Manage Enzymes");
+    cy.get(".veEnzymeDialogAddGroupBtn").click();
+    cy.get(".veNewEnzymeGroupPopover input").type("newGroup");
+    cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.contains("Common Enzymes").click();
+    cy.contains("AccIII").click();
+    cy.contains("Eco52I").click();
+    cy.get(".veEnzymeGroupAddEnzymesBtn").click();
+    // cy.get('.veEnzymeGroupAddEnzymesBtn').blur()
+    cy.contains("Copy 2 Enzyme(s)");
+    cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
+    cy.contains("Deselect 2").click({ force: true });
+    cy.contains("Deselect 0").should("exist");
+
+    cy.contains("newGroup").click();
+    cy.contains("AccIII").click();
+    cy.get(".veRemoveEnzymeFromGroupBtn").click();
+    cy.contains("button", "OK").click();
+    cy.contains("AccIII").should("not.exist");
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
+    cy.contains(
+      ".veToolbarCutsiteFilterHolder .bp3-menu-item",
+      "newGroup"
+    ).click();
+
+    // cy.get('.veEnzymeGroupAddEnzymesBtn').click()
+  });
+});

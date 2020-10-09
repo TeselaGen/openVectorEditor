@@ -11,20 +11,37 @@ export default createSelector(
     let returnVal = {
       cutsitesByName: {}
     };
-    if (
-      !filteredRestrictionEnzymes ||
-      filteredRestrictionEnzymes.length === 0
-    ) {
+
+    const hiddenEnzymesByName = {};
+    let filteredEnzymes = [];
+    //handle adding enzymes that are included in user created groups
+    filteredRestrictionEnzymes.forEach(e => {
+      if (e.value.includes("__userCreatedGroup")) {
+        const groupName = e.value.replace("__userCreatedGroup", "");
+
+        const enzymes = window.getExistingEnzymeGroups()[groupName] || [];
+
+        filteredEnzymes = filteredEnzymes.concat(
+          enzymes.map(e => ({ value: e }))
+        );
+      } else if (e.isHidden) {
+        hiddenEnzymesByName[e.value] = e;
+      } else {
+        filteredEnzymes.push(e);
+      }
+    });
+    if (!filteredEnzymes || filteredEnzymes.length === 0) {
       returnVal.cutsitesByName = cutsitesByName;
     } else {
       //loop through each filter option ('Single Cutters', 'BamHI')
-      filteredRestrictionEnzymes.forEach(function({ value }) {
+      filteredEnzymes.forEach(function({ value }) {
         let cutsThisManyTimes =
           specialCutsiteFilterOptions[value] &&
           specialCutsiteFilterOptions[value].cutsThisManyTimes;
         if (cutsThisManyTimes > 0) {
           //the cutter type is either 1,2,3 for single, double or triple cutters
           Object.keys(cutsitesByName).forEach(function(key) {
+            if (hiddenEnzymesByName[key]) return; //don't show that cutsite
             if (cutsitesByName[key].length === cutsThisManyTimes) {
               returnVal.cutsitesByName[key] = cutsitesByName[key];
             }

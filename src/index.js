@@ -19,9 +19,7 @@ export {
   default as CircularView,
   CircularView as CircularViewUnconnected
 } from "./CircularView";
-export {
-  default as SimpleCircularOrLinearView
-} from "./SimpleCircularOrLinearView";
+export { default as SimpleCircularOrLinearView } from "./SimpleCircularOrLinearView";
 export { default as RowView, RowView as RowViewUnconnected } from "./RowView";
 export { default as RowItem, RowItem as RowItemUnconnected } from "./RowItem";
 export { default as Editor, Editor as EditorUnconnected } from "./Editor";
@@ -52,12 +50,8 @@ export {
 export { default as updateEditor } from "./updateEditor";
 export { default as addAlignment } from "./addAlignment";
 
-export {
-  default as getRangeAnglesSpecial
-} from "./CircularView/getRangeAnglesSpecial";
-export {
-  default as PositionAnnotationOnCircle
-} from "./CircularView/PositionAnnotationOnCircle";
+export { default as getRangeAnglesSpecial } from "./CircularView/getRangeAnglesSpecial";
+export { default as PositionAnnotationOnCircle } from "./CircularView/PositionAnnotationOnCircle";
 export { default as EnzymeViewer } from "./EnzymeViewer";
 export { default as AlignmentView } from "./AlignmentView";
 export { default as getOveHotkeyDefs } from "./commands/getOveHotkeyDefs";

@@ -19,13 +19,13 @@ describe("addAdditionalEnzymes", function() {
     cy.contains("(2 cuts)");
   });
 
-  it(`can open the add additional enzymes dialog from the Tools > Add Additional Enzymes 
+  it(`can open the add additional enzymes dialog from the Tools > Manage Enzymes 
   and add a custom user enzyme `, function() {
     cy.get(".tg-menu-bar")
       .contains("Tools")
       .click();
     cy.get(".bp3-menu-item")
-      .contains("Add Additional Enzymes")
+      .contains("Manage Enzymes")
       .click();
     cy.contains("Create your own enzyme").click();
     cy.contains("Cuts 0 times in your Destination Vector");
@@ -37,13 +37,13 @@ describe("addAdditionalEnzymes", function() {
     cy.contains("Use Enzyme").click();
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
   });
-  it(`can open the add additional enzymers dialog from the Tools > Add Additional Enzymes 
+  it(`can open the add additional enzymers dialog from the Tools > Manage Enzymes 
   and add an additional enzyme `, function() {
     cy.get(".tg-menu-bar")
       .contains("Tools")
       .click();
     cy.get(".bp3-menu-item")
-      .contains("Add Additional Enzymes")
+      .contains("Manage Enzymes")
       .click();
     cy.get(`input[placeholder="Select cut sites..."]`).click();
     cy.contains("AaaI").click();
@@ -55,8 +55,8 @@ describe("addAdditionalEnzymes", function() {
   it("can open the create a new enzyme dialog from the cutsite filter dropdown", function() {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.contains(".bp3-menu-item", `Add additional enzyme`).click();
-    cy.contains(".bp3-heading", "Add Additional Enzymes");
+    cy.contains(".bp3-menu-item", `Manage Enzymes`).click();
+    cy.contains(".bp3-heading", "Manage Enzymes");
 
     // cy.get(`[data-test="veStatusBar-circularity"]`)
     //   .find("select")

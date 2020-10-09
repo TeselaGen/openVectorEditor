@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-
 import AddOrEditPrimerDialogDefault from "../helperComponents/AddOrEditPrimerDialog";
 import AddOrEditFeatureDialogDefault from "../helperComponents/AddOrEditFeatureDialog";
 import AddOrEditPartDialogDefault from "../helperComponents/AddOrEditPartDialog";
@@ -9,18 +7,24 @@ import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 import RenameSequenceDialog from "../helperComponents/RenameSequenceDialog";
 import GoToDialog from "../helperComponents/GoToDialog";
 import SelectDialog from "../helperComponents/SelectDialog";
-import _AddAdditionalEnzymes from "../AddAdditionalEnzymes";
+// import _ManageEnzymes from "../ManageEnzymes";
 import { withDialog } from "teselagen-react-components";
-import { addAdditionalEnzymesClose } from "../redux/addAdditionalEnzymes";
 import { AlignmentToolInner } from "../ToolBar/alignmentTool";
 import PrintDialog from "../helperComponents/PrintDialog";
 import RemoveDuplicatesDialog from "../helperComponents/RemoveDuplicates";
 import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
+import _EnzymesDialog from "../helperComponents/EnzymesDialog";
 
-const AddAdditionalEnzymes = withDialog({
-  title: "Add Additional Enzymes"
-})(_AddAdditionalEnzymes);
+const EnzymesDialog = withDialog({
+  title: "Manage Enzymes",
+  // isOpen: true,
+  isDraggable: true,
+  height: 500,
+  width: 500
+})(_EnzymesDialog);
+
+// })(_ManageEnzymes);
 
 const CreateAlignmentDialog = withDialog({
   title: "Create New Alignment"
@@ -32,21 +36,9 @@ export const dialogOverrides = [
   "AddOrEditPrimerDialogOverride"
 ];
 
-export default connect(
-  state => {
-    return {
-      addAdditionalEnzymesOpen:
-        state.VectorEditor.__allEditorsOptions.addAdditionalEnzymes.isOpen
-    };
-  },
-  {
-    addAdditionalEnzymesClose
-  }
-)(props => {
+export default props => {
   const {
     editorName,
-    addAdditionalEnzymesOpen,
-    addAdditionalEnzymesClose,
     AddOrEditFeatureDialogOverride,
     AddOrEditPartDialogOverride,
     AddOrEditPrimerDialogOverride
@@ -65,13 +57,13 @@ export default connect(
     AddOrEditPrimerDialogOverride || AddOrEditPrimerDialogDefault;
   return (
     <div>
-      <AddAdditionalEnzymes
+      {/* <AddAdditionalEnzymes
         noTarget
         dialogProps={{
           isOpen: addAdditionalEnzymesOpen,
           onClose: addAdditionalEnzymesClose
         }}
-      />
+      /> */}
       <CreateAlignmentDialog
         editorName={editorName}
         dialogName="CreateAlignmentDialog"
@@ -81,6 +73,12 @@ export default connect(
       <RemoveDuplicatesDialog
         editorName={editorName}
         dialogName="RemoveDuplicatesDialog"
+        noTarget
+      />
+      <EnzymesDialog
+        isOpen
+        editorName={editorName}
+        dialogName="ManageEnzymesDialog"
         noTarget
       />
 
@@ -121,4 +119,4 @@ export default connect(
       />
     </div>
   );
-});
+};

@@ -177,14 +177,18 @@ export default [
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
 
   { divider: "" },
+  {
+    text: "Labels",
+    submenu: [
+      { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
+      { cmd: "togglePartLabels", shouldDismissPopover: false },
+      { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
 
-  { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
-  { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+      { divider: "" },
 
-  { divider: "" },
-
-  { cmd: "toggleExternalLabels", shouldDismissPopover: false },
-  { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false },
-  { cmd: "adjustLabelSize", shouldDismissPopover: false }
+      { cmd: "toggleExternalLabels", shouldDismissPopover: false },
+      { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false },
+      { cmd: "adjustLabelSize", shouldDismissPopover: false }
+    ]
+  }
 ];

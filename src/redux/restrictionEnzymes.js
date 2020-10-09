@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-import defaultEnzymeList from "./utils/defaultEnzymeList.json";
+// import defaultEnzymeList from "./utils/defaultEnzymeList.js";
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -23,6 +23,8 @@ export const allRestrictionEnzymesUpdate = createAction(
 // Reducer
 // ------------------------------------
 let initialState = [specialCutsiteFilterOptions.single];
+// const userEnzymeGroups = window.localStorage.getItem("restrictionEnzymeGroups") || []
+
 export default combineReducers({
   //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
   filteredRestrictionEnzymes: createReducer(
@@ -34,18 +36,5 @@ export default combineReducers({
       }
     },
     initialState
-  ),
-
-  allRestrictionEnzymes: createReducer(
-    {
-      [addRestrictionEnzyme]: function(state, payload) {
-        return {
-          ...state,
-          [payload.name]: payload
-        };
-      },
-      [allRestrictionEnzymesUpdate]: (state, payload) => payload
-    },
-    defaultEnzymeList
   )
 });

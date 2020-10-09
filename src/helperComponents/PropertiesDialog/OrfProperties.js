@@ -50,7 +50,7 @@ class OrfProperties extends React.Component {
       <React.Fragment>
         <DataTable
           topLeftItems={
-            <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfs} />
+            <CmdCheckbox name="Show ORFs (Open Reading Frames)" cmd={this.commands.toggleOrfs} />
           }
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding

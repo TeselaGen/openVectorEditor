@@ -1,4 +1,3 @@
-
 describe("tabs", function() {
   beforeEach(() => {
     cy.visit("#EnzymeViewer");

@@ -57,6 +57,12 @@ export function hidePrintDialog(props) {
     props
   };
 }
+export function showManageEnzymesDialog() {
+  return {
+    type: "TG_SHOW_MODAL",
+    name: "ManageEnzymesDialog" //you'll need to pass a unique dialogName prop to the compoennt
+  };
+}
 export function showRemoveDuplicatesDialog(props) {
   return {
     type: "TG_SHOW_MODAL",
