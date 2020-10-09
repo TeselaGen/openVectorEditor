@@ -120,6 +120,7 @@ export default [
     submenu: [
       "openFilterCutsites",
       "restrictionEnzymesManager",
+      "openCreateCustomEnzyme",
       "simulateDigestion",
       {
         text: "Remove Duplicates",

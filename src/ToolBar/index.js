@@ -74,6 +74,9 @@ export class ToolBar extends React.PureComponent {
       ],
       ...rest
     } = this.props;
+    const userDefinedProps = {
+      ...pick(this.props, userDefinedHandlersAndOpts)
+    };
     let items = toolList
       .map((toolNameOrOverrides, index) => {
         let toolName;
@@ -110,8 +113,14 @@ export class ToolBar extends React.PureComponent {
         return (
           <Tool
             {...rest}
-            onSave={onSave}
-            toolbarItemProps={{ index, toolName, editorName, ...toolOverride }}
+            {...userDefinedProps}
+            toolbarItemProps={{
+              ...userDefinedProps,
+              index,
+              toolName,
+              editorName,
+              ...toolOverride
+            }}
             editorName={editorName}
             key={toolName}
           />
@@ -147,7 +156,7 @@ export class ToolBar extends React.PureComponent {
           {showMenuBar && (
             <MenuBar
               openHotkeyDialog={openHotkeyDialog}
-              {...pick(this.props, userDefinedHandlersAndOpts)}
+              {...userDefinedProps}
               onSave={onSave} //needs to be passed so that editor commands will have it
               style={{ marginLeft: 0 }}
               editorName={editorName}

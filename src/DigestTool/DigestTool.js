@@ -18,6 +18,8 @@ import {
   Checkbox
 } from "@blueprintjs/core";
 import withEditorInteractions from "../withEditorInteractions";
+import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 
 const MAX_DIGEST_CUTSITES = 50;
 const MAX_PARTIAL_DIGEST_CUTSITES = 10;
@@ -80,7 +82,10 @@ export class DigestTool extends React.Component {
           disabled={computePartialDigestDisabled}
         ></Checkbox>
         Choose your enzymes:
-        <CutsiteFilter editorName={editorName} />
+        <CutsiteFilter
+          {...pick(this.props, userDefinedHandlersAndOpts)}
+          editorName={editorName}
+        />
         <br />
         {computeDigestDisabled && (
           <div

@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-// import defaultEnzymeList from "./utils/defaultEnzymeList.js";
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -15,7 +14,6 @@ export const filteredRestrictionEnzymesReset = createAction(
 export const filteredRestrictionEnzymesAdd = createAction(
   "FILTERED_RESTRICTION_ENZYMES_ADD"
 );
-export const addRestrictionEnzyme = createAction("ADD_RESTRICTION_ENZYME");
 export const allRestrictionEnzymesUpdate = createAction(
   "ALL_RESTRICTION_ENZYMES_UPDATE"
 );
@@ -31,7 +29,7 @@ export default combineReducers({
     {
       [filteredRestrictionEnzymesReset]: () => initialState,
       [filteredRestrictionEnzymesUpdate]: (state, payload) => payload,
-      [filteredRestrictionEnzymesAdd]: function(state, payload) {
+      [filteredRestrictionEnzymesAdd]: function (state, payload) {
         return [...state, payload];
       }
     },

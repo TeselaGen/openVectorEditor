@@ -3,7 +3,7 @@ import React from "react";
 
 // import { reduxForm, formValues } from "redux-form";
 
-import { showConfirmationDialog } from "teselagen-react-components";
+import { InfoHelper, showConfirmationDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import {
   Classes,
@@ -13,23 +13,24 @@ import {
   HTMLSelect,
   Tooltip,
   AnchorButton,
-  Intent
+  Intent,
+  Button
 } from "@blueprintjs/core";
 import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
-import defaultEnzymeList from "../../redux/utils/defaultEnzymeList.js";
 
 import EnzymeViewer from "../../EnzymeViewer";
 import "./style.css";
 
-import { map, flatMap, countBy, forEach, reduce, uniq, omitBy } from "lodash";
+import { map, flatMap, countBy, reduce, uniq, omitBy } from "lodash";
 import {
-  getCutsitesFromSequence,
-  enzymeList as expandedEnzymeList
+  aliasedEnzymesByName,
+  defaultEnzymesByName,
+  getCutsitesFromSequence
 } from "ve-sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
 
-const upsertLocalEnzymeGroups = newGroups => {
+const upsertLocalEnzymeGroups = (newGroups) => {
   const existingGroups = window.getExistingEnzymeGroups();
   const toUpsert = omitBy(
     //delete any groups that have a value of null/undefined
@@ -37,7 +38,7 @@ const upsertLocalEnzymeGroups = newGroups => {
       ...existingGroups,
       ...newGroups
     },
-    val => {
+    (val) => {
       return !val;
     }
   );
@@ -47,7 +48,7 @@ const upsertLocalEnzymeGroups = newGroups => {
 
 window.createNewEnzymeGroup =
   window.createNewEnzymeGroup ||
-  (newName => {
+  ((newName) => {
     return upsertLocalEnzymeGroups({
       [newName]: []
     });
@@ -62,7 +63,7 @@ window.editEnzymeGroupName =
   });
 window.deleteEnzymeGroup =
   window.deleteEnzymeGroup ||
-  (nameToDelete => {
+  ((nameToDelete) => {
     return upsertLocalEnzymeGroups({
       [nameToDelete]: null
     });
@@ -91,58 +92,80 @@ window.getExistingEnzymeGroups =
     return existingGroups;
   });
 
-window.getExistingEnzymeGroupsWithEnzymeData = () => {
-  const toRet = {};
-  forEach(window.getExistingEnzymeGroups(), (group, name) => {
-    toRet[name] = flatMap(group, enzymeName => {
-      const enzyme = expandedEnzymeList[enzymeName.toLowerCase()];
-      if (!enzyme) {
-        console.warn("ruh roh");
-        return [];
-      } else {
-        return enzyme;
-      }
-    });
-  });
-  return toRet;
-};
+// window.getExistingEnzymeGroupsWithEnzymeData = () => {
+//   const toRet = {};
+//   forEach(window.getExistingEnzymeGroups(), (group, name) => {
+//     toRet[name] = flatMap(group, enzymeName => {
+//       const enzyme = this.getAllEnzymesByName()[enzymeName.toLowerCase()];
+//       if (!enzyme) {
+//         console.warn("ruh roh");
+//         return [];
+//       } else {
+//         return enzyme;
+//       }
+//     });
+//   });
+//   return toRet;
+// };
 
 const easyStore = store({ hoveredEnzyme: "" });
 export class EnzymesDialog extends React.Component {
   state = {
-    selectedEnzymeGroup: "Common Enzymes",
+    selectedEnzymeGroup: "My Enzymes",
     searchInput: ""
   };
   componentDidMount() {
     this.refreshEnzymeGroups();
   }
+  getAllEnzymesByName = () => {
+    return {
+      ...this.props.additionalEnzymes,
+      ...aliasedEnzymesByName
+    };
+  };
   refreshEnzymeGroups = () => {
-    const { sequenceData } = this.props;
+    const { sequenceData, additionalEnzymes } = this.props;
     const existingGroups = window.getExistingEnzymeGroups();
     const orderedExistingGroups = {};
+    const groupedEnzymesNameMap = {};
     Object.keys(existingGroups)
       .sort()
-      .forEach(function(key) {
-        orderedExistingGroups[key] = existingGroups[key];
+      .forEach(function (key) {
+        const group = existingGroups[key];
+        orderedExistingGroups[key] = group;
+        group.forEach((name) => {
+          const lowerName = name.toLowerCase();
+          groupedEnzymesNameMap[lowerName] =
+            aliasedEnzymesByName[lowerName] || additionalEnzymes[lowerName];
+        });
       });
+    const myEnzymes = {
+      ...groupedEnzymesNameMap,
+      ...additionalEnzymes,
+      ...defaultEnzymesByName
+    };
+    const hiddenEnzymes = omitBy(aliasedEnzymesByName, (p, i) => {
+      return myEnzymes[i] || groupedEnzymesNameMap[i];
+    });
     this.enzymeGroups = {
-      "Common Enzymes": {
+      "My Enzymes": {
         protected: true,
-        name: "Common Enzymes",
-        enzymes: map(defaultEnzymeList)
+        name: "My Enzymes",
+        enzymes: map(myEnzymes).sort((e) => e.name)
       },
-
-      "All Enzymes": {
+      Hidden: {
         protected: true,
-        name: "All Enzymes",
-        enzymes: map(expandedEnzymeList)
+        name: "Hidden",
+        tooltipInfo:
+          "These less common enzymes are hidden by default. Adding them to a custom group will make them show up in the cutsite filter dropdown.",
+        enzymes: map(hiddenEnzymes).sort((e) => e.name)
       },
       ...reduce(
         orderedExistingGroups,
         (acc, val, key) => {
           acc[key] = {
             name: key,
-            enzymes: getEnzymesForNames(val)
+            enzymes: getEnzymesForNames(val, this.getAllEnzymesByName())
           };
           return acc;
         },
@@ -162,12 +185,20 @@ export class EnzymesDialog extends React.Component {
     this.cutsitesByEnzymeName = getCutsitesFromSequence(
       sequenceData.sequence,
       sequenceData.circular,
-      map(expandedEnzymeList)
+      map(this.getAllEnzymesByName())
     );
     this.forceUpdate();
   };
 
+  clearSelection = () => {
+    const { selectedEnzymeGroup } = this.state;
+    const selectedEnzymesKey = `selectedEnzymes_${selectedEnzymeGroup}`;
+    this.setState({
+      [selectedEnzymesKey]: {}
+    });
+  };
   render() {
+    const { showCreateCustomEnzymeDialog, hideModal } = this.props;
     if (!this.enzymeGroups) return null;
     const {
       selectedEnzymeGroup,
@@ -176,54 +207,56 @@ export class EnzymesDialog extends React.Component {
     } = this.state;
     const selectedEnzymesKey = `selectedEnzymes_${selectedEnzymeGroup}`;
     const selectedEnzymesForGroup = this.state[selectedEnzymesKey] || {};
-    const selectedCount = countBy(selectedEnzymesForGroup, e => e).true || 0;
-    const enzymeList = flatMap(
-      this.enzymeGroups[selectedEnzymeGroup].enzymes,
-      (enz, i) => {
-        const name = `${enz.name} (${(this.cutsitesByEnzymeName &&
+    const selectedCount = countBy(selectedEnzymesForGroup, (e) => e).true || 0;
+    const fullSelectedEnzGroup = this.enzymeGroups[selectedEnzymeGroup] || {};
+
+    const enzymeList = flatMap(fullSelectedEnzGroup.enzymes, (enz, i) => {
+      const name = `${enz.name} (${
+        (this.cutsitesByEnzymeName &&
           this.cutsitesByEnzymeName[enz.name] &&
           this.cutsitesByEnzymeName[enz.name].length) ||
-          0})`;
-        if (
-          searchInput &&
-          !name.toLowerCase().includes(searchInput.toLowerCase())
-        ) {
-          return [];
-        }
-        return (
-          <div
-            onMouseOver={() => {
-              easyStore.hoveredEnzyme = enz.name;
-              clearTimeout(this.clearId);
-            }}
-            onMouseLeave={() => {
-              this.clearId = setTimeout(() => {
-                easyStore.hoveredEnzyme = "";
-              }, 100);
-            }}
-            onClick={() => {
-              this.setState({
-                [selectedEnzymesKey]: {
-                  ...selectedEnzymesForGroup,
-                  [enz.name]: !selectedEnzymesForGroup[enz.name]
-                }
-              });
-            }}
-            className={classNames(Classes.MENU_ITEM, "veEnzymeDialogEnzyme", {
-              [`${Classes.ACTIVE} ${Classes.INTENT_PRIMARY}`]: selectedEnzymesForGroup[
-                enz.name
-              ]
-            })}
-            key={i}
-          >
-            {name}
-          </div>
-        );
+        0
+      })`;
+      if (
+        searchInput &&
+        !name.toLowerCase().includes(searchInput.toLowerCase())
+      ) {
+        return [];
       }
-    );
+      return (
+        <div
+          onMouseOver={() => {
+            easyStore.hoveredEnzyme = enz.name;
+            clearTimeout(this.clearId);
+          }}
+          onMouseLeave={() => {
+            this.clearId = setTimeout(() => {
+              easyStore.hoveredEnzyme = "";
+            }, 100);
+          }}
+          onClick={() => {
+            this.setState({
+              [selectedEnzymesKey]: {
+                ...selectedEnzymesForGroup,
+                [enz.name]: !selectedEnzymesForGroup[enz.name]
+              }
+            });
+          }}
+          className={classNames(Classes.MENU_ITEM, "veEnzymeDialogEnzyme", {
+            [`${Classes.ACTIVE} ${Classes.INTENT_PRIMARY}`]: selectedEnzymesForGroup[
+              enz.name
+            ]
+          })}
+          key={i}
+        >
+          {name}
+        </div>
+      );
+    });
     // const enzymesForGroup =
     return (
       <div
+        style={{ height: 500 }}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog veEnzymeDialog"
@@ -245,7 +278,7 @@ export class EnzymesDialog extends React.Component {
             }}
           >
             <h5>Enzyme Groups:</h5>
-            <div style={{ overflowY: "scroll" }}>
+            <div style={{ overflowY: "auto" }}>
               {map(this.enzymeGroups, (group, i) => {
                 return (
                   <React.Fragment>
@@ -261,9 +294,16 @@ export class EnzymesDialog extends React.Component {
                       style={{ marginBottom: 5, cursor: "pointer" }}
                       key={i}
                     >
-                      &nbsp; {group.name}
+                      &nbsp; {group.name} &nbsp;{" "}
+                      {group.tooltipInfo && (
+                        <InfoHelper
+                          color="grey"
+                          isInline
+                          content={group.tooltipInfo}
+                        ></InfoHelper>
+                      )}
                     </div>
-                    {group.name === "All Enzymes" && (
+                    {group.name === "Hidden" && (
                       <div className={Classes.MENU_DIVIDER}></div>
                     )}
                   </React.Fragment>
@@ -369,7 +409,7 @@ export class EnzymesDialog extends React.Component {
               >
                 <Tooltip position="bottom" content="Edit Group Name">
                   <AnchorButton
-                    disabled={this.enzymeGroups[selectedEnzymeGroup].protected}
+                    disabled={fullSelectedEnzGroup.protected}
                     minimal
                     icon="edit"
                   ></AnchorButton>
@@ -377,7 +417,7 @@ export class EnzymesDialog extends React.Component {
               </Popover>
               <Tooltip position="bottom" content="Delete Group">
                 <AnchorButton
-                  disabled={this.enzymeGroups[selectedEnzymeGroup].protected}
+                  disabled={fullSelectedEnzGroup.protected}
                   onClick={async () => {
                     const confirm = await showConfirmationDialog({
                       text: `Are you sure you want to delete this group, ${selectedEnzymeGroup}?`,
@@ -387,7 +427,7 @@ export class EnzymesDialog extends React.Component {
                       window.deleteEnzymeGroup(selectedEnzymeGroup);
                       this.refreshEnzymeGroups();
                       this.setState({
-                        selectedEnzymeGroup: "Common Enzymes"
+                        selectedEnzymeGroup: "My Enzymes"
                       });
                     }
                   }}
@@ -405,7 +445,7 @@ export class EnzymesDialog extends React.Component {
               <InputGroup
                 round
                 placeholder="Search by name or # of cuts"
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({
                     searchInput: e.target.value
                   });
@@ -417,7 +457,7 @@ export class EnzymesDialog extends React.Component {
                       icon="cross"
                       minimal
                       intent="danger"
-                      onClick={e => {
+                      onClick={(e) => {
                         this.setState({ searchInput: "" });
                         e.stopPropagation();
                       }}
@@ -428,91 +468,107 @@ export class EnzymesDialog extends React.Component {
               ></InputGroup>
             </div>
             <div
-              className="veEnzymeDialogEnzymesList"
               style={{
-                height: "fit-parent",
-                overflowY: "auto",
+                height: "84%",
                 display: "flex",
-                flexWrap: "wrap"
+                flexFlow: "column",
+                justifyContent: "space-between"
               }}
             >
-              {/* <span style={{fontSize: 10}}>{this.enzymeGroups[selectedEnzymeGroup].message || "Enzymes added here can be filtered for in the Cutsite Filter"}  </span> */}
-              {enzymeList.length
-                ? enzymeList
-                : "Copy enzymes from other groups to your custom group"}
+              <div
+                className="veEnzymeDialogEnzymesList"
+                style={{
+                  height: "fit-parent",
+                  overflowY: "auto",
+                  display: "flex",
+                  flexWrap: "wrap"
+                }}
+              >
+                {/* <span style={{fontSize: 10}}>{fullSelectedEnzGroup.message || "Enzymes added here can be filtered for in the Cutsite Filter"}  </span> */}
+                {enzymeList.length
+                  ? enzymeList
+                  : "Copy enzymes from other groups to your custom group"}
+              </div>
+              <HoverView
+                allEnzymesByName={this.getAllEnzymesByName()}
+              ></HoverView>
             </div>
-            <HoverView></HoverView>
-            <ButtonGroup>
-              <div>
-                <Tooltip
-                  position="left"
-                  content="Copy Selection To Another Group"
-                >
-                  <Popover
-                    canEscapeKeyClose
-                    disabled={!selectedCount}
-                    // targetClassName={"veEnzymeDialogEnzymeAddIcon"}
-                    // targetProps={{style: {flex: "0 0 auto"}}}
-                    // wrapperTagName="div"
-                    position="top"
-                    content={
-                      <MoveToInner
-                        {...{
-                          refreshEnzymeGroups: this.refreshEnzymeGroups,
-                          selectedEnzymeGroup,
-                          enzymeGroupToMoveTo,
-                          selectedCount,
-                          selectedEnzymesForGroup,
-                          enzymeGroups: this.enzymeGroups,
-                          setStateAbove: val => {
-                            this.setState(val);
-                          }
-                        }}
-                      ></MoveToInner>
-                    }
-                    target={
-                      <AnchorButton
-                        className="veEnzymeGroupAddEnzymesBtn"
-                        disabled={!selectedCount}
-                        icon="duplicate"
-                      ></AnchorButton>
-                    }
-                  ></Popover>
-                </Tooltip>
-              </div>
-              <div>
-                <Tooltip position="bottom" content="Remove Enzymes">
-                  <AnchorButton
-                    className="veRemoveEnzymeFromGroupBtn"
-                    onClick={async () => {
-                      const confirm = await showConfirmationDialog({
-                        text: `Are you sure you want to remove ${selectedCount} enzyme(s) from ${selectedEnzymeGroup}`,
-                        intent: Intent.DANGER
-                      });
-                      if (confirm) {
-                        const enzymes = flatMap(
-                          this.enzymeGroups[selectedEnzymeGroup].enzymes,
-                          e => (selectedEnzymesForGroup[e.name] ? [] : e.name)
-                        );
-                        window.updateEnzymeGroup(selectedEnzymeGroup, enzymes);
-                        this.setState({ [selectedEnzymesKey]: {} });
-                        this.refreshEnzymeGroups();
-                        window.toastr.success(
-                          `${selectedCount} enzyme(s) removed`
-                        );
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <ButtonGroup>
+                <div>
+                  <Tooltip
+                    position="left"
+                    content="Copy Selection To Another Group"
+                  >
+                    <Popover
+                      canEscapeKeyClose
+                      disabled={!selectedCount}
+                      // targetClassName={"veEnzymeDialogEnzymeAddIcon"}
+                      // targetProps={{style: {flex: "0 0 auto"}}}
+                      // wrapperTagName="div"
+                      position="top"
+                      content={
+                        <MoveToInner
+                          {...{
+                            clearSelection: this.clearSelection,
+                            refreshEnzymeGroups: this.refreshEnzymeGroups,
+                            selectedEnzymeGroup,
+                            enzymeGroupToMoveTo,
+                            selectedCount,
+                            selectedEnzymesForGroup,
+                            enzymeGroups: this.enzymeGroups,
+                            setStateAbove: (val) => {
+                              this.setState(val);
+                            }
+                          }}
+                        ></MoveToInner>
                       }
-                    }}
-                    disabled={
-                      this.enzymeGroups[selectedEnzymeGroup].protected ||
-                      !selectedCount
-                    }
-                    icon="trash"
-                  ></AnchorButton>
-                </Tooltip>
-              </div>
+                      target={
+                        <AnchorButton
+                          className="veEnzymeGroupAddEnzymesBtn"
+                          disabled={!selectedCount}
+                          icon="duplicate"
+                        ></AnchorButton>
+                      }
+                    ></Popover>
+                  </Tooltip>
+                </div>
+                <div>
+                  <Tooltip position="bottom" content="Remove Enzymes">
+                    <AnchorButton
+                      className="veRemoveEnzymeFromGroupBtn"
+                      onClick={async () => {
+                        const confirm = await showConfirmationDialog({
+                          text: `Are you sure you want to remove ${selectedCount} enzyme(s) from ${selectedEnzymeGroup}`,
+                          intent: Intent.DANGER
+                        });
+                        if (confirm) {
+                          const enzymes = flatMap(
+                            fullSelectedEnzGroup.enzymes,
+                            (e) =>
+                              selectedEnzymesForGroup[e.name] ? [] : e.name
+                          );
+                          window.updateEnzymeGroup(
+                            selectedEnzymeGroup,
+                            enzymes
+                          );
+                          this.setState({ [selectedEnzymesKey]: {} });
+                          this.refreshEnzymeGroups();
+                          window.toastr.success(
+                            `${selectedCount} enzyme(s) removed`
+                          );
+                        }
+                      }}
+                      disabled={
+                        fullSelectedEnzGroup.protected || !selectedCount
+                      }
+                      icon="trash"
+                    ></AnchorButton>
+                  </Tooltip>
+                </div>
 
-              <div>
-                {/* <Popover
+                <div>
+                  {/* <Popover
                   autoFocus={false}
                   captureDismiss
                   content={
@@ -523,7 +579,7 @@ export class EnzymesDialog extends React.Component {
                           onClick: () => {
                             const selectedEnzymes = {};
                             forEach(
-                              this.enzymeGroups[selectedEnzymeGroup].enzymes,
+                              fullSelectedEnzGroup.enzymes,
                               enzyme => {
                                 selectedEnzymes[enzyme.name] = true;
                               }
@@ -644,16 +700,32 @@ export class EnzymesDialog extends React.Component {
                 >
                   <AnchorButton>Select...</AnchorButton>
                 </Popover> */}
-              </div>
-              <AnchorButton
-                onClick={() => {
-                  this.setState({ [selectedEnzymesKey]: {} });
-                }}
-                disabled={!selectedCount}
-              >
-                Deselect {selectedCount}
-              </AnchorButton>
-            </ButtonGroup>
+                </div>
+                <AnchorButton
+                  onClick={() => {
+                    this.setState({ [selectedEnzymesKey]: {} });
+                  }}
+                  disabled={!selectedCount}
+                >
+                  Deselect {selectedCount}
+                </AnchorButton>
+              </ButtonGroup>
+              {selectedEnzymeGroup === "My Enzymes" && (
+                <div>
+                  <Tooltip position="left" content="Create Custom Enzyme">
+                    <Button
+                      minimal
+                      onClick={() => {
+                        hideModal();
+                        showCreateCustomEnzymeDialog();
+                      }}
+                      className="veEnzymeCreateCustomEnzyme"
+                      icon="add"
+                    ></Button>
+                  </Tooltip>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -679,9 +751,9 @@ export default compose(
   // formValues("id1", "id2")
 )(EnzymesDialog);
 
-function getEnzymesForNames(names) {
-  return names.map(n => {
-    return (n && expandedEnzymeList[n.toLowerCase()]) || { name: "Not Found!" };
+function getEnzymesForNames(names, allEnzymesByName) {
+  return names.map((n) => {
+    return (n && allEnzymesByName[n.toLowerCase()]) || { name: "Not Found!" };
   });
 }
 
@@ -693,7 +765,7 @@ class MoveToInner extends React.Component {
       setStateAbove,
       enzymeGroups
     } = this.props;
-    const enzymeOpts = flatMap(enzymeGroups, g => {
+    const enzymeOpts = flatMap(enzymeGroups, (g) => {
       if (g.protected || g.name === selectedEnzymeGroup) return [];
       return {
         value: g.name
@@ -709,6 +781,7 @@ class MoveToInner extends React.Component {
   state = { enzymeOpts: [] };
   render() {
     const {
+      clearSelection,
       setStateAbove,
       selectedCount,
       enzymeGroupToMoveTo,
@@ -729,7 +802,7 @@ class MoveToInner extends React.Component {
             <h5>Copy {selectedCount} Enzyme(s) To:</h5>
 
             <HTMLSelect
-              onChange={e => {
+              onChange={(e) => {
                 setStateAbove({
                   enzymeGroupToMoveTo: e.target.value
                 });
@@ -740,19 +813,22 @@ class MoveToInner extends React.Component {
             <AnchorButton
               className={Classes.POPOVER_DISMISS}
               onClick={() => {
-                //tnrtodo
                 const enzymes = uniq([
                   ...map(
                     enzymeGroups[enzymeGroupToMoveTo].enzymes,
-                    e => e.name
+                    (e) => e.name
                   ),
                   ...flatMap(selectedEnzymesForGroup, (selected, name) =>
                     selected ? name : []
                   )
                 ]);
-                window.updateEnzymeGroup(enzymeGroupToMoveTo, enzymes);
-                refreshEnzymeGroups();
 
+                window.updateEnzymeGroup(enzymeGroupToMoveTo, enzymes);
+                // setStateAbove({
+                //   enzymeGroupToMoveTo: e.target.value
+                // });
+                refreshEnzymeGroups();
+                clearSelection();
                 window.toastr.success(
                   `${selectedCount} enzyme(s) moved to ${enzymeGroupToMoveTo}`
                 );
@@ -769,11 +845,15 @@ class MoveToInner extends React.Component {
   }
 }
 
-const HoverView = view(() => {
+const HoverView = view(({ allEnzymesByName }) => {
   const { hoveredEnzyme } = easyStore;
   return (
     <div
+      className="hoveredEnzymeContainer"
       style={{
+        overflow: "hidden",
+        maxWidth: "100%",
+        margin: "20px",
         minHeight: 30,
         maxHeight: 30,
         display: "flex",
@@ -786,11 +866,11 @@ const HoverView = view(() => {
           {...{
             paddingEnd: "--",
             paddingStart: "--",
-            sequence: expandedEnzymeList[hoveredEnzyme.toLowerCase()].site,
+            sequence: allEnzymesByName[hoveredEnzyme.toLowerCase()].site,
             reverseSnipPosition:
-              expandedEnzymeList[hoveredEnzyme.toLowerCase()].bottomSnipOffset,
+              allEnzymesByName[hoveredEnzyme.toLowerCase()].bottomSnipOffset,
             forwardSnipPosition:
-              expandedEnzymeList[hoveredEnzyme.toLowerCase()].topSnipOffset
+              allEnzymesByName[hoveredEnzyme.toLowerCase()].topSnipOffset
           }}
         ></EnzymeViewer>
       )}
