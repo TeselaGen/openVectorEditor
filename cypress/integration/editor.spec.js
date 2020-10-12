@@ -36,6 +36,7 @@ describe("editor", function () {
     cy.contains("onRename callback triggered: pj5_00001renamed seq");
   });
   it("should fire the onSelectionOrCaretChanged handler", function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("onSelectionOrCaretChanged");
 
     cy.contains(".veLabelText", "Part 0").click();
@@ -96,6 +97,7 @@ describe("editor", function () {
     cy.contains("onSave callback triggered");
   });
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("onCreateNewFromSubsequence");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
@@ -117,6 +119,7 @@ describe("editor", function () {
     cy.contains("beforeAnnotationCreate callback triggered for primers");
   });
   it(`should handle rightClickOverrides correctly if they are passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("overrideRightClickExample");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
@@ -124,6 +127,7 @@ describe("editor", function () {
     cy.contains("Part Override Hit!").should("be.visible");
   });
   it(`should handle clickOverrides correctly if they are passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("clickOverridesExample");
 
     cy.contains(".veLabelText", "Part 0").click();
@@ -210,6 +214,7 @@ describe("editor", function () {
     cy.contains("Selecting 3 bps from 1 to 3");
   });
   it(`should handle maintainOriginSplit flag correctly when pasted text is shorter than pre origin selection`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.tgToggle("maintainOriginSplit");
     cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
@@ -230,6 +235,7 @@ describe("editor", function () {
   });
   it(`should handle enabling external labels and then only showing labels that don't fit`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Labels").click();
     cy.get(".tg-menu-bar-popover").contains("External Labels").click();
     cy.get(".veTabProperties").contains("Properties").click();
     cy.get(".veTabLinearMap").contains("Linear Map").click();
@@ -242,6 +248,7 @@ describe("editor", function () {
   it(`should handle adjusting label line intensity.`, () => {
     cy.get(".veLabelLine").should("have.css", "opacity", "0.1");
     cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Labels").click();
     cy.get(".tg-menu-bar-popover").contains("Label Line Intensity").click();
     cy.get(".tg-menu-bar-popover").contains("High").click();
     cy.get(".veLabelLine").should("have.css", "opacity", "0.9");
@@ -252,6 +259,7 @@ describe("editor", function () {
         labelText[0].style.getPropertyValue("font-size").replace("px", "")
       );
       cy.get(".tg-menu-bar").contains("View").click();
+      cy.get(".tg-menu-bar-popover").contains("Labels").click();
       cy.get(".tg-menu-bar-popover").contains("Circular Label Size").click();
       cy.get(".tg-menu-bar-popover").contains("50%").click();
       cy.get(".veCircularViewLabelText").then((fiftyPercentText) => {
@@ -271,6 +279,7 @@ describe("editor", function () {
     });
   });
   it(`should handle adjusting circular map label spacing.`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.get(".veCircularViewLabelText")
       .contains("Example Primer 1")
       .then((preLabelText1) => {

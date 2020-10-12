@@ -1,4 +1,4 @@
-describe("editor", function() {
+describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
   });
@@ -9,6 +9,7 @@ describe("editor", function() {
   // })
 
   it(`should return focus correctly after typing in chars in circular view`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veCircularView text", "Part 0").click();
     cy.contains(".veCircularView text", "Part 0")
       .closest(".veVectorInteractionWrapper")
@@ -35,6 +36,7 @@ describe("editor", function() {
   it(`should be able to delete data around the origin correctly
   - the cursor should be place at the origin`, () => {
     cy.selectRange(5297, 3);
+    cy.get(`[title="Caret Between Bases 5296 and 5297"]`);
     cy.deleteSelection();
     cy.contains("Caret Between Bases 5293 and 1");
     cy.contains(".ve-row-item-sequence", /^gtcttatga/);
@@ -65,6 +67,7 @@ describe("editor", function() {
     cy.contains(".ve-row-item-sequence", /^ctagtcttatg/);
   });
   it("should be able to change the color of features by changing the feature type", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
     cy.contains(".veLabelText", "araD").rightclick();
     cy.contains(".bp3-menu-item", "Edit Feature").click();
@@ -76,6 +79,7 @@ describe("editor", function() {
       .should("not.exist");
   });
   it("should be able to edit a feature/part via double clicking", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veRowViewPart", "Part 0").dblclick();
     cy.get(".tg-test-name input").should("have.value", "Part 0");
     cy.get(".bp3-dialog-close-button").click();

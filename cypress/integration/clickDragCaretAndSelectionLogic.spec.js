@@ -52,69 +52,65 @@ describe("clickDragCaretAndSelectionLogic", function () {
   it(`should not allow origin spanning drags if linear (circular view drag)`, () => {
     cy.tgToggle("linear");
 
-    cy.selectRange(13, 15);
+    cy.selectRange(13, 150);
+    // cy.get(`.veCaretSVG`)
+    // cy.get(`.veCaretSVG`)
+    //   .first()
+    // cy.pause()
     //drag between the cursor at 16 and the 10 tick mark:
-    cy.get(`.veCaretSVG`)
+    cy.get(`.vePolygonCaretHandle`)
       .first()
       .then((el) => {
         cy.contains(`text`, "4770").then((el2) => {
           cy.dragBetweenSimple(el, el2);
         });
       });
-    cy.get(`[title="Selecting 4766 bps from 1 to 4766"]`);
+    cy.get(`[title="Selecting 4616 bps from 151 to 4766"]`);
   });
   it(`should not allow origin spanning click if linear (circular view click with previous selection present)`, () => {
     cy.tgToggle("linear");
     cy.selectRange(13, 15);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "4770").click();
-    cy.get(`[title="Selecting 4754 bps from 13 to 4766"]`);
+    cy.get(`[title="Selecting 4753 bps from 13 to 4765"]`);
     cy.selectRange(4000, 4010);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "530").click();
-    cy.get(`[title="Selecting 3486 bps from 525 to 4010"]`);
+    cy.get(`[title="Selecting 3483 bps from 528 to 4010"]`);
   });
 
   it(`should handle dragging correctly`, () => {
     /* eslint-disable cypress/no-unnecessary-waiting */
     cy.wait(100);
-    cy.get(".veRowViewAxis path")
-      .eq(1)
-      .then((el) => {
-        cy.get(".veRowViewAxis path")
-          .eq(2)
-          .then((el2) => {
-            cy.dragBetweenSimple(el, el2);
-          });
+    cy.get(`[data-tick-mark="10"]`).then((el) => {
+      cy.get(`[data-tick-mark="20"]`).then((el2) => {
+        cy.dragBetweenSimple(el, el2);
       });
+    });
     cy.wait(100);
 
     cy.get(`[title="Caret Between Bases 19 and 20"]`).then((el) => {
-      cy.get(".veRowViewAxis path")
-        .eq(5)
-        .then((el2) => {
-          cy.dragBetweenSimple(el, el2);
-        });
+      cy.get(`[data-tick-mark="50"]`).then((el2) => {
+        cy.dragBetweenSimple(el, el2);
+      });
     });
 
-    cy.contains("Selecting 30 bps from 10 to 39");
+    cy.contains("Selecting 40 bps from 10 to 49");
+    cy.selectRange(4, 4);
     cy.wait(100);
 
-    cy.get(".veRowViewAxis path")
-      .eq(6)
-      .then((el) => {
-        cy.get(".veRowViewAxis path")
-          .eq(7)
-          .then((el2) => {
-            cy.dragBetweenSimple(el, el2);
-          });
+    cy.get(`[data-tick-mark="50"]`).then((el) => {
+      cy.get(`[data-tick-mark="60"]`).then((el2) => {
+        cy.dragBetweenSimple(el, el2);
       });
+    });
     cy.contains("Selecting 10 bps from 50 to 59");
     /* eslint-enable */
   });
 
   it(`shift clicking features should cause the selection layer to be augmented from 5' to 3'`, () => {
     //will select around the origin in 5' to 3' direction
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veCircularViewLabelText", "CmR").first().click();
 
     cy.get("body").type("{shift}", { release: false });

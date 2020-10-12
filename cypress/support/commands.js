@@ -192,7 +192,7 @@ Cypress.Commands.add("replaceSelection", (sequenceString) => {
   cy.get(".sequenceInputBubble input").type(`${sequenceString}{enter}`);
 });
 Cypress.Commands.add("deleteSelection", () => {
-  cy.get(".veRowViewSelectionLayer")
+  cy.get(".veRowViewSelectionLayer.notCaret:not(.cutsiteLabelSelectionLayer)")
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Cut").click();
