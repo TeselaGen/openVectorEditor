@@ -6,18 +6,20 @@
       href="https://unpkg.com/open-vector-editor/umd/main.css"
     />
   </head>
-  <body>
+  <body style="display: flex;">
     <script
       type="text/javascript"
       src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"
     ></script>
     <script type="text/javascript">
       const editor = window.createVectorEditor("createDomNodeForMe", {
-        isFullscreen: true,
+        withPreviewMode: true,
+        // isFullscreen: true,
         showMenuBar: true
       });
       /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
       editor.updateEditor({
+        editorName: "FirstSequence",
         sequenceData: {
           circular: true,
           sequence:
@@ -28,6 +30,68 @@
               name: "I'm a feature :)",
               start: 10,
               end: 20
+            }
+          ]
+        }
+      });
+      const editor2 = window.createVectorEditor("createDomNodeForMe", {
+        withPreviewMode: true,
+        // isFullscreen: true,
+        showMenuBar: true,
+        editorName: "AnotherSequence"
+      });
+      /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
+      editor2.updateEditor({
+        sequenceData: {
+          name: "Another Sequence",
+          circular: false,
+          sequence: "gtaacccccc",
+          features: [
+            {
+              id: "agog98",
+              name: "2nd Feature",
+              type: "CDS",
+              start: 1,
+              end: 5
+            }
+          ]
+        }
+      });
+      const editor3 = window.createVectorEditor("createDomNodeForMe", {
+        withPreviewMode: true,
+        // isFullscreen: true,
+        showMenuBar: true,
+        editorName: "YetAnotherSequence"
+      });
+      /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
+      editor3.updateEditor({
+        sequenceData: {
+          name: "Wait for Me!",
+          circular: true,
+          sequence:
+            "gtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaacccccc",
+          features: [
+            {
+              id: "19f0fjj",
+              name: "abcd",
+              type: "RBS",
+              start: 1,
+              end: 5
+            },
+
+            {
+              id: "24t2t",
+              name: "pj1",
+              type: "CDS",
+              start: 10,
+              end: 50
+            },
+            {
+              id: "82020000",
+              name: "pj3",
+              type: "CDS",
+              start: 10,
+              end: 50
             }
           ]
         }
