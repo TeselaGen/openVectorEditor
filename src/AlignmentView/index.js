@@ -1131,7 +1131,7 @@ class AlignmentView extends React.Component {
                   }}
                   title="Adjust Zoom Level"
                   style={{ paddingTop: "4px", width: 100 }}
-                  className="alignment-zoom-slider"
+                  className="ove-slider"
                   labelRenderer={false}
                   stepSize={0.01}
                   initialValue={charWidthInLinearView}

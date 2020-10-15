@@ -276,6 +276,7 @@ export class Editor extends React.Component {
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
+      withRotateCircularView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
       readOnly,
@@ -469,7 +470,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
-          withRotateCircularView
+          withRotateCircularView={withRotateCircularView}
           {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&

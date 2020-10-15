@@ -58,6 +58,7 @@ const defaultState = {
   forceHeightMode: false,
   adjustCircularLabelSpacing: false,
   withVersionHistory: true,
+  withRotateCircularView: true,
   setDefaultVisibilities: false,
   onNew: true,
   onImport: true,
@@ -619,6 +620,12 @@ rightClickOverrides: {
                 label: "Adjust circular label spacing",
                 info:
                   "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
+              })}
+              {renderToggle({
+                that: this,
+                type: "withRotateCircularView",
+                label: "Show Rotate Circular View",
+                info: `withRotateCircularView={true /* default */}`
               })}
               {renderToggle({
                 that: this,
@@ -1555,6 +1562,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             })}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
+            withRotateCircularView={this.state.withRotateCircularView}
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
             showGCContent={this.state.showGCContent}

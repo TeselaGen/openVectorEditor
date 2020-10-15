@@ -5,6 +5,11 @@ describe("editor", function () {
     cy.visit("");
   });
 
+  it(`should be able to hide the rotate circular view!`, () => {
+    cy.get(`.ove-slider`);
+    cy.tgToggle(`withRotateCircularView`, false);
+    cy.get(`.ove-slider`).should("not.exist");
+  });
   it(`should be able to hide the single import button if necessary!`, () => {
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(".bp3-menu-item").contains("Import Sequence").should("exist");

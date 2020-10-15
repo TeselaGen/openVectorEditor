@@ -612,7 +612,7 @@ function RotateCircularView({ setRotationRadians }) {
         rightIcon="arrow-right"
         title="Rotate"
         style={{ paddingTop: "4px", width: 120 }}
-        className="alignment-zoom-slider"
+        className="ove-slider"
         labelRenderer={false}
         stepSize={3}
         initialValue={0}
