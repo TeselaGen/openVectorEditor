@@ -58,7 +58,11 @@ const links = [
   );
 });
 links.push(
-  <a key="umdDemo" style={{ marginLeft: 10 }} href="/UMDDemo.html">
+  <a
+    key="umdDemo"
+    style={{ marginLeft: 10 }}
+    href="http://teselagen.github.io/openVectorEditor/UMDDemo.html"
+  >
     UMD demo
   </a>
 );
