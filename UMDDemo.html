@@ -16,12 +16,12 @@
     
       const editor = window.createVectorEditor("createDomNodeForMe", {
         withPreviewMode: true,
-        // isFullscreen: true,
+        editorName: "FirstSequence",
         showMenuBar: true
       });
       /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
       editor.updateEditor({
-        editorName: "FirstSequence",
+        
         sequenceData: {
           circular: true,
           sequence:
@@ -38,7 +38,6 @@
       });
       const editor2 = window.createVectorEditor("createDomNodeForMe", {
         withPreviewMode: true,
-        // isFullscreen: true,
         showMenuBar: true,
         editorName: "AnotherSequence"
       });
@@ -61,7 +60,6 @@
       });
       const editor3 = window.createVectorEditor("createDomNodeForMe", {
         withPreviewMode: true,
-        // isFullscreen: true,
         showMenuBar: true,
         editorName: "YetAnotherSequence"
       });
