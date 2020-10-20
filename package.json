@@ -62,11 +62,11 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.15",
-    "teselagen-react-components": "^29.2.38",
+    "teselagen-react-components": "^29.2.49",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
     "ve-range-utils": "^2.5.8",
-    "ve-sequence-utils": "^4.0.0"
+    "ve-sequence-utils": "^4.0.1"
   },
   "peerDependencies": {
     "react": "^16.10.2",
