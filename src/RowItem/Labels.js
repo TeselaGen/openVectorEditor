@@ -197,7 +197,7 @@ const DrawLabel = withHover(
         try {
           const line = this.n;
           const isRowView = document
-            .querySelector(`veEditor.${editorName} .veRowView`)
+            .querySelector(`.veEditor.${editorName} .veRowView`)
             .contains(line);
 
           const el = line

@@ -53,10 +53,12 @@ describe("manage enzymes dialog", () => {
     cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
     cy.contains("Deselect 0").should("exist");
 
-    cy.contains("newGroup").click();
+    cy.contains(".bp3-dialog .bp3-menu-item", "newGroup").click();
     cy.contains("AccIII").click();
     cy.get(".veRemoveEnzymeFromGroupBtn").click();
     cy.contains("button", "OK").click();
+    cy.closeToasts();
+    cy.closeDialog();
     cy.contains("AccIII").should("not.exist");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();

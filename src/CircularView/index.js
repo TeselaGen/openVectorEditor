@@ -599,18 +599,18 @@ function RotateCircularView({ setRotationRadians, editorName }) {
       <UncontrolledSliderWithPlusMinusBtns
         onChange={(val) => {
           const el = document.querySelector(
-            `veEditor.${editorName} .circularViewSvg`
+            `.veEditor.${editorName} .circularViewSvg`
           );
           el.style.transform = `rotate(${val}deg)`;
           el.classList.add("veHideLabels");
           document.querySelector(
-            `veEditor.${editorName} .circularViewSvg .veLabels`
+            `.veEditor.${editorName} .circularViewSvg .veLabels`
           ).style.transform = `rotate(-${val}deg)`;
         }}
         onRelease={(val) => {
           setRotationRadians((val * Math.PI) / 180);
           const el = document.querySelector(
-            `veEditor.${editorName} .circularViewSvg`
+            `.veEditor.${editorName} .circularViewSvg`
           );
           el.classList.remove("veHideLabels");
         }}

@@ -66,6 +66,7 @@ describe("toolbar", function () {
   });
 
   it("you should be able to undo and redo the deletion of several features", function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.get(`[data-test="veUndoTool"]`).click();
     cy.contains("Undo Successful").should("not.exist");
     cy.get(".veCircularViewLabelText").contains("CAP site").click();

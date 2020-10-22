@@ -476,7 +476,7 @@ class PutMyParentOnTop extends React.Component {
     //we use this component to re-order the svg groupedLabels because z-index won't work in svgs
     try {
       const el = document.querySelector(
-        `veEditor.${editorName} .topLevelLabelGroup`
+        `.veEditor.${editorName} .topLevelLabelGroup`
       );
       const parent = el.parentElement.parentElement;
       const i = Array.prototype.indexOf.call(parent.children, el.parentElement);
