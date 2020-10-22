@@ -6,14 +6,18 @@
       href="https://unpkg.com/open-vector-editor/umd/main.css"
     />
   </head>
-  <body style="display: flex;">
-    <a href="http://teselagen.github.io/openVectorEditor/#/Editor">Back </a> &nbsp;
+  <body style="display: flex">
+    <a id="backButton"> Back </a> &nbsp;
     <script
       type="text/javascript"
       src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"
     ></script>
     <script type="text/javascript">
-    
+      const hrefToUse = window.location.href.includes("localhost")
+        ? `${window.location.origin}/#/Editor`
+        : "http://teselagen.github.io/openVectorEditor/#/Editor";
+        
+      document.getElementById("backButton").setAttribute("href", hrefToUse);
       const editor = window.createVectorEditor("createDomNodeForMe", {
         withPreviewMode: true,
         editorName: "FirstSequence",
@@ -21,7 +25,6 @@
       });
       /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
       editor.updateEditor({
-        
         sequenceData: {
           circular: true,
           sequence:
