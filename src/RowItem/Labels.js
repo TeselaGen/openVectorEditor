@@ -188,6 +188,7 @@ const DrawLabel = withHover(
         xStart,
         onMouseLeave,
         onMouseOver,
+        editorName,
         labelLineIntensity
       } = this.props;
       let heightToUse = height;
@@ -195,7 +196,9 @@ const DrawLabel = withHover(
       if (hovered) {
         try {
           const line = this.n;
-          const isRowView = document.querySelector(".veRowView").contains(line);
+          const isRowView = document
+            .querySelector(`veEditor.${editorName} .veRowView`)
+            .contains(line);
 
           const el = line
             .closest(".veRowItem")
@@ -223,7 +226,7 @@ const DrawLabel = withHover(
         <div>
           <div
             {...{ onMouseLeave, onMouseOver }}
-            className={className + " ve-monospace-font"}
+            className={className + "veLabelText ve-monospace-font"}
             onClick={function (event) {
               onClick({ event, annotation });
               event.stopPropagation();

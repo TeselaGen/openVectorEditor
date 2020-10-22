@@ -4,6 +4,7 @@ import cutsitesSelector from "./cutsitesSelector";
 import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 import { getLowerCaseObj } from "../utils/arrayUtils";
+import { flatMap } from "lodash";
 
 export default createSelector(
   cutsitesSelector,
@@ -22,13 +23,12 @@ export default createSelector(
       if (e.value.includes("__userCreatedGroup")) {
         hasUserGroup = true;
         const enzymes = e.nameArray || [];
-
-        filteredEnzymes = filteredEnzymes.concat(
-          enzymes.map((e) => ({ value: e }))
-        );
+        const zs = flatMap(enzymes, (e) => (e ? { value: e } : []));
+        filteredEnzymes = filteredEnzymes.concat(zs);
       } else if (e.isHidden) {
         hiddenEnzymesByName[e.value] = e;
       } else {
+        if (!e) return;
         filteredEnzymes.push(e);
       }
     });
@@ -36,7 +36,11 @@ export default createSelector(
       returnVal.cutsitesByName = cutsitesByNameLower;
     } else {
       //loop through each filter option ('Single Cutters', 'BamHI')
-      filteredEnzymes.forEach(function ({ value }) {
+      filteredEnzymes.forEach(function ({ value, ...rest }) {
+        if (!value) {
+          console.error(`Missing value for filtered enzyme`, rest);
+          return;
+        }
         const lowerValue = value.toLowerCase();
         let cutsThisManyTimes =
           specialCutsiteFilterOptions[value] &&

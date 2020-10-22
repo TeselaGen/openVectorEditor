@@ -51,7 +51,6 @@ describe("manage enzymes dialog", () => {
     // cy.get('.veEnzymeGroupAddEnzymesBtn').blur()
     cy.contains("Copy 2 Enzyme(s)");
     cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
-    cy.contains("Deselect 2").click({ force: true });
     cy.contains("Deselect 0").should("exist");
 
     cy.contains("newGroup").click();

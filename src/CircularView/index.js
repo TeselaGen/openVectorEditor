@@ -103,6 +103,7 @@ export class CircularView extends React.Component {
       selectionLayerRightClicked = noop,
       searchLayerClicked = noop,
       instantiated,
+      noWarnings,
       labelLineIntensity,
       fontHeightMultiplier,
       labelSize
@@ -436,6 +437,7 @@ export class CircularView extends React.Component {
       >
         {withRotateCircularView && (
           <RotateCircularView
+            editorName={editorName}
             setRotationRadians={(rotationRadians) => {
               this.setState({ rotationRadians });
             }}
@@ -514,16 +516,17 @@ export class CircularView extends React.Component {
               {annotationsSvgs}
             </svg>
             <div className="veCircularViewWarningContainer">
-              {!circular && (
-                <VeWarning
-                  data-test="ve-warning-circular-to-linear"
-                  intent="warning"
-                  tooltip={
-                    "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
-                  }
-                />
-              )}
-              {paredDownMessages}
+              {!circular &&
+                !noWarnings(
+                  <VeWarning
+                    data-test="ve-warning-circular-to-linear"
+                    intent="warning"
+                    tooltip={
+                      "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
+                    }
+                  />
+                )}
+              {!noWarnings && paredDownMessages}
             </div>
           </div>
         </Draggable>
@@ -591,21 +594,25 @@ function positionCutsites(annotation) {
 //   }
 // }
 
-function RotateCircularView({ setRotationRadians }) {
+function RotateCircularView({ setRotationRadians, editorName }) {
   return (
     <div style={{ zIndex: 1000, position: "absolute" }}>
       <UncontrolledSliderWithPlusMinusBtns
         onChange={(val) => {
-          const el = document.querySelector(".circularViewSvg");
+          const el = document.querySelector(
+            `veEditor.${editorName} .circularViewSvg`
+          );
           el.style.transform = `rotate(${val}deg)`;
           el.classList.add("veHideLabels");
           document.querySelector(
-            ".circularViewSvg .veLabels"
+            `veEditor.${editorName} .circularViewSvg .veLabels`
           ).style.transform = `rotate(-${val}deg)`;
         }}
         onRelease={(val) => {
           setRotationRadians((val * Math.PI) / 180);
-          const el = document.querySelector(".circularViewSvg");
+          const el = document.querySelector(
+            `veEditor.${editorName} .circularViewSvg`
+          );
           el.classList.remove("veHideLabels");
         }}
         leftIcon="arrow-left"

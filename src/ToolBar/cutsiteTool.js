@@ -83,11 +83,6 @@ function CutsiteToolDropDown({
           </span>
         </Button>
       )}
-
-      {/* <Button onClick={() => {
-
-      }}> Add Additional Enzymes</Button> */}
-      {/* {showDigestTool && <DigestTool></DigestTool>} */}
     </div>
   );
 }

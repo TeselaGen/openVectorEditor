@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import Dialogs, { dialogOverrides } from "../Dialogs";
 import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
+import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -47,7 +48,6 @@ import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
-import { getCustomEnzymes } from "../utils/editorUtils";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -766,7 +766,7 @@ export class Editor extends React.Component {
           }),
           ...style
         }}
-        className="veEditor"
+        className={`veEditor ${editorName}`}
       >
         <Dialogs
           editorName={editorName}
@@ -854,12 +854,11 @@ export default compose(
       { panelsShown, versionHistory, sequenceData = {} },
       { additionalEnzymes }
     ) => {
-      const addEnzs = {
-        ...additionalEnzymes,
-        ...getCustomEnzymes()
-      };
       return {
-        additionalEnzymes: addEnzs,
+        additionalEnzymes: getAdditionalEnzymesSelector(
+          null,
+          additionalEnzymes
+        ),
         panelsShown,
         versionHistory,
         sequenceData

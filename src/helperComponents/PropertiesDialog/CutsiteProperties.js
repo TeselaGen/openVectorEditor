@@ -34,9 +34,9 @@ class CutsiteProperties extends React.Component {
       }
     });
   };
-  SubComponent = (row, props) => {
+  SubComponent = (row) => {
     // const { selectionLayerUpdate } = this.props;
-    const { name, cutsiteGroup } = row.original;
+    const { cutsiteGroup } = row.original;
     const entities = cutsiteGroup
       .sort((a, b) => a.topSnipPosition - b.topSnipPosition)
       .map(
@@ -63,10 +63,7 @@ class CutsiteProperties extends React.Component {
           };
         }
       );
-    const enzymeList = props.enzymeList;
-    if (!enzymeList) throw new Error("no enzyme list!");
-    const enzyme = enzymeList[name.toLowerCase()];
-    // return <div>yooo</div>
+    const enzyme = row.enzyme;
     return (
       <div>
         <div
@@ -145,7 +142,8 @@ class CutsiteProperties extends React.Component {
         cutsiteGroup,
         id: name,
         name,
-        numberOfCuts: cutsiteGroup.length
+        numberOfCuts: cutsiteGroup.length,
+        enzyme: cutsiteGroup[0].restrictionEnzyme
         // size: getRangeLength(cutsiteGroup, sequenceData.sequence.length)
       };
     });
@@ -210,8 +208,11 @@ class CutsiteProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor((editorState) => {
-    const cutsites = selectors.filteredCutsitesSelector(editorState);
+  connectToEditor((editorState, ownProps) => {
+    const cutsites = selectors.filteredCutsitesSelector(
+      editorState,
+      ownProps.additionalEnzymes
+    );
     return {
       annotationVisibility: editorState.annotationVisibility || {},
       filteredCutsites: cutsites,

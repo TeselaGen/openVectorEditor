@@ -1,4 +1,17 @@
 describe("enzyme overrides", () => {
+  it(`shouldn't fail when messed up enzyme overrides are passed`, () => {
+    cy.visit("");
+    cy.tgToggle("corruptedOverrideManageEnzymes");
+    cy.triggerFileCmd("Filter Cutsites");
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
+    cy.get(".bp3-icon-small-cross").click(); //clear single cutters
+    cy.contains("someGroup").click();
+    cy.contains("anothaGroup").click();
+    cy.contains(".veLabelText", "BsmBI").should("exist");
+    cy.contains(".veLabelText", "specialEnzyme0").should("exist");
+    cy.contains(".veLabelText", "specialEnzyme1").should("not.exist");
+    cy.contains(".veLabelText", "specialEnzyme2").should("not.exist");
+  });
   it(`should be able to override the manage enzyme functionality`, () => {
     cy.visit("");
     cy.tgToggle("overrideManageEnzymes");
@@ -36,9 +49,9 @@ describe("enzyme overrides", () => {
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("newGroup");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
-    cy.contains("My Enzymes").click();
-    cy.contains("specialEnzyme1").click();
-    cy.contains("specialEnzyme2").click();
+    cy.contains(".bp3-dialog div", "My Enzymes").click();
+    cy.contains(".bp3-dialog div", "specialEnzyme1").click();
+    cy.contains(".bp3-dialog div", "specialEnzyme2").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
 
     cy.contains("Copy 2 Enzyme(s)");

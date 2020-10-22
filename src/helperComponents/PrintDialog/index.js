@@ -68,7 +68,7 @@ export class PrintDialog extends React.Component {
           fullscreen={this.state && this.state.fullscreen}
           circular={isCirc}
           editorName={editorName || "StandaloneEditor"}
-          ref={el => (this.componentRef = el)}
+          ref={(el) => (this.componentRef = el)}
         />
         <br />
         {!hidePrintButton && (
@@ -158,7 +158,7 @@ class ReactToPrint extends React.Component {
   removeWindow(targets) {
     targets &&
       setTimeout(() => {
-        (Array.isArray(targets) ? targets : [targets]).forEach(target => {
+        (Array.isArray(targets) ? targets : [targets]).forEach((target) => {
           target.parentNode.removeChild(target);
         });
       }, 500);
@@ -328,7 +328,7 @@ class ReactToPrint extends React.Component {
             }
           } else {
             let attributes = [...node.attributes];
-            attributes.forEach(attr => {
+            attributes.forEach((attr) => {
               newHeadEl.setAttribute(attr.nodeName, attr.nodeValue);
             });
 
@@ -353,7 +353,7 @@ class ReactToPrint extends React.Component {
 
   render() {
     return React.cloneElement(this.props.trigger(), {
-      ref: el => (this.triggerRef = el),
+      ref: (el) => (this.triggerRef = el),
       onClick: this.startPrint
     });
   }
@@ -380,9 +380,9 @@ class ComponentToPrint extends React.Component {
     // const width =  670;
     // const height = 900;
     return circular ? (
-      <CircularView noInteractions editorName={editorName} />
+      <CircularView noWarnings noInteractions editorName={editorName} />
     ) : (
-      <LinearView noInteractions editorName={editorName} />
+      <LinearView noWarnings noInteractions editorName={editorName} />
     );
   }
 }

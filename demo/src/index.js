@@ -61,7 +61,11 @@ links.push(
   <a
     key="umdDemo"
     style={{ marginLeft: 10 }}
-    href="http://teselagen.github.io/openVectorEditor/UMDDemo.html"
+    href={
+      window.location.href.includes("localhost")
+        ? `${window.location.origin}/UMDDemo.html`
+        : "http://teselagen.github.io/openVectorEditor/UMDDemo.html"
+    }
   >
     UMD demo
   </a>

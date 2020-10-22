@@ -145,12 +145,14 @@ describe("properties", function () {
   and have the cutsite properties table jump to the correct cutsite`, () => {
     cy.get(".ve-tool-container-cutsiteTool .veToolbarDropdown").click();
     cy.get(".tg-select-clear-all").click();
-    cy.contains(".veLabelText", "+3,FokI").rightclick();
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
+    cy.contains("Double cutters").click();
+    cy.get(".veLabelText:contains(Van):first").rightclick();
     cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
-    cy.contains(".rt-tr-group.selected", "4975");
-    cy.contains(".veLabelText", "+2,FokI").rightclick();
+    cy.contains(".rt-tr-group.selected", "831");
+    cy.get(".veLabelText:contains(Van):last").rightclick();
     cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
-    cy.contains(".rt-tr-group.selected", "642");
+    cy.contains(".rt-tr-group.selected", "4730");
   });
 });
 

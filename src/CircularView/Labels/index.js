@@ -270,7 +270,7 @@ const DrawLabelGroup = withHover(function ({
     content = [
       line,
 
-      <PutMyParentOnTop key="gGroup">
+      <PutMyParentOnTop editorName={editorName} key="gGroup">
         <g className={className + " topLevelLabelGroup"}>
           <rect
             onMouseOver={cancelFn}
@@ -472,9 +472,12 @@ function cancelFn(e) {
 
 class PutMyParentOnTop extends React.Component {
   componentDidMount() {
+    const { editorName } = this.props;
     //we use this component to re-order the svg groupedLabels because z-index won't work in svgs
     try {
-      const el = document.querySelector(".topLevelLabelGroup");
+      const el = document.querySelector(
+        `veEditor.${editorName} .topLevelLabelGroup`
+      );
       const parent = el.parentElement.parentElement;
       const i = Array.prototype.indexOf.call(parent.children, el.parentElement);
       parent.insertBefore(parent.children[i], null); //insert at the end of the list..

@@ -137,7 +137,7 @@ class PointedAnnotation extends React.PureComponent {
         {!hideName && nameToDisplay && (
           <text
             className={classnames(
-              "ve-monospace-font",
+              "veLabelText ve-monospace-font",
               annotation.labelClassName
             )}
             style={{

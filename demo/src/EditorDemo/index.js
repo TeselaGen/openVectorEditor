@@ -894,6 +894,11 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "corruptedOverrideManageEnzymes",
+                description: `This is just for testing purposes. We want to make sure that corrupted enzyme data doesn't bring down the whole tool.`
+              })}
+              {renderToggle({
+                that: this,
                 type: "enzymeGroupsOverride",
                 description: `enzymeGroupsOverride`
               })}
@@ -1302,6 +1307,61 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
+            {...(this.state.corruptedOverrideManageEnzymes && {
+              enzymeGroupsOverride: {
+                someGroup: [
+                  "specialEnzyme0",
+                  "specialEnzyme1",
+                  "aaui",
+                  "bamhi",
+                  "enzymeThatDoesntExist"
+                ],
+                anothaGroup: [
+                  undefined,
+                  "messedupname",
+                  "aaui",
+                  "specialenzyme2",
+                  "bsmbi"
+                ] //case shouldn't matter here
+              },
+              additionalEnzymes: {
+                specialenzyme0: {
+                  //this enzyme is fine
+                  name: "specialEnzyme0",
+                  site: "attttttaaatacccgcg",
+                  forwardRegex: "attttttaaatacccgcg",
+                  reverseRegex: "cgcgggtatttaaaaaat",
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                },
+                specialenzyme1: {
+                  //this is a corrupted enzyme
+                  name: "specialEnzyme1",
+                  site: "attttttaaatacccgcg",
+                  forwardRegex: "attttttaaatacccgcg",
+                  reverseRegex: undefined,
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                },
+                specialenzyme2: {
+                  //this is a corrupted enzyme
+                  name: "specialEnzyme2",
+                  site: "gacggctacatcat",
+                  forwardRegex: undefined,
+                  reverseRegex: "atgatgtagccgtc",
+                  topSnipOffset: 2,
+                  bottomSnipOffset: 4
+                },
+                messedUpName: {
+                  name: "specialEnzymespecialenzyme4",
+                  site: "gacggctacatcat",
+                  forwardRegex: undefined,
+                  reverseRegex: "atgatgtagccgtc",
+                  topSnipOffset: 2,
+                  bottomSnipOffset: 4
+                }
+              }
+            })}
             {...(this.state.overrideManageEnzymes && {
               enzymeManageOverride: () => {
                 window.toastr.success("enzyme manage override hit!");

@@ -1,4 +1,5 @@
 import cutsitesSelector from "./cutsitesSelector";
+import getAdditionalEnzymesSelector from "./getAdditionalEnzymesSelector";
 import translationsSelector from "./translationsSelector";
 import sequenceLengthSelector from "./sequenceLengthSelector";
 import sequenceDataSelector from "./sequenceDataSelector";
@@ -17,6 +18,7 @@ import filteredPartsSelector from "./filteredPartsSelector";
 
 export default {
   translationsSelector,
+  getAdditionalEnzymesSelector,
   cutsitesSelector,
   sequenceDataSelector,
   sequenceLengthSelector,
