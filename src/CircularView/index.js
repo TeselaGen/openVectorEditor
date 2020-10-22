@@ -516,16 +516,15 @@ export class CircularView extends React.Component {
               {annotationsSvgs}
             </svg>
             <div className="veCircularViewWarningContainer">
-              {!circular &&
-                !noWarnings(
-                  <VeWarning
-                    data-test="ve-warning-circular-to-linear"
-                    intent="warning"
-                    tooltip={
-                      "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
-                    }
-                  />
-                )}
+              {!circular && !noWarnings && (
+                <VeWarning
+                  data-test="ve-warning-circular-to-linear"
+                  intent="warning"
+                  tooltip={
+                    "Warning! You're viewing a linear sequence in the Circular Map. Click on 'Linear Map' to view the linear sequence in a more intuitive way."
+                  }
+                />
+              )}
               {!noWarnings && paredDownMessages}
             </div>
           </div>
