@@ -371,6 +371,62 @@ certain dna specific tools and annotations are automatically disabled when isPro
                       });
                 }
               })}
+              {renderToggle({
+                that: this,
+                type: "isRna",
+                info: `pass sequenceData.isRna=true`,
+                hook: (isRna) => {
+                  if (isRna) {
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        reverseSequence: false,
+                        cutsites: false
+                      },
+                      readOnly: false,
+                      sequenceData: tidyUpSequenceData(
+                        {
+                          ...exampleSequenceData,
+                          circular: false,
+                          isRna: true
+                        },
+                        {}
+                      )
+                    });
+                  } else {
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        reverseSequence: true,
+                        cutsites: true
+                      },
+                      readOnly: false,
+                      sequenceData: exampleSequenceData
+                    });
+                  }
+                }
+              })}
+              {renderToggle({
+                that: this,
+                type: "isMixedRnaAndDna",
+                info: `pass sequenceData.isMixedRnaAndDna=true`,
+                hook: (isMixedRnaAndDna) => {
+                  isMixedRnaAndDna
+                    ? updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: tidyUpSequenceData(
+                          {
+                            ...exampleSequenceData,
+                            sequence: "uuuu" + exampleSequenceData.sequence,
+                            isMixedRnaAndDna: true
+                          },
+                          {}
+                        )
+                      })
+                    : updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
+                }
+              })}
 
               {renderToggle({
                 that: this,
@@ -1018,6 +1074,7 @@ hide or show the menubar (false by default)
                 type: "showReadOnly",
                 info: `pass showReadOnly=false to the <Editor> to not display the read-only <--> editable mode toggle, true by default`
               })}
+
               {renderToggle({
                 that: this,
                 type: "clickOverridesExample",

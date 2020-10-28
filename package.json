@@ -62,11 +62,11 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.15",
-    "teselagen-react-components": "^29.2.49",
+    "teselagen-react-components": "^29.2.52",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
     "ve-range-utils": "^2.5.8",
-    "ve-sequence-utils": "^4.0.1"
+    "ve-sequence-utils": "^4.0.2"
   },
   "peerDependencies": {
     "react": "^16.10.2",
@@ -76,7 +76,7 @@
     "@cypress/code-coverage": "^3.8.1",
     "@types/lodash": "npm:@types/lodash-es",
     "babel-plugin-istanbul": "^6.0.0",
-    "cypress": "^5.0.0",
+    "cypress": "^5.5.0",
     "drag-mock": "^1.4.0",
     "eslint": "^6.8.0",
     "eslint-config-teselagen": "^5.0.5",

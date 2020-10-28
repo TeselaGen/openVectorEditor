@@ -47,10 +47,16 @@ import {
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 import { getNodeToRefocus } from "../utils/editorUtils";
 
-function getAcceptedChars(isProtein) {
+function getAcceptedChars({ isProtein, isRna, isMixedRnaAndDna } = {}) {
   return isProtein
     ? bioData.extended_protein_letters.toLowerCase()
-    : bioData.ambiguous_dna_letters.toLowerCase();
+    : isRna
+    ? bioData.ambiguous_rna_letters.toLowerCase()
+    : isMixedRnaAndDna
+    ? bioData.ambiguous_rna_letters.toLowerCase() +
+      bioData.ambiguous_dna_letters.toLowerCase()
+    : //just plain old dna
+      bioData.ambiguous_dna_letters.toLowerCase();
 }
 
 const annotationClickHandlers = [
@@ -117,9 +123,7 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        getAcceptedChars(
-          this.props.sequenceData && this.props.sequenceData.isProtein
-        ).split(""),
+        getAcceptedChars(this.props.sequenceData).split(""),
         (event) => {
           this.handleDnaInsert(event);
         }
@@ -335,8 +339,10 @@ function VectorInteractionHOC(Component /* options */) {
         createSequenceInputPopup({
           useEventPositioning,
           isReplace,
-          acceptedChars: getAcceptedChars(sequenceData.isProtein),
+          acceptedChars: getAcceptedChars(sequenceData),
           isProtein: sequenceData.isProtein,
+          isRna: sequenceData.isRna,
+          isMixedRnaAndDna: sequenceData.isMixedRnaAndDna,
           selectionLayer,
           sequenceLength,
           caretPosition,
