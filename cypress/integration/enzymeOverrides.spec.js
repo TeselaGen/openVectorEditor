@@ -1,4 +1,17 @@
 describe("enzyme overrides", () => {
+  it(`if an enzyme group is updated it should update`, () => {
+    cy.visit("");
+    cy.tgToggle("overrideManageEnzymes");
+    cy.triggerFileCmd("Filter Cutsites");
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
+    cy.get(".bp3-icon-small-cross").click(); //clear single cutters
+    cy.contains("someGroup").click();
+    cy.contains(".veLabelText", "specialEnzyme1").should("exist");
+    cy.tgToggle("toggleEnzymeGroup");
+    cy.contains(".veLabelText", "specialEnzyme1").should("not.exist");
+    cy.contains(".veLabelText", "BsmBI").should("exist");
+    cy.contains(".veLabelText", "AatII").should("exist");
+  });
   it(`shouldn't fail when messed up enzyme overrides are passed`, () => {
     cy.visit("");
     cy.tgToggle("corruptedOverrideManageEnzymes");

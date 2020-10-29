@@ -11,6 +11,7 @@ import { TgSelect } from "teselagen-react-components";
 
 import map from "lodash/map";
 import { flatMap } from "lodash";
+import { omit } from "lodash";
 
 export class CutsiteFilter extends React.Component {
   static defaultProps = {
@@ -186,7 +187,11 @@ export class CutsiteFilter extends React.Component {
             //   return;
             // }
             onChangeHook && onChangeHook(filteredRestrictionEnzymes);
-            filteredRestrictionEnzymesUpdate(filteredRestrictionEnzymes);
+            filteredRestrictionEnzymesUpdate(
+              map(filteredRestrictionEnzymes, (r) => {
+                return omit(r, ["label"]);
+              })
+            );
           }}
           value={filteredRestrictionEnzymes.map((filteredOpt) => {
             if (filteredOpt.cutsThisManyTimes) {

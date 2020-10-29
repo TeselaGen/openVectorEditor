@@ -945,9 +945,13 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
-                type: "overrideManageEnzymes",
-                description: `overrideManageEnzymes`
+                type: "overrideManageEnzymes"
               })}
+              {this.state.overrideManageEnzymes &&
+                renderToggle({
+                  that: this,
+                  type: "toggleEnzymeGroup"
+                })}
               {renderToggle({
                 that: this,
                 type: "corruptedOverrideManageEnzymes",
@@ -955,8 +959,7 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
-                type: "enzymeGroupsOverride",
-                description: `enzymeGroupsOverride`
+                type: "enzymeGroupsOverride"
               })}
               {renderToggle({
                 that: this,
@@ -1449,7 +1452,9 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             {...((this.state.overrideManageEnzymes ||
               this.state.enzymeGroupsOverride) && {
               enzymeGroupsOverride: {
-                someGroup: ["specialEnzyme1", "bamhi"],
+                someGroup: this.state.toggleEnzymeGroup
+                  ? ["bsmbi", "aatII"]
+                  : ["specialEnzyme1", "bamhi"],
                 anothaGroup: ["specialenzyme2", "bsmbi"] //case shouldn't matter here
               }
             })}

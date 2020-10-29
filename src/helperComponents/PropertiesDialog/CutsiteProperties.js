@@ -211,7 +211,8 @@ export default compose(
   connectToEditor((editorState, ownProps) => {
     const cutsites = selectors.filteredCutsitesSelector(
       editorState,
-      ownProps.additionalEnzymes
+      ownProps.additionalEnzymes,
+      ownProps.enzymeGroupsOverride
     );
     return {
       annotationVisibility: editorState.annotationVisibility || {},

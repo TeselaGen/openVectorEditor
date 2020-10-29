@@ -518,7 +518,8 @@ function mapStateToProps(state, ownProps) {
   let sequenceData = s.sequenceDataSelector(editorState);
   const filteredCutsites = s.filteredCutsitesSelector(
     editorState,
-    ownProps.additionalEnzymes
+    ownProps.additionalEnzymes,
+    ownProps.enzymeGroupsOverride
   );
   let cutsites = filteredCutsites.cutsitesArray;
   let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(

@@ -9,12 +9,16 @@ import { flatMap } from "lodash";
 export default createSelector(
   cutsitesSelector,
   filteredRestrictionEnzymesSelector,
-  function ({ cutsitesByName }, filteredRestrictionEnzymes) {
+  (state, addEnzs, enzymeGroupsOverride) => enzymeGroupsOverride,
+  function (
+    { cutsitesByName },
+    filteredRestrictionEnzymes,
+    enzymeGroupsOverride
+  ) {
     let returnVal = {
       cutsitesByName: {}
     };
     const cutsitesByNameLower = getLowerCaseObj(cutsitesByName);
-
     const hiddenEnzymesByName = {};
     let filteredEnzymes = [];
     let hasUserGroup;
@@ -22,7 +26,12 @@ export default createSelector(
     filteredRestrictionEnzymes.forEach((e) => {
       if (e.value.includes("__userCreatedGroup")) {
         hasUserGroup = true;
-        const enzymes = e.nameArray || [];
+        const existingGroups = {
+          ...window.getExistingEnzymeGroups(),
+          ...enzymeGroupsOverride
+        };
+        const enzymes =
+          existingGroups[e.value.replace("__userCreatedGroup", "")] || [];
         const zs = flatMap(enzymes, (e) => (e ? { value: e } : []));
         filteredEnzymes = filteredEnzymes.concat(zs);
       } else if (e.isHidden) {
