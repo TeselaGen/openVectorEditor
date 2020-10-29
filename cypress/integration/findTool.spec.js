@@ -3,6 +3,30 @@ describe("find tool", function () {
     cy.visit("");
   });
 
+  it(`when there is only 1 search result, typing enter in the find tool should jump you back to the search layer`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("tgacaacttgacggcta", { delay: 1 }); //this should cause 1 region to be selected
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+    cy.selectRange(400, 450);
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should(
+      "not.be.visible"
+    );
+    //hitting enter again should jump us back to our original search layer!
+    cy.focused().type("{enter}");
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+  });
+  it(`when there is only 2 search results but the search is palindromic, typing enter in the find tool should jump you back to the search layer`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gacgtc", { delay: 1 }); //this should cause 1 region to be selected
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+    cy.selectRange(400, 450);
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should(
+      "not.be.visible"
+    );
+    //hitting enter again should jump us back to our original search layer!
+    cy.focused().type("{enter}");
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+  });
   it(`can be expanded and should have full functionality as such`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gataca", { delay: 1 }); //this should cause 1 region to be selected

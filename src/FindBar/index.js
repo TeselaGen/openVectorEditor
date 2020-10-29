@@ -17,6 +17,7 @@ import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { featureColors } from "ve-sequence-utils";
+import getReverseComplementSequenceString from "ve-sequence-utils/lib/getReverseComplementSequenceString";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -33,12 +34,11 @@ export class FindBar extends React.Component {
       toggleFindTool,
       toggleHighlightAll,
       toggleIsInline,
-      // highlightAll,
       updateSearchText,
       annotationVisibilityShow,
       updateAmbiguousOrLiteral,
       updateDnaOrAA,
-      updateMatchNumber,
+      updateMatchNumber: _updateMatchNumber,
       selectionLayerUpdate,
       annotationSearchMatches,
       findTool = {}
@@ -53,6 +53,22 @@ export class FindBar extends React.Component {
       matchNumber = 0,
       isInline
     } = findTool;
+    const updateMatchNumber = (...args) => {
+      if (
+        matchesTotal > 1 &&
+        !(
+          getReverseComplementSequenceString(searchText) === searchText &&
+          matchesTotal === 2
+        )
+      ) {
+        _updateMatchNumber(...args);
+      } else {
+        _updateMatchNumber(null);
+        setTimeout(() => {
+          _updateMatchNumber(...args);
+        });
+      }
+    };
     const findOptionsEls = [
       <HTMLSelect
         key="dnaoraa"
