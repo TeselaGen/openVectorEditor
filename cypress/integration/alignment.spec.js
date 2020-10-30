@@ -1,4 +1,8 @@
 describe("editor", function () {
+  it("it should show an unmapped warning", function () {
+    cy.visit("#/Alignment");
+    cy.get(".bp3-icon-warning-sign");
+  });
   it("adding selection right click options should work", function () {
     cy.visit("#/Alignment");
     cy.tgToggle("addSelectionRightClickOptions");

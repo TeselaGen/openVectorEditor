@@ -48,7 +48,7 @@ let defaultVisibilities = {
 const defaultVisibilityTypes = Object.keys(defaultVisibilities);
 
 try {
-  defaultVisibilityTypes.forEach(type => {
+  defaultVisibilityTypes.forEach((type) => {
     const newVal = JSON.parse(window.localStorage.getItem(type));
     if (newVal)
       defaultVisibilities[type] = {
@@ -75,7 +75,10 @@ const highlightRangeProps = {
   ignoreGaps: true
 };
 function addHighlightedDifferences(alignmentTracks) {
-  return alignmentTracks.map(track => {
+  return alignmentTracks.map((track) => {
+    if (track.isUnmapped) {
+      return track;
+    }
     const sequenceData = tidyUpSequenceData(track.sequenceData);
     const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
       alignmentTracks[0].alignmentData.sequence,
@@ -89,7 +92,7 @@ function addHighlightedDifferences(alignmentTracks) {
       matchHighlightRanges,
       additionalSelectionLayers: matchHighlightRanges
         .filter(({ isMatch }) => !isMatch)
-        .map(range => {
+        .map((range) => {
           return { ...range, ...highlightRangeProps };
         }),
       mismatches
@@ -117,7 +120,7 @@ export default (state = {}, { payload = {}, type }) => {
   }
 
   if (type === "UPDATE_ALIGNMENT_VIEW_VISIBILITY") {
-    defaultVisibilityTypes.forEach(type => {
+    defaultVisibilityTypes.forEach((type) => {
       if (
         (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
         (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
@@ -230,13 +233,12 @@ export default (state = {}, { payload = {}, type }) => {
       payloadToUse.alignmentTracks,
       payload.alignmentType
     );
-    (payloadToUse.pairwiseAlignments || []).forEach(alignment => {
+    (payloadToUse.pairwiseAlignments || []).forEach((alignment) => {
       const error = alignment;
       if (error) {
         hasError = error;
       }
     });
-
     // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
     return {
       ...state,
@@ -296,7 +298,7 @@ function checkForIssues(alignmentTracks, alignmentType) {
 
   let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
   let hasError;
-  alignmentTracks.some(track => {
+  alignmentTracks.some((track) => {
     if (track.alignmentData.sequence.length !== alignmentTrackLength) {
       console.error("incorrect length", alignmentTracks);
 

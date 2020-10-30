@@ -12,7 +12,11 @@ import {
   MenuItem,
   Tooltip
 } from "@blueprintjs/core";
-import { Loading, showContextMenu } from "teselagen-react-components";
+import {
+  InfoHelper,
+  Loading,
+  showContextMenu
+} from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
 import PropTypes from "prop-types";
@@ -1116,6 +1120,22 @@ class AlignmentView extends React.Component {
               {this.props.handleAlignmentRename && (
                 <Button small>Rename</Button>
               )}
+              {this.props.unmappedSeqs && (
+                <InfoHelper
+                  size={20}
+                  content={
+                    <div>
+                      This alignment had sequences that did not map to the
+                      template sequence:
+                      {this.props.unmappedSeqs.map(({ sequenceData }, i) => (
+                        <div key={i}>{sequenceData.name}</div>
+                      ))}
+                    </div>
+                  }
+                  intent="warning"
+                  icon="warning-sign"
+                ></InfoHelper>
+              )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
                   onRelease={(val) => {
@@ -1268,6 +1288,7 @@ export default compose(
       const { id: alignmentId, updateAlignmentViewVisibility } = ownProps;
       const alignment = { ...alignments[alignmentId], id: alignmentId };
       const {
+        unmappedSeqs,
         alignmentTracks,
         pairwiseAlignments,
         alignmentType,
@@ -1350,6 +1371,7 @@ export default compose(
       return {
         isAlignment: true,
         selectionLayer,
+        unmappedSeqs,
         caretPosition,
         alignmentId,
         sequenceData: {
