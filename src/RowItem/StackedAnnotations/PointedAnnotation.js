@@ -18,6 +18,7 @@ class PointedAnnotation extends React.PureComponent {
       rangeType,
       forward,
       name = "",
+      type,
       onMouseLeave,
       onMouseOver,
       isProtein,
@@ -41,6 +42,7 @@ class PointedAnnotation extends React.PureComponent {
 
     const classNames = getAnnotationClassnames(annotation, {
       isProtein,
+      type,
       viewName: "RowView"
     });
 

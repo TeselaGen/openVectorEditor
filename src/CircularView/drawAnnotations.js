@@ -15,6 +15,7 @@ function drawAnnotations({
   annotationType,
   radius,
   isProtein,
+  type,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
@@ -156,6 +157,7 @@ function drawAnnotations({
 
       const classNames = getAnnotationClassnames(annotation, {
         viewName: "CircularView",
+        type,
         isProtein
       });
 

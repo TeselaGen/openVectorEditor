@@ -308,6 +308,7 @@ export class CircularView extends React.Component {
             Annotation: Comp || Feature,
             fontStyle: fontStyle,
             annotationType: singularName,
+            type: singularName,
             reverseAnnotations: true,
             showLabels: !(annotationLabelVisibility[layerName] === false),
             annotations,

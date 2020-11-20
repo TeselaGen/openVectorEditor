@@ -1,13 +1,12 @@
 import classnames from "classnames";
 import { startCase } from "lodash";
-import { singular } from "pluralize";
 
 export default function getAnnotationClassnames(
-  { doesOverlapSelf, annotationTypePlural },
-  { viewName }
+  { doesOverlapSelf },
+  { viewName, type }
 ) {
-  const type = startCase(singular(annotationTypePlural));
-  return classnames(`ve${type}`, `ve${viewName}${type}`, {
+  const Type = startCase(type);
+  return classnames(`ve${Type}`, `ve${viewName}${Type}`, {
     doesOverlapSelf
   });
 }
