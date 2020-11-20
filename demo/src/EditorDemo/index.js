@@ -969,7 +969,12 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "allowPartsToOverlapSelf",
-                description: `if allowPartsToOverlapSelf then a new option will appear in the Edit/Create Part Dialog that a user can use to create a part that "wraps around the whole sequence and back over itself"`
+                description: `If allowPartsToOverlapSelf=true is passed to <Editor/> 
+                then a new option will appear in the 
+                Edit/Create Part Dialog that a user can use to create a 
+                part that "wraps around the whole sequence and back over itself". 
+                This will cause part.doesOverlapSelf = true
+                `
               })}
               {renderToggle({
                 that: this,
