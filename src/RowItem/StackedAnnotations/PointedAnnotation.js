@@ -6,6 +6,7 @@ import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAn
 import React from "react";
 import { doesLabelFitInAnnotation } from "../utils";
 import { noop } from "lodash";
+import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -38,6 +39,11 @@ class PointedAnnotation extends React.PureComponent {
       onlyShowLabelsThatDoNotFit
     } = this.props;
 
+    const classNames = getAnnotationClassnames(annotation, {
+      isProtein,
+      viewName: "RowView"
+    });
+
     let width = (widthInBps + gapsInside) * charWidth;
     let charWN = charWidth; //charWN is normalized
     if (charWidth < 15) {
@@ -51,6 +57,15 @@ class PointedAnnotation extends React.PureComponent {
     let widthMinusOne = width - charWN;
     let path;
     let hasAPoint = false;
+    const endLine = annotation.doesOverlapSelf
+      ? `L 0,${height / 2} 
+    L -10,${height / 2} 
+    L 0,${height / 2} `
+      : "";
+    const arrowLine = annotation.doesOverlapSelf
+      ? `L ${width + 10},${height / 2} 
+    L ${width},${height / 2} `
+      : "";
     // starting from the top left of the annotation
     if (rangeType === "middle") {
       //draw a rectangle
@@ -71,6 +86,7 @@ class PointedAnnotation extends React.PureComponent {
         width - pointiness / 2
       },${height}
           L 0,${height} 
+          ${endLine}
           z`;
     } else if (rangeType === "beginningAndEnd") {
       hasAPoint = true;
@@ -78,8 +94,10 @@ class PointedAnnotation extends React.PureComponent {
           M 0,0 
           L ${widthMinusOne},0 
           L ${width},${height / 2} 
+          ${arrowLine}
           L ${widthMinusOne},${height} 
           L 0,${height} 
+          ${endLine}
           z`;
     } else {
       hasAPoint = true;
@@ -87,6 +105,7 @@ class PointedAnnotation extends React.PureComponent {
         M 0,0 
         L ${widthMinusOne},0 
         L ${width},${height / 2} 
+        ${arrowLine}
         L ${widthMinusOne},${height} 
         L 0,${height} 
         Q ${pointiness},${height / 2} ${0},${0}
@@ -110,7 +129,7 @@ class PointedAnnotation extends React.PureComponent {
     return (
       <g
         {...{ onMouseLeave, onMouseOver }}
-        className={" clickable " + className}
+        className={` clickable ${className} ${classNames}`}
         data-id={id}
         onClick={function (event) {
           onClick({ annotation, event, gapsBefore, gapsInside });

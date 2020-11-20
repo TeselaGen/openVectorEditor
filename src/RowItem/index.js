@@ -289,10 +289,8 @@ export class RowItem extends React.PureComponent {
           ? color.replace("override_", "")
           : "purple";
         return {
-          fill: "white",
-          textColor: "black",
-          stroke: colorToUse,
-          color: colorToUse
+          textColor: colorToUse,
+          stroke: colorToUse
         };
       },
       alignmentType

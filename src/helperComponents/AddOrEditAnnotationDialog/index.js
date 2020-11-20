@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { reduxForm, FieldArray, formValues } from "redux-form";
 
@@ -9,11 +9,12 @@ import {
   withDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent, Classes, EditableText } from "@blueprintjs/core";
+import { Button, Intent, Classes, EditableText, Icon } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
-  checkIfPotentiallyCircularRangesOverlap
+  checkIfPotentiallyCircularRangesOverlap,
+  getRangeLength
 } from "ve-range-utils";
 import { tidyUpAnnotation, featureColors } from "ve-sequence-utils";
 import classNames from "classnames";
@@ -182,10 +183,25 @@ class AddOrEditAnnotationDialog extends React.Component {
       annotationVisibilityShow,
       renderLocations,
       locations,
+      doesOverlapSelf,
+      start,
+      end,
+
+      advancedOptions,
+      advancedDefaultOpen,
       upsertAnnotation
     } = this.props;
     const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
+    const annotationLength = getRangeLength(
+      locations && locations.length
+        ? {
+            start: locations[0].start,
+            end: locations[locations.length - 1].end
+          }
+        : { start, end },
+      sequenceLength
+    );
     return (
       <div
         className={classNames(
@@ -253,7 +269,20 @@ class AddOrEditAnnotationDialog extends React.Component {
         {renderLocations ? (
           <FieldArray component={this.renderLocations} name="locations" />
         ) : null}
+        <div
+          className="bp3-text-muted bp3-text-small"
+          style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
+        >
+          Length:{" "}
+          {doesOverlapSelf
+            ? sequenceLength + annotationLength
+            : annotationLength}
+        </div>
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
+        <Advanced
+          advancedDefaultOpen={advancedDefaultOpen}
+          advancedOptions={advancedOptions}
+        ></Advanced>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
@@ -291,8 +320,9 @@ class AddOrEditAnnotationDialog extends React.Component {
               const hasJoinedLocations =
                 updatedData.locations && updatedData.locations.length > 1;
 
-              const newFeat = tidyUpAnnotation(
+              const newAnnotation = tidyUpAnnotation(
                 convertRangeTo0Based({
+                  doesOverlapSelf: data.doesOverlapSelf,
                   ...updatedData,
                   ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
                     ? { type: "primer" }
@@ -309,16 +339,16 @@ class AddOrEditAnnotationDialog extends React.Component {
                 }),
                 {
                   sequenceData,
-                  annotationType: "features"
+                  annotationType: annotationTypePlural
                 }
               );
               beforeAnnotationCreate &&
                 beforeAnnotationCreate({
                   annotationTypePlural,
-                  annotation: newFeat,
+                  annotation: newAnnotation,
                   props: this.props
                 });
-              upsertAnnotation(newFeat);
+              upsertAnnotation(newAnnotation);
               annotationVisibilityShow(annotationTypePlural);
               hideModal();
             })}
@@ -420,7 +450,7 @@ export default ({ formName, getProps, dialogProps }) => {
         return errors;
       }
     }),
-    formValues("start", "end", "locations")
+    formValues("start", "end", "doesOverlapSelf", "locations")
   )(AddOrEditAnnotationDialog);
 };
 
@@ -428,7 +458,7 @@ const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
       <div style={{ display: "flex" }}>
-        <h4>Notes </h4>{" "}
+        <div>Notes: </div>{" "}
         <span style={{ marginLeft: 15, fontSize: 10, color: "grey" }}>
           (Key -- Value)
         </span>{" "}
@@ -511,3 +541,23 @@ const Notes = view(({ readOnly, notes }) => {
     </div>
   );
 });
+
+function Advanced({ advancedOptions, advancedDefaultOpen }) {
+  const [isOpen, setOpen] = useState(advancedDefaultOpen);
+  if (!advancedOptions) {
+    return null;
+  }
+  return (
+    <div style={{ marginTop: 5 }}>
+      <div
+        onClick={() => {
+          setOpen(!isOpen);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Advanced <Icon icon={isOpen ? "caret-up" : "caret-down"}></Icon>
+      </div>
+      {isOpen && <div>{advancedOptions}</div>}
+    </div>
+  );
+}

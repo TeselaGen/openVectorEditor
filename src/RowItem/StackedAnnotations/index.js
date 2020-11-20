@@ -1,12 +1,9 @@
 import { featureColors } from "ve-sequence-utils";
-import { camelCase } from "lodash";
-import classnames from "classnames";
 import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
 
-// import './style.css'
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
 import { getAnnotationRangeType } from "ve-range-utils";
@@ -24,7 +21,6 @@ function StackedAnnotations(props) {
     spaceBetweenAnnotations,
     onClick,
     isProtein,
-
     onDoubleClick,
     disregardLocations,
     InnerComp,
@@ -86,10 +82,7 @@ function StackedAnnotations(props) {
           noRedux={noRedux}
           externalLabels={externalLabels}
           key={index}
-          className={classnames(
-            `${camelCase("veRowView-" + type)}`,
-            annotation.className
-          )}
+          className={annotation.className}
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}

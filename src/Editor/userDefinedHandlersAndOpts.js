@@ -1,4 +1,5 @@
 export const userDefinedHandlersAndOpts = [
+  "allowPartsToOverlapSelf",
   "allPartTags",
   "editTagsLink",
   "readOnly",

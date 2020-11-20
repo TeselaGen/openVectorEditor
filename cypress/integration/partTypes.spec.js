@@ -2,6 +2,23 @@ describe("partTypes", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`parts that overlap with themselves should be supported`, () => {
+    cy.tgToggle("allowPartsToOverlapSelf");
+    cy.get(".veRowViewPart.doesOverlapSelf").should("not.exist");
+    cy.get(".veCircularViewPart.doesOverlapSelf").should("not.exist");
+    cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
+    cy.contains(".bp3-menu-item", "Edit Part").click();
+    cy.contains(".bp3-dialog div", "Advanced").click();
+    cy.contains(".bp3-dialog div", "Overlaps Self").click();
+    cy.contains(".bp3-dialog button", "Save").click();
+
+    cy.get(".veRowViewPart.doesOverlapSelf").should("exist");
+    cy.get(".veCircularViewPart.doesOverlapSelf").should("exist");
+    cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
+    cy.contains(".bp3-menu-item", "Edit Part").click();
+    //this should already be open!
+    cy.contains(".bp3-dialog div", "Overlaps Self");
+  });
 
   it(`should be able to add a part type`, () => {
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });

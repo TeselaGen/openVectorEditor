@@ -18,11 +18,6 @@
 .bp3-dark .veFeature {
   stroke: #f5f8fa !important;
 }
-.bp3-dark .veRowViewPartsContainer path,
-.bp3-dark .vePart {
-  fill: #30404d !important;
-  stroke: #df7ff1 !important;
-}
 
 .bp3-dark .veEditor .veRowViewCaret {
   background: #f5f8fa !important;
@@ -56,10 +51,6 @@
 .bp3-dark .veRowViewPartsContainer text,
 .bp3-dark .veLabelText.black {
   fill: #f5f8fa !important;
-}
-
-.bp3-dark .veLabelText.purple {
-  fill: #ac68cc !important;
 }
 
 .bp3-dark .tag-selection.selected {
@@ -102,4 +93,14 @@
 
 .bp3-dark .veWhiteBackground {
   background: #293742;
+}
+
+.bp3-dark .vePart path {
+  stroke-width: 1;
+  stroke: #df7ff1 !important;
+}
+
+.bp3-dark .vePart .veLabelText,
+.bp3-dark .veLabelText.vePart {
+  fill: #ac68cc !important;
 }

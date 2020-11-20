@@ -968,6 +968,11 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "allowPartsToOverlapSelf",
+                description: `if allowPartsToOverlapSelf then a new option will appear in the Edit/Create Part Dialog that a user can use to create a part that "wraps around the whole sequence and back over itself"`
+              })}
+              {renderToggle({
+                that: this,
                 type: "readOnly",
                 hook: (readOnly) => {
                   updateEditor(store, "DemoEditor", {
@@ -1367,6 +1372,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
+            allowPartsToOverlapSelf={this.state.allowPartsToOverlapSelf}
             {...(this.state.corruptedOverrideManageEnzymes && {
               enzymeGroupsOverride: {
                 someGroup: [
