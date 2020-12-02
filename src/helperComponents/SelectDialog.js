@@ -19,7 +19,7 @@ const validate = (val, vals, props) => {
   if ((min && val < min) || (max && val > max)) {
     return "Invalid position";
   }
-  if (!circular && vals.from > vals.to) {
+  if (!circular && Number(vals.from) > Number(vals.to)) {
     return "Wrong from/to order";
   }
 };
@@ -38,7 +38,7 @@ export default compose(
   formValues("from", "to")
 )(
   class SelectDialog extends React.Component {
-    updateTempHighlight = ({ isStart, isEnd } = {}) => val => {
+    updateTempHighlight = ({ isStart, isEnd } = {}) => (val) => {
       const { selectionLayerUpdate, from, to, invalid } = this.props;
       if (invalid) return;
       selectionLayerUpdate(
@@ -122,7 +122,7 @@ export default compose(
               text="Cancel"
             />
             <Button
-              onClick={handleSubmit(data => {
+              onClick={handleSubmit((data) => {
                 if (onSubmit) onSubmit(data);
                 hideModal();
                 tryToRefocusEditor();
@@ -140,7 +140,7 @@ export default compose(
   }
 );
 
-const normalizeToInt = val => {
+const normalizeToInt = (val) => {
   const int = Math.round(val);
   const normalizedVal = `${int >= 0 ? int : 1}`;
   return normalizedVal;
