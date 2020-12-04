@@ -216,6 +216,16 @@ class AddOrEditAnnotationDialog extends React.Component {
           tooltipError
           autoFocus
           placeholder="Untitled Annotation"
+          {...(window.__getDefaultValGenerator &&
+            window.__getDefaultValGenerator({
+              code: annotationTypePlural + "_name",
+              customParams: {
+                isProtein,
+                sequenceName: sequenceData.name,
+                start,
+                end
+              }
+            }))}
           validate={required}
           name="name"
           label="Name:"
