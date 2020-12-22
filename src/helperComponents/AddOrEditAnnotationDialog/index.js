@@ -203,171 +203,174 @@ class AddOrEditAnnotationDialog extends React.Component {
       sequenceLength
     );
     return (
-      <div
-        className={classNames(
-          Classes.DIALOG_BODY,
-          "tg-min-width-dialog",
-          "tg-upsert-annotation"
-        )}
+      <form
+        onSubmit={handleSubmit((data) => {
+          let updatedData;
+          if (data.forward === true && data.strand !== 1) {
+            updatedData = { ...data, strand: 1 };
+          } else if (data.forward === false && data.strand !== -1) {
+            updatedData = { ...data, strand: -1 };
+          } else {
+            updatedData = data;
+          }
+          updatedData.notes = {};
+          this.notes.forEach(({ key, value }) => {
+            if (!updatedData.notes[key]) updatedData.notes[key] = [];
+            updatedData.notes[key].push(value || "");
+          });
+          if (annotationTypePlural === "features") {
+            updatedData.color = featureColors[updatedData.type];
+          }
+          const hasJoinedLocations =
+            updatedData.locations && updatedData.locations.length > 1;
+
+          const newAnnotation = tidyUpAnnotation(
+            convertRangeTo0Based({
+              doesOverlapSelf: data.doesOverlapSelf,
+              ...updatedData,
+              ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
+                ? { type: "primer" }
+                : {}),
+              locations: undefined, //by default clear locations
+              ...(hasJoinedLocations && {
+                //only add locations if there are locations
+                start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
+                end:
+                  updatedData.locations[updatedData.locations.length - 1].end,
+                locations: updatedData.locations.map(convertRangeTo0Based)
+              })
+            }),
+            {
+              sequenceData,
+              annotationType: annotationTypePlural
+            }
+          );
+          beforeAnnotationCreate &&
+            beforeAnnotationCreate({
+              annotationTypePlural,
+              annotation: newAnnotation,
+              props: this.props
+            });
+          upsertAnnotation(newAnnotation);
+          annotationVisibilityShow(annotationTypePlural);
+          hideModal();
+        })}
       >
-        <InputField
-          disabled={this.props.readOnly}
-          inlineLabel
-          tooltipError
-          autoFocus
-          placeholder="Untitled Annotation"
-          {...(window.__getDefaultValGenerator &&
-            window.__getDefaultValGenerator({
-              code: annotationTypePlural + "_name",
-              customParams: {
-                isProtein,
-                sequenceName: sequenceData.name,
-                start,
-                end
-              }
-            }))}
-          validate={required}
-          name="name"
-          label="Name:"
-        />
-        {!isProtein && (
-          <RadioGroupField
+        <div
+          className={classNames(
+            Classes.DIALOG_BODY,
+            "tg-min-width-dialog",
+            "tg-upsert-annotation"
+          )}
+        >
+          <InputField
             disabled={this.props.readOnly}
             inlineLabel
             tooltipError
-            options={[
-              { label: "Positive", value: "true" },
-              { label: "Negative", value: "false" }
-            ]}
-            normalize={(value) => value === "true" || false}
-            format={(value) => (value ? "true" : "false")}
-            name="forward"
-            label="Strand:"
-            defaultValue={true}
-          />
-        )}
-        {renderTypes || null}
-        {renderTags || null}
-        {!renderLocations || !locations || locations.length < 2 ? (
-          <React.Fragment>
-            <NumericInputField
-              inlineLabel
-              disabled={this.props.readOnly}
-              format={this.formatStart}
-              parse={this.parseStart}
-              tooltipError
-              defaultValue={1}
-              min={1}
-              max={sequenceLength || 1}
-              name="start"
-              label="Start:"
-            />
-            <NumericInputField
-              disabled={this.props.readOnly}
-              format={this.formatEnd}
-              parse={this.parseEnd}
-              inlineLabel
-              tooltipError
-              defaultValue={sequenceData.isProtein ? 3 : 1}
-              min={1}
-              max={sequenceLength || 1}
-              name="end"
-              label="End:"
-            />
-          </React.Fragment>
-        ) : null}
-        {renderLocations ? (
-          <FieldArray component={this.renderLocations} name="locations" />
-        ) : null}
-        <div
-          className="bp3-text-muted bp3-text-small"
-          style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
-        >
-          Length:{" "}
-          {doesOverlapSelf
-            ? sequenceLength + annotationLength
-            : annotationLength}
-        </div>
-        <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
-        <Advanced
-          advancedDefaultOpen={advancedDefaultOpen}
-          advancedOptions={advancedOptions}
-        ></Advanced>
-        <div
-          style={{ display: "flex", justifyContent: "flex-end" }}
-          className="width100"
-        >
-          <Button
-            style={{ marginRight: 15 }}
-            onMouseDown={(e) => {
-              //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
-              e.preventDefault();
-              e.stopPropagation();
-              hideModal();
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            disabled={this.props.readOnly}
-            onClick={handleSubmit((data) => {
-              let updatedData;
-              if (data.forward === true && data.strand !== 1) {
-                updatedData = { ...data, strand: 1 };
-              } else if (data.forward === false && data.strand !== -1) {
-                updatedData = { ...data, strand: -1 };
-              } else {
-                updatedData = data;
-              }
-              updatedData.notes = {};
-              this.notes.forEach(({ key, value }) => {
-                if (!updatedData.notes[key]) updatedData.notes[key] = [];
-                updatedData.notes[key].push(value || "");
-              });
-              if (annotationTypePlural === "features") {
-                updatedData.color = featureColors[updatedData.type];
-              }
-              const hasJoinedLocations =
-                updatedData.locations && updatedData.locations.length > 1;
-
-              const newAnnotation = tidyUpAnnotation(
-                convertRangeTo0Based({
-                  doesOverlapSelf: data.doesOverlapSelf,
-                  ...updatedData,
-                  ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
-                    ? { type: "primer" }
-                    : {}),
-                  locations: undefined, //by default clear locations
-                  ...(hasJoinedLocations && {
-                    //only add locations if there are locations
-                    start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
-                    end:
-                      updatedData.locations[updatedData.locations.length - 1]
-                        .end,
-                    locations: updatedData.locations.map(convertRangeTo0Based)
-                  })
-                }),
-                {
-                  sequenceData,
-                  annotationType: annotationTypePlural
+            autoFocus
+            placeholder="Untitled Annotation"
+            {...(window.__getDefaultValGenerator &&
+              window.__getDefaultValGenerator({
+                code: annotationTypePlural + "_name",
+                customParams: {
+                  isProtein,
+                  sequenceName: sequenceData.name,
+                  start,
+                  end
                 }
-              );
-              beforeAnnotationCreate &&
-                beforeAnnotationCreate({
-                  annotationTypePlural,
-                  annotation: newAnnotation,
-                  props: this.props
-                });
-              upsertAnnotation(newAnnotation);
-              annotationVisibilityShow(annotationTypePlural);
-              hideModal();
-            })}
-            intent={Intent.PRIMARY}
+              }))}
+            validate={required}
+            name="name"
+            label="Name:"
+          />
+          {!isProtein && (
+            <RadioGroupField
+              disabled={this.props.readOnly}
+              inlineLabel
+              tooltipError
+              options={[
+                { label: "Positive", value: "true" },
+                { label: "Negative", value: "false" }
+              ]}
+              normalize={(value) => value === "true" || false}
+              format={(value) => (value ? "true" : "false")}
+              name="forward"
+              label="Strand:"
+              defaultValue={true}
+            />
+          )}
+          {renderTypes || null}
+          {renderTags || null}
+          {!renderLocations || !locations || locations.length < 2 ? (
+            <React.Fragment>
+              <NumericInputField
+                inlineLabel
+                disabled={this.props.readOnly}
+                format={this.formatStart}
+                parse={this.parseStart}
+                tooltipError
+                defaultValue={1}
+                min={1}
+                max={sequenceLength || 1}
+                name="start"
+                label="Start:"
+              />
+              <NumericInputField
+                disabled={this.props.readOnly}
+                format={this.formatEnd}
+                parse={this.parseEnd}
+                inlineLabel
+                tooltipError
+                defaultValue={sequenceData.isProtein ? 3 : 1}
+                min={1}
+                max={sequenceLength || 1}
+                name="end"
+                label="End:"
+              />
+            </React.Fragment>
+          ) : null}
+          {renderLocations ? (
+            <FieldArray component={this.renderLocations} name="locations" />
+          ) : null}
+          <div
+            className="bp3-text-muted bp3-text-small"
+            style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
           >
-            Save
-          </Button>
+            Length:{" "}
+            {doesOverlapSelf
+              ? sequenceLength + annotationLength
+              : annotationLength}
+          </div>
+          <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
+          <Advanced
+            advancedDefaultOpen={advancedDefaultOpen}
+            advancedOptions={advancedOptions}
+          ></Advanced>
+          <div
+            style={{ display: "flex", justifyContent: "flex-end" }}
+            className="width100"
+          >
+            <Button
+              style={{ marginRight: 15 }}
+              onMouseDown={(e) => {
+                //use onMouseDown to prevent issues with redux form errors popping in and stopping the dialog from closing
+                e.preventDefault();
+                e.stopPropagation();
+                hideModal();
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={this.props.readOnly}
+              type={!this.props.readOnly && "submit"}
+              intent={Intent.PRIMARY}
+            >
+              Save
+            </Button>
+          </div>
         </div>
-      </div>
+      </form>
     );
   }
 }
