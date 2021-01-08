@@ -210,6 +210,13 @@ These props consist of hooks and editor config options that can be passed like s
 		const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
 		return sequenceData
 	},
+	beforeAnnotationCreate: ({
+		annotationTypePlural, //features/parts/primers
+		annotation, //annotation info 
+		props //general props to the dialog
+	}) => {
+		//a handler to hook into when annotations (features/primers/parts) are being created
+	},
 	//regular click overrides, eg: 
 	featureClicked: ({annotation, event}) => {
 		//do something here :)
