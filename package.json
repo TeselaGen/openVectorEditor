@@ -80,7 +80,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^6.2.1",
     "drag-mock": "^1.4.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.17.0",
     "eslint-config-teselagen": "^5.0.5",
     "gh-pages": "^3.1.0",
     "husky": "^4.3.7",
