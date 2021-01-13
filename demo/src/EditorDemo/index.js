@@ -1032,6 +1032,20 @@ other options are:
                 label: "Focus Linear View"
               })}
               {renderToggle({
+                info: `Triggers a menu toastr message`,
+                onClick: () => {
+                  window.oveMenuToastrSuccess("Sequence Saving", {
+                    loading: true
+                  });
+                  setTimeout(() => {
+                    window.oveMenuToastrSuccess("Sequence Saved");
+                  }, 3000);
+                },
+                isButton: true,
+                that: this,
+                label: "Trigger menu toastr message"
+              })}
+              {renderToggle({
                 onClick: () => {
                   updateEditor(store, "DemoEditor", {
                     selectionLayer: { start: 30, end: 59 }

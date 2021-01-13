@@ -2,6 +2,13 @@ describe("menuBar", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`the menu should allow for custom toastr messages`, () => {
+    cy.visit("");
+
+    cy.contains("Trigger menu toastr message").click();
+    cy.contains(".ove-menu-toast", "Sequence Saving");
+    cy.contains(".ove-menu-toast", "Sequence Saved");
+  });
   it("Should be able to filter features by length", () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".tg-menu-bar button", "View").click();
