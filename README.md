@@ -6,7 +6,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  
  ![image](https://user-images.githubusercontent.com/2730609/62503453-220acd00-b7a9-11e9-87f3-19e3b1119e6e.png)
 
-
+## [CHANGELOG](CHANGELOG.md)
 ## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
@@ -21,6 +21,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 # Table of Contents
 <!-- TOC -->
 
+  - [[CHANGELOG](CHANGELOG.md)](#changelogchangelogmd)
   - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
   - [Get the desktop app: https://github.com/tnrich/ove-electron/releases](#get-the-desktop-app-httpsgithubcomtnrichove-electronreleases)
