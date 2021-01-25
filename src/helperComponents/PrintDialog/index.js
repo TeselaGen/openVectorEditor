@@ -306,7 +306,9 @@ class ReactToPrint extends React.Component {
       try {
         const canvasEls = domDoc.querySelectorAll("canvas");
         [...canvasEls].forEach((node, index) => {
-          node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
+          if (node.getContext) {
+            node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
+          }
         });
       } catch (e) {
         console.warn(
