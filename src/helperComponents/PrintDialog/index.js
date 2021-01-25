@@ -303,10 +303,17 @@ class ReactToPrint extends React.Component {
         domDoc.body.classList.add(bodyClass);
       }
 
-      const canvasEls = domDoc.querySelectorAll("canvas");
-      [...canvasEls].forEach((node, index) => {
-        node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
-      });
+      try {
+        const canvasEls = domDoc.querySelectorAll("canvas");
+        [...canvasEls].forEach((node, index) => {
+          node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
+        });
+      } catch (e) {
+        console.warn(
+          "An error occurred trying to get the canvas elements for printing:"
+        );
+        console.warn(`gg2g20011 error:`, e);
+      }
 
       if (copyStyles !== false) {
         const headEls = document.querySelectorAll(
