@@ -3,8 +3,11 @@ const path = require("path");
 module.exports = {
   type: "react-component",
   npm: {
+    umd: {},
+    // comment out the next line and comment in the following lines to avoid building anything but the umd build
     esModules: true,
-    umd: {}
+    // esModules: console.log("commentMeBackOut") || false,
+    // cjs: console.log("commentMeBackOut") || false
   },
   ...(process.env.WITH_COVERAGE && {
     babel: {
@@ -30,10 +33,13 @@ module.exports = {
       // "@teselagen/apollo-methods":
       //   console.log("comment me back out!") ||
       //   path.resolve("../teselagen-common/apollo-methods/src/"),
-      
+
       //don't comment this out!
       react: path.resolve(__dirname, "node_modules/react"),
-      "@blueprintjs/core": path.resolve(__dirname, "node_modules/@blueprintjs/core"),
+      "@blueprintjs/core": path.resolve(
+        __dirname,
+        "node_modules/@blueprintjs/core"
+      ),
       "react-dom": path.resolve(__dirname, "node_modules/react-dom")
     },
     extra: {

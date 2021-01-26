@@ -12,6 +12,7 @@ require("typeface-ubuntu-mono");
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
+export { default as createVectorEditor } from "./createVectorEditor";
 export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
 //export components

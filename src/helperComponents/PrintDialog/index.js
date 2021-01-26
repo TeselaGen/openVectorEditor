@@ -336,7 +336,7 @@ class ReactToPrint extends React.Component {
               newHeadEl.appendChild(domDoc.createTextNode(styleCSS));
             }
           } else {
-            let attributes = [...node.attributes];
+            let attributes = [...(node.attributes || [])];
             attributes.forEach((attr) => {
               newHeadEl.setAttribute(attr.nodeName, attr.nodeValue);
             });
