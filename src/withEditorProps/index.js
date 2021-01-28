@@ -241,7 +241,42 @@ export const exportSequenceToFile = (props) => (format) => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
+  connect(
+    mapStateToProps,
+    mapDispatchToActions,
+    (mapProps, dispatchProps, ownProps) => {
+      let toSpread = {};
+      if (mapProps.annotationToAdd) {
+        toSpread.original_selectionLayerUpdate =
+          dispatchProps.selectionLayerUpdate;
+        toSpread.selectionLayerUpdate = (sel) => {
+          dispatchProps.dispatch({
+            type: "@@redux-form/CHANGE",
+            meta: {
+              form: mapProps.annotationToAdd.formName,
+              field: "start",
+              touch: false,
+              persistentSubmitErrors: false
+            },
+            payload: sel.start + 1
+          });
+          dispatchProps.dispatch({
+            type: "@@redux-form/CHANGE",
+            meta: {
+              form: mapProps.annotationToAdd.formName,
+              field: "end",
+              touch: false,
+              persistentSubmitErrors: false
+            },
+            payload: sel.end + 1
+          });
+        };
+        toSpread.caretPositionUpdate = () => {};
+      }
+      return { ...ownProps, ...mapProps, ...dispatchProps, ...toSpread };
+    },
+    { pure: false }
+  ),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: (props) => {
       return (
@@ -491,17 +526,22 @@ function mapStateToProps(state, ownProps) {
     annotationLabelVisibility,
     annotationsToSupport
   );
-  const annotationToAdd =
-    // addFeatureSelector(state, "start", "end") ||
-    // addPrimerSelector(state, "start", "end") ||
-    // addPartSelector(state, "start", "end");
-    getFormValues("AddOrEditFeatureDialog")(state) ||
-    getFormValues("AddOrEditPrimerDialog")(state) ||
-    getFormValues("AddOrEditPartDialog")(state);
+  let annotationToAdd;
+  [
+    "AddOrEditFeatureDialog",
+    "AddOrEditPrimerDialog",
+    "AddOrEditPartDialog"
+  ].forEach((n) => {
+    const vals = getFormValues(n)(state);
+    if (vals) {
+      annotationToAdd = { ...vals, formName: n };
+    }
+  });
 
   let toReturn = {
     ...editorState,
     meta,
+    annotationToAdd,
     ...(annotationToAdd && {
       selectionLayer: {
         start: (annotationToAdd.start || 1) - 1,
@@ -764,16 +804,25 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = (fn) => {
-  return connect((state, ownProps, ...rest) => {
-    const editor = state.VectorEditor[ownProps.editorName] || {};
-    editor.sequenceData = editor.sequenceData || {};
-    editor.sequenceData.sequence = getUpperOrLowerSeq(
-      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
-      editor.sequenceData.sequence
-    );
+  return connect(
+    (state, ownProps, ...rest) => {
+      const editor = state.VectorEditor[ownProps.editorName] || {};
+      editor.sequenceData = editor.sequenceData || {};
+      editor.sequenceData.sequence = getUpperOrLowerSeq(
+        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+        editor.sequenceData.sequence
+      );
 
-    return fn ? fn(editor, ownProps, ...rest, state) : {};
-  }, mapDispatchToActions);
+      return fn ? fn(editor, ownProps, ...rest, state) : {};
+    },
+    mapDispatchToActions
+    // function mergeProps(propsFromState, propsFromDispatch) {
+    //   return {
+    //     ...propsFromState,
+    //     ...propsFromDispatch
+    //   };
+    // }
+  );
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView

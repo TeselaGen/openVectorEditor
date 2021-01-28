@@ -186,10 +186,10 @@ class AddOrEditAnnotationDialog extends React.Component {
       doesOverlapSelf,
       start,
       end,
-
       advancedOptions,
       advancedDefaultOpen,
-      upsertAnnotation
+      upsertAnnotation,
+      original_selectionLayerUpdate
     } = this.props;
     const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
@@ -251,6 +251,11 @@ class AddOrEditAnnotationDialog extends React.Component {
               annotation: newAnnotation,
               props: this.props
             });
+
+          //update the selection layer so we don't jump away from where we're editing
+          //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
+          original_selectionLayerUpdate &&
+            original_selectionLayerUpdate(newAnnotation);
           upsertAnnotation(newAnnotation);
           annotationVisibilityShow(annotationTypePlural);
           hideModal();
@@ -303,6 +308,11 @@ class AddOrEditAnnotationDialog extends React.Component {
           {renderTags || null}
           {!renderLocations || !locations || locations.length < 2 ? (
             <React.Fragment>
+              <div
+                style={{ marginBottom: 10, fontSize: 12, fontStyle: "italic" }}
+              >
+                You can also click or drag in the editor to change the selection{" "}
+              </div>
               <NumericInputField
                 inlineLabel
                 disabled={this.props.readOnly}

@@ -91,4 +91,17 @@ describe("editor", function () {
     cy.get(".tg-test-name input").should("have.value", "Example Primer 1");
     cy.get(".bp3-dialog-close-button").click();
   });
+  it("should be able to edit a feature/part start/end by clicking/dragging in the editor", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
+    cy.contains(".veRowViewPart", "Part 0").dblclick();
+    cy.contains(
+      "You can also click or drag in the editor to change the selection"
+    ).dblclick();
+    cy.get(".tg-test-start input").should("not.have.value", "4393");
+    cy.contains(".veCircularViewLabelText", "T0").click();
+    cy.get(".tg-test-start input").should("have.value", "4393");
+    cy.get(".tg-test-end input").should("have.value", "4498");
+    cy.contains(".bp3-dialog button", "Save").click();
+    cy.contains("Selecting 106 bps from 4393 to 4498");
+  });
 });
