@@ -206,7 +206,7 @@ export class CircularView extends React.Component {
         Comp: Part,
         layerName: "parts",
         isAnnotation: true,
-        spaceBefore: 5
+        spaceBefore: 15
       },
       {
         zIndex: 20,

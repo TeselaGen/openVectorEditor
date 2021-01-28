@@ -10,20 +10,18 @@
   cursor: pointer;
 }
 
-.veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
+.veEditor .veAnnotationHovered:not(.topLevelLabelGroup) {
   font-weight: bold;
   text-decoration: underline;
-  fill: black !important;
 }
 
-.veAnnotationHovered.veCutsiteLabel {
+.veEditor .veAnnotationHovered.veCutsiteLabel {
   font-weight: bold;
   text-decoration: underline;
-  fill: black !important;
 }
 
 .bp3-dark .veLabels .veAnnotationHovered:not(.topLevelLabelGroup) {
-  fill: white !important;
+  /* fill: white !important; */
   font-weight: normal;
 }
 .bp3-dark .veLabels .veAnnotationHovered rect {

@@ -245,16 +245,15 @@ const DrawLabel = withHover(
               cursor: "pointer",
               position: "absolute",
               bottom: height,
-              ...(hovered && { fontWeight: "bold" }),
+              ...(hovered && { textDecoration: "underline" }),
               ...(annotation.annotationTypePlural !== "cutsites" && {
                 fontStyle: "normal"
               }),
               left: xStart,
-              color: hovered
-                ? "black"
-                : annotation.annotationTypePlural === "parts"
-                ? "purple"
-                : annotation.labelColor,
+              color:
+                annotation.annotationTypePlural === "parts"
+                  ? "purple"
+                  : annotation.labelColor,
               zIndex: 10
             }}
           >
@@ -265,6 +264,7 @@ const DrawLabel = withHover(
             ref={(n) => {
               if (n) this.n = n;
             }}
+            className="veLabelLine"
             style={{
               zIndex: 50,
               position: "absolute",
@@ -272,8 +272,8 @@ const DrawLabel = withHover(
               bottom,
               height: Math.max(heightToUse, 3),
               width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : labelLineIntensity,
-              background: "black"
+              opacity: hovered ? 1 : labelLineIntensity
+              // background: "black"
             }}
           />
         </div>
