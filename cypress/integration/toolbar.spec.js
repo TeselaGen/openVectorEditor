@@ -71,7 +71,7 @@ describe("toolbar", function () {
     cy.contains("Undo Successful").should("not.exist");
     cy.get(".veCircularViewLabelText").contains("CAP site").click();
     cy.contains("Selecting 14 bps from 1115 to 1128");
-    cy.get(".veVectorInteractionWrapper").first().type("{backspace}");
+    cy.focused().type("{backspace}");
     cy.contains("Sequence Deleted Successfully");
     cy.get(`[data-test="veUndoTool"]`).click();
     cy.contains("Undo Successful");

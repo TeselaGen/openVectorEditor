@@ -5,12 +5,10 @@ describe("find tool", function () {
 
   it(`when there is only 1 search result, typing enter in the find tool should jump you back to the search layer`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
-    cy.focused().type("tgacaacttgacggcta", { delay: 1 }); //this should cause 1 region to be selected
+    cy.focused().type("tgacaacttgacggcta"); //this should cause 1 region to be selected
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
     cy.selectRange(400, 450);
-    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should(
-      "not.be.visible"
-    );
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
     //hitting enter again should jump us back to our original search layer!
     cy.focused().type("{enter}");
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");

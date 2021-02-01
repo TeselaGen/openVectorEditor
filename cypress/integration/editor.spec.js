@@ -189,12 +189,12 @@ describe("editor", function () {
     cy.contains("I Am Overridden. Any custom React can go here");
   });
   it(`should focus the linear view`, () => {
-    cy.get(".veLinearView").should("not.be.visible");
+    cy.get(".veLinearView").should("not.exist");
     cy.contains("Focus Linear View").click();
     cy.get(".veLinearView").should("be.visible");
   });
   it(`should shuffle the tabs programatically`, () => {
-    cy.get(".veLinearView").should("not.be.visible");
+    cy.get(".veLinearView").should("not.exist");
     cy.tgToggle("customizeTabs");
     cy.get(".veLinearView").should("be.visible");
     cy.get(".ve-draggable-tabs").last().contains("Sequence Map");

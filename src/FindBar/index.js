@@ -335,7 +335,7 @@ function AnnotationSearchMatchComp({
         const annotationsFound = annotationSearchMatches[i];
         if (!annotationsFound) return null;
         return annotationsFound.length ? (
-          <div>
+          <div key={i}>
             <div className="veAnnotationFoundType">
               {annotationsFound.length} {getSingular(type)} match
               {annotationsFound.length > 1 ? "es" : null}

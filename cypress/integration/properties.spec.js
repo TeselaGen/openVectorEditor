@@ -146,7 +146,7 @@ describe("properties", function () {
     cy.get(".ve-tool-container-cutsiteTool .veToolbarDropdown").click();
     cy.get(".tg-select-clear-all").click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.contains("Double cutters").click();
+    cy.contains(".tg-select-option", "Van").click();
     cy.get(".veLabelText:contains(Van):first").rightclick();
     cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
     cy.contains(".rt-tr-group.selected", "831");
