@@ -232,7 +232,7 @@ function required(val) {
 export default compose(
   withDialog({
     isDraggable: true,
-    height: 480,
+    // height: 480,
     width: 400
   }),
   withEditorProps,

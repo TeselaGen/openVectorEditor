@@ -5,7 +5,7 @@ module.exports = {
   npm: {
     umd: {},
     // comment out the next line and comment in the following lines to avoid building anything but the umd build
-    esModules: true,
+    esModules: true
     // esModules: console.log("commentMeBackOut") || false,
     // cjs: console.log("commentMeBackOut") || false
   },
@@ -20,27 +20,35 @@ module.exports = {
       // **** Just be sure to comment them back out before committing! *****
       // "ve-range-utils":
       //   console.log("comment me back out!") ||
-      //   path.resolve("../ve-range-utils/src/"),
+      //   path.join("../ve-range-utils/src/"),
       // "ve-sequence-utils":
       //   console.log("comment me back out!") ||
-      //   path.resolve("../ve-sequence-utils/src/"),
+      //   path.join("../ve-sequence-utils/src/"),
       // "bio-parsers":
       //   console.log("comment me back out!") ||
-      //   path.resolve("../ve-sequence-parsers/src/parsers/"),
-      // "teselagen-react-components":
+      //   path.join("../ve-sequence-parsers/src/parsers/"),
+      // "teselagen-react-components": //downgrade to nwb @ 0.24.5 to get this to work for now
       //   console.log("comment me back out!") ||
-      //   path.resolve("../teselagen-react-components/src/"),
+      //   path.join(__dirname, "../teselagen-react-components/src/"),
       // "@teselagen/apollo-methods":
       //   console.log("comment me back out!") ||
-      //   path.resolve("../teselagen-common/apollo-methods/src/"),
+      //   path.join("../teselagen-common/apollo-methods/src/"),
 
       //don't comment this out!
-      react: path.resolve(__dirname, "node_modules/react"),
-      "@blueprintjs/core": path.resolve(
+      react: path.join(__dirname, "node_modules/react"),
+      // "../teselagen-react-components/node_modules/@blueprintjs/core/": path.join(
+      //   __dirname,
+      //   "node_modules/@blueprintjs/core"
+      // ),
+      "@blueprintjs/core": path.join(
         __dirname,
         "node_modules/@blueprintjs/core"
       ),
-      "react-dom": path.resolve(__dirname, "node_modules/react-dom")
+      // "@blueprintjs/core/lib": path.join(
+      //   __dirname,
+      //   "node_modules/@blueprintjs/core/lib"
+      // ),
+      "react-dom": path.join(__dirname, "node_modules/react-dom")
     },
     extra: {
       devtool: "source-map"
