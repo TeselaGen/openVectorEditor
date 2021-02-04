@@ -20,6 +20,13 @@ function PartToolDropdown({
   if (!sequenceData) return <div>No Parts Present</div>;
   const keyedTags = getKeyedTagsAndTagOptions(allPartTags);
 
+  // this is what keyedTags looks like:
+  // keyedTags = {
+  //   '12:4': {label,value,id},
+  //   '12:1': {label,value,id},
+  //   '44': {label,value,id},
+  // }
+
   const tags = uniqBy(
     flatMap(sequenceData.parts, ({ tags }) => {
       return flatMap(tags, (t) => {
