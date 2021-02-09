@@ -2328,9 +2328,9 @@
   integrity sha512-W+bw9ds02rAQaMvaLYxAbJ6cvguW/iJXNT6lTssS1ps6QdrMKttqEAMEG/b5CR8TZl3/L7/lH0ZV5nNR1LXikA==
 
 "@types/uglify-js@*":
-  version "3.11.1"
-  resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.11.1.tgz#97ff30e61a0aa6876c270b5f538737e2d6ab8ceb"
-  integrity sha512-7npvPKV+jINLu1SpSYVWG8KvyJBhBa8tmzMMdDoVc2pWUYHN8KIXlPJhjJ4LT97c4dXJA2SHL/q6ADbDriZN+Q==
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.12.0.tgz#2bb061c269441620d46b946350c8f16d52ef37c5"
+  integrity sha512-sYAF+CF9XZ5cvEBkI7RtrG9g2GtMBkviTnBxYYyq+8BWvO4QtXfwwR6a2LFwCi4evMKZfpv6U43ViYvv17Wz3Q==
   dependencies:
     source-map "^0.6.1"
 
@@ -3885,7 +3885,12 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001093:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001176.tgz"
   integrity sha512-VWdkYmqdkDLRe0lvfJlZQ43rnjKqIGKHWhWWRbkqMsJIUaYDNf/K/sdZZcVO6YKQklubokdkJY+ujArsuJ5cag==
 
-caniuse-lite@^1.0.30001061, caniuse-lite@^1.0.30001181:
+caniuse-lite@^1.0.30001061:
+  version "1.0.30001185"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001185.tgz#3482a407d261da04393e2f0d61eefbc53be43b95"
+  integrity sha512-Fpi4kVNtNvJ15H0F6vwmXtb3tukv3Zg3qhKkOGUq7KJ1J6b9kf4dnNgtEAFXhRsJo0gNj9W60+wBvn0JcTvdTg==
+
+caniuse-lite@^1.0.30001181:
   version "1.0.30001183"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001183.tgz#7a57ba9d6584119bb5f2bc76d3cc47ba9356b3e2"
   integrity sha512-7JkwTEE1hlRKETbCFd8HDZeLiQIUcl8rC6JgNjvHCNaxOeNmQ9V4LvQXRUsKIV2CC73qKxljwVhToaA3kLRqTw==
@@ -6874,9 +6879,9 @@ graceful-fs@^4.1.15, graceful-fs@^4.2.0:
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
 graceful-fs@^4.2.4:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
-  integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.5.tgz#bc18864a6c9fc7b303f2e2abdb9155ad178fbe29"
+  integrity sha512-kBBSQbz2K0Nyn+31j/w36fUfxkBW9/gfwRWdUY1ULReH3iokVJgddZAFcD1D0xlgTmFxJCbUkUclAlc6/IDJkw==
 
 growl@1.10.5:
   version "1.10.5"
@@ -9450,7 +9455,7 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-nwb@^0.25.2:
+nwb@0.25.2:
   version "0.25.2"
   resolved "https://registry.yarnpkg.com/nwb/-/nwb-0.25.2.tgz#4499f99e2c6618949fdef043438f874697b5f009"
   integrity sha512-0kybp/3XSV2EYeP90p7boyDsEuZfczgp8zyghxlFG+PONHrqE3jFVPWNmPGKKY6udi0vK2paHTcSg006attOsA==
@@ -12810,10 +12815,10 @@ terser@^4.6.13:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^29.4.3:
-  version "29.4.3"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-29.4.3.tgz#a2d415ecc7e0890928d85c60c283bf89369eccdb"
-  integrity sha512-RJ5pFj7q6FE07SMs4or/maEhuAXG86K5dFcb1dt7nmPFSs853g4T4vf/lYCS2NpaixI6dB9ChVNGj9ckq7fOHA==
+teselagen-react-components@^29.4.5:
+  version "29.4.5"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-29.4.5.tgz#386bcba0921a653e07e181b5eeefa29ad51d3c73"
+  integrity sha512-Ka3xViX5CcLLbOfWe1E7f0gEEbiU/OCMYwZNrjZKIXGViw/4+eeUa7QvSIK81Sa3fINaD2PNPasPLX1EPbVh3A==
   dependencies:
     "@blueprintjs/core" "^3.38.2"
     "@blueprintjs/datetime" "^3.20.4"

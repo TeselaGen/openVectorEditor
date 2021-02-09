@@ -1,4 +1,4 @@
-import { Button, Icon } from "@blueprintjs/core";
+import { Button, Icon, InputGroup } from "@blueprintjs/core";
 import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 import { isRangeOrPositionWithinRange } from "ve-range-utils";
@@ -235,6 +235,107 @@ export default class EditorDemo extends React.Component {
       withPreviewMode
     } = this.state;
 
+    const editorHandlers = [
+      renderToggle({
+        that: this,
+        type: "onNew"
+      }),
+      renderToggle({
+        that: this,
+        type: "onImport"
+      }),
+      renderToggle({
+        that: this,
+        type: "beforeAnnotationCreate"
+      }),
+      renderToggle({
+        that: this,
+        type: "onSave"
+      }),
+      renderToggle({
+        that: this,
+        type: "onSaveAs"
+      }),
+      renderToggle({
+        that: this,
+        type: "alwaysAllowSave"
+      }),
+      renderToggle({
+        that: this,
+        type: "generatePng",
+        info:
+          "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
+      }),
+      renderToggle({
+        that: this,
+        type: "onRename"
+      }),
+      renderToggle({
+        that: this,
+        type: "onDuplicate"
+      }),
+      renderToggle({
+        that: this,
+        type: "onSelectionOrCaretChanged"
+      }),
+      renderToggle({
+        that: this,
+        type: "onCreateNewFromSubsequence",
+        info:
+          "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
+      }),
+      renderToggle({
+        that: this,
+        type: "onDelete",
+        info:
+          "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
+      }),
+      renderToggle({
+        that: this,
+        label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
+        type: "beforeSequenceInsertOrDelete",
+        info: `
+The beforeSequenceInsertOrDelete handler can be used to 
+override the values being used in the insertion/deletion
+\`\`\`
+beforeSequenceInsertOrDelete: (
+sequenceDataToInsert,
+existingSequenceData,
+caretPositionOrRange,
+// the maintainOriginSplit option will be passed in as TRUE on complement/revComp actions (delete --> insert at start of selection and wrap around origin)
+// and FALSE on replace actions (delete --> insert at end of selection)
+options // {maintainOriginSplit: true} 
+) => {
+return {
+// you can return one or more of the following to override the values used
+sequenceDataToInsert: myFilterSequenceDataToInsertFn(sequenceDataToInsert),
+existingSequenceData: myFilterExistingSeqFn(sequenceDataToInsert,caretPositionOrRange),
+caretPositionOrRange: myChangeCaretPosFn(caretPositionOrRange),
+options
+}
+}
+\`\`\`
+`
+      }),
+      renderToggle({
+        that: this,
+        disabled: !this.state.beforeSequenceInsertOrDelete,
+        type: "maintainOriginSplit",
+        label: "maintainOriginSplit (when pasting text)",
+        info: `
+This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabled.  See the description and code example for beforeSequenceInsertOrDelete to use this feature.
+\`\`\`
+`
+      }),
+      renderToggle({
+        that: this,
+        type: "onCopy"
+      }),
+      renderToggle({
+        that: this,
+        type: "onPaste"
+      })
+    ].filter((i) => i);
     return (
       <React.Fragment>
         {/* <button onClick={() => {
@@ -243,7 +344,12 @@ export default class EditorDemo extends React.Component {
           dragMock.dragStart(dragSource).dragEnter(dropTarget).dragOver(dropTarget).delay(500).dragEnd()
         }}>click me!</button> */}
         <div style={{ width: 250 }}>
-          {renderToggle({ that: this, type: "showDemoOptions" })}
+          {renderToggle({
+            that: this,
+            alwaysShow: true,
+            type: "showDemoOptions",
+            label: "Show Demo Options"
+          })}
         </div>
 
         <div
@@ -275,13 +381,36 @@ export default class EditorDemo extends React.Component {
                 borderRight: "1px solid lightgrey"
               }}
             >
-              <Button
-                icon="refresh"
-                style={{ marginLeft: 10, marginRight: 10 }}
-                onClick={this.resetDefaultState}
-              >
-                Reset Demo Defaults
-              </Button>
+              <div style={{ paddingLeft: 10, paddingRight: 10 }}>
+                <Button
+                  icon="refresh"
+                  style={{ marginLeft: 10, marginRight: 10, marginBottom: 5 }}
+                  onClick={this.resetDefaultState}
+                >
+                  Reset Demo Defaults
+                </Button>
+                <InputGroup
+                  round
+                  rightElement={
+                    this.state.searchInput ? (
+                      <Button
+                        onClick={() => {
+                          this.setState({ searchInput: "" });
+                        }}
+                        minimal
+                        small
+                        icon="cross"
+                      ></Button>
+                    ) : null
+                  }
+                  leftIcon="filter"
+                  placeholder="Search Options.."
+                  value={this.state.searchInput || ""}
+                  onChange={(e) => {
+                    this.setState({ searchInput: e.target.value });
+                  }}
+                />
+              </div>
 
               {renderToggle({
                 info: `
@@ -1195,106 +1324,11 @@ clickOverrides: {
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
 
-              <strong>Editor Handlers: </strong>
-              {renderToggle({
-                that: this,
-                type: "onNew"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onImport"
-              })}
-              {renderToggle({
-                that: this,
-                type: "beforeAnnotationCreate"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onSave"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onSaveAs"
-              })}
-              {renderToggle({
-                that: this,
-                type: "alwaysAllowSave"
-              })}
-              {renderToggle({
-                that: this,
-                type: "generatePng",
-                info:
-                  "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
-              })}
-              {renderToggle({
-                that: this,
-                type: "onRename"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onDuplicate"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onSelectionOrCaretChanged"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onCreateNewFromSubsequence",
-                info:
-                  "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onDelete",
-                info:
-                  "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
-              })}
-              {renderToggle({
-                that: this,
-                label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
-                type: "beforeSequenceInsertOrDelete",
-                info: `
-The beforeSequenceInsertOrDelete handler can be used to 
-override the values being used in the insertion/deletion
-\`\`\`
-beforeSequenceInsertOrDelete: (
-  sequenceDataToInsert,
-  existingSequenceData,
-  caretPositionOrRange,
-  // the maintainOriginSplit option will be passed in as TRUE on complement/revComp actions (delete --> insert at start of selection and wrap around origin)
-  // and FALSE on replace actions (delete --> insert at end of selection)
-  options // {maintainOriginSplit: true} 
-) => {
-  return {
-    // you can return one or more of the following to override the values used
-    sequenceDataToInsert: myFilterSequenceDataToInsertFn(sequenceDataToInsert),
-    existingSequenceData: myFilterExistingSeqFn(sequenceDataToInsert,caretPositionOrRange),
-    caretPositionOrRange: myChangeCaretPosFn(caretPositionOrRange),
-    options
-  }
-}
-\`\`\`
-`
-              })}
-              {renderToggle({
-                that: this,
-                disabled: !this.state.beforeSequenceInsertOrDelete,
-                type: "maintainOriginSplit",
-                label: "maintainOriginSplit (when pasting text)",
-                info: `
-This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabled.  See the description and code example for beforeSequenceInsertOrDelete to use this feature.
-\`\`\`
-`
-              })}
-              {renderToggle({
-                that: this,
-                type: "onCopy"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onPaste"
-              })}
+              {editorHandlers.length ? (
+                <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
+              ) : null}
+              {editorHandlers}
+
               <br />
               <br />
             </div>
