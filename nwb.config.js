@@ -30,10 +30,7 @@ module.exports = {
       // "teselagen-react-components": //downgrade to nwb @ 0.24.5 to get this to work for now
       //   console.log("comment me back out!") ||
       //   path.join(__dirname, "../teselagen-react-components/src/"),
-      // "@teselagen/apollo-methods":
-      //   console.log("comment me back out!") ||
-      //   path.join("../teselagen-common/apollo-methods/src/"),
-
+      
       //don't comment this out!
       react: path.join(__dirname, "node_modules/react"),
       // "../teselagen-react-components/node_modules/@blueprintjs/core/": path.join(
