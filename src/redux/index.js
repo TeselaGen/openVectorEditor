@@ -31,6 +31,7 @@ import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
+import * as showGCContent from "./showGCContent";
 
 import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
@@ -64,6 +65,7 @@ const subReducers = {
   sequenceData,
   useAdditionalOrfStartCodons,
   uppercaseSequenceMapFont,
+  showGCContent,
   externalLabels,
   labelLineIntensity,
   labelSize,
@@ -174,6 +176,12 @@ export default function reducerFactory(initialState = {}) {
           !state.__allEditorsOptions
             ? undefined
             : state.__allEditorsOptions.uppercaseSequenceMapFont,
+          action
+        ),
+        showGCContent: showGCContent.default(
+          !state.__allEditorsOptions
+            ? undefined
+            : state.__allEditorsOptions.showGCContent,
           action
         ),
         externalLabels: externalLabels.default(

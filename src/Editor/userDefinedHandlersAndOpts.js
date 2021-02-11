@@ -10,7 +10,7 @@ export const userDefinedHandlersAndOpts = [
   "showReadOnly",
   "showCircularity",
   "showAvailability",
-  "showGCContent",
+  "showGCContentByDefault",
   "GCDecimalDigits",
   "onlyShowLabelsThatDoNotFit",
   "fullscreenMode",

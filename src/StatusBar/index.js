@@ -3,7 +3,8 @@ import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
 import {
   connectToEditor,
   updateCircular,
-  handleInverse
+  handleInverse,
+  getShowGCContent
 } from "../withEditorProps";
 import "./style.css";
 import { withHandlers, compose } from "recompose";
@@ -47,13 +48,20 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
 
 const ShowSelectionItem = compose(
   connectToEditor(
-    ({ selectionLayer, caretPosition, sequenceData = { sequence: "" } }) => ({
-      selectionLayer,
-      isProtein: sequenceData.isProtein,
-      caretPosition,
-      sequenceLength: sequenceData.sequence.length,
-      sequenceData
-    })
+    (
+      { selectionLayer, caretPosition, sequenceData = { sequence: "" } },
+      ownProps,
+      ...rest
+    ) => {
+      return {
+        showGCContent: getShowGCContent(rest[rest.length - 1], ownProps),
+        selectionLayer,
+        isProtein: sequenceData.isProtein,
+        caretPosition,
+        sequenceLength: sequenceData.sequence.length,
+        sequenceData
+      };
+    }
   ),
   withHandlers({ handleInverse })
 )(
@@ -76,6 +84,7 @@ const ShowSelectionItem = compose(
             sequenceLength,
             sequenceData,
             showGCContent,
+
             GCDecimalDigits,
             isProtein
           })}
@@ -182,7 +191,7 @@ export function StatusBar({
   showCircularity = true,
   showReadOnly = true,
   showAvailability = false,
-  showGCContent = false,
+  showGCContentByDefault,
   onSelectionOrCaretChanged,
   GCDecimalDigits = 1,
   isProtein
@@ -208,7 +217,7 @@ export function StatusBar({
       <ShowSelectionItem
         editorName={editorName}
         isProtein={isProtein}
-        showGCContent={showGCContent}
+        showGCContentByDefault={showGCContentByDefault}
         onSelectionOrCaretChanged={onSelectionOrCaretChanged}
         GCDecimalDigits={GCDecimalDigits}
       />

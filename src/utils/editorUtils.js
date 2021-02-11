@@ -13,8 +13,8 @@ export function getSelectionMessage({
   customTitle,
   sequenceLength,
   sequenceData,
-  showGCContent,
-  GCDecimalDigits,
+  showGCContent, //these are only passed in for the status bar
+  GCDecimalDigits, //these are only passed in for the status bar
   isProtein
 }) {
   let isSelecting = selectionLayer.start > -1;

@@ -142,6 +142,11 @@ export default [
   // { cmd: "spaces" },
   { divider: "" },
   {
+    cmd: "toggleShowGCContent",
+    shouldDismissPopover: false,
+    text: "Percent GC Content in Selection"
+  },
+  {
     text: "Sequence Case",
     cmd: "sequenceCase",
     submenu: [

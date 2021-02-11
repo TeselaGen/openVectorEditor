@@ -660,6 +660,16 @@ const editCommandDefs = {
     };
     return acc;
   }, {}),
+
+  toggleShowGCContent: {
+    isActive: (props) => props.showGCContent,
+    handler: (props) => {
+      props.toggleShowGCContent(!props.showGCContent);
+      // window.toastr.success(`Sequence Case View Changed`);
+    }
+    // hotkey: "ctrl+option+plus"
+  },
+
   toggleSequenceMapFontUpper: {
     isActive: (props) => props.uppercaseSequenceMapFont === "uppercase",
     handler: (props) => {

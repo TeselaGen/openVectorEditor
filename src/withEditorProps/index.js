@@ -628,7 +628,8 @@ function mapStateToProps(state, ownProps) {
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
     sequenceData: sequenceDataToUse,
-    uppercaseSequenceMapFont
+    uppercaseSequenceMapFont,
+    showGCContent: getShowGCContent(state, ownProps)
   };
 }
 
@@ -866,3 +867,13 @@ const getUpperOrLowerSeq = defaultMemoize(
       ? sequence.toLowerCase()
       : sequence
 );
+
+export function getShowGCContent(state, ownProps) {
+  let showGCContent = state.VectorEditor.__allEditorsOptions.showGCContent;
+
+  const toRet =
+    showGCContent === null
+      ? ownProps.showGCContentByDefault //user hasn't yet set this option
+      : showGCContent;
+  return toRet;
+}

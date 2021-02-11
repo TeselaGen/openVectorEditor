@@ -40,7 +40,7 @@ const defaultState = {
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
-  showGCContent: false,
+  showGCContentByDefault: false,
   GCDecimalDigits: 1,
   onlyShowLabelsThatDoNotFit: true,
   overrideToolbarOptions: false,
@@ -1264,8 +1264,12 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                type: "showGCContent",
-                info: `pass showGCContent=true to the <Editor> to display the %GC content. You'll need to select some DNA bps to see it in the status bar!`
+                hook: () => {
+                  window.localStorage.clear();
+                },
+                label: "Show GC Content by default (reload required)",
+                type: "showGCContentByDefault",
+                info: `pass showGCContentByDefault=true to the <Editor/> to display the %GC content by default (note this will still allow the user to override that preference)`
               })}
               {renderToggle({
                 that: this,
@@ -1746,7 +1750,7 @@ clickOverrides: {
             withRotateCircularView={this.state.withRotateCircularView}
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
-            showGCContent={this.state.showGCContent}
+            showGCContentByDefault={this.state.showGCContentByDefault}
             onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}
