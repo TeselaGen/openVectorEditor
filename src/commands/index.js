@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag, Classes, NumericInput } from "@blueprintjs/core";
+import { Tag, Classes, NumericInput, MenuItem } from "@blueprintjs/core";
 import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
@@ -25,6 +25,7 @@ import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 import packageJson from "../../package.json";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
+import useLocalStorageState from "use-local-storage-state";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
 
@@ -665,9 +666,29 @@ const editCommandDefs = {
     isActive: (props) => props.showGCContent,
     handler: (props) => {
       props.toggleShowGCContent(!props.showGCContent);
-      // window.toastr.success(`Sequence Case View Changed`);
     }
-    // hotkey: "ctrl+option+plus"
+  },
+
+  // toggleShowMeltingTemp: ToggleShowMeltingTemp,
+
+  toggleShowMeltingTemp: {
+    isActive: () => {
+      console.log(`yo`)
+    },
+    component: function ToggleShowMeltingTemp() {
+      const [showMeltingTemp, setShowMeltingTemp] = useLocalStorageState(
+        "showMeltingTemp"
+      );
+      return (
+        <MenuItem
+          text="Show Melting Temp of Selection"
+          onClick={() => {
+            setShowMeltingTemp(!showMeltingTemp);
+          }}
+          icon={showMeltingTemp ? "small-tick" : "blank"}
+        ></MenuItem>
+      );
+    },
   },
 
   toggleSequenceMapFontUpper: {
@@ -1313,3 +1334,4 @@ const invertString = function (str) {
   }
   return s;
 };
+

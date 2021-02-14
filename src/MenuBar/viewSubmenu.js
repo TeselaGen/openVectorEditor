@@ -1,3 +1,8 @@
+import { MenuItem } from "@blueprintjs/core";
+import useLocalStorageState from "use-local-storage-state";
+import React from "react";
+import { toggleShowMeltingTemp } from "../redux/showMeltingTemp";
+
 export const fullSequenceTranslationMenu = {
   text: "Full Sequence Translation",
   cmd: "fullSequenceTranslations",
@@ -144,8 +149,30 @@ export default [
   {
     cmd: "toggleShowGCContent",
     shouldDismissPopover: false,
-    text: "Percent GC Content in Selection"
+    text: "Percent GC Content of Selection"
   },
+  <ToggleShowMeltingTemp key="ToggleShowMeltingTemp"></ToggleShowMeltingTemp>,
+  // {
+  //   shouldDismissPopover: false,
+  //   // text: "Melting Temp of Selection",
+  //   component: function ToggleShowMeltingTemp(props) {
+  //     console.log(`props:`,props)
+  //     const [showMeltingTemp, setShowMeltingTemp] = useLocalStorageState(
+  //       "showMeltingTemp"
+  //     );
+  //     return (
+  //       <MenuItem
+  //       children="Show Melting Temp of Selection"
+  //         text="Show Melting Temp of Selection"
+  //         onClick={() => {
+  //           setShowMeltingTemp(!showMeltingTemp);
+  //         }}
+  //         icon={'small-tick'}
+  //         // icon={showMeltingTemp ? "small-tick" : "blank"}
+  //       ></MenuItem>
+  //     );
+  //   }
+  // },
   {
     text: "Sequence Case",
     cmd: "sequenceCase",
@@ -197,3 +224,21 @@ export default [
     ]
   }
 ];
+
+function ToggleShowMeltingTemp(props) {
+  console.log(`props:`,props)
+  const [showMeltingTemp, setShowMeltingTemp] = useLocalStorageState(
+    "showMeltingTemp"
+  );
+  return (
+    <MenuItem
+    children="Show Melting Temp of Selection"
+      text="Show Melting Temp of Selection"
+      onClick={() => {
+        setShowMeltingTemp(!showMeltingTemp);
+      }}
+      icon={'small-tick'}
+      // icon={showMeltingTemp ? "small-tick" : "blank"}
+    ></MenuItem>
+  );
+}

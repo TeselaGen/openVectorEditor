@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
+import useLocalStorageState from "use-local-storage-state";
 import {
   connectToEditor,
   updateCircular,
@@ -10,6 +11,8 @@ import "./style.css";
 import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
+import getSequenceDataBetweenRange from "ve-sequence-utils/lib/getSequenceDataBetweenRange";
+import { calculateTm } from "ve-sequence-utils/lib";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -75,6 +78,9 @@ const ShowSelectionItem = compose(
     GCDecimalDigits,
     handleInverse
   }) => {
+     
+    const [showMeltingTemp] = useLocalStorageState('showMeltingTemp')
+
     return (
       <React.Fragment>
         <StatusBarItem dataTest="veStatusBar-selection">
@@ -99,6 +105,18 @@ const ShowSelectionItem = compose(
             Select Inverse
           </Button>
         </StatusBarItem>
+        {showMeltingTemp && <StatusBarItem dataTest="veStatusBar-selection-tm">
+          <Button
+            minimal
+            disabled={sequenceLength <= 0}
+            onClick={handleInverse}
+            small
+          >
+            Melting Temp {calculateTm(
+              getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence
+            )}
+          </Button>
+        </StatusBarItem>}
       </React.Fragment>
     );
   }
