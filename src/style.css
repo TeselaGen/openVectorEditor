@@ -59,6 +59,10 @@
 .ove-portal {
   z-index: 100000;
 }
+body.tg-no-scroll-body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
 
 /* needed to prevent the input bubble from losing focus post user drag */
 /* body.sequenceDragging {

@@ -347,6 +347,16 @@ export class Editor extends React.Component {
         height
       }
     };
+    try {
+      //tnr: fixes https://github.com/TeselaGen/openVectorEditor/issues/689
+      if (previewModeFullscreen) {
+        window.document.body.classList.add("tg-no-scroll-body");
+      } else {
+        window.document.body.classList.remove("tg-no-scroll-body");
+      }
+    } catch (e) {
+      console.warn(`Error 3839458:`, e);
+    }
 
     if (withPreviewMode && !previewModeFullscreen) {
       return (
@@ -766,7 +776,9 @@ export class Editor extends React.Component {
           }),
           ...style
         }}
-        className={`veEditor ${editorName}`}
+        className={`veEditor ${editorName} ${
+          previewModeFullscreen ? "previewModeFullscreen" : ""
+        }`}
       >
         <Dialogs
           editorName={editorName}
