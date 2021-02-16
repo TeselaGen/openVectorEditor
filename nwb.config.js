@@ -27,9 +27,9 @@ module.exports = {
       // "bio-parsers":
       //   console.log("comment me back out!") ||
       //   path.join("../ve-sequence-parsers/src/parsers/"),
-      "teselagen-react-components": //downgrade to nwb @ 0.24.5 to get this to work for now
-        console.log("comment me back out!") ||
-        path.join(__dirname, "../teselagen-react-components/src/"),
+      // "teselagen-react-components": //downgrade to nwb @ 0.24.5 to get this to work for now
+      //   console.log("comment me back out!") ||
+      //   path.join(__dirname, "../teselagen-react-components/src/"),
       
       //don't comment this out!
       react: path.join(__dirname, "node_modules/react"),

@@ -33,7 +33,7 @@ class OveMenuBar extends React.Component {
       console.warn(
         `It's likely you're passing a new "menuFilter" function every time. This will cause unecessary re-renders. Try not to recreate a new function each time!`
       );
-    return menuFilter(JSON.parse(JSON.stringify(menuDef)));
+    return menuFilter(menuDef);
   });
   oveMenuToastrSuccess = (message, { loading } = {}) => {
     this.setState({ successMessage: message, successMessageLoading: loading });

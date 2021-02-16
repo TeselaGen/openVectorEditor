@@ -1264,8 +1264,8 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                hook: () => {
-                  window.localStorage.clear();
+                hook: (show) => {
+                  show && window.localStorage.clear();
                 },
                 label: "Show GC Content by default (reload required)",
                 type: "showGCContentByDefault",

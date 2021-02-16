@@ -1,8 +1,6 @@
 import { merge } from "lodash";
 import * as createYourOwnEnzyme from "./createYourOwnEnzyme";
 import * as showGCContent from "./showGCContent";
-import * as showMeltingTemp from "./showMeltingTemp";
-
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
@@ -67,7 +65,6 @@ const subReducers = {
   useAdditionalOrfStartCodons,
   uppercaseSequenceMapFont,
   showGCContent,
-  showMeltingTemp,
   externalLabels,
   labelLineIntensity,
   labelSize,
@@ -171,7 +168,6 @@ export default function reducerFactory(initialState = {}) {
         ["createYourOwnEnzyme", createYourOwnEnzyme],
         ["uppercaseSequenceMapFont", uppercaseSequenceMapFont],
         ["showGCContent", showGCContent],
-        ["showMeltingTemp", showMeltingTemp],
         ["externalLabels", externalLabels],
         ["labelLineIntensity", labelLineIntensity],
         ["labelSize", labelSize],

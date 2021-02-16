@@ -1,4 +1,13 @@
 describe("statusBar", function () {
+  it("melting temp should be an option in the menu bar", function () {
+    cy.visit("");
+    cy.selectRange(10, 30);
+    cy.contains("Melting Temp").should("not.exist");
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".bp3-menu-item").contains("Melting Temp").click();
+    cy.contains("Melting Temp: 62.69").click();
+    cy.get(`[value="default"][checked]`);
+  });
   it("can change to linear mode via the status bar and get a warning that annotations will be truncated", function () {
     cy.visit("");
     cy.get(`[data-test="veStatusBar-circularity"]`)

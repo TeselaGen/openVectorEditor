@@ -1,7 +1,6 @@
 import { MenuItem } from "@blueprintjs/core";
-import useLocalStorageState from "use-local-storage-state";
 import React from "react";
-import { toggleShowMeltingTemp } from "../redux/showMeltingTemp";
+import useMeltingTemp from "../utils/useMeltingTemp";
 
 export const fullSequenceTranslationMenu = {
   text: "Full Sequence Translation",
@@ -152,27 +151,6 @@ export default [
     text: "Percent GC Content of Selection"
   },
   <ToggleShowMeltingTemp key="ToggleShowMeltingTemp"></ToggleShowMeltingTemp>,
-  // {
-  //   shouldDismissPopover: false,
-  //   // text: "Melting Temp of Selection",
-  //   component: function ToggleShowMeltingTemp(props) {
-  //     console.log(`props:`,props)
-  //     const [showMeltingTemp, setShowMeltingTemp] = useLocalStorageState(
-  //       "showMeltingTemp"
-  //     );
-  //     return (
-  //       <MenuItem
-  //       children="Show Melting Temp of Selection"
-  //         text="Show Melting Temp of Selection"
-  //         onClick={() => {
-  //           setShowMeltingTemp(!showMeltingTemp);
-  //         }}
-  //         icon={'small-tick'}
-  //         // icon={showMeltingTemp ? "small-tick" : "blank"}
-  //       ></MenuItem>
-  //     );
-  //   }
-  // },
   {
     text: "Sequence Case",
     cmd: "sequenceCase",
@@ -225,20 +203,16 @@ export default [
   }
 ];
 
-function ToggleShowMeltingTemp(props) {
-  console.log(`props:`,props)
-  const [showMeltingTemp, setShowMeltingTemp] = useLocalStorageState(
-    "showMeltingTemp"
-  );
+function ToggleShowMeltingTemp() {
+  const [showMeltingTemp, setShowMeltingTemp] = useMeltingTemp();
   return (
     <MenuItem
-    children="Show Melting Temp of Selection"
-      text="Show Melting Temp of Selection"
+      shouldDismissPopover={false}
+      text="Melting Temp of Selection"
       onClick={() => {
         setShowMeltingTemp(!showMeltingTemp);
       }}
-      icon={'small-tick'}
-      // icon={showMeltingTemp ? "small-tick" : "blank"}
+      icon={showMeltingTemp ? "small-tick" : "blank"}
     ></MenuItem>
   );
 }
