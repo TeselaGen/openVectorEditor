@@ -3393,10 +3393,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-7.0.2.tgz#454d3fc8e2f3087b59ef14dd913fd3390a013cb8"
-  integrity sha512-chUUBmx2c7CN59TW/zlfwbNl9zgZ1NoJAexi6pIslRalw32d/yz1Zjm7V4FWWFt5SqquZlz1rqhJ4v/B3atmwg==
+bio-parsers@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-7.0.5.tgz#3c4a49321987a8f5d0bf25938226fa5d321fd5c9"
+  integrity sha512-8G+eHPoOTyISn6zjdVm9PXsudLBdNDpvvhNqe3xidVg1I/63lejqCB36KJ7OWW9Qt5+oyNJsSp/fdhpa/oi7wA==
   dependencies:
     "@gmod/gff" "^1.1.2"
     buffer "^6.0.3"
@@ -8870,10 +8870,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@10.5.3:
-  version "10.5.3"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.5.3.tgz#c682838b3eadd4c864d1022da05daa0912fb1da5"
-  integrity sha512-TanwFfuqUBLufxCc3RUtFEkFraSPNR3WzWcGF39R3f2J7S9+iF9W0KTVLfSy09lYGmZS5NDCxjNvhGMSJyFCWg==
+lint-staged@10.5.4:
+  version "10.5.4"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.5.4.tgz#cd153b5f0987d2371fc1d2847a409a2fe705b665"
+  integrity sha512-EechC3DdFic/TdOPgj/RB3FicqE6932LTHCUm0Y2fsD9KGlLB+RwJl2q1IYBIvEsKzDOgn0D4gll+YxG5RsrKg==
   dependencies:
     chalk "^4.1.0"
     cli-truncate "^2.1.0"
@@ -13481,10 +13481,10 @@ terser@^4.4.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^29.4.5:
-  version "29.4.5"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-29.4.5.tgz#386bcba0921a653e07e181b5eeefa29ad51d3c73"
-  integrity sha512-Ka3xViX5CcLLbOfWe1E7f0gEEbiU/OCMYwZNrjZKIXGViw/4+eeUa7QvSIK81Sa3fINaD2PNPasPLX1EPbVh3A==
+teselagen-react-components@^29.4.12:
+  version "29.4.12"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-29.4.12.tgz#432f1f6b95f7b8e7bf0000a6de4ab107f4f172ec"
+  integrity sha512-KJmSQlL2uBEpdqBzVHoyA6FvOWJzXTkGa6ItoQ+JgS2rGfj6AwIM6p6IS3NKy8aMvDFir1BI3Bj1FVvUxa8bZw==
   dependencies:
     "@blueprintjs/core" "^3.38.2"
     "@blueprintjs/datetime" "^3.20.4"
@@ -13511,8 +13511,8 @@ teselagen-react-components@^29.4.5:
     react-transition-group "^2.4.0"
     recompose "^0.30.0"
     redux-form "^7.4.2"
+    shortid "^2.2.16"
     tg-client-query-builder "^2.12.2"
-    uniqid "^5.2.0"
     use-deep-compare-effect "^1.5.0"
 
 test-exclude@^6.0.0:
@@ -13934,11 +13934,6 @@ uniq@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
   integrity sha1-sxxa6CVIRKOoKBVBzisEuGWnNP8=
-
-uniqid@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/uniqid/-/uniqid-5.2.0.tgz#0d0589a7e9ce07116848126764fbff0b68e74329"
-  integrity sha512-LH8zsvwJ/GL6YtNfSOmMCrI9piraAUjBfw2MCvleNE6a4pVKJwXjG2+HWhkVeFcSg+nmaPKbMrMOoxwQluZ1Mg==
 
 uniqs@^2.0.0:
   version "2.0.0"
