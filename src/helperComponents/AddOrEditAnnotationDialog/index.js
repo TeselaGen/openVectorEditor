@@ -366,7 +366,10 @@ class AddOrEditAnnotationDialog extends React.Component {
               //update the selection layer so we don't jump away from where we're editing
               //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
               original_selectionLayerUpdate &&
-                original_selectionLayerUpdate(newAnnotation);
+                original_selectionLayerUpdate({
+                  start: newAnnotation.start,
+                  end: newAnnotation.end
+                });
               upsertAnnotation(newAnnotation);
               annotationVisibilityShow(annotationTypePlural);
               hideModal();

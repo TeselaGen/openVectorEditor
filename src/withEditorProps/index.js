@@ -368,8 +368,7 @@ export default compose(
         } else {
           const rangeToUse =
             selectionLayer.start > -1
-              ? //tnr: don't pass the selection layer directly because it might contain additional annotation info
-                { start: selectionLayer.start, end: selectionLayer.end }
+              ? { ...selectionLayer, id: undefined }
               : caretPosition > -1
               ? {
                   start: caretPosition,
