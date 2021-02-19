@@ -355,6 +355,7 @@ export default compose(
           end: sequenceLength - 1
         });
     },
+    //handleNewPrimer handleNewFeature handleNewPart
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
       acc[`handleNew${key}`] = (props) => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
@@ -367,7 +368,8 @@ export default compose(
         } else {
           const rangeToUse =
             selectionLayer.start > -1
-              ? selectionLayer
+              ? //tnr: don't pass the selection layer directly because it might contain additional annotation info
+                { start: selectionLayer.start, end: selectionLayer.end }
               : caretPosition > -1
               ? {
                   start: caretPosition,
@@ -379,7 +381,6 @@ export default compose(
                   start: 0,
                   end: sequenceData.isProtein ? 2 : 0
                 };
-
           handler({
             ...rangeToUse,
             forward: !(selectionLayer.forward === false)

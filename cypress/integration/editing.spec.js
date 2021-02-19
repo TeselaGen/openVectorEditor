@@ -8,6 +8,17 @@ describe("editor", function () {
   //   // cy.window()
   // })
 
+  it(`editing a part/feature and saving shouldn't make the new part/feature window initialize in edit mode`, () => {
+    cy.contains(".veRowView text", "Part 0").rightclick();
+    cy.contains(`.bp3-menu-item`, "Edit Part").click();
+    cy.contains(".bp3-dialog button", "Save").click();
+
+    cy.contains(`button`, "Help").click();
+    cy.focused().type("New Part{enter}");
+    cy.contains(`.bp3-dialog`, "New Part");
+    cy.get(`[placeholder="Untitled Annotation"]`);
+  });
+
   it(`should return focus correctly after typing in chars in circular view`, () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veCircularView text", "Part 0").click();
