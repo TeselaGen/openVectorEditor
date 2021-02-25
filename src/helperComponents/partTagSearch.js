@@ -15,7 +15,8 @@ function PartToolDropdown({
   selectedPartTags,
   allPartTags,
   annotationVisibilityShow,
-  editTagsLink
+  editTagsLink,
+  dontAutoOpen
 }) {
   if (!sequenceData) return <div>No Parts Present</div>;
   const keyedTags = getKeyedTagsAndTagOptions(allPartTags);
@@ -62,7 +63,7 @@ function PartToolDropdown({
             }
           }}
           options={tags}
-          // autoOpen
+          autoOpen={!dontAutoOpen}
         ></TgSelect>
         {editTagsLink || null}
       </div>

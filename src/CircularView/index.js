@@ -295,7 +295,9 @@ export function CircularView(props) {
             : limits[layerName]) || 50;
         let [annotations, paredDown] = isAnnotation
           ? pareDownAnnotations(
-              sequenceData["filtered" + nameUpper] || sequenceData[layerName],
+              sequenceData["filtered" + nameUpper] ||
+                sequenceData[layerName] ||
+                {},
               maxToShow
             )
           : [];

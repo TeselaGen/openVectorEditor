@@ -18,7 +18,7 @@ let defaultMarginWidth = 10;
 
 function noop() {}
 
-export class LinearView extends React.Component {
+class _LinearView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
@@ -82,7 +82,7 @@ export class LinearView extends React.Component {
               ? maxAnnotationsToDisplay[type]
               : limits[type]) || 50;
           let [annotations, paredDown] = pareDownAnnotations(
-            sequenceData["filtered" + nameUpper] || sequenceData[type],
+            sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
             maxToShow
           );
 
@@ -255,9 +255,8 @@ const WithAnnotationLimitsHoc = (Component) => (props) => {
   const [limits = {}] = useAnnotationLimits();
   return <Component limits={limits} {...props}></Component>;
 };
+export const LinearView = WithAnnotationLimitsHoc(_LinearView);
 
-export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(
-  WithAnnotationLimitsHoc(LinearView)
-);
+export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(LinearView);
 
-export default withEditorInteractions(WithAnnotationLimitsHoc(LinearView));
+export default withEditorInteractions(LinearView);

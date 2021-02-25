@@ -150,7 +150,7 @@ const fileCommandDefs = {
           }}
           data-test="filter-parts-by-tag"
         >
-          <PartTagSearch {...props}></PartTagSearch>
+          <PartTagSearch dontAutoOpen {...props}></PartTagSearch>
         </div>
       );
     },
