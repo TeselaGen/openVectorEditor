@@ -1,5 +1,6 @@
 import { MenuItem } from "@blueprintjs/core";
 import React from "react";
+import { LimitAnnotations } from "../utils/useAnnotationLimits";
 import useMeltingTemp from "../utils/useMeltingTemp";
 
 export const fullSequenceTranslationMenu = {
@@ -150,7 +151,10 @@ export default [
     shouldDismissPopover: false,
     text: "Percent GC Content of Selection"
   },
-  <ToggleShowMeltingTemp key="ToggleShowMeltingTemp"></ToggleShowMeltingTemp>,
+  {
+    text: "Melting Temp of Selection",
+    component: ToggleShowMeltingTemp
+  },
   {
     text: "Sequence Case",
     cmd: "sequenceCase",
@@ -188,6 +192,27 @@ export default [
 
   { divider: "" },
   {
+    text: "Limits",
+    cmd: "limitsMenu",
+    submenu: [
+      {
+        text: "Max Features To Show",
+        component: LimitAnnotations,
+        type: "features"
+      },
+      {
+        text: "Max Parts To Show",
+        type: "parts",
+        component: LimitAnnotations
+      },
+      {
+        text: "Max Cutsites To Show",
+        component: LimitAnnotations,
+        type: "cutsites"
+      }
+    ]
+  },
+  {
     text: "Labels",
     submenu: [
       { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
@@ -203,12 +228,12 @@ export default [
   }
 ];
 
-function ToggleShowMeltingTemp() {
+function ToggleShowMeltingTemp(props) {
   const [showMeltingTemp, setShowMeltingTemp] = useMeltingTemp();
   return (
     <MenuItem
+      {...props}
       shouldDismissPopover={false}
-      text="Melting Temp of Selection"
       onClick={() => {
         setShowMeltingTemp(!showMeltingTemp);
       }}

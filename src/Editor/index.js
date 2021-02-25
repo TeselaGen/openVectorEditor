@@ -282,7 +282,7 @@ export class Editor extends React.Component {
       readOnly,
       setPanelAsActive,
       style = {},
-      maxAnnotationsToDisplay = {},
+      maxAnnotationsToDisplay,
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,

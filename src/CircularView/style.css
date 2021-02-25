@@ -10,13 +10,6 @@
                                            translateX(-50%) and translateY(-50%) */
 }
 
-.veCircularViewWarningContainer {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  display: flex;
-}
-
 .selectionLayerInverseWrapper {
   fill: none !important;
 }

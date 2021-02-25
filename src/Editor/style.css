@@ -190,3 +190,9 @@ text.vePart,
 tspan.vePart {
   fill-opacity: 1;
 }
+.veWarningContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+}

@@ -5,6 +5,36 @@ describe("editor", function () {
     cy.visit("");
   });
 
+  it(`annotation limits should persist across reloads and be configurable from the menu`, () => {
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(".veWarningMessage").should("not.exist");
+    cy.get(`.tg-select-clear-all`).click();
+    cy.get(".veWarningMessage").trigger("mouseover");
+    cy.contains(
+      "Warning: More than 100 Cutsites. Only displaying 100 (Configure this under View > Limits)"
+    );
+    cy.contains(".tg-menu-bar-item", "View").click();
+    cy.contains(".bp3-menu-item", "Limits").click();
+    cy.contains(".bp3-menu-item", "Max Cutsites To Show").click();
+    cy.get(".bp3-menu-item:contains(100) .bp3-icon-small-tick");
+    cy.get(".bp3-menu-item:contains(400)").click();
+    cy.get(".bp3-menu-item:contains(400) .bp3-icon-small-tick");
+    cy.contains(
+      "Warning: More than 400 Cutsites. Only displaying 400 (Configure this under View > Limits)"
+    );
+    cy.get(".veTabLinearMap").click({ force: true });
+    cy.get(".veWarningMessage").should("exist");
+  });
+  it(`annotation limits should not show up as options if maxAnnotationsToDisplay is passed`, () => {
+    cy.get(".veWarningMessage").should("not.exist");
+    cy.tgToggle("maxAnnotationsToDisplayAdjustment");
+    cy.contains(".tg-menu-bar-item", "View").click();
+    cy.contains(".bp3-menu-item", "Limits").should("not.exist");
+    cy.get(".veWarningMessage").trigger("mouseover");
+    cy.contains("Warning: More than 5 Features. Only displaying 5");
+    cy.contains("(Configure this under View > Limits)").should("not.exist");
+  });
+
   it(`should be able to hide the rotate circular view!`, () => {
     cy.get(`.ove-slider`);
     cy.tgToggle(`withRotateCircularView`, false);

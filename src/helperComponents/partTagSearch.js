@@ -38,8 +38,8 @@ function PartToolDropdown({
     "value"
   );
   return (
-    <div>
-      <h6>Search Parts By Tag: </h6>
+    <div style={{ width: "100%" }}>
+      <div>Search Parts By Tag: </div>
       <div style={{ display: "flex" }}>
         <TgSelect
           value={selectedPartTags.parts}
@@ -62,7 +62,7 @@ function PartToolDropdown({
             }
           }}
           options={tags}
-          autoOpen
+          // autoOpen
         ></TgSelect>
         {editTagsLink || null}
       </div>

@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import { isEqual, startCase } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
@@ -7,7 +7,12 @@ import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
 import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
-import { getEmptyText } from "../utils/editorUtils";
+import {
+  getEmptyText,
+  getParedDownWarning,
+  pareDownAnnotations
+} from "../utils/editorUtils";
+import useAnnotationLimits from "../utils/useAnnotationLimits";
 
 let defaultMarginWidth = 10;
 
@@ -62,12 +67,43 @@ export class LinearView extends React.Component {
   };
 
   getRowData = () => {
-    const { sequenceData = { sequence: "" } } = this.props;
+    const {
+      limits,
+      sequenceData = { sequence: "" },
+      maxAnnotationsToDisplay
+    } = this.props;
     if (!isEqual(sequenceData, this.oldSeqData)) {
+      this.paredDownMessages = [];
+      const paredDownSeqData = ["parts", "features", "cutsites"].reduce(
+        (acc, type) => {
+          const nameUpper = startCase(type);
+          const maxToShow =
+            (maxAnnotationsToDisplay
+              ? maxAnnotationsToDisplay[type]
+              : limits[type]) || 50;
+          let [annotations, paredDown] = pareDownAnnotations(
+            sequenceData["filtered" + nameUpper] || sequenceData[type],
+            maxToShow
+          );
+
+          if (paredDown) {
+            this.paredDownMessages.push(
+              getParedDownWarning({
+                nameUpper,
+                isAdjustable: !maxAnnotationsToDisplay,
+                maxToShow
+              })
+            );
+          }
+          acc[type] = annotations;
+          return acc;
+        },
+        {}
+      );
       this.rowData = prepareRowData(
         {
           ...sequenceData,
-          features: sequenceData.filteredFeatures || sequenceData.features
+          ...paredDownSeqData
         },
         sequenceData.sequence ? sequenceData.sequence.length : 0
       );
@@ -161,6 +197,8 @@ export class LinearView extends React.Component {
               }}
             />
           )}
+          <div className="veWarningContainer">{this.paredDownMessages}</div>
+
           <RowItem
             {...{
               ...rest,
@@ -212,6 +250,14 @@ function SequenceName({ sequenceName, sequenceLength, isProtein }) {
   );
 }
 
-export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(LinearView);
+const WithAnnotationLimitsHoc = (Component) => (props) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [limits = {}] = useAnnotationLimits();
+  return <Component limits={limits} {...props}></Component>;
+};
 
-export default withEditorInteractions(LinearView);
+export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(
+  WithAnnotationLimitsHoc(LinearView)
+);
+
+export default withEditorInteractions(WithAnnotationLimitsHoc(LinearView));

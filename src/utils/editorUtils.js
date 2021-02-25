@@ -6,6 +6,8 @@ import {
   calculatePercentGC,
   getSequenceDataBetweenRange
 } from "ve-sequence-utils";
+import { sortBy } from "lodash";
+import VeWarning from "../helperComponents/VeWarning";
 
 export function getSelectionMessage({
   caretPosition = -1,
@@ -100,5 +102,33 @@ export function addCustomEnzyme(newEnz) {
       ...customEnzymes,
       [newEnz.name.toLowerCase()]: newEnz
     })
+  );
+}
+
+export function pareDownAnnotations(annotations, max) {
+  let annotationsToPass = annotations;
+  let paredDown = false;
+  if (Object.keys(annotations).length > max) {
+    paredDown = true;
+    let sortedAnnotations = sortBy(annotations, function (annotation) {
+      return -getRangeLength(annotation);
+    });
+    annotationsToPass = sortedAnnotations
+      .slice(0, max)
+      .reduce(function (obj, item) {
+        obj[item.id] = item;
+        return obj;
+      }, {});
+  }
+  return [annotationsToPass, paredDown];
+}
+export function getParedDownWarning({ nameUpper, maxToShow, isAdjustable }) {
+  return (
+    <VeWarning
+      data-test={`ve-warning-max${nameUpper}ToDisplay`}
+      tooltip={`Warning: More than ${maxToShow} ${nameUpper}. Only displaying ${maxToShow} ${
+        isAdjustable ? "(Configure this under View > Limits)" : ""
+      } `}
+    />
   );
 }

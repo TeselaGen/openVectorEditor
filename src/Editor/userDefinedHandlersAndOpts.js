@@ -14,6 +14,7 @@ export const userDefinedHandlersAndOpts = [
   "GCDecimalDigits",
   "onlyShowLabelsThatDoNotFit",
   "fullscreenMode",
+  "maxAnnotationsToDisplay",
   "onNew",
   "onImport",
   "onSave",

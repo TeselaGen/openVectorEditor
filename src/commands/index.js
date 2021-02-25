@@ -138,15 +138,21 @@ const fileCommandDefs = {
   },
   filterPartsByTagCmd: {
     isHidden: (props) => !props.allPartTags,
-    name: (props) => {
+    name: "Search Parts By Tag",
+    component: (props) => () => {
       return (
-        <div style={{ padding: 3 }} data-test="filter-parts-by-tag">
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <div
+          className="bp3-menu-item"
+          style={{
+            padding: 3,
+            paddingLeft: 30
+          }}
+          data-test="filter-parts-by-tag"
+        >
           <PartTagSearch {...props}></PartTagSearch>
         </div>
       );
-    },
-    component: (props) => {
-      return <div {...props}></div>;
     },
     handler: () => {}
   },
@@ -1148,6 +1154,9 @@ const annotationToggleCommandDefs = {};
 });
 
 const additionalAnnotationCommandsDefs = {
+  limitsMenu: {
+    isHidden: (props) => props.maxAnnotationsToDisplay
+  },
   showAll: {
     handler: (props) => {
       annotationTypes.forEach((type) => {
@@ -1262,20 +1271,18 @@ const commandDefs = {
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,
     submenu: (props) => {
-      if (props.allPartTags) {
-        return [
-          {
-            cmd: "toggleParts",
-            shouldDismissPopover: false
-          },
-          {
-            cmd: "filterPartsByTagCmd",
-            shouldDismissPopover: false
-          }
-        ];
-      } else {
-        return;
-      }
+      return [
+        {
+          cmd: "toggleParts",
+          shouldDismissPopover: false
+        },
+        ...(props.allPartTags
+          ? {
+              cmd: "filterPartsByTagCmd",
+              shouldDismissPopover: false
+            }
+          : [])
+      ];
     }
   },
   ...additionalAnnotationCommandsDefs,

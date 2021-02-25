@@ -1279,7 +1279,7 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "maxAnnotationsToDisplayAdjustment",
-                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted. Passing this option will disable the user from being able to manually adjust the annotation limits via the view > limits menu`
               })}
               {renderToggle({
                 that: this,
@@ -1360,7 +1360,7 @@ clickOverrides: {
             maxAnnotationsToDisplay={
               this.state.maxAnnotationsToDisplayAdjustment
                 ? { features: 5 }
-                : {}
+                : undefined
             }
             editTagsLink={
               <Button
