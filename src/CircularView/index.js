@@ -442,9 +442,7 @@ export function CircularView(props) {
       {withRotateCircularView && (
         <RotateCircularView
           editorName={editorName}
-          setRotationRadians={(rotationRadians) => {
-            setRotationRadians({ rotationRadians });
-          }}
+          setRotationRadians={setRotationRadians}
         ></RotateCircularView>
       )}
       <Draggable

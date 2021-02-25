@@ -17,12 +17,10 @@ describe("find tool", function () {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gacgtc", { delay: 1 }); //this should cause 1 region to be selected
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
-    cy.selectRange(400, 450);
-    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should(
-      "not.be.visible"
-    );
+    cy.contains("dbl term").click({ force: true });
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
     //hitting enter again should jump us back to our original search layer!
-    cy.focused().type("{enter}");
+    cy.get(`input[value="gacgtc"]`).type("{enter}");
     cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
   });
   it(`can be expanded and should have full functionality as such`, () => {
