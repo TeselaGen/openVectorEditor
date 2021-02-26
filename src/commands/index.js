@@ -1277,10 +1277,12 @@ const commandDefs = {
           shouldDismissPopover: false
         },
         ...(props.allPartTags
-          ? {
-              cmd: "filterPartsByTagCmd",
-              shouldDismissPopover: false
-            }
+          ? [
+              {
+                cmd: "filterPartsByTagCmd",
+                shouldDismissPopover: false
+              }
+            ]
           : [])
       ];
     }

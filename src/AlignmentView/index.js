@@ -63,7 +63,7 @@ try {
     e
   );
 }
-// @HotkeysTarget
+
 class AlignmentView extends React.Component {
   constructor(props) {
     super(props);

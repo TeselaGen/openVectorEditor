@@ -9,11 +9,16 @@ module.exports = {
     // esModules: console.log("commentMeBackOut") || false,
     // cjs: console.log("commentMeBackOut") || false
   },
-  ...(process.env.WITH_COVERAGE && {
-    babel: {
+  babel: {
+    runtime: false,
+    env: {
+      targets: "defaults, not IE 11"
+    },
+    ...(process.env.WITH_COVERAGE && {
       plugins: ["istanbul"]
-    }
-  }),
+    })
+  },
+
   webpack: {
     aliases: {
       // **** You can comment one or more of these in to override an npm module with a local module. *****
@@ -27,10 +32,11 @@ module.exports = {
       // "bio-parsers":
       //   console.log("comment me back out!") ||
       //   path.join("../ve-sequence-parsers/src/parsers/"),
-      // "teselagen-react-components": //downgrade to nwb @ 0.24.5 to get this to work for now
+      //downgrade to nwb @ 0.24.5 to get this to work for now
+      // "teselagen-react-components":
       //   console.log("comment me back out!") ||
       //   path.join(__dirname, "../teselagen-react-components/src/"),
-      
+
       //don't comment this out!
       react: path.join(__dirname, "node_modules/react"),
       // "../teselagen-react-components/node_modules/@blueprintjs/core/": path.join(
