@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { reduxForm } from "redux-form";
 
-import { withDialog } from "teselagen-react-components";
+import { wrapDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Classes, ButtonGroup } from "@blueprintjs/core";
 import classNames from "classnames";
@@ -14,7 +14,7 @@ import CircularView from "../../CircularView";
 import LinearView from "../../LinearView";
 import "./style.css";
 
-export class PrintDialog extends React.Component {
+class PrintDialog extends React.Component {
   state = {
     circular: null
   };
@@ -99,8 +99,7 @@ export class PrintDialog extends React.Component {
 }
 
 export default compose(
-  withDialog({
-    // isOpen: true,
+  wrapDialog({
     title: "Print"
   }),
   withEditorProps,

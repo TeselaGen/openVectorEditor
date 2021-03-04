@@ -1,17 +1,20 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Icon } from "@blueprintjs/core";
+import { Classes, Icon } from "@blueprintjs/core";
 
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 
 import React from "react";
+import EnzymesDialog from "../helperComponents/EnzymesDialog";
+
 import "./style.css";
-import { TgSelect } from "teselagen-react-components";
+import { TgSelect, wrapDialog } from "teselagen-react-components";
 
 import map from "lodash/map";
 import { flatMap } from "lodash";
 import { omit } from "lodash";
+import { showDialog } from "../GlobalDialog";
 
 export class CutsiteFilter extends React.Component {
   static defaultProps = {
@@ -24,29 +27,6 @@ export class CutsiteFilter extends React.Component {
       sequence: ""
     }
   };
-
-  // getManageEnzymesLink = () => (
-  //   <span
-  //     onClick={() => {
-  //       // e.stopPropagation();
-  //       const {
-  //         createYourOwnEnzymeReset,
-  //         showManageEnzymesDialog,
-  //         sequenceData,
-  //         closeDropDown
-  //       } = this.props;
-  //       closeDropDown();
-  //       createYourOwnEnzymeReset();
-  //       showManageEnzymesDialog({
-  //         inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
-  //       });
-  //     }}
-  //     className={"ta_link " + Classes.POPOVER_DISMISS}
-  //   >
-  //     Manage enzymes &nbsp;
-  //     <Icon iconSize={14} icon="cut" />
-  //   </span>
-  // );
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
     // if (value === "manageEnzymes") {
@@ -103,7 +83,6 @@ export class CutsiteFilter extends React.Component {
       filteredRestrictionEnzymes,
       filteredRestrictionEnzymesUpdate,
       allCutsites: { cutsitesByName },
-      showManageEnzymesDialog,
       closeDropDown = () => {},
       enzymeManageOverride,
       enzymeGroupsOverride
@@ -139,7 +118,7 @@ export class CutsiteFilter extends React.Component {
             value: key
           };
         })
-    ];
+    ].map(addClickableLabel);
     // function openManageEnzymes() {
     //   dispatch({
     //     type: "CREATE_YOUR_OWN_ENZYME_RESET"
@@ -194,21 +173,22 @@ export class CutsiteFilter extends React.Component {
             );
           }}
           value={filteredRestrictionEnzymes.map((filteredOpt) => {
+            let toRet;
             if (filteredOpt.cutsThisManyTimes) {
-              return filteredOpt;
+              toRet = filteredOpt;
+            } else if (filteredOpt.value.includes("__userCreatedGroup")) {
+              toRet = filteredOpt;
+            } else {
+              const label = getLabel(
+                cutsitesByName[filteredOpt.value],
+                filteredOpt.value
+              );
+              toRet = {
+                ...filteredOpt,
+                label
+              };
             }
-            if (filteredOpt.value.includes("__userCreatedGroup")) {
-              return filteredOpt;
-            }
-
-            const label = getLabel(
-              cutsitesByName[filteredOpt.value],
-              filteredOpt.value
-            );
-            return {
-              ...filteredOpt,
-              label
-            };
+            return addClickableLabel(toRet);
           })}
         />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -216,7 +196,8 @@ export class CutsiteFilter extends React.Component {
           onClick={() => {
             enzymeManageOverride
               ? enzymeManageOverride(this.props)
-              : showManageEnzymesDialog({
+              : showDialog({
+                  Component: EnzymesDialog
                   // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
                 });
             closeDropDown();
@@ -251,3 +232,34 @@ const getLabel = (maybeCutsites = [], val) => {
     </div>
   );
 };
+
+function addClickableLabel(toRet) {
+  return {
+    ...toRet,
+    ...(toRet.label
+      ? {
+          label: (
+            <div
+              className="tg-clickable-cutsite-label"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                showDialog({
+                  Component: wrapDialog()(() => {
+                    return <div className={Classes.DIALOG_BODY}>yaa</div>;
+                  }),
+                  props: {
+                    dialogProps: {
+                      title: "hahah"
+                    },
+                    yaa: "baby"
+                  }
+                });
+              }}
+            >
+              {toRet.label}
+            </div>
+          )
+        }
+      : {})
+  };
+}

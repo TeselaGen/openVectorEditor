@@ -32,7 +32,6 @@ import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
-import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
 export { default as vectorEditorMiddleware } from "./middleware";
@@ -84,7 +83,6 @@ export const actions = {
     }),
     {}
   ),
-  ...modalActions,
   ...alignments,
   vectorEditorInitialize,
   vectorEditorClear

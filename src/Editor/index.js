@@ -10,7 +10,7 @@ import {
   ContextMenu
 } from "@blueprintjs/core";
 import PropTypes from "prop-types";
-import Dialogs, { dialogOverrides } from "../Dialogs";
+
 import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
 import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
@@ -48,6 +48,7 @@ import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
+import { DialogsTwoPointO } from "../GlobalDialog";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -780,10 +781,9 @@ export class Editor extends React.Component {
           previewModeFullscreen ? "previewModeFullscreen" : ""
         }`}
       >
-        <Dialogs
+        <DialogsTwoPointO
           editorName={editorName}
           {...pickedUserDefinedHandlersAndOpts}
-          {...pick(this.props, dialogOverrides)}
         />
         <ToolBar
           {...pickedUserDefinedHandlersAndOpts}

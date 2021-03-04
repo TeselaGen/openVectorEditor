@@ -24,21 +24,22 @@ import { allTypes } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
+import { showAddOrEditAnnotationDialog } from "../utils/dialogUtils";
+import { hideDialog, showDialog } from "../GlobalDialog";
 
-// const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
-// const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
-// const addPartSelector = formValueSelector("AddOrEditPartDialog");
-
-async function getSaveDialogEl(props) {
+async function getSaveDialogEl() {
   return new Promise((resolve) => {
-    props.showPrintDialog({
-      dialogProps: {
-        title: "Generating Image to Save...",
-        isCloseButtonShown: false
-      },
-      addPaddingBottom: true,
-      hideLinearCircularToggle: true,
-      hidePrintButton: true
+    showDialog({
+      Component: require("../helperComponents/PrintDialog").default,
+      props: {
+        dialogProps: {
+          title: "Generating Image to Save...",
+          isCloseButtonShown: false
+        },
+        addPaddingBottom: true,
+        hideLinearCircularToggle: true,
+        hidePrintButton: true
+      }
     });
 
     const id = setInterval(() => {
@@ -69,7 +70,7 @@ const generatePngFromPrintDialog = async (props) => {
       console.error(error);
       return error;
     });
-  props.hidePrintDialog();
+  hideDialog();
   return result;
 };
 
@@ -359,7 +360,6 @@ export default compose(
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
       acc[`handleNew${key}`] = (props) => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
-        const handler = props[`showAddOrEdit${key}Dialog`];
 
         if (readOnly) {
           window.toastr.warning(
@@ -380,9 +380,12 @@ export default compose(
                   start: 0,
                   end: sequenceData.isProtein ? 2 : 0
                 };
-          handler({
-            ...rangeToUse,
-            forward: !(selectionLayer.forward === false)
+          showAddOrEditAnnotationDialog({
+            type: key.toLowerCase(),
+            annotation: {
+              ...rangeToUse,
+              forward: !(selectionLayer.forward === false)
+            }
           });
         }
       };
@@ -471,30 +474,6 @@ export default compose(
       updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
       window.toastr.success("Complemented Sequence Successfully");
     },
-    /* eslint-enable no-unused-vars */
-
-    // handleNewPrimer: props => () => {
-    //   const {
-    //     selectionLayer,
-    //     caretPosition,
-    //     showAddOrEditPrimerDialog,
-    //     readOnly
-    //     // sequenceLength
-    //   } = props;
-    //   const rangeToUse =
-    //     selectionLayer.start > -1
-    //       ? selectionLayer
-    //       : caretPosition > -1
-    //       ? { start: caretPosition, end: caretPosition }
-    //       : undefined;
-    //   if (readOnly) {
-    //     window.toastr.warning(
-    //       "Sorry, can't create new primers in read-only mode"
-    //     );
-    //   } else {
-    //     showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
-    //   }
-    // },
     handleInverse
   })
 );

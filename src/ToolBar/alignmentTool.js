@@ -4,7 +4,8 @@ import {
   FileUploadField,
   TextareaField,
   EditableTextField,
-  CheckboxField
+  CheckboxField,
+  wrapDialog
 } from "teselagen-react-components";
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
@@ -17,6 +18,8 @@ import classNames from "classnames";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
+import { showDialog } from "../GlobalDialog";
+import { compose } from "recompose";
 
 export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return {
@@ -47,7 +50,6 @@ class AlignmentToolDropdown extends React.Component {
       savedAlignments = [],
       hasSavedAlignments,
       toggleDropdown,
-      showCreateAlignmentDialog,
       sequenceData
     } = this.props;
     return (
@@ -56,11 +58,14 @@ class AlignmentToolDropdown extends React.Component {
           intent={Intent.PRIMARY}
           onClick={() => {
             toggleDropdown();
-            showCreateAlignmentDialog({
-              createNewAlignment: this.props.createNewAlignment,
-              upsertAlignmentRun: this.props.upsertAlignmentRun,
-              initialValues: {
-                addedSequences: [{ ...sequenceData, isTemplate: true }]
+            showDialog({
+              Component: AlignmentToolDialog,
+              props: {
+                createNewAlignment: this.props.createNewAlignment,
+                upsertAlignmentRun: this.props.upsertAlignmentRun,
+                initialValues: {
+                  addedSequences: [{ ...sequenceData, isTemplate: true }]
+                }
               }
             });
           }}
@@ -413,12 +418,12 @@ class AlignmentTool extends React.Component {
   }
 }
 
-export const AlignmentToolInner = reduxForm({
-  form: "veAlignmentTool"
-  // initialValues: {
-  //   addedSequences: []
-  // }
-})(AlignmentTool);
+export const AlignmentToolDialog = compose(
+  wrapDialog({ title: "Create New Alignment" }),
+  reduxForm({
+    form: "veAlignmentTool"
+  })
+)(AlignmentTool);
 
 const AddYourOwnSeqForm = reduxForm({
   form: "AddYourOwnSeqForm",

@@ -46,6 +46,10 @@ import {
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 import { getNodeToRefocus } from "../utils/editorUtils";
+import { showAddOrEditAnnotationDialog } from "../utils/dialogUtils";
+import { showDialog } from "../GlobalDialog";
+
+import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
 
 function getAcceptedChars({ isProtein, isRna, isMixedRnaAndDna } = {}) {
   return isProtein
@@ -874,11 +878,7 @@ function VectorInteractionHOC(Component /* options */) {
           end: annotation.end
         });
         event.persist();
-        const {
-          readOnly,
-          showMergeFeaturesDialog,
-          annotationsToSupport: { parts } = {}
-        } = this.props;
+        const { readOnly, annotationsToSupport: { parts } = {} } = this.props;
         return [
           "editFeature",
           "deleteFeature",
@@ -928,7 +928,9 @@ function VectorInteractionHOC(Component /* options */) {
                       event: { ...event, shiftHeld: true }
                     });
                     // annotationSelect(annotation)
-                    showMergeFeaturesDialog(annotation);
+                    showDialog({
+                      Component: MergeFeaturesDialog
+                    });
                   }
                 },
                 "showRemoveDuplicatesDialogFeatures",
@@ -1014,13 +1016,13 @@ function VectorInteractionHOC(Component /* options */) {
     );
 
     featureDoubleClicked = ({ annotation }) => {
-      this.props.showAddOrEditFeatureDialog(annotation);
+      showAddOrEditAnnotationDialog({ type: "feature", annotation });
     };
     partDoubleClicked = ({ annotation }) => {
-      this.props.showAddOrEditPartDialog(annotation);
+      showAddOrEditAnnotationDialog({ type: "part", annotation });
     };
     primerDoubleClicked = ({ annotation }) => {
-      this.props.showAddOrEditPrimerDialog(annotation);
+      showAddOrEditAnnotationDialog({ type: "primer", annotation });
     };
 
     render() {

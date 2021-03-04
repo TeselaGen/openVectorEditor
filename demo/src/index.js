@@ -16,7 +16,6 @@ import {
   SimpleCircularOrLinearView
 } from "../../src";
 
-// import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
 import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";

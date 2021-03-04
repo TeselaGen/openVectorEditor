@@ -3,7 +3,11 @@ import React from "react";
 
 // import { reduxForm, formValues } from "redux-form";
 
-import { InfoHelper, showConfirmationDialog } from "teselagen-react-components";
+import {
+  InfoHelper,
+  showConfirmationDialog,
+  wrapDialog
+} from "teselagen-react-components";
 import { compose } from "redux";
 import {
   Classes,
@@ -29,6 +33,8 @@ import {
   getCutsitesFromSequence
 } from "ve-sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
+import { showDialog } from "../../GlobalDialog";
+import CreateCustomEnzyme from "../../CreateCustomEnzyme";
 
 const upsertLocalEnzymeGroups = (newGroups) => {
   const existingGroups = window.getExistingEnzymeGroups();
@@ -109,7 +115,7 @@ window.getExistingEnzymeGroups =
 // };
 
 const easyStore = store({ hoveredEnzyme: "" });
-export class EnzymesDialog extends React.Component {
+class EnzymesDialog extends React.Component {
   state = {
     selectedEnzymeGroup: "My Enzymes",
     searchInput: ""
@@ -198,7 +204,7 @@ export class EnzymesDialog extends React.Component {
     });
   };
   render() {
-    const { showCreateCustomEnzymeDialog, hideModal } = this.props;
+    const { hideModal } = this.props;
     if (!this.enzymeGroups) return null;
     const {
       selectedEnzymeGroup,
@@ -717,7 +723,9 @@ export class EnzymesDialog extends React.Component {
                       minimal
                       onClick={() => {
                         hideModal();
-                        showCreateCustomEnzymeDialog();
+                        showDialog({
+                          Component: CreateCustomEnzyme
+                        });
                       }}
                       className="veEnzymeCreateCustomEnzyme"
                       icon="add"
@@ -734,6 +742,7 @@ export class EnzymesDialog extends React.Component {
 }
 
 export default compose(
+  wrapDialog({ title: "Manage Enzymes" }),
   withEditorProps
   // reduxForm({
   //   form: "EnzymesDialog",

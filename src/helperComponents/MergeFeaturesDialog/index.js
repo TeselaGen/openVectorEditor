@@ -6,7 +6,7 @@ import { reduxForm, formValues } from "redux-form";
 import {
   InputField,
   ReactSelectField,
-  withDialog,
+  wrapDialog,
   InfoHelper
 } from "teselagen-react-components";
 import { compose } from "redux";
@@ -17,7 +17,7 @@ import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "teselagen-react-components";
 import "./style.css";
 
-export class MergeFeaturesDialog extends React.Component {
+class MergeFeaturesDialog extends React.Component {
   render() {
     const {
       // editorName,
@@ -229,10 +229,11 @@ export class MergeFeaturesDialog extends React.Component {
 function required(val) {
   if (!val) return "Required";
 }
+
 export default compose(
-  withDialog({
+  wrapDialog({
+    title: "Merge Features",
     isDraggable: true,
-    // height: 480,
     width: 400
   }),
   withEditorProps,

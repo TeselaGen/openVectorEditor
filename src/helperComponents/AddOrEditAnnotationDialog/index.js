@@ -6,7 +6,7 @@ import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  withDialog
+  wrapDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes, EditableText, Icon } from "@blueprintjs/core";
@@ -392,7 +392,7 @@ function required(val) {
 
 export default ({ formName, getProps, dialogProps }) => {
   return compose(
-    withDialog({
+    wrapDialog({
       isDraggable: true,
       width: 350,
       ...dialogProps

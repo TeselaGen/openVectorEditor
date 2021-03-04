@@ -25,6 +25,8 @@ import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 import packageJson from "../../package.json";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
+import { showAddOrEditAnnotationDialog } from "../utils/dialogUtils";
+import { showDialog } from "../GlobalDialog";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
 
@@ -62,11 +64,14 @@ const fileCommandDefs = {
     isHidden: (props) => props.readOnly,
     isDisabled: (props) => props.readOnly && readOnlyDisabledTooltip,
     handler: (props) => {
-      props.showRenameSequenceDialog({
-        initialValues: { newName: props.sequenceData.name },
-        onSubmit: (values) => {
-          props.sequenceNameUpdate(values.newName);
-          props.onRename && props.onRename(values.newName, props);
+      showDialog({
+        Component: require("../helperComponents/RenameSequenceDialog").default,
+        props: {
+          initialValues: { newName: props.sequenceData.name },
+          onSubmit: (values) => {
+            props.sequenceNameUpdate(values.newName);
+            props.onRename && props.onRename(values.newName, props);
+          }
         }
       });
     }
@@ -308,7 +313,11 @@ const fileCommandDefs = {
 
   print: {
     hotkeyProps: { preventDefault: true },
-    handler: (props) => props.showPrintDialog(),
+    handler: (props) =>
+      showDialog({
+        Component: require("../helperComponents/PrintDialog").default,
+        props
+      }),
     hotkey: "mod+p"
   },
   ...["Parts", "Features", "Primers"].reduce((acc, type) => {
@@ -317,11 +326,14 @@ const fileCommandDefs = {
       name: `Remove Duplicate ${startCase(type)}`,
       isDisabled: (props) => props.readOnly,
       handler: (props) =>
-        props.showRemoveDuplicatesDialog({
-          type: camelCase(type),
-          editorName: props.editorName,
-          dialogProps: {
-            title: `Remove Duplicate ${type}`
+        showDialog({
+          Component: require("../helperComponents/RemoveDuplicates").default,
+          props: {
+            type: camelCase(type),
+            editorName: props.editorName,
+            dialogProps: {
+              title: `Remove Duplicate ${type}`
+            }
           }
         })
     };
@@ -481,23 +493,26 @@ const editCommandDefs = {
     isDisabled: (props) => props.sequenceLength === 0,
     name: "Go To...",
     handler: (props) => {
-      props.showGoToDialog({
-        extraProps: {
-          sequencePosition: {
-            min: 0,
-            max: divideBy3(props.sequenceLength, isProtein(props))
-          }
-        },
-        initialValues: {
-          sequencePosition: divideBy3(
-            props.caretPosition >= 0 ? props.caretPosition : 0,
-            isProtein(props)
-          )
-        },
-        onSubmit: (values) =>
-          props.caretPositionUpdate(
-            values.sequencePosition * (isProtein(props) ? 3 : 1)
-          )
+      showDialog({
+        Component: require("../helperComponents/GoToDialog").default,
+        props: {
+          extraProps: {
+            sequencePosition: {
+              min: 0,
+              max: divideBy3(props.sequenceLength, isProtein(props))
+            }
+          },
+          initialValues: {
+            sequencePosition: divideBy3(
+              props.caretPosition >= 0 ? props.caretPosition : 0,
+              isProtein(props)
+            )
+          },
+          onSubmit: (values) =>
+            props.caretPositionUpdate(
+              values.sequencePosition * (isProtein(props) ? 3 : 1)
+            )
+        }
       });
     },
     hotkey: "mod+g",
@@ -513,40 +528,46 @@ const editCommandDefs = {
         start = props.caretPosition;
         end = props.caretPosition;
       }
-      props.showSelectDialog({
-        extraProps: {
-          circular: props.sequenceData && props.sequenceData.circular,
-          from: {
-            min: 1,
-            max: divideBy3(props.sequenceLength || 1, isProtein(props))
+      showDialog({
+        Component: require("../helperComponents/SelectDialog").default,
+        props: {
+          extraProps: {
+            circular: props.sequenceData && props.sequenceData.circular,
+            from: {
+              min: 1,
+              max: divideBy3(props.sequenceLength || 1, isProtein(props))
+            },
+            to: {
+              min: 1,
+              max: divideBy3(props.sequenceLength || 1, isProtein(props))
+            }
           },
-          to: {
-            min: 1,
-            max: divideBy3(props.sequenceLength || 1, isProtein(props))
-          }
-        },
-        selectionLayerUpdate: props.selectionLayerUpdate,
-        caretPositionUpdate: props.caretPositionUpdate,
-        initialCaretPosition: props.caretPosition,
-        initialValues: {
-          from: Math.max(
-            1,
-            1 + divideBy3(start >= 0 ? start : 0, isProtein(props))
+          selectionLayerUpdate: props.selectionLayerUpdate,
+          caretPositionUpdate: props.caretPositionUpdate,
+          initialCaretPosition: props.caretPosition,
+          initialValues: {
+            from: Math.max(
+              1,
+              1 + divideBy3(start >= 0 ? start : 0, isProtein(props))
+            ),
+            to: Math.max(1, 1 + divideBy3(end >= 0 ? end : 0, isProtein(props)))
+          },
+          isProtein: isProtein(props),
+          sequenceLength: divideBy3(
+            props.sequenceLength || 1,
+            isProtein(props)
           ),
-          to: Math.max(1, 1 + divideBy3(end >= 0 ? end : 0, isProtein(props)))
-        },
-        isProtein: isProtein(props),
-        sequenceLength: divideBy3(props.sequenceLength || 1, isProtein(props)),
-        onSubmit: (values) => {
-          const newRange = convertRangeTo0Based({
-            start: isProtein(props) ? values.from * 3 : values.from,
-            end: isProtein(props) ? values.to * 3 : values.to
-          });
+          onSubmit: (values) => {
+            const newRange = convertRangeTo0Based({
+              start: isProtein(props) ? values.from * 3 : values.from,
+              end: isProtein(props) ? values.to * 3 : values.to
+            });
 
-          return props.selectionLayerUpdate({
-            start: isProtein(props) ? newRange.start - 2 : newRange.start,
-            end: newRange.end
-          });
+            return props.selectionLayerUpdate({
+              start: isProtein(props) ? newRange.start - 2 : newRange.start,
+              end: newRange.end
+            });
+          }
         }
       });
     }
@@ -958,7 +979,7 @@ const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
           : `Edit ${upperFirst(key)}`,
       handler: (props, state, ctxInfo) => {
         const annotation = get(ctxInfo, "context.annotation");
-        props[`showAddOrEdit${upperFirst(key)}Dialog`](annotation);
+        showAddOrEditAnnotationDialog({ annotation, type: key });
       }
       // isHidden: (props) => props.readOnly
     };
@@ -1196,10 +1217,13 @@ const toolCommandDefs = {
         props.enzymeManageOverride(props);
       } else {
         props.createYourOwnEnzymeReset();
-        props.showManageEnzymesDialog({
-          inputSequenceToTestAgainst: props.sequenceData
-            ? props.sequenceData.sequence
-            : ""
+        showDialog({
+          Component: require("../helperComponents/EnzymesDialog").default,
+          props: {
+            inputSequenceToTestAgainst: props.sequenceData
+              ? props.sequenceData.sequence
+              : ""
+          }
         });
       }
     },
@@ -1214,8 +1238,10 @@ const toolCommandDefs = {
   },
   openCreateCustomEnzyme: {
     name: "Create Custom Enzyme",
-    handler: (props) => {
-      props.showCreateCustomEnzymeDialog();
+    handler: () => {
+      showDialog({
+        Component: require("../CreateCustomEnzyme").default
+      });
     },
     isHidden: (props) => props.overrideManageEnzymes
   }

@@ -1,6 +1,5 @@
 //optionally connect to the redux store
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import { tg_modalState } from "teselagen-react-components";
 import {
   vectorEditorReducer as VectorEditor,
   vectorEditorMiddleware
@@ -21,7 +20,6 @@ const composeEnhancer =
 const store = createStore(
   combineReducers({
     form,
-    tg_modalState,
     VectorEditor: VectorEditor()
   }),
   undefined,

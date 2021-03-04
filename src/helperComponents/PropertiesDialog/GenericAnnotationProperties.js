@@ -16,6 +16,7 @@ import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
+import { showAddOrEditAnnotationDialog } from "../../utils/dialogUtils";
 
 const genericAnnotationProperties = ({
   annotationType,
@@ -112,12 +113,6 @@ const genericAnnotationProperties = ({
       );
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
-      // showAddOrEditFeatureDialog()
-      // showAddOrEditPartDialog()
-      // showAddOrEditPrimerDialog()
-      const showAddOrEditAnnotationDialog = this.props[
-        `showAddOrEdit${annotationTypeUpper}Dialog`
-      ];
 
       const annotationsToUse = map(annotations, (annotation) => {
         return {
@@ -160,7 +155,8 @@ const genericAnnotationProperties = ({
                 style={{ marginRight: 15 }}
                 onClick={() => {
                   showAddOrEditAnnotationDialog({
-                    ...pick(selectionLayer, "start", "end", "forward")
+                    type: annotationType,
+                    annotation: pick(selectionLayer, "start", "end", "forward")
                   });
                 }}
               >
@@ -168,9 +164,10 @@ const genericAnnotationProperties = ({
               </Button>
               <Button
                 onClick={() => {
-                  showAddOrEditAnnotationDialog(
-                    annotationPropertiesSelectedEntities[0]
-                  );
+                  showAddOrEditAnnotationDialog({
+                    type: annotationType,
+                    annotation: annotationPropertiesSelectedEntities[0]
+                  });
                 }}
                 style={{ marginRight: 15 }}
                 disabled={annotationPropertiesSelectedEntities.length !== 1}

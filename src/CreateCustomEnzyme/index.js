@@ -1,7 +1,11 @@
 import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
-import { DialogFooter, InfoHelper } from "teselagen-react-components";
+import {
+  DialogFooter,
+  InfoHelper,
+  wrapDialog
+} from "teselagen-react-components";
 
 // import './style.css';
 import { cutSequenceByRestrictionEnzyme } from "ve-sequence-utils";
@@ -215,7 +219,10 @@ let CreateCustomEnzyme = function (props) {
   );
 };
 
-CreateCustomEnzyme = compose(
+export default compose(
+  wrapDialog({
+    title: "Create Custom Enzyme"
+  }),
   connectToEditor(({ sequenceData = {} }) => {
     return {
       seqName: sequenceData.name,
@@ -229,8 +236,6 @@ CreateCustomEnzyme = compose(
     };
   })
 )(CreateCustomEnzyme);
-
-export default CreateCustomEnzyme;
 
 function validate(values) {
   const errors = {};

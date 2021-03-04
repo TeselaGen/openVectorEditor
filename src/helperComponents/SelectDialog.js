@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React from "react";
 
 import { reduxForm, formValues } from "redux-form";
-import { withDialog } from "teselagen-react-components";
+import { wrapDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 
@@ -25,7 +25,7 @@ const validate = (val, vals, props) => {
 };
 
 export default compose(
-  withDialog({
+  wrapDialog({
     isDraggable: true,
     width: 400,
     title: "Select Range",

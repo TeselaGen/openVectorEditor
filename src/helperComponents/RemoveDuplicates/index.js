@@ -2,7 +2,7 @@ import React from "react";
 import { reduxForm, formValues } from "redux-form";
 
 import {
-  withDialog,
+  wrapDialog,
   DataTable,
   withSelectedEntities,
   SwitchField
@@ -40,7 +40,7 @@ const schema = {
   ]
 };
 
-export class RemoveDuplicatesDialog extends React.Component {
+class RemoveDuplicatesDialog extends React.Component {
   state = {
     dups: []
   };
@@ -181,7 +181,7 @@ export class RemoveDuplicatesDialog extends React.Component {
 }
 
 export default compose(
-  withDialog(),
+  wrapDialog(),
   withEditorProps,
 
   withSelectedEntities("duplicatesToRemove"),
