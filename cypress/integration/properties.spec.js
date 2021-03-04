@@ -141,8 +141,7 @@ describe("properties", function () {
     //Part 0 should be in there
     cy.get(`[data-test="ve-genbank-text"]`).contains("Part 0");
   });
-  it(`can right click multiple of the same cutsite type (FokI) 
-  and have the cutsite properties table jump to the correct cutsite`, () => {
+  it(`can right click multiple of the same cutsite type (FokI) and have the cutsite properties table jump to the correct cutsite`, () => {
     cy.get(".ve-tool-container-cutsiteTool .veToolbarDropdown").click();
     cy.get(".tg-select-clear-all").click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();

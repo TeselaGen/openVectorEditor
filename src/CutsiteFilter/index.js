@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Classes, Icon } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
@@ -9,7 +9,7 @@ import React from "react";
 import EnzymesDialog from "../helperComponents/EnzymesDialog";
 
 import "./style.css";
-import { TgSelect, wrapDialog } from "teselagen-react-components";
+import { TgSelect } from "teselagen-react-components";
 
 import map from "lodash/map";
 import { flatMap } from "lodash";
@@ -234,32 +234,33 @@ const getLabel = (maybeCutsites = [], val) => {
 };
 
 function addClickableLabel(toRet) {
-  return {
-    ...toRet,
-    ...(toRet.label
-      ? {
-          label: (
-            <div
-              className="tg-clickable-cutsite-label"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                showDialog({
-                  Component: wrapDialog()(() => {
-                    return <div className={Classes.DIALOG_BODY}>yaa</div>;
-                  }),
-                  props: {
-                    dialogProps: {
-                      title: "hahah"
-                    },
-                    yaa: "baby"
-                  }
-                });
-              }}
-            >
-              {toRet.label}
-            </div>
-          )
-        }
-      : {})
-  };
+  return toRet;
+  // return {
+  //   ...toRet,
+  //   ...(toRet.label
+  //     ? {
+  //         label: (
+  //           <div
+  //             className="tg-clickable-cutsite-label"
+  //             style={{ cursor: "pointer" }}
+  //             onClick={() => {
+  //               showDialog({
+  //                 Component: wrapDialog()(() => {
+  //                   return <div className={Classes.DIALOG_BODY}>yaa</div>;
+  //                 }),
+  //                 props: {
+  //                   dialogProps: {
+  //                     title: "hahah"
+  //                   },
+  //                   yaa: "baby"
+  //                 }
+  //               });
+  //             }}
+  //           >
+  //             {toRet.label}
+  //           </div>
+  //         )
+  //       }
+  //     : {})
+  // };
 }
