@@ -48,7 +48,7 @@ import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
-import { DialogsTwoPointO } from "../GlobalDialog";
+import { GlobalDialog } from "../GlobalDialog";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -781,9 +781,14 @@ export class Editor extends React.Component {
           previewModeFullscreen ? "previewModeFullscreen" : ""
         }`}
       >
-        <DialogsTwoPointO
+        <GlobalDialog
           editorName={editorName}
           {...pickedUserDefinedHandlersAndOpts}
+          dialogOverrides={pick(this.props, [
+            "AddOrEditFeatureDialogOverride",
+            "AddOrEditPartDialogOverride",
+            "AddOrEditPrimerDialogOverride"
+          ])}
         />
         <ToolBar
           {...pickedUserDefinedHandlersAndOpts}

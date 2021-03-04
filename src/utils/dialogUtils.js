@@ -11,6 +11,7 @@ export function showAddOrEditAnnotationDialog({ type, annotation }) {
   const Component = typeToDialog[type];
   const nameUpper = startCase(type);
   showDialog({
+    overrideName: `AddOrEdit${nameUpper}DialogOverride`,
     Component,
     props: {
       dialogProps: {
