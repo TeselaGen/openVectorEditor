@@ -9,15 +9,17 @@ module.exports = {
     // esModules: console.log("commentMeBackOut") || false,
     // cjs: console.log("commentMeBackOut") || false
   },
-  babel: {
-    runtime: false,
-    env: {
-      targets: "defaults, not IE 11"
-    },
-    ...(process.env.WITH_COVERAGE && {
-      plugins: ["istanbul"]
-    })
-  },
+  ...(process.env.NODE_ENV !== "production" && {
+    babel: {
+      runtime: false,
+      env: {
+        targets: "defaults, not IE 11"
+      },
+      ...(process.env.WITH_COVERAGE && {
+        plugins: ["istanbul"]
+      })
+    }
+  }),
 
   webpack: {
     aliases: {
