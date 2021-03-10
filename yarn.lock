@@ -2047,12 +2047,12 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/core@^3.39.0":
-  version "3.39.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.39.0.tgz#77c13aea4e5285568b9ad76f69004567ea7d75e5"
-  integrity sha512-Pl92Qvfo0iowvJ81hOxfOXgBUuqHdMgtYao7hCvhF5hvz8wYRfOr1GHChVsiD5NvpNmG2rtUTYqkfft06Tyj5A==
+"@blueprintjs/core@^3.40.1":
+  version "3.40.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.40.1.tgz#786f3bffa9f7c6e0f80b2935ae13a425a237b7c0"
+  integrity sha512-trZMuv84vbIJKJYZ7YkMB+Eth1H74KeJrY07pJhlbmbsGTbBc7Pj1Lx2858PgyIaO9HpaHaBS2+VPmMFkt8muw==
   dependencies:
-    "@blueprintjs/icons" "^3.24.0"
+    "@blueprintjs/icons" "^3.25.1"
     "@types/dom4" "^2.0.1"
     classnames "^2.2"
     dom4 "^2.1.5"
@@ -2064,31 +2064,31 @@
     resize-observer-polyfill "^1.5.1"
     tslib "~1.13.0"
 
-"@blueprintjs/datetime@^3.20.5":
-  version "3.20.5"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.20.5.tgz#9f446818ad4ad595847c76da0d56954f78145472"
-  integrity sha512-/pNgDW0vLIdOCrUh0KOVGWc9snNEjJoG2CYj3NTVnxai2yb2xBE88OHTkiorIVwBl55PvrEHlr5TEp7lnOTFqw==
+"@blueprintjs/datetime@^3.21.1":
+  version "3.21.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.21.1.tgz#c715c70f35b49295a84aa347db0bc394415d2be8"
+  integrity sha512-WdMYH/Uz9c6DYNkLe63wSV1U4qhDBtBIxlFhkYNbc1Hp52AY912uOsN8UP2MnzCYBBlXwd0FUltyoZ42sjjOwA==
   dependencies:
-    "@blueprintjs/core" "^3.39.0"
+    "@blueprintjs/core" "^3.40.1"
     classnames "^2.2"
     react-day-picker "7.4.8"
     react-lifecycles-compat "^3.0.4"
     tslib "~1.13.0"
 
-"@blueprintjs/icons@^3.24.0":
-  version "3.24.0"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.24.0.tgz#aa7e6042e40806d22f85da8d62990ff0296adcf2"
-  integrity sha512-OvDDI5EUueS1Y3t594iS8LAGoHhLhYjC2GuN/01a85n+ASLSp0jf0/+uix2JeCOj41iTdRRCINbWuRwVQNNGPw==
+"@blueprintjs/icons@^3.25.1":
+  version "3.25.1"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.25.1.tgz#530c06a72b759da5c3cfbb01eaf2ab987a67129d"
+  integrity sha512-AppGf5IyjjKa/Zlre4pHWbDnsI7nefurXKku8Yf/B14bDAB2a8lzP6HCoTowAW4fHryTwE5Pzp9zEJYvofkUEg==
   dependencies:
     classnames "^2.2"
     tslib "~1.13.0"
 
-"@blueprintjs/select@^3.15.5":
-  version "3.15.5"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-3.15.5.tgz#f3448a21ff596a793c8949d8ac5068b1fcd70bbd"
-  integrity sha512-ZZaW60v7sKY2NIPvqG9PO+BAvbfeFvL/LQ6wNHias+T63Nk34NZrUx0a3MSELkTsJwdpZLZJLzH7c8zQANBOkg==
+"@blueprintjs/select@^3.15.7":
+  version "3.15.7"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/select/-/select-3.15.7.tgz#5d263588d4b11c8fed332877d3b957d6b54afdc1"
+  integrity sha512-PZ1hh0bQjtSwNd2n1xr+D5XCZms72soDjgjLWUIGPIZIpZjmf+WpZFXJYME9AUWw55bCDPeZ9sUBa7/XEpazQQ==
   dependencies:
-    "@blueprintjs/core" "^3.39.0"
+    "@blueprintjs/core" "^3.40.1"
     classnames "^2.2"
     tslib "~1.13.0"
 
@@ -4217,10 +4217,10 @@ cli-width@^2.0.0:
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
   integrity sha1-/xnt6Kml5XkyQUewwR8PvLq+1jk=
 
-clipboard@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-2.0.6.tgz#52921296eec0fdf77ead1749421b21c968647376"
-  integrity sha512-g5zbiixBRk/wyKakSwCKd7vQXDjFnAMGHoEyBogG/bw9kTD9GvdAvaoRR1ALcEzt3pVKxZR0pViekPMIS0QyGg==
+clipboard@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-2.0.7.tgz#da927f817b1859426df39212ac81feb07dbaeadc"
+  integrity sha512-8M8WEZcIvs0hgOma+wAPkrUxpv0PMY1L6VsAJh/2DOKARIMpyWe6ZLcEoe1qktl6/ced5ceYHs+oGedSbgZ3sg==
   dependencies:
     good-listener "^1.2.2"
     select "^1.1.2"
@@ -5745,10 +5745,10 @@ eslint-config-react-app@^5.0.0, eslint-config-react-app@^5.0.1:
   dependencies:
     confusing-browser-globals "^1.0.8"
 
-eslint-config-teselagen@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-5.0.5.tgz#d182928acb4ae8fe10386b14213742501668c417"
-  integrity sha512-0djFnWD867b9jhiYZklGlgQE1ImSbAig1QuFE6zfe6bMgH1xBRz+UYlaP88w47O0tp6AAjMGbonIDMNB5vN2lg==
+eslint-config-teselagen@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-5.0.6.tgz#cda50591ac11526cded735b2c9b604d558e9997b"
+  integrity sha512-CuX3Q+V+05I9TU144jCSPpZlWSDBTxiI6POZaamyC8yqo8HgjKIKKFS9J8u+V9slf9gxOKRsf7+l0ztT/+jNkQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^1.13.0"
     "@typescript-eslint/parser" "^1.13.0"
@@ -11093,16 +11093,6 @@ react-refresh@0.8.2:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.2.tgz#24bb0858eac92b0d7b0dd561747f0c9fd6c60327"
   integrity sha512-n8GXxo3DwM2KtFEL69DAVhGc4A1THn2qjmfvSo3nze0NLCoPbywazeJPqdp0RdSGLmyhQzeyA+XPXOobbYlkzg==
 
-react-resize-detector@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-2.3.0.tgz#57bad1ae26a28a62a2ddb678ba6ffdf8fa2b599c"
-  integrity sha512-oCAddEWWeFWYH5FAcHdBYcZjAw9fMzRUK9sWSx6WvSSOPVRxcHd5zTIGy/mOus+AhN/u6T4TMiWxvq79PywnJQ==
-  dependencies:
-    lodash.debounce "^4.0.8"
-    lodash.throttle "^4.1.1"
-    prop-types "^15.6.0"
-    resize-observer-polyfill "^1.5.0"
-
 react-rnd@^10.2.4:
   version "10.2.4"
   resolved "https://registry.yarnpkg.com/react-rnd/-/react-rnd-10.2.4.tgz#542c28fa9cfcb3ad1521694dfa2799217832818f"
@@ -12836,14 +12826,14 @@ terser@^4.6.13:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^30.0.4:
-  version "30.0.4"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.0.4.tgz#940b7824ac26d58042fc6c2abd0a44370ad9e87c"
-  integrity sha512-3s7W+H42185bJqgvG/OXSTZKCtCnk4oXTpMeq/4sjmA08xHAnV1c9YpiEymqrvJNhtnAgccP7Rm5zwUr+bREcQ==
+teselagen-react-components@^30.1.1:
+  version "30.1.1"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.1.1.tgz#68d6acb0bc747c760706a03464b9b04a68992d2e"
+  integrity sha512-9WTLRCN8ICo74XD5VCugW8sInexr7hyMNmhalzgZOyMS3vcPtZ21zV/py9gsSfGLlip9yao0/8bAJtvRY2CFxw==
   dependencies:
-    "@blueprintjs/core" "^3.39.0"
-    "@blueprintjs/datetime" "^3.20.5"
-    "@blueprintjs/select" "^3.15.5"
+    "@blueprintjs/core" "^3.40.1"
+    "@blueprintjs/datetime" "^3.21.1"
+    "@blueprintjs/select" "^3.15.7"
     "@teselagen/react-list" "^0.8.18"
     "@teselagen/react-table" "^6.10.9"
     axios "^0.21.1"
@@ -12859,7 +12849,6 @@ teselagen-react-components@^30.0.4:
     qs "^6.9.6"
     react-color "^2.19.3"
     react-dropzone "^4.2.12"
-    react-resize-detector "^2.3.0"
     react-rnd "^10.2.4"
     react-router-dom "^4.3.1"
     react-sortable-hoc "^0.6.8"
