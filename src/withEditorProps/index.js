@@ -24,13 +24,16 @@ import { allTypes } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
-import { showAddOrEditAnnotationDialog } from "../utils/dialogUtils";
-import { hideDialog, showDialog } from "../GlobalDialog";
+import {
+  hideDialog,
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
 
 async function getSaveDialogEl() {
   return new Promise((resolve) => {
     showDialog({
-      Component: require("../helperComponents/PrintDialog").default,
+      dialogType: "PrintDialog",
       props: {
         dialogProps: {
           title: "Generating Image to Save...",

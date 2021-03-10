@@ -1,5 +1,9 @@
+import { Icon } from "@blueprintjs/core";
 import React from "react";
+import copyToClipboard from "copy-to-clipboard";
+
 import RowItem from "../RowItem";
+import "./style.css";
 
 export default ({
   extraClasses = "",
@@ -12,7 +16,19 @@ export default ({
   const seqPlusPadding = paddingStart + sequence + paddingEnd;
 
   return (
-    <div className={"enzyme-rowitem " + extraClasses}>
+    <div
+      style={{ cursor: "pointer", position: "relative" }}
+      onClick={() => {
+        copyToClipboard(sequence);
+        window.toastr.success("Recognition Site Copied");
+      }}
+      className={"enzyme-rowitem " + extraClasses}
+    >
+      <Icon
+        className="tg-icon-duplicate-inner"
+        style={{ display: "none", position: "absolute", top: 3, left: 3 }}
+        icon="duplicate"
+      ></Icon>
       <RowItem
         {...{
           tickSpacing: 1,

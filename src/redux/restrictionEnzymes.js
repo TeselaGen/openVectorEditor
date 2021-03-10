@@ -14,9 +14,6 @@ export const filteredRestrictionEnzymesReset = createAction(
 export const filteredRestrictionEnzymesAdd = createAction(
   "FILTERED_RESTRICTION_ENZYMES_ADD"
 );
-export const allRestrictionEnzymesUpdate = createAction(
-  "ALL_RESTRICTION_ENZYMES_UPDATE"
-);
 // ------------------------------------
 // Reducer
 // ------------------------------------

@@ -18,7 +18,7 @@ import classNames from "classnames";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
-import { showDialog } from "../GlobalDialog";
+import { showDialog } from "../GlobalDialogUtils";
 import { compose } from "recompose";
 
 export default connectToEditor(({ readOnly, toolBar = {} }) => {
@@ -59,7 +59,7 @@ class AlignmentToolDropdown extends React.Component {
           onClick={() => {
             toggleDropdown();
             showDialog({
-              Component: AlignmentToolDialog,
+              dialogType: "AlignmentToolDialog",
               props: {
                 createNewAlignment: this.props.createNewAlignment,
                 upsertAlignmentRun: this.props.upsertAlignmentRun,

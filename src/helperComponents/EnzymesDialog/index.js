@@ -33,8 +33,7 @@ import {
   getCutsitesFromSequence
 } from "ve-sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
-import { showDialog } from "../../GlobalDialog";
-import CreateCustomEnzyme from "../../CreateCustomEnzyme";
+import { showDialog } from "../../GlobalDialogUtils";
 
 const upsertLocalEnzymeGroups = (newGroups) => {
   const existingGroups = window.getExistingEnzymeGroups();
@@ -724,7 +723,7 @@ class EnzymesDialog extends React.Component {
                       onClick={() => {
                         hideModal();
                         showDialog({
-                          Component: CreateCustomEnzyme
+                          dialogType: "CreateCustomEnzyme"
                         });
                       }}
                       className="veEnzymeCreateCustomEnzyme"

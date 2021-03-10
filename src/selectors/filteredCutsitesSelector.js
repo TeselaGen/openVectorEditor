@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import cutsitesSelector from "./cutsitesSelector";
 import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-import { getLowerCaseObj } from "../utils/arrayUtils";
+// import { getLowerCaseObj } from "../utils/arrayUtils";
 import { flatMap } from "lodash";
 
 export default createSelector(
@@ -18,7 +18,7 @@ export default createSelector(
     let returnVal = {
       cutsitesByName: {}
     };
-    const cutsitesByNameLower = getLowerCaseObj(cutsitesByName);
+    // const cutsitesByName = getLowerCaseObj(cutsitesByName);
     const hiddenEnzymesByName = {};
     let filteredEnzymes = [];
     let hasUserGroup;
@@ -42,7 +42,7 @@ export default createSelector(
       }
     });
     if (!filteredEnzymes || (filteredEnzymes.length === 0 && !hasUserGroup)) {
-      returnVal.cutsitesByName = cutsitesByNameLower;
+      returnVal.cutsitesByName = cutsitesByName;
     } else {
       //loop through each filter option ('Single Cutters', 'BamHI')
       filteredEnzymes.forEach(function ({ value, ...rest }) {
@@ -56,19 +56,18 @@ export default createSelector(
           specialCutsiteFilterOptions[value].cutsThisManyTimes;
         if (cutsThisManyTimes > 0) {
           //the cutter type is either 1,2,3 for single, double or triple cutters
-          Object.keys(cutsitesByNameLower).forEach(function (key) {
+          Object.keys(cutsitesByName).forEach(function (key) {
             if (hiddenEnzymesByName[key]) return; //don't show that cutsite
-            if (cutsitesByNameLower[key].length === cutsThisManyTimes) {
-              returnVal.cutsitesByName[key] = cutsitesByNameLower[key];
+            if (cutsitesByName[key].length === cutsThisManyTimes) {
+              returnVal.cutsitesByName[key] = cutsitesByName[key];
             }
           });
         } else {
           if (hiddenEnzymesByName[value]) return; //don't show that cutsite
           //normal enzyme ('BamHI')
 
-          if (!cutsitesByNameLower[lowerValue]) return;
-          returnVal.cutsitesByName[lowerValue] =
-            cutsitesByNameLower[lowerValue];
+          if (!cutsitesByName[lowerValue]) return;
+          returnVal.cutsitesByName[lowerValue] = cutsitesByName[lowerValue];
         }
       });
     }

@@ -79,6 +79,7 @@
     "@types/lodash": "npm:@types/lodash-es",
     "auto-changelog": "^2.2.1",
     "babel-plugin-istanbul": "^6.0.0",
+    "copy-to-clipboard": "^3.3.1",
     "cypress": "^6.4.0",
     "drag-mock": "^1.4.0",
     "eslint": "^6.8.0",

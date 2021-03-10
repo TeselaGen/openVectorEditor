@@ -46,10 +46,11 @@ import {
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 import { getNodeToRefocus } from "../utils/editorUtils";
-import { showAddOrEditAnnotationDialog } from "../utils/dialogUtils";
-import { showDialog } from "../GlobalDialog";
 
-import MergeFeaturesDialog from "../helperComponents/MergeFeaturesDialog";
+import {
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
 
 function getAcceptedChars({ isProtein, isRna, isMixedRnaAndDna } = {}) {
   return isProtein
@@ -929,7 +930,7 @@ function VectorInteractionHOC(Component /* options */) {
                     });
                     // annotationSelect(annotation)
                     showDialog({
-                      Component: MergeFeaturesDialog
+                      dialogType: "MergeFeaturesDialog"
                     });
                   }
                 },
@@ -1024,6 +1025,17 @@ function VectorInteractionHOC(Component /* options */) {
     primerDoubleClicked = ({ annotation }) => {
       showAddOrEditAnnotationDialog({ type: "primer", annotation });
     };
+    cutsiteDoubleClicked = ({ annotation }) => {
+      showDialog({
+        dialogType: "AdditionalCutsiteInfoDialog",
+        props: {
+          dialogProps: {
+            title: annotation.name
+          },
+          cutsiteOrGroupKey: annotation.name
+        }
+      });
+    };
 
     render() {
       const {
@@ -1067,6 +1079,7 @@ function VectorInteractionHOC(Component /* options */) {
           orfRightClicked: this.orfRightClicked,
           deletionLayerRightClicked: this.deletionLayerRightClicked,
           cutsiteRightClicked: this.cutsiteRightClicked,
+          cutsiteDoubleClicked: this.cutsiteDoubleClicked,
           translationRightClicked: this.translationRightClicked,
           ...annotationClickHandlers.reduce((acc, handler) => {
             acc[handler] = this[handler];

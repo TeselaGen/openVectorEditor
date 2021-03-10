@@ -6,7 +6,6 @@ import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 
 import React from "react";
-import EnzymesDialog from "../helperComponents/EnzymesDialog";
 
 import "./style.css";
 import { TgSelect } from "teselagen-react-components";
@@ -14,7 +13,12 @@ import { TgSelect } from "teselagen-react-components";
 import map from "lodash/map";
 import { flatMap } from "lodash";
 import { omit } from "lodash";
-import { showDialog } from "../GlobalDialog";
+import { showDialog } from "../GlobalDialogUtils";
+import {
+  addCutsiteGroupClickHandler,
+  getCutsiteWithNumCuts,
+  getUserGroupLabel
+} from "./AdditionalCutsiteInfoDialog";
 
 export class CutsiteFilter extends React.Component {
   static defaultProps = {
@@ -93,15 +97,7 @@ export class CutsiteFilter extends React.Component {
       ...map(specialCutsiteFilterOptions, (opt) => opt),
       ...map(userEnzymeGroups, (nameArray, name) => {
         return {
-          label: (
-            <span
-              title={`User created enzyme group ${name} -- ${nameArray.join(
-                " "
-              )}`}
-            >
-              <Icon size={10} icon="user"></Icon>&nbsp;{name}
-            </span>
-          ),
+          label: getUserGroupLabel({ nameArray, name }),
           value: "__userCreatedGroup" + name,
           nameArray
         };
@@ -110,7 +106,11 @@ export class CutsiteFilter extends React.Component {
       ...Object.keys(cutsitesByName)
         .sort()
         .map(function (key) {
-          const label = getLabel(cutsitesByName[key], key);
+          const numCuts = (cutsitesByName[key] || []).length;
+          const label = getCutsiteWithNumCuts({
+            numCuts,
+            name: numCuts ? cutsitesByName[key][0].name : key
+          });
           return {
             canBeHidden: true,
             label,
@@ -118,7 +118,7 @@ export class CutsiteFilter extends React.Component {
             value: key
           };
         })
-    ].map(addClickableLabel);
+    ].map((n) => addClickableLabel(n, { closeDropDown }));
     // function openManageEnzymes() {
     //   dispatch({
     //     type: "CREATE_YOUR_OWN_ENZYME_RESET"
@@ -179,16 +179,19 @@ export class CutsiteFilter extends React.Component {
             } else if (filteredOpt.value.includes("__userCreatedGroup")) {
               toRet = filteredOpt;
             } else {
-              const label = getLabel(
-                cutsitesByName[filteredOpt.value],
-                filteredOpt.value
-              );
+              const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
+              const label = getCutsiteWithNumCuts({
+                numCuts,
+                name: numCuts
+                  ? cutsitesByName[filteredOpt.value][0].name
+                  : filteredOpt.value
+              });
               toRet = {
                 ...filteredOpt,
                 label
               };
             }
-            return addClickableLabel(toRet);
+            return addClickableLabel(toRet, { closeDropDown });
           })}
         />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -197,7 +200,7 @@ export class CutsiteFilter extends React.Component {
             enzymeManageOverride
               ? enzymeManageOverride(this.props)
               : showDialog({
-                  Component: EnzymesDialog
+                  dialogType: "EnzymesDialog"
                   // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
                 });
             closeDropDown();
@@ -213,54 +216,17 @@ export class CutsiteFilter extends React.Component {
 
 export default compose(withEditorProps, connect())(CutsiteFilter);
 
-const getLabel = (maybeCutsites = [], val) => {
-  const cutNumber = maybeCutsites.length;
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between"
-      }}
-    >
-      {" "}
-      <div>{val}</div>{" "}
-      <div style={{ fontSize: 12 }}>
-        &nbsp;({cutNumber} cut{cutNumber === 1 ? "" : "s"})
-      </div>
-    </div>
-  );
-};
-
-function addClickableLabel(toRet) {
-  return toRet;
-  // return {
-  //   ...toRet,
-  //   ...(toRet.label
-  //     ? {
-  //         label: (
-  //           <div
-  //             className="tg-clickable-cutsite-label"
-  //             style={{ cursor: "pointer" }}
-  //             onClick={() => {
-  //               showDialog({
-  //                 Component: wrapDialog()(() => {
-  //                   return <div className={Classes.DIALOG_BODY}>yaa</div>;
-  //                 }),
-  //                 props: {
-  //                   dialogProps: {
-  //                     title: "hahah"
-  //                   },
-  //                   yaa: "baby"
-  //                 }
-  //               });
-  //             }}
-  //           >
-  //             {toRet.label}
-  //           </div>
-  //         )
-  //       }
-  //     : {})
-  // };
+function addClickableLabel(toRet, { closeDropDown }) {
+  return {
+    ...toRet,
+    ...(toRet.label
+      ? {
+          label: addCutsiteGroupClickHandler({
+            closeDropDown,
+            cutsiteOrGroupKey: toRet.value,
+            el: toRet.label
+          })
+        }
+      : {})
+  };
 }

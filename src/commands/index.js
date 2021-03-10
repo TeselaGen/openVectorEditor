@@ -25,8 +25,10 @@ import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 import packageJson from "../../package.json";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
-import { showAddOrEditAnnotationDialog } from "../utils/dialogUtils";
-import { showDialog } from "../GlobalDialog";
+import {
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
 
@@ -65,7 +67,7 @@ const fileCommandDefs = {
     isDisabled: (props) => props.readOnly && readOnlyDisabledTooltip,
     handler: (props) => {
       showDialog({
-        Component: require("../helperComponents/RenameSequenceDialog").default,
+        dialogType: "RenameSequenceDialog",
         props: {
           initialValues: { newName: props.sequenceData.name },
           onSubmit: (values) => {
@@ -315,7 +317,7 @@ const fileCommandDefs = {
     hotkeyProps: { preventDefault: true },
     handler: (props) =>
       showDialog({
-        Component: require("../helperComponents/PrintDialog").default,
+        dialogType: "PrintDialog",
         props
       }),
     hotkey: "mod+p"
@@ -327,7 +329,7 @@ const fileCommandDefs = {
       isDisabled: (props) => props.readOnly,
       handler: (props) =>
         showDialog({
-          Component: require("../helperComponents/RemoveDuplicates").default,
+          dialogType: "RemoveDuplicates",
           props: {
             type: camelCase(type),
             editorName: props.editorName,
@@ -494,7 +496,7 @@ const editCommandDefs = {
     name: "Go To...",
     handler: (props) => {
       showDialog({
-        Component: require("../helperComponents/GoToDialog").default,
+        dialogType: "GoToDialog",
         props: {
           extraProps: {
             sequencePosition: {
@@ -529,7 +531,7 @@ const editCommandDefs = {
         end = props.caretPosition;
       }
       showDialog({
-        Component: require("../helperComponents/SelectDialog").default,
+        dialogType: "SelectDialog",
         props: {
           extraProps: {
             circular: props.sequenceData && props.sequenceData.circular,
@@ -1218,7 +1220,7 @@ const toolCommandDefs = {
       } else {
         props.createYourOwnEnzymeReset();
         showDialog({
-          Component: require("../helperComponents/EnzymesDialog").default,
+          dialogType: "EnzymesDialog",
           props: {
             inputSequenceToTestAgainst: props.sequenceData
               ? props.sequenceData.sequence
@@ -1240,7 +1242,7 @@ const toolCommandDefs = {
     name: "Create Custom Enzyme",
     handler: () => {
       showDialog({
-        Component: require("../CreateCustomEnzyme").default
+        dialogType: "CreateCustomEnzyme"
       });
     },
     isHidden: (props) => props.overrideManageEnzymes

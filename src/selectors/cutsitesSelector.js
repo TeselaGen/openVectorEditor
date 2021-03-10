@@ -6,13 +6,12 @@ import { createSelector } from "reselect";
 import bsonObjectid from "bson-objectid";
 import { flatMap as flatmap, map } from "lodash";
 import { getCutsitesFromSequence } from "ve-sequence-utils";
+import { getLowerCaseObj } from "../utils/arrayUtils";
 
 function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
   //get the cutsites grouped by enzyme
-  let cutsitesByName = getCutsitesFromSequence(
-    sequence,
-    circular,
-    map(enzymeList)
+  let cutsitesByName = getLowerCaseObj(
+    getCutsitesFromSequence(sequence, circular, map(enzymeList))
   );
   //tag each cutsite with a unique id
   let cutsitesById = {};

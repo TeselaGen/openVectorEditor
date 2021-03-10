@@ -16,7 +16,7 @@ import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
-import { showAddOrEditAnnotationDialog } from "../../utils/dialogUtils";
+import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 
 const genericAnnotationProperties = ({
   annotationType,
