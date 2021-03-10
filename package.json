@@ -50,7 +50,7 @@
     "prop-types": "^15.7.2",
     "react-beautiful-dnd": "^13.0.0",
     "react-draggable": "^3.2.1",
-    "react-dropzone": "^4.2.11",
+    "react-dropzone": "^11.3.1",
     "react-measure": "^2.3.0",
     "react-redux": "^5",
     "react-router-dom": "^4.3.1",
