@@ -11,11 +11,11 @@ module.exports = {
   },
   babel: {
     runtime: false,
-    env: {
-      targets: {
-        chrome: "59"
-      }
-    },
+    // env: {
+    //   targets: {
+    //     chrome: "59"
+    //   }
+    // },
     ...(process.env.WITH_COVERAGE && {
       plugins: ["istanbul"]
     })
