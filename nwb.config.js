@@ -13,8 +13,7 @@ module.exports = {
     runtime: false,
     env: {
       targets: {
-        chrome: "78",
-        electron: "59"
+        chrome: "59"
       }
     },
     ...(process.env.WITH_COVERAGE && {
