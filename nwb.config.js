@@ -10,7 +10,7 @@ module.exports = {
     // cjs: console.log("commentMeBackOut") || false
   },
   babel: {
-    runtime: false,
+    // runtime: false, //tnr: comment this back in once we're at a higher version of cypress on lims
     // env: {
     //   targets: {
     //     chrome: "59"

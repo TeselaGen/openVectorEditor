@@ -63,7 +63,7 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "^30.1.3",
+    "teselagen-react-components": "^30.1.5",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
     "use-local-storage-state": "^9.0.2",
