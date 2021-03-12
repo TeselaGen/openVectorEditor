@@ -1,4 +1,4 @@
-describe("editor", function () {
+describe("alignment", function () {
   it("it should show an unmapped warning", function () {
     cy.visit("#/Alignment");
     cy.get(".bp3-icon-warning-sign");

@@ -17,9 +17,9 @@ export default compose(
         IconWrapperProps: {
           multiple: false,
           style: {},
-          onDrop: files => importSequenceFromFile(files[0])
+          onDrop: (files) => importSequenceFromFile(files[0])
         },
-        tooltip: "Click or drag to import and view .fasta or .gb files",
+        tooltip: "Click or drag to import and view files (.fasta .gb .dna)",
         ...toolbarItemProps
       }}
     />

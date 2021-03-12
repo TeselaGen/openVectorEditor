@@ -172,46 +172,38 @@ export const updateCircular = (props) => async (isCircular) => {
 
 export const importSequenceFromFile = (props) => (file, opts = {}) => {
   const { updateSequenceData, onImport } = props;
-  let reader = new FileReader();
-  reader.readAsText(file, "UTF-8");
-  reader.onload = function (evt) {
-    const content = evt.target.result;
-    anyToJson(
-      content,
-      async (result) => {
-        // TODO maybe handle import errors/warnings better
-        const failed = !result[0].success;
-        const messages = result[0].messages;
-        if (messages && messages.length) {
-          messages.forEach((msg) => {
-            const type = msg.substr(0, 20).toLowerCase().includes("error")
-              ? failed
-                ? "error"
-                : "warning"
-              : "info";
-            window.toastr[type](msg);
-          });
-        }
-        if (failed) {
-          window.toastr.error("Error importing sequence");
-        }
-        let seqData = result[0].parsedSequence;
+  anyToJson(
+    file,
+    async (result) => {
+      // TODO maybe handle import errors/warnings better
+      const failed = !result[0].success;
+      const messages = result[0].messages;
+      if (messages && messages.length) {
+        messages.forEach((msg) => {
+          const type = msg.substr(0, 20).toLowerCase().includes("error")
+            ? failed
+              ? "error"
+              : "warning"
+            : "info";
+          window.toastr[type](msg);
+        });
+      }
+      if (failed) {
+        window.toastr.error("Error importing sequence");
+      }
+      let seqData = result[0].parsedSequence;
 
-        if (onImport) {
-          seqData = await onImport(seqData);
-        }
+      if (onImport) {
+        seqData = await onImport(seqData);
+      }
 
-        if (seqData) {
-          updateSequenceData(seqData);
-          window.toastr.success("Sequence Imported");
-        }
-      },
-      { acceptParts: true, ...opts }
-    );
-  };
-  reader.onerror = function () {
-    window.toastr.error("Could not read file.");
-  };
+      if (seqData) {
+        updateSequenceData(seqData);
+        window.toastr.success("Sequence Imported");
+      }
+    },
+    { acceptParts: true, ...opts }
+  );
 };
 
 export const exportSequenceToFile = (props) => (format) => {

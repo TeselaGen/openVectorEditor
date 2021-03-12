@@ -1,4 +1,4 @@
-describe("editor", function () {
+describe("warnings", function () {
   beforeEach(() => {
     cy.visit("");
   });

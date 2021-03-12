@@ -1,4 +1,4 @@
-describe("partTypes", function () {
+describe("partTags", function () {
   beforeEach(() => {
     cy.visit("");
   });

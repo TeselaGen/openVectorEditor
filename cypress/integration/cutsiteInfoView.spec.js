@@ -1,4 +1,4 @@
-describe("editor", function () {
+describe("cutsiteInfoView", function () {
   beforeEach(() => {
     cy.visit("");
   });

@@ -1,4 +1,4 @@
-describe("editor", function () {
+describe("proteinEditor", function () {
   beforeEach(() => {
     cy.visit("");
     cy.tgToggle("isProtein");
