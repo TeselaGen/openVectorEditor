@@ -6,14 +6,6 @@ import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStar
 
 import { /* createReducer, */ createAction } from "redux-act";
 
-// import createAction from "./utils/createMetaAction";
-// import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
-// import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
-// import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
-// import ab1ParsedGFPvv50 from "../ToolBar/ab1ParsedGFPvv50.json";
-// import ab1ParsedGFPvv60 from "../ToolBar/ab1ParsedGFPvv60.json";
-// import { magicDownload } from "teselagen-react-components";
-
 const alignmentAnnotationSettings = {
   axis: true,
   axisNumbers: true,

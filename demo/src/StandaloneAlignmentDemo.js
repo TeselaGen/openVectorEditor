@@ -1,27 +1,21 @@
 import React from "react";
 
 import { Dialog, Button } from "@blueprintjs/core";
-import {times} from "lodash";
-import {generateSequenceData} from "ve-sequence-utils";
+import { times } from "lodash";
+import { generateSequenceData } from "ve-sequence-utils";
 
-// import ab1ParsedGFPuv54 from "../../src/ToolBar/ab1ParsedGFPuv54.json";
-// import exampleAlignmentData from "../../src/ToolBar/ab1ParsedGFPuv58.json";
-// import exampleAlignmentData from "./exampleData/alignmentDataPairwise.json";
-// import exampleAlignmentData from "./exampleData/jbeiPairwiseAlignmnent_23_2018.json";
-// import exampleAlignmentData from "./exampleData/jbeiPairwiseAlignmnent_29_2018.json";
-
-// import exampleSequenceData from './exampleData/simpleSequenceData';
-
-const exampleAlignmentData = {alignmentTracks: times(10).map(() => {
-  return {
-    sequenceData: {
-      ...generateSequenceData(10)
-    },
-    alignmentData: {
-      ...generateSequenceData(10)
-    }
-  }
-})}
+const exampleAlignmentData = {
+  alignmentTracks: times(10).map(() => {
+    return {
+      sequenceData: {
+        ...generateSequenceData(10)
+      },
+      alignmentData: {
+        ...generateSequenceData(10)
+      }
+    };
+  })
+};
 
 export default class StandaloneAlignmentDemo extends React.Component {
   state = {
@@ -32,7 +26,7 @@ export default class StandaloneAlignmentDemo extends React.Component {
       ...exampleAlignmentData,
       id: "pairwiseRun1",
       handleAlignmentRename: () => {
-        console.info("alignment being renamed!")
+        console.info("alignment being renamed!");
       }, //this does nothing right now
       linearViewOptions: () => {
         return {
@@ -50,10 +44,10 @@ export default class StandaloneAlignmentDemo extends React.Component {
         };
       }
     });
-    
-    setTimeout(()=>{
-      console.info('alignment.getState():',alignment.getState())
-    },10000)
+
+    setTimeout(() => {
+      console.info("alignment.getState():", alignment.getState());
+    }, 10000);
   };
   componentDidMount() {
     this.mountEditor();
@@ -61,13 +55,13 @@ export default class StandaloneAlignmentDemo extends React.Component {
   render() {
     const inner = (
       <div
-        className={"standaloneDemoNode"}
+        className="standaloneDemoNode"
         style={{
           width: "100%",
           height: "100%",
           zIndex: 1050
         }}
-        ref={node => {
+        ref={(node) => {
           this.node = node;
         }}
       />

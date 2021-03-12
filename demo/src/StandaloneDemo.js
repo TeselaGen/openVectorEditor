@@ -6,15 +6,15 @@ import exampleSequenceData from "./exampleData/exampleSequenceData";
 import { Dialog, Button } from "@blueprintjs/core";
 // import ab1ParsedGFPuv54 from "../../src/ToolBar/ab1ParsedGFPuv54.json";
 // import ab1ParsedGFPuv58 from "../../src/ToolBar/ab1ParsedGFPuv58.json";
-import ab1ParsedGFPvv50 from "../../src/ToolBar/ab1ParsedGFPvv50.json";
-import ab1ParsedGFPvv60 from "../../src/ToolBar/ab1ParsedGFPvv60.json";
+import ab1ParsedGFPvv50 from "../../scratch/ab1ParsedGFPvv50.json";
+import ab1ParsedGFPvv60 from "../../scratch/ab1ParsedGFPvv60.json";
 import alignmentDataPairwise from "./exampleData/alignmentDataPairwise.json";
 
 // import exampleSequenceData from './exampleData/simpleSequenceData';
 
 connect(
   (/* state, ownProps */) => {},
-  dispatch => {
+  (dispatch) => {
     dispatch();
   }
 );
@@ -51,7 +51,7 @@ export default class StandaloneDemo extends React.Component {
           onRename: () => {}, //this option should be shown by default
           onNew: () => {}, //unless this callback is defined, don't show the option to create a new seq
           onDuplicate: () => {}, //unless this callback is defined, don't show the option to create a new seq
-          onSave: function(
+          onSave: function (
             opts = {},
             sequenceDataToSave,
             editorState,
@@ -66,10 +66,10 @@ export default class StandaloneDemo extends React.Component {
             //or
             // return myPromiseBasedApiCall()
           },
-          onDelete: data => {
+          onDelete: (data) => {
             console.warn("would delete", data);
           },
-          onCopy: function(event, copiedSequenceData /* , editorState */) {
+          onCopy: function (event, copiedSequenceData /* , editorState */) {
             //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
             const clipboardData = event.clipboardData;
             clipboardData.setData("text/plain", copiedSequenceData.sequence);
@@ -82,7 +82,7 @@ export default class StandaloneDemo extends React.Component {
             //in onPaste in your app you can do:
             // e.clipboardData.getData('application/json')
           },
-          onPaste: function(event /* , editorState */) {
+          onPaste: function (event /* , editorState */) {
             //the onPaste here must return sequenceData in the teselagen data format
             const clipboardData = event.clipboardData;
             let jsonData = clipboardData.getData("application/json");
@@ -97,7 +97,7 @@ export default class StandaloneDemo extends React.Component {
             };
             return sequenceData;
           },
-          getSequenceAtVersion: versionId => {
+          getSequenceAtVersion: (versionId) => {
             if (versionId === 2) {
               return {
                 sequence: "thomaswashere"
@@ -498,7 +498,7 @@ export default class StandaloneDemo extends React.Component {
           zIndex: 1050,
           flexGrow: 1
         }}
-        ref={node => {
+        ref={(node) => {
           this.node = node;
         }}
       />
