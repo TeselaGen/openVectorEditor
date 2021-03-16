@@ -24,7 +24,12 @@ class SimpleGenericDialogForm extends React.Component {
       extraProps = {}
     } = this.props;
     return (
-      <div
+      <form
+        onSubmit={handleSubmit((data) => {
+          if (onSubmit) onSubmit(data);
+          hideModal();
+          tryToRefocusEditor();
+        })}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog simple-dialog"
@@ -54,17 +59,13 @@ class SimpleGenericDialogForm extends React.Component {
             />
           )}
           <Button
-            onClick={handleSubmit((data) => {
-              if (onSubmit) onSubmit(data);
-              hideModal();
-              tryToRefocusEditor();
-            })}
+            type="submit"
             intent={Intent.PRIMARY}
             text={buttonText}
             disabled={invalid}
           />
         </div>
-      </div>
+      </form>
     );
   }
 }
