@@ -181,7 +181,7 @@ export const AdditionalCutsiteInfoDialog = sharedWrapper(function (props) {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {enzymesThatCutInSeq.length && (
+          {!!enzymesThatCutInSeq.length && (
             <div>
               <div
                 style={{
