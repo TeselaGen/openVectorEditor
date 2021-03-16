@@ -63,7 +63,7 @@ export default createSelector(
             }
           });
         } else {
-          if (hiddenEnzymesByName[value]) return; //don't show that cutsite
+          if (hiddenEnzymesByName[lowerValue]) return; //don't show that cutsite
           //normal enzyme ('BamHI')
 
           if (!cutsitesByName[lowerValue]) return;

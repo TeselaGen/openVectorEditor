@@ -1,5 +1,5 @@
 describe("enzymeManager", () => {
-  it(`enzymes not shown by default should show up when added to a group`, () => {
+  it(`enzymes not shown by default should show up when added to a group (and hiding an enzyme that is shown in a group should work)`, () => {
     cy.visit("");
     cy.window().then((win) => {
       win.localStorage.clear();
