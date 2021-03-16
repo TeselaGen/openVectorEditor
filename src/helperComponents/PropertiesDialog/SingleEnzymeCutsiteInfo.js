@@ -61,28 +61,30 @@ export default function SingleEnzymeCutsiteInfo({
           />
         )}
         <br></br>
-        <div>
-          <DataTable
-            style={{ minHeight: 0, maxHeight: 200 }}
-            selectedIds={selectedAnnotationId}
-            maxHeight={300}
-            onRowSelect={onRowSelect}
-            formName="cutLocations"
-            isSingleSelect
-            compact
-            noRouter
-            minimalStyle
-            scrollToSelectedRowRelativeToDom
-            noHeader
-            isSimple
-            noFullscreenButton
-            isInfinite
-            withSearch={false}
-            withFilter={false}
-            schema={schema}
-            entities={entities}
-          />
-        </div>
+        {entities && !!entities.length && (
+          <div>
+            <DataTable
+              style={{ minHeight: 0, maxHeight: 200 }}
+              selectedIds={selectedAnnotationId}
+              maxHeight={300}
+              onRowSelect={onRowSelect}
+              formName="cutLocations"
+              isSingleSelect
+              compact
+              noRouter
+              minimalStyle
+              scrollToSelectedRowRelativeToDom
+              noHeader
+              isSimple
+              noFullscreenButton
+              isInfinite
+              withSearch={false}
+              withFilter={false}
+              schema={schema}
+              entities={entities}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
