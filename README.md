@@ -558,9 +558,9 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
  `() => teselagenSequenceData  //called upon initialization  `
 
 
-<!-- 
+
 # Implementing Autosave functionality
- -->
+pass shouldAutosave=true as a prop and in the onSave() handler, make sure to return a promise so that the UI responds correctly with a spinner indicating saving is in progress
 
 # Development: 
 
