@@ -46,7 +46,33 @@ class MergeFeaturesDialog extends React.Component {
       }
     );
     return (
-      <div
+      <form
+        onSubmit={handleSubmit(
+          ({ id1, id2, name, preserveFeatures, start, end }) => {
+            if (!preserveFeatures) {
+              deleteFeature([id1, id2], {
+                batchUndoStart: true
+              });
+            }
+            upsertFeature(
+              {
+                ...feat1,
+                id: uuid(),
+                start: start - 1,
+                end: end - 1,
+                name
+              },
+              {
+                batchUndoEnd: true
+              }
+            );
+            selectionLayerUpdate({
+              start: start - 1,
+              end: end - 1
+            });
+            hideModal();
+          }
+        )}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog",
@@ -189,39 +215,11 @@ class MergeFeaturesDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
         >
-          <Button
-            onClick={handleSubmit(
-              ({ id1, id2, name, preserveFeatures, start, end }) => {
-                if (!preserveFeatures) {
-                  deleteFeature([id1, id2], {
-                    batchUndoStart: true
-                  });
-                }
-                upsertFeature(
-                  {
-                    ...feat1,
-                    id: uuid(),
-                    start: start - 1,
-                    end: end - 1,
-                    name
-                  },
-                  {
-                    batchUndoEnd: true
-                  }
-                );
-                selectionLayerUpdate({
-                  start: start - 1,
-                  end: end - 1
-                });
-                hideModal();
-              }
-            )}
-            intent={Intent.PRIMARY}
-          >
+          <Button type="submit" intent={Intent.PRIMARY}>
             Create Merged Feature
           </Button>
         </div>
-      </div>
+      </form>
     );
   }
 }

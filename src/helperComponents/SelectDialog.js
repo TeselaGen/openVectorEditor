@@ -77,7 +77,12 @@ export default compose(
       );
 
       return (
-        <div
+        <form
+          onSubmit={handleSubmit((data) => {
+            if (onSubmit) onSubmit(data);
+            hideModal();
+            tryToRefocusEditor();
+          })}
           className={classNames(
             Classes.DIALOG_BODY,
             "tg-min-width-dialog simple-dialog"
@@ -122,11 +127,7 @@ export default compose(
               text="Cancel"
             />
             <Button
-              onClick={handleSubmit((data) => {
-                if (onSubmit) onSubmit(data);
-                hideModal();
-                tryToRefocusEditor();
-              })}
+              type="submit"
               intent={Intent.PRIMARY}
               text={`Select ${invalid ? 0 : selectionLength} ${
                 isProtein ? "AA" : "BP"
@@ -134,7 +135,7 @@ export default compose(
               disabled={invalid}
             />
           </div>
-        </div>
+        </form>
       );
     }
   }

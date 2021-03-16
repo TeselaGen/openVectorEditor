@@ -439,7 +439,12 @@ const AddYourOwnSeqForm = reduxForm({
   }
 })(({ pristine, error, handleSubmit, reset, addSeq }) => {
   return (
-    <div>
+    <form
+      onSubmit={handleSubmit((vals) => {
+        reset();
+        addSeq(vals);
+      })}
+    >
       <EditableTextField
         style={{ maxWidth: 200 }}
         placeholder="Untitled Sequence"
@@ -450,16 +455,10 @@ const AddYourOwnSeqForm = reduxForm({
         placeholder="AGTTGAGC"
         name="sequence"
       />
-      <Button
-        disabled={pristine || error}
-        onClick={handleSubmit((vals) => {
-          reset();
-          addSeq(vals);
-        })}
-      >
+      <Button disabled={pristine || error} type="submit">
         Add
       </Button>
-    </div>
+    </form>
   );
 });
 

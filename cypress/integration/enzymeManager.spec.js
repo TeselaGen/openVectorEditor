@@ -1,4 +1,4 @@
-describe("manage enzymes dialog", () => {
+describe("enzymeManager", () => {
   it(`enzymes not shown by default should show up when added to a group`, () => {
     cy.visit("");
     cy.window().then((win) => {

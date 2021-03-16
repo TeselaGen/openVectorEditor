@@ -21,11 +21,6 @@ describe("toolbar", function () {
     cy.get(`[data-test="my-overridden-tool-123"]`).click();
     cy.contains("cha-ching");
   });
-  it("import tool should be able to import a genbank file", function () {
-    cy.uploadFile(`[data-test="veImportTool"]`, "pj5_00002.gb");
-    cy.contains("Sequence Imported").should("exist");
-    cy.contains("Parsed using Genbank Parser").should("exist");
-  });
   it("cutsite tool should toggle on and off cutsites", function () {
     cy.get(`.cutsiteLabelSelectionLayer`).should("exist");
     cy.get(`.veCutsite`).should("exist");

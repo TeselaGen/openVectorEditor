@@ -203,7 +203,66 @@ class AddOrEditAnnotationDialog extends React.Component {
       sequenceLength
     );
     return (
-      <div
+      <form
+        onSubmit={handleSubmit((data) => {
+          let updatedData;
+          if (data.forward === true && data.strand !== 1) {
+            updatedData = { ...data, strand: 1 };
+          } else if (data.forward === false && data.strand !== -1) {
+            updatedData = { ...data, strand: -1 };
+          } else {
+            updatedData = data;
+          }
+          updatedData.notes = {};
+          this.notes.forEach(({ key, value }) => {
+            if (!updatedData.notes[key]) updatedData.notes[key] = [];
+            updatedData.notes[key].push(value || "");
+          });
+          if (annotationTypePlural === "features") {
+            updatedData.color = featureColors[updatedData.type];
+          }
+          const hasJoinedLocations =
+            updatedData.locations && updatedData.locations.length > 1;
+
+          const newAnnotation = tidyUpAnnotation(
+            convertRangeTo0Based({
+              doesOverlapSelf: data.doesOverlapSelf,
+              ...updatedData,
+              ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
+                ? { type: "primer" }
+                : {}),
+              locations: undefined, //by default clear locations
+              ...(hasJoinedLocations && {
+                //only add locations if there are locations
+                start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
+                end:
+                  updatedData.locations[updatedData.locations.length - 1].end,
+                locations: updatedData.locations.map(convertRangeTo0Based)
+              })
+            }),
+            {
+              sequenceData,
+              annotationType: annotationTypePlural
+            }
+          );
+          beforeAnnotationCreate &&
+            beforeAnnotationCreate({
+              annotationTypePlural,
+              annotation: newAnnotation,
+              props: this.props
+            });
+
+          //update the selection layer so we don't jump away from where we're editing
+          //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
+          original_selectionLayerUpdate &&
+            original_selectionLayerUpdate({
+              start: newAnnotation.start,
+              end: newAnnotation.end
+            });
+          upsertAnnotation(newAnnotation);
+          annotationVisibilityShow(annotationTypePlural);
+          hideModal();
+        })}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog",
@@ -314,74 +373,14 @@ class AddOrEditAnnotationDialog extends React.Component {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit((data) => {
-              let updatedData;
-              if (data.forward === true && data.strand !== 1) {
-                updatedData = { ...data, strand: 1 };
-              } else if (data.forward === false && data.strand !== -1) {
-                updatedData = { ...data, strand: -1 };
-              } else {
-                updatedData = data;
-              }
-              updatedData.notes = {};
-              this.notes.forEach(({ key, value }) => {
-                if (!updatedData.notes[key]) updatedData.notes[key] = [];
-                updatedData.notes[key].push(value || "");
-              });
-              if (annotationTypePlural === "features") {
-                updatedData.color = featureColors[updatedData.type];
-              }
-              const hasJoinedLocations =
-                updatedData.locations && updatedData.locations.length > 1;
-
-              const newAnnotation = tidyUpAnnotation(
-                convertRangeTo0Based({
-                  doesOverlapSelf: data.doesOverlapSelf,
-                  ...updatedData,
-                  ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
-                    ? { type: "primer" }
-                    : {}),
-                  locations: undefined, //by default clear locations
-                  ...(hasJoinedLocations && {
-                    //only add locations if there are locations
-                    start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
-                    end:
-                      updatedData.locations[updatedData.locations.length - 1]
-                        .end,
-                    locations: updatedData.locations.map(convertRangeTo0Based)
-                  })
-                }),
-                {
-                  sequenceData,
-                  annotationType: annotationTypePlural
-                }
-              );
-              beforeAnnotationCreate &&
-                beforeAnnotationCreate({
-                  annotationTypePlural,
-                  annotation: newAnnotation,
-                  props: this.props
-                });
-
-              //update the selection layer so we don't jump away from where we're editing
-              //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
-              original_selectionLayerUpdate &&
-                original_selectionLayerUpdate({
-                  start: newAnnotation.start,
-                  end: newAnnotation.end
-                });
-              upsertAnnotation(newAnnotation);
-              annotationVisibilityShow(annotationTypePlural);
-              hideModal();
-            })}
+            type="submit"
             disabled={this.props.readOnly}
-            type={!this.props.readOnly && "submit"}
             intent={Intent.PRIMARY}
           >
             Save
           </Button>
         </div>
-      </div>
+      </form>
     );
   }
 }
