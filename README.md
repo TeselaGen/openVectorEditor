@@ -566,7 +566,7 @@ pass shouldAutosave=true as a prop and in the onSave() handler, make sure to ret
 
 ## Prerequisites
 [Node.js](http://nodejs.org/) >= v8 must be installed.
-download the latest yarn (https://yarnpkg.com/en/)
+download the latest yarn 
 
 ## Outside Developer Set Up Steps
 

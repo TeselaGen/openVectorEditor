@@ -68,7 +68,7 @@
     "typeface-ubuntu-mono": "^0.0.54",
     "use-local-storage-state": "^9.0.2",
     "ve-range-utils": "^2.5.9",
-    "ve-sequence-utils": "^5.0.1"
+    "ve-sequence-utils": "^5.0.0"
   },
   "peerDependencies": {
     "react": "^16.10.2",
