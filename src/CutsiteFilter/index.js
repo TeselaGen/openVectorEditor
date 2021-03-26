@@ -10,15 +10,58 @@ import React from "react";
 import "./style.css";
 import { TgSelect } from "teselagen-react-components";
 
-import map from "lodash/map";
-import { flatMap } from "lodash";
+import { map, flatMap, includes, pickBy, isEmpty } from "lodash";
 import { omit } from "lodash";
 import { showDialog } from "../GlobalDialogUtils";
 import {
   addCutsiteGroupClickHandler,
+  CutsiteTag,
   getCutsiteWithNumCuts,
-  getUserGroupLabel
+  getUserGroupLabel,
+  withRestrictionEnzymes
 } from "./AdditionalCutsiteInfoDialog";
+
+const NoResults = withRestrictionEnzymes(
+  ({ cutsitesByName, allRestrictionEnzymes, queryString = "" }) => {
+    const enzymesByNameThatMatch = pickBy(
+      allRestrictionEnzymes,
+      function (v, k) {
+        if (cutsitesByName[k]) {
+          return false;
+        }
+        return includes(k.toLowerCase(), queryString.toLowerCase());
+      }
+    );
+    if (!isEmpty(enzymesByNameThatMatch)) {
+      return (
+        <div>
+          No Active Results.. These inactive enzymes match:
+          <br></br>
+          <div style={{ display: "flex" }}>
+            {flatMap(enzymesByNameThatMatch, (e, i) => {
+              if (i > 3) return [];
+              return (
+                <CutsiteTag
+                  forceOpenCutsiteInfo
+                  name={e.name}
+                  cutsitesByNameActive={cutsitesByName}
+                  key={i}
+                  numCuts={0}
+                  sites={[]}
+                ></CutsiteTag>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="noResultsTextPlusButton">
+        No results... Add enzymes to your list via the Manage Enzymes link{" "}
+      </div>
+    );
+  }
+);
 
 export class CutsiteFilter extends React.Component {
   static defaultProps = {
@@ -31,6 +74,8 @@ export class CutsiteFilter extends React.Component {
       sequence: ""
     }
   };
+  //the queryTracker is just used for tracking purposes
+  state = { queryTracker: "" };
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
     // if (value === "manageEnzymes") {
@@ -89,7 +134,9 @@ export class CutsiteFilter extends React.Component {
       allCutsites: { cutsitesByName },
       closeDropDown = () => {},
       enzymeManageOverride,
-      enzymeGroupsOverride
+      enzymeGroupsOverride,
+      editorName,
+      additionalEnzymes
     } = this.props;
     const userEnzymeGroups =
       enzymeGroupsOverride || window.getExistingEnzymeGroups();
@@ -144,10 +191,19 @@ export class CutsiteFilter extends React.Component {
           allowCreate
           wrapperStyle={{ zIndex: 11 }}
           noResultsText={
-            <div className="noResultsTextPlusButton">
-              No results... Add enzymes to your list via the Manage Enzymes link{" "}
-            </div>
+            <NoResults
+              {...{
+                queryString: this.state.queryTracker,
+                additionalEnzymes,
+                enzymeGroupsOverride,
+                cutsitesByName,
+                editorName
+              }}
+            ></NoResults>
           }
+          onInputChange={(queryTracker) => {
+            this.setState({ queryTracker });
+          }}
           placeholder="Filter cutsites..."
           options={options}
           filteredRestrictionEnzymes={filteredRestrictionEnzymes}

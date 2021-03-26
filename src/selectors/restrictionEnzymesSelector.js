@@ -1,11 +1,12 @@
 import { forEach } from "lodash";
 import { createSelector } from "reselect";
 import { defaultEnzymesByName, aliasedEnzymesByName } from "ve-sequence-utils";
+import { getLowerCaseObj } from "../utils/arrayUtils";
 
 export default createSelector(
   () => defaultEnzymesByName,
   (state, additionalEnzymes) => {
-    return additionalEnzymes;
+    return getLowerCaseObj(additionalEnzymes);
   },
   () => localStorage.getItem("enzymeGroups"), //it should recompute if the enzyme groups change in localstorage
 

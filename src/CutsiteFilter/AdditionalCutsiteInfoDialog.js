@@ -18,10 +18,8 @@ import { showDialog } from "../GlobalDialogUtils";
 
 import restrictionEnzymesSelector from "../selectors/restrictionEnzymesSelector";
 
-const sharedWrapper = compose(
-  wrapDialog({ isDraggable: true }),
-  withEditorProps,
-  connectToEditor((editorState, ownProps) => {
+export const withRestrictionEnzymes = connectToEditor(
+  (editorState, ownProps) => {
     const allRestrictionEnzymes = restrictionEnzymesSelector(
       editorState,
       ownProps.additionalEnzymes,
@@ -30,7 +28,13 @@ const sharedWrapper = compose(
     return {
       allRestrictionEnzymes
     };
-  })
+  }
+);
+
+const sharedWrapper = compose(
+  wrapDialog({ isDraggable: true }),
+  withEditorProps,
+  withRestrictionEnzymes
 );
 
 export const AdditionalCutsiteInfoDialog = sharedWrapper(function (props) {
@@ -394,7 +398,8 @@ export const CutsiteTag = ({
   cutsitesByNameActive,
   name,
   numCuts: _numCuts,
-  sites
+  sites,
+  forceOpenCutsiteInfo
 }) => {
   const numCuts = sites ? sites.length : _numCuts;
 
@@ -419,7 +424,8 @@ export const CutsiteTag = ({
   return addCutsiteGroupClickHandler({
     el,
     cutsiteOrGroupKey: name,
-    title: el
+    title: el,
+    forceOpenCutsiteInfo
   });
 };
 
@@ -451,14 +457,15 @@ export const addCutsiteGroupClickHandler = ({
   closeDropDown = () => {},
   cutsiteOrGroupKey,
   el,
-  title
+  title,
+  forceOpenCutsiteInfo
 }) => (
   <div
     className="tg-clickable-cutsite-label"
     style={{ cursor: "pointer" }}
     onClick={(e) => {
       const isInMultiSelect = e.target.closest(".bp3-multi-select-popover");
-      if (isInMultiSelect) return true;
+      if (!forceOpenCutsiteInfo && isInMultiSelect) return true;
       closeDropDown();
       showDialog({
         dialogType: "AdditionalCutsiteInfoDialog",

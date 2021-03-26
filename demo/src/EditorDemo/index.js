@@ -1448,7 +1448,7 @@ clickOverrides: {
                 ] //case shouldn't matter here
               },
               additionalEnzymes: {
-                specialenzyme0: {
+                noCutsEnzyme: {
                   //this enzyme is fine
                   name: "specialEnzyme0",
                   site: "attttttaaatacccgcg",
@@ -1509,6 +1509,15 @@ clickOverrides: {
                   reverseRegex: "atgatgtagccgtc",
                   topSnipOffset: 2,
                   bottomSnipOffset: 4
+                },
+                noCutsEnzyme: {
+                  //this enzyme doesn't cut within the default sequence
+                  name: "noCutsEnzyme",
+                  site: "gggggggaaaaaaa",
+                  forwardRegex: "gggggggaaaaaaa",
+                  reverseRegex: "tttttttccccccc",
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
                 }
               }
             })}
@@ -1517,7 +1526,7 @@ clickOverrides: {
               enzymeGroupsOverride: {
                 someGroup: this.state.toggleEnzymeGroup
                   ? ["bsmbi", "aatII"]
-                  : ["specialEnzyme1", "bamhi"],
+                  : ["specialEnzyme1", "bamhi", "noCutsEnzyme"],
                 anothaGroup: ["specialenzyme2", "bsmbi"] //case shouldn't matter here
               }
             })}

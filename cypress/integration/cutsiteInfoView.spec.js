@@ -3,6 +3,19 @@ describe("cutsiteInfoView", function () {
     cy.visit("");
   });
 
+  it(`filtering for an enzyme with 0 cuts should bring up a No Active Results.. These inactive enzymes match: message`, () => {
+    cy.tgToggle("overrideManageEnzymes");
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(`.veToolbarCutsiteFilterHolder input`).type("bsai");
+    cy.contains(`No Active Results.. These inactive enzymes match:`);
+    cy.contains("BsaI (0 cuts)").click();
+
+    cy.contains(".ve-enzymeSubrow", "ggtctc");
+    cy.get(`.veToolbarCutsiteFilterHolder input`).type("{selectAll}nocuts");
+    cy.contains("noCutsEnzyme (0 cuts)").click();
+    cy.contains(".ve-enzymeSubrow", "gggggggaaaaaaa");
+    cy.contains(".bp3-dialog", "someGroup");
+  });
   it(`clicking a cutsite or cutsite group should provide more info`, () => {
     cy.tgToggle("overrideManageEnzymes");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
