@@ -6,7 +6,7 @@ import { getLowerCaseObj } from "../utils/arrayUtils";
 export default createSelector(
   () => defaultEnzymesByName,
   (state, additionalEnzymes) => {
-    return getLowerCaseObj(additionalEnzymes);
+    return getLowerCaseObj(additionalEnzymes || {});
   },
   () => localStorage.getItem("enzymeGroups"), //it should recompute if the enzyme groups change in localstorage
 
