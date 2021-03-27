@@ -266,19 +266,6 @@ function validate(values) {
   return errors;
 }
 
-// connect(
-//   function(state, props) {
-//     const editorState = state.VectorEditor[props.editorName];
-//     let selectedEnzymes = s.restrictionEnzymesSelector(editorState, props.additionalEnzymes);
-//     return {
-//       selectedEnzymes
-//     };
-//   },
-//   { createYourOwnEnzymeClose }
-// )(ManageEnzymes);
-
-// export default ManageEnzymes;
-
 function bpsToRegexString(bps) {
   let regexString = "";
   if (typeof bps === "string") {
