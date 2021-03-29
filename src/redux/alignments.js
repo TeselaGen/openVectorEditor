@@ -231,7 +231,6 @@ export default (state = {}, { payload = {}, type }) => {
         hasError = error;
       }
     });
-    // payloadToUse.pairwiseAlignments && magicDownload(JSON.stringify(payloadToUse), 'myFile.json')
     return {
       ...state,
       [payload.id]: { ...payloadToUse, hasError }
