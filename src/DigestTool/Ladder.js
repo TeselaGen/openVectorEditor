@@ -60,10 +60,29 @@ export default class Ladder extends React.Component {
             100
           ]
         },
-        {
-          value: "geneRuler100LowRange",
-          label: "GeneRuler 100bp + DNA 100-3000 bp"
-        }
+         {
+          value: "invitrogen1KbPlus",
+          label: "Invitrogen 1kb + DNA 100-15,000 bp",
+          markings: [
+            15000,
+            10000,
+            8000,
+            7000,
+            6000,
+            5000,
+            4000,
+            3000,
+            2000,
+            1500,
+            1000,
+            850,
+            650,
+            500,
+            400,
+            300,
+            200
+          ]
+        },
       ]
     } = this.props;
     const { highlightedFragment } = this.state;
