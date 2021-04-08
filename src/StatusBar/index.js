@@ -17,8 +17,11 @@ import "./style.css";
 import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
-import getSequenceDataBetweenRange from "ve-sequence-utils/lib/getSequenceDataBetweenRange";
-import { calculateTm, calculateNebTm } from "ve-sequence-utils/lib";
+import {
+  calculateTm,
+  calculateNebTm,
+  getSequenceDataBetweenRange
+} from "ve-sequence-utils";
 import useMeltingTemp from "../utils/useMeltingTemp";
 import useLocalStorageState from "use-local-storage-state";
 import { isString } from "lodash";

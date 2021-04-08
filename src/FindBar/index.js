@@ -17,7 +17,7 @@ import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { featureColors } from "ve-sequence-utils";
-import getReverseComplementSequenceString from "ve-sequence-utils/lib/getReverseComplementSequenceString";
+import { getReverseComplementSequenceString } from "ve-sequence-utils";
 
 const opts = [
   { label: "DNA", value: "DNA" },

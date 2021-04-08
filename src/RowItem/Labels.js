@@ -5,7 +5,7 @@ import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import { reduce, values, startCase, filter } from "lodash";
-import { getRangeLength } from "ve-range-utils/lib";
+import { getRangeLength } from "ve-range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 
 const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line

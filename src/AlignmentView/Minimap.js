@@ -5,7 +5,7 @@ import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "@risingstack/react-easy-state";
 import { some } from "lodash";
-import isPositionWithinRange from "ve-range-utils/lib/isPositionWithinRange";
+import { isPositionWithinRange } from "ve-range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 
 export default class Minimap extends React.Component {
