@@ -148,7 +148,7 @@ export class Editor extends React.Component {
   }, 100);
 
   componentDidMount() {
-    if (isMobile()) this.props.collapseSplitScreen()
+    if (isMobile()) this.props.collapseSplitScreen();
     window.addEventListener("resize", this.updateDimensions);
     this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
@@ -578,7 +578,12 @@ export class Editor extends React.Component {
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
                     return (
-                      <Draggable key={id} index={index} draggableId={id}>
+                      <Draggable
+                        isDragDisabled={isMobile()}
+                        key={id}
+                        index={index}
+                        draggableId={id}
+                      >
                         {(provided, snapshot) => (
                           <div
                             style={{

@@ -53,10 +53,6 @@ describe("clickDragCaretAndSelectionLogic", function () {
     cy.tgToggle("linear");
 
     cy.selectRange(13, 150);
-    // cy.get(`.veCaretSVG`)
-    // cy.get(`.veCaretSVG`)
-    //   .first()
-    // cy.pause()
     //drag between the cursor at 16 and the 10 tick mark:
     cy.get(`.vePolygonCaretHandle`)
       .first()

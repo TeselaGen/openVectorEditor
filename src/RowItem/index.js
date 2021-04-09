@@ -621,7 +621,6 @@ export class RowItem extends React.PureComponent {
           {caretPosition > -1 && (
             <Caret
               caretPosition={caretPosition}
-              shouldBlink
               {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
               row={
                 alignmentData
