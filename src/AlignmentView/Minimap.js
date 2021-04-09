@@ -7,6 +7,7 @@ import { view } from "@risingstack/react-easy-state";
 import { some } from "lodash";
 import { isPositionWithinRange } from "ve-range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
+import { getClientX, getClientY } from "../utils/editorUtils";
 
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
@@ -64,36 +65,37 @@ export default class Minimap extends React.Component {
   };
   getXPositionOfClickInMinimap = (e) => {
     const leftStart = this.minimap.getBoundingClientRect().left;
-    return Math.max(e.clientX - leftStart, 0);
+    return Math.max(getClientX(e) - leftStart, 0);
   };
   getYPositionOfClickInMinimap = (e) => {
     const topStart = this.minimap.getBoundingClientRect().top;
-    return Math.max(e.clientY + this.minimapTracks.scrollTop - topStart, 0);
+    return Math.max(getClientY(e) + this.minimapTracks.scrollTop - topStart, 0);
   };
 
   scrollMinimapVertical = ({ e, force }) => {
+    const clientY = getClientY(e)
     try {
       if (
         !force &&
-        isPositionWithinRange(e.clientY, {
+        isPositionWithinRange(clientY, {
           start: this.lastYPosition - 5,
           end: this.lastYPosition + 5
         })
       ) {
-        // this.lastYPosition = e.clientY
+        // this.lastYPosition = clientY
         return;
       }
       const lanes = document.querySelectorAll(".minimapLane");
 
       some(lanes, (lane) => {
         const rect = lane.getBoundingClientRect();
-        if (rect.top > e.clientY && rect.top - rect.height < e.clientY) {
+        if (rect.top > clientY && rect.top - rect.height < clientY) {
           this.props.scrollYToTrack(lane.getAttribute("data-lane-index"));
           return true;
         }
         return false;
       });
-      this.lastYPosition = e.clientY;
+      this.lastYPosition = clientY;
     } catch (error) {
       console.error(`error in scrollMinimapVertical:`, error);
     }

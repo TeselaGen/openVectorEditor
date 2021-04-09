@@ -2,6 +2,19 @@ describe("virtualDigest", function () {
   beforeEach(() => {
     cy.visit("#Editor");
   });
+  it(`users should be able to choose between multiple ladders`, () => {
+    cy.triggerFileCmd("Digest");
+    cy.contains("20000 bp");
+    cy.contains("15000 bp").should('not.exist');
+    cy.contains(".tg-select-value", "GeneRuler 1kb + DNA 75-20,000 bp");
+    cy.get(".tg-single-select").click();
+    cy.contains("Invitrogen 1kb").click();
+    cy.contains(".tg-select-value", "GeneRuler 1kb + DNA 75-20,000 bp").should(
+      "not.exist"
+    );
+    cy.contains(".tg-select-value", "Invitrogen 1kb").should("exist");
+    cy.contains("15000 bp");
+  });
   it(`should show a warning if too many cutsites are visible`, () => {
     cy.triggerFileCmd("Digest");
     cy.get(`.bp3-multi-select [data-icon="small-cross"`).click();

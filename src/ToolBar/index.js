@@ -22,6 +22,7 @@ import visibilityTool from "./visibilityTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 import { isString } from "util";
+import isMobile from "is-mobile";
 
 const allTools = {
   downloadTool,
@@ -168,8 +169,15 @@ export class ToolBar extends React.PureComponent {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginLeft: 15,
-                flexWrap: "wrap"
+                paddingLeft: 15,
+                paddingRight: 15,
+                flexWrap: "wrap",
+                ...(isMobile() && {
+                  overflow: "auto",
+                  flexWrap: "nowrap",
+                  width: "100%",
+                  
+                })
                 // width: "100%"
               }}
             >

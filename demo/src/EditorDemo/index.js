@@ -2,6 +2,7 @@ import { Button, Icon, InputGroup } from "@blueprintjs/core";
 import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 import { isRangeOrPositionWithinRange } from "ve-range-utils";
+import isMobile from "is-mobile";
 
 import store from "./../store";
 import { updateEditor, actions } from "../../../src/";
@@ -50,7 +51,7 @@ const defaultState = {
   overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
   showAvailability: true,
-  showDemoOptions: true,
+  showDemoOptions: !isMobile(),
   shouldAutosave: false,
   generatePng: false,
   isFullscreen: false,

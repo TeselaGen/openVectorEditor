@@ -49,6 +49,8 @@ import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
 import { GlobalDialog } from "../GlobalDialog";
+import isMobile from "is-mobile";
+import { getClientX, getClientY } from "../utils/editorUtils";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -146,6 +148,7 @@ export class Editor extends React.Component {
   }, 100);
 
   componentDidMount() {
+    if (isMobile()) this.props.collapseSplitScreen()
     window.addEventListener("resize", this.updateDimensions);
     this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
@@ -232,16 +235,17 @@ export class Editor extends React.Component {
 
   getPanelsToShow = () => {
     const { panelsShown } = this.props;
+    if (isMobile()) return [flatMap(panelsShown)];
     return map(panelsShown);
   };
 
-  onPreviewModeButtonContextMenu = (e) => {
+  onPreviewModeButtonContextMenu = (event) => {
     const { previewModeButtonMenu } = this.props;
-    e.preventDefault();
+    event.preventDefault();
     if (previewModeButtonMenu) {
       ContextMenu.show(previewModeButtonMenu, {
-        left: e.clientX,
-        top: e.clientY
+        left: getClientX(event),
+        top: getClientY(event)
       });
     }
   };

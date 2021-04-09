@@ -25,7 +25,12 @@ import { upperFirst, map } from "lodash";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import useAnnotationLimits from "../utils/useAnnotationLimits";
-import { getParedDownWarning, pareDownAnnotations } from "../utils/editorUtils";
+import {
+  getClientX,
+  getClientY,
+  getParedDownWarning,
+  pareDownAnnotations
+} from "../utils/editorUtils";
 
 function noop() {}
 
@@ -42,13 +47,15 @@ export function CircularView(props) {
     sequenceLength,
     callback
   ) {
-    if (!event.clientX) {
+    const clientX = getClientX(event);
+    const clientY = getClientY(event);
+    if (!clientX) {
       return;
     }
     let boundingRect = circRef.current.getBoundingClientRect();
     //get relative click positions
-    let clickX = event.clientX - boundingRect.left - boundingRect.width / 2;
-    let clickY = event.clientY - boundingRect.top - boundingRect.height / 2;
+    let clickX = clientX - boundingRect.left - boundingRect.width / 2;
+    let clickY = clientY - boundingRect.top - boundingRect.height / 2;
 
     //get angle
     let angle = Math.atan2(clickY, clickX) + Math.PI / 2 - rotationRadians;

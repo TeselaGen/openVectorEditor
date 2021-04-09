@@ -49,6 +49,7 @@ import { debounce } from "lodash";
 import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
+import { getClientX, getClientY } from "../utils/editorUtils";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -92,11 +93,11 @@ class AlignmentView extends React.Component {
     let rowDomNode = this.veTracksAndAlignmentHolder;
     let boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
-    if (event.clientX - boundingRowRect.left - 140 < 0) {
+    if (getClientX(event) - boundingRowRect.left - 140 < 0) {
       nearestCaretPos = 0;
     } else {
       let clickXPositionRelativeToRowContainer =
-        event.clientX - boundingRowRect.left - 140;
+        getClientX(event) - boundingRowRect.left - 140;
       let numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
           this.charWidth
@@ -844,9 +845,9 @@ class AlignmentView extends React.Component {
                           let track;
                           trackContainers.forEach((t) => {
                             const mouseX =
-                              event.clientX + document.body.scrollLeft;
+                              getClientX(event) + document.body.scrollLeft;
                             const mouseY =
-                              event.clientY + document.body.scrollTop;
+                              getClientY(event) + document.body.scrollTop;
                             if (
                               mouseX >= t.getBoundingClientRect().left &&
                               mouseX <=

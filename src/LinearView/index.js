@@ -8,6 +8,7 @@ import withEditorInteractions from "../withEditorInteractions";
 import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
 import {
+  getClientX,
   getEmptyText,
   getParedDownWarning,
   pareDownAnnotations
@@ -25,11 +26,11 @@ class _LinearView extends React.Component {
     let rowDomNode = this.linearView;
     let boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
-    if (event.clientX - boundingRowRect.left < 0) {
+    if (getClientX(event) - boundingRowRect.left < 0) {
       nearestCaretPos = 0;
     } else {
       let clickXPositionRelativeToRowContainer =
-        event.clientX - boundingRowRect.left;
+        getClientX(event) - boundingRowRect.left;
       let numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
           this.charWidth

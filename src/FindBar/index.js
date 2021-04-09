@@ -18,6 +18,7 @@ import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { featureColors } from "ve-sequence-utils";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
+import isMobile from "is-mobile";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -142,9 +143,17 @@ export class FindBar extends React.Component {
           Highlight All
         </Tooltip>
       </Switch>,
-      <Switch key="isInline" checked={!isInline} onChange={toggleIsInline}>
-        Expanded
-      </Switch>
+      ...(isMobile()
+        ? []
+        : [
+            <Switch
+              key="isInline"
+              checked={!isInline}
+              onChange={toggleIsInline}
+            >
+              Expanded
+            </Switch>
+          ])
     ];
     const InputToUse = !isInline ? TextArea : InputGroup;
     const rightEl = (
@@ -210,7 +219,8 @@ export class FindBar extends React.Component {
         style={
           isInline
             ? {
-                display: "flex"
+                display: "flex",
+                minWidth: 300 
               }
             : {
                 position: "fixed",

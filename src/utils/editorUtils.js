@@ -6,7 +6,7 @@ import {
   calculatePercentGC,
   getSequenceDataBetweenRange
 } from "ve-sequence-utils";
-import { sortBy } from "lodash";
+import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
 
 export function getSelectionMessage({
@@ -131,4 +131,11 @@ export function getParedDownWarning({ nameUpper, maxToShow, isAdjustable }) {
       } `}
     />
   );
+}
+
+export function getClientX(event) {
+  return event.clientX || get(event, "touches[0].clientX");
+}
+export function getClientY(event) {
+  return event.clientY || get(event, "touches[0].clientY");
 }
