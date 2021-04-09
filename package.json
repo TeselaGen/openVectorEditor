@@ -54,7 +54,7 @@
     "react-dropzone": "^4.2.11",
     "react-measure": "^2.5.2",
     "react-redux": "^5",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.2.0",
     "react-sizeme": "^2.5.2",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
