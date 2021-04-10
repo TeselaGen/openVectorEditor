@@ -73,7 +73,8 @@ export default function Ladder({
         500,
         400,
         300,
-        200
+        200,
+        100
       ]
     }
   ]
