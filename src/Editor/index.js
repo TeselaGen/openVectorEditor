@@ -1,4 +1,4 @@
-import { debounce, get } from "lodash";
+import { debounce, get, some } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import {
@@ -148,7 +148,16 @@ export class Editor extends React.Component {
   }, 100);
 
   componentDidMount() {
-    if (isMobile()) this.props.collapseSplitScreen();
+    if (isMobile()) {
+      let firstActivePanelId;
+      some(this.getPanelsToShow()[0], (panel) => {
+        if (panel.active) {
+          firstActivePanelId = panel.id;
+          return true;
+        }
+      });
+      this.props.collapseSplitScreen(firstActivePanelId);
+    }
     window.addEventListener("resize", this.updateDimensions);
     this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
@@ -577,6 +586,10 @@ export class Editor extends React.Component {
                   }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
+                    let nameToShow = name || id;
+                    if (isMobile()) {
+                      nameToShow = nameToShow.replace("Map", "");
+                    }
                     return (
                       <Draggable
                         isDragDisabled={isMobile()}
@@ -631,7 +644,7 @@ export class Editor extends React.Component {
                                 }}
                                 className={
                                   (id === activePanelId ? "veTabActive " : "") +
-                                  camelCase("veTab-" + (name || id))
+                                  camelCase("veTab-" + nameToShow)
                                 }
                               >
                                 {isFullScreen && (
@@ -657,7 +670,7 @@ export class Editor extends React.Component {
                                     </Tooltip>
                                   </div>
                                 )}
-                                {name || id}
+                                {nameToShow}
                                 {canClose && (
                                   <Icon
                                     icon="small-cross"

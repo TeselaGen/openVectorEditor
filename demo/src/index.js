@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import { Button, Overlay, Tooltip } from "@blueprintjs/core";
+import { Button, Drawer, Tooltip } from "@blueprintjs/core";
 
 import store from "./store";
 import { render } from "react-dom";
@@ -184,38 +184,31 @@ class Demo extends React.Component {
               flexDirection: "column"
             }}
           >
-            <Overlay
+            <Drawer
+              size={Drawer.SIZE_SMALL}
               isOpen={this.state.sidebarOpen}
               onClose={() => {
                 this.setState({ sidebarOpen: false });
               }}
+              position="left"
             >
               <div
                 style={{
-                  padding: 20,
-                  background: "white",
-                  height: "100vh",
-                  width: 300
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%"
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    width: "100%"
+                <Button
+                  onClick={() => {
+                    this.setState({ sidebarOpen: false });
                   }}
-                >
-                  <Button
-                    onClick={() => {
-                      this.setState({ sidebarOpen: false });
-                    }}
-                    minimal
-                    icon="cross"
-                  ></Button>
-                </div>
-                {links}
+                  minimal
+                  icon="cross"
+                ></Button>
               </div>
-            </Overlay>
+              {links}
+            </Drawer>
             <div
               style={{
                 display: "flex",

@@ -168,15 +168,13 @@ export class ToolBar extends React.PureComponent {
               className="veTools-displayMenuBarAboveTools"
               style={{
                 display: "flex",
-                justifyContent: "center",
                 paddingLeft: 15,
                 paddingRight: 15,
                 flexWrap: "wrap",
                 ...(isMobile() && {
                   overflow: "auto",
                   flexWrap: "nowrap",
-                  width: "100%",
-                  
+                  width: "100%"
                 })
                 // width: "100%"
               }}
