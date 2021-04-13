@@ -1025,7 +1025,7 @@ export default {
       name: "Example Primer 1",
       start: 280,
       end: 300,
-      type: "primer",
+      type: "primer_bind",
       forward: true
     }
   ],

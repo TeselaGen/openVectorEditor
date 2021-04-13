@@ -229,7 +229,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               doesOverlapSelf: data.doesOverlapSelf,
               ...updatedData,
               ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
-                ? { type: "primer" }
+                ? { type: "primer_bind" }
                 : {}),
               locations: undefined, //by default clear locations
               ...(hasJoinedLocations && {
@@ -401,7 +401,7 @@ export default ({ formName, getProps, dialogProps }) => {
     reduxForm({
       form: formName, // "AddOrEditAnnotationDialog",
       validate: (values, { sequenceLength, sequenceData }) => {
-        let errors = {};
+        const errors = {};
         const { circular } = sequenceData || {};
         if (!circular && values.start > values.end) {
           errors.start = "Start must be less than End for a linear sequence";
