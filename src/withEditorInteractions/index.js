@@ -135,7 +135,7 @@ function VectorInteractionHOC(Component /* options */) {
       );
 
       // TODO: move these into commands
-      let moveCaretBindings = [
+      const moveCaretBindings = [
         { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
         { keyCombo: ["right", "shift+right"], type: "moveCaretRightOne" },
         { keyCombo: ["up", "shift+up"], type: "moveCaretUpARow" },
@@ -160,9 +160,9 @@ function VectorInteractionHOC(Component /* options */) {
 
       moveCaretBindings.forEach(({ keyCombo, type }) => {
         this.combokeys.bind(keyCombo, (event) => {
-          let shiftHeld = event.shiftKey;
-          let bpsPerRow = getBpsPerRow(this.props);
-          let {
+          const shiftHeld = event.shiftKey;
+          const bpsPerRow = getBpsPerRow(this.props);
+          const {
             selectionLayer,
             caretPosition,
             sequenceLength,
@@ -171,7 +171,7 @@ function VectorInteractionHOC(Component /* options */) {
             caretPositionUpdate,
             selectionLayerUpdate
           } = this.props;
-          let moveBy = moveCaret({
+          const moveBy = moveCaret({
             sequenceLength,
             bpsPerRow,
             caretPosition,
@@ -226,7 +226,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handlePaste = (e) => {
-      let {
+      const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         readOnly,
@@ -327,7 +327,7 @@ function VectorInteractionHOC(Component /* options */) {
     handleCopy = this.handleCutOrCopy();
 
     handleDnaInsert = ({ useEventPositioning }) => {
-      let {
+      const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
@@ -364,7 +364,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handleDnaDelete = (showToast = true) => {
-      let {
+      const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
@@ -412,7 +412,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     caretPositionUpdate = (position) => {
-      let { caretPosition = -1 } = this.props;
+      const { caretPosition = -1 } = this.props;
       if (caretPosition === position) {
         return;
       }
@@ -420,7 +420,7 @@ function VectorInteractionHOC(Component /* options */) {
       this.props.caretPositionUpdate(position);
     };
     selectionLayerUpdate = (newSelection) => {
-      let {
+      const {
         selectionLayer = { start: -1, end: -1 },
         ignoreGapsOnHighlight
       } = this.props;
@@ -594,13 +594,6 @@ function VectorInteractionHOC(Component /* options */) {
             ]),
         {
           text: "Copy",
-          className: "openVeCopy1",
-          willUnmount: () => {
-            this.openVeCopy1 && this.openVeCopy1.destroy();
-          },
-          didMount: ({ className }) => {
-            this.openVeCopy1 = makeTextCopyable((i) => i, className);
-          },
           submenu: !isProtein && [
             {
               text: "Copy",
@@ -698,7 +691,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     getSelectionMenuOptions = (annotation) => {
-      let items = [
+      const items = [
         ...this.getCopyOptions(annotation),
         createNewAnnotationMenu,
         "--",
@@ -1046,9 +1039,13 @@ function VectorInteractionHOC(Component /* options */) {
         // fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
       //do this in two steps to determine propsToPass
+
       let {
+        // eslint-disable-next-line prefer-const
         children,
+        // eslint-disable-next-line prefer-const
         vectorInteractionWrapperStyle = {},
+        // eslint-disable-next-line prefer-const
         disableEditorClickAndDrag = false,
         ...propsToPass
       } = this.props;
@@ -1057,7 +1054,7 @@ function VectorInteractionHOC(Component /* options */) {
       propsToPass.height = height - tabHeight;
       // if (fitHeight) {
       // }
-      let selectedBps = getSequenceWithinRange(
+      const selectedBps = getSequenceWithinRange(
         selectionLayer,
         sequenceData.sequence
       );
