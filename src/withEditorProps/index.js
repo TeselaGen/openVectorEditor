@@ -170,40 +170,36 @@ export const updateCircular = (props) => async (isCircular) => {
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
 
-export const importSequenceFromFile = (props) => (file, opts = {}) => {
+export const importSequenceFromFile = (props) => async (file, opts = {}) => {
   const { updateSequenceData, onImport } = props;
-  anyToJson(
-    file,
-    async (result) => {
-      // TODO maybe handle import errors/warnings better
-      const failed = !result[0].success;
-      const messages = result[0].messages;
-      if (messages && messages.length) {
-        messages.forEach((msg) => {
-          const type = msg.substr(0, 20).toLowerCase().includes("error")
-            ? failed
-              ? "error"
-              : "warning"
-            : "info";
-          window.toastr[type](msg);
-        });
-      }
-      if (failed) {
-        window.toastr.error("Error importing sequence");
-      }
-      let seqData = result[0].parsedSequence;
+  const result = await anyToJson(file, { acceptParts: true, ...opts });
 
-      if (onImport) {
-        seqData = await onImport(seqData);
-      }
+  // TODO maybe handle import errors/warnings better
+  const failed = !result[0].success;
+  const messages = result[0].messages;
+  if (messages && messages.length) {
+    messages.forEach((msg) => {
+      const type = msg.substr(0, 20).toLowerCase().includes("error")
+        ? failed
+          ? "error"
+          : "warning"
+        : "info";
+      window.toastr[type](msg);
+    });
+  }
+  if (failed) {
+    window.toastr.error("Error importing sequence");
+  }
+  let seqData = result[0].parsedSequence;
 
-      if (seqData) {
-        updateSequenceData(seqData);
-        window.toastr.success("Sequence Imported");
-      }
-    },
-    { acceptParts: true, ...opts }
-  );
+  if (onImport) {
+    seqData = await onImport(seqData);
+  }
+
+  if (seqData) {
+    updateSequenceData(seqData);
+    window.toastr.success("Sequence Imported");
+  }
 };
 
 export const exportSequenceToFile = (props) => (format) => {
@@ -241,7 +237,7 @@ export default compose(
     mapStateToProps,
     mapDispatchToActions,
     (mapProps, dispatchProps, ownProps) => {
-      let toSpread = {};
+      const toSpread = {};
       if (mapProps.annotationToAdd) {
         toSpread.original_selectionLayerUpdate =
           dispatchProps.selectionLayerUpdate;
@@ -479,11 +475,11 @@ function mapStateToProps(state, ownProps) {
     sequenceData: sequenceDataFromProps,
     allowSeqDataOverride
   } = ownProps;
-  let meta = { editorName };
-  let { VectorEditor } = state;
+  const meta = { editorName };
+  const { VectorEditor } = state;
   const { __allEditorsOptions } = VectorEditor;
   const { uppercaseSequenceMapFont } = __allEditorsOptions;
-  let editorState = VectorEditor[editorName];
+  const editorState = VectorEditor[editorName];
 
   if (!editorState) {
     return editorReducer({}, {});
@@ -495,7 +491,7 @@ function mapStateToProps(state, ownProps) {
     annotationLabelVisibility,
     annotationsToSupport = {}
   } = editorState;
-  let visibilities = getVisibilities(
+  const visibilities = getVisibilities(
     annotationVisibility,
     annotationLabelVisibility,
     annotationsToSupport
@@ -512,7 +508,7 @@ function mapStateToProps(state, ownProps) {
     }
   });
 
-  let toReturn = {
+  const toReturn = {
     ...editorState,
     meta,
     annotationToAdd,
@@ -529,26 +525,29 @@ function mapStateToProps(state, ownProps) {
     return toReturn;
   }
 
-  let sequenceData = s.sequenceDataSelector(editorState);
+  const sequenceData = s.sequenceDataSelector(editorState);
   const filteredCutsites = s.filteredCutsitesSelector(
     editorState,
     ownProps.additionalEnzymes,
     ownProps.enzymeGroupsOverride
   );
-  let cutsites = filteredCutsites.cutsitesArray;
-  let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
+  const cutsites = filteredCutsites.cutsitesArray;
+  const filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
   );
-  let orfs = s.orfsSelector(editorState);
-  let selectedCutsites = s.selectedCutsitesSelector(editorState);
-  let allCutsites = s.cutsitesSelector(editorState, ownProps.additionalEnzymes);
-  let translations = s.translationsSelector(editorState);
-  let filteredFeatures = s.filteredFeaturesSelector(editorState);
-  let filteredParts = s.filteredPartsSelector(editorState);
-  let sequenceLength = s.sequenceLengthSelector(editorState);
+  const orfs = s.orfsSelector(editorState);
+  const selectedCutsites = s.selectedCutsitesSelector(editorState);
+  const allCutsites = s.cutsitesSelector(
+    editorState,
+    ownProps.additionalEnzymes
+  );
+  const translations = s.translationsSelector(editorState);
+  const filteredFeatures = s.filteredFeaturesSelector(editorState);
+  const filteredParts = s.filteredPartsSelector(editorState);
+  const sequenceLength = s.sequenceLengthSelector(editorState);
 
   let matchedSearchLayer = { start: -1, end: -1 };
-  let annotationSearchMatches = s.annotationSearchSelector(editorState);
+  const annotationSearchMatches = s.annotationSearchSelector(editorState);
   let searchLayers = s.searchLayersSelector(editorState).map((item, index) => {
     let itemToReturn = item;
     if (index === findTool.matchNumber) {
@@ -572,7 +571,7 @@ function mapStateToProps(state, ownProps) {
   this.orfs = orfs;
   this.translations = translations;
 
-  let sequenceDataToUse = {
+  const sequenceDataToUse = {
     ...sequenceData,
     sequence: getUpperOrLowerSeq(
       uppercaseSequenceMapFont,
@@ -610,8 +609,8 @@ function mapStateToProps(state, ownProps) {
 export function mapDispatchToActions(dispatch, ownProps) {
   const { editorName } = ownProps;
 
-  let { actionOverrides = fakeActionOverrides } = ownProps;
-  let actionsToPass = getCombinedActions(
+  const { actionOverrides = fakeActionOverrides } = ownProps;
+  const actionsToPass = getCombinedActions(
     editorName,
     actions,
     actionOverrides,
@@ -657,11 +656,11 @@ export function getCombinedActions(
   actionOverrides,
   dispatch
 ) {
-  let meta = { editorName };
+  const meta = { editorName };
 
   let metaActions = addMetaToActionCreators(actions, meta);
   // let overrides = addMetaToActionCreators(actionOverrides(metaActions), meta);
-  let overrides = {};
+  const overrides = {};
   metaActions = {
     undo: () => {
       window.toastr.success("Undo Successful");
@@ -692,7 +691,7 @@ export function getCombinedActions(
   // );
 
   //rebind the actions with dispatch and meta
-  let actionsToPass = {
+  const actionsToPass = {
     ...metaActions
     // ...metaOverrides
   };
@@ -700,7 +699,7 @@ export function getCombinedActions(
 }
 
 const getTypesToOmit = (annotationsToSupport) => {
-  let typesToOmit = {};
+  const typesToOmit = {};
   allTypes.forEach((type) => {
     if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
@@ -843,7 +842,7 @@ const getUpperOrLowerSeq = defaultMemoize(
 );
 
 export function getShowGCContent(state, ownProps) {
-  let showGCContent = state.VectorEditor.__allEditorsOptions.showGCContent;
+  const showGCContent = state.VectorEditor.__allEditorsOptions.showGCContent;
 
   const toRet =
     showGCContent === null
