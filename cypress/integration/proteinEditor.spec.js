@@ -257,7 +257,7 @@ describe("editor", function() {
     cy.contains(".rt-td", "(11-31)");
 
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("protein_bind    1124..1162");
+    cy.contains("protein_bind 1124..1162");
     cy.contains("complement(join(7..25,29..49,501..885))");
   });
 

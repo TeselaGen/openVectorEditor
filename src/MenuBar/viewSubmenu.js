@@ -159,5 +159,9 @@ export default [
 
   { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
   { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false }
+  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+
+  { divider: "" },
+
+  { cmd: "toggleExternalLabels", shouldDismissPopover: false }
 ];

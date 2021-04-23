@@ -53,6 +53,7 @@ describe("editor", function() {
   - new sequence should be inserted after the origin`, () => {
     cy.selectRange(5297, 3);
     cy.contains("Jump to start").click();
+    cy.contains("button", "Jump to end").should("exist");
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", /Complement Selection/).click();
     cy.contains(".ve-row-item-sequence", /^ctggtcttat/);

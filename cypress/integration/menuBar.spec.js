@@ -78,16 +78,17 @@ describe("menuBar", function() {
     cy.contains(".bp3-dialog", "Editor Hotkeys").should("not.exist");
   });
   it(`should be able to remove duplicate features`, () => {
+    cy.contains(".veLabelText", "araD").should("exist");
     cy.get("body").type("{meta}/");
-    cy.focused().type("remove duplicate feature{enter}");
+    cy.focused().type("remove duplicate feature{enter}", { delay: 1 });
+    cy.contains(".rt-td", "dbl term").should("exist");
+    cy.contains(".bp3-dialog button", "Remove 2 Duplicates");
     cy.get(".bp3-dialog .bp3-icon-settings").click();
-    cy.contains("araD").should("exist");
-    cy.contains(".bp3-dialog button", "Remove 3 Duplicates");
     cy.get(".tg-test-ignore-name .tg-no-fill-field").click();
     cy.get(".tg-test-ignore-strand .tg-no-fill-field").click();
     cy.get(".tg-test-ignore-start-and-end .tg-no-fill-field").click();
     cy.contains(".bp3-dialog button", "Remove 21 Duplicates").click();
-    cy.contains("araD").should("not.exist");
+    cy.contains(".veLabelText", "araD").should("not.exist");
   });
 
   it("should not be able to select a range in a length 0 sequence", function() {

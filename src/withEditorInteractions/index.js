@@ -610,20 +610,6 @@ function VectorInteractionHOC(Component /* options */) {
               }
             },
             {
-              text: "Copy Complement",
-              className: "openVeCopyComplement",
-              willUnmount: () => {
-                this.openVeCopyComplement &&
-                  this.openVeCopyComplement.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyComplement = makeTextCopyable(
-                  getComplementSequenceAndAnnotations,
-                  className
-                );
-              }
-            },
-            {
               text: "Copy Reverse Complement",
               className: "openVeCopyReverse",
               willUnmount: () => {
@@ -668,6 +654,20 @@ function VectorInteractionHOC(Component /* options */) {
                       ).sequence
                     )
                   }),
+                  className
+                );
+              }
+            },
+            {
+              text: "Copy Complement",
+              className: "openVeCopyComplement",
+              willUnmount: () => {
+                this.openVeCopyComplement &&
+                  this.openVeCopyComplement.destroy();
+              },
+              didMount: ({ className }) => {
+                this.openVeCopyComplement = makeTextCopyable(
+                  getComplementSequenceAndAnnotations,
                   className
                 );
               }
@@ -749,15 +749,20 @@ function VectorInteractionHOC(Component /* options */) {
       },
       "selectionLayerRightClicked"
     );
+    digestLaneRightClicked = this.enhanceRightClickAction(() => {
+      return ["newFeature", "newPart"];
+    }, "digestLaneRightClicked");
     searchLayerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        forward: !annotation.bottomStrand
       });
       return this.getSelectionMenuOptions({
         //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        forward: !annotation.bottomStrand
       });
     }, "searchLayerRightClicked");
 
@@ -1002,6 +1007,7 @@ function VectorInteractionHOC(Component /* options */) {
         propsToPass = {
           ...propsToPass,
           selectionLayerRightClicked: this.selectionLayerRightClicked,
+          digestLaneRightClicked: this.digestLaneRightClicked,
           searchLayerRightClicked: this.searchLayerRightClicked,
           backgroundRightClicked: this.backgroundRightClicked,
           featureRightClicked: this.featureRightClicked,

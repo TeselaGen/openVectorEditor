@@ -210,6 +210,7 @@ export default createReducer(
         id: "circular",
         name: "Circular Map",
         active: true
+        //   canClose: true
       },
       {
         id: "rail",

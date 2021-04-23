@@ -15,7 +15,7 @@ describe("properties", function() {
       .contains("Save")
       .click();
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("textarea", `primer          complement(10..20)`);
+    cy.contains("textarea", `primer complement(10..20)`);
     cy.contains("textarea", `/label="fakeprimer"`);
   });
   it(`should be able to delete a feature from the properties tab and not have the delete button still enabled; 
@@ -82,7 +82,7 @@ describe("properties", function() {
       "Test description{cmd}{enter}"
     );
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("DEFINITION  Test description");
+    cy.contains("DEFINITION Test description");
     cy.get(`[data-tab-id="general"]`).click();
     cy.get(`.tg-test-description`)
       .contains("Edit")

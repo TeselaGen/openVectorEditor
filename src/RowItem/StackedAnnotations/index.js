@@ -31,7 +31,9 @@ function StackedAnnotations(props) {
     getGaps,
     marginTop,
     marginBottom,
-    getExtraInnerCompProps
+    getExtraInnerCompProps,
+    onlyShowLabelsThatDoNotFit,
+    externalLabels
   } = props;
 
   const InnerCompToUse = InnerComp || PointedAnnotation;
@@ -76,8 +78,9 @@ function StackedAnnotations(props) {
         left={result.xStart}
       >
         <InnerCompToUse
+          externalLabels={externalLabels}
           key={index}
-          className={camelCase("veRowView-" + type)}
+          className={`${camelCase("veRowView-" + type)}`}
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
@@ -91,6 +94,7 @@ function StackedAnnotations(props) {
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           forward={annotation.forward}
+          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           rangeType={getAnnotationRangeType(
             annotationRange,
             annotation,
@@ -103,8 +107,8 @@ function StackedAnnotations(props) {
           }
           hideName={annotationRange.containsLocations && !disregardLocations}
           name={annotation.name}
-          {...getExtraInnerCompProps &&
-            getExtraInnerCompProps(annotationRange, props)}
+          {...(getExtraInnerCompProps &&
+            getExtraInnerCompProps(annotationRange, props))}
         />
       </AnnotationPositioner>
     );
