@@ -7,6 +7,7 @@ import getYOffset from "../CircularView/getYOffset";
 import { reduce, values, startCase, filter, clamp } from "lodash";
 import { getRangeLength } from "ve-range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
+import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 
 const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line
 
@@ -20,7 +21,8 @@ function Labels(props) {
     annotationHeight,
     textWidth = 6,
     editorName,
-    labelLineIntensity
+    labelLineIntensity,
+    isProtein
   } = props;
 
   if (annotationRanges.length === 0) {
@@ -131,6 +133,7 @@ function Labels(props) {
           className: `${annotationRange.annotation.labelClassName || ""} ${
             labelClassNames[pluralType]
           } veLabel `,
+          isProtein,
           xStartOriginal,
           onClick: annotationRange.onClick,
           onDoubleClick: annotationRange.onDoubleClick,
@@ -189,6 +192,7 @@ const DrawLabel = withHover(
         xStartOriginal,
         xStart,
         onMouseLeave,
+        isProtein,
         onMouseOver,
         editorName,
         labelLineIntensity,
@@ -234,7 +238,10 @@ const DrawLabel = withHover(
           ? annotationText.slice(0, -numberOfCharsToChop) + ".."
           : annotationText;
       };
-
+      const titleText = getAnnotationNameAndStartStopString(annotation, {
+        isProtein
+      });
+      const labelText = annotation.name || annotation.restrictionEnzyme.name;
       return (
         <div>
           <div
@@ -254,6 +261,7 @@ const DrawLabel = withHover(
               onRightClick({ event, annotation });
               event.stopPropagation();
             }}
+            title={titleText}
             style={{
               cursor: "pointer",
               position: "absolute",
@@ -270,10 +278,7 @@ const DrawLabel = withHover(
               zIndex: 10
             }}
           >
-            {truncateLabelIfNeeded(
-              annotation.name || annotation.restrictionEnzyme.name,
-              xStart
-            )}
+            {truncateLabelIfNeeded(labelText, xStart)}
           </div>
 
           <div

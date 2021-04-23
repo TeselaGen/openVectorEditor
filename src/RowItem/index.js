@@ -123,7 +123,7 @@ export class RowItem extends React.PureComponent {
     if (!row) {
       return null;
     }
-    let selectionLayers = [
+    const selectionLayers = [
       ...additionalSelectionLayers,
       ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
     ];
@@ -132,7 +132,7 @@ export class RowItem extends React.PureComponent {
     } else {
       charWidth = width / Math.max(bpsPerRow, 1);
     }
-    let rowContainerStyle = {
+    const rowContainerStyle = {
       position: "relative",
       minHeight,
       width: width + "px"
@@ -163,7 +163,7 @@ export class RowItem extends React.PureComponent {
         return toReturn;
       };
     }
-    let annotationCommonProps = {
+    const annotationCommonProps = {
       noRedux,
       editorName,
       charWidth,
@@ -240,13 +240,13 @@ export class RowItem extends React.PureComponent {
     // 0 1 2 3 4 5 6 8 9
     //0 1 2 3 4 5 6 7 9
 
-    let deletionLayersToDisplay = flatMap(
+    const deletionLayersToDisplay = flatMap(
       { ...replacementLayers, ...deletionLayers },
       function (layer) {
         if (layer.caretPosition > -1) {
           return [];
         }
-        let overlaps = getOverlapsOfPotentiallyCircularRanges(
+        const overlaps = getOverlapsOfPotentiallyCircularRanges(
           layer,
           row,
           sequenceLength
@@ -254,10 +254,10 @@ export class RowItem extends React.PureComponent {
         return overlaps;
       }
     );
-    let deletionLayerStrikeThrough = deletionLayersToDisplay.length
+    const deletionLayerStrikeThrough = deletionLayersToDisplay.length
       ? deletionLayersToDisplay.map(function (layer, index) {
-          let left = (layer.start - row.start) * charWidth;
-          let width = (layer.end - layer.start + 1) * charWidth;
+          const left = (layer.start - row.start) * charWidth;
+          const width = (layer.end - layer.start + 1) * charWidth;
           return (
             <div
               key={"deletionLayer" + index}
@@ -476,8 +476,8 @@ export class RowItem extends React.PureComponent {
             {showCutsites &&
               showCutsitesInSequence &&
               Object.keys(cutsites).map(function (id, index) {
-                let cutsite = cutsites[id];
-                let layer = cutsite.annotation.recognitionSiteRange;
+                const cutsite = cutsites[id];
+                const layer = cutsite.annotation.recognitionSiteRange;
                 return (
                   layer.start > -1 && (
                     <SelectionLayer
@@ -510,7 +510,7 @@ export class RowItem extends React.PureComponent {
 
           {map(replacementLayers, function (replacementLayer) {
             if (!replacementLayer) return null;
-            let atCaret = replacementLayer.caretPosition > -1;
+            const atCaret = replacementLayer.caretPosition > -1;
             let normedCaretPos;
             if (atCaret) {
               normedCaretPos = normalizePositionByRangeLength(
@@ -518,34 +518,34 @@ export class RowItem extends React.PureComponent {
                 sequenceLength
               );
             }
-            let insertedBpsLayer = {
+            const insertedBpsLayer = {
               ...replacementLayer,
               start: atCaret ? normedCaretPos : replacementLayer.start,
               end:
                 (atCaret ? normedCaretPos : replacementLayer.start) +
                 replacementLayer.sequence.length
             };
-            let { sequence } = insertedBpsLayer;
-            let layerRangeOverlaps = getOverlapsOfPotentiallyCircularRanges(
+            const { sequence } = insertedBpsLayer;
+            const layerRangeOverlaps = getOverlapsOfPotentiallyCircularRanges(
               insertedBpsLayer,
               row,
               sequenceLength
             );
             return layerRangeOverlaps.map(function (layer, index) {
-              let isStart = layer.start === insertedBpsLayer.start;
-              let seqInRow = getSequenceWithinRange(
+              const isStart = layer.start === insertedBpsLayer.start;
+              const seqInRow = getSequenceWithinRange(
                 {
                   start: layer.start - insertedBpsLayer.start,
                   end: layer.end - insertedBpsLayer.start
                 },
                 sequence
               );
-              let startOffset = layer.start - row.start;
-              let width = seqInRow.length * charWidth;
-              let height = sequenceHeight;
-              let bufferBottom = 4;
-              let bufferLeft = 2;
-              let arrowHeight = isStart ? 8 : 0;
+              const startOffset = layer.start - row.start;
+              const width = seqInRow.length * charWidth;
+              const height = sequenceHeight;
+              const bufferBottom = 4;
+              const bufferLeft = 2;
+              const arrowHeight = isStart ? 8 : 0;
               return (
                 <Sequence
                   showDnaColors={showDnaColors}
