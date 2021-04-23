@@ -1,3 +1,8 @@
+import { MenuItem } from "@blueprintjs/core";
+import React from "react";
+import { LimitAnnotations } from "../utils/useAnnotationLimits";
+import useMeltingTemp from "../utils/useMeltingTemp";
+
 export const fullSequenceTranslationMenu = {
   text: "Full Sequence Translation",
   cmd: "fullSequenceTranslations",
@@ -142,6 +147,15 @@ export default [
   // { cmd: "spaces" },
   { divider: "" },
   {
+    cmd: "toggleShowGCContent",
+    shouldDismissPopover: false,
+    text: "Percent GC Content of Selection"
+  },
+  {
+    text: "Melting Temp of Selection",
+    component: ToggleShowMeltingTemp
+  },
+  {
     text: "Sequence Case",
     cmd: "sequenceCase",
     submenu: [
@@ -177,13 +191,53 @@ export default [
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
 
   { divider: "" },
+  {
+    text: "Limits",
+    cmd: "limitsMenu",
+    submenu: [
+      {
+        text: "Max Features To Show",
+        component: LimitAnnotations,
+        type: "features"
+      },
+      {
+        text: "Max Parts To Show",
+        type: "parts",
+        component: LimitAnnotations
+      },
+      {
+        text: "Max Cutsites To Show",
+        component: LimitAnnotations,
+        type: "cutsites"
+      }
+    ]
+  },
+  {
+    text: "Labels",
+    submenu: [
+      { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
+      { cmd: "togglePartLabels", shouldDismissPopover: false },
+      { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
 
-  { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
-  { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+      { divider: "" },
 
-  { divider: "" },
-
-  { cmd: "toggleExternalLabels", shouldDismissPopover: false },
-  { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false }
+      { cmd: "toggleExternalLabels", shouldDismissPopover: false },
+      { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false },
+      { cmd: "adjustLabelSize", shouldDismissPopover: false }
+    ]
+  }
 ];
+
+function ToggleShowMeltingTemp(props) {
+  const [showMeltingTemp, setShowMeltingTemp] = useMeltingTemp();
+  return (
+    <MenuItem
+      {...props}
+      shouldDismissPopover={false}
+      onClick={() => {
+        setShowMeltingTemp(!showMeltingTemp);
+      }}
+      icon={showMeltingTemp ? "small-tick" : "blank"}
+    ></MenuItem>
+  );
+}

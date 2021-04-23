@@ -12,6 +12,7 @@ function Cutsites({
   editorName,
   showCutsiteLabels,
   cutsiteClicked,
+  cutsiteDoubleClicked,
   cutsiteRightClicked,
   cutsites,
   cutsiteWidth = 1,
@@ -44,6 +45,10 @@ function Cutsites({
         id: annotation.id,
         onClick: (event) => {
           cutsiteClicked({ event, annotation });
+          event.stopPropagation();
+        },
+        onDoubleClick: (event) => {
+          cutsiteDoubleClicked({ event, annotation });
           event.stopPropagation();
         },
         onContextMenu: (event) => {

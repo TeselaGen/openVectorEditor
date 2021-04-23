@@ -118,7 +118,9 @@ export default [
     text: "Tools",
     cmd: "toolsCmd",
     submenu: [
+      "openFilterCutsites",
       "restrictionEnzymesManager",
+      "openCreateCustomEnzyme",
       "simulateDigestion",
       {
         text: "Remove Duplicates",

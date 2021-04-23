@@ -5,7 +5,7 @@ import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import { reduce, values, startCase, filter } from "lodash";
-import { getRangeLength } from "ve-range-utils/lib";
+import { getRangeLength } from "ve-range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 
 const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line
@@ -188,6 +188,7 @@ const DrawLabel = withHover(
         xStart,
         onMouseLeave,
         onMouseOver,
+        editorName,
         labelLineIntensity
       } = this.props;
       let heightToUse = height;
@@ -195,7 +196,9 @@ const DrawLabel = withHover(
       if (hovered) {
         try {
           const line = this.n;
-          const isRowView = document.querySelector(".veRowView").contains(line);
+          const isRowView = document
+            .querySelector(`.veEditor.${editorName} .veRowView`)
+            .contains(line);
 
           const el = line
             .closest(".veRowItem")
@@ -223,7 +226,7 @@ const DrawLabel = withHover(
         <div>
           <div
             {...{ onMouseLeave, onMouseOver }}
-            className={className + " ve-monospace-font"}
+            className={className + "veLabelText ve-monospace-font"}
             onClick={function (event) {
               onClick({ event, annotation });
               event.stopPropagation();
@@ -242,16 +245,15 @@ const DrawLabel = withHover(
               cursor: "pointer",
               position: "absolute",
               bottom: height,
-              ...(hovered && { fontWeight: "bold" }),
+              ...(hovered && { textDecoration: "underline" }),
               ...(annotation.annotationTypePlural !== "cutsites" && {
                 fontStyle: "normal"
               }),
               left: xStart,
-              color: hovered
-                ? "black"
-                : annotation.annotationTypePlural === "parts"
-                ? "purple"
-                : annotation.labelColor,
+              color:
+                annotation.annotationTypePlural === "parts"
+                  ? "purple"
+                  : annotation.labelColor,
               zIndex: 10
             }}
           >
@@ -262,6 +264,7 @@ const DrawLabel = withHover(
             ref={(n) => {
               if (n) this.n = n;
             }}
+            className="veLabelLine"
             style={{
               zIndex: 50,
               position: "absolute",
@@ -269,8 +272,8 @@ const DrawLabel = withHover(
               bottom,
               height: Math.max(heightToUse, 3),
               width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : labelLineIntensity,
-              background: "black"
+              opacity: hovered ? 1 : labelLineIntensity
+              // background: "black"
             }}
           />
         </div>

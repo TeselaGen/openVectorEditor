@@ -2,20 +2,19 @@ import React from "react";
 import { reduxForm, formValues } from "redux-form";
 
 import {
-  withDialog,
+  wrapDialog,
   DataTable,
   withSelectedEntities,
-  InfoHelper,
   SwitchField
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Classes } from "@blueprintjs/core";
+import { Button, Classes, Popover } from "@blueprintjs/core";
 import classNames from "classnames";
 
 import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash";
 import { sizeSchema } from "../PropertiesDialog/utils";
-import { getRangeLength } from "ve-range-utils/lib";
+import { getRangeLength } from "ve-range-utils";
 
 const schema = {
   fields: [
@@ -41,7 +40,7 @@ const schema = {
   ]
 };
 
-export class RemoveDuplicatesDialog extends React.Component {
+class RemoveDuplicatesDialog extends React.Component {
   state = {
     dups: []
   };
@@ -73,7 +72,7 @@ export class RemoveDuplicatesDialog extends React.Component {
     const annotations = sequenceData[type];
     const dups = [];
     const seqsHashByStartEndStrandName = {};
-    forEach(annotations, a => {
+    forEach(annotations, (a) => {
       const hash = `${ignoreStartAndEnd ? "" : a.start}&${
         ignoreStartAndEnd ? "" : a.end
       }&${ignoreStrand ? "" : a.strand}&${ignoreName ? "" : a.name}`;
@@ -88,7 +87,7 @@ export class RemoveDuplicatesDialog extends React.Component {
   render() {
     const { duplicatesToRemoveSelectedEntities, hideModal, type } = this.props;
 
-    const selectedIds = this.state.dups.map(d => d.id);
+    const selectedIds = this.state.dups.map((d) => d.id);
     // const sequenceLength = sequenceData.sequence.length;
     // const isCirc = (this.state || {}).circular;
     return (
@@ -124,40 +123,45 @@ export class RemoveDuplicatesDialog extends React.Component {
             justifyContent: "space-between"
           }}
         >
-          <InfoHelper isButton isPopover icon="settings">
-            <div style={{ maxWidth: 200 }}>
-              <h5>Ignore These Fields While Finding Duplicates:</h5>
-              <SwitchField
-                containerStyle={{ marginBottom: 2 }}
-                //delay the call to recompute dups until redux has had time to update
-                onFieldSubmit={this.delayedRecomputeDups}
-                style={this.checkboxStyle}
-                name="ignoreName"
-                label="Name"
-              ></SwitchField>
-              <SwitchField
-                containerStyle={{ marginBottom: 2 }}
-                //delay the call to recompute dups until redux has had time to update
-                onFieldSubmit={this.delayedRecomputeDups}
-                style={this.checkboxStyle}
-                name="ignoreStrand"
-                label="Strand"
-              ></SwitchField>
-              <SwitchField
-                containerStyle={{ marginBottom: 2 }}
-                //delay the call to recompute dups until redux has had time to update
-                onFieldSubmit={this.delayedRecomputeDups}
-                style={this.checkboxStyle}
-                name="ignoreStartAndEnd"
-                label="Start and End"
-              ></SwitchField>
-            </div>
-          </InfoHelper>
+          <Popover
+            target={<Button icon="settings" />}
+            content={
+              <div style={{ padding: 20, maxWidth: 250 }}>
+                <div>Ignore These Fields While Finding Duplicates:</div>
+                <br></br>
+                <SwitchField
+                  containerStyle={{ marginBottom: 2 }}
+                  //delay the call to recompute dups until redux has had time to update
+                  onFieldSubmit={this.delayedRecomputeDups}
+                  style={this.checkboxStyle}
+                  name="ignoreName"
+                  label="Name"
+                ></SwitchField>
+                <SwitchField
+                  containerStyle={{ marginBottom: 2 }}
+                  //delay the call to recompute dups until redux has had time to update
+                  onFieldSubmit={this.delayedRecomputeDups}
+                  style={this.checkboxStyle}
+                  name="ignoreStrand"
+                  label="Strand"
+                ></SwitchField>
+                <SwitchField
+                  containerStyle={{ marginBottom: 2 }}
+                  //delay the call to recompute dups until redux has had time to update
+                  onFieldSubmit={this.delayedRecomputeDups}
+                  style={this.checkboxStyle}
+                  name="ignoreStartAndEnd"
+                  label="Start and End"
+                ></SwitchField>
+              </div>
+            }
+          ></Popover>
+
           <Button
             intent="primary"
             onClick={() => {
               this.props[camelCase(`delete_${type}`).slice(0, -1)](
-                duplicatesToRemoveSelectedEntities.map(d => d.id)
+                duplicatesToRemoveSelectedEntities.map((d) => d.id)
               );
               window.toastr.success(
                 `Successfully Deleted ${
@@ -177,7 +181,7 @@ export class RemoveDuplicatesDialog extends React.Component {
 }
 
 export default compose(
-  withDialog(),
+  wrapDialog(),
   withEditorProps,
 
   withSelectedEntities("duplicatesToRemove"),

@@ -25,6 +25,10 @@ import { defaultCopyOptions } from "../redux/copyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 import packageJson from "../../package.json";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
+import {
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
 
@@ -62,11 +66,14 @@ const fileCommandDefs = {
     isHidden: (props) => props.readOnly,
     isDisabled: (props) => props.readOnly && readOnlyDisabledTooltip,
     handler: (props) => {
-      props.showRenameSequenceDialog({
-        initialValues: { newName: props.sequenceData.name },
-        onSubmit: (values) => {
-          props.sequenceNameUpdate(values.newName);
-          props.onRename && props.onRename(values.newName, props);
+      showDialog({
+        dialogType: "RenameSequenceDialog",
+        props: {
+          initialValues: { newName: props.sequenceData.name },
+          onSubmit: (values) => {
+            props.sequenceNameUpdate(values.newName);
+            props.onRename && props.onRename(values.newName, props);
+          }
         }
       });
     }
@@ -138,15 +145,21 @@ const fileCommandDefs = {
   },
   filterPartsByTagCmd: {
     isHidden: (props) => !props.allPartTags,
-    name: (props) => {
+    name: "Search Parts By Tag",
+    component: (props) => () => {
       return (
-        <div style={{ padding: 3 }} data-test="filter-parts-by-tag">
-          <PartTagSearch {...props}></PartTagSearch>
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <div
+          className="bp3-menu-item"
+          style={{
+            padding: 3,
+            paddingLeft: 30
+          }}
+          data-test="filter-parts-by-tag"
+        >
+          <PartTagSearch dontAutoOpen {...props}></PartTagSearch>
         </div>
       );
-    },
-    component: (props) => {
-      return <div {...props}></div>;
     },
     handler: () => {}
   },
@@ -302,7 +315,11 @@ const fileCommandDefs = {
 
   print: {
     hotkeyProps: { preventDefault: true },
-    handler: (props) => props.showPrintDialog(),
+    handler: (props) =>
+      showDialog({
+        dialogType: "PrintDialog",
+        props
+      }),
     hotkey: "mod+p"
   },
   ...["Parts", "Features", "Primers"].reduce((acc, type) => {
@@ -311,11 +328,14 @@ const fileCommandDefs = {
       name: `Remove Duplicate ${startCase(type)}`,
       isDisabled: (props) => props.readOnly,
       handler: (props) =>
-        props.showRemoveDuplicatesDialog({
-          type: camelCase(type),
-          editorName: props.editorName,
-          dialogProps: {
-            title: `Remove Duplicate ${type}`
+        showDialog({
+          dialogType: "RemoveDuplicates",
+          props: {
+            type: camelCase(type),
+            editorName: props.editorName,
+            dialogProps: {
+              title: `Remove Duplicate ${type}`
+            }
           }
         })
     };
@@ -475,23 +495,26 @@ const editCommandDefs = {
     isDisabled: (props) => props.sequenceLength === 0,
     name: "Go To...",
     handler: (props) => {
-      props.showGoToDialog({
-        extraProps: {
-          sequencePosition: {
-            min: 0,
-            max: divideBy3(props.sequenceLength, isProtein(props))
-          }
-        },
-        initialValues: {
-          sequencePosition: divideBy3(
-            props.caretPosition >= 0 ? props.caretPosition : 0,
-            isProtein(props)
-          )
-        },
-        onSubmit: (values) =>
-          props.caretPositionUpdate(
-            values.sequencePosition * (isProtein(props) ? 3 : 1)
-          )
+      showDialog({
+        dialogType: "GoToDialog",
+        props: {
+          extraProps: {
+            sequencePosition: {
+              min: 0,
+              max: divideBy3(props.sequenceLength, isProtein(props))
+            }
+          },
+          initialValues: {
+            sequencePosition: divideBy3(
+              props.caretPosition >= 0 ? props.caretPosition : 0,
+              isProtein(props)
+            )
+          },
+          onSubmit: (values) =>
+            props.caretPositionUpdate(
+              values.sequencePosition * (isProtein(props) ? 3 : 1)
+            )
+        }
       });
     },
     hotkey: "mod+g",
@@ -507,40 +530,46 @@ const editCommandDefs = {
         start = props.caretPosition;
         end = props.caretPosition;
       }
-      props.showSelectDialog({
-        extraProps: {
-          circular: props.sequenceData && props.sequenceData.circular,
-          from: {
-            min: 1,
-            max: divideBy3(props.sequenceLength || 1, isProtein(props))
+      showDialog({
+        dialogType: "SelectDialog",
+        props: {
+          extraProps: {
+            circular: props.sequenceData && props.sequenceData.circular,
+            from: {
+              min: 1,
+              max: divideBy3(props.sequenceLength || 1, isProtein(props))
+            },
+            to: {
+              min: 1,
+              max: divideBy3(props.sequenceLength || 1, isProtein(props))
+            }
           },
-          to: {
-            min: 1,
-            max: divideBy3(props.sequenceLength || 1, isProtein(props))
-          }
-        },
-        selectionLayerUpdate: props.selectionLayerUpdate,
-        caretPositionUpdate: props.caretPositionUpdate,
-        initialCaretPosition: props.caretPosition,
-        initialValues: {
-          from: Math.max(
-            1,
-            1 + divideBy3(start >= 0 ? start : 0, isProtein(props))
+          selectionLayerUpdate: props.selectionLayerUpdate,
+          caretPositionUpdate: props.caretPositionUpdate,
+          initialCaretPosition: props.caretPosition,
+          initialValues: {
+            from: Math.max(
+              1,
+              1 + divideBy3(start >= 0 ? start : 0, isProtein(props))
+            ),
+            to: Math.max(1, 1 + divideBy3(end >= 0 ? end : 0, isProtein(props)))
+          },
+          isProtein: isProtein(props),
+          sequenceLength: divideBy3(
+            props.sequenceLength || 1,
+            isProtein(props)
           ),
-          to: Math.max(1, 1 + divideBy3(end >= 0 ? end : 0, isProtein(props)))
-        },
-        isProtein: isProtein(props),
-        sequenceLength: divideBy3(props.sequenceLength || 1, isProtein(props)),
-        onSubmit: (values) => {
-          const newRange = convertRangeTo0Based({
-            start: isProtein(props) ? values.from * 3 : values.from,
-            end: isProtein(props) ? values.to * 3 : values.to
-          });
+          onSubmit: (values) => {
+            const newRange = convertRangeTo0Based({
+              start: isProtein(props) ? values.from * 3 : values.from,
+              end: isProtein(props) ? values.to * 3 : values.to
+            });
 
-          return props.selectionLayerUpdate({
-            start: isProtein(props) ? newRange.start - 2 : newRange.start,
-            end: newRange.end
-          });
+            return props.selectionLayerUpdate({
+              start: isProtein(props) ? newRange.start - 2 : newRange.start,
+              end: newRange.end
+            });
+          }
         }
       });
     }
@@ -660,6 +689,14 @@ const editCommandDefs = {
     };
     return acc;
   }, {}),
+
+  toggleShowGCContent: {
+    isActive: (props) => props.showGCContent,
+    handler: (props) => {
+      props.toggleShowGCContent(!props.showGCContent);
+    }
+  },
+
   toggleSequenceMapFontUpper: {
     isActive: (props) => props.uppercaseSequenceMapFont === "uppercase",
     handler: (props) => {
@@ -944,7 +981,7 @@ const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
           : `Edit ${upperFirst(key)}`,
       handler: (props, state, ctxInfo) => {
         const annotation = get(ctxInfo, "context.annotation");
-        props[`showAddOrEdit${upperFirst(key)}Dialog`](annotation);
+        showAddOrEditAnnotationDialog({ annotation, type: key });
       }
       // isHidden: (props) => props.readOnly
     };
@@ -1140,6 +1177,9 @@ const annotationToggleCommandDefs = {};
 });
 
 const additionalAnnotationCommandsDefs = {
+  limitsMenu: {
+    isHidden: (props) => props.maxAnnotationsToDisplay
+  },
   showAll: {
     handler: (props) => {
       annotationTypes.forEach((type) => {
@@ -1173,15 +1213,39 @@ const toolCommandDefs = {
   },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
-    name: "Add Additional Enzymes",
-    handler: (props) =>
-      props.addAdditionalEnzymesReset({
-        inputSequenceToTestAgainst: props.sequenceData
-          ? props.sequenceData.sequence
-          : "",
-        isOpen: true
-      }),
+    name: "Manage Enzymes",
+    handler: (props) => {
+      if (props.enzymeManageOverride) {
+        props.enzymeManageOverride(props);
+      } else {
+        props.createYourOwnEnzymeReset();
+        showDialog({
+          dialogType: "EnzymesDialog",
+          props: {
+            inputSequenceToTestAgainst: props.sequenceData
+              ? props.sequenceData.sequence
+              : ""
+          }
+        });
+      }
+    },
     isHidden: (props) => isProtein(props)
+  },
+  openFilterCutsites: {
+    name: "Filter Cutsites",
+    handler: (props) => {
+      props.openToolbarItemUpdate("cutsiteTool");
+    },
+    isHidden: (props) => isProtein(props)
+  },
+  openCreateCustomEnzyme: {
+    name: "Create Custom Enzyme",
+    handler: () => {
+      showDialog({
+        dialogType: "CreateCustomEnzyme"
+      });
+    },
+    isHidden: (props) => props.overrideManageEnzymes
   }
 };
 
@@ -1189,6 +1253,15 @@ const labelIntensities = {
   Low: 0.1,
   Medium: 0.4,
   High: 0.9
+};
+const labelSizes = {
+  "33%": 3,
+  "50%": 4,
+  "75%": 6,
+  "100%": 8,
+  "125%": 10,
+  "150%": 12,
+  "200%": 16
 };
 const labelCommandDefs = {
   toggleExternalLabels: {
@@ -1210,6 +1283,15 @@ const labelCommandDefs = {
         checked: props.labelLineIntensity === labelIntensities[key],
         onClick: () => props.changeLabelLineIntensity(labelIntensities[key])
       }))
+  },
+  adjustLabelSize: {
+    name: "Circular Label Size",
+    submenu: (props) =>
+      map(Object.keys(labelSizes), (key) => ({
+        text: key,
+        checked: props.labelSize === labelSizes[key],
+        onClick: () => props.changeLabelSize(labelSizes[key])
+      }))
   }
 };
 
@@ -1217,20 +1299,20 @@ const commandDefs = {
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,
     submenu: (props) => {
-      if (props.allPartTags) {
-        return [
-          {
-            cmd: "toggleParts",
-            shouldDismissPopover: false
-          },
-          {
-            cmd: "filterPartsByTagCmd",
-            shouldDismissPopover: false
-          }
-        ];
-      } else {
-        return;
-      }
+      return [
+        {
+          cmd: "toggleParts",
+          shouldDismissPopover: false
+        },
+        ...(props.allPartTags
+          ? [
+              {
+                cmd: "filterPartsByTagCmd",
+                shouldDismissPopover: false
+              }
+            ]
+          : [])
+      ];
     }
   },
   ...additionalAnnotationCommandsDefs,

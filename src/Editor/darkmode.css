@@ -11,17 +11,15 @@
   color: #f5f8fa !important;
 }
 
-.bp3-dark .veCaretSVG,
+.bp3-dark .veCaret,
 .bp3-dark .veRowViewAxis path,
-.bp3-dark .veRowViewFeature path,
-.bp3-dark .veLabelLine,
-.bp3-dark .veFeature {
-  stroke: #f5f8fa !important;
+.veLabelLine {
+  stroke: black;
+  background: black;
 }
-.bp3-dark .veRowViewPartsContainer path,
-.bp3-dark .vePart {
-  fill: #30404d !important;
-  stroke: #df7ff1 !important;
+.bp3-dark .veLabelLine {
+  stroke: #f5f8fa !important;
+  background: #f5f8fa !important;
 }
 
 .bp3-dark .veEditor .veRowViewCaret {
@@ -56,10 +54,6 @@
 .bp3-dark .veRowViewPartsContainer text,
 .bp3-dark .veLabelText.black {
   fill: #f5f8fa !important;
-}
-
-.bp3-dark .veLabelText.purple {
-  fill: #ac68cc !important;
 }
 
 .bp3-dark .tag-selection.selected {
@@ -102,4 +96,14 @@
 
 .bp3-dark .veWhiteBackground {
   background: #293742;
+}
+
+.bp3-dark .vePart path {
+  stroke-width: 1;
+  stroke: #df7ff1 !important;
+}
+
+.bp3-dark .vePart .veLabelText,
+.bp3-dark .veLabelText.vePart {
+  fill: #ac68cc !important;
 }

@@ -19,7 +19,8 @@ import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 
 // import ReactList from './ReactVariable';
 import "./style.css";
-import { getEmptyText } from "../utils/editorUtils";
+import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
+import isMobile from "is-mobile";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
@@ -89,20 +90,26 @@ export class RowView extends React.Component {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
 
+    const selectionStartGrabbed = event.target.classList.contains(
+      draggableClassnames.selectionStart
+    );
+    const selectionEndGrabbed = event.target.classList.contains(
+      draggableClassnames.selectionEnd
+    );
     some(visibleRowsContainer.childNodes, function (rowDomNode) {
       let boundingRowRect = rowDomNode.getBoundingClientRect();
       if (
-        event.clientY > boundingRowRect.top &&
-        event.clientY < boundingRowRect.top + boundingRowRect.height
+        getClientY(event) > boundingRowRect.top &&
+        getClientY(event) < boundingRowRect.top + boundingRowRect.height
       ) {
         //then the click is falls within this row
         rowNotFound = false;
         let row = rowData[Number(rowDomNode.getAttribute("data-row-number"))];
-        if (event.clientX - boundingRowRect.left < 0) {
+        if (getClientX(event) - boundingRowRect.left < 0) {
           nearestCaretPos = row.start;
         } else {
           let clickXPositionRelativeToRowContainer =
-            event.clientX - boundingRowRect.left;
+            getClientX(event) - boundingRowRect.left;
           let numberOfBPsInFromRowStart = Math.floor(
             (clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth
           );
@@ -117,7 +124,7 @@ export class RowView extends React.Component {
     if (rowNotFound) {
       let { top, bottom } = visibleRowsContainer.getBoundingClientRect();
       let numbers = [top, bottom];
-      let target = event.clientY;
+      let target = getClientY(event);
       let topOrBottom = numbers
         .map(function (value, index) {
           return [Math.abs(value - target), index];
@@ -155,12 +162,8 @@ export class RowView extends React.Component {
       className: event.target.className,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
-      selectionStartGrabbed: event.target.classList.contains(
-        draggableClassnames.selectionStart
-      ),
-      selectionEndGrabbed: event.target.classList.contains(
-        draggableClassnames.selectionEnd
-      )
+      selectionStartGrabbed,
+      selectionEndGrabbed
     });
   };
 
@@ -377,6 +380,19 @@ export class RowView extends React.Component {
     }
   };
   onDrag = (event) => {
+    if (isMobile({ tablet: true })) {
+      if (
+        //only allow dragging on mobile if the user is grabbing the cursor
+        !some(draggableClassnames, (cn) => {
+          if (event.target.classList.contains(cn)) {
+            return true;
+          }
+        })
+      ) {
+        return;
+      }
+    }
+
     this.dragging = true;
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(
@@ -474,7 +490,8 @@ export class RowView extends React.Component {
             height: height || 300,
             width: containerWidthMinusMargin + marginWidth,
             paddingLeft: marginWidth / 2,
-            paddingRight: marginWidth / 2
+            paddingRight: marginWidth / 2,
+            ...(isMobile && { touchAction: "inherit" })
           }}
           // onScroll={disablePointers} //tnr: this doesn't actually help much with scrolling performance
           onContextMenu={this.onContextMenu}

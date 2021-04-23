@@ -1,5 +1,6 @@
 import { merge } from "lodash";
-import * as addAdditionalEnzymes from "./addAdditionalEnzymes";
+import * as createYourOwnEnzyme from "./createYourOwnEnzyme";
+import * as showGCContent from "./showGCContent";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
@@ -28,16 +29,15 @@ import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
+import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
-
-import * as modalActions from "./modalActions";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
 export { default as vectorEditorMiddleware } from "./middleware";
 
 const subReducers = {
-  addAdditionalEnzymes,
+  createYourOwnEnzyme,
   annotationLabelVisibility,
   annotationsToSupport,
   annotationVisibility,
@@ -63,8 +63,10 @@ const subReducers = {
   sequenceData,
   useAdditionalOrfStartCodons,
   uppercaseSequenceMapFont,
+  showGCContent,
   externalLabels,
   labelLineIntensity,
+  labelSize,
   featureLengthsToHide,
   selectedPartTags
 };
@@ -81,7 +83,6 @@ export const actions = {
     }),
     {}
   ),
-  ...modalActions,
   ...alignments,
   vectorEditorInitialize,
   vectorEditorClear
@@ -161,38 +162,23 @@ export default function reducerFactory(initialState = {}) {
     return {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
-      __allEditorsOptions: {
-        addAdditionalEnzymes: addAdditionalEnzymes.default(
+      __allEditorsOptions: [
+        ["createYourOwnEnzyme", createYourOwnEnzyme],
+        ["uppercaseSequenceMapFont", uppercaseSequenceMapFont],
+        ["showGCContent", showGCContent],
+        ["externalLabels", externalLabels],
+        ["labelLineIntensity", labelLineIntensity],
+        ["labelSize", labelSize],
+        ["alignments", alignments]
+      ].reduce((acc, [key, val]) => {
+        acc[key] = val.default(
           !state.__allEditorsOptions
             ? undefined
-            : state.__allEditorsOptions.addAdditionalEnzymes,
+            : state.__allEditorsOptions[key],
           action
-        ),
-        uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.uppercaseSequenceMapFont,
-          action
-        ),
-        externalLabels: externalLabels.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.externalLabels,
-          action
-        ),
-        labelLineIntensity: labelLineIntensity.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.labelLineIntensity,
-          action
-        ),
-        alignments: alignments.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.alignments,
-          action
-        )
-      }
+        );
+        return acc;
+      }, {})
     };
   };
 }

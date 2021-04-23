@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { reduxForm, FieldArray, formValues } from "redux-form";
 
@@ -6,14 +6,15 @@ import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  withDialog
+  wrapDialog
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent, Classes, EditableText } from "@blueprintjs/core";
+import { Button, Intent, Classes, EditableText, Icon } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
-  checkIfPotentiallyCircularRangesOverlap
+  checkIfPotentiallyCircularRangesOverlap,
+  getRangeLength
 } from "ve-range-utils";
 import { tidyUpAnnotation, featureColors } from "ve-sequence-utils";
 import classNames from "classnames";
@@ -182,12 +183,86 @@ class AddOrEditAnnotationDialog extends React.Component {
       annotationVisibilityShow,
       renderLocations,
       locations,
-      upsertAnnotation
+      doesOverlapSelf,
+      start,
+      end,
+      advancedOptions,
+      advancedDefaultOpen,
+      upsertAnnotation,
+      original_selectionLayerUpdate
     } = this.props;
     const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
+    const annotationLength = getRangeLength(
+      locations && locations.length
+        ? {
+            start: locations[0].start,
+            end: locations[locations.length - 1].end
+          }
+        : { start, end },
+      sequenceLength
+    );
     return (
-      <div
+      <form
+        onSubmit={handleSubmit((data) => {
+          let updatedData;
+          if (data.forward === true && data.strand !== 1) {
+            updatedData = { ...data, strand: 1 };
+          } else if (data.forward === false && data.strand !== -1) {
+            updatedData = { ...data, strand: -1 };
+          } else {
+            updatedData = data;
+          }
+          updatedData.notes = {};
+          this.notes.forEach(({ key, value }) => {
+            if (!updatedData.notes[key]) updatedData.notes[key] = [];
+            updatedData.notes[key].push(value || "");
+          });
+          if (annotationTypePlural === "features") {
+            updatedData.color = featureColors[updatedData.type];
+          }
+          const hasJoinedLocations =
+            updatedData.locations && updatedData.locations.length > 1;
+
+          const newAnnotation = tidyUpAnnotation(
+            convertRangeTo0Based({
+              doesOverlapSelf: data.doesOverlapSelf,
+              ...updatedData,
+              ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
+                ? { type: "primer_bind" }
+                : {}),
+              locations: undefined, //by default clear locations
+              ...(hasJoinedLocations && {
+                //only add locations if there are locations
+                start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
+                end:
+                  updatedData.locations[updatedData.locations.length - 1].end,
+                locations: updatedData.locations.map(convertRangeTo0Based)
+              })
+            }),
+            {
+              sequenceData,
+              annotationType: annotationTypePlural
+            }
+          );
+          beforeAnnotationCreate &&
+            beforeAnnotationCreate({
+              annotationTypePlural,
+              annotation: newAnnotation,
+              props: this.props
+            });
+
+          //update the selection layer so we don't jump away from where we're editing
+          //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
+          original_selectionLayerUpdate &&
+            original_selectionLayerUpdate({
+              start: newAnnotation.start,
+              end: newAnnotation.end
+            });
+          upsertAnnotation(newAnnotation);
+          annotationVisibilityShow(annotationTypePlural);
+          hideModal();
+        })}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog",
@@ -200,6 +275,16 @@ class AddOrEditAnnotationDialog extends React.Component {
           tooltipError
           autoFocus
           placeholder="Untitled Annotation"
+          {...(window.__getDefaultValGenerator &&
+            window.__getDefaultValGenerator({
+              code: annotationTypePlural + "_name",
+              customParams: {
+                isProtein,
+                sequenceName: sequenceData.name,
+                start,
+                end
+              }
+            }))}
           validate={required}
           name="name"
           label="Name:"
@@ -224,6 +309,11 @@ class AddOrEditAnnotationDialog extends React.Component {
         {renderTags || null}
         {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
+            <div
+              style={{ marginBottom: 10, fontSize: 12, fontStyle: "italic" }}
+            >
+              You can also click or drag in the editor to change the selection{" "}
+            </div>
             <NumericInputField
               inlineLabel
               disabled={this.props.readOnly}
@@ -253,7 +343,20 @@ class AddOrEditAnnotationDialog extends React.Component {
         {renderLocations ? (
           <FieldArray component={this.renderLocations} name="locations" />
         ) : null}
+        <div
+          className="bp3-text-muted bp3-text-small"
+          style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
+        >
+          Length:{" "}
+          {doesOverlapSelf
+            ? sequenceLength + annotationLength
+            : annotationLength}
+        </div>
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
+        <Advanced
+          advancedDefaultOpen={advancedDefaultOpen}
+          advancedOptions={advancedOptions}
+        ></Advanced>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
@@ -270,64 +373,14 @@ class AddOrEditAnnotationDialog extends React.Component {
             Cancel
           </Button>
           <Button
+            type="submit"
             disabled={this.props.readOnly}
-            onClick={handleSubmit((data) => {
-              let updatedData;
-              if (data.forward === true && data.strand !== 1) {
-                updatedData = { ...data, strand: 1 };
-              } else if (data.forward === false && data.strand !== -1) {
-                updatedData = { ...data, strand: -1 };
-              } else {
-                updatedData = data;
-              }
-              updatedData.notes = {};
-              this.notes.forEach(({ key, value }) => {
-                if (!updatedData.notes[key]) updatedData.notes[key] = [];
-                updatedData.notes[key].push(value || "");
-              });
-              if (annotationTypePlural === "features") {
-                updatedData.color = featureColors[updatedData.type];
-              }
-              const hasJoinedLocations =
-                updatedData.locations && updatedData.locations.length > 1;
-
-              const newFeat = tidyUpAnnotation(
-                convertRangeTo0Based({
-                  ...updatedData,
-                  ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
-                    ? { type: "primer" }
-                    : {}),
-                  locations: undefined, //by default clear locations
-                  ...(hasJoinedLocations && {
-                    //only add locations if there are locations
-                    start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
-                    end:
-                      updatedData.locations[updatedData.locations.length - 1]
-                        .end,
-                    locations: updatedData.locations.map(convertRangeTo0Based)
-                  })
-                }),
-                {
-                  sequenceData,
-                  annotationType: "features"
-                }
-              );
-              beforeAnnotationCreate &&
-                beforeAnnotationCreate({
-                  annotationTypePlural,
-                  annotation: newFeat,
-                  props: this.props
-                });
-              upsertAnnotation(newFeat);
-              annotationVisibilityShow(annotationTypePlural);
-              hideModal();
-            })}
             intent={Intent.PRIMARY}
           >
             Save
           </Button>
         </div>
-      </div>
+      </form>
     );
   }
 }
@@ -338,7 +391,7 @@ function required(val) {
 
 export default ({ formName, getProps, dialogProps }) => {
   return compose(
-    withDialog({
+    wrapDialog({
       isDraggable: true,
       width: 350,
       ...dialogProps
@@ -348,7 +401,7 @@ export default ({ formName, getProps, dialogProps }) => {
     reduxForm({
       form: formName, // "AddOrEditAnnotationDialog",
       validate: (values, { sequenceLength, sequenceData }) => {
-        let errors = {};
+        const errors = {};
         const { circular } = sequenceData || {};
         if (!circular && values.start > values.end) {
           errors.start = "Start must be less than End for a linear sequence";
@@ -420,7 +473,7 @@ export default ({ formName, getProps, dialogProps }) => {
         return errors;
       }
     }),
-    formValues("start", "end", "locations")
+    formValues("start", "end", "doesOverlapSelf", "locations")
   )(AddOrEditAnnotationDialog);
 };
 
@@ -428,7 +481,7 @@ const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
       <div style={{ display: "flex" }}>
-        <h4>Notes </h4>{" "}
+        <div>Notes: </div>{" "}
         <span style={{ marginLeft: 15, fontSize: 10, color: "grey" }}>
           (Key -- Value)
         </span>{" "}
@@ -511,3 +564,23 @@ const Notes = view(({ readOnly, notes }) => {
     </div>
   );
 });
+
+function Advanced({ advancedOptions, advancedDefaultOpen }) {
+  const [isOpen, setOpen] = useState(advancedDefaultOpen);
+  if (!advancedOptions) {
+    return null;
+  }
+  return (
+    <div style={{ marginTop: 5 }}>
+      <div
+        onClick={() => {
+          setOpen(!isOpen);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Advanced <Icon icon={isOpen ? "caret-up" : "caret-down"}></Icon>
+      </div>
+      {isOpen && <div>{advancedOptions}</div>}
+    </div>
+  );
+}

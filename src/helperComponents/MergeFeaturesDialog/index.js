@@ -6,7 +6,7 @@ import { reduxForm, formValues } from "redux-form";
 import {
   InputField,
   ReactSelectField,
-  withDialog,
+  wrapDialog,
   InfoHelper
 } from "teselagen-react-components";
 import { compose } from "redux";
@@ -17,7 +17,7 @@ import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "teselagen-react-components";
 import "./style.css";
 
-export class MergeFeaturesDialog extends React.Component {
+class MergeFeaturesDialog extends React.Component {
   render() {
     const {
       // editorName,
@@ -37,7 +37,7 @@ export class MergeFeaturesDialog extends React.Component {
     const feat2 = features[id2];
     const [id1default, id2default] = flatMap(
       selectedAnnotations.idStack,
-      id => {
+      (id) => {
         const ann = selectedAnnotations.idMap[id];
         if (ann.annotationTypePlural === "features") {
           return id;
@@ -46,7 +46,33 @@ export class MergeFeaturesDialog extends React.Component {
       }
     );
     return (
-      <div
+      <form
+        onSubmit={handleSubmit(
+          ({ id1, id2, name, preserveFeatures, start, end }) => {
+            if (!preserveFeatures) {
+              deleteFeature([id1, id2], {
+                batchUndoStart: true
+              });
+            }
+            upsertFeature(
+              {
+                ...feat1,
+                id: uuid(),
+                start: start - 1,
+                end: end - 1,
+                name
+              },
+              {
+                batchUndoEnd: true
+              }
+            );
+            selectionLayerUpdate({
+              start: start - 1,
+              end: end - 1
+            });
+            hideModal();
+          }
+        )}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog",
@@ -88,7 +114,7 @@ export class MergeFeaturesDialog extends React.Component {
               </div>
             </div>
           }
-          options={flatMap(features, feat => {
+          options={flatMap(features, (feat) => {
             if (feat.id === (feat2 && feat2.id)) return []; //filter out other feature as an option
             return {
               value: feat.id,
@@ -141,7 +167,7 @@ export class MergeFeaturesDialog extends React.Component {
               </div>
             </div>
           }
-          options={flatMap(features, feat => {
+          options={flatMap(features, (feat) => {
             if (feat.id === (feat1 && feat1.id)) return []; //filter out other feature as an option
             return {
               value: feat.id,
@@ -189,39 +215,11 @@ export class MergeFeaturesDialog extends React.Component {
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
         >
-          <Button
-            onClick={handleSubmit(
-              ({ id1, id2, name, preserveFeatures, start, end }) => {
-                if (!preserveFeatures) {
-                  deleteFeature([id1, id2], {
-                    batchUndoStart: true
-                  });
-                }
-                upsertFeature(
-                  {
-                    ...feat1,
-                    id: uuid(),
-                    start: start - 1,
-                    end: end - 1,
-                    name
-                  },
-                  {
-                    batchUndoEnd: true
-                  }
-                );
-                selectionLayerUpdate({
-                  start: start - 1,
-                  end: end - 1
-                });
-                hideModal();
-              }
-            )}
-            intent={Intent.PRIMARY}
-          >
+          <Button type="submit" intent={Intent.PRIMARY}>
             Create Merged Feature
           </Button>
         </div>
-      </div>
+      </form>
     );
   }
 }
@@ -229,10 +227,11 @@ export class MergeFeaturesDialog extends React.Component {
 function required(val) {
   if (!val) return "Required";
 }
+
 export default compose(
-  withDialog({
+  wrapDialog({
+    title: "Merge Features",
     isDraggable: true,
-    height: 480,
     width: 400
   }),
   withEditorProps,

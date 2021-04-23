@@ -1,11 +1,15 @@
 import React from "react";
 import { Switch, Button } from "@blueprintjs/core";
-import { InfoHelper } from "teselagen-react-components";
+import {
+  InfoHelper,
+  getStringFromReactComponent,
+  doesSearchValMatchText
+} from "teselagen-react-components";
 import { lifecycle, mapProps } from "recompose";
 import { omit } from "lodash";
 import ReactMarkdown from "react-markdown";
 
-const omitProps = keys => mapProps(props => omit(props, keys));
+const omitProps = (keys) => mapProps((props) => omit(props, keys));
 const _Switch = omitProps(["didMount"])(Switch);
 const EnhancedSwitch = lifecycle({
   componentDidMount() {
@@ -20,6 +24,7 @@ export default function renderToggle({
   label,
   onClick,
   info,
+  alwaysShow,
   description,
   hook,
   disabled = false,
@@ -34,6 +39,16 @@ export default function renderToggle({
     text: labelOrText,
     ...rest
   };
+  if (that.state.searchInput && !alwaysShow) {
+    if (
+      !doesSearchValMatchText(
+        that.state.searchInput,
+        getStringFromReactComponent(labelOrText)
+      )
+    ) {
+      return null;
+    }
+  }
   if (isButton) {
     toggleOrButton = (
       <Button

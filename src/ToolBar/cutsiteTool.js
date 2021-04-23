@@ -3,6 +3,8 @@ import CutsiteFilter from "../CutsiteFilter";
 import React from "react";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
+import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
 
 export default connectToEditor(
   ({ readOnly, annotationVisibility = {}, toolBar = {} }) => {
@@ -17,7 +19,7 @@ export default connectToEditor(
     <ToolbarItem
       {...{
         Icon: <Icon data-test="cutsiteHideShowTool" icon="cut" />,
-        onIconClick: function() {
+        onIconClick: function () {
           annotationVisibilityToggle("cutsites");
         },
         toggled,
@@ -49,16 +51,25 @@ function CutsiteToolDropDown({
   toggleDropdown,
   annotationVisibilityShow,
   withDigestTool,
-  createNewDigest
+  createNewDigest,
+
+  ...rest
 }) {
   return (
     <div className="veToolbarCutsiteFilterHolder">
-      <h6>Filter Cut Sites:</h6>
+      <h6>
+        Filter Cutsites{" "}
+        <span style={{ fontSize: 12, color: "grey" }}>
+          (Search by name or # of cuts)
+        </span>
+      </h6>
       <CutsiteFilter
+        {...pick(rest, userDefinedHandlersAndOpts)}
         editorName={editorName}
-        onChangeHook={function() {
+        onChangeHook={function () {
           annotationVisibilityShow("cutsites");
         }}
+        closeDropDown={toggleDropdown}
       />
       {withDigestTool && (
         <Button
@@ -72,11 +83,6 @@ function CutsiteToolDropDown({
           </span>
         </Button>
       )}
-
-      {/* <Button onClick={() => {
-
-      }}> Add Additional Enzymes</Button> */}
-      {/* {showDigestTool && <DigestTool></DigestTool>} */}
     </div>
   );
 }

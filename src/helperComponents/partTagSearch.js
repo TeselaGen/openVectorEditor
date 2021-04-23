@@ -15,10 +15,18 @@ function PartToolDropdown({
   selectedPartTags,
   allPartTags,
   annotationVisibilityShow,
-  editTagsLink
+  editTagsLink,
+  dontAutoOpen
 }) {
   if (!sequenceData) return <div>No Parts Present</div>;
   const keyedTags = getKeyedTagsAndTagOptions(allPartTags);
+
+  // this is what keyedTags looks like:
+  // keyedTags = {
+  //   '12:4': {label,value,id},
+  //   '12:1': {label,value,id},
+  //   '44': {label,value,id},
+  // }
 
   const tags = uniqBy(
     flatMap(sequenceData.parts, ({ tags }) => {
@@ -31,8 +39,8 @@ function PartToolDropdown({
     "value"
   );
   return (
-    <div>
-      <h6>Search Parts By Tag: </h6>
+    <div style={{ width: "100%" }}>
+      <div>Search Parts By Tag: </div>
       <div style={{ display: "flex" }}>
         <TgSelect
           value={selectedPartTags.parts}
@@ -55,7 +63,7 @@ function PartToolDropdown({
             }
           }}
           options={tags}
-          autoOpen
+          autoOpen={!dontAutoOpen}
         ></TgSelect>
         {editTagsLink || null}
       </div>

@@ -3,6 +3,26 @@ describe("find tool", function () {
     cy.visit("");
   });
 
+  it(`when there is only 1 search result, typing enter in the find tool should jump you back to the search layer`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("tgacaacttgacggcta"); //this should cause 1 region to be selected
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+    cy.selectRange(400, 450);
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
+    //hitting enter again should jump us back to our original search layer!
+    cy.focused().type("{enter}");
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+  });
+  it(`when there is only 2 search results but the search is palindromic, typing enter in the find tool should jump you back to the search layer`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gacgtc", { delay: 1 }); //this should cause 1 region to be selected
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+    cy.contains("dbl term").click({ force: true });
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("not.exist");
+    //hitting enter again should jump us back to our original search layer!
+    cy.get(`input[value="gacgtc"]`).type("{enter}");
+    cy.get(".veRowViewSelectionLayer.veSearchLayerActive").should("be.visible");
+  });
   it(`can be expanded and should have full functionality as such`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gataca", { delay: 1 }); //this should cause 1 region to be selected
@@ -16,7 +36,9 @@ describe("find tool", function () {
     cy.get(".ve-tool-container-featureTool").click();
     cy.get(".ve-tool-container-oligoTool").click();
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
-    cy.focused().type("p"); //this should cause 1 region to be selected
+    cy.focused().type("araD"); //this should cause 1 region to be selected
+    cy.contains(".veAnnotationFoundResult", "araD");
+    cy.focused().clear().type("p"); //this should cause 1 region to be selected
     cy.contains(".veAnnotationFoundResult", "Operator I2").click();
     cy.contains(".veRowViewFeature", "Operator I2");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();

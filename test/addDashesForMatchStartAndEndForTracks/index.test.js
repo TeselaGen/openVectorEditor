@@ -1,7 +1,7 @@
-const addDashesForMatchStartAndEndForTracks = require("./index");
+const addDashesForMatchStartAndEndForTracks = require("../../src/redux/utils/addDashesForMatchStartAndEndForTracks/index");
 const jbeiSimple = require("./jbeiSimple.json");
 const jbeiReverseStrand = require("./jbeiReverseStrand.json");
-const jbeiSpansOrigin = require("./jbeiSpansOrigin.json");
+// const jbeiSpansOrigin = require("./jbeiSpansOrigin.json");
 
 describe("addDashesForMatchStartAndEndForTracks", function() {
   it("should run with no issues", function() {

@@ -1,4 +1,4 @@
-import { debounce, get } from "lodash";
+import { debounce, get, some } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import {
@@ -10,9 +10,10 @@ import {
   ContextMenu
 } from "@blueprintjs/core";
 import PropTypes from "prop-types";
-import Dialogs, { dialogOverrides } from "../Dialogs";
+
 import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
+import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
 import "tg-react-reflex/styles.css";
 import React from "react";
 // import DrawChromatogram from "./DrawChromatogram";
@@ -47,6 +48,9 @@ import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
+import { GlobalDialog } from "../GlobalDialog";
+import isMobile from "is-mobile";
+import { getClientX, getClientY } from "../utils/editorUtils";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -144,6 +148,16 @@ export class Editor extends React.Component {
   }, 100);
 
   componentDidMount() {
+    if (isMobile()) {
+      let firstActivePanelId;
+      some(this.getPanelsToShow()[0], (panel) => {
+        if (panel.active) {
+          firstActivePanelId = panel.id;
+          return true;
+        }
+      });
+      this.props.collapseSplitScreen(firstActivePanelId);
+    }
     window.addEventListener("resize", this.updateDimensions);
     this.forceUpdate(); //we need to do this to get an accurate height measurement on first render
   }
@@ -230,16 +244,17 @@ export class Editor extends React.Component {
 
   getPanelsToShow = () => {
     const { panelsShown } = this.props;
+    if (isMobile()) return [flatMap(panelsShown)];
     return map(panelsShown);
   };
 
-  onPreviewModeButtonContextMenu = (e) => {
+  onPreviewModeButtonContextMenu = (event) => {
     const { previewModeButtonMenu } = this.props;
-    e.preventDefault();
+    event.preventDefault();
     if (previewModeButtonMenu) {
       ContextMenu.show(previewModeButtonMenu, {
-        left: e.clientX,
-        top: e.clientY
+        left: getClientX(event),
+        top: getClientY(event)
       });
     }
   };
@@ -275,12 +290,13 @@ export class Editor extends React.Component {
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
+      withRotateCircularView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
       readOnly,
       setPanelAsActive,
       style = {},
-      maxAnnotationsToDisplay = {},
+      maxAnnotationsToDisplay,
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
@@ -345,6 +361,16 @@ export class Editor extends React.Component {
         height
       }
     };
+    try {
+      //tnr: fixes https://github.com/TeselaGen/openVectorEditor/issues/689
+      if (previewModeFullscreen) {
+        window.document.body.classList.add("tg-no-scroll-body");
+      } else {
+        window.document.body.classList.remove("tg-no-scroll-body");
+      }
+    } catch (e) {
+      console.warn(`Error 3839458:`, e);
+    }
 
     if (withPreviewMode && !previewModeFullscreen) {
       return (
@@ -468,7 +494,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       let panel = Panel ? (
         <Panel
-          withRotateCircularView
+          withRotateCircularView={withRotateCircularView}
           {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&
@@ -478,6 +504,7 @@ export class Editor extends React.Component {
             }, {}))}
           maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
+          fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
           {...panelPropsToSpread}
@@ -559,8 +586,17 @@ export class Editor extends React.Component {
                   }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
+                    let nameToShow = name || id;
+                    if (isMobile()) {
+                      nameToShow = nameToShow.replace("Map", "");
+                    }
                     return (
-                      <Draggable key={id} index={index} draggableId={id}>
+                      <Draggable
+                        isDragDisabled={isMobile()}
+                        key={id}
+                        index={index}
+                        draggableId={id}
+                      >
                         {(provided, snapshot) => (
                           <div
                             style={{
@@ -608,7 +644,7 @@ export class Editor extends React.Component {
                                 }}
                                 className={
                                   (id === activePanelId ? "veTabActive " : "") +
-                                  camelCase("veTab-" + (name || id))
+                                  camelCase("veTab-" + nameToShow)
                                 }
                               >
                                 {isFullScreen && (
@@ -634,7 +670,7 @@ export class Editor extends React.Component {
                                     </Tooltip>
                                   </div>
                                 )}
-                                {name || id}
+                                {nameToShow}
                                 {canClose && (
                                   <Icon
                                     icon="small-cross"
@@ -763,12 +799,18 @@ export class Editor extends React.Component {
           }),
           ...style
         }}
-        className="veEditor"
+        className={`veEditor ${editorName} ${
+          previewModeFullscreen ? "previewModeFullscreen" : ""
+        }`}
       >
-        <Dialogs
+        <GlobalDialog
           editorName={editorName}
           {...pickedUserDefinedHandlersAndOpts}
-          {...pick(this.props, dialogOverrides)}
+          dialogOverrides={pick(this.props, [
+            "AddOrEditFeatureDialogOverride",
+            "AddOrEditPartDialogOverride",
+            "AddOrEditPrimerDialogOverride"
+          ])}
         />
         <ToolBar
           {...pickedUserDefinedHandlersAndOpts}
@@ -846,12 +888,21 @@ Editor.childContextTypes = {
 };
 
 export default compose(
-  connectToEditor(({ panelsShown, versionHistory, sequenceData = {} }) => {
-    return {
-      panelsShown,
-      versionHistory,
-      sequenceData
-    };
-  }),
+  connectToEditor(
+    (
+      { panelsShown, versionHistory, sequenceData = {} },
+      { additionalEnzymes }
+    ) => {
+      return {
+        additionalEnzymes: getAdditionalEnzymesSelector(
+          null,
+          additionalEnzymes
+        ),
+        panelsShown,
+        versionHistory,
+        sequenceData
+      };
+    }
+  ),
   withHandlers({ handleSave, importSequenceFromFile })
 )(Editor);

@@ -24,21 +24,25 @@ import { allTypes } from "../utils/annotationTypes";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import { defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
+import {
+  hideDialog,
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
 
-// const addFeatureSelector = formValueSelector("AddOrEditFeatureDialog");
-// const addPrimerSelector = formValueSelector("AddOrEditPrimerDialog");
-// const addPartSelector = formValueSelector("AddOrEditPartDialog");
-
-async function getSaveDialogEl(props) {
+async function getSaveDialogEl() {
   return new Promise((resolve) => {
-    props.showPrintDialog({
-      dialogProps: {
-        title: "Generating Image to Save...",
-        isCloseButtonShown: false
-      },
-      addPaddingBottom: true,
-      hideLinearCircularToggle: true,
-      hidePrintButton: true
+    showDialog({
+      dialogType: "PrintDialog",
+      props: {
+        dialogProps: {
+          title: "Generating Image to Save...",
+          isCloseButtonShown: false
+        },
+        addPaddingBottom: true,
+        hideLinearCircularToggle: true,
+        hidePrintButton: true
+      }
     });
 
     const id = setInterval(() => {
@@ -69,7 +73,7 @@ const generatePngFromPrintDialog = async (props) => {
       console.error(error);
       return error;
     });
-  props.hidePrintDialog();
+  hideDialog();
   return result;
 };
 
@@ -166,48 +170,36 @@ export const updateCircular = (props) => async (isCircular) => {
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
 
-export const importSequenceFromFile = (props) => (file, opts = {}) => {
+export const importSequenceFromFile = (props) => async (file, opts = {}) => {
   const { updateSequenceData, onImport } = props;
-  let reader = new FileReader();
-  reader.readAsText(file, "UTF-8");
-  reader.onload = function (evt) {
-    const content = evt.target.result;
-    anyToJson(
-      content,
-      async (result) => {
-        // TODO maybe handle import errors/warnings better
-        const failed = !result[0].success;
-        const messages = result[0].messages;
-        if (messages && messages.length) {
-          messages.forEach((msg) => {
-            const type = msg.substr(0, 20).toLowerCase().includes("error")
-              ? failed
-                ? "error"
-                : "warning"
-              : "info";
-            window.toastr[type](msg);
-          });
-        }
-        if (failed) {
-          window.toastr.error("Error importing sequence");
-        }
-        let seqData = result[0].parsedSequence;
+  const result = await anyToJson(file, { acceptParts: true, ...opts });
 
-        if (onImport) {
-          seqData = await onImport(seqData);
-        }
+  // TODO maybe handle import errors/warnings better
+  const failed = !result[0].success;
+  const messages = result[0].messages;
+  if (messages && messages.length) {
+    messages.forEach((msg) => {
+      const type = msg.substr(0, 20).toLowerCase().includes("error")
+        ? failed
+          ? "error"
+          : "warning"
+        : "info";
+      window.toastr[type](msg);
+    });
+  }
+  if (failed) {
+    window.toastr.error("Error importing sequence");
+  }
+  let seqData = result[0].parsedSequence;
 
-        if (seqData) {
-          updateSequenceData(seqData);
-          window.toastr.success("Sequence Imported");
-        }
-      },
-      { acceptParts: true, ...opts }
-    );
-  };
-  reader.onerror = function () {
-    window.toastr.error("Could not read file.");
-  };
+  if (onImport) {
+    seqData = await onImport(seqData);
+  }
+
+  if (seqData) {
+    updateSequenceData(seqData);
+    window.toastr.success("Sequence Imported");
+  }
 };
 
 export const exportSequenceToFile = (props) => (format) => {
@@ -241,7 +233,42 @@ export const exportSequenceToFile = (props) => (format) => {
  * and then some extra goodies like computed properties and namespace bound action handlers
  */
 export default compose(
-  connect(mapStateToProps, mapDispatchToActions, null, { pure: false }),
+  connect(
+    mapStateToProps,
+    mapDispatchToActions,
+    (mapProps, dispatchProps, ownProps) => {
+      const toSpread = {};
+      if (mapProps.annotationToAdd) {
+        toSpread.original_selectionLayerUpdate =
+          dispatchProps.selectionLayerUpdate;
+        toSpread.selectionLayerUpdate = (sel) => {
+          dispatchProps.dispatch({
+            type: "@@redux-form/CHANGE",
+            meta: {
+              form: mapProps.annotationToAdd.formName,
+              field: "start",
+              touch: false,
+              persistentSubmitErrors: false
+            },
+            payload: sel.start + 1
+          });
+          dispatchProps.dispatch({
+            type: "@@redux-form/CHANGE",
+            meta: {
+              form: mapProps.annotationToAdd.formName,
+              field: "end",
+              touch: false,
+              persistentSubmitErrors: false
+            },
+            payload: sel.end + 1
+          });
+        };
+        toSpread.caretPositionUpdate = () => {};
+      }
+      return { ...ownProps, ...mapProps, ...dispatchProps, ...toSpread };
+    },
+    { pure: false }
+  ),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: (props) => {
       return (
@@ -320,10 +347,10 @@ export default compose(
           end: sequenceLength - 1
         });
     },
+    //handleNewPrimer handleNewFeature handleNewPart
     ...["Part", "Feature", "Primer"].reduce((acc, key) => {
       acc[`handleNew${key}`] = (props) => () => {
         const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
-        const handler = props[`showAddOrEdit${key}Dialog`];
 
         if (readOnly) {
           window.toastr.warning(
@@ -332,7 +359,7 @@ export default compose(
         } else {
           const rangeToUse =
             selectionLayer.start > -1
-              ? selectionLayer
+              ? { ...selectionLayer, id: undefined }
               : caretPosition > -1
               ? {
                   start: caretPosition,
@@ -344,10 +371,12 @@ export default compose(
                   start: 0,
                   end: sequenceData.isProtein ? 2 : 0
                 };
-
-          handler({
-            ...rangeToUse,
-            forward: !(selectionLayer.forward === false)
+          showAddOrEditAnnotationDialog({
+            type: key.toLowerCase(),
+            annotation: {
+              ...rangeToUse,
+              forward: !(selectionLayer.forward === false)
+            }
           });
         }
       };
@@ -436,30 +465,6 @@ export default compose(
       updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
       window.toastr.success("Complemented Sequence Successfully");
     },
-    /* eslint-enable no-unused-vars */
-
-    // handleNewPrimer: props => () => {
-    //   const {
-    //     selectionLayer,
-    //     caretPosition,
-    //     showAddOrEditPrimerDialog,
-    //     readOnly
-    //     // sequenceLength
-    //   } = props;
-    //   const rangeToUse =
-    //     selectionLayer.start > -1
-    //       ? selectionLayer
-    //       : caretPosition > -1
-    //       ? { start: caretPosition, end: caretPosition }
-    //       : undefined;
-    //   if (readOnly) {
-    //     window.toastr.warning(
-    //       "Sorry, can't create new primers in read-only mode"
-    //     );
-    //   } else {
-    //     showAddOrEditPrimerDialog({ ...rangeToUse, forward: true });
-    //   }
-    // },
     handleInverse
   })
 );
@@ -470,11 +475,11 @@ function mapStateToProps(state, ownProps) {
     sequenceData: sequenceDataFromProps,
     allowSeqDataOverride
   } = ownProps;
-  let meta = { editorName };
-  let { VectorEditor } = state;
+  const meta = { editorName };
+  const { VectorEditor } = state;
   const { __allEditorsOptions } = VectorEditor;
   const { uppercaseSequenceMapFont } = __allEditorsOptions;
-  let editorState = VectorEditor[editorName];
+  const editorState = VectorEditor[editorName];
 
   if (!editorState) {
     return editorReducer({}, {});
@@ -486,22 +491,27 @@ function mapStateToProps(state, ownProps) {
     annotationLabelVisibility,
     annotationsToSupport = {}
   } = editorState;
-  let visibilities = getVisibilities(
+  const visibilities = getVisibilities(
     annotationVisibility,
     annotationLabelVisibility,
     annotationsToSupport
   );
-  const annotationToAdd =
-    // addFeatureSelector(state, "start", "end") ||
-    // addPrimerSelector(state, "start", "end") ||
-    // addPartSelector(state, "start", "end");
-    getFormValues("AddOrEditFeatureDialog")(state) ||
-    getFormValues("AddOrEditPrimerDialog")(state) ||
-    getFormValues("AddOrEditPartDialog")(state);
+  let annotationToAdd;
+  [
+    "AddOrEditFeatureDialog",
+    "AddOrEditPrimerDialog",
+    "AddOrEditPartDialog"
+  ].forEach((n) => {
+    const vals = getFormValues(n)(state);
+    if (vals) {
+      annotationToAdd = { ...vals, formName: n };
+    }
+  });
 
-  let toReturn = {
+  const toReturn = {
     ...editorState,
     meta,
+    annotationToAdd,
     ...(annotationToAdd && {
       selectionLayer: {
         start: (annotationToAdd.start || 1) - 1,
@@ -515,22 +525,29 @@ function mapStateToProps(state, ownProps) {
     return toReturn;
   }
 
-  let sequenceData = s.sequenceDataSelector(editorState);
-  const filteredCutsites = s.filteredCutsitesSelector(editorState);
-  let cutsites = filteredCutsites.cutsitesArray;
-  let filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
+  const sequenceData = s.sequenceDataSelector(editorState);
+  const filteredCutsites = s.filteredCutsitesSelector(
+    editorState,
+    ownProps.additionalEnzymes,
+    ownProps.enzymeGroupsOverride
+  );
+  const cutsites = filteredCutsites.cutsitesArray;
+  const filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
     editorState
   );
-  let orfs = s.orfsSelector(editorState);
-  let selectedCutsites = s.selectedCutsitesSelector(editorState);
-  let allCutsites = s.cutsitesSelector(editorState);
-  let translations = s.translationsSelector(editorState);
-  let filteredFeatures = s.filteredFeaturesSelector(editorState);
-  let filteredParts = s.filteredPartsSelector(editorState);
-  let sequenceLength = s.sequenceLengthSelector(editorState);
+  const orfs = s.orfsSelector(editorState);
+  const selectedCutsites = s.selectedCutsitesSelector(editorState);
+  const allCutsites = s.cutsitesSelector(
+    editorState,
+    ownProps.additionalEnzymes
+  );
+  const translations = s.translationsSelector(editorState);
+  const filteredFeatures = s.filteredFeaturesSelector(editorState);
+  const filteredParts = s.filteredPartsSelector(editorState);
+  const sequenceLength = s.sequenceLengthSelector(editorState);
 
   let matchedSearchLayer = { start: -1, end: -1 };
-  let annotationSearchMatches = s.annotationSearchSelector(editorState);
+  const annotationSearchMatches = s.annotationSearchSelector(editorState);
   let searchLayers = s.searchLayersSelector(editorState).map((item, index) => {
     let itemToReturn = item;
     if (index === findTool.matchNumber) {
@@ -554,7 +571,7 @@ function mapStateToProps(state, ownProps) {
   this.orfs = orfs;
   this.translations = translations;
 
-  let sequenceDataToUse = {
+  const sequenceDataToUse = {
     ...sequenceData,
     sequence: getUpperOrLowerSeq(
       uppercaseSequenceMapFont,
@@ -584,15 +601,16 @@ function mapStateToProps(state, ownProps) {
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,
     sequenceData: sequenceDataToUse,
-    uppercaseSequenceMapFont
+    uppercaseSequenceMapFont,
+    showGCContent: getShowGCContent(state, ownProps)
   };
 }
 
 export function mapDispatchToActions(dispatch, ownProps) {
   const { editorName } = ownProps;
 
-  let { actionOverrides = fakeActionOverrides } = ownProps;
-  let actionsToPass = getCombinedActions(
+  const { actionOverrides = fakeActionOverrides } = ownProps;
+  const actionsToPass = getCombinedActions(
     editorName,
     actions,
     actionOverrides,
@@ -638,11 +656,11 @@ export function getCombinedActions(
   actionOverrides,
   dispatch
 ) {
-  let meta = { editorName };
+  const meta = { editorName };
 
   let metaActions = addMetaToActionCreators(actions, meta);
   // let overrides = addMetaToActionCreators(actionOverrides(metaActions), meta);
-  let overrides = {};
+  const overrides = {};
   metaActions = {
     undo: () => {
       window.toastr.success("Undo Successful");
@@ -673,7 +691,7 @@ export function getCombinedActions(
   // );
 
   //rebind the actions with dispatch and meta
-  let actionsToPass = {
+  const actionsToPass = {
     ...metaActions
     // ...metaOverrides
   };
@@ -681,7 +699,7 @@ export function getCombinedActions(
 }
 
 const getTypesToOmit = (annotationsToSupport) => {
-  let typesToOmit = {};
+  const typesToOmit = {};
   allTypes.forEach((type) => {
     if (!annotationsToSupport[type]) typesToOmit[type] = false;
   });
@@ -760,16 +778,25 @@ function doAnySpanOrigin(annotations) {
 }
 
 export const connectToEditor = (fn) => {
-  return connect((state, ownProps, ...rest) => {
-    const editor = state.VectorEditor[ownProps.editorName] || {};
-    editor.sequenceData = editor.sequenceData || {};
-    editor.sequenceData.sequence = getUpperOrLowerSeq(
-      state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
-      editor.sequenceData.sequence
-    );
+  return connect(
+    (state, ownProps, ...rest) => {
+      const editor = state.VectorEditor[ownProps.editorName] || {};
+      editor.sequenceData = editor.sequenceData || {};
+      editor.sequenceData.sequence = getUpperOrLowerSeq(
+        state.VectorEditor.__allEditorsOptions.uppercaseSequenceMapFont,
+        editor.sequenceData.sequence
+      );
 
-    return fn ? fn(editor, ownProps, ...rest, state) : {};
-  }, mapDispatchToActions);
+      return fn ? fn(editor, ownProps, ...rest, state) : {};
+    },
+    mapDispatchToActions
+    // function mergeProps(propsFromState, propsFromDispatch) {
+    //   return {
+    //     ...propsFromState,
+    //     ...propsFromDispatch
+    //   };
+    // }
+  );
 };
 
 //this is to enhance non-redux connected views like LinearView, or CircularView or RowView
@@ -813,3 +840,13 @@ const getUpperOrLowerSeq = defaultMemoize(
       ? sequence.toLowerCase()
       : sequence
 );
+
+export function getShowGCContent(state, ownProps) {
+  const showGCContent = state.VectorEditor.__allEditorsOptions.showGCContent;
+
+  const toRet =
+    showGCContent === null
+      ? ownProps.showGCContentByDefault //user hasn't yet set this option
+      : showGCContent;
+  return toRet;
+}

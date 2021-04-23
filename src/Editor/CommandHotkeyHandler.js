@@ -14,11 +14,11 @@ class CommandHotkeyHandler extends React.Component {
     super(props);
     const commands = getCommands(this);
     // Don't bind clipboard shortcuts (use native ones directly)
-    ["cut", "copy", "paste"].forEach(cmdId => delete commands[cmdId]);
+    ["cut", "copy", "paste"].forEach((cmdId) => delete commands[cmdId]);
     this.hotkeyDefs = getCommandHotkeys(commands);
     this.handlers = getCommandHotkeyHandlers(commands);
 
-    this.Handler = withHotkeys(this.hotkeyDefs, this.handlers)();
+    this.Handler = withHotkeys(this.hotkeyDefs, this.handlers);
   }
 
   render() {

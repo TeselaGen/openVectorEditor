@@ -12,7 +12,11 @@ import {
   MenuItem,
   Tooltip
 } from "@blueprintjs/core";
-import { Loading, showContextMenu } from "teselagen-react-components";
+import {
+  InfoHelper,
+  Loading,
+  showContextMenu
+} from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map } from "lodash";
 import PropTypes from "prop-types";
@@ -45,6 +49,7 @@ import { debounce } from "lodash";
 import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
+import { getClientX, getClientY } from "../utils/editorUtils";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -59,7 +64,7 @@ try {
     e
   );
 }
-// @HotkeysTarget
+
 class AlignmentView extends React.Component {
   constructor(props) {
     super(props);
@@ -88,11 +93,11 @@ class AlignmentView extends React.Component {
     let rowDomNode = this.veTracksAndAlignmentHolder;
     let boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
-    if (event.clientX - boundingRowRect.left - 140 < 0) {
+    if (getClientX(event) - boundingRowRect.left - 140 < 0) {
       nearestCaretPos = 0;
     } else {
       let clickXPositionRelativeToRowContainer =
-        event.clientX - boundingRowRect.left - 140;
+        getClientX(event) - boundingRowRect.left - 140;
       let numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
           this.charWidth
@@ -840,9 +845,9 @@ class AlignmentView extends React.Component {
                           let track;
                           trackContainers.forEach((t) => {
                             const mouseX =
-                              event.clientX + document.body.scrollLeft;
+                              getClientX(event) + document.body.scrollLeft;
                             const mouseY =
-                              event.clientY + document.body.scrollTop;
+                              getClientY(event) + document.body.scrollTop;
                             if (
                               mouseX >= t.getBoundingClientRect().left &&
                               mouseX <=
@@ -1116,6 +1121,22 @@ class AlignmentView extends React.Component {
               {this.props.handleAlignmentRename && (
                 <Button small>Rename</Button>
               )}
+              {this.props.unmappedSeqs && (
+                <InfoHelper
+                  size={20}
+                  content={
+                    <div>
+                      This alignment had sequences that did not map to the
+                      template sequence:
+                      {this.props.unmappedSeqs.map(({ sequenceData }, i) => (
+                        <div key={i}>{sequenceData.name}</div>
+                      ))}
+                    </div>
+                  }
+                  intent="warning"
+                  icon="warning-sign"
+                ></InfoHelper>
+              )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
                   onRelease={(val) => {
@@ -1131,7 +1152,7 @@ class AlignmentView extends React.Component {
                   }}
                   title="Adjust Zoom Level"
                   style={{ paddingTop: "4px", width: 100 }}
-                  className="alignment-zoom-slider"
+                  className="ove-slider"
                   labelRenderer={false}
                   stepSize={0.01}
                   initialValue={charWidthInLinearView}
@@ -1268,6 +1289,7 @@ export default compose(
       const { id: alignmentId, updateAlignmentViewVisibility } = ownProps;
       const alignment = { ...alignments[alignmentId], id: alignmentId };
       const {
+        unmappedSeqs,
         alignmentTracks,
         pairwiseAlignments,
         alignmentType,
@@ -1350,6 +1372,7 @@ export default compose(
       return {
         isAlignment: true,
         selectionLayer,
+        unmappedSeqs,
         caretPosition,
         alignmentId,
         sequenceData: {

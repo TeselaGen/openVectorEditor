@@ -181,3 +181,18 @@
 [cmd="filterPartsByTagCmd"] > .bp3-text-overflow-ellipsis {
   overflow: visible;
 }
+.vePart {
+  fill-opacity: 0;
+}
+
+.vePart text,
+text.vePart,
+tspan.vePart {
+  fill-opacity: 1;
+}
+.veWarningContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+}

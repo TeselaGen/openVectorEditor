@@ -1,4 +1,4 @@
-import { getReverseComplementSequenceAndAnnotations } from "ve-sequence-utils/lib";
+import { getReverseComplementSequenceAndAnnotations } from "ve-sequence-utils";
 
 export default function addDashesForMatchStartAndEndForTracks(alignmentTracks) {
   return alignmentTracks.map((track, i) => {

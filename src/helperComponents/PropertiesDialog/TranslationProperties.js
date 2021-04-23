@@ -33,13 +33,12 @@ class TranslationProperties extends React.Component {
       readOnly,
       translations,
       translationPropertiesSelectedEntities,
-      // showAddOrEditTranslationDialog,
       deleteTranslation,
       sequenceLength,
       selectedAnnotationId,
       annotationVisibility
     } = this.props;
-    const translationsToUse = map(translations, translation => {
+    const translationsToUse = map(translations, (translation) => {
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceLength),
@@ -95,26 +94,6 @@ class TranslationProperties extends React.Component {
         />
         {!readOnly && (
           <div className="vePropertiesFooter">
-            {/* <Button
-              style={{ marginRight: 15 }}
-              onClick={() => {
-                showAddOrEditTranslationDialog();
-              }}
-            >
-              New
-            </Button>
-            <Button
-              onClick={() => {
-                showAddOrEditTranslationDialog(
-                  translationPropertiesSelectedEntities[0]
-                );
-              }}
-              style={{ marginRight: 15 }}
-              disabled={translationPropertiesSelectedEntities.length !== 1}
-            >
-              Edit
-            </Button> */}
-
             <Tooltip
               content={
                 translationPropertiesSelectedEntities.length &&
@@ -146,7 +125,7 @@ class TranslationProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor(editorState => {
+  connectToEditor((editorState) => {
     const { readOnly, annotationVisibility = {}, sequenceData } = editorState;
     return {
       readOnly,

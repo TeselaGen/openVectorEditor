@@ -1,6 +1,5 @@
 //optionally connect to the redux store
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import { tg_modalState } from "teselagen-react-components";
 import VectorEditor, { vectorEditorMiddleware } from "../redux";
 import thunk from "redux-thunk";
 import { reducer as form } from "redux-form";
@@ -22,7 +21,6 @@ const makeStore = () => {
   const store = createStore(
     combineReducers({
       form,
-      tg_modalState,
       VectorEditor: VectorEditor()
     }),
     undefined,

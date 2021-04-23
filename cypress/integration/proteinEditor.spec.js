@@ -1,4 +1,4 @@
-describe("editor", function () {
+describe("proteinEditor", function () {
   beforeEach(() => {
     cy.visit("");
     cy.tgToggle("isProtein");
@@ -59,9 +59,8 @@ describe("editor", function () {
       force: true
     });
 
-    cy.get(".veVectorInteractionWrapper")
-      .first()
-      .type("{rightarrow}{rightarrow}");
+    cy.focused().type("{rightarrow}{rightarrow}");
+
     cy.get(".veRowViewCaret").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Insert").click();
     cy.contains("Press ENTER to insert 0 AAs after AA 2");
@@ -92,9 +91,7 @@ describe("editor", function () {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
-    cy.get(".veVectorInteractionWrapper")
-      .first()
-      .type("{rightarrow}{backspace}");
+    cy.focused().type("{rightarrow}{backspace}");
     cy.contains("Caret Between AAs 1383 and 1");
     cy.contains("Length: 1383 AAs");
   });
@@ -103,10 +100,8 @@ describe("editor", function () {
       .contains("Part 0")
       .first()
       .click({ force: true });
-    cy.get(".veRowViewSelectionLayer")
-      .first()
-      .trigger("contextmenu", { force: true });
-    cy.get(".bp3-menu-item").contains("Cut").click();
+    cy.get(".veRowViewSelectionLayer").first().rightclick({ force: true });
+    cy.contains(".bp3-menu-item", "Cut").click();
     cy.get(".bp3-toast .bp3-icon-cross").first().click();
     cy.get(`[data-test="ve-find-tool-toggle"]`)
       .click()
@@ -156,9 +151,7 @@ describe("editor", function () {
     cy.contains(".veRowViewPrimaryProteinSequenceContainer svg g", "M").click({
       force: true
     });
-    cy.get(".veVectorInteractionWrapper")
-      .first()
-      .type("{rightarrow}{rightarrow}{rightarrow}");
+    cy.focused().type("{rightarrow}{rightarrow}{rightarrow}");
     cy.contains("Caret Between AAs 3 and 4");
   });
   it(`

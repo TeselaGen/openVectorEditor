@@ -6,7 +6,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  
  ![image](https://user-images.githubusercontent.com/2730609/62503453-220acd00-b7a9-11e9-87f3-19e3b1119e6e.png)
 
-
+## [CHANGELOG](CHANGELOG.md)
 ## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
@@ -21,6 +21,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 # Table of Contents
 <!-- TOC -->
 
+  - [[CHANGELOG](CHANGELOG.md)](#changelogchangelogmd)
   - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
   - [Get the desktop app: https://github.com/tnrich/ove-electron/releases](#get-the-desktop-app-httpsgithubcomtnrichove-electronreleases)
@@ -209,6 +210,13 @@ These props consist of hooks and editor config options that can be passed like s
 		}
 		const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
 		return sequenceData
+	},
+	beforeAnnotationCreate: ({ //also works for edits (!)
+		annotationTypePlural, //features/parts/primers
+		annotation, //annotation info 
+		props //general props to the dialog
+	}) => {
+		//a handler to hook into when annotations (features/primers/parts) are being created
 	},
 	//regular click overrides, eg: 
 	featureClicked: ({annotation, event}) => {
@@ -550,15 +558,15 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
  `() => teselagenSequenceData  //called upon initialization  `
 
 
-<!-- 
+
 # Implementing Autosave functionality
- -->
+pass shouldAutosave=true as a prop and in the onSave() handler, make sure to return a promise so that the UI responds correctly with a spinner indicating saving is in progress
 
 # Development: 
 
 ## Prerequisites
 [Node.js](http://nodejs.org/) >= v8 must be installed.
-download the latest yarn (https://yarnpkg.com/en/)
+download the latest yarn 
 
 ## Outside Developer Set Up Steps
 

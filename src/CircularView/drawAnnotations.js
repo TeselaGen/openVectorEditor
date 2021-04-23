@@ -8,12 +8,14 @@ import withHover from "../helperComponents/withHover";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import Feature from "./Feature";
+import getAnnotationClassnames from "../utils/getAnnotationClassnames";
 
 function drawAnnotations({
   Annotation,
   annotationType,
   radius,
   isProtein,
+  type,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
@@ -153,6 +155,12 @@ function drawAnnotations({
         isProtein
       });
 
+      const classNames = getAnnotationClassnames(annotation, {
+        viewName: "CircularView",
+        type,
+        isProtein
+      });
+
       const annotationRadius =
         radius + annotation.yOffset * totalAnnotationHeight;
       const name =
@@ -167,7 +175,7 @@ function drawAnnotations({
           text: name,
           id: annotation.id,
           title: titleText,
-          className: annotation.labelClassName || "",
+          className: `${classNames} ${annotation.labelClassName || ""}`,
           highPriorityLabel: annotation.highPriorityLabel,
           onClick: _onClick,
           onDoubleClick: _onDoubleClick,
@@ -191,10 +199,12 @@ function drawAnnotations({
             isProtein,
             titleText,
             noRedux,
+            classNames,
             editorName,
             annotationType,
             showLabels,
             Annotation,
+            doesOverlapSelf: annotation.doesOverlapSelf,
             labelCenter: centerAngle,
             startAngle,
             endAngle,
@@ -239,6 +249,7 @@ const DrawAnnotation = withHover(function ({
   onDoubleClick,
   onContextMenu,
   titleText,
+  classNames,
   locationAngles,
   annotation,
   reverseAnnotations,
@@ -254,7 +265,7 @@ const DrawAnnotation = withHover(function ({
 }) {
   const sharedProps = {
     style: { cursor: "pointer" },
-    className: className,
+    className: `${className} ${classNames}`,
     onContextMenu: onContextMenu,
     onClick: onClick,
     onDoubleClick: onDoubleClick,

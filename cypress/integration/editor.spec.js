@@ -1,8 +1,45 @@
+import { inRange } from "lodash";
+
 describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
   });
 
+  it(`annotation limits should persist across reloads and be configurable from the menu`, () => {
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(".veWarningMessage").should("not.exist");
+    cy.get(`.tg-select-clear-all`).click();
+    cy.get(".veWarningMessage").trigger("mouseover");
+    cy.contains(
+      "Warning: More than 100 Cutsites. Only displaying 100 (Configure this under View > Limits)"
+    );
+    cy.contains(".tg-menu-bar-item", "View").click();
+    cy.contains(".bp3-menu-item", "Limits").click();
+    cy.contains(".bp3-menu-item", "Max Cutsites To Show").click();
+    cy.get(".bp3-menu-item:contains(100) .bp3-icon-small-tick");
+    cy.get(".bp3-menu-item:contains(400)").click();
+    cy.get(".bp3-menu-item:contains(400) .bp3-icon-small-tick");
+    cy.contains(
+      "Warning: More than 400 Cutsites. Only displaying 400 (Configure this under View > Limits)"
+    );
+    cy.get(".veTabLinearMap").click({ force: true });
+    cy.get(".veWarningMessage").should("exist");
+  });
+  it(`annotation limits should not show up as options if maxAnnotationsToDisplay is passed`, () => {
+    cy.get(".veWarningMessage").should("not.exist");
+    cy.tgToggle("maxAnnotationsToDisplayAdjustment");
+    cy.contains(".tg-menu-bar-item", "View").click();
+    cy.contains(".bp3-menu-item", "Limits").should("not.exist");
+    cy.get(".veWarningMessage").trigger("mouseover");
+    cy.contains("Warning: More than 5 Features. Only displaying 5");
+    cy.contains("(Configure this under View > Limits)").should("not.exist");
+  });
+
+  it(`should be able to hide the rotate circular view!`, () => {
+    cy.get(`.ove-slider`);
+    cy.tgToggle(`withRotateCircularView`, false);
+    cy.get(`.ove-slider`).should("not.exist");
+  });
   it(`should be able to hide the single import button if necessary!`, () => {
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(".bp3-menu-item").contains("Import Sequence").should("exist");
@@ -34,6 +71,7 @@ describe("editor", function () {
     cy.contains("onRename callback triggered: pj5_00001renamed seq");
   });
   it("should fire the onSelectionOrCaretChanged handler", function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("onSelectionOrCaretChanged");
 
     cy.contains(".veLabelText", "Part 0").click();
@@ -94,6 +132,7 @@ describe("editor", function () {
     cy.contains("onSave callback triggered");
   });
   it(`should give the option to create from a subsection of the sequence if onCreateNewFromSubsequence is passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("onCreateNewFromSubsequence");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
@@ -115,6 +154,7 @@ describe("editor", function () {
     cy.contains("beforeAnnotationCreate callback triggered for primers");
   });
   it(`should handle rightClickOverrides correctly if they are passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("overrideRightClickExample");
 
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
@@ -122,6 +162,7 @@ describe("editor", function () {
     cy.contains("Part Override Hit!").should("be.visible");
   });
   it(`should handle clickOverrides correctly if they are passed`, function () {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("clickOverridesExample");
 
     cy.contains(".veLabelText", "Part 0").click();
@@ -178,12 +219,12 @@ describe("editor", function () {
     cy.contains("I Am Overridden. Any custom React can go here");
   });
   it(`should focus the linear view`, () => {
-    cy.get(".veLinearView").should("not.be.visible");
+    cy.get(".veLinearView").should("not.exist");
     cy.contains("Focus Linear View").click();
     cy.get(".veLinearView").should("be.visible");
   });
   it(`should shuffle the tabs programatically`, () => {
-    cy.get(".veLinearView").should("not.be.visible");
+    cy.get(".veLinearView").should("not.exist");
     cy.tgToggle("customizeTabs");
     cy.get(".veLinearView").should("be.visible");
     cy.get(".ve-draggable-tabs").last().contains("Sequence Map");
@@ -208,6 +249,7 @@ describe("editor", function () {
     cy.contains("Selecting 3 bps from 1 to 3");
   });
   it(`should handle maintainOriginSplit flag correctly when pasted text is shorter than pre origin selection`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.tgToggle("beforeSequenceInsertOrDelete");
     cy.tgToggle("maintainOriginSplit");
     cy.contains(".veLabelText", "pS8c-vecto").trigger("contextmenu");
@@ -228,6 +270,7 @@ describe("editor", function () {
   });
   it(`should handle enabling external labels and then only showing labels that don't fit`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Labels").click();
     cy.get(".tg-menu-bar-popover").contains("External Labels").click();
     cy.get(".veTabProperties").contains("Properties").click();
     cy.get(".veTabLinearMap").contains("Linear Map").click();
@@ -236,5 +279,69 @@ describe("editor", function () {
     cy.get(`[data-test="onlyShowLabelsThatDoNotFit"]`).click({ force: true });
     cy.contains(".vePartLabel", "pj5_00001");
     cy.contains(".veFeatureLabel", "pSC101**");
+  });
+  it(`should handle adjusting label line intensity.`, () => {
+    cy.get(".veLabelLine").should("have.css", "opacity", "0.1");
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Labels").click();
+    cy.get(".tg-menu-bar-popover").contains("Label Line Intensity").click();
+    cy.get(".tg-menu-bar-popover").contains("High").click();
+    cy.get(".veLabelLine").should("have.css", "opacity", "0.9");
+  });
+  it(`should handle adjusting circular map label size.`, () => {
+    cy.get(".veCircularViewLabelText").then((labelText) => {
+      const fullFontSize = parseFloat(
+        labelText[0].style.getPropertyValue("font-size").replace("px", "")
+      );
+      cy.get(".tg-menu-bar").contains("View").click();
+      cy.get(".tg-menu-bar-popover").contains("Labels").click();
+      cy.get(".tg-menu-bar-popover").contains("Circular Label Size").click();
+      cy.get(".tg-menu-bar-popover").contains("50%").click();
+      cy.get(".veCircularViewLabelText").then((fiftyPercentText) => {
+        const halfFontSize = parseFloat(
+          fiftyPercentText[0].style
+            .getPropertyValue("font-size")
+            .replace("px", "")
+        );
+        expect(
+          inRange(
+            halfFontSize,
+            (fullFontSize / 2) * 0.9,
+            (fullFontSize / 2) * 1.1
+          )
+        ).to.equal(true);
+      });
+    });
+  });
+  it(`should handle adjusting circular map label spacing.`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
+    cy.get(".veCircularViewLabelText")
+      .contains("Example Primer 1")
+      .then((preLabelText1) => {
+        cy.get(".veCircularViewLabelText")
+          .contains("araD")
+          .then((preLabelText2) => {
+            const preLabelTextDiff = Math.abs(
+              parseFloat(preLabelText1[0].attributes.y.value) -
+                parseFloat(preLabelText2[0].attributes.y.value)
+            );
+            cy.get(`[data-test="adjustCircularLabelSpacing"]`).click({
+              force: true
+            });
+            cy.get(".veCircularViewLabelText")
+              .contains("Example Primer 1")
+              .then((postLabelText1) => {
+                cy.get(".veCircularViewLabelText")
+                  .contains("araD")
+                  .then((postLabelText2) => {
+                    const postLabelTextDiff = Math.abs(
+                      parseFloat(postLabelText1[0].attributes.y.value) -
+                        parseFloat(postLabelText2[0].attributes.y.value)
+                    );
+                    expect(preLabelTextDiff > postLabelTextDiff).to.equal(true);
+                  });
+              });
+          });
+      });
   });
 });

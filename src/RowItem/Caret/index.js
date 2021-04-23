@@ -42,7 +42,7 @@ function Caret(props) {
         }
         className={classnames(
           {
-            notClickable: isDraggable
+            notClickable: !isDraggable
           },
           "veCaret",
           "veRowViewCaret",

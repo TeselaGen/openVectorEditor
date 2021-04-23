@@ -5,115 +5,34 @@ import {
   withSelectedEntities
 } from "teselagen-react-components";
 import { map, get } from "lodash";
-import EnzymeViewer from "../../EnzymeViewer";
-import enzymeList from "../../redux/utils/defaultEnzymeList.json";
 import CutsiteFilter from "../../CutsiteFilter";
 import { Button } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
 import commands from "../../commands";
-
-// import { Button } from "@blueprintjs/core";
-// import { getRangeLength, convertRangeTo1Based } from "ve-range-utils";
+import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
+import { pick } from "lodash";
+import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
 
 class CutsiteProperties extends React.Component {
   constructor(props) {
     super(props);
     this.commands = commands(this);
   }
-  onRowSelect = ([record]) => {
-    if (!record) return;
-    const { dispatch, editorName } = this.props;
-    dispatch({
-      type: "CARET_POSITION_UPDATE",
-      payload: record.topSnipPosition,
-      meta: {
-        editorName
-      }
-    });
-  };
-  SubComponent = row => {
-    // const { selectionLayerUpdate } = this.props;
-    const { name, cutsiteGroup } = row.original;
-    const entities = cutsiteGroup
-      .sort((a, b) => a.topSnipPosition - b.topSnipPosition)
-      .map(
-        ({
-          restrictionEnzyme: { forwardRegex, reverseRegex } = {},
-          forward,
-          id,
-          topSnipBeforeBottom,
-          topSnipPosition,
-          bottomSnipPosition
-        }) => {
-          return {
-            id,
-            topSnipPosition,
-            position: topSnipBeforeBottom
-              ? topSnipPosition + " - " + bottomSnipPosition
-              : bottomSnipPosition + " - " + topSnipPosition,
-            strand:
-              forwardRegex === reverseRegex
-                ? "Palindromic"
-                : forward
-                ? "1"
-                : "-1"
-          };
-        }
-      );
-    const enzyme = enzymeList[name.toLowerCase()];
-    // return <div>yooo</div>
-    return (
-      <div>
-        <div
-          className="ve-enzymeSubrow"
-          style={{
-            margin: 10
-          }}
-        >
-          {enzyme && (
-            <EnzymeViewer
-              {...{
-                sequence: enzyme.site,
-                reverseSnipPosition: enzyme.bottomSnipOffset,
-                forwardSnipPosition: enzyme.topSnipOffset
-              }}
-            />
-          )}
-          <div>
-            <DataTable
-              style={{ minHeight: 0, maxHeight: 200 }}
-              selectedIds={this.props.selectedAnnotationId}
-              maxHeight={300}
-              onRowSelect={this.onRowSelect}
-              formName="cutLocations"
-              isSingleSelect
-              compact
-              noRouter
-              minimalStyle
-              scrollToSelectedRowRelativeToDom
-              noHeader
-              isSimple
-              noFullscreenButton
-              isInfinite
-              withSearch={false}
-              withFilter={false}
-              schema={this.subComponentSchemna}
-              entities={entities}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
 
-  subComponentSchemna = {
-    fields: [
-      { path: "topSnipPosition", label: "Top Snip", type: "string" },
-      { path: "position", type: "string" },
-      { path: "strand", type: "string" }
-    ]
+  SubComponent = (row) => {
+    return (
+      <SingleEnzymeCutsiteInfo
+        {...{
+          editorName: this.props.editorName,
+          dispatch: this.props.dispatch,
+          selectedAnnotationId: this.props.selectedAnnotationId,
+          cutsiteGroup: row.original.cutsiteGroup,
+          enzyme: row.original.enzyme
+        }}
+      ></SingleEnzymeCutsiteInfo>
+    );
   };
 
   schema = {
@@ -136,12 +55,14 @@ class CutsiteProperties extends React.Component {
 
     const { cutsitesByName, cutsitesById } = allCutsites;
 
-    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup, name) => {
+    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
+      const name = cutsiteGroup[0].restrictionEnzyme.name;
       return {
         cutsiteGroup,
         id: name,
         name,
-        numberOfCuts: cutsiteGroup.length
+        numberOfCuts: cutsiteGroup.length,
+        enzyme: cutsiteGroup[0].restrictionEnzyme
         // size: getRangeLength(cutsiteGroup, sequenceData.sequence.length)
       };
     });
@@ -163,6 +84,7 @@ class CutsiteProperties extends React.Component {
             icon="filter"
           />
           <CutsiteFilter
+            {...pick(this.props, userDefinedHandlersAndOpts)}
             style={{ flexGrow: 2 }}
             editorName={editorName}
             onChangeHook={this.onChangeHook}
@@ -205,8 +127,12 @@ class CutsiteProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor(editorState => {
-    const cutsites = selectors.filteredCutsitesSelector(editorState);
+  connectToEditor((editorState, ownProps) => {
+    const cutsites = selectors.filteredCutsitesSelector(
+      editorState,
+      ownProps.additionalEnzymes,
+      ownProps.enzymeGroupsOverride
+    );
     return {
       annotationVisibility: editorState.annotationVisibility || {},
       filteredCutsites: cutsites,

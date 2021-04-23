@@ -1,4 +1,4 @@
-describe("partTypes", function () {
+describe("partTags", function () {
   beforeEach(() => {
     cy.visit("");
   });
@@ -26,7 +26,7 @@ describe("partTypes", function () {
     cy.contains(".bp3-tag", "status: broken").should("not.exist");
     cy.contains(".bp3-tag", "something else").should("not.exist");
   });
-  it(`if allPartTags isn't passed in, no the search for part tags should show up from the part tool dropdown`, () => {
+  it(`if allPartTags isn't passed in, no search for part tags should show up from the part tool dropdown`, () => {
     cy.get(`[data-test="partToolDropdown"]`).should("exist");
     cy.tgToggle("withPartTags", false);
     cy.get(`[data-test="partToolDropdown"]`).should("not.exist");

@@ -2,7 +2,15 @@ describe("menuBar", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`the menu should allow for custom toastr messages`, () => {
+    cy.visit("");
+
+    cy.contains("Trigger menu toastr message").click();
+    cy.contains(".ove-menu-toast", "Sequence Saving");
+    cy.contains(".ove-menu-toast", "Sequence Saved");
+  });
   it("Should be able to filter features by length", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".tg-menu-bar button", "View").click();
     cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
     cy.get("[data-test=filter-feature-length]").click("top");
@@ -80,6 +88,7 @@ describe("menuBar", function () {
   // });
 
   it(`should be able to filter by feature`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.get(".tg-menu-bar").contains("View").click();
     cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
     cy.contains(".bp3-menu-item", "Filter By Type")
@@ -104,6 +113,7 @@ describe("menuBar", function () {
     cy.contains(".bp3-dialog", "Editor Hotkeys").should("not.exist");
   });
   it(`should be able to remove duplicate features`, () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veLabelText", "araD").should("exist");
     cy.get("body").type("{meta}/");
     cy.focused().type("remove duplicate feature{enter}", { delay: 1 });

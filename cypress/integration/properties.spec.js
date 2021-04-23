@@ -88,7 +88,7 @@ describe("properties", function () {
     cy.get(`[data-tab-id="genbank"]`).click();
     cy.contains("DEFINITION").should("not.exist");
   });
-  // it.only(`we should be able to edit a description in general properties, not make any changes, hit ok, and have the description not clear (bug! https://github.com/TeselaGen/lims/issues/5492)
+  // it(`we should be able to edit a description in general properties, not make any changes, hit ok, and have the description not clear (bug! https://github.com/TeselaGen/lims/issues/5492)
   // and have that visible within the genbank view as well`, () => {
   //   cy.get(".veTabProperties").click();
   //   cy.get(`.tg-test-description`)
@@ -141,16 +141,17 @@ describe("properties", function () {
     //Part 0 should be in there
     cy.get(`[data-test="ve-genbank-text"]`).contains("Part 0");
   });
-  it(`can right click multiple of the same cutsite type (FokI) 
-  and have the cutsite properties table jump to the correct cutsite`, () => {
+  it(`can right click multiple of the same cutsite type (FokI) and have the cutsite properties table jump to the correct cutsite`, () => {
     cy.get(".ve-tool-container-cutsiteTool .veToolbarDropdown").click();
     cy.get(".tg-select-clear-all").click();
-    cy.contains(".veLabelText", "+3,FokI").rightclick();
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
+    cy.contains(".tg-select-option", "Van").click();
+    cy.get(".veLabelText:contains(Van):first").rightclick();
     cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
-    cy.contains(".rt-tr-group.selected", "4975");
-    cy.contains(".veLabelText", "+2,FokI").rightclick();
+    cy.contains(".rt-tr-group.selected", "831");
+    cy.get(".veLabelText:contains(Van):last").rightclick();
     cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
-    cy.contains(".rt-tr-group.selected", "642");
+    cy.contains(".rt-tr-group.selected", "4730");
   });
 });
 

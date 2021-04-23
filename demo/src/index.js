@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import { Switch } from "@blueprintjs/core";
+import { Button, Drawer, Tooltip } from "@blueprintjs/core";
 
 import store from "./store";
 import { render } from "react-dom";
@@ -16,7 +16,6 @@ import {
   SimpleCircularOrLinearView
 } from "../../src";
 
-// import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
 import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
@@ -58,7 +57,15 @@ const links = [
   );
 });
 links.push(
-  <a key="umdDemo" style={{ marginLeft: 10 }} href="/UMDDemo.html">
+  <a
+    key="umdDemo"
+    style={{ marginLeft: 10 }}
+    href={
+      window.location.href.includes("localhost")
+        ? `${window.location.origin}/UMDDemo.html`
+        : "http://teselagen.github.io/openVectorEditor/UMDDemo.html"
+    }
+  >
     UMD demo
   </a>
 );
@@ -177,21 +184,62 @@ class Demo extends React.Component {
               flexDirection: "column"
             }}
           >
+            <Drawer
+              size={Drawer.SIZE_SMALL}
+              isOpen={this.state.sidebarOpen}
+              onClose={() => {
+                this.setState({ sidebarOpen: false });
+              }}
+              position="left"
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%"
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    this.setState({ sidebarOpen: false });
+                  }}
+                  minimal
+                  icon="cross"
+                ></Button>
+              </div>
+              {links}
+            </Drawer>
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
+                justifyContent: "space-between",
                 flexShrink: 0
               }}
             >
-              {links}{" "}
-              <span style={{ marginLeft: 10 }}>Version: {pjson.version}</span>{" "}
-              <Switch
-                label="Dark Mode"
-                checked={darkMode}
-                onChange={this.changeDarkMode}
-                style={{ margin: "0px 30px", marginTop: 4 }}
-              />
+              <Button
+                onClick={() =>
+                  this.setState({ sidebarOpen: !this.state.sidebarOpen })
+                }
+                intent="primary"
+                minimal
+                icon="menu"
+              ></Button>
+              <span style={{ marginTop: 5, marginLeft: 10 }}>
+                Version: {pjson.version}
+              </span>{" "}
+              <Tooltip
+                content={darkMode ? "Light Theme" : "Dark Theme"}
+                key="theme"
+              >
+                <Button
+                  data-test="tg-toggle-dark-mode"
+                  icon={darkMode ? "flash" : "moon"}
+                  intent={darkMode ? "warning" : undefined}
+                  minimal
+                  onClick={this.changeDarkMode}
+                />
+              </Tooltip>
             </div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route

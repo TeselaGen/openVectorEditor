@@ -10,8 +10,10 @@ import translationsRawSelector from "./translationsRawSelector";
 import translationSearchMatchesSelector from "./translationSearchMatchesSelector";
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import cdsFeaturesSelector from "./cdsFeaturesSelector";
+import circularSelector from "./circularSelector";
 
 function translationsSelector(
+  isCircular,
   translationSearchMatches,
   sequence,
   orfs,
@@ -80,11 +82,23 @@ function translationsSelector(
           const id = uuid();
           acc[id] = {
             id,
-            start: 0 + Math.abs(frameOffset) - 1,
-            end: normalizePositionByRangeLength(
-              sequence.length - 1 + Math.abs(frameOffset) - 1,
-              sequence.length
-            ),
+            start:
+              isCircular || frameOffset > 0
+                ? normalizePositionByRangeLength(
+                    0 + frameOffset + (frameOffset > 0 ? -1 : 1),
+                    sequence.length
+                  )
+                : 0,
+            end:
+              isCircular || frameOffset < 0
+                ? normalizePositionByRangeLength(
+                    sequence.length -
+                      1 +
+                      frameOffset +
+                      (frameOffset > 0 ? -1 : 1),
+                    sequence.length
+                  )
+                : sequence.length - 1,
             translationType: "Frame",
             forward: frameOffset > 0,
             isOrf: true //pass isOrf = true here in order to not have it show up in the properties window
@@ -95,7 +109,7 @@ function translationsSelector(
       {}
     )
   };
-  each(translationsToPass, function(translation) {
+  each(translationsToPass, function (translation) {
     translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
       sequence,
       translation.forward,
@@ -106,17 +120,18 @@ function translationsSelector(
 }
 
 export default createSelector(
+  circularSelector,
   translationSearchMatchesSelector,
   sequenceSelector,
   orfsSelector,
-  state => state.annotationVisibility.orfTranslations,
-  state => state.annotationVisibility.orfs,
+  (state) => state.annotationVisibility.orfTranslations,
+  (state) => state.annotationVisibility.orfs,
   cdsFeaturesSelector,
-  state => state.annotationVisibility.cdsFeatureTranslations,
-  state => state.annotationVisibility.features,
+  (state) => state.annotationVisibility.cdsFeatureTranslations,
+  (state) => state.annotationVisibility.features,
   translationsRawSelector,
-  state => state.frameTranslations,
-  state => state.sequenceData.isProtein,
-  state => state.sequenceData.proteinSequence,
+  (state) => state.frameTranslations,
+  (state) => state.sequenceData.isProtein,
+  (state) => state.sequenceData.proteinSequence,
   translationsSelector
 );

@@ -142,7 +142,7 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
 
 Cypress.Commands.add("triggerFileCmd", (text) => {
   cy.get("body").type("{meta}/");
-  cy.focused().type(`${text}{enter}`);
+  cy.focused().type(`${text}{enter}`, { delay: 1 });
 });
 
 /**
@@ -192,8 +192,32 @@ Cypress.Commands.add("replaceSelection", (sequenceString) => {
   cy.get(".sequenceInputBubble input").type(`${sequenceString}{enter}`);
 });
 Cypress.Commands.add("deleteSelection", () => {
-  cy.get(".veRowViewSelectionLayer")
+  cy.get(".veRowViewSelectionLayer.notCaret:not(.cutsiteLabelSelectionLayer)")
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Cut").click();
+});
+
+Cypress.Commands.add("waitForDialogClose", ({ timeout } = {}) => {
+  cy.get(".bp3-dialog", {
+    timeout
+  }).should("not.exist");
+});
+
+Cypress.Commands.add("waitForMenuClose", ({ timeout } = {}) => {
+  cy.get(".bp3-menu", {
+    timeout
+  }).should("not.exist");
+});
+
+Cypress.Commands.add("closeDialog", ({ timeout } = {}) => {
+  cy.get(".bp3-dialog-close-button").click();
+  cy.waitForDialogClose({ timeout });
+});
+Cypress.Commands.add("hideMenu", () => {
+  cy.get(".bp3-popover").invoke("hide");
+});
+
+Cypress.Commands.add("closeToasts", () => {
+  cy.get(".bp3-toast .bp3-icon-cross").click({ multiple: true });
 });

@@ -76,6 +76,7 @@ class SequenceInputNoHotkeys extends React.Component {
       selectionLayer,
       sequenceLength,
       isProtein,
+
       caretPosition,
       acceptedChars,
       maxInsertSize

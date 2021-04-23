@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import { isEqual, startCase } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
@@ -7,24 +7,30 @@ import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
 import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
-import { getEmptyText } from "../utils/editorUtils";
+import {
+  getClientX,
+  getEmptyText,
+  getParedDownWarning,
+  pareDownAnnotations
+} from "../utils/editorUtils";
+import useAnnotationLimits from "../utils/useAnnotationLimits";
 
 let defaultMarginWidth = 10;
 
 function noop() {}
 
-export class LinearView extends React.Component {
+class _LinearView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
     let rowDomNode = this.linearView;
     let boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
-    if (event.clientX - boundingRowRect.left < 0) {
+    if (getClientX(event) - boundingRowRect.left < 0) {
       nearestCaretPos = 0;
     } else {
       let clickXPositionRelativeToRowContainer =
-        event.clientX - boundingRowRect.left;
+        getClientX(event) - boundingRowRect.left;
       let numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
           this.charWidth
@@ -62,12 +68,43 @@ export class LinearView extends React.Component {
   };
 
   getRowData = () => {
-    const { sequenceData = { sequence: "" } } = this.props;
+    const {
+      limits,
+      sequenceData = { sequence: "" },
+      maxAnnotationsToDisplay
+    } = this.props;
     if (!isEqual(sequenceData, this.oldSeqData)) {
+      this.paredDownMessages = [];
+      const paredDownSeqData = ["parts", "features", "cutsites"].reduce(
+        (acc, type) => {
+          const nameUpper = startCase(type);
+          const maxToShow =
+            (maxAnnotationsToDisplay
+              ? maxAnnotationsToDisplay[type]
+              : limits[type]) || 50;
+          let [annotations, paredDown] = pareDownAnnotations(
+            sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
+            maxToShow
+          );
+
+          if (paredDown) {
+            this.paredDownMessages.push(
+              getParedDownWarning({
+                nameUpper,
+                isAdjustable: !maxAnnotationsToDisplay,
+                maxToShow
+              })
+            );
+          }
+          acc[type] = annotations;
+          return acc;
+        },
+        {}
+      );
       this.rowData = prepareRowData(
         {
           ...sequenceData,
-          features: sequenceData.filteredFeatures || sequenceData.features
+          ...paredDownSeqData
         },
         sequenceData.sequence ? sequenceData.sequence.length : 0
       );
@@ -161,6 +198,8 @@ export class LinearView extends React.Component {
               }}
             />
           )}
+          <div className="veWarningContainer">{this.paredDownMessages}</div>
+
           <RowItem
             {...{
               ...rest,
@@ -211,6 +250,13 @@ function SequenceName({ sequenceName, sequenceLength, isProtein }) {
     </div>
   );
 }
+
+const WithAnnotationLimitsHoc = (Component) => (props) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [limits = {}] = useAnnotationLimits();
+  return <Component limits={limits} {...props}></Component>;
+};
+export const LinearView = WithAnnotationLimitsHoc(_LinearView);
 
 export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(LinearView);
 

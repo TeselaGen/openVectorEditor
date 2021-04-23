@@ -2,9 +2,12 @@ import React from "react";
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import {
   ReactSelectField,
-  getTagsAndTagOptions
+  getTagsAndTagOptions,
+  CheckboxField,
+  InfoHelper
 } from "teselagen-react-components";
 import { FeatureTypes as featureTypes } from "ve-sequence-utils";
+import { get } from "lodash";
 
 const renderTypes = ({ readOnly }) => (
   <ReactSelectField
@@ -41,6 +44,24 @@ const renderTypes = ({ readOnly }) => (
     label="Type:"
   />
 );
+const renderAdvancedOptions = ({ readOnly }) => (
+  <CheckboxField
+    inlineLabel
+    tooltipError
+    disabled={readOnly}
+    name="doesOverlapSelf"
+    label={
+      <div style={{ display: "flex", alignItems: "center" }}>
+        Part Overlaps Self
+        <InfoHelper
+          style={{ paddingLeft: 10, paddingTop: 9 }}
+          isInline
+          content="If checked, this part will span the entire sequence and wrap back around on itself. (Useful for USER cloning and other instances where the part needs to span the entire sequence and then some)"
+        ></InfoHelper>
+      </div>
+    }
+  />
+);
 const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
   return (
     <ReactSelectField
@@ -59,11 +80,15 @@ const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPartDialog",
   dialogProps: {
-    height: 550,
+    // height: 550,
     width: 450
   },
   getProps: (props) => ({
     upsertAnnotation: props.upsertPart,
+    advancedDefaultOpen: get(props, "initialValues.doesOverlapSelf"),
+    advancedOptions: props.allowPartsToOverlapSelf
+      ? renderAdvancedOptions({ readOnly: props.readOnly })
+      : undefined,
     renderTypes: renderTypes({ readOnly: props.readOnly }),
     renderTags:
       props.allPartTags &&

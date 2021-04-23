@@ -17,6 +17,8 @@ import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
 import { featureColors } from "ve-sequence-utils";
+import { getReverseComplementSequenceString } from "ve-sequence-utils";
+import isMobile from "is-mobile";
 
 const opts = [
   { label: "DNA", value: "DNA" },
@@ -33,12 +35,11 @@ export class FindBar extends React.Component {
       toggleFindTool,
       toggleHighlightAll,
       toggleIsInline,
-      // highlightAll,
       updateSearchText,
       annotationVisibilityShow,
       updateAmbiguousOrLiteral,
       updateDnaOrAA,
-      updateMatchNumber,
+      updateMatchNumber: _updateMatchNumber,
       selectionLayerUpdate,
       annotationSearchMatches,
       findTool = {}
@@ -53,6 +54,22 @@ export class FindBar extends React.Component {
       matchNumber = 0,
       isInline
     } = findTool;
+    const updateMatchNumber = (...args) => {
+      if (
+        matchesTotal > 1 &&
+        !(
+          getReverseComplementSequenceString(searchText) === searchText &&
+          matchesTotal === 2
+        )
+      ) {
+        _updateMatchNumber(...args);
+      } else {
+        _updateMatchNumber(null);
+        setTimeout(() => {
+          _updateMatchNumber(...args);
+        });
+      }
+    };
     const findOptionsEls = [
       <HTMLSelect
         key="dnaoraa"
@@ -126,9 +143,17 @@ export class FindBar extends React.Component {
           Highlight All
         </Tooltip>
       </Switch>,
-      <Switch key="isInline" checked={!isInline} onChange={toggleIsInline}>
-        Expanded
-      </Switch>
+      ...(isMobile()
+        ? []
+        : [
+            <Switch
+              key="isInline"
+              checked={!isInline}
+              onChange={toggleIsInline}
+            >
+              Expanded
+            </Switch>
+          ])
     ];
     const InputToUse = !isInline ? TextArea : InputGroup;
     const rightEl = (
@@ -194,7 +219,8 @@ export class FindBar extends React.Component {
         style={
           isInline
             ? {
-                display: "flex"
+                display: "flex",
+                minWidth: 300 
               }
             : {
                 position: "fixed",
@@ -319,7 +345,7 @@ function AnnotationSearchMatchComp({
         const annotationsFound = annotationSearchMatches[i];
         if (!annotationsFound) return null;
         return annotationsFound.length ? (
-          <div>
+          <div key={i}>
             <div className="veAnnotationFoundType">
               {annotationsFound.length} {getSingular(type)} match
               {annotationsFound.length > 1 ? "es" : null}

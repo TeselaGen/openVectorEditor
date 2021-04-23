@@ -19,9 +19,8 @@ export default function DeletionLayer({
   return (
     <path
       {...rest}
-      className="veFeature veCircularViewFeature"
       strokeWidth=".5"
-      stroke={"black"}
+      stroke="black"
       fill={color}
       d={path.print()}
     />

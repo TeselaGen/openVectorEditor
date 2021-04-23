@@ -218,7 +218,7 @@ export default class AlignmentDemo extends React.Component {
               : undefined,
             alignmentName: this.state.setAlignmentName
               ? "Ref Seq Name"
-              : undefined,
+              : "Alignment Name Placeholder",
             noClickDragHandlers: this.state.noClickDragHandlers,
             hasTemplate: this.state.hasTemplate,
             noVisibilityOptions: this.state.noVisibilityOptions,
