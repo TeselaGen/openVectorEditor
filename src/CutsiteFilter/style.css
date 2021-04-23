@@ -6,6 +6,15 @@
 .ta_link:hover {
   color: lightblue;
 }
- 
+.veHideEnzymeBtn {
+  opacity: 0.3;
+}
+.veHideEnzymeBtn:hover {
+  opacity: 1;
+}
+.veHiddenEnzyme {
+  background-color: #b83211 !important;
+  color: #f5f8fa !important;
+}
 
- /*# sourceMappingURL= style.css.map */
+/*# sourceMappingURL= style.css.map */

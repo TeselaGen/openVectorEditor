@@ -32,13 +32,13 @@ function getSnipForRow(
   index
 ) {
   if (!isPositionWithinRange(snipPosition, row)) return;
-  let { xStart } = getXStartAndWidthOfRangeWrtRow(
-    { start: snipPosition, end: snipPosition },
+
+  let { xStart } = getXStartAndWidthOfRangeWrtRow({
+    range: { start: snipPosition, end: snipPosition },
     row,
-    bpsPerRow,
     charWidth,
     sequenceLength
-  );
+  });
 
   let newCursorStyle = assign({}, snipStyle, {
     left: xStart + 2
@@ -70,14 +70,13 @@ function getSnipConnector(
     { ...row, end: row.end + 1 },
     sequenceLength
   );
-  return overlaps.map(function(overlap, index2) {
-    let { xStart, width } = getXStartAndWidthOfRangeWrtRow(
-      overlap,
+  return overlaps.map(function (overlap, index2) {
+    let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
+      range: overlap,
       row,
-      bpsPerRow,
       charWidth,
       sequenceLength
-    );
+    });
     width -= charWidth;
     //the second logical operator catches the special case where we're at the very end of the sequence..
     let newCursorStyle = assign({}, snipConnectorStyle, {
@@ -108,7 +107,7 @@ function Cutsites(props) {
   } = props;
   let snips = [];
   let snipConnectors = [];
-  Object.keys(annotationRanges).forEach(function(key) {
+  Object.keys(annotationRanges).forEach(function (key) {
     let annotationRange = annotationRanges[key];
     let { annotation } = annotationRange;
     if (!annotation) {

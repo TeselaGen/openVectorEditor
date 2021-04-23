@@ -1,5 +1,6 @@
 import React from "react";
-import pure from "../../utils/pureNoFunc";
+import classnames from "classnames";
+// import pure from "../../utils/pureNoFunc";
 import "./style.css";
 import { getSelectionMessage } from "../../utils/editorUtils";
 // import draggableClassnames from "../../constants/draggableClassnames";
@@ -12,26 +13,25 @@ function Caret(props) {
     caretPosition,
     isProtein,
     onClick,
+    isDraggable,
+    leftMargin = 0,
     onRightClick,
+    style,
     selectionMessage,
     className = ""
-    // getGaps,
-    // ignoreGaps
   } = props;
 
   if (
     (row.start <= caretPosition && row.end + 1 >= caretPosition) ||
     (row.end === sequenceLength - 1 && row.end < caretPosition)
   ) {
-    // const { gapsBefore = 0 } =
-    //   !ignoreGaps && getGaps ? getGaps(caretPosition) : {};
     //the second logical operator catches the special case where we're at the very end of the sequence..
     let cursorEl = (
       <div
         onClick={onClick}
         onContextMenu={
           onRightClick
-            ? e => {
+            ? (e) => {
                 onRightClick(e);
               }
             : undefined
@@ -40,9 +40,17 @@ function Caret(props) {
           selectionMessage ||
           getSelectionMessage({ caretPosition, isProtein, sequenceLength })
         }
-        className={"veCaret veRowViewCaret " + className}
+        className={classnames(
+          {
+            notClickable: !isDraggable
+          },
+          "veCaret",
+          "veRowViewCaret",
+          className
+        )}
         style={{
-          left: (caretPosition - row.start) * charWidth - 2
+          left: leftMargin + (caretPosition - row.start) * charWidth - 2,
+          ...style
         }}
       />
     );
@@ -52,4 +60,5 @@ function Caret(props) {
   }
 }
 
-export default pure(Caret);
+export default Caret;
+// export default pure(Caret);

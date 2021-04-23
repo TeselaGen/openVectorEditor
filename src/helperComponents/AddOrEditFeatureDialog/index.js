@@ -4,12 +4,13 @@ import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { ReactSelectField } from "teselagen-react-components";
 
-const renderTypes = (
+const renderTypes = ({ readOnly }) => (
   <ReactSelectField
     inlineLabel
     tooltipError
+    disabled={readOnly}
     defaultValue="misc_feature"
-    options={featureTypes.map(type => {
+    options={featureTypes.map((type) => {
       return {
         label: (
           <div
@@ -41,13 +42,13 @@ const renderTypes = (
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditFeatureDialog",
   dialogProps: {
-    height: 500,
+    // height: 500,
     width: 400
   },
-  getProps: props => ({
+  getProps: (props) => ({
     upsertAnnotation: props.upsertFeature,
-    renderLocations: true,
-    renderTypes,
+    renderLocations: !props.sequenceData.isProtein,
+    renderTypes: renderTypes({ readOnly: props.readOnly }),
     annotationTypePlural: "features"
   })
 });

@@ -41,7 +41,8 @@ function getPropsForType(props, type, pluralType) {
       props.annotationLabelVisibility &&
       props.annotationLabelVisibility[pluralType],
     onClick: props[type + "Clicked"],
-    onRightClick: props[type + "RightClicked"]
+    onRightClick: props[type + "RightClicked"],
+    onDoubleClick: props[type + "DoubleClicked"]
   };
 
   return toRet;
@@ -51,6 +52,7 @@ export class RowItem extends React.PureComponent {
   const;
   render() {
     let {
+      noRedux,
       charWidth = 12,
       selectionLayer = { start: -1, end: -1 },
       deletionLayers = {},
@@ -94,7 +96,9 @@ export class RowItem extends React.PureComponent {
       bpsPerRow = sequenceLength,
       editorName,
       externalLabels,
-      onlyShowLabelsThatDoNotFit
+      scrollData,
+      onlyShowLabelsThatDoNotFit,
+      labelLineIntensity
     } = this.props;
 
     let {
@@ -140,7 +144,7 @@ export class RowItem extends React.PureComponent {
     if (alignmentData) {
       const gapMap = getGapMap(alignmentData.sequence);
       //this function is used to calculate the number of spaces that come before or inside a range
-      getGaps = rangeOrCaretPosition => {
+      getGaps = (rangeOrCaretPosition) => {
         if (typeof rangeOrCaretPosition !== "object") {
           return {
             gapsBefore:
@@ -160,6 +164,7 @@ export class RowItem extends React.PureComponent {
       };
     }
     let annotationCommonProps = {
+      noRedux,
       editorName,
       charWidth,
       bpsPerRow,
@@ -177,10 +182,11 @@ export class RowItem extends React.PureComponent {
       const ranges =
         annotationLabelVisibility[pluralType] &&
         annotationVisibility[pluralType]
-          ? map(row[pluralType], a =>
+          ? map(row[pluralType], (a) =>
               assign(a, {
                 onClick: this.props[type + "Clicked"],
-                onRightClick: this.props[type + "RightClicked"]
+                onRightClick: this.props[type + "RightClicked"],
+                onDoubleClick: this.props[type + "DoubleClicked"]
               })
             )
           : [];
@@ -188,6 +194,7 @@ export class RowItem extends React.PureComponent {
         <Labels
           {...annotationCommonProps}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
+          labelLineIntensity={labelLineIntensity}
           rangeMax={bpsPerRow}
           annotationRanges={ranges}
           annotationHeight={cutsiteLabelHeight}
@@ -235,7 +242,7 @@ export class RowItem extends React.PureComponent {
 
     let deletionLayersToDisplay = flatMap(
       { ...replacementLayers, ...deletionLayers },
-      function(layer) {
+      function (layer) {
         if (layer.caretPosition > -1) {
           return [];
         }
@@ -248,7 +255,7 @@ export class RowItem extends React.PureComponent {
       }
     );
     let deletionLayerStrikeThrough = deletionLayersToDisplay.length
-      ? deletionLayersToDisplay.map(function(layer, index) {
+      ? deletionLayersToDisplay.map(function (layer, index) {
           let left = (layer.start - row.start) * charWidth;
           let width = (layer.end - layer.start + 1) * charWidth;
           return (
@@ -275,17 +282,15 @@ export class RowItem extends React.PureComponent {
       aminoAcidNumbersHeight
     };
     const partProps = {
-      getExtraInnerCompProps: function(annotationRange) {
+      getExtraInnerCompProps: function (annotationRange) {
         const { annotation } = annotationRange;
         const { color } = annotation;
         const colorToUse = startsWith(color, "override_")
           ? color.replace("override_", "")
           : "purple";
         return {
-          fill: "white",
-          textColor: "black",
-          stroke: colorToUse,
-          color: colorToUse
+          textColor: colorToUse,
+          stroke: colorToUse
         };
       },
       alignmentType
@@ -359,12 +364,7 @@ export class RowItem extends React.PureComponent {
             ]}
             annotationHeight={cutsiteLabelHeight}
           /> */}
-          {drawAnnotations("warning", {
-            getExtraInnerCompProps: () => ({
-              pointiness: 0,
-              rangeType: "middle"
-            })
-          })}
+          {drawAnnotations("warning")}
           {drawAnnotations("assemblyPiece")}
           {drawAnnotations("lineageAnnotation")}
           {drawLabels("part", externalLabels !== "true")}
@@ -404,15 +404,11 @@ export class RowItem extends React.PureComponent {
               <Sequence
                 cutsites={cutsites} //pass this in order to get children cutsites to re-render
                 showDnaColors={showDnaColors}
+                scrollData={scrollData}
                 hideBps={charWidth < 7}
                 sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
                 height={sequenceHeight}
                 showCutsites={showCutsites}
-                length={
-                  alignmentData
-                    ? alignmentData.sequence.length
-                    : row.sequence.length
-                }
                 charWidth={charWidth}
                 alignmentData={alignmentData}
                 {...annotationCommonProps}
@@ -479,7 +475,7 @@ export class RowItem extends React.PureComponent {
              */}
             {showCutsites &&
               showCutsitesInSequence &&
-              Object.keys(cutsites).map(function(id, index) {
+              Object.keys(cutsites).map(function (id, index) {
                 let cutsite = cutsites[id];
                 let layer = cutsite.annotation.recognitionSiteRange;
                 return (
@@ -512,7 +508,7 @@ export class RowItem extends React.PureComponent {
           {/* {externalLabels && drawAnnotations("part", partProps)} */}
           {drawAnnotations("feature")}
 
-          {map(replacementLayers, function(replacementLayer) {
+          {map(replacementLayers, function (replacementLayer) {
             if (!replacementLayer) return null;
             let atCaret = replacementLayer.caretPosition > -1;
             let normedCaretPos;
@@ -535,7 +531,7 @@ export class RowItem extends React.PureComponent {
               row,
               sequenceLength
             );
-            return layerRangeOverlaps.map(function(layer, index) {
+            return layerRangeOverlaps.map(function (layer, index) {
               let isStart = layer.start === insertedBpsLayer.start;
               let seqInRow = getSequenceWithinRange(
                 {
@@ -567,13 +563,13 @@ export class RowItem extends React.PureComponent {
                       position: "absolute"
                     }}
                     ref="rowViewTextContainer"
-                    onClick={function(event) {
+                    onClick={function (event) {
                       replacementLayerClicked({
                         annotation: replacementLayer,
                         event
                       });
                     }}
-                    onContextMenu={function(event) {
+                    onContextMenu={function (event) {
                       replacementLayerRightClicked({
                         annotation: replacementLayer,
                         event
@@ -584,10 +580,13 @@ export class RowItem extends React.PureComponent {
                     height={Math.max(0, Number(height))}
                   >
                     <polyline
-                      points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${charWidth /
-                        2},0 ${width},0 ${width},${height +
-                        bufferBottom} ${-bufferLeft},${height +
-                        bufferBottom} ${-bufferLeft},0`}
+                      points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${
+                        charWidth / 2
+                      },0 ${width},0 ${width},${
+                        height + bufferBottom
+                      } ${-bufferLeft},${
+                        height + bufferBottom
+                      } ${-bufferLeft},0`}
                       fill="none"
                       stroke="black"
                       strokeWidth="2px"
@@ -611,6 +610,7 @@ export class RowItem extends React.PureComponent {
           {drawLabels("cutsite", isRowView)}
           {showAxis && (
             <Axis
+              scrollData={scrollData}
               tickSpacing={tickSpacing}
               showAxisNumbers={showAxisNumbers}
               annotationHeight={axisHeight}
@@ -621,7 +621,6 @@ export class RowItem extends React.PureComponent {
           {caretPosition > -1 && (
             <Caret
               caretPosition={caretPosition}
-              shouldBlink
               {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
               row={
                 alignmentData
@@ -642,7 +641,7 @@ export default RowItem;
 
 function getGapMap(sequence) {
   const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-  sequence.split("").forEach(char => {
+  sequence.split("").forEach((char) => {
     if (char === "-") {
       gapMap[Math.max(0, gapMap.length - 1)] =
         (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;

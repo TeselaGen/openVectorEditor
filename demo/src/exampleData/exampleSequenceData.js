@@ -1002,13 +1002,22 @@ export default {
       name: "pj5_00001",
       start: 0,
       end: 5298,
-      id: "10"
+      id: "10",
+      tags: ["1:2", "5"]
     },
     {
       start: 10,
       end: 30,
       name: "Part 0",
-      id: "0"
+      id: "0",
+      tags: ["8"]
+    },
+    {
+      start: 1000,
+      end: 3000,
+      name: "Curtis' Part",
+      id: "9",
+      tags: ["1:2", "5"]
     }
   ],
   primers: [
@@ -1016,7 +1025,7 @@ export default {
       name: "Example Primer 1",
       start: 280,
       end: 300,
-      type: "primer",
+      type: "primer_bind",
       forward: true
     }
   ],

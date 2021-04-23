@@ -1,4 +1,4 @@
-.alignment-zoom-slider {
+.ove-slider {
   min-width: 10px !important;
   margin-bottom: 4px;
 }
@@ -24,4 +24,19 @@
   max-width: 100%;
   margin-left: 4px;
   margin-right: 4px;
+}
+
+.veAlignmentSelectionLayer {
+  top: 0;
+  height: 100% !important;
+  overflow: hidden;
+}
+.alignmentView .veSelectionLayer {
+  top: 0;
+}
+
+.veTracksAndAlignmentHolder {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
 }

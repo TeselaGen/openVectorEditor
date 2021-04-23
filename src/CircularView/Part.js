@@ -2,16 +2,18 @@ import React from "react";
 import { startsWith } from "lodash";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
 
-export default function CircularPart({
+export default function Part({
   radius,
   arrowheadLength = 0.5,
   annotationHeight,
   totalAngle,
   color,
-  ...rest
+  doesOverlapSelf,
+  className
 }) {
   let path = drawDirectedPiePiece({
     radius,
+    doesOverlapSelf,
     annotationHeight,
     totalAngle,
     arrowheadLength,
@@ -22,12 +24,10 @@ export default function CircularPart({
     : "purple";
   return (
     <path
-      {...rest}
-      className="vePart veCircularViewPart"
+      className={className}
       strokeWidth="0.5"
       stroke={colorToUse}
-      fill={colorToUse}
-      fillOpacity={0}
+      // fill={colorToUse}
       d={path.print()}
     />
   );

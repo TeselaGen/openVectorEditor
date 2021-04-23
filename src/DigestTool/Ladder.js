@@ -1,192 +1,194 @@
 /* eslint-disable react/jsx-no-bind */
-import React from "react";
+import React, { useState } from "react";
 import { TgSelect } from "teselagen-react-components";
 
 import "./Ladder.css";
 import { Tooltip } from "@blueprintjs/core";
 
-export default class Ladder extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { highlightedFragment: undefined };
-  }
-  render() {
-    let {
-      // gelDigestEnzymes = [],
-      boxHeight = 550,
-      lanes = [],
-      digestLaneRightClicked,
-      selectedFragment,
-      selectedLadder = "geneRuler1KB",
-      ladders = [
-        {
-          value: "geneRuler1KB",
-          label: "GeneRuler 1kb + DNA 75-20,000 bp",
-          markings: [
-            20000,
-            10000,
-            7000,
-            5000,
-            4000,
-            3000,
-            2000,
-            1500,
-            1000,
-            700,
-            500,
-            400,
-            300,
-            200,
-            75
-          ]
-        },
-        {
-          value: "geneRuler100BP",
-          label: "GeneRuler 100bp + DNA 100-3000 bp",
-          markings: [
-            3000,
-            2000,
-            1500,
-            1200,
-            1000,
-            900,
-            800,
-            700,
-            600,
-            500,
-            400,
-            300,
-            200,
-            100
-          ]
-        },
-        {
-          value: "geneRuler100LowRange",
-          label: "GeneRuler 100bp + DNA 100-3000 bp"
-        }
+export default function Ladder({
+  // gelDigestEnzymes = [],
+  boxHeight = 550,
+  lanes = [],
+  digestLaneRightClicked,
+  selectedFragment,
+  ladders = [
+    {
+      value: "geneRuler1KB",
+      label: "GeneRuler 1kb + DNA 75-20,000 bp",
+      markings: [
+        20000,
+        10000,
+        7000,
+        5000,
+        4000,
+        3000,
+        2000,
+        1500,
+        1000,
+        700,
+        500,
+        400,
+        300,
+        200,
+        75
       ]
-    } = this.props;
-    const { highlightedFragment } = this.state;
-    let ladderInfo;
-    ladders.forEach(ladder => {
-      if (ladder.value === selectedLadder)
-        ladderInfo = {
-          ...ladder,
-          markings: ladder.markings.sort((a, b) => {
-            return b - a;
-          })
-        };
-    });
-    if (!ladderInfo) {
-      return console.error("Uh oh there needs to be ladder info here!");
+    },
+    {
+      value: "geneRuler100BP",
+      label: "GeneRuler 100bp + DNA 100-3000 bp",
+      markings: [
+        3000,
+        2000,
+        1500,
+        1200,
+        1000,
+        900,
+        800,
+        700,
+        600,
+        500,
+        400,
+        300,
+        200,
+        100
+      ]
+    },
+    {
+      value: "invitrogen1KbPlus",
+      label: "Invitrogen 1kb + DNA 100-15,000 bp",
+      markings: [
+        15000,
+        10000,
+        8000,
+        7000,
+        6000,
+        5000,
+        4000,
+        3000,
+        2000,
+        1500,
+        1000,
+        850,
+        650,
+        500,
+        400,
+        300,
+        200,
+        100
+      ]
     }
+  ]
+}) {
+  const [highlightedFragment, setHighlightedFragment] = useState();
+  const [selectedLadder, setSelectedLadder] = useState(ladders[0].value);
+  let ladderInfo;
+  ladders.forEach((ladder) => {
+    if (ladder.value === selectedLadder)
+      ladderInfo = {
+        ...ladder,
+        markings: ladder.markings.sort((a, b) => {
+          return b - a;
+        })
+      };
+  });
+  if (!ladderInfo) {
+    return console.error("Uh oh there needs to be ladder info here!");
+  }
 
-    const upperBoundary = ladderInfo.markings[0];
-    return (
-      <div>
-        Ladder:
-        <TgSelect
-          value={selectedLadder}
-          onChange={this.handleChange}
-          options={ladders}
-        />
-        <br />
-        <div
-          style={{ width: "fit-content", color: "white", background: "black" }}
-        >
-          <div style={{ padding: 3, paddingLeft: 7, width: 290 }}>
-            Highlighted Fragment:{" "}
-            {highlightedFragment ? highlightedFragment.size : "--"}{" "}
-          </div>
-          <div style={{ height: boxHeight }} className="ve-digest-container">
-            <div
-              style={{ width: 100 }}
-              className="ve-digest-column ve-digest-ladder"
-            >
-              <div className="ve-digest-header"> </div>
-              {ladderInfo.markings.map((val, index) => {
-                return (
-                  <div
-                    key={index}
+  const upperBoundary = ladderInfo.markings[0];
+  return (
+    <div>
+      Ladder:
+      <TgSelect
+        value={selectedLadder}
+        onChange={(val) => setSelectedLadder(val.value)}
+        options={ladders}
+      />
+      <br />
+      <div
+        style={{ width: "fit-content", color: "white", background: "black" }}
+      >
+        <div style={{ padding: 3, paddingLeft: 7, width: 290 }}>
+          Highlighted Fragment:{" "}
+          {highlightedFragment ? highlightedFragment.size : "--"}{" "}
+        </div>
+        <div style={{ height: boxHeight }} className="ve-digest-container">
+          <div
+            style={{ width: 100 }}
+            className="ve-digest-column ve-digest-ladder"
+          >
+            <div className="ve-digest-header"> </div>
+            {ladderInfo.markings.map((val, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    fontSize: 12,
+                    position: "absolute",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "white",
+                    bottom: calculateOffset(boxHeight, val, upperBoundary) - 3 //subtract 3 to get the labels to align better
+                  }}
+                >
+                  <span
                     style={{
-                      fontSize: 12,
-                      position: "absolute",
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
                       color: "white",
-                      bottom: calculateOffset(boxHeight, val, upperBoundary) - 3 //subtract 3 to get the labels to align better
+                      paddingLeft: 6,
+                      paddingRight: 4
                     }}
                   >
-                    <span
-                      style={{
-                        color: "white",
-                        paddingLeft: 6,
-                        paddingRight: 4
-                      }}
-                    >
-                      {val}{" "}
-                    </span>
-                    <span style={{ color: "white", paddingRight: 4 }}>
-                      {" "}
-                      bp{" "}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="ve-digest-column ve-digest-ladder">
-              <div className="ve-digest-header">Ladder </div>
-              {ladderInfo.markings.map((val, index) => {
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      fontSize: 12,
-                      position: "absolute",
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      color: "white",
-                      height: "2px",
-                      background: "white",
-                      bottom: calculateOffset(boxHeight, val, upperBoundary)
-                    }}
-                  />
-                );
-              })}
-            </div>
-            {lanes.map((fragments, index) => {
+                    {val}{" "}
+                  </span>
+                  <span style={{ color: "white", paddingRight: 4 }}> bp </span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="ve-digest-column ve-digest-ladder">
+            <div className="ve-digest-header">Ladder </div>
+            {ladderInfo.markings.map((val, index) => {
               return (
-                <Lane
+                <div
                   key={index}
-                  {...{
-                    onMouseOver: fragment => {
-                      this.setState({
-                        highlightedFragment: fragment
-                      });
-                    },
-                    onMouseOut: () => {
-                      this.setState({
-                        highlightedFragment: undefined
-                      });
-                    },
-                    digestLaneRightClicked,
-                    laneNumber: index + 1,
-                    fragments,
-                    highlightedFragment,
-                    selectedFragment,
-                    boxHeight,
-                    upperBoundary
+                  style={{
+                    fontSize: 12,
+                    position: "absolute",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "white",
+                    height: "2px",
+                    background: "white",
+                    bottom: calculateOffset(boxHeight, val, upperBoundary)
                   }}
                 />
               );
             })}
           </div>
+          {lanes.map((fragments, index) => {
+            return (
+              <Lane
+                key={index}
+                {...{
+                  onMouseOver: (fragment) => setHighlightedFragment(fragment),
+                  onMouseOut: () => setHighlightedFragment(undefined),
+                  digestLaneRightClicked,
+                  laneNumber: index + 1,
+                  fragments,
+                  highlightedFragment,
+                  selectedFragment,
+                  boxHeight,
+                  upperBoundary
+                }}
+              />
+            );
+          })}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 function Lane({
@@ -223,7 +225,7 @@ function Lane({
             onClick={() => {
               fragment.onFragmentSelect();
             }}
-            onContextMenu={e => {
+            onContextMenu={(e) => {
               fragment.onFragmentSelect();
               digestLaneRightClicked(e);
             }}

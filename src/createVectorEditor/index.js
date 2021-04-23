@@ -72,14 +72,14 @@ export default function createVectorEditor(
     unmountComponentAtNode(node);
     node.remove();
   };
-  editor.updateEditor = values => {
+  editor.updateEditor = (values) => {
     updateEditor(store, editorName, values);
   };
-  editor.addAlignment = values => {
+  editor.addAlignment = (values) => {
     addAlignment(store, values);
   };
   editor.getState = () => {
-    return store.getState().VectorEditor["StandaloneEditor"];
+    return store.getState().VectorEditor[editorName];
   };
 
   return editor;
@@ -98,7 +98,7 @@ export function createVersionHistoryView(
     node
   );
 
-  editor.updateEditor = values => {
+  editor.updateEditor = (values) => {
     updateEditor(store, editorName, values);
   };
   editor.getState = () => {
@@ -116,7 +116,7 @@ export function createAlignmentView(node, props = {}) {
   const editor = {};
   editor.renderResponse = render(<SizedStandaloneAlignment {...props} />, node);
 
-  editor.updateAlignment = values => {
+  editor.updateAlignment = (values) => {
     addAlignment(store, values);
   };
   editor.updateAlignment(props);

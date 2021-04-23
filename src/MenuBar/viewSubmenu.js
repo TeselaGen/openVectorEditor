@@ -1,3 +1,8 @@
+import { MenuItem } from "@blueprintjs/core";
+import React from "react";
+import { LimitAnnotations } from "../utils/useAnnotationLimits";
+import useMeltingTemp from "../utils/useMeltingTemp";
+
 export const fullSequenceTranslationMenu = {
   text: "Full Sequence Translation",
   cmd: "fullSequenceTranslations",
@@ -59,9 +64,26 @@ export default [
   { cmd: "toggleWarnings", shouldDismissPopover: false },
   { cmd: "toggleAssemblyPieces", shouldDismissPopover: false },
   { cmd: "toggleLineageAnnotations", shouldDismissPopover: false },
-  { cmd: "toggleFeatures", shouldDismissPopover: false },
+  //deprecating
+  //{ cmd: "toggleFeatures", shouldDismissPopover: false },
   {
-    cmd: "featureTypesCmd"
+    cmd: "toggleFeatures",
+    onClick: () => {}, //override this click so that they have to hit the submenu
+    shouldDismissPopover: false,
+    submenu: [
+      {
+        cmd: "toggleFeatures",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "featureTypesCmd",
+        shouldDismissPopover: false
+      },
+      {
+        cmd: "filterFeatureLengthsCmd",
+        shouldDismissPopover: false
+      }
+    ]
   },
   {
     cmd: "toggleTranslations",
@@ -91,7 +113,11 @@ export default [
   //   //submenu of checklist of all feature types here
   //   submenu: [{ text: "TO DO...", disabled: true }]
   // },
-  { cmd: "toggleParts", shouldDismissPopover: false },
+  {
+    cmd: "togglePartsWithSubmenu",
+    onClick: () => {},
+    shouldDismissPopover: false
+  },
   { cmd: "toggleCutsites", shouldDismissPopover: false },
   // TODO translations, cds feature translations?
   {
@@ -120,6 +146,15 @@ export default [
   // { cmd: "complementary" },
   // { cmd: "spaces" },
   { divider: "" },
+  {
+    cmd: "toggleShowGCContent",
+    shouldDismissPopover: false,
+    text: "Percent GC Content of Selection"
+  },
+  {
+    text: "Melting Temp of Selection",
+    component: ToggleShowMeltingTemp
+  },
   {
     text: "Sequence Case",
     cmd: "sequenceCase",
@@ -156,12 +191,53 @@ export default [
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
 
   { divider: "" },
+  {
+    text: "Limits",
+    cmd: "limitsMenu",
+    submenu: [
+      {
+        text: "Max Features To Show",
+        component: LimitAnnotations,
+        type: "features"
+      },
+      {
+        text: "Max Parts To Show",
+        type: "parts",
+        component: LimitAnnotations
+      },
+      {
+        text: "Max Cutsites To Show",
+        component: LimitAnnotations,
+        type: "cutsites"
+      }
+    ]
+  },
+  {
+    text: "Labels",
+    submenu: [
+      { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
+      { cmd: "togglePartLabels", shouldDismissPopover: false },
+      { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
 
-  { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
-  { cmd: "togglePartLabels", shouldDismissPopover: false },
-  { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+      { divider: "" },
 
-  { divider: "" },
-
-  { cmd: "toggleExternalLabels", shouldDismissPopover: false }
+      { cmd: "toggleExternalLabels", shouldDismissPopover: false },
+      { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false },
+      { cmd: "adjustLabelSize", shouldDismissPopover: false }
+    ]
+  }
 ];
+
+function ToggleShowMeltingTemp(props) {
+  const [showMeltingTemp, setShowMeltingTemp] = useMeltingTemp();
+  return (
+    <MenuItem
+      {...props}
+      shouldDismissPopover={false}
+      onClick={() => {
+        setShowMeltingTemp(!showMeltingTemp);
+      }}
+      icon={showMeltingTemp ? "small-tick" : "blank"}
+    ></MenuItem>
+  );
+}

@@ -1,5 +1,6 @@
 import { merge } from "lodash";
-import * as addAdditionalEnzymes from "./addAdditionalEnzymes";
+import * as createYourOwnEnzyme from "./createYourOwnEnzyme";
+import * as showGCContent from "./showGCContent";
 import * as annotationLabelVisibility from "./annotationLabelVisibility";
 import * as annotationsToSupport from "./annotationsToSupport";
 import * as annotationVisibility from "./annotationVisibility";
@@ -27,14 +28,16 @@ import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as externalLabels from "./externalLabels";
-
-import * as modalActions from "./modalActions";
+import * as labelLineIntensity from "./labelLineIntensity";
+import * as labelSize from "./labelSize";
+import * as featureLengthsToHide from "./featureLengthsToHide";
+import * as selectedPartTags from "./selectedPartTags";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
 export { default as vectorEditorMiddleware } from "./middleware";
 
 const subReducers = {
-  addAdditionalEnzymes,
+  createYourOwnEnzyme,
   annotationLabelVisibility,
   annotationsToSupport,
   annotationVisibility,
@@ -60,7 +63,12 @@ const subReducers = {
   sequenceData,
   useAdditionalOrfStartCodons,
   uppercaseSequenceMapFont,
-  externalLabels
+  showGCContent,
+  externalLabels,
+  labelLineIntensity,
+  labelSize,
+  featureLengthsToHide,
+  selectedPartTags
 };
 
 const vectorEditorInitialize = createAction("VECTOR_EDITOR_UPDATE");
@@ -75,7 +83,6 @@ export const actions = {
     }),
     {}
   ),
-  ...modalActions,
   ...alignments,
   vectorEditorInitialize,
   vectorEditorClear
@@ -117,7 +124,7 @@ export default function reducerFactory(initialState = {}) {
   //     "Please pass an initial state to the vector editor reducer like: {DemoEditor: {}}!"
   //   );
   // }
-  return function(state = initialState, action) {
+  return function (state = initialState, action) {
     let editorNames;
     let newState = {};
     if (action.meta && action.meta.editorName) {
@@ -128,7 +135,7 @@ export default function reducerFactory(initialState = {}) {
     let stateToReturn;
     if (editorNames) {
       //we're dealing with an action specific to a given editor
-      editorNames.forEach(function(editorName) {
+      editorNames.forEach(function (editorName) {
         let currentState = state[editorName];
         if (action.type === "VECTOR_EDITOR_UPDATE") {
           //deep merge certain parts of the exisiting state with the new payload of props
@@ -146,7 +153,7 @@ export default function reducerFactory(initialState = {}) {
       };
     } else {
       //just a normal action
-      Object.keys(state).forEach(function(editorName) {
+      Object.keys(state).forEach(function (editorName) {
         if (editorName === "__allEditorsOptions") return; //we deal with __allEditorsOptions below so don't pass it here
         newState[editorName] = editorReducer(state[editorName], action);
       });
@@ -155,32 +162,23 @@ export default function reducerFactory(initialState = {}) {
     return {
       ...stateToReturn,
       //these are reducers that are not editor specific (aka shared across editor instances)
-      __allEditorsOptions: {
-        addAdditionalEnzymes: addAdditionalEnzymes.default(
+      __allEditorsOptions: [
+        ["createYourOwnEnzyme", createYourOwnEnzyme],
+        ["uppercaseSequenceMapFont", uppercaseSequenceMapFont],
+        ["showGCContent", showGCContent],
+        ["externalLabels", externalLabels],
+        ["labelLineIntensity", labelLineIntensity],
+        ["labelSize", labelSize],
+        ["alignments", alignments]
+      ].reduce((acc, [key, val]) => {
+        acc[key] = val.default(
           !state.__allEditorsOptions
             ? undefined
-            : state.__allEditorsOptions.addAdditionalEnzymes,
+            : state.__allEditorsOptions[key],
           action
-        ),
-        uppercaseSequenceMapFont: uppercaseSequenceMapFont.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.uppercaseSequenceMapFont,
-          action
-        ),
-        externalLabels: externalLabels.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.externalLabels,
-          action
-        ),
-        alignments: alignments.default(
-          !state.__allEditorsOptions
-            ? undefined
-            : state.__allEditorsOptions.alignments,
-          action
-        )
-      }
+        );
+        return acc;
+      }, {})
     };
   };
 }

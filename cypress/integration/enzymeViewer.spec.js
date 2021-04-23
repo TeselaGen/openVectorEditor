@@ -1,6 +1,4 @@
-// import dragMock from 'drag-mock'
-
-describe("tabs", function() {
+describe("enzymeViewer", function () {
   beforeEach(() => {
     cy.visit("#EnzymeViewer");
   });

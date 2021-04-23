@@ -4,19 +4,22 @@ import {
   FileUploadField,
   TextareaField,
   EditableTextField,
-  CheckboxField
+  CheckboxField,
+  wrapDialog
 } from "teselagen-react-components";
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import axios from "axios";
-import uniqid from "uniqid";
+import uniqid from "shortid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
 
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
+import { showDialog } from "../GlobalDialogUtils";
+import { compose } from "recompose";
 
 export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return {
@@ -47,7 +50,6 @@ class AlignmentToolDropdown extends React.Component {
       savedAlignments = [],
       hasSavedAlignments,
       toggleDropdown,
-      showCreateAlignmentDialog,
       sequenceData
     } = this.props;
     return (
@@ -56,11 +58,14 @@ class AlignmentToolDropdown extends React.Component {
           intent={Intent.PRIMARY}
           onClick={() => {
             toggleDropdown();
-            showCreateAlignmentDialog({
-              createNewAlignment: this.props.createNewAlignment,
-              upsertAlignmentRun: this.props.upsertAlignmentRun,
-              initialValues: {
-                addedSequences: [{ ...sequenceData, isTemplate: true }]
+            showDialog({
+              dialogType: "AlignmentToolDialog",
+              props: {
+                createNewAlignment: this.props.createNewAlignment,
+                upsertAlignmentRun: this.props.upsertAlignmentRun,
+                initialValues: {
+                  addedSequences: [{ ...sequenceData, isTemplate: true }]
+                }
               }
             });
           }}
@@ -94,7 +99,7 @@ class AlignmentTool extends React.Component {
   state = {
     templateSeqIndex: 0
   };
-  sendSelectedDataToBackendForAlignment = async values => {
+  sendSelectedDataToBackendForAlignment = async (values) => {
     const {
       addedSequences,
       isPairwiseAlignment,
@@ -126,6 +131,7 @@ class AlignmentTool extends React.Component {
               i
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
             const elementsToTrim = ["baseCalls", "basePos", "qualNums"];
+            // eslint-disable-next-line no-unused-vars
             for (let element in addedSequencesToUseTrimmed[i]
               .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
@@ -168,7 +174,7 @@ class AlignmentTool extends React.Component {
     // const j5server = process.env.REMOTE_J5 || "http://j5server.teselagen.com"
 
     window.toastr.success("Alignment submitted.");
-    const replaceProtocol = url => {
+    const replaceProtocol = (url) => {
       return url.replace("http://", window.location.protocol + "//");
     };
 
@@ -218,7 +224,7 @@ class AlignmentTool extends React.Component {
         }),
       alignmentTracks:
         alignedSequences &&
-        alignedSequences.map(alignmentData => {
+        alignedSequences.map((alignmentData) => {
           return {
             sequenceData:
               seqsToAlign[
@@ -245,12 +251,12 @@ class AlignmentTool extends React.Component {
 
   handleFileUpload = (files, onChange) => {
     const { array } = this.props;
-    flatMap(files, async file => {
+    flatMap(files, async (file) => {
       const results = await anyToJson(file.originalFileObj, {
         fileName: file.name,
         acceptParts: true
       });
-      return results.forEach(result => {
+      return results.forEach((result) => {
         if (result.success) {
           array.push("addedSequences", result.parsedSequence);
         } else {
@@ -269,7 +275,7 @@ class AlignmentTool extends React.Component {
         <h6>Or enter sequences in plain text format</h6>
         <div>
           <AddYourOwnSeqForm
-            addSeq={newSeq => {
+            addSeq={(newSeq) => {
               fields.push(newSeq);
             }}
           />
@@ -318,7 +324,7 @@ class AlignmentTool extends React.Component {
                   )}
 
                   <Button
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
                       fields.remove(index);
@@ -412,12 +418,12 @@ class AlignmentTool extends React.Component {
   }
 }
 
-export const AlignmentToolInner = reduxForm({
-  form: "veAlignmentTool"
-  // initialValues: {
-  //   addedSequences: []
-  // }
-})(AlignmentTool);
+export const AlignmentToolDialog = compose(
+  wrapDialog({ title: "Create New Alignment" }),
+  reduxForm({
+    form: "veAlignmentTool"
+  })
+)(AlignmentTool);
 
 const AddYourOwnSeqForm = reduxForm({
   form: "AddYourOwnSeqForm",
@@ -433,7 +439,12 @@ const AddYourOwnSeqForm = reduxForm({
   }
 })(({ pristine, error, handleSubmit, reset, addSeq }) => {
   return (
-    <div>
+    <form
+      onSubmit={handleSubmit((vals) => {
+        reset();
+        addSeq(vals);
+      })}
+    >
       <EditableTextField
         style={{ maxWidth: 200 }}
         placeholder="Untitled Sequence"
@@ -444,16 +455,10 @@ const AddYourOwnSeqForm = reduxForm({
         placeholder="AGTTGAGC"
         name="sequence"
       />
-      <Button
-        disabled={pristine || error}
-        onClick={handleSubmit(vals => {
-          reset();
-          addSeq(vals);
-        })}
-      >
+      <Button disabled={pristine || error} type="submit">
         Add
       </Button>
-    </div>
+    </form>
   );
 });
 
@@ -492,7 +497,7 @@ function mottTrim(qualNums) {
       totalScore = 0;
     }
   }
-  const firstPositiveValue = totalScoreInfo.find(e => {
+  const firstPositiveValue = totalScoreInfo.find((e) => {
     return e > 0;
   });
   startPos = totalScoreInfo.indexOf(firstPositiveValue);

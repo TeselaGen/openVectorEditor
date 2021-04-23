@@ -1,9 +1,6 @@
 import React from "react";
 import RowItem from "../RowItem";
-// import ab1Parsed from '../ToolBar/ab1Parsed.json'
-// import ab1ParsedWithQualScores from '../ToolBar/ab1ParsedWithQualScores.json'
-// import ab1ParsedGFPuv54 from "../ToolBar/ab1ParsedGFPuv54.json";
-import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
+// import ab1ParsedGFPuv58 from "../ToolBar/ab1ParsedGFPuv58.json";
 
 export default class DrawChromatogram extends React.Component {
   render() {
@@ -13,7 +10,7 @@ export default class DrawChromatogram extends React.Component {
       <div>
         <RowItem
           {...{
-            chromatogramData: ab1ParsedGFPuv58,
+            // chromatogramData: ab1ParsedGFPuv58,
             row: {
               rowNumber: 0,
               // start: 10,

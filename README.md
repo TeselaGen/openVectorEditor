@@ -6,7 +6,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  
  ![image](https://user-images.githubusercontent.com/2730609/62503453-220acd00-b7a9-11e9-87f3-19e3b1119e6e.png)
 
-
+## [CHANGELOG](CHANGELOG.md)
 ## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
@@ -21,6 +21,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 # Table of Contents
 <!-- TOC -->
 
+  - [[CHANGELOG](CHANGELOG.md)](#changelogchangelogmd)
   - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
   - [Get the desktop app: https://github.com/tnrich/ove-electron/releases](#get-the-desktop-app-httpsgithubcomtnrichove-electronreleases)
@@ -29,6 +30,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Using this module in React](#using-this-module-in-react)
+  - [Example CRA repo with OVE](#example-cra-repo-with-ove)
   - [Installation (react)](#installation-react)
   - [Code (react)](#code-react)
     - [Editor](#editor)
@@ -40,6 +42,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Installation (Universal)](#installation-universal)
     - [via npm:](#via-npm)
     - [Or via CDN:](#or-via-cdn)
+    - [Full Example:](#full-example)
   - [Code (Universal)](#code-universal)
     - [Accessing the editor state:](#accessing-the-editor-state)
   - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
@@ -80,21 +83,30 @@ Upgrade instructions for any major or minor change can be found here:
 [Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
 
 # Using this module in React
+## Example CRA repo with OVE 
+Here is where you can see how to run the `<Editor/>` in a Create-React-App environment: https://github.com/tnrich/ove-react-demo-repo
+
+If you clone that repo you can see it working and see how to set up the redux store/provider and initialize the editor. You should just clone it and run:
+```
+yarn
+yarn start
+```
+
 ## Installation (react)
 ```
-yarn add install-peerdeps open-vector-editor
-```
-Add peer-dependencies: 
-```
-install-peerdeps open-vector-editor --dev --only-peers
+yarn add open-vector-editor
 ```
 
 ## Code (react)
 Require the following components like: 
 ```
-import {Editor, RowView} from "open-vector-editor
+import {Editor, RowView} from "open-vector-editor"
 ```
+
 ### Editor
+To use the <Editor> component, you'll need to do a bit more work to set up a redux store. 
+You can see an example repo where this works here: https://github.com/tnrich/ove-react-demo-repo
+
 The `<Editor {...editorProps}/>` component gives you a full blown editor.
 It takes in a list of editorProps as detailed below. 
 ### CircularView/CircularViewUnconnected
@@ -125,6 +137,10 @@ then add the links
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/open-vector-editor/umd/main.css"> 
 <script type="text/javascript" src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"></script>
 ```
+
+### Full Example: 
+A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/openVectorEditor/blob/master/demo/src/UMDDemo.html
+Demo here http://teselagen.github.io/openVectorEditor/UMDDemo.html
 
 ## Code (Universal)
 
@@ -194,6 +210,13 @@ These props consist of hooks and editor config options that can be passed like s
 		}
 		const sequenceData = jsonData || {sequence: clipboardData.getData("text/plain")}
 		return sequenceData
+	},
+	beforeAnnotationCreate: ({ //also works for edits (!)
+		annotationTypePlural, //features/parts/primers
+		annotation, //annotation info 
+		props //general props to the dialog
+	}) => {
+		//a handler to hook into when annotations (features/primers/parts) are being created
 	},
 	//regular click overrides, eg: 
 	featureClicked: ({annotation, event}) => {
@@ -535,15 +558,15 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
  `() => teselagenSequenceData  //called upon initialization  `
 
 
-<!-- 
+
 # Implementing Autosave functionality
- -->
+pass shouldAutosave=true as a prop and in the onSave() handler, make sure to return a promise so that the UI responds correctly with a spinner indicating saving is in progress
 
 # Development: 
 
 ## Prerequisites
 [Node.js](http://nodejs.org/) >= v8 must be installed.
-download the latest yarn (https://yarnpkg.com/en/)
+download the latest yarn 
 
 ## Outside Developer Set Up Steps
 

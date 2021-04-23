@@ -19,7 +19,7 @@ export default connectToEditor(
     <ToolbarItem
       {...{
         Icon: <Icon icon={featureIcon} />,
-        onIconClick: function() {
+        onIconClick: function () {
           annotationVisibilityToggle("features");
         },
         toggled,
@@ -32,51 +32,3 @@ export default connectToEditor(
     />
   );
 });
-
-// function FeatureToolDropDown({
-//   dispatch,
-//   readOnly,
-//   editorName,
-//   selectionLayer,
-//   toggleDropdown,
-//   annotationLabelVisibility,
-//   annotationLabelVisibilityToggle
-// }) {
-//   return (
-//     <div style={{ paddingTop: 5 }}>
-//       <Checkbox
-//         onChange={function() {
-//           annotationLabelVisibilityToggle("features");
-//           /* labelVisibilityToggle("features"); */
-//         }}
-//         checked={annotationLabelVisibility.features}
-//         label={"Show feature labels"}
-//       />
-//       {!readOnly && (
-//         <Button
-//           onClick={() => {
-//             toggleDropdown();
-//             let initialValues = {};
-//             if (selectionLayer && selectionLayer.start) {
-//               initialValues = convertRangeTo1Based(selectionLayer);
-//             }
-
-//             dispatch({
-//               type: "TG_SHOW_MODAL",
-//               name: "AddOrEditFeatureDialog", //you'll need to pass a unique dialogName prop to the compoennt
-//               props: {
-//                 editorName,
-//                 dialogProps: {
-//                   title: "New Feature"
-//                 },
-//                 initialValues
-//               }
-//             });
-//           }}
-//         >
-//           Add New Feature
-//         </Button>
-//       )}
-//     </div>
-//   );
-// }

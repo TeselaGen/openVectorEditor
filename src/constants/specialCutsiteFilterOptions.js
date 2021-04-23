@@ -1,8 +1,9 @@
 export default {
-  addYourOwn: {
-    value: "addYourOwn",
-    label: "Add additional enzymes"
-  },
+  // manageEnzymes: {
+  //   value: "manageEnzymes",
+  //   label: "Manage Enzymes",
+  //   closeOnSelect: true
+  // },
   single: {
     value: "single",
     label: "Single cutters",

@@ -1,0 +1,41 @@
+name: Cypress tests
+on: [push]
+jobs:
+  cypress-run:
+    name: Cypress run
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        # the actual items in the array do not matter,
+        # just the number - to force CI to sping 3 copies
+        # of the current job in parallel
+        machines: [1, 2, 3]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          parallel: true
+          start: yarn start
+          wait-on: http://localhost:3344
+        env:
+          WITH_COVERAGE: true
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: 373658d4-4931-4ffd-9263-8eb78a838ab9
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v1
+        with:
+          directory: ./coverage/
+          name: codecov-umbrella
+          # fail_ci_if_error: true
+          path_to_write_report: ./coverage/codecov_report.gz
+      # - name: Upload coverage result
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: cypress-coverage
+      #     path: coverage

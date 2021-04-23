@@ -1,5 +1,19 @@
 {
   "id": "msaAlignment_1",
+  "unmappedSeqs": [
+    {
+      "sequenceData": {
+        "name": "lib54",
+        "sequence": "gatagagagttgagacc"
+      }
+    },
+    {
+      "sequenceData": {
+        "name": "lib99",
+        "sequence": "gatagagagttgagacc"
+      }
+    }
+  ],
   "alignmentType": "Multiple Sequence Alignment",
   "alignmentTracks": [
     {

@@ -46,14 +46,14 @@ export default class ReflexElement extends React.Component {
 
     this.onResize = this.onResize.bind(this);
 
-    this.setStateThrottled = throttle(state => {
+    this.setStateThrottled = throttle((state) => {
       this.setState(state);
     }, this.props.renderOnResizeRate);
 
     this.state = {
       dimensions: {
         height: "100%",
-        width: "100%"
+        width: 300
       }
     };
   }
@@ -107,7 +107,7 @@ export default class ReflexElement extends React.Component {
   /////////////////////////////////////////////////////////
   renderChildren() {
     if (this.props.propagateDimensions) {
-      return React.Children.map(this.props.children, child => {
+      return React.Children.map(this.props.children, (child) => {
         const newProps = Object.assign({}, child.props, {
           dimensions: this.state.dimensions
         });
@@ -149,7 +149,9 @@ export default class ReflexElement extends React.Component {
       <Measure bounds onResize={this.onResize}>
         {({ measureRef }) => (
           <div ref={measureRef} className={className} style={outerStyle}>
-            <div style={innerStyle}>{this.renderChildren()}</div>
+            <div className="tg-reflex-element-inner" style={innerStyle}>
+              {this.renderChildren()}
+            </div>
           </div>
         )}
       </Measure>

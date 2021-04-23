@@ -5,16 +5,9 @@
   left: 49.5%;
   /* position the left edge of the element at the middle of the parent */
   transform: translate(-50%, -50%);
+  z-index: 10;
   /* This is a shorthand of
                                            translateX(-50%) and translateY(-50%) */
-}
-
-.veCircularViewWarningContainer {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-
-  display: flex;
 }
 
 .selectionLayerInverseWrapper {
@@ -22,3 +15,7 @@
 }
 
 /*# sourceMappingURL= style.css.map */
+
+.veHideLabels .veLabels {
+  display: none;
+}

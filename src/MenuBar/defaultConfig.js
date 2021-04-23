@@ -93,6 +93,10 @@ export default [
           "lowerCaseSelection"
         ]
       },
+      {
+        text: "Change Circular/Linear",
+        submenu: ["toggleCircular", "toggleLinear"]
+      },
       // {
       //   text: "Change Sequence Case For Selection",
       //   submenu: [
@@ -114,7 +118,9 @@ export default [
     text: "Tools",
     cmd: "toolsCmd",
     submenu: [
+      "openFilterCutsites",
       "restrictionEnzymesManager",
+      "openCreateCustomEnzyme",
       "simulateDigestion",
       {
         text: "Remove Duplicates",

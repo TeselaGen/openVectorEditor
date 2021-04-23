@@ -19,7 +19,8 @@ import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 
 // import ReactList from './ReactVariable';
 import "./style.css";
-import { getEmptyText } from "../utils/editorUtils";
+import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
+import isMobile from "is-mobile";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
@@ -89,20 +90,26 @@ export class RowView extends React.Component {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
 
-    some(visibleRowsContainer.childNodes, function(rowDomNode) {
+    const selectionStartGrabbed = event.target.classList.contains(
+      draggableClassnames.selectionStart
+    );
+    const selectionEndGrabbed = event.target.classList.contains(
+      draggableClassnames.selectionEnd
+    );
+    some(visibleRowsContainer.childNodes, function (rowDomNode) {
       let boundingRowRect = rowDomNode.getBoundingClientRect();
       if (
-        event.clientY > boundingRowRect.top &&
-        event.clientY < boundingRowRect.top + boundingRowRect.height
+        getClientY(event) > boundingRowRect.top &&
+        getClientY(event) < boundingRowRect.top + boundingRowRect.height
       ) {
         //then the click is falls within this row
         rowNotFound = false;
         let row = rowData[Number(rowDomNode.getAttribute("data-row-number"))];
-        if (event.clientX - boundingRowRect.left < 0) {
+        if (getClientX(event) - boundingRowRect.left < 0) {
           nearestCaretPos = row.start;
         } else {
           let clickXPositionRelativeToRowContainer =
-            event.clientX - boundingRowRect.left;
+            getClientX(event) - boundingRowRect.left;
           let numberOfBPsInFromRowStart = Math.floor(
             (clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth
           );
@@ -117,13 +124,13 @@ export class RowView extends React.Component {
     if (rowNotFound) {
       let { top, bottom } = visibleRowsContainer.getBoundingClientRect();
       let numbers = [top, bottom];
-      let target = event.clientY;
+      let target = getClientY(event);
       let topOrBottom = numbers
-        .map(function(value, index) {
+        .map(function (value, index) {
           return [Math.abs(value - target), index];
         })
         .sort()
-        .map(function(value) {
+        .map(function (value) {
           return numbers[value[1]];
         })[0];
       let rowDomNode;
@@ -148,22 +155,18 @@ export class RowView extends React.Component {
     }
     if (sequenceLength === 0) nearestCaretPos = 0;
     callback({
+      doNotWrapOrigin: !(
+        this.props.sequenceData && this.props.sequenceData.circular
+      ),
       event,
       className: event.target.className,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
-      selectionStartGrabbed: event.target.classList.contains(
-        draggableClassnames.selectionStart
-      ),
-      selectionEndGrabbed: event.target.classList.contains(
-        draggableClassnames.selectionEnd
-      )
+      selectionStartGrabbed,
+      selectionEndGrabbed
     });
   };
 
-  // componentDidMount() {
-  //   this.mounted=true
-  // }
   UNSAFE_componentWillReceiveProps(props) {
     //we haven't yet called this function yet, so to make sure it jumps to the selected bps we just set a variable on the class
     this.updateScrollPosition(
@@ -181,7 +184,6 @@ export class RowView extends React.Component {
       selectionLayer = {},
       matchedSearchLayer = {}
     } = newProps;
-
     let {
       caretPosition: caretPositionOld = -1,
       selectionLayer: selectionLayerOld = {},
@@ -240,7 +242,10 @@ export class RowView extends React.Component {
       let [start, end] = this.InfiniteScroller.getVisibleRange();
       // const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
-        this.InfiniteScroller.scrollTo(rowToScrollTo);
+        //wrap this in a set timeout to give onDoubleClick enough time to fire before jumping the rowview around
+        setTimeout(() => {
+          this.InfiniteScroller.scrollTo(rowToScrollTo);
+        }, 0);
         clearInterval(this.jumpIntervalId);
         //this will try to run the following logic at most 10 times with a 100ms pause between each
         this.jumpIntervalId = setIntervalX(
@@ -287,7 +292,7 @@ export class RowView extends React.Component {
     return this.rowData;
   };
 
-  renderItem = index => {
+  renderItem = (index) => {
     if (this.cache[index]) return this.cache[index];
     let {
       //currently found in props
@@ -319,7 +324,7 @@ export class RowView extends React.Component {
           <div style={rowJumpButtonStyle}>
             <Button
               data-test="jumpToEndButton"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 this.InfiniteScroller &&
                   this.InfiniteScroller.scrollTo(rowData.length);
@@ -334,7 +339,7 @@ export class RowView extends React.Component {
           <div style={rowJumpButtonStyle}>
             <Button
               data-test="jumpToStartButton"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 this.InfiniteScroller && this.InfiniteScroller.scrollTo(0);
               }}
@@ -374,7 +379,20 @@ export class RowView extends React.Component {
       return null;
     }
   };
-  onDrag = event => {
+  onDrag = (event) => {
+    if (isMobile({ tablet: true })) {
+      if (
+        //only allow dragging on mobile if the user is grabbing the cursor
+        !some(draggableClassnames, (cn) => {
+          if (event.target.classList.contains(cn)) {
+            return true;
+          }
+        })
+      ) {
+        return;
+      }
+    }
+
     this.dragging = true;
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(
@@ -383,7 +401,7 @@ export class RowView extends React.Component {
       this.props.editorDragged
     );
   };
-  onStart = event => {
+  onStart = (event) => {
     this.dragging = true;
     const rowData = this.rowData;
     this.getNearestCursorPositionToMouseEvent(
@@ -393,21 +411,21 @@ export class RowView extends React.Component {
     );
   };
 
-  onStop = e => {
+  onStop = (e) => {
     this.dragging = false;
     this.props.editorDragStopped(e);
   };
 
-  getRef = ref => (this.node = ref);
+  getRef = (ref) => (this.node = ref);
 
-  onContextMenu = event => {
+  onContextMenu = (event) => {
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       event,
       this.props.backgroundRightClicked
     );
   };
-  onClick = event => {
+  onClick = (event) => {
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       event,
@@ -415,7 +433,7 @@ export class RowView extends React.Component {
     );
   };
 
-  getReactListRef = c => {
+  getReactListRef = (c) => {
     this.InfiniteScroller = c;
     !this.calledUpdateScrollOnce && this.updateScrollPosition({}, this.props); //trigger the scroll here as well because now we actually have the infinite scroller component accessible
   };
@@ -472,7 +490,8 @@ export class RowView extends React.Component {
             height: height || 300,
             width: containerWidthMinusMargin + marginWidth,
             paddingLeft: marginWidth / 2,
-            paddingRight: marginWidth / 2
+            paddingRight: marginWidth / 2,
+            ...(isMobile && { touchAction: "inherit" })
           }}
           // onScroll={disablePointers} //tnr: this doesn't actually help much with scrolling performance
           onContextMenu={this.onContextMenu}
@@ -495,30 +514,6 @@ export class RowView extends React.Component {
 
 export default withEditorInteractions(RowView);
 
-// function itemSizeEstimator(index, cache) {
-//   if (cache[index]) {
-//     return cache[index];
-//   }
-//   return 400;
-// }
-
-// const disablePointers = () => {
-//   clearTimeout(this.timer);
-//   if(!document.body.classList.contains('disable-hover')) {
-//     document.body.classList.add('disable-hover')
-//   }
-
-//   this.timer = setTimeout(function(){
-//     document.body.classList.remove('disable-hover')
-//   },0);
-// }
-
-// function onScroll() {
-//   window.__veScrolling = true;
-//   setTimeout(() => {
-//     window.__veScrolling = false;
-//   });
-// }
 function onScroll() {
   window.__veScrolling = true;
   setTimeout(endScroll);
@@ -530,7 +525,7 @@ const endScroll = debounce(() => {
 
 function setIntervalX(callback, delay, repetitions) {
   let x = 0;
-  let intervalID = window.setInterval(function() {
+  let intervalID = window.setInterval(function () {
     callback();
 
     if (++x === repetitions) {

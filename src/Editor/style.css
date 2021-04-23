@@ -74,8 +74,7 @@
 .preview-mode-view-fullscreen:hover {
   background: #0e5a8a;
 }
-
-.bp3-menu-item span.bp3-tag {
+.bp3-tag.tg-smallTag {
   transform: scale(0.8);
 }
 
@@ -177,4 +176,23 @@
 .bp3-dark .veTabActive {
   color: #48aff0 !important;
   border-bottom-color: #48aff0 !important;
+}
+
+[cmd="filterPartsByTagCmd"] > .bp3-text-overflow-ellipsis {
+  overflow: visible;
+}
+.vePart {
+  fill-opacity: 0;
+}
+
+.vePart text,
+text.vePart,
+tspan.vePart {
+  fill-opacity: 1;
+}
+.veWarningContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
 }

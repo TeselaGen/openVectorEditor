@@ -3,10 +3,12 @@ import {
   DataTable,
   withSelectedEntities,
   CmdCheckbox,
-  CmdButton
+  CmdButton,
+  getTagProps,
+  getKeyedTagsAndTagOptions
 } from "teselagen-react-components";
 import { map, upperFirst, pick } from "lodash";
-import { Button } from "@blueprintjs/core";
+import { Button, Tag } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
@@ -14,37 +16,74 @@ import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
+import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 
-const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
-  const schema = {
-    fields: [
-      ...(noColor
-        ? []
-        : [
-            {
-              path: "color",
-              type: "string",
-              render: color => {
-                return (
-                  <div style={{ height: 20, width: 20, background: color }} />
-                  // <ColorPickerPopover>
-                  //   <div style={{ height: 20, width: 20, background: color }} />
-                  // </ColorPickerPopover>
-                );
-              }
-            }
-          ]),
-      { path: "name", type: "string" },
-      ...(noType ? [] : [{ path: "type", type: "string" }]),
-      sizeSchema,
-      { path: "strand", type: "string" }
-    ]
-  };
+const genericAnnotationProperties = ({
+  annotationType,
+  noColor,
+  noType,
+  withTags
+}) => {
   const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
     constructor(props) {
       super(props);
       this.commands = commands(this);
+      this.schema = {
+        fields: [
+          ...(noColor
+            ? []
+            : [
+                {
+                  path: "color",
+                  type: "string",
+                  render: (color) => {
+                    return (
+                      <div
+                        style={{ height: 20, width: 20, background: color }}
+                      />
+                      // <ColorPickerPopover>
+                      //   <div style={{ height: 20, width: 20, background: color }} />
+                      // </ColorPickerPopover>
+                    );
+                  }
+                }
+              ]),
+          { path: "name", type: "string" },
+          ...(noType ? [] : [{ path: "type", type: "string" }]),
+          sizeSchema,
+          ...(withTags && this.props.allPartTags
+            ? [
+                {
+                  path: "tags",
+                  type: "string",
+                  getValueToFilterOn: (o, { keyedPartTags }) => {
+                    const toRet = (o.tags || [])
+                      .map((tagId) => {
+                        const tag = keyedPartTags[tagId];
+                        if (!tag) return "";
+                        return tag.label;
+                      })
+                      .join(" ");
+                    return toRet;
+                  },
+                  render: (tags, b, c, { keyedPartTags = {} }) => {
+                    return (
+                      <div style={{ display: "flex" }}>
+                        {(tags || []).map((tagId, i) => {
+                          const tag = keyedPartTags[tagId];
+                          if (!tag) return null;
+                          return <Tag key={i} {...getTagProps(tag)}></Tag>;
+                        })}
+                      </div>
+                    );
+                  }
+                }
+              ]
+            : []),
+          { path: "strand", type: "string" }
+        ]
+      };
     }
     onRowSelect = ([record]) => {
       if (!record) return;
@@ -65,22 +104,17 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
         sequenceLength,
         selectionLayer,
         isProtein,
+        allPartTags,
         annotationPropertiesSelectedEntities: _annotationPropertiesSelectedEntities,
         selectedAnnotationId
       } = this.props;
       const annotationPropertiesSelectedEntities = _annotationPropertiesSelectedEntities.filter(
-        a => annotations[a.id]
+        (a) => annotations[a.id]
       );
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
-      // showAddOrEditFeatureDialog()
-      // showAddOrEditPartDialog()
-      // showAddOrEditPrimerDialog()
-      const showAddOrEditAnnotationDialog = this.props[
-        `showAddOrEdit${annotationTypeUpper}Dialog`
-      ];
 
-      const annotationsToUse = map(annotations, annotation => {
+      const annotationsToUse = map(annotations, (annotation) => {
         return {
           ...annotation,
           ...(annotation.strand === undefined && {
@@ -89,6 +123,7 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
           size: getRangeLength(annotation, sequenceLength)
         };
       });
+
       return (
         <React.Fragment>
           <DataTable
@@ -107,9 +142,10 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
             formName="annotationProperties"
             noRouter
             isProtein={isProtein}
+            keyedPartTags={getKeyedTagsAndTagOptions(allPartTags)}
             compact
             isInfinite
-            schema={schema}
+            schema={this.schema}
             entities={annotationsToUse}
           />
           {!readOnly && (
@@ -119,7 +155,8 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
                 style={{ marginRight: 15 }}
                 onClick={() => {
                   showAddOrEditAnnotationDialog({
-                    ...pick(selectionLayer, "start", "end", "forward")
+                    type: annotationType,
+                    annotation: pick(selectionLayer, "start", "end", "forward")
                   });
                 }}
               >
@@ -127,9 +164,10 @@ const genericAnnotationProperties = ({ annotationType, noColor, noType }) => {
               </Button>
               <Button
                 onClick={() => {
-                  showAddOrEditAnnotationDialog(
-                    annotationPropertiesSelectedEntities[0]
-                  );
+                  showAddOrEditAnnotationDialog({
+                    type: annotationType,
+                    annotation: annotationPropertiesSelectedEntities[0]
+                  });
                 }}
                 style={{ marginRight: 15 }}
                 disabled={annotationPropertiesSelectedEntities.length !== 1}

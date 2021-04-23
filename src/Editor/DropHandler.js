@@ -3,7 +3,7 @@ import Dropzone from "react-dropzone";
 import "./DropHandler.css";
 
 export default class DropHandler extends React.Component {
-  handleDrop = files => {
+  handleDrop = (files) => {
     this.props.importSequenceFromFile(files[0]);
   };
   render() {
@@ -13,7 +13,7 @@ export default class DropHandler extends React.Component {
         disabled={disabled}
         disableClick
         multiple={false}
-        accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt"]}
+        accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna"]}
         activeClassName="isActive"
         rejectClassName="isRejected"
         onDropRejected={() => {

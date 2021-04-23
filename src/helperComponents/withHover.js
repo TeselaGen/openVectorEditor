@@ -3,7 +3,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import React from "react";
 import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
-import { withHandlers } from "recompose";
+import { withHandlers, branch } from "recompose";
 
 export const HoveredIdContext = React.createContext({
   hoveredId: "" // default value
@@ -13,7 +13,7 @@ function withHoveredIdFromContext(Component) {
   return function HoveredIdComponent(props) {
     return (
       <HoveredIdContext.Consumer>
-        {contexts => <Component {...props} {...contexts} />}
+        {(contexts) => <Component {...props} {...contexts} />}
       </HoveredIdContext.Consumer>
     );
   };
@@ -21,8 +21,9 @@ function withHoveredIdFromContext(Component) {
 
 export default compose(
   withHoveredIdFromContext,
-  connect(
-    function(
+  branch(
+    ({ noRedux }) => !noRedux,
+    connect(function (
       state,
       {
         id,
@@ -55,23 +56,24 @@ export default compose(
       }
       return toReturn;
     },
-    hoveredAnnotationActions
+    hoveredAnnotationActions)
   ),
   withHandlers({
-    onMouseOver: props => e => {
+    onMouseOver: (props) => (e) => {
       const { editorName, id, hoveredAnnotationUpdate } = props;
       let isIdHashmap = typeof id === "object";
       let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
       //because the calling onHover can slow things down, we disable it if dragging or scrolling
       if (window.__veDragging || window.__veScrolling) return;
       e.stopPropagation();
-      hoveredAnnotationUpdate(idToPass, { editorName });
+      hoveredAnnotationUpdate &&
+        hoveredAnnotationUpdate(idToPass, { editorName });
     },
-    onMouseLeave: props => e => {
+    onMouseLeave: (props) => (e) => {
       const { editorName, hoveredAnnotationClear } = props;
       e.stopPropagation();
       if (window.__veDragging || window.__veScrolling) return;
-      hoveredAnnotationClear(true, { editorName });
+      hoveredAnnotationClear && hoveredAnnotationClear(true, { editorName });
     }
   })
 );

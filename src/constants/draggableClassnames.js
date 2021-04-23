@@ -1,5 +1,5 @@
 export default {
-  caret: "veCaretSVG",
+  caret: "veCaret",
   selectionStart: "veSelectionLayerStart",
   selectionEnd: "veSelectionLayerEnd"
 };

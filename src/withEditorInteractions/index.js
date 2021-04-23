@@ -47,10 +47,21 @@ import {
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 import { getNodeToRefocus } from "../utils/editorUtils";
 
-function getAcceptedChars(isProtein) {
+import {
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
+
+function getAcceptedChars({ isProtein, isRna, isMixedRnaAndDna } = {}) {
   return isProtein
     ? bioData.extended_protein_letters.toLowerCase()
-    : bioData.ambiguous_dna_letters.toLowerCase();
+    : isRna
+    ? bioData.ambiguous_rna_letters.toLowerCase()
+    : isMixedRnaAndDna
+    ? bioData.ambiguous_rna_letters.toLowerCase() +
+      bioData.ambiguous_dna_letters.toLowerCase()
+    : //just plain old dna
+      bioData.ambiguous_dna_letters.toLowerCase();
 }
 
 const annotationClickHandlers = [
@@ -69,12 +80,18 @@ const annotationClickHandlers = [
   "partClicked",
   "searchLayerClicked"
 ];
+//tnr: because this menu is being rendered outside the main render tree (by blueprint)
+//we need to make sure it re-renders whenever the redux state changes (so things like tick-marks will toggle properly etc..)
+const ConnectedMenu = withEditorProps(({ children, ...rest }) => (
+  <Menu changingProps={rest}>{children}</Menu>
+));
+
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
   return class VectorInteractionWrapper extends React.Component {
     constructor(props) {
       super(props);
-      annotationClickHandlers.forEach(handler => {
+      annotationClickHandlers.forEach((handler) => {
         this[handler] = (...args) => {
           const { clickOverrides = {} } = this.props;
           let preventDefault;
@@ -88,10 +105,7 @@ function VectorInteractionHOC(Component /* options */) {
         };
       });
 
-      const ConnectedMenu = withEditorProps(({ children }) => (
-        <Menu>{children}</Menu>
-      ));
-      this.ConnectedMenu = props => (
+      this.ConnectedMenu = (props) => (
         <ConnectedMenu store={this.props.store} {...props} />
       );
     }
@@ -114,16 +128,14 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        getAcceptedChars(
-          this.props.sequenceData && this.props.sequenceData.isProtein
-        ).split(""),
-        event => {
+        getAcceptedChars(this.props.sequenceData).split(""),
+        (event) => {
           this.handleDnaInsert(event);
         }
       );
 
       // TODO: move these into commands
-      let moveCaretBindings = [
+      const moveCaretBindings = [
         { keyCombo: ["left", "shift+left"], type: "moveCaretLeftOne" },
         { keyCombo: ["right", "shift+right"], type: "moveCaretRightOne" },
         { keyCombo: ["up", "shift+up"], type: "moveCaretUpARow" },
@@ -147,10 +159,10 @@ function VectorInteractionHOC(Component /* options */) {
       ];
 
       moveCaretBindings.forEach(({ keyCombo, type }) => {
-        this.combokeys.bind(keyCombo, event => {
-          let shiftHeld = event.shiftKey;
-          let bpsPerRow = getBpsPerRow(this.props);
-          let {
+        this.combokeys.bind(keyCombo, (event) => {
+          const shiftHeld = event.shiftKey;
+          const bpsPerRow = getBpsPerRow(this.props);
+          const {
             selectionLayer,
             caretPosition,
             sequenceLength,
@@ -159,7 +171,7 @@ function VectorInteractionHOC(Component /* options */) {
             caretPositionUpdate,
             selectionLayerUpdate
           } = this.props;
-          let moveBy = moveCaret({
+          const moveBy = moveCaret({
             sequenceLength,
             bpsPerRow,
             caretPosition,
@@ -184,7 +196,7 @@ function VectorInteractionHOC(Component /* options */) {
         });
       });
 
-      this.combokeys.bind(["backspace", "del"], event => {
+      this.combokeys.bind(["backspace", "del"], (event) => {
         // Handle shortcut
         this.handleDnaDelete(event);
       });
@@ -202,6 +214,7 @@ function VectorInteractionHOC(Component /* options */) {
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       updateSelectionOrCaret({
+        doNotWrapOrigin: !sequenceData.circular,
         shiftHeld,
         sequenceLength,
         newRangeOrCaret,
@@ -212,8 +225,8 @@ function VectorInteractionHOC(Component /* options */) {
       });
     };
 
-    handlePaste = e => {
-      let {
+    handlePaste = (e) => {
+      const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         readOnly,
@@ -258,7 +271,7 @@ function VectorInteractionHOC(Component /* options */) {
       e.preventDefault();
     };
 
-    handleCutOrCopy = isCut => e => {
+    handleCutOrCopy = (isCut) => (e) => {
       const {
         onCopy = () => {},
         sequenceData,
@@ -314,7 +327,7 @@ function VectorInteractionHOC(Component /* options */) {
     handleCopy = this.handleCutOrCopy();
 
     handleDnaInsert = ({ useEventPositioning }) => {
-      let {
+      const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
@@ -331,12 +344,14 @@ function VectorInteractionHOC(Component /* options */) {
         createSequenceInputPopup({
           useEventPositioning,
           isReplace,
-          acceptedChars: getAcceptedChars(sequenceData.isProtein),
+          acceptedChars: getAcceptedChars(sequenceData),
           isProtein: sequenceData.isProtein,
+          isRna: sequenceData.isRna,
+          isMixedRnaAndDna: sequenceData.isMixedRnaAndDna,
           selectionLayer,
           sequenceLength,
           caretPosition,
-          handleInsert: seqDataToInsert => {
+          handleInsert: (seqDataToInsert) => {
             insertAndSelectHelper({
               props: this.props,
               seqDataToInsert
@@ -349,7 +364,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handleDnaDelete = (showToast = true) => {
-      let {
+      const {
         caretPosition = -1,
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
@@ -396,16 +411,16 @@ function VectorInteractionHOC(Component /* options */) {
       }
     };
 
-    caretPositionUpdate = position => {
-      let { caretPosition = -1 } = this.props;
+    caretPositionUpdate = (position) => {
+      const { caretPosition = -1 } = this.props;
       if (caretPosition === position) {
         return;
       }
       //we only call caretPositionUpdate if we're actually changing something
       this.props.caretPositionUpdate(position);
     };
-    selectionLayerUpdate = newSelection => {
-      let {
+    selectionLayerUpdate = (newSelection) => {
+      const {
         selectionLayer = { start: -1, end: -1 },
         ignoreGapsOnHighlight
       } = this.props;
@@ -462,22 +477,25 @@ function VectorInteractionHOC(Component /* options */) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
-    warningClicked_localOverride = ({ event, annotation }) => {
-      event.preventDefault();
-      event.stopPropagation();
+
+    warningDoubleClicked = ({ event, annotation, doNotStopPropagation }) => {
+      if (!doNotStopPropagation) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       const { annotationSelect, annotationDeselectAll } = this.props;
       showConfirmationDialog({
-        cancelButtonText: "Cancel",
-        confirmButtonText: "Okay",
-
+        cancelButtonText: null,
+        confirmButtonText: "OK",
         canEscapeKeyCancel: true,
         // intent: Intent.NONE,
-
         // onCancel: undefined,
         text: (
           <React.Fragment>
-            <h3>{annotation.name}:</h3>
-            {annotation.message}
+            <div style={{ wordBreak: "break-word" }}>
+              <h3>{annotation.name}:</h3>
+              {annotation.message}
+            </div>
           </React.Fragment>
         )
       });
@@ -509,7 +527,7 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     // eslint-disable-next-line no-unused-vars
-    getCopyOptions = annotation => {
+    getCopyOptions = (annotation) => {
       const { sequenceData, readOnly } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
@@ -570,19 +588,12 @@ function VectorInteractionHOC(Component /* options */) {
                 },
                 didMount: ({ className }) => {
                   // TODO: Maybe use a cut action instead
-                  this.openVeCut = makeTextCopyable(i => i, className, "cut");
+                  this.openVeCut = makeTextCopyable((i) => i, className, "cut");
                 }
               }
             ]),
         {
           text: "Copy",
-          className: "openVeCopy1",
-          willUnmount: () => {
-            this.openVeCopy1 && this.openVeCopy1.destroy();
-          },
-          didMount: ({ className }) => {
-            this.openVeCopy1 = makeTextCopyable(i => i, className);
-          },
           submenu: !isProtein && [
             {
               text: "Copy",
@@ -591,7 +602,7 @@ function VectorInteractionHOC(Component /* options */) {
                 this.openVeCopy2 && this.openVeCopy2.destroy();
               },
               didMount: ({ className }) => {
-                this.openVeCopy2 = makeTextCopyable(i => i, className);
+                this.openVeCopy2 = makeTextCopyable((i) => i, className);
               }
             },
 
@@ -630,7 +641,7 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAA = makeTextCopyable(
-                  selectedSeqData => ({
+                  (selectedSeqData) => ({
                     sequence: getAminoAcidStringFromSequenceString(
                       selectedSeqData.sequence
                     )
@@ -647,7 +658,7 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
-                  selectedSeqData => ({
+                  (selectedSeqData) => ({
                     sequence: getAminoAcidStringFromSequenceString(
                       getReverseComplementSequenceAndAnnotations(
                         selectedSeqData
@@ -679,8 +690,8 @@ function VectorInteractionHOC(Component /* options */) {
       ];
     };
 
-    getSelectionMenuOptions = annotation => {
-      let items = [
+    getSelectionMenuOptions = (annotation) => {
+      const items = [
         ...this.getCopyOptions(annotation),
         createNewAnnotationMenu,
         "--",
@@ -707,7 +718,7 @@ function VectorInteractionHOC(Component /* options */) {
       return handler({ event, ...rest }, this.props);
     };
     enhanceRightClickAction = (action, key) => {
-      return opts => {
+      return (opts) => {
         const lastFocusedEl = document.activeElement;
         const { rightClickOverrides = {} } = this.props;
         const items = action(opts);
@@ -802,7 +813,7 @@ function VectorInteractionHOC(Component /* options */) {
           {
             text: "Remove Deletion",
             // icon: "ion-plus-round",
-            onClick: function() {
+            onClick: function () {
               dispatch({
                 type: "DELETION_LAYER_DELETE",
                 meta: { editorName },
@@ -833,6 +844,27 @@ function VectorInteractionHOC(Component /* options */) {
         "viewPartProperties"
       ];
     }, "partRightClicked");
+    warningRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+      this.props.selectionLayerUpdate({
+        start: annotation.start,
+        end: annotation.end
+      });
+      return [
+        {
+          text: "View Warning Details",
+          onClick: (event) => {
+            this.warningDoubleClicked({
+              event,
+              annotation,
+              doNotStopPropagation: true
+            });
+          }
+        },
+
+        "--",
+        ...this.getSelectionMenuOptions(annotation)
+      ];
+    }, "partRightClicked");
     featureRightClicked = this.enhanceRightClickAction(
       ({ annotation, event }) => {
         this.props.selectionLayerUpdate({
@@ -840,11 +872,7 @@ function VectorInteractionHOC(Component /* options */) {
           end: annotation.end
         });
         event.persist();
-        const {
-          readOnly,
-          showMergeFeaturesDialog,
-          annotationsToSupport: { parts } = {}
-        } = this.props;
+        const { readOnly, annotationsToSupport: { parts } = {} } = this.props;
         return [
           "editFeature",
           "deleteFeature",
@@ -859,7 +887,7 @@ function VectorInteractionHOC(Component /* options */) {
                     onClick: async () => {
                       const { sequenceData, upsertPart } = this.props;
                       if (
-                        some(sequenceData.parts, part => {
+                        some(sequenceData.parts, (part) => {
                           if (
                             part.start === annotation.start &&
                             part.end === annotation.end
@@ -894,7 +922,9 @@ function VectorInteractionHOC(Component /* options */) {
                       event: { ...event, shiftHeld: true }
                     });
                     // annotationSelect(annotation)
-                    showMergeFeaturesDialog(annotation);
+                    showDialog({
+                      dialogType: "MergeFeaturesDialog"
+                    });
                   }
                 },
                 "showRemoveDuplicatesDialogFeatures",
@@ -965,7 +995,7 @@ function VectorInteractionHOC(Component /* options */) {
           "deleteTranslation",
           {
             text: "Select Translation",
-            onClick: function() {
+            onClick: function () {
               selectionLayerUpdate({
                 start: annotation.start,
                 end: annotation.end
@@ -979,6 +1009,27 @@ function VectorInteractionHOC(Component /* options */) {
       "translationRightClicked"
     );
 
+    featureDoubleClicked = ({ annotation }) => {
+      showAddOrEditAnnotationDialog({ type: "feature", annotation });
+    };
+    partDoubleClicked = ({ annotation }) => {
+      showAddOrEditAnnotationDialog({ type: "part", annotation });
+    };
+    primerDoubleClicked = ({ annotation }) => {
+      showAddOrEditAnnotationDialog({ type: "primer", annotation });
+    };
+    cutsiteDoubleClicked = ({ annotation }) => {
+      showDialog({
+        dialogType: "AdditionalCutsiteInfoDialog",
+        props: {
+          dialogProps: {
+            title: annotation.name
+          },
+          cutsiteOrGroupKey: annotation.name
+        }
+      });
+    };
+
     render() {
       const {
         closePanelButton,
@@ -988,9 +1039,13 @@ function VectorInteractionHOC(Component /* options */) {
         // fitHeight //used to allow the editor to expand to fill the height of its containing component
       } = this.props;
       //do this in two steps to determine propsToPass
+
       let {
+        // eslint-disable-next-line prefer-const
         children,
+        // eslint-disable-next-line prefer-const
         vectorInteractionWrapperStyle = {},
+        // eslint-disable-next-line prefer-const
         disableEditorClickAndDrag = false,
         ...propsToPass
       } = this.props;
@@ -999,7 +1054,7 @@ function VectorInteractionHOC(Component /* options */) {
       propsToPass.height = height - tabHeight;
       // if (fitHeight) {
       // }
-      let selectedBps = getSequenceWithinRange(
+      const selectedBps = getSequenceWithinRange(
         selectionLayer,
         sequenceData.sequence
       );
@@ -1012,11 +1067,17 @@ function VectorInteractionHOC(Component /* options */) {
           backgroundRightClicked: this.backgroundRightClicked,
           featureRightClicked: this.featureRightClicked,
           partRightClicked: this.partRightClicked,
+          primerRightClicked: this.primerRightClicked,
+          featureDoubleClicked: this.featureDoubleClicked,
+          partDoubleClicked: this.partDoubleClicked,
+          primerDoubleClicked: this.primerDoubleClicked,
+          warningDoubleClicked: this.warningDoubleClicked,
+          warningRightClicked: this.warningRightClicked,
           orfRightClicked: this.orfRightClicked,
           deletionLayerRightClicked: this.deletionLayerRightClicked,
           cutsiteRightClicked: this.cutsiteRightClicked,
+          cutsiteDoubleClicked: this.cutsiteDoubleClicked,
           translationRightClicked: this.translationRightClicked,
-          primerRightClicked: this.primerRightClicked,
           ...annotationClickHandlers.reduce((acc, handler) => {
             acc[handler] = this[handler];
             return acc;
@@ -1032,7 +1093,7 @@ function VectorInteractionHOC(Component /* options */) {
       return (
         <div
           tabIndex={0} //this helps with focusing using Keyboard's parentElement.focus()
-          ref={c => (this.node = c)}
+          ref={(c) => (this.node = c)}
           className="veVectorInteractionWrapper"
           style={{ position: "relative", ...vectorInteractionWrapperStyle }}
           onFocus={this.handleWrapperFocus}

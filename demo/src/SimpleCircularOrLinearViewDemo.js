@@ -12,7 +12,8 @@ const defaultState = {
   hideNameAndInfo: false,
   circular: false,
   changeSize: false,
-  togglePartColor: false
+  togglePartColor: false,
+  toggleNoRedux: false
 };
 
 export default class SimpleCircularOrLinearViewDemo extends React.Component {
@@ -52,6 +53,12 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
           {renderToggle({ that: this, type: "circular" })}
           {renderToggle({ that: this, type: "changeSize" })}
           {renderToggle({ that: this, type: "togglePartColor" })}
+          {renderToggle({
+            that: this,
+            type: "toggleNoRedux",
+            description:
+              "Pass noRedux=true if you want to render this component in a redux-free environment. Note: passing hoveredIds will not work with noRedux=true"
+          })}
         </div>
         <br />
         <br />
@@ -60,6 +67,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
 
         <SimpleCircularOrLinearView
           {...{
+            ...(this.state.toggleNoRedux && { noRedux: true }),
             ...(this.state.hideNameAndInfo && { hideName: true }),
             ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
             ...(this.state.changeSize && { height: 500, width: 500 }),
@@ -118,7 +126,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                 },
                 {
                   name: "Part 2",
-                  id: "fakeId2",
+                  id: "fakeId3",
                   start: 25,
                   end: 30,
                   ...(this.state.togglePartColor && { color: "override_blue" })
@@ -150,7 +158,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
         },
         {
           name: "Part 2",
-          id: "fakeId2",
+          id: "fakeId4",
           start: 25,
           end: 30
         }

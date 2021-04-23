@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { reduxForm } from "redux-form";
 
-import { withDialog } from "teselagen-react-components";
+import { wrapDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Classes, ButtonGroup } from "@blueprintjs/core";
 import classNames from "classnames";
@@ -14,79 +14,92 @@ import CircularView from "../../CircularView";
 import LinearView from "../../LinearView";
 import "./style.css";
 
-export class PrintDialog extends React.Component {
+class PrintDialog extends React.Component {
   state = {
-    circular: false
+    circular: null
   };
   render() {
     const {
       hideModal,
-      // sequenceData = { sequence: "" },
+      hideLinearCircularToggle,
+      hidePrintButton,
+      addPaddingBottom,
+      sequenceData,
       // handleSubmit,
       editorName
       // circular,
       // upsertFeature
     } = this.props;
     // const sequenceLength = sequenceData.sequence.length;
-    const isCirc = (this.state || {}).circular;
+    let isCirc = sequenceData.circular;
+
+    if (this.state.circular !== null) {
+      isCirc = this.state.circular;
+    }
     return (
-      <div className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <ButtonGroup>
-            <Button
-              onClick={() => {
-                this.setState({ circular: true });
-              }}
-              active={isCirc}
-            >
-              Circular
-            </Button>
-            <Button
-              onClick={() => {
-                this.setState({ circular: false });
-              }}
-              active={!isCirc}
-            >
-              Linear
-            </Button>
-          </ButtonGroup>
-        </div>
+      <div
+        style={addPaddingBottom ? { paddingBottom: 20 } : {}}
+        className={classNames(Classes.DIALOG_BODY, "tg-min-width-dialog")}
+      >
+        {!hideLinearCircularToggle && (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ButtonGroup>
+              <Button
+                onClick={() => {
+                  this.setState({ circular: true });
+                }}
+                active={isCirc}
+              >
+                Circular
+              </Button>
+              <Button
+                onClick={() => {
+                  this.setState({ circular: false });
+                }}
+                active={!isCirc}
+              >
+                Linear
+              </Button>
+            </ButtonGroup>
+          </div>
+        )}
         <br />
         <ComponentToPrint
           fullscreen={this.state && this.state.fullscreen}
           circular={isCirc}
           editorName={editorName || "StandaloneEditor"}
-          ref={el => (this.componentRef = el)}
+          ref={(el) => (this.componentRef = el)}
         />
         <br />
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <ReactToPrint
-            trigger={() => <Button intent="primary">Print</Button>}
-            content={() => this.componentRef}
-            onBeforePrint={() => {
-              this.setState({ fullscreen: true });
-            }}
-            bodyClass="ve-print"
-            // printPreview
-            pageStyle={`@page { size: auto;  margin: 0mm; } @media print { 
+        {!hidePrintButton && (
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <ReactToPrint
+              trigger={() => <Button intent="primary">Print</Button>}
+              content={() => this.componentRef}
+              onBeforePrint={() => {
+                this.setState({ fullscreen: true });
+              }}
+              bodyClass="ve-print"
+              // printPreview
+              pageStyle={`@page { size: auto;  margin: 0mm; } @media print { 
               body { 
                  -webkit-print-color-adjust: exact; page-break-after: always; 
               } }`}
-            ignoreLinks //needed because some css is linked to but is not loading..
-            onAfterPrint={() => {
-              this.setState({ fullscreen: false });
-              hideModal();
-            }}
-          />
-        </div>
+              ignoreLinks //needed because some css is linked to but is not loading..
+              onAfterPrint={() => {
+                this.setState({ fullscreen: false });
+                hideModal();
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   }
 }
 
 export default compose(
-  withDialog({
-    // isOpen: true,
+  wrapDialog({
     title: "Print"
   }),
   withEditorProps,
@@ -144,7 +157,7 @@ class ReactToPrint extends React.Component {
   removeWindow(targets) {
     targets &&
       setTimeout(() => {
-        (Array.isArray(targets) ? targets : [targets]).forEach(target => {
+        (Array.isArray(targets) ? targets : [targets]).forEach((target) => {
           target.parentNode.removeChild(target);
         });
       }, 500);
@@ -289,10 +302,19 @@ class ReactToPrint extends React.Component {
         domDoc.body.classList.add(bodyClass);
       }
 
-      const canvasEls = domDoc.querySelectorAll("canvas");
-      [...canvasEls].forEach((node, index) => {
-        node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
-      });
+      try {
+        const canvasEls = domDoc.querySelectorAll("canvas");
+        [...canvasEls].forEach((node, index) => {
+          if (node.getContext) {
+            node.getContext("2d").drawImage(srcCanvasEls[index], 0, 0);
+          }
+        });
+      } catch (e) {
+        console.warn(
+          "An error occurred trying to get the canvas elements for printing:"
+        );
+        console.warn(`gg2g20011 error:`, e);
+      }
 
       if (copyStyles !== false) {
         const headEls = document.querySelectorAll(
@@ -313,8 +335,8 @@ class ReactToPrint extends React.Component {
               newHeadEl.appendChild(domDoc.createTextNode(styleCSS));
             }
           } else {
-            let attributes = [...node.attributes];
-            attributes.forEach(attr => {
+            let attributes = [...(node.attributes || [])];
+            attributes.forEach((attr) => {
               newHeadEl.setAttribute(attr.nodeName, attr.nodeValue);
             });
 
@@ -339,7 +361,7 @@ class ReactToPrint extends React.Component {
 
   render() {
     return React.cloneElement(this.props.trigger(), {
-      ref: el => (this.triggerRef = el),
+      ref: (el) => (this.triggerRef = el),
       onClick: this.startPrint
     });
   }
@@ -366,9 +388,9 @@ class ComponentToPrint extends React.Component {
     // const width =  670;
     // const height = 900;
     return circular ? (
-      <CircularView noInteractions editorName={editorName} />
+      <CircularView noWarnings noInteractions editorName={editorName} />
     ) : (
-      <LinearView noInteractions editorName={editorName} />
+      <LinearView noWarnings noInteractions editorName={editorName} />
     );
   }
 }

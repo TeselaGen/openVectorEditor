@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { HashRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import { Switch } from "@blueprintjs/core";
+import { Button, Drawer, Tooltip } from "@blueprintjs/core";
 
 import store from "./store";
 import { render } from "react-dom";
@@ -12,10 +12,10 @@ import {
   LinearView,
   DigestTool,
   updateEditor,
-  EnzymeViewer
+  EnzymeViewer,
+  SimpleCircularOrLinearView
 } from "../../src";
 
-// import AddOrEditFeatureDialog from "../../src/helperComponents/AddOrEditFeatureDialog";
 import exampleSequenceData from "./exampleData/exampleSequenceData";
 import StandaloneDemo from "./StandaloneDemo";
 import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
@@ -39,6 +39,10 @@ const links = [
   { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
   { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
+  {
+    name: "SimpleCircularOrLinearViewNoRedux",
+    url: "SimpleCircularOrLinearViewNoRedux"
+  },
   { name: "DigestTool", url: "DigestTool" },
   { name: "EnzymeViewer", url: "EnzymeViewer" },
   { name: "CircularView", url: "CircularView" },
@@ -52,6 +56,19 @@ const links = [
     </div>
   );
 });
+links.push(
+  <a
+    key="umdDemo"
+    style={{ marginLeft: 10 }}
+    href={
+      window.location.href.includes("localhost")
+        ? `${window.location.origin}/UMDDemo.html`
+        : "http://teselagen.github.io/openVectorEditor/UMDDemo.html"
+    }
+  >
+    UMD demo
+  </a>
+);
 
 class Demo extends React.Component {
   constructor(props) {
@@ -71,6 +88,90 @@ class Demo extends React.Component {
 
   render() {
     const { darkMode } = this.state;
+    if (window.location.href.includes("SimpleCircularOrLinearViewNoRedux")) {
+      return (
+        <div>
+          <SimpleCircularOrLinearView
+            {...{
+              noRedux: true,
+              sequenceData: {
+                size: 164,
+                sequence:
+                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc",
+                name: "Test Seq",
+                circular: true, //toggle to true to change this!
+                features: [
+                  {
+                    name: "Feat 1",
+                    id: "fakeId2",
+                    color: "green",
+                    start: 1,
+                    end: 20
+                  }
+                ],
+                parts: [
+                  {
+                    name: "Part 1",
+                    id: "fakeId1",
+                    start: 10,
+                    end: 20,
+                    ...(this.state.togglePartColor && { color: "override_red" })
+                  },
+                  {
+                    name: "Part 2",
+                    id: "fakeId3",
+                    start: 25,
+                    end: 30,
+                    ...(this.state.togglePartColor && {
+                      color: "override_blue"
+                    })
+                  }
+                ]
+              }
+            }}
+          ></SimpleCircularOrLinearView>
+          <SimpleCircularOrLinearView
+            {...{
+              noRedux: true,
+              sequenceData: {
+                size: 164,
+                sequence:
+                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc",
+                name: "Test Seq",
+                circular: false, //toggle to true to change this!
+                features: [
+                  {
+                    name: "Feat 1",
+                    id: "fakeId2",
+                    color: "green",
+                    start: 1,
+                    end: 20
+                  }
+                ],
+                parts: [
+                  {
+                    name: "Part 1",
+                    id: "fakeId1",
+                    start: 10,
+                    end: 20,
+                    ...(this.state.togglePartColor && { color: "override_red" })
+                  },
+                  {
+                    name: "Part 2",
+                    id: "fakeId3",
+                    start: 25,
+                    end: 30,
+                    ...(this.state.togglePartColor && {
+                      color: "override_blue"
+                    })
+                  }
+                ]
+              }
+            }}
+          ></SimpleCircularOrLinearView>
+        </div>
+      );
+    }
 
     return (
       <Provider store={store}>
@@ -83,21 +184,62 @@ class Demo extends React.Component {
               flexDirection: "column"
             }}
           >
+            <Drawer
+              size={Drawer.SIZE_SMALL}
+              isOpen={this.state.sidebarOpen}
+              onClose={() => {
+                this.setState({ sidebarOpen: false });
+              }}
+              position="left"
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%"
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    this.setState({ sidebarOpen: false });
+                  }}
+                  minimal
+                  icon="cross"
+                ></Button>
+              </div>
+              {links}
+            </Drawer>
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
+                justifyContent: "space-between",
                 flexShrink: 0
               }}
             >
-              {links}{" "}
-              <span style={{ marginLeft: 10 }}>Version: {pjson.version}</span>{" "}
-              <Switch
-                label="Dark Mode"
-                checked={darkMode}
-                onChange={this.changeDarkMode}
-                style={{ margin: "0px 30px", marginTop: 4 }}
-              />
+              <Button
+                onClick={() =>
+                  this.setState({ sidebarOpen: !this.state.sidebarOpen })
+                }
+                intent="primary"
+                minimal
+                icon="menu"
+              ></Button>
+              <span style={{ marginTop: 5, marginLeft: 10 }}>
+                Version: {pjson.version}
+              </span>{" "}
+              <Tooltip
+                content={darkMode ? "Light Theme" : "Dark Theme"}
+                key="theme"
+              >
+                <Button
+                  data-test="tg-toggle-dark-mode"
+                  icon={darkMode ? "flash" : "moon"}
+                  intent={darkMode ? "warning" : undefined}
+                  minimal
+                  onClick={this.changeDarkMode}
+                />
+              </Tooltip>
             </div>
             <Route exact path="/" render={() => <Redirect to="/Editor" />} />
             <Route
@@ -118,7 +260,7 @@ class Demo extends React.Component {
                       exitVersionHistoryView={() => {
                         window.alert("exit requested!");
                       }}
-                      getSequenceAtVersion={versionId => {
+                      getSequenceAtVersion={(versionId) => {
                         // in a real version we'd go to server and get a real sequence based on the version id
                         // const seq = await api.getSeqAtVersion()
                         // return seq
@@ -141,7 +283,7 @@ class Demo extends React.Component {
                       }}
                       getVersionList={() => {
                         //fake talking to some api
-                        return new Promise(resolve => {
+                        return new Promise((resolve) => {
                           setTimeout(() => {
                             resolve([
                               {

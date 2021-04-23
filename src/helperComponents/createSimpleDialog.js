@@ -3,7 +3,7 @@ import React from "react";
 import { reduxForm } from "redux-form";
 import { startCase } from "lodash";
 import { withProps } from "recompose";
-import { InputField, withDialog } from "teselagen-react-components";
+import { InputField, wrapDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
@@ -11,7 +11,7 @@ import "./simpleDialog.css";
 import { tryToRefocusEditor } from "../utils/editorUtils";
 
 // TODO: move to TRC
-export class SimpleGenericDialogForm extends React.Component {
+class SimpleGenericDialogForm extends React.Component {
   render() {
     const {
       hideModal,
@@ -24,7 +24,12 @@ export class SimpleGenericDialogForm extends React.Component {
       extraProps = {}
     } = this.props;
     return (
-      <div
+      <form
+        onSubmit={handleSubmit((data) => {
+          if (onSubmit) onSubmit(data);
+          hideModal();
+          tryToRefocusEditor();
+        })}
         className={classNames(
           Classes.DIALOG_BODY,
           "tg-min-width-dialog simple-dialog"
@@ -44,22 +49,23 @@ export class SimpleGenericDialogForm extends React.Component {
           return <FieldComp key={field.name} {...fieldProps} />;
         })}
         <div className="dialog-buttons">
-          {showCancel && <Button onClick={() => {
-            hideModal()
-            tryToRefocusEditor()
-          }} text="Cancel" />}
+          {showCancel && (
+            <Button
+              onClick={() => {
+                hideModal();
+                tryToRefocusEditor();
+              }}
+              text="Cancel"
+            />
+          )}
           <Button
-            onClick={handleSubmit(data => {
-              if (onSubmit) onSubmit(data);
-              hideModal();
-              tryToRefocusEditor()
-            })}
+            type="submit"
             intent={Intent.PRIMARY}
             text={buttonText}
             disabled={invalid}
           />
         </div>
-      </div>
+      </form>
     );
   }
 }
@@ -70,7 +76,7 @@ function required(val) {
 
 export default function createSimpleDialog(props) {
   return compose(
-    withDialog({
+    wrapDialog({
       isDraggable: true,
       width: 400,
       ...props.withDialogProps

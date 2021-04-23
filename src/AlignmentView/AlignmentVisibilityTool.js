@@ -56,6 +56,12 @@ function VisibilityOptions({
           <div key={annotationName}>
             <Checkbox
               onChange={() => {
+                if (annotationName === "axis") {
+                  alignmentAnnotationVisibilityToggle("axisNumbers", {
+                    useChecked: true,
+                    checked: !visible
+                  });
+                }
                 alignmentAnnotationVisibilityToggle(annotationName);
               }}
               checked={visible}

@@ -1,14 +1,12 @@
 import { normalizePositionByRangeLength } from "ve-range-utils";
-// import { onlyUpdateForKeys } from "recompose";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
-import React from "react";
+import React, { useMemo } from "react";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
-import pureNoFunc from "../utils/pureNoFunc";
 import { divideBy3 } from "../utils/proteinUtils";
+import { view } from "@risingstack/react-easy-state";
+import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 
-// import getXCenterOfRowAnnotation from "./getXCenterOfRowAnnotation";
-
-let Axis = function(props) {
+let Axis = function (props) {
   let {
     row,
     tickSpacing,
@@ -19,45 +17,73 @@ let Axis = function(props) {
     sequenceLength,
     showAxisNumbers = true,
     getGaps,
-    isProtein
+    scrollData,
+    isProtein,
+    style
   } = props;
-  if (row.start === 0 && row.end === 0) {
+  const noRows = row.start === 0 && row.end === 0;
+  /* eslint-disable react-hooks/exhaustive-deps */
+  //memoize this function because it does the heavy lifting
+  let tickMarkPositions = useMemo(() => {
+    if (noRows) return [];
+    return calculateTickMarkPositionsForGivenRange({
+      tickSpacing,
+      range: row,
+      sequenceLength,
+      isProtein
+    }).map((tickMarkPosition) => {
+      const gaps = getGaps ? getGaps(tickMarkPosition).gapsBefore : 0;
+      let xCenter =
+        (tickMarkPosition - (isProtein ? 1 : 0) + gaps) * charWidth +
+        charWidth / 2;
+      return {
+        tickMarkPosition,
+        xCenter
+      };
+    });
+  }, [
+    noRows,
+    tickSpacing,
+    row.start,
+    row.end,
+    sequenceLength,
+    isProtein,
+    charWidth
+  ]);
+  /* eslint-enable react-hooks/exhaustive-deps*/
+  if (noRows) {
     return null;
   }
-  let { xStart, width } = getXStartAndWidthOfRangeWrtRow(
+  let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
     row,
-    row,
-    bpsPerRow,
+    range: row,
     charWidth,
     sequenceLength,
-    ...(getGaps ? [getGaps(row).gapsBefore, getGaps(row).gapsInside] : [])
-  );
+    ...(getGaps ? getGaps(row) : {})
+  });
   //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
   //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
   let xEnd = xStart + width;
+  let visibleStart, visibleEnd;
+  if (scrollData) {
+    const val = getVisibleStartEnd({
+      scrollData,
+      width: sequenceLength * charWidth
+    });
+    //add a small buffer to either side of the visible start/end
+    visibleStart = val.visibleStart - 400;
+    visibleEnd = val.visibleEnd + 400;
+  }
 
   let yStart = 0;
-  let tickMarkPositions = calculateTickMarkPositionsForGivenRange({
-    tickSpacing,
-    range: row,
-    sequenceLength,
-    isProtein
-  });
+  let yEnd = annotationHeight / 3;
+
   let tickMarkSVG = [];
 
-  tickMarkPositions.forEach(function(tickMarkPosition, i) {
-    // var xCenter = getXCenterOfRowAnnotation({
-    //     start: tickMarkPosition,
-    //     end: tickMarkPosition
-    // }, row, bpsPerRow, charWidth, sequenceLength);
-    let xCenter =
-      (tickMarkPosition -
-        (isProtein ? 1 : 0) +
-        (getGaps ? getGaps(tickMarkPosition).gapsBefore : 0)) *
-        charWidth +
-      charWidth / 2;
-    let yStart = 0;
-    let yEnd = annotationHeight / 3;
+  tickMarkPositions.forEach(function ({ tickMarkPosition, xCenter }, i) {
+    // const xCenterPlusXStart = xCenter + xStart;
+
+    if (scrollData && !(xCenter < visibleEnd && xCenter > visibleStart)) return;
     tickMarkSVG.push(
       <path
         key={"axisTickMarkPath " + i + " " + tickMarkPosition}
@@ -73,9 +99,10 @@ let Axis = function(props) {
         ) + (isProtein ? 0 : 1);
 
       const positionLength = position.toString().length * 4;
-
+      const textInner = divideBy3(position + (isProtein ? 1 : 0), isProtein);
       tickMarkSVG.push(
         <text
+          data-tick-mark={textInner}
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
           stroke="black"
           x={
@@ -88,7 +115,7 @@ let Axis = function(props) {
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
         >
-          {divideBy3(position + (isProtein ? 1 : 0), isProtein)}
+          {textInner}
         </text>
       );
     }
@@ -99,7 +126,7 @@ let Axis = function(props) {
       className="veRowViewAxis veAxis"
       width="100%"
       height={annotationHeight}
-      style={{ marginTop, overflow: "visible", display: "block" }}
+      style={{ marginTop, overflow: "visible", display: "block", ...style }}
     >
       {tickMarkSVG}
       <path
@@ -111,5 +138,5 @@ let Axis = function(props) {
 };
 
 // export default Axis
-// export default Axis
-export default pureNoFunc(Axis);
+export default view(Axis);
+// export default pureNoFunc(Axis);

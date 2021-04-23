@@ -1,7 +1,8 @@
-import { Button, Icon } from "@blueprintjs/core";
+import { Button, Icon, InputGroup } from "@blueprintjs/core";
 import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
 import React from "react";
 import { isRangeOrPositionWithinRange } from "ve-range-utils";
+import isMobile from "is-mobile";
 
 import store from "./../store";
 import { updateEditor, actions } from "../../../src/";
@@ -13,13 +14,14 @@ import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
+import { showConfirmationDialog } from "teselagen-react-components";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
   return {
     sequenceData
   };
-})(function(props) {
+})(function (props) {
   console.info("These are the props passed to our Custom Tab:", props);
   return (
     <div>
@@ -39,7 +41,7 @@ const defaultState = {
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
-  showGCContent: false,
+  showGCContentByDefault: false,
   GCDecimalDigits: 1,
   onlyShowLabelsThatDoNotFit: true,
   overrideToolbarOptions: false,
@@ -49,15 +51,19 @@ const defaultState = {
   overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
   showAvailability: true,
-  showDemoOptions: true,
+  showDemoOptions: !isMobile(),
   shouldAutosave: false,
+  generatePng: false,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
+  adjustCircularLabelSpacing: false,
   withVersionHistory: true,
+  withRotateCircularView: true,
   setDefaultVisibilities: false,
   onNew: true,
   onImport: true,
+  beforeAnnotationCreate: true,
   onSave: true,
   onSaveAs: false,
   onRename: true,
@@ -68,6 +74,7 @@ const defaultState = {
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
   maxAnnotationsToDisplayAdjustment: false,
+  withPartTags: true,
   onCopy: true,
   onPaste: true
 };
@@ -76,7 +83,7 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    window.ove_updateEditor = vals => {
+    window.ove_updateEditor = (vals) => {
       updateEditor(store, "DemoEditor", vals);
     };
     updateEditor(store, "DemoEditor", {
@@ -88,11 +95,11 @@ export default class EditorDemo extends React.Component {
     setParamsIfNecessary({ that: this, defaultState });
   }
 
-  changeFullscreenMode = e =>
+  changeFullscreenMode = (e) =>
     this.setState({
       isFullscreen: e.target.checked
     });
-  changeReadOnly = e =>
+  changeReadOnly = (e) =>
     this.setState({
       readOnly: e.target.checked
     });
@@ -125,7 +132,7 @@ export default class EditorDemo extends React.Component {
   };
   rightClickOverridesExample = {
     rightClickOverrides: {
-      partRightClicked: items => {
+      partRightClicked: (items) => {
         return [
           ...items,
           {
@@ -155,10 +162,10 @@ export default class EditorDemo extends React.Component {
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
-      menuDef => {
+      (menuDef) => {
         menuDef.push({ text: "Custom", submenu: ["copy"] });
         menuDef[0].submenu
-          .find(i => i.text && i.text.includes("Export"))
+          .find((i) => i.text && i.text.includes("Export"))
           .submenu.push({
             text: "Custom export option!",
             onClick: () => window.toastr.success("Custom export hit!")
@@ -193,6 +200,7 @@ export default class EditorDemo extends React.Component {
         "redoTool",
         "cutsiteTool",
         "featureTool",
+        "partTool",
         "oligoTool",
         "orfTool",
         "versionHistoryTool",
@@ -220,12 +228,115 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      adjustCircularLabelSpacing,
       withVersionHistory,
       shouldAutosave,
+      generatePng,
       isFullscreen,
       withPreviewMode
     } = this.state;
 
+    const editorHandlers = [
+      renderToggle({
+        that: this,
+        type: "onNew"
+      }),
+      renderToggle({
+        that: this,
+        type: "onImport"
+      }),
+      renderToggle({
+        that: this,
+        type: "beforeAnnotationCreate"
+      }),
+      renderToggle({
+        that: this,
+        type: "onSave"
+      }),
+      renderToggle({
+        that: this,
+        type: "onSaveAs"
+      }),
+      renderToggle({
+        that: this,
+        type: "alwaysAllowSave"
+      }),
+      renderToggle({
+        that: this,
+        type: "generatePng",
+        info:
+          "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
+      }),
+      renderToggle({
+        that: this,
+        type: "onRename"
+      }),
+      renderToggle({
+        that: this,
+        type: "onDuplicate"
+      }),
+      renderToggle({
+        that: this,
+        type: "onSelectionOrCaretChanged"
+      }),
+      renderToggle({
+        that: this,
+        type: "onCreateNewFromSubsequence",
+        info:
+          "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
+      }),
+      renderToggle({
+        that: this,
+        type: "onDelete",
+        info:
+          "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
+      }),
+      renderToggle({
+        that: this,
+        label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
+        type: "beforeSequenceInsertOrDelete",
+        info: `
+The beforeSequenceInsertOrDelete handler can be used to 
+override the values being used in the insertion/deletion
+\`\`\`
+beforeSequenceInsertOrDelete: (
+sequenceDataToInsert,
+existingSequenceData,
+caretPositionOrRange,
+// the maintainOriginSplit option will be passed in as TRUE on complement/revComp actions (delete --> insert at start of selection and wrap around origin)
+// and FALSE on replace actions (delete --> insert at end of selection)
+options // {maintainOriginSplit: true} 
+) => {
+return {
+// you can return one or more of the following to override the values used
+sequenceDataToInsert: myFilterSequenceDataToInsertFn(sequenceDataToInsert),
+existingSequenceData: myFilterExistingSeqFn(sequenceDataToInsert,caretPositionOrRange),
+caretPositionOrRange: myChangeCaretPosFn(caretPositionOrRange),
+options
+}
+}
+\`\`\`
+`
+      }),
+      renderToggle({
+        that: this,
+        disabled: !this.state.beforeSequenceInsertOrDelete,
+        type: "maintainOriginSplit",
+        label: "maintainOriginSplit (when pasting text)",
+        info: `
+This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabled.  See the description and code example for beforeSequenceInsertOrDelete to use this feature.
+\`\`\`
+`
+      }),
+      renderToggle({
+        that: this,
+        type: "onCopy"
+      }),
+      renderToggle({
+        that: this,
+        type: "onPaste"
+      })
+    ].filter((i) => i);
     return (
       <React.Fragment>
         {/* <button onClick={() => {
@@ -234,7 +345,12 @@ export default class EditorDemo extends React.Component {
           dragMock.dragStart(dragSource).dragEnter(dropTarget).dragOver(dropTarget).delay(500).dragEnd()
         }}>click me!</button> */}
         <div style={{ width: 250 }}>
-          {renderToggle({ that: this, type: "showDemoOptions" })}
+          {renderToggle({
+            that: this,
+            alwaysShow: true,
+            type: "showDemoOptions",
+            label: "Show Demo Options"
+          })}
         </div>
 
         <div
@@ -266,13 +382,36 @@ export default class EditorDemo extends React.Component {
                 borderRight: "1px solid lightgrey"
               }}
             >
-              <Button
-                icon="refresh"
-                style={{ marginLeft: 10, marginRight: 10 }}
-                onClick={this.resetDefaultState}
-              >
-                Reset Demo Defaults
-              </Button>
+              <div style={{ paddingLeft: 10, paddingRight: 10 }}>
+                <Button
+                  icon="refresh"
+                  style={{ marginLeft: 10, marginRight: 10, marginBottom: 5 }}
+                  onClick={this.resetDefaultState}
+                >
+                  Reset Demo Defaults
+                </Button>
+                <InputGroup
+                  round
+                  rightElement={
+                    this.state.searchInput ? (
+                      <Button
+                        onClick={() => {
+                          this.setState({ searchInput: "" });
+                        }}
+                        minimal
+                        small
+                        icon="cross"
+                      ></Button>
+                    ) : null
+                  }
+                  leftIcon="filter"
+                  placeholder="Search Options.."
+                  value={this.state.searchInput || ""}
+                  onChange={(e) => {
+                    this.setState({ searchInput: e.target.value });
+                  }}
+                />
+              </div>
 
               {renderToggle({
                 info: `
@@ -348,13 +487,69 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
 
                 `,
-                hook: isProtein => {
+                hook: (isProtein) => {
                   isProtein
                     ? updateEditor(store, "DemoEditor", {
                         readOnly: false,
                         sequenceData: tidyUpSequenceData(exampleProteinData, {
                           convertAnnotationsFromAAIndices: true
                         })
+                      })
+                    : updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
+                }
+              })}
+              {renderToggle({
+                that: this,
+                type: "isRna",
+                info: `pass sequenceData.isRna=true`,
+                hook: (isRna) => {
+                  if (isRna) {
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        reverseSequence: false,
+                        cutsites: false
+                      },
+                      readOnly: false,
+                      sequenceData: tidyUpSequenceData(
+                        {
+                          ...exampleSequenceData,
+                          circular: false,
+                          isRna: true
+                        },
+                        {}
+                      )
+                    });
+                  } else {
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        reverseSequence: true,
+                        cutsites: true
+                      },
+                      readOnly: false,
+                      sequenceData: exampleSequenceData
+                    });
+                  }
+                }
+              })}
+              {renderToggle({
+                that: this,
+                type: "isMixedRnaAndDna",
+                info: `pass sequenceData.isMixedRnaAndDna=true`,
+                hook: (isMixedRnaAndDna) => {
+                  isMixedRnaAndDna
+                    ? updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: tidyUpSequenceData(
+                          {
+                            ...exampleSequenceData,
+                            sequence: "uuuu" + exampleSequenceData.sequence,
+                            isMixedRnaAndDna: true
+                          },
+                          {}
+                        )
                       })
                     : updateEditor(store, "DemoEditor", {
                         readOnly: false,
@@ -386,7 +581,7 @@ ToolBarProps: {
                 that: this,
                 label: "Customize tabs",
                 type: "customizeTabs",
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       panelsShown: [
@@ -607,6 +802,19 @@ rightClickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "adjustCircularLabelSpacing",
+                label: "Adjust circular label spacing",
+                info:
+                  "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
+              })}
+              {renderToggle({
+                that: this,
+                type: "withRotateCircularView",
+                label: "Show Rotate Circular View",
+                info: `withRotateCircularView={true /* default */}`
+              })}
+              {renderToggle({
+                that: this,
                 type: "withVersionHistory",
                 label: "Include Revision History Tool",
                 info: `
@@ -655,7 +863,7 @@ updateEditor(store, "DemoEditor", {
                 `,
                 type: "setDefaultVisibilities",
                 label: "Set Default Visibilities",
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
@@ -685,7 +893,8 @@ sequenceData: {
       start: 10,
       end: 400,
       labelColor: "red",
-      color: "red"
+      color: "red",
+      noDirectionality: true
     },
     {
       id: "error2",
@@ -694,13 +903,14 @@ sequenceData: {
       start: 600,
       end: 950,
       labelColor: "gold",
-      color: "yellow"
+      color: "yellow",
+      noDirectionality: true
     }
   ]
 }
 \`\`\`
 `,
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
                     sequenceData: {
                       ...exampleSequenceData,
@@ -713,7 +923,8 @@ sequenceData: {
                               start: 10,
                               end: 400,
                               labelColor: "red",
-                              color: "red"
+                              color: "red",
+                              noDirectionality: true
                             },
                             {
                               id: "error2",
@@ -722,7 +933,8 @@ sequenceData: {
                               start: 600,
                               end: 950,
                               labelColor: "gold",
-                              color: "yellow"
+                              color: "yellow",
+                              noDirectionality: true
                             }
                           ]
                         : []
@@ -735,7 +947,7 @@ sequenceData: {
                 type: "showLineageAnnotations",
                 label: "Show Lineage Annotations in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Lineage Annotations (aka the input parts that went into the assembly) can be displayed directly in the editor like so: 
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -746,7 +958,8 @@ sequenceData: {
       start: 900,
       end: 400,
       labelColor: "green",
-      color: "green"
+      color: "green",
+      noDirectionality: true
     },
     {
       id: "18711jja1",
@@ -761,7 +974,7 @@ sequenceData: {
 \`\`\`
 `,
 
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
                       sequenceData: {
@@ -782,7 +995,8 @@ sequenceData: {
                                 start: 401,
                                 end: 899,
                                 labelColor: "blue",
-                                color: "blue"
+                                color: "blue",
+                                noDirectionality: true
                               }
                             ]
                           : []
@@ -795,7 +1009,8 @@ sequenceData: {
                 type: "showAssemblyPieces",
                 label: "Show AssemblyPieces  in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Input Parts get turned into assembly pieces by j5, which then have the proper overlaps / overhangs and are ready for assembly
+Assembly Pieces can be displayed directly in the editor like so: 
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -806,7 +1021,8 @@ sequenceData: {
       start: 900,
       end: 400,
       labelColor: "green",
-      color: "green"
+      color: "green",
+      noDirectionality: true,
     },
     {
       id: "18711jja1",
@@ -814,14 +1030,15 @@ sequenceData: {
       start: 401,
       end: 899,
       labelColor: "blue",
-      color: "blue"
+      color: "blue",
+      noDirectionality: true,
     }
   ]
 }
 \`\`\`
 `,
 
-                hook: shouldUpdate => {
+                hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
                     sequenceData: {
                       ...exampleSequenceData,
@@ -833,7 +1050,8 @@ sequenceData: {
                               start: 900,
                               end: 400,
                               labelColor: "darkorange",
-                              color: "darkorange"
+                              color: "darkorange",
+                              noDirectionality: true
                             },
                             {
                               id: "18711jja1",
@@ -841,7 +1059,8 @@ sequenceData: {
                               start: 401,
                               end: 899,
                               labelColor: "darkblue",
-                              color: "darkblue"
+                              color: "darkblue",
+                              noDirectionality: true
                             }
                           ]
                         : []
@@ -856,8 +1075,41 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "overrideManageEnzymes"
+              })}
+              {this.state.overrideManageEnzymes &&
+                renderToggle({
+                  that: this,
+                  type: "toggleEnzymeGroup"
+                })}
+              {renderToggle({
+                that: this,
+                type: "corruptedOverrideManageEnzymes",
+                description: `This is just for testing purposes. We want to make sure that corrupted enzyme data doesn't bring down the whole tool.`
+              })}
+              {renderToggle({
+                that: this,
+                type: "enzymeGroupsOverride"
+              })}
+              {renderToggle({
+                that: this,
+                type: "additionalEnzymes",
+                description: `additionalEnzymes`
+              })}
+              {renderToggle({
+                that: this,
+                type: "allowPartsToOverlapSelf",
+                description: `If allowPartsToOverlapSelf=true is passed to <Editor/> 
+                then a new option will appear in the 
+                Edit/Create Part Dialog that a user can use to create a 
+                part that "wraps around the whole sequence and back over itself". 
+                This will cause part.doesOverlapSelf = true
+                `
+              })}
+              {renderToggle({
+                that: this,
                 type: "readOnly",
-                hook: readOnly => {
+                hook: (readOnly) => {
                   updateEditor(store, "DemoEditor", {
                     readOnly
                   });
@@ -866,6 +1118,23 @@ sequenceData: {
 \`\`\`
 updateEditor(store, "DemoEditor", {
   readOnly
+});
+\`\`\`
+`
+              })}
+              {renderToggle({
+                that: this,
+                type: "linear",
+                hook: (linear) => {
+                  updateEditor(store, "DemoEditor", {
+                    sequenceData: { ...exampleSequenceData, circular: !linear }
+                  });
+                },
+                label: "Toggle Linear",
+                description: `The editor can be put into linear mode like so: 
+\`\`\`
+updateEditor(store, "DemoEditor", {
+  sequenceData: {...exampleSequenceData, circular: false}
 });
 \`\`\`
 `
@@ -891,6 +1160,20 @@ other options are:
                 isButton: true,
                 that: this,
                 label: "Focus Linear View"
+              })}
+              {renderToggle({
+                info: `Triggers a menu toastr message`,
+                onClick: () => {
+                  window.oveMenuToastrSuccess("Sequence Saving", {
+                    loading: true
+                  });
+                  setTimeout(() => {
+                    window.oveMenuToastrSuccess("Sequence Saved");
+                  }, 3000);
+                },
+                isButton: true,
+                that: this,
+                label: "Trigger menu toastr message"
               })}
               {renderToggle({
                 onClick: () => {
@@ -948,6 +1231,7 @@ hide or show the menubar (false by default)
                 type: "showReadOnly",
                 info: `pass showReadOnly=false to the <Editor> to not display the read-only <--> editable mode toggle, true by default`
               })}
+
               {renderToggle({
                 that: this,
                 type: "clickOverridesExample",
@@ -981,8 +1265,12 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                type: "showGCContent",
-                info: `pass showGCContent=true to the <Editor> to display the %GC content. You'll need to select some DNA bps to see it in the status bar!`
+                hook: (show) => {
+                  show && window.localStorage.clear();
+                },
+                label: "Show GC Content by default (reload required)",
+                type: "showGCContentByDefault",
+                info: `pass showGCContentByDefault=true to the <Editor/> to display the %GC content by default (note this will still allow the user to override that preference)`
               })}
               {renderToggle({
                 that: this,
@@ -992,7 +1280,48 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "maxAnnotationsToDisplayAdjustment",
-                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted`
+                info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted. Passing this option will disable the user from being able to manually adjust the annotation limits via the view > limits menu`
+              })}
+              {renderToggle({
+                that: this,
+                type: "withPartTags",
+                info: `Passing allPartTags to the <Editor/> allows the tags to be rendered in the Edit Part dialog. You can optionally pass a editTagsLink prop too!
+                \`\`\` 
+                editTagsLink={<Button style={{height: 30}} icon="edit" href={"google.com"}></Button>}
+                allPartTags={[{
+                id: "1",
+                name: "status",
+                description: "the status of the part",
+                color: "blue",
+                tagOptions: [
+                  {
+                    id: "2",
+                    name: "ready",
+                    description: "this part is ready to use in a design",
+                    color: "green"
+                  },
+                  {
+                    id: "3",
+                    name: "in progress",
+                    description: "this part is being worked on",
+                    color: "orange"
+                  },
+                  {
+                    id: "4",
+                    name: "broken",
+                    description: "this part is broken",
+                    color: "orange"
+                  }
+                ]
+              },
+              {
+                id: "5",
+                name: "tag2",
+                description: "tag 2 description",
+                color: "red"
+              }]} 
+              \`\`\`
+              to the <Editor> and pass parts[x].tags = ["1:2","5"]`
               })}
               {renderToggle({
                 that: this,
@@ -1000,96 +1329,11 @@ clickOverrides: {
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
 
-              <strong>Editor Handlers: </strong>
-              {renderToggle({
-                that: this,
-                type: "onNew"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onImport"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onSave"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onSaveAs"
-              })}
-              {renderToggle({
-                that: this,
-                type: "alwaysAllowSave"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onRename"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onDuplicate"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onSelectionOrCaretChanged"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onCreateNewFromSubsequence",
-                info:
-                  "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onDelete",
-                info:
-                  "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
-              })}
-              {renderToggle({
-                that: this,
-                label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
-                type: "beforeSequenceInsertOrDelete",
-                info: `
-The beforeSequenceInsertOrDelete handler can be used to 
-override the values being used in the insertion/deletion
-\`\`\`
-beforeSequenceInsertOrDelete: (
-  sequenceDataToInsert,
-  existingSequenceData,
-  caretPositionOrRange,
-  // the maintainOriginSplit option will be passed in as TRUE on complement/revComp actions (delete --> insert at start of selection and wrap around origin)
-  // and FALSE on replace actions (delete --> insert at end of selection)
-  options // {maintainOriginSplit: true} 
-) => {
-  return {
-    // you can return one or more of the following to override the values used
-    sequenceDataToInsert: myFilterSequenceDataToInsertFn(sequenceDataToInsert),
-    existingSequenceData: myFilterExistingSeqFn(sequenceDataToInsert,caretPositionOrRange),
-    caretPositionOrRange: myChangeCaretPosFn(caretPositionOrRange),
-    options
-  }
-}
-\`\`\`
-`
-              })}
-              {renderToggle({
-                that: this,
-                disabled: !this.state.beforeSequenceInsertOrDelete,
-                type: "maintainOriginSplit",
-                label: "maintainOriginSplit (when pasting text)",
-                info: `
-This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabled.  See the description and code example for beforeSequenceInsertOrDelete to use this feature.
-\`\`\`
-`
-              })}
-              {renderToggle({
-                that: this,
-                type: "onCopy"
-              })}
-              {renderToggle({
-                that: this,
-                type: "onPaste"
-              })}
+              {editorHandlers.length ? (
+                <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
+              ) : null}
+              {editorHandlers}
+
               <br />
               <br />
             </div>
@@ -1117,33 +1361,216 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             maxAnnotationsToDisplay={
               this.state.maxAnnotationsToDisplayAdjustment
                 ? { features: 5 }
-                : {}
+                : undefined
+            }
+            editTagsLink={
+              <Button
+                className="example-editTagsLink"
+                style={{ height: 30 }}
+                icon="edit"
+                onClick={() => {
+                  showConfirmationDialog({ text: "You hit the editTagsLink!" });
+                }}
+              ></Button>
+            }
+            allPartTags={
+              this.state.withPartTags && [
+                {
+                  id: "1",
+                  name: "status",
+                  description: "the status of the part",
+                  color: "blue",
+                  tagOptions: [
+                    {
+                      id: "2",
+                      name: "ready",
+                      description: "this part is ready to use in a design",
+                      color: "green"
+                    },
+                    {
+                      id: "3",
+                      name: "in progress",
+                      description: "this part is being worked on",
+                      color: "orange"
+                    },
+                    {
+                      id: "4",
+                      name: "broken",
+                      description: "this part is broken",
+                      color: "orange"
+                    }
+                  ]
+                },
+                {
+                  id: "5",
+                  name: "tag2",
+                  description: "tag 2 description",
+                  color: "red"
+                },
+                {
+                  id: "8",
+                  name: "zoink",
+                  description: "tag 2 description",
+                  color: "blue"
+                },
+                {
+                  id: "100",
+                  name: "something else",
+                  description: "tag 2 description",
+                  color: "lightblue"
+                },
+                {
+                  id: "500",
+                  name: "new tag ",
+                  description: "tag 2 description",
+                  color: "gray"
+                }
+              ]
             }
             showMenuBar={this.state.showMenuBar}
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
+            allowPartsToOverlapSelf={this.state.allowPartsToOverlapSelf}
+            {...(this.state.corruptedOverrideManageEnzymes && {
+              enzymeGroupsOverride: {
+                someGroup: [
+                  "specialEnzyme0",
+                  "specialEnzyme1",
+                  "aaui",
+                  "bamhi",
+                  "enzymeThatDoesntExist"
+                ],
+                anothaGroup: [
+                  undefined,
+                  "messedupname",
+                  "aaui",
+                  "specialenzyme2",
+                  "bsmbi"
+                ] //case shouldn't matter here
+              },
+              additionalEnzymes: {
+                noCutsEnzyme: {
+                  //this enzyme is fine
+                  name: "specialEnzyme0",
+                  site: "attttttaaatacccgcg",
+                  forwardRegex: "attttttaaatacccgcg",
+                  reverseRegex: "cgcgggtatttaaaaaat",
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                },
+                specialenzyme1: {
+                  //this is a corrupted enzyme
+                  name: "specialEnzyme1",
+                  site: "attttttaaatacccgcg",
+                  forwardRegex: "attttttaaatacccgcg",
+                  reverseRegex: undefined,
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                },
+                specialenzyme2: {
+                  //this is a corrupted enzyme
+                  name: "specialEnzyme2",
+                  site: "gacggctacatcat",
+                  forwardRegex: undefined,
+                  reverseRegex: "atgatgtagccgtc",
+                  topSnipOffset: 2,
+                  bottomSnipOffset: 4
+                },
+                messedUpName: {
+                  name: "specialEnzymespecialenzyme4",
+                  site: "gacggctacatcat",
+                  forwardRegex: undefined,
+                  reverseRegex: "atgatgtagccgtc",
+                  topSnipOffset: 2,
+                  bottomSnipOffset: 4
+                }
+              }
+            })}
+            {...(this.state.overrideManageEnzymes && {
+              enzymeManageOverride: () => {
+                window.toastr.success("enzyme manage override hit!");
+              }
+            })}
+            {...((this.state.overrideManageEnzymes ||
+              this.state.enzymeGroupsOverride ||
+              this.state.additionalEnzymes) && {
+              additionalEnzymes: {
+                specialenzyme1: {
+                  name: "specialEnzyme1",
+                  site: "attttttaaatacccgcg",
+                  forwardRegex: "attttttaaatacccgcg",
+                  reverseRegex: "cgcgggtatttaaaaaat",
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                },
+                specialenzyme2: {
+                  name: "specialEnzyme2",
+                  site: "gacggctacatcat",
+                  forwardRegex: "gacggctacatcat",
+                  reverseRegex: "atgatgtagccgtc",
+                  topSnipOffset: 2,
+                  bottomSnipOffset: 4
+                },
+                noCutsEnzyme: {
+                  //this enzyme doesn't cut within the default sequence
+                  name: "noCutsEnzyme",
+                  site: "gggggggaaaaaaa",
+                  forwardRegex: "gggggggaaaaaaa",
+                  reverseRegex: "tttttttccccccc",
+                  topSnipOffset: 9,
+                  bottomSnipOffset: 10
+                }
+              }
+            })}
+            {...((this.state.overrideManageEnzymes ||
+              this.state.enzymeGroupsOverride) && {
+              enzymeGroupsOverride: {
+                someGroup: this.state.toggleEnzymeGroup
+                  ? ["bsmbi", "aatII"]
+                  : ["specialEnzyme1", "bamhi", "noCutsEnzyme"],
+                anothaGroup: ["specialenzyme2", "bsmbi"] //case shouldn't matter here
+              }
+            })}
             {...(this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
             })}
             {...(this.state.onImport && {
-              onImport: sequence => {
+              onImport: (sequence) => {
                 window.toastr.success(
                   `onImport callback triggered for sequence: ${sequence.name}`
                 );
                 return sequence;
               }
             })}
+            {...(this.state.beforeAnnotationCreate && {
+              beforeAnnotationCreate: ({
+                props,
+                annotationTypePlural,
+                annotation
+              }) => {
+                console.info(
+                  `props, annotation, annotationTypePlural`,
+                  props,
+                  annotation,
+                  annotationTypePlural
+                );
+                window.toastr.success(
+                  `beforeAnnotationCreate callback triggered for ${annotationTypePlural}`
+                );
+              }
+            })}
             {...(this.state.onSave && {
-              onSave: function(
+              onSave: function (
                 opts,
                 sequenceDataToSave,
                 editorState,
                 onSuccessCallback
               ) {
-                window.toastr.success("onSave callback triggered");
                 console.info("opts:", opts);
+                if (window.Cypress) window.Cypress.pngFile = opts.pngFile;
                 console.info("sequenceData:", sequenceDataToSave);
                 console.info("editorState:", editorState);
+                window.toastr.success("onSave callback triggered");
                 // To disable the save button after successful saving
                 // either call the onSuccessCallback or return a successful promise :)
                 onSuccessCallback();
@@ -1152,7 +1579,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onSaveAs && {
-              onSaveAs: function(
+              onSaveAs: function (
                 opts,
                 sequenceDataToSave,
                 editorState,
@@ -1173,7 +1600,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               alwaysAllowSave: true
             })}
             {...(this.state.onRename && {
-              onRename: newName =>
+              onRename: (newName) =>
                 window.toastr.success("onRename callback triggered: " + newName)
             })}
             {...(this.state.onDuplicate && {
@@ -1228,7 +1655,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                     ...["parts", "features", "primers"].reduce((acc, key) => {
                       const annotations = existingSequenceData[key];
                       acc[key] = annotations.filter(
-                        a =>
+                        (a) =>
                           !isRangeOrPositionWithinRange(
                             caretPositionOrRange,
                             a,
@@ -1243,7 +1670,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onCopy && {
-              onCopy: function(/* event, copiedSequenceData, editorState */) {
+              onCopy: function (/* event, copiedSequenceData, editorState */) {
                 window.toastr.success("onCopy callback triggered");
 
                 // console.info(editorState);
@@ -1264,7 +1691,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               }
             })}
             {...(this.state.onPaste && {
-              onPaste: function(event /* editorState */) {
+              onPaste: function (event /* editorState */) {
                 //the onPaste here must return sequenceData in the teselagen data format
                 window.toastr.success("onPaste callback triggered");
                 const clipboardData = event.clipboardData;
@@ -1289,9 +1716,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
+            generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
+            {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
             {...(withVersionHistory && {
-              getSequenceAtVersion: versionId => {
+              getSequenceAtVersion: (versionId) => {
                 if (versionId === 2) {
                   return {
                     sequence: "thomaswashere"
@@ -1328,9 +1757,10 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             })}
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
+            withRotateCircularView={this.state.withRotateCircularView}
             showReadOnly={this.state.showReadOnly}
             showCircularity={this.state.showCircularity}
-            showGCContent={this.state.showGCContent}
+            showGCContentByDefault={this.state.showGCContentByDefault}
             onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
             showAvailability={this.state.showAvailability}

@@ -1,14 +1,30 @@
 import React from "react";
-import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
+import {
+  Button,
+  Classes,
+  HTMLSelect,
+  Icon,
+  Popover,
+  RadioGroup
+} from "@blueprintjs/core";
 import {
   connectToEditor,
   updateCircular,
-  handleInverse
+  handleInverse,
+  getShowGCContent
 } from "../withEditorProps";
 import "./style.css";
 import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
+import {
+  calculateTm,
+  calculateNebTm,
+  getSequenceDataBetweenRange
+} from "ve-sequence-utils";
+import useMeltingTemp from "../utils/useMeltingTemp";
+import useLocalStorageState from "use-local-storage-state";
+import { isString } from "lodash";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -47,13 +63,20 @@ const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
 
 const ShowSelectionItem = compose(
   connectToEditor(
-    ({ selectionLayer, caretPosition, sequenceData = { sequence: "" } }) => ({
-      selectionLayer,
-      isProtein: sequenceData.isProtein,
-      caretPosition,
-      sequenceLength: sequenceData.sequence.length,
-      sequenceData
-    })
+    (
+      { selectionLayer, caretPosition, sequenceData = { sequence: "" } },
+      ownProps,
+      ...rest
+    ) => {
+      return {
+        showGCContent: getShowGCContent(rest[rest.length - 1], ownProps),
+        selectionLayer,
+        isProtein: sequenceData.isProtein,
+        caretPosition,
+        sequenceLength: sequenceData.sequence.length,
+        sequenceData
+      };
+    }
   ),
   withHandlers({ handleInverse })
 )(
@@ -67,6 +90,11 @@ const ShowSelectionItem = compose(
     GCDecimalDigits,
     handleInverse
   }) => {
+    const [showMeltingTemp] = useMeltingTemp();
+
+    const sequence = getSequenceDataBetweenRange(sequenceData, selectionLayer)
+      .sequence;
+
     return (
       <React.Fragment>
         <StatusBarItem dataTest="veStatusBar-selection">
@@ -76,6 +104,7 @@ const ShowSelectionItem = compose(
             sequenceLength,
             sequenceData,
             showGCContent,
+
             GCDecimalDigits,
             isProtein
           })}
@@ -90,6 +119,7 @@ const ShowSelectionItem = compose(
             Select Inverse
           </Button>
         </StatusBarItem>
+        {showMeltingTemp && <MeltingTemp sequence={sequence}></MeltingTemp>}
       </React.Fragment>
     );
   }
@@ -182,7 +212,7 @@ export function StatusBar({
   showCircularity = true,
   showReadOnly = true,
   showAvailability = false,
-  showGCContent = false,
+  showGCContentByDefault,
   onSelectionOrCaretChanged,
   GCDecimalDigits = 1,
   isProtein
@@ -208,7 +238,7 @@ export function StatusBar({
       <ShowSelectionItem
         editorName={editorName}
         isProtein={isProtein}
-        showGCContent={showGCContent}
+        showGCContentByDefault={showGCContentByDefault}
         onSelectionOrCaretChanged={onSelectionOrCaretChanged}
         GCDecimalDigits={GCDecimalDigits}
       />
@@ -229,3 +259,63 @@ function StatusBarItem({ children, dataTest }) {
 }
 
 export default StatusBar;
+
+function MeltingTemp({ sequence }) {
+  const [tmType, setTmType] = useLocalStorageState("tmType", "default");
+  const tm = (
+    {
+      default: calculateTm,
+      neb_tm: calculateNebTm
+    }[tmType] || calculateTm
+  )(sequence);
+  const hasWarning = isString(tm) && tm.length > 7 && tm;
+  return (
+    <StatusBarItem dataTest="veStatusBar-selection-tm">
+      <Popover
+        content={
+          <div style={{ maxWidth: 300, padding: 20 }}>
+            Using Tm calculations based on these{" "}
+            <a href="https://github.com/TeselaGen/ve-sequence-utils">
+              algorithms
+            </a>
+            <br></br>
+            <br></br>
+            <RadioGroup
+              label="Choose Tm Type:"
+              options={[
+                { value: "default", label: "Default Tm" },
+                { value: "neb_tm", label: "NEB Tm" }
+              ]}
+              onChange={(e) => setTmType(e.target.value)}
+              selectedValue={tmType}
+            ></RadioGroup>
+            {hasWarning && (
+              <div>
+                <Icon
+                  style={{ marginLeft: 5, marginRight: 5 }}
+                  size={10}
+                  icon="warning-sign"
+                ></Icon>
+                {hasWarning}
+                <br></br>
+                <br></br>
+                Try using the Default Tm
+              </div>
+            )}
+          </div>
+        }
+      >
+        <Button minimal small>
+          Melting Temp: {Number(tm) || 0}{" "}
+          {hasWarning && (
+            <Icon
+              style={{ marginLeft: 5, marginRight: 5 }}
+              size={10}
+              icon="warning-sign"
+            ></Icon>
+          )}
+        </Button>
+      </Popover>
+    </StatusBarItem>
+  );
+}

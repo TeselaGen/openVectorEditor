@@ -1,6 +1,10 @@
 /// <reference types="cypress" />
 
 
+interface waitForOptions {
+  timeout?: number;
+}
+
 declare namespace Cypress {
   interface Chainable<Subject = any> {
     // /**
@@ -22,6 +26,41 @@ declare namespace Cypress {
     triggerFileCmd(text: string): void;
     
     /**
+     * waits for .bp3-dialog to not exist
+     * @example
+     * cy.waitForDialogClose()
+     */
+    waitForDialogClose(options: waitForOptions): void;
+    /**
+     * waits for .bp3-menu to not exist
+     * @example
+     * cy.waitForMenuClose()
+     */
+    waitForMenuClose(options: waitForOptions): void;
+
+    /**
+     * closes the dialog and waits for .bp3-dialog to not exist
+     * @example
+     * cy.closeDialog()
+     */
+    closeDialog(options: waitForOptions): void;
+
+
+    /**
+     * This command will close all open toastr messages by clicking each one's X
+     * @example
+     * cy.closeToasts()
+     */
+    closeToasts(): void;
+
+    /**
+     * Hides an open .bp3-menu or popover
+     * @example
+     * cy.hideMenu()
+     */
+    hideMenu(): void;
+    
+    /**
      * selectRange
      * selects a 1 based range of the sequence
      * @example
@@ -29,6 +68,41 @@ declare namespace Cypress {
      * //user would see this as: "Selecting 11 bps from 10 to 20"
      */
     selectRange(start, end): void;
+    /**
+     * dragBetweenSimple
+     * drags between 2 els
+     * @example
+     * cy.dragBetweenSimple('.someEl', '.anotherEl') 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    dragBetweenSimple(startEl, endEl): void;
+    /**
+     * dragBetween
+     * drags between 2 els
+     * @example
+     * cy.dragBetween('.someEl', '.anotherEl') 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    dragBetween(startEl, endEl): void;
+    
+    /**
+     * selectAlignmentRange
+     * selects a 1 based range of the alignment
+     * @example
+     * cy.selectAlignmentRange(10, 20) 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    selectAlignmentRange(start, end): void;
+
+    
+    /**
+     * scrollAlignmentToPercent
+     * selects a 1 based range of the alignment
+     * @example
+     * cy.scrollAlignmentToPercent(10, 20) 
+     * //user would see this as: "Selecting 11 bps from 10 to 20"
+     */
+    scrollAlignmentToPercent(percent): void;
 
     
 

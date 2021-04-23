@@ -251,7 +251,7 @@ class SplitPane extends React.Component {
     return (
       <div
         className={classes.join(" ")}
-        ref={node => {
+        ref={(node) => {
           this.splitPane = node;
         }}
         style={prefixer.prefix(style)}
@@ -259,7 +259,7 @@ class SplitPane extends React.Component {
         <Pane
           className="Pane1"
           key="pane1"
-          ref={node => {
+          ref={(node) => {
             this.pane1 = node;
           }}
           size={
@@ -278,7 +278,7 @@ class SplitPane extends React.Component {
           onTouchStart={this.onTouchStart}
           onTouchEnd={this.onMouseUp}
           key="resizer"
-          ref={node => {
+          ref={(node) => {
             this.resizer = node;
           }}
           resizerClassName={resizerClassNamesIncludingDefault}
@@ -288,7 +288,7 @@ class SplitPane extends React.Component {
         <Pane
           className="Pane2"
           key="pane2"
-          ref={node => {
+          ref={(node) => {
             this.pane2 = node;
           }}
           size={

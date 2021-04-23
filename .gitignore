@@ -10,3 +10,5 @@ npm-debug.log*
 /cypress/screenshots
 .linkEnv
 .idea
+.DS_Store
+.nyc_output

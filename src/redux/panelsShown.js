@@ -77,7 +77,7 @@ export const createNewMismatchesList = (payload, meta) => {
 export const collapseSplitScreen = (activePanelId, meta) => {
   return dispatch => {
     dispatch(_collapseSplitScreen(activePanelId, meta));
-    dispatch(setPanelAsActive(activePanelId, meta));
+    activePanelId && dispatch(setPanelAsActive(activePanelId, meta));
   };
 };
 

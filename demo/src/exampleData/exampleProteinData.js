@@ -19,12 +19,12 @@ export default {
       strand: -1,
       name: "araC",
       start: 6,
-      end: 884,
-      locations: [
-        { start: 6, end: 24 },
-        { start: 28, end: 48 },
-        { start: 500, end: 884 }
-      ]
+      end: 884
+      // locations: [
+      //   { start: 6, end: 24 },
+      //   { start: 28, end: 48 },
+      //   { start: 500, end: 884 }
+      // ]
     },
     {
       notes: {},
