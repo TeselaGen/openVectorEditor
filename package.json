@@ -106,6 +106,7 @@
   },
   "lint-staged": {
     "src/**/*.js|demo/**/*.js|cypress/**/*.js": [
+      "eslint --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
       "prettier --write"
     ],
     "*.css": [
