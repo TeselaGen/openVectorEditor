@@ -419,6 +419,7 @@ const DrawGroupInnerLabel = withHover(
         {...{ onMouseOver }}
         className={className}
       >
+        <title>{label.title}</title>
         {label.text}
       </tspan>
     );
