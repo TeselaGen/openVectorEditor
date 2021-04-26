@@ -4,7 +4,6 @@ describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
   });
-
   it(`annotation limits should persist across reloads and be configurable from the menu`, () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(".veWarningMessage").should("not.exist");
@@ -343,5 +342,18 @@ describe("editor", function () {
               });
           });
       });
+  });
+  it(`should handle very long external labels in RowView`, () => {
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Labels").click();
+    cy.get(".tg-menu-bar-popover").contains("External Labels").click();
+    cy.contains(".veLabelText", "Part 0").rightclick();
+    cy.contains(".bp3-menu-item", "Edit Part").click();
+    const longName =
+      "long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name{enter}";
+    cy.focused().type(longName);
+    cy.contains(
+      "Part 0long_name_long_name_long_name_long_name_long_name_long_name_long_nam.."
+    );
   });
 });
