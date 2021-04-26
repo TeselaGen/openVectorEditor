@@ -171,7 +171,7 @@ const fileCommandDefs = {
           <div onClick={(e) => e.stopPropagation()}>
             <NumericInput
               onValueChange={function (valueAsNumber) {
-                let minimumFilterLength = parseInt(valueAsNumber, 10);
+                const minimumFilterLength = parseInt(valueAsNumber, 10);
                 if (!(minimumFilterLength > -1)) return;
                 if (minimumFilterLength > props.sequenceLength) return;
                 props.updateFeatureLengthsToHide({
@@ -188,7 +188,7 @@ const fileCommandDefs = {
             />
             <NumericInput
               onValueChange={function (valueAsNumber) {
-                let maximumFilterLength = parseInt(valueAsNumber, 10);
+                const maximumFilterLength = parseInt(valueAsNumber, 10);
                 if (!(maximumFilterLength > -1)) return;
                 if (maximumFilterLength > props.sequenceLength) return;
                 props.updateFeatureLengthsToHide({
@@ -661,7 +661,7 @@ const editCommandDefs = {
         }
         const func = type.includes("lower") ? "toLowerCase" : "toUpperCase";
         let newSeq;
-        let orginalSeq = isSelection
+        const orginalSeq = isSelection
           ? getSequenceWithinRange(selectionLayer, sequence)
           : sequence;
         if (type.includes("flip")) {
@@ -886,7 +886,7 @@ const editCommandDefs = {
             type="number"
             className={classnames(Classes.INPUT, "minOrfSizeInput")}
             onChange={function (event) {
-              let minimumOrfSize = parseInt(event.target.value, 10);
+              const minimumOrfSize = parseInt(event.target.value, 10);
               if (!(minimumOrfSize > -1)) return;
               if (minimumOrfSize > props.sequenceLength) return;
               props.annotationVisibilityShow("orfs");
@@ -1183,6 +1183,10 @@ const additionalAnnotationCommandsDefs = {
   showAll: {
     handler: (props) => {
       annotationTypes.forEach((type) => {
+        if (props.isProtein) {
+          if (type === "translations" || type === "cutsites")
+            return props.annotationVisibilityHide(type);
+        }
         props.annotationVisibilityShow(type);
       });
     }
