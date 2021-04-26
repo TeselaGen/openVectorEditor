@@ -4,6 +4,7 @@ describe("editor", function () {
   beforeEach(() => {
     cy.visit("");
   });
+
   it(`annotation limits should persist across reloads and be configurable from the menu`, () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(".veWarningMessage").should("not.exist");
