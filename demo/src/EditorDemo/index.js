@@ -228,6 +228,7 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      passAutoAnnotateHandlers,
       adjustCircularLabelSpacing,
       withVersionHistory,
       shouldAutosave,
@@ -1211,6 +1212,13 @@ trigger the onSave() callback without first waiting for the user to hit "Save"
               })}
               {renderToggle({
                 that: this,
+                type: "passAutoAnnotateHandlers",
+                info: `
+passing an autoAnnotateFeatures=()=>{} (or Primers/Parts) prop to the <Editor> will add a new menu item to the tools section which will trigger the passed callback
+`
+              })}
+              {renderToggle({
+                that: this,
                 type: "showMenuBar",
                 info: `
 hide or show the menubar (false by default)
@@ -1716,6 +1724,21 @@ clickOverrides: {
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
+            {...(passAutoAnnotateHandlers && {
+              autoAnnotateFeatures: () => {
+                window.toastr.success(
+                  "auto annotate features callback triggered"
+                );
+              },
+              autoAnnotateParts: () => {
+                window.toastr.success("auto annotate parts callback triggered");
+              },
+              autoAnnotatePrimers: () => {
+                window.toastr.success(
+                  "auto annotate primers callback triggered"
+                );
+              }
+            })}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}

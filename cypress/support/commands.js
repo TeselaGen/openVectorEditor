@@ -37,9 +37,9 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
   cy.clock();
   getOrWrap(dragSelector).then((el) => {
-    let dragSelectDomEl = el.get(0);
+    const dragSelectDomEl = el.get(0);
     getOrWrap(dropSelector).then((el2) => {
-      let dropSelectDomEl = el2.get(0);
+      const dropSelectDomEl = el2.get(0);
       const [x, y] = getCenter(dragSelectDomEl);
       const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
       getOrWrap(dragSelector)
@@ -140,9 +140,9 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
  * @param {String} text - the file cmd to trigger
  */
 
-Cypress.Commands.add("triggerFileCmd", (text) => {
+Cypress.Commands.add("triggerFileCmd", (text, { noEnter }) => {
   cy.get("body").type("{meta}/");
-  cy.focused().type(`${text}{enter}`, { delay: 1 });
+  cy.focused().type(`${text}${noEnter ? "" : "{enter}"}`, { delay: 1 });
 });
 
 /**

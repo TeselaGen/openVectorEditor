@@ -22,9 +22,10 @@ declare namespace Cypress {
      * @example
      * cy.triggerFileCmd("Select All")
      * cy.triggerFileCmd("Digest")
+     * cy.triggerFileCmd("Digest", {noEnter: true})
      */
-    triggerFileCmd(text: string): void;
-    
+    triggerFileCmd(text: string, options: { noEnter: boolean }): void;
+
     /**
      * waits for .bp3-dialog to not exist
      * @example
@@ -59,7 +60,7 @@ declare namespace Cypress {
      * cy.hideMenu()
      */
     hideMenu(): void;
-    
+
     /**
      * selectRange
      * selects a 1 based range of the sequence
@@ -84,7 +85,7 @@ declare namespace Cypress {
      * //user would see this as: "Selecting 11 bps from 10 to 20"
      */
     dragBetween(startEl, endEl): void;
-    
+
     /**
      * selectAlignmentRange
      * selects a 1 based range of the alignment
@@ -94,7 +95,7 @@ declare namespace Cypress {
      */
     selectAlignmentRange(start, end): void;
 
-    
+
     /**
      * scrollAlignmentToPercent
      * selects a 1 based range of the alignment
@@ -104,7 +105,7 @@ declare namespace Cypress {
      */
     scrollAlignmentToPercent(percent): void;
 
-    
+
 
     /**
      * tgToggle
@@ -116,7 +117,7 @@ declare namespace Cypress {
      */
     tgToggle(toggleId: string, toggleOnOrOff: boolean): void;
 
-    
+
     // /**
     //  * chainable waitForBackendCalls
     //  * waits for backend xhr requests to complete

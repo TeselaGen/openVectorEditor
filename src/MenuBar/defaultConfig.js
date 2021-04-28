@@ -129,6 +129,11 @@ export default [
           "showRemoveDuplicatesDialogParts",
           "showRemoveDuplicatesDialogPrimers"
         ]
+      },
+      {
+        text: "Auto Annotate",
+        cmd: "autoAnnotateHolder",
+        submenu: ["autoAnnotateFeatures", "autoAnnotateParts"]
       }
     ]
   },

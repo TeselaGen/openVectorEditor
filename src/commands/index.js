@@ -18,7 +18,8 @@ import {
   get,
   filter,
   camelCase,
-  reduce
+  reduce,
+  some
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
@@ -31,7 +32,7 @@ import {
 } from "../GlobalDialogUtils";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
-
+const partsPrimersFeatures = ["Parts", "Features", "Primers"];
 const getNewTranslationHandler = (isReverse) => ({
   handler: (props, state, ctxInfo) => {
     const annotation =
@@ -322,7 +323,7 @@ const fileCommandDefs = {
       }),
     hotkey: "mod+p"
   },
-  ...["Parts", "Features", "Primers"].reduce((acc, type) => {
+  ...partsPrimersFeatures.reduce((acc, type) => {
     //showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
     acc[`showRemoveDuplicatesDialog${type}`] = {
       name: `Remove Duplicate ${startCase(type)}`,
@@ -338,6 +339,34 @@ const fileCommandDefs = {
             }
           }
         })
+    };
+    return acc;
+  }, {}),
+  autoAnnotateHolder: {
+    isHidden: (props) =>
+      some(partsPrimersFeatures, (type) => !props[`autoAnnotate${type}`])
+  },
+  ...partsPrimersFeatures.reduce((acc, type) => {
+    acc[`autoAnnotate${type}`] = {
+      name: `Auto Annotate ${type}`,
+      isDisabled: (props) => props.readOnly,
+      isHidden: (props) => !props[`autoAnnotate${type}`], //tnr we'll eventually remove this when we have a built in way of doing this
+      handler: (props) => {
+        if (props[`autoAnnotate${type}`]) {
+          props[`autoAnnotate${type}`]();
+        } else {
+          // showDialog({
+          //   dialogType: "AutoAnnotate",
+          //   props: {
+          //     type: camelCase(type),
+          //     editorName: props.editorName,
+          //     dialogProps: {
+          //       title: `Auto Annotate ${type}`
+          //     }
+          //   }
+          // });
+        }
+      }
     };
     return acc;
   }, {})
