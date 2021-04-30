@@ -70,11 +70,10 @@ describe("enzyme overrides", () => {
     cy.contains("Copy 2 Enzyme(s)");
     cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
 
-    cy.closeToasts();
     cy.closeDialog();
 
     cy.contains(".veLabelText", "Bpa36II").should("not.exist");
-    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click({ force: true }); //the toastr was getting in the way
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
 
     cy.contains(".bp3-menu-item", "newGroup").click();
