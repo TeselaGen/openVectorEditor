@@ -140,7 +140,7 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
  * @param {String} text - the file cmd to trigger
  */
 
-Cypress.Commands.add("triggerFileCmd", (text, { noEnter }) => {
+Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
   cy.get("body").type("{meta}/");
   cy.focused().type(`${text}${noEnter ? "" : "{enter}"}`, { delay: 1 });
 });

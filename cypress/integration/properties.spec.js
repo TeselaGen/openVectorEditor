@@ -15,7 +15,7 @@ describe("properties", function () {
       .contains("Save")
       .click();
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("textarea", `primer complement(10..20)`);
+    cy.contains("textarea", `primer_bind complement(10..20)`);
     cy.contains("textarea", `/label="fakeprimer"`);
   });
   it(`should be able to delete a feature from the properties tab and not have the delete button still enabled; 
