@@ -344,27 +344,24 @@ const fileCommandDefs = {
   }, {}),
   autoAnnotateHolder: {
     isHidden: (props) =>
-      some(partsPrimersFeatures, (type) => !props[`autoAnnotate${type}`])
+      !some(partsPrimersFeatures, (type) => props[`autoAnnotate${type}`])
   },
   ...partsPrimersFeatures.reduce((acc, type) => {
-    acc[`autoAnnotate${type}`] = {
+    const handlerName = `autoAnnotate${type}`;
+    acc[handlerName] = {
       name: `Auto Annotate ${type}`,
       isDisabled: (props) => props.readOnly,
-      isHidden: (props) => !props[`autoAnnotate${type}`], //tnr we'll eventually remove this when we have a built in way of doing this
-      handler: (props) => {
-        if (props[`autoAnnotate${type}`]) {
-          props[`autoAnnotate${type}`]();
+      isHidden: (props) => !props[handlerName],
+      handler: async (props) => {
+        if (props[handlerName]) {
+          const lowerType = type.toLowerCase();
+          const toAdd = await props[handlerName](props);
+          props.updateSequenceData({
+            ...props.sequenceData,
+            [lowerType]: { ...props.sequenceData[lowerType], ...toAdd }
+          });
         } else {
-          // showDialog({
-          //   dialogType: "AutoAnnotate",
-          //   props: {
-          //     type: camelCase(type),
-          //     editorName: props.editorName,
-          //     dialogProps: {
-          //       title: `Auto Annotate ${type}`
-          //     }
-          //   }
-          // });
+          console.warn(`we shouldn't be here..`);
         }
       }
     };
