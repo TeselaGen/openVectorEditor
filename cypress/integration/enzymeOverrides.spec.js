@@ -77,10 +77,7 @@ describe("enzyme overrides", () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
 
-    cy.contains(
-      ".veToolbarCutsiteFilterHolder .bp3-menu-item",
-      "newGroup"
-    ).click();
+    cy.contains(".bp3-menu-item", "newGroup").click();
     cy.contains(".veLabelText", "specialEnzyme1").should("exist");
     cy.contains(".veLabelText", "specialEnzyme2").should("exist");
   });

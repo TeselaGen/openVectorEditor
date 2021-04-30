@@ -25,6 +25,7 @@ describe("copyPaste", function () {
       .trigger("contextmenu", { force: true });
     // cy.contains(".bp3-menu-item", "Copy").trigger("mouseover")
     cy.contains(".bp3-menu-item", "Copy").click();
+    cy.contains(".openVeCopy2", "Copy").click();
     cy.window().then((win) => {
       assert(
         win.__tg_copiedSeqData.sequence ===

@@ -556,7 +556,6 @@ function VectorInteractionHOC(Component /* options */) {
               selectedSeqData,
               sequenceData
             );
-
             this.sequenceDataToCopy = sequenceDataToCopy;
             if (action === "copy") {
               document.body.addEventListener("copy", this.handleCopy);

@@ -25,14 +25,9 @@ describe("enzymeManager", () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
 
-    cy.contains(
-      ".veToolbarCutsiteFilterHolder .bp3-menu-item",
-      "newGroup"
-    ).click();
+    cy.contains(".bp3-menu-item", "newGroup").click();
     cy.contains(".veLabelText", "Bpa36II").should("exist");
-    cy.get(
-      ".veToolbarCutsiteFilterHolder .bp3-menu-item:contains(Bpa36II) .bp3-icon-eye-off"
-    ).click();
+    cy.get(".bp3-menu-item:contains(Bpa36II) .bp3-icon-eye-off").click();
     cy.contains(".veLabelText", "Bpa36II").should("not.exist");
   });
   it(`should be able to add a new group and add enzymes to it`, () => {
@@ -62,10 +57,7 @@ describe("enzymeManager", () => {
     cy.contains("AccIII").should("not.exist");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
-    cy.contains(
-      ".veToolbarCutsiteFilterHolder .bp3-menu-item",
-      "newGroup"
-    ).click();
+    cy.contains(".bp3-menu-item", "newGroup").click();
 
     // cy.get('.veEnzymeGroupAddEnzymesBtn').click()
   });
