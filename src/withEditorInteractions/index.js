@@ -294,16 +294,26 @@ function VectorInteractionHOC(Component /* options */) {
           }),
         { annotationsAsObjects: true }
       );
-      if (!seqData.sequence.length)
+
+      if (
+        !(this.sequenceDataToCopy || {}).textToCopy &&
+        !seqData.sequence.length
+      )
         return window.toastr.warning(
           `No Sequence Selected To ${isCut ? "Cut" : "Copy"}`
         );
 
       const clipboardData = e.clipboardData;
-      clipboardData.setData(
-        "text/plain",
-        seqData.isProtein ? seqData.proteinSequence : seqData.sequence
-      );
+      const textToCopy =
+        (this.sequenceDataToCopy || {}).textToCopy !== undefined
+          ? this.sequenceDataToCopy.textToCopy
+          : seqData.isProtein
+          ? seqData.proteinSequence
+          : seqData.sequence;
+
+      seqData.textToCopy = textToCopy;
+
+      clipboardData.setData("text/plain", textToCopy);
       clipboardData.setData("application/json", JSON.stringify(seqData));
       e.preventDefault();
 
@@ -563,11 +573,30 @@ function VectorInteractionHOC(Component /* options */) {
               document.body.addEventListener("cut", this.handleCut);
             }
             if (window.Cypress) {
-              window.__tg_copiedSeqData = sequenceDataToCopy;
+              window.Cypress.textToCopy = sequenceDataToCopy.textToCopy;
+              window.Cypress.seqDataToCopy = sequenceDataToCopy;
             }
-            return sequenceDataToCopy.sequence;
+            return sequenceDataToCopy.textToCopy || sequenceDataToCopy.sequence;
           }
         });
+      };
+      const aaCopy = {
+        text: "Copy AA Sequence",
+        className: "openVeCopyAA",
+        willUnmount: () => {
+          this.openVeCopyAA && this.openVeCopyAA.destroy();
+        },
+        didMount: ({ className }) => {
+          this.openVeCopyAA = makeTextCopyable((selectedSeqData) => {
+            const textToCopy = isProtein
+              ? selectedSeqData.proteinSequence.toUpperCase()
+              : getAminoAcidStringFromSequenceString(selectedSeqData.sequence);
+            return {
+              ...selectedSeqData,
+              textToCopy
+            };
+          }, className);
+        }
       };
       // TODO: maybe stop using Clipboard.js and unify clipboard handling with
       // a more versatile approach
@@ -593,9 +622,10 @@ function VectorInteractionHOC(Component /* options */) {
             ]),
         {
           text: "Copy",
-          submenu: !isProtein && [
+          submenu: [
+            ...(isProtein ? [aaCopy] : []),
             {
-              text: "Copy",
+              text: isProtein ? "Copy DNA Bps" : "Copy",
               className: "openVeCopy2",
               willUnmount: () => {
                 this.openVeCopy2 && this.openVeCopy2.destroy();
@@ -620,7 +650,9 @@ function VectorInteractionHOC(Component /* options */) {
               }
             },
             {
-              text: "Copy Reverse Complement",
+              text: isProtein
+                ? "Copy Reverse Complement DNA Bps"
+                : "Copy Reverse Complement",
               className: "openVeCopyReverse",
               willUnmount: () => {
                 this.openVeCopyReverse && this.openVeCopyReverse.destroy();
@@ -632,23 +664,7 @@ function VectorInteractionHOC(Component /* options */) {
                 );
               }
             },
-            {
-              text: "Copy AA Sequence",
-              className: "openVeCopyAA",
-              willUnmount: () => {
-                this.openVeCopyAA && this.openVeCopyAA.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyAA = makeTextCopyable(
-                  (selectedSeqData) => ({
-                    sequence: getAminoAcidStringFromSequenceString(
-                      selectedSeqData.sequence
-                    )
-                  }),
-                  className
-                );
-              }
-            },
+            ...(isProtein ? [] : [aaCopy]),
             {
               text: "Copy Reverse Complement AA Sequence",
               className: "openVeCopyAAReverse",
@@ -657,19 +673,26 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
-                  (selectedSeqData) => ({
-                    sequence: getAminoAcidStringFromSequenceString(
-                      getReverseComplementSequenceAndAnnotations(
-                        selectedSeqData
-                      ).sequence
-                    )
-                  }),
+                  (selectedSeqData) => {
+                    const revSeqData = getReverseComplementSequenceAndAnnotations(
+                      selectedSeqData
+                    );
+                    const textToCopy = isProtein
+                      ? revSeqData.proteinSequence.toUpperCase()
+                      : getAminoAcidStringFromSequenceString(
+                          revSeqData.sequence
+                        );
+                    return {
+                      ...revSeqData,
+                      textToCopy
+                    };
+                  },
                   className
                 );
               }
             },
             {
-              text: "Copy Complement",
+              text: isProtein ? "Copy Complement DNA Bps" : "Copy Complement",
               className: "openVeCopyComplement",
               willUnmount: () => {
                 this.openVeCopyComplement &&
@@ -684,8 +707,7 @@ function VectorInteractionHOC(Component /* options */) {
             },
             copyOptionsMenu
           ]
-        },
-        isProtein && copyOptionsMenu
+        }
       ];
     };
 
@@ -1133,7 +1155,8 @@ function getGenbankFromSelection(selectedSeqData, sequenceData) {
   const just1Feat = feats.length === 1;
 
   return {
-    sequence: jsonToGenbank({
+    ...selectedSeqData,
+    textToCopy: jsonToGenbank({
       ...selectedSeqData,
       name: spansEntireSeq
         ? selectedSeqData.name
