@@ -189,7 +189,6 @@ These props consist of hooks and editor config options that can be passed like s
 		console.info("sequenceData:", copiedSequenceData);
 		console.info("editorState:", editorState);
 		const clipboardData = event.clipboardData;
-		clipboardData.setData("text/plain", copiedSequenceData.sequence);
 		clipboardData.setData(
 			"application/json",
 			JSON.stringify(copiedSequenceData)

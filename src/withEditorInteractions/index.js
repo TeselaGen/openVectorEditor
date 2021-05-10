@@ -616,7 +616,14 @@ function VectorInteractionHOC(Component /* options */) {
                 },
                 didMount: ({ className }) => {
                   // TODO: Maybe use a cut action instead
-                  this.openVeCut = makeTextCopyable((i) => i, className, "cut");
+                  this.openVeCut = makeTextCopyable(
+                    (s) => ({
+                      ...s,
+                      textToCopy: isProtein ? s.proteinSequence : s.sequence
+                    }),
+                    className,
+                    "cut"
+                  );
                 }
               }
             ]),
@@ -631,7 +638,10 @@ function VectorInteractionHOC(Component /* options */) {
                 this.openVeCopy2 && this.openVeCopy2.destroy();
               },
               didMount: ({ className }) => {
-                this.openVeCopy2 = makeTextCopyable((i) => i, className);
+                this.openVeCopy2 = makeTextCopyable(
+                  (s) => ({ ...s, textToCopy: s.sequence }),
+                  className
+                );
               }
             },
 
