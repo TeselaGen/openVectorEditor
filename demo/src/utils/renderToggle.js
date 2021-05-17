@@ -1,7 +1,6 @@
-import React from "react";
-import { Switch, Button } from "@blueprintjs/core";
+import React, { useState } from "react";
+import { Switch, Button, HTMLSelect, Dialog } from "@blueprintjs/core";
 import {
-  InfoHelper,
   getStringFromReactComponent,
   doesSearchValMatchText
 } from "teselagen-react-components";
@@ -16,9 +15,17 @@ const EnhancedSwitch = lifecycle({
     return this.props.didMount();
   }
 })(_Switch);
+const _Select = omitProps(["didMount"])(HTMLSelect);
+const EnhancedSelect = lifecycle({
+  componentDidMount() {
+    return this.props.didMount();
+  }
+})(_Select);
 
 export default function renderToggle({
   isButton,
+  isSelect,
+  options,
   that,
   type,
   label,
@@ -33,8 +40,8 @@ export default function renderToggle({
   let toggleOrButton;
   const labelOrText = label ? <span>{label}</span> : type;
   const sharedProps = {
+    style: { marginBottom: 0 },
     "data-test": type || label,
-    style: { margin: "0px 30px", marginTop: 4 },
     label: labelOrText,
     text: labelOrText,
     ...rest
@@ -58,6 +65,29 @@ export default function renderToggle({
         }}
       />
     );
+  } else if (isSelect) {
+    const { style, ...rest } = sharedProps;
+    toggleOrButton = (
+      <div style={sharedProps.style}>
+        <EnhancedSelect
+          {...{
+            options,
+            ...rest,
+            didMount: () => {
+              hook && hook((that.state || {})[type], true);
+            },
+            value: (that.state || {})[type],
+            disabled: disabled,
+            onChange: (newType) => {
+              hook && hook(newType.target.value);
+              that.setState({
+                [type]: newType.target.value
+              });
+            }
+          }}
+        />
+      </div>
+    );
   } else {
     toggleOrButton = (
       <EnhancedSwitch
@@ -79,27 +109,45 @@ export default function renderToggle({
     );
   }
   return (
-    <div style={{ display: "flex" }} className="toggle-button-holder">
-      {(description || info) && (
-        <InfoHelper
-          isPopover
-          popoverProps={{
-            modifiers: {
-              preventOverflow: { enabled: false },
-              hide: {
-                enabled: false
-              },
-              flip: {
-                boundariesElement: "viewport"
-              }
-            }
-          }}
-          style={{ marginRight: -15, marginTop: 5, marginLeft: 5 }}
-        >
-          <ReactMarkdown source={description || info} />
-        </InfoHelper>
-      )}
+    <div
+      style={{ display: "flex", alignItems: "center", margin: "5px 5px" }}
+      className="toggle-button-holder"
+    >
+      <ShowInfo {...{ description, info }}></ShowInfo>
       {toggleOrButton}
     </div>
+  );
+}
+
+function ShowInfo({ description, info }) {
+  const [isOpen, setOpen] = useState(false);
+  return (
+    <React.Fragment>
+      <Dialog
+        onClose={() => {
+          setOpen(false);
+        }}
+        isOpen={isOpen}
+      >
+        <div
+          style={{ maxWidth: 600, overflow: "auto" }}
+          className="bp3-dialog-body"
+        >
+          <ReactMarkdown source={description || info} />
+        </div>
+      </Dialog>
+
+      {(description || info) && (
+        <div>
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}
+            minimal
+            icon="info-sign"
+          ></Button>
+        </div>
+      )}
+    </React.Fragment>
   );
 }

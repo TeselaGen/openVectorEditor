@@ -236,6 +236,9 @@ export default class EditorDemo extends React.Component {
       isFullscreen,
       withPreviewMode
     } = this.state;
+    const isNotDna =
+      this.state.moleculeType === "RNA" ||
+      this.state.moleculeType === "Protein";
 
     const editorHandlers = [
       renderToggle({
@@ -436,10 +439,12 @@ updateEditor(store, "DemoEditor", {
                 label: "Randomize Sequence Data"
               })}
               {renderToggle({
+                isSelect: true,
+                options: ["DNA", "RNA", "Protein"],
                 that: this,
-                type: "isProtein",
+                type: "moleculeType",
                 info: `
-The editor supports Amino Acid sequences as well as DNA sequences!
+The editor supports Amino Acid sequences and RNA sequences as well as DNA sequences!
 Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
 \`\`\`
 updateEditor(store, "DemoEditor", {
@@ -488,74 +493,25 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
 
                 `,
-                hook: (isProtein) => {
-                  isProtein
-                    ? updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: tidyUpSequenceData(exampleProteinData, {
-                          convertAnnotationsFromAAIndices: true
-                        })
-                      })
-                    : updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: exampleSequenceData
-                      });
-                }
-              })}
-              {renderToggle({
-                that: this,
-                type: "isRna",
-                info: `pass sequenceData.isRna=true`,
-                hook: (isRna) => {
-                  if (isRna) {
+                hook: (val) => {
+                  if (val === "Protein") {
                     updateEditor(store, "DemoEditor", {
-                      annotationVisibility: {
-                        reverseSequence: false,
-                        cutsites: false
-                      },
                       readOnly: false,
-                      sequenceData: tidyUpSequenceData(
-                        {
-                          ...exampleSequenceData,
-                          circular: false,
-                          isRna: true
-                        },
-                        {}
-                      )
+                      sequenceData: tidyUpSequenceData(exampleProteinData, {
+                        convertAnnotationsFromAAIndices: true
+                      })
+                    });
+                  } else if (val === "RNA") {
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: { ...exampleSequenceData, isRna: true }
                     });
                   } else {
                     updateEditor(store, "DemoEditor", {
-                      annotationVisibility: {
-                        reverseSequence: true,
-                        cutsites: true
-                      },
                       readOnly: false,
                       sequenceData: exampleSequenceData
                     });
                   }
-                }
-              })}
-              {renderToggle({
-                that: this,
-                type: "isMixedRnaAndDna",
-                info: `pass sequenceData.isMixedRnaAndDna=true`,
-                hook: (isMixedRnaAndDna) => {
-                  isMixedRnaAndDna
-                    ? updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: tidyUpSequenceData(
-                          {
-                            ...exampleSequenceData,
-                            sequence: "uuuu" + exampleSequenceData.sequence,
-                            isMixedRnaAndDna: true
-                          },
-                          {}
-                        )
-                      })
-                    : updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: exampleSequenceData
-                      });
                 }
               })}
 
@@ -743,7 +699,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
                 type: "menuOverrideExample",
                 info: `The top menu bar can be customized as desired. 
                 Here is an example of how to do that:
-\`\`\`\
+\`\`\`
 menuFilter:
   menuDef => {
     menuDef.push({ text: "Custom", submenu: ["copy"] });
@@ -850,7 +806,7 @@ getVersionList: async () => {
                 that: this,
                 info: `
 You can set default visibilities like so: 
-\`\`\
+\`\`\`
 updateEditor(store, "DemoEditor", {
   annotationVisibility: {
     features: false,
@@ -913,8 +869,8 @@ sequenceData: {
 `,
                 hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
+                    justPassingPartialSeqData: true,
                     sequenceData: {
-                      ...exampleSequenceData,
                       warnings: shouldUpdate
                         ? [
                             {
@@ -978,8 +934,8 @@ sequenceData: {
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
                       sequenceData: {
-                        ...exampleSequenceData,
                         lineageAnnotations: shouldUpdate
                           ? [
                               {
@@ -1041,8 +997,8 @@ sequenceData: {
 
                 hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
+                    justPassingPartialSeqData: true,
                     sequenceData: {
-                      ...exampleSequenceData,
                       assemblyPieces: shouldUpdate
                         ? [
                             {
@@ -1126,9 +1082,16 @@ updateEditor(store, "DemoEditor", {
               {renderToggle({
                 that: this,
                 type: "linear",
+                disabled:
+                  this.state.moleculeType === "RNA" ||
+                  this.state.moleculeType === "Protein",
                 hook: (linear) => {
+                  if (isNotDna) {
+                    return;
+                  }
                   updateEditor(store, "DemoEditor", {
-                    sequenceData: { ...exampleSequenceData, circular: !linear }
+                    justPassingPartialSeqData: true,
+                    sequenceData: { circular: !linear }
                   });
                 },
                 label: "Toggle Linear",
