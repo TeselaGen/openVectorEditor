@@ -9,7 +9,6 @@ import {
 } from "teselagen-react-components";
 import React, { useState } from "react";
 import downloadjs from "downloadjs";
-
 import { showDialog } from "../../src/GlobalDialogUtils";
 import { compose } from "recompose";
 import { withEditorProps } from "../../src";
