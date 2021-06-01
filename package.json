@@ -105,11 +105,11 @@
     }
   },
   "lint-staged": {
-    ".js": [
-      "eslint --no-ignore=0 --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
+    "**/*.js": [
+      "eslint --rule 'no-ignore: 0' --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
       "prettier --write"
     ],
-    ".css": [
+    "**/*.css": [
       "prettier --write"
     ]
   },

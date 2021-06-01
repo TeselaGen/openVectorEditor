@@ -13,7 +13,6 @@ import { showDialog } from "../../src/GlobalDialogUtils";
 import { compose } from "recompose";
 import { withEditorProps } from "../../src";
 import { MenuItem, Tab, Tabs } from "@blueprintjs/core";
-
 import { reduxForm, SubmissionError } from "redux-form";
 import { autoAnnotate, convertApELikeRegexToRegex } from "./autoAnnotate";
 import { FeatureTypes } from "ve-sequence-utils/lib";
