@@ -15,6 +15,8 @@ import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
 import { showConfirmationDialog } from "teselagen-react-components";
+import { autoAnnotateFeatures } from "../../../addons/AutoAnnotate";
+import { AutoAnnotateModal } from "../../../addons/AutoAnnotate";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -229,6 +231,7 @@ export default class EditorDemo extends React.Component {
     const {
       forceHeightMode,
       passAutoAnnotateHandlers,
+      withAutoAnnotateAddon,
       adjustCircularLabelSpacing,
       withVersionHistory,
       shouldAutosave,
@@ -343,6 +346,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
     ].filter((i) => i);
     return (
       <React.Fragment>
+        <AutoAnnotateModal editorName={"DemoEditor"}></AutoAnnotateModal>
         {/* <button onClick={() => {
           const dragSource = document.querySelector(".veTabLinearMap")
     const dropTarget = document.querySelector(".veTabProperties")
@@ -1182,6 +1186,17 @@ passing an autoAnnotateFeatures=()=>{} (or Primers/Parts) prop to the <Editor> w
               })}
               {renderToggle({
                 that: this,
+                label: "Enable autoAnnotateAddon",
+                type: "withAutoAnnotateAddon",
+                info: `Use this like so:
+                \`\`\`                
+import AutoAnnotateAddon from "@ove/AutoAnnotateAddon"
+ <Editor AutoAnnotateAddon=AutoAnnotateAddon/>
+ \`\`\` 
+`
+              })}
+              {renderToggle({
+                that: this,
                 type: "showMenuBar",
                 info: `
 hide or show the menubar (false by default)
@@ -1698,6 +1713,10 @@ clickOverrides: {
                 );
               }
             })}
+            {...(withAutoAnnotateAddon && {
+              autoAnnotateFeatures
+            })}
+            // AutoAnnotateAddon={withAutoAnnotateAddon && AutoAnnotateAddon}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}

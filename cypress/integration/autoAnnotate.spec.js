@@ -11,4 +11,12 @@ describe("autoAnnotate", function () {
     cy.contains("Auto Annotate Features").click();
     cy.contains("auto annotate features callback triggered");
   });
+  it(`the auto annotation ape upload addon should work`, () => {
+    cy.uploadFile(`.tg-dropzone`, "Default_Features.txt");
+    cy.contains("button", "Annotate").click();
+  });
+  it.only(`the auto annotation csv upload addon should work`, () => {
+    cy.uploadFile(`.tg-dropzone`, "csvAnnotationList.csv");
+    cy.contains("button", "Annotate").click();
+  });
 });

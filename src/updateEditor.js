@@ -1,5 +1,4 @@
 import { tidyUpSequenceData } from "ve-sequence-utils";
-// import cleanSequenceData from "./utils/cleanSequenceData";
 
 export default function updateEditor(
   store,

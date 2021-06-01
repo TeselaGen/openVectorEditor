@@ -35,7 +35,7 @@
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "^0.8.18",
     "axios": "^0.21.1",
-    "bio-parsers": "^8.3.7",
+    "bio-parsers": "^8.3.9",
     "classnames": "^2.3.1",
     "clipboard": "^2.0.8",
     "color": "^3.1.3",
@@ -64,7 +64,7 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "^30.1.16",
+    "teselagen-react-components": "^30.1.25",
     "tg-react-reflex": "^2.0.10",
     "typeface-ubuntu-mono": "^0.0.54",
     "use-local-storage-state": "^9.0.2",
@@ -81,7 +81,7 @@
     "auto-changelog": "^2.2.1",
     "babel-plugin-istanbul": "^6.0.0",
     "copy-to-clipboard": "^3.3.1",
-    "cypress": "^7.1.0",
+    "cypress": "3.2.0",
     "drag-mock": "^1.4.0",
     "eslint": "^6.8.0",
     "eslint-config-teselagen": "^5.0.7",
@@ -105,11 +105,11 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js|demo/**/*.js|cypress/**/*.js": [
+    "!(**/node_modules/**/*).js&(addons/**/*.js|src/**/*.js|demo/**/*.js|cypress/**/*.js)": [
       "eslint --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
       "prettier --write"
     ],
-    "*.css": [
+    "!(**/node_modules/**/*).js|*.css": [
       "prettier --write"
     ]
   },

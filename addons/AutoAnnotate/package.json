@@ -1,0 +1,7 @@
+{
+  "name": "@ove/auto-annotate",
+  "dependencies": {
+    "downloadjs": "^1.4.7",
+    "papaparse": "^5.3.0"
+  }
+}

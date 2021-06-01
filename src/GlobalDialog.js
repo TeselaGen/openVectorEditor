@@ -40,6 +40,7 @@ export function GlobalDialog(props) {
   const [uniqKey, setUniqKey] = useState();
   dialogHolder.setUniqKey = setUniqKey;
   const Comp =
+    dialogHolder.CustomModalComponent ||
     props.dialogOverrides[dialogHolder.overrideName] ||
     Dialogs[dialogHolder.dialogType];
   if (!Comp) return null;

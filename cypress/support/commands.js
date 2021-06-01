@@ -159,9 +159,12 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
   return cy.fixture(fileUrl, "base64").then((input) => {
     const blob = Cypress.Blob.base64StringToBlob(input);
     const name = fileUrl.split("/").pop();
-    const testFile = new File([blob], name, { type });
-    const event = { dataTransfer: { files: [testFile] } };
-    return cy.get(selector).trigger("drop", event);
+    return cy.window().then((win) => {
+      // this is using the File constructor from the application window
+      const testFile = new win.File([blob], name, { type });
+      const event = { dataTransfer: { files: [testFile] } };
+      return cy.get(selector).trigger("drop", event);
+    });
   });
 });
 
