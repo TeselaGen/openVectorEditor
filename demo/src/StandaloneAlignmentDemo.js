@@ -28,6 +28,10 @@ export default class StandaloneAlignmentDemo extends React.Component {
       handleAlignmentRename: () => {
         console.info("alignment being renamed!");
       }, //this does nothing right now
+      alignmentAnnotationVisibility: {
+        features: true,
+        parts: true
+      },
       linearViewOptions: () => {
         return {
           selectionLayerRightClicked: ({ event }) => {

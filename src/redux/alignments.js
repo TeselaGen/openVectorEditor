@@ -23,7 +23,7 @@ const alignmentAnnotationSettings = {
   primers: false
 };
 
-let defaultVisibilities = {
+const defaultVisibilities = {
   alignmentAnnotationVisibility: alignmentAnnotationSettings,
   pairwise_alignmentAnnotationVisibility: alignmentAnnotationSettings,
   alignmentAnnotationLabelVisibility: {
@@ -138,18 +138,21 @@ export default (state = {}, { payload = {}, type }) => {
   }
 
   if (type === "UPSERT_ALIGNMENT_RUN") {
-    let payloadToUse = {
+    const payloadToUse = {
+      ...payload,
       //assign default visibilities
       ...defaultVisibilityTypes.reduce((acc, type) => {
         if (
           (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
           (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
         ) {
-          acc[type.replace("pairwise_", "")] = defaultVisibilities[type];
+          acc[type.replace("pairwise_", "")] = {
+            ...defaultVisibilities[type],
+            ...payload[type.replace("pairwise_", "")]
+          };
         }
         return acc;
-      }, {}),
-      ...payload
+      }, {})
     };
     if (payloadToUse.pairwiseAlignments) {
       if (
@@ -287,7 +290,7 @@ function checkForIssues(alignmentTracks, alignmentType) {
     return;
   }
 
-  let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
+  const alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
   let hasError;
   alignmentTracks.some((track) => {
     if (track.alignmentData.sequence.length !== alignmentTrackLength) {
