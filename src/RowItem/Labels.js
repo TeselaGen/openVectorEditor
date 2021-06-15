@@ -22,7 +22,8 @@ function Labels(props) {
     textWidth = 6,
     editorName,
     labelLineIntensity,
-    isProtein
+    isProtein,
+    noRedux
   } = props;
 
   if (annotationRanges.length === 0) {
@@ -142,7 +143,8 @@ function Labels(props) {
           xStart,
           xEnd,
           textWidth,
-          labelLineIntensity
+          labelLineIntensity,
+          noRedux
         }}
       />
     );
