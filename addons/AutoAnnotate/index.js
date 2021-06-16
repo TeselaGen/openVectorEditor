@@ -12,10 +12,10 @@ import downloadjs from "downloadjs";
 import { showDialog } from "../../src/GlobalDialogUtils";
 import { compose } from "recompose";
 import { withEditorProps } from "../../src";
-import { MenuItem, Tab, Tabs } from "@blueprintjs/core";
+import { Colors, Tab, Tabs } from "@blueprintjs/core";
 import { reduxForm, SubmissionError } from "redux-form";
 import { autoAnnotate, convertApELikeRegexToRegex } from "./autoAnnotate";
-import { FeatureTypes } from "ve-sequence-utils/lib";
+import { featureColors, FeatureTypes } from "ve-sequence-utils";
 import {
   parseCsvFile,
   validateCSVRequiredHeaders,
@@ -24,16 +24,14 @@ import {
 import shortid from "shortid";
 import { startCase } from "lodash";
 import { unparse } from "papaparse";
+import CreateAnnotationsPage from "./CreateAnnotationsPage";
+import { formName } from "./constants";
 
 export function autoAnnotateFeatures() {
   showDialog({
     ModalComponent: AutoAnnotateModal, //we want to use a ModalComponent here so our addon does not
     props: {
-      // initialValues: { newName: props.sequenceData.name },
-      // onSubmit: (values) => {
-      //   props.sequenceNameUpdate(values.newName);
-      //   props.onRename && props.onRename(values.newName, props);
-      // }
+      annotationType: "feature"
     }
   });
 }
@@ -41,9 +39,24 @@ export function autoAnnotateFeatures() {
 export const AutoAnnotateModal = compose(
   wrapDialog({ title: "Auto Annotate" }),
   withEditorProps,
-  reduxForm({ form: "autoAnnotate" })
-)(({ sequenceData, handleSubmit, annotationType = "feature" }) => {
+  reduxForm({ form: formName })
+)((props) => {
+  const {
+    sequenceData,
+    handleSubmit,
+    annotationType = "feature",
+    error
+  } = props;
   const [fileType, setSelectedImportType] = useState("csvFile");
+  const [newAnnotations, setNewAnns] = useState(false);
+  if (newAnnotations) {
+    return (
+      <CreateAnnotationsPage
+        {...props}
+        newAnnotations={newAnnotations}
+      ></CreateAnnotationsPage>
+    );
+  }
   return (
     <div className={"bp3-dialog-body"}>
       <Tabs
@@ -131,6 +144,9 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 isRequired
                 accept={".txt"}
               ></FileUploadField>
+              {error && (
+                <div style={{ padding: 5, color: Colors.RED1 }}>{error}</div>
+              )}
             </div>
           }
           id="apeFile"
@@ -140,7 +156,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
       <DialogFooter
         onClick={handleSubmit(async ({ apeFile, csvFile }) => {
           let convertNonStandardTypes = false;
-          const newAnnotations = [];
+          const annsToCheck = [];
           try {
             const validateRow = async (row, rowName) => {
               const { type = "", sequence } = row;
@@ -153,7 +169,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 if (!cleanedType) {
                   if (!convertNonStandardTypes) {
                     convertNonStandardTypes = await showConfirmationDialog({
-                      cancelButtonText: "Stop Annotation",
+                      cancelButtonText: "Stop Auto-Annotate",
                       text: `Detected that ${rowName} has a non-standard type of ${type}. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
                     });
                     if (!convertNonStandardTypes) {
@@ -184,7 +200,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               } else {
                 row.isRegex = undefined;
               }
-              newAnnotations.push(row);
+              annsToCheck.push(row);
             };
             if (fileType === "csvFile") {
               const csvHeaders = ["name", "description", "sequence"];
@@ -202,6 +218,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                   validationError: error
                 };
               }
+
               for (const [index, row] of data.entries()) {
                 const error = validateCSVRow(row, csvHeaders, index);
                 if (error) {
@@ -215,7 +232,6 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               const { data } = await parseCsvFile(apeFile[0], {
                 header: false
               });
-              console.log(`data:`, data);
               for (const [i, [name, sequence, type]] of data.entries()) {
                 await validateRow({ name, sequence, type }, `Row ${i + 1}`);
               }
@@ -224,35 +240,59 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               console.info(`fileType:`, fileType);
             }
 
-            if (!newAnnotations.length) {
+            if (!annsToCheck.length) {
               return window.toastr.warning(
                 "No Annotations Detected on File. Please check that your file is in the correct format."
               );
             }
             const annotationsToCheckById = {};
-            newAnnotations.forEach((ann) => {
+            annsToCheck.forEach((ann) => {
               const id = shortid();
               annotationsToCheckById[id] = {
                 ...ann,
                 sequence: ann.isRegex
-                  ? convertApELikeRegexToRegex(ann.sequence)
-                  : ann.sequence,
+                  ? ann.sequence
+                  : convertApELikeRegexToRegex(ann.sequence),
                 id
               };
             });
+
+
             const seqId = "placeholderId";
-            const annotationsToAddBySeqId = autoAnnotate({
+
+            return
+            const { [seqId]: newAnns } = autoAnnotate({
               seqsToAnnotateById: {
                 [seqId]: { ...sequenceData, id: seqId }
               },
               annotationsToCheckById
             });
-            console.log(`annotationsToAddBySeqId:`, annotationsToAddBySeqId);
-          } catch (error) {
-            if (error.validationError) {
-              throw new SubmissionError({ _error: error.validationError });
+
+            console.log(`newAnns:`, newAnns);
+            return;
+            if (newAnns && newAnns.length) {
+              setNewAnns(
+                newAnns.map((a) => {
+                  const toRet = {
+                    ...annotationsToCheckById[a.id],
+                    ...a,
+                    forward: a.strand !== -1,
+                    id: shortid()
+                  };
+                  toRet.color = toRet.color || featureColors[toRet.type];
+                  return toRet;
+                })
+              );
             } else {
-              console.error(`error:`, error);
+              window.toastr.warning(
+                `No ${annotationType}s detected on sequence.`
+              );
+            }
+          } catch (error) {
+            console.error(`error:`, error);
+            if (error.validationError) {
+              throw new SubmissionError({ [fileType]: error.validationError });
+            } else {
               window.toastr.error(
                 `Error annotating ${annotationType}(s). Double check your file to make sure it is valid!`
               );

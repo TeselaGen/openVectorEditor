@@ -158,6 +158,7 @@ Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
 Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
   return cy.fixture(fileUrl, "base64").then((input) => {
     const blob = Cypress.Blob.base64StringToBlob(input);
+
     const name = fileUrl.split("/").pop();
     return cy.window().then((win) => {
       // this is using the File constructor from the application window
@@ -174,6 +175,34 @@ Cypress.Commands.add("selectRange", (start, end) => {
       selectionLayer: {
         start: start - 1,
         end: end - 1
+      }
+    });
+  });
+});
+Cypress.Commands.add("removeFeatures", () => {
+  cy.window().then((win) => {
+    win.ove_updateEditor({
+      justPassingPartialSeqData: true,
+      sequenceData: {
+        features: []
+      }
+    });
+  });
+});
+Cypress.Commands.add("hideCutsites", () => {
+  cy.window().then((win) => {
+    win.ove_updateEditor({
+      annotationVisibility: {
+        cutsites: false
+      }
+    });
+  });
+});
+Cypress.Commands.add("hideParts", () => {
+  cy.window().then((win) => {
+    win.ove_updateEditor({
+      annotationVisibility: {
+        parts: false
       }
     });
   });

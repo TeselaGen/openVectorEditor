@@ -1,9 +1,4 @@
 export default {
-  // manageEnzymes: {
-  //   value: "manageEnzymes",
-  //   label: "Manage Enzymes",
-  //   closeOnSelect: true
-  // },
   single: {
     value: "single",
     label: "Single cutters",

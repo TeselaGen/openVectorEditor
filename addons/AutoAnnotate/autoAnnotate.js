@@ -25,27 +25,31 @@ export function autoAnnotate({
         function getMatches({ seqToMatchAgainst, isReverse, seqLen }) {
           let match;
           // const matches = []
-          while ((match = reg.exec(seqToMatchAgainst))) {
-            const { index: matchStart, 0: matchSeq } = match;
-            if (matchStart >= seqLen) return;
-            const matchEnd = matchStart + matchSeq.length;
-            const range = {
-              start: matchStart,
-              end: normalizePositionByRangeLength(matchEnd - 1, seqLen)
-            };
-            if (!annotationsToAddBySeqId[id]) annotationsToAddBySeqId[id] = [];
-            annotationsToAddBySeqId[id].push({
-              ...(isReverse
-                ? {
-                    start: reversePositionInRange(range.end, seqLen),
-                    end: reversePositionInRange(range.start, seqLen)
-                  }
-                : range),
-              strand: isReverse ? -1 : 1,
-              id: ann.id
-            });
-
-            reg.lastIndex = match.index + 1;
+          try {
+            while ((match = reg.exec(seqToMatchAgainst))) {
+              const { index: matchStart, 0: matchSeq } = match;
+              if (matchStart >= seqLen) return;
+              const matchEnd = matchStart + matchSeq.length;
+              const range = {
+                start: matchStart,
+                end: normalizePositionByRangeLength(matchEnd - 1, seqLen)
+              };
+              if (!annotationsToAddBySeqId[id]) annotationsToAddBySeqId[id] = [];
+              annotationsToAddBySeqId[id].push({
+                ...(isReverse
+                  ? {
+                      start: reversePositionInRange(range.end, seqLen),
+                      end: reversePositionInRange(range.start, seqLen)
+                    }
+                  : range),
+                strand: isReverse ? -1 : 1,
+                id: ann.id
+              });
+  
+              reg.lastIndex = match.index + 1;
+            }
+          } catch (error) {
+            console.error(`error:`,error) 
           }
         }
         const seqLen = sequence.length;
@@ -132,7 +136,6 @@ export function convertApELikeRegexToRegex(regString = "") {
     /* eslint-enable no-inner-declarations*/
 
     const ambigVal = ambiguous_dna_values[bp.toUpperCase()];
-
     if (ambigVal && ambigVal.length > 1) {
       if (ambigVal.length === 4) {
         newstr += ".";

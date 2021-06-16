@@ -62,6 +62,27 @@ declare namespace Cypress {
     hideMenu(): void;
 
     /**
+     * removeFeatures
+     * remove all features on the sequence
+     * @example
+     * cy.removeFeatures() 
+     */
+    removeFeatures(): void;
+    /**
+     * hideCutsites
+     * hide all cutsites on the sequence
+     * @example
+     * cy.hideCutsites() 
+     */
+    hideCutsites(): void;
+    /**
+     * hideParts
+     * hide all parts on the sequence
+     * @example
+     * cy.hideParts() 
+     */
+    hideParts(): void;
+    /**
      * selectRange
      * selects a 1 based range of the sequence
      * @example

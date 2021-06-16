@@ -771,38 +771,106 @@ export class Editor extends React.Component {
     }
 
     return (
-      <DropHandler
-        key="dropHandler"
-        importSequenceFromFile={this.props.importSequenceFromFile}
-        disabled={readOnly || hideSingleImport}
-        style={{
-          width: "100%",
-          maxWidth: "100%",
-          // ...(fitHeight && {
-          // height: "100%",
-          //  }),
-          position: "relative",
-          // height: "100%",
-          // ...(fitHeight && {
-          height,
-          minHeight,
-          display: "flex",
-          flexDirection: "column",
-          ...(previewModeFullscreen && {
-            background: "white",
-            zIndex: 15000,
-            position: "fixed",
-            // paddingTop: 20,
-            top: yOffset || 0,
-            left: xOffset || 0,
-            ...windowDimensions
-          }),
-          ...style
-        }}
-        className={`veEditor ${editorName} ${
-          previewModeFullscreen ? "previewModeFullscreen" : ""
-        }`}
-      >
+      <React.Fragment>
+        <DropHandler
+          key="dropHandler"
+          importSequenceFromFile={this.props.importSequenceFromFile}
+          disabled={readOnly || hideSingleImport}
+          style={{
+            width: "100%",
+            maxWidth: "100%",
+            // ...(fitHeight && {
+            // height: "100%",
+            //  }),
+            position: "relative",
+            // height: "100%",
+            // ...(fitHeight && {
+            height,
+            minHeight,
+            display: "flex",
+            flexDirection: "column",
+            ...(previewModeFullscreen && {
+              background: "white",
+              zIndex: 15000,
+              position: "fixed",
+              // paddingTop: 20,
+              top: yOffset || 0,
+              left: xOffset || 0,
+              ...windowDimensions
+            }),
+            ...style
+          }}
+          className={`veEditor ${editorName} ${
+            previewModeFullscreen ? "previewModeFullscreen" : ""
+          }`}
+        >
+          <ToolBar
+            {...pickedUserDefinedHandlersAndOpts}
+            openHotkeyDialog={this.openHotkeyDialog}
+            key="toolbar"
+            showMenuBar={showMenuBar}
+            displayMenuBarAboveTools={displayMenuBarAboveTools}
+            handleFullscreenClose={
+              handleFullscreenClose || this.togglePreviewFullscreen
+            }
+            isProtein={sequenceData.isProtein}
+            userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
+            closeFullscreen={
+              !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
+            }
+            {...{
+              modifyTools: this.props.modifyTools,
+              contentLeft: this.props.contentLeft,
+              editorName,
+              toolList: this.props.toolList
+            }}
+            withDigestTool
+            {...ToolBarProps}
+          />
+
+          <CommandHotkeyHandler
+            menuSearchHotkey={this.props.menuSearchHotkey}
+            hotkeyDialogProps={{
+              isOpen: this.state.isHotkeyDialogOpen,
+              onClose: this.closeHotkeyDialog
+            }}
+            {...pickedUserDefinedHandlersAndOpts}
+            editorName={editorName}
+          />
+
+          <div
+            style={{
+              position: "relative",
+              flexGrow: "1",
+              minHeight: 0,
+              display: "flex"
+            }}
+            className="tg-editor-container"
+            id="section-to-print"
+          >
+            <DragDropContext
+              onDragStart={this.onTabDragStart}
+              onDragEnd={this.onTabDragEnd}
+            >
+              <ReflexContainer
+                onPanelCollapse={({ activePanelId }) => {
+                  this.props.collapsePanel(activePanelId);
+                }}
+                /* style={{}} */ orientation="vertical"
+              >
+                {panels}
+              </ReflexContainer>
+            </DragDropContext>
+          </div>
+
+          <StatusBar
+            {...pickedUserDefinedHandlersAndOpts}
+            isProtein={sequenceData.isProtein}
+            showCircularity={showCircularity && !sequenceData.isProtein}
+            editorName={editorName}
+            {...StatusBarProps}
+          />
+        </DropHandler>
         <GlobalDialog
           editorName={editorName}
           {...pickedUserDefinedHandlersAndOpts}
@@ -812,73 +880,7 @@ export class Editor extends React.Component {
             "AddOrEditPrimerDialogOverride"
           ])}
         />
-        <ToolBar
-          {...pickedUserDefinedHandlersAndOpts}
-          openHotkeyDialog={this.openHotkeyDialog}
-          key="toolbar"
-          showMenuBar={showMenuBar}
-          displayMenuBarAboveTools={displayMenuBarAboveTools}
-          handleFullscreenClose={
-            handleFullscreenClose || this.togglePreviewFullscreen
-          }
-          isProtein={sequenceData.isProtein}
-          userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
-          closeFullscreen={
-            !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
-          }
-          {...{
-            modifyTools: this.props.modifyTools,
-            contentLeft: this.props.contentLeft,
-            editorName,
-            toolList: this.props.toolList
-          }}
-          withDigestTool
-          {...ToolBarProps}
-        />
-
-        <CommandHotkeyHandler
-          menuSearchHotkey={this.props.menuSearchHotkey}
-          hotkeyDialogProps={{
-            isOpen: this.state.isHotkeyDialogOpen,
-            onClose: this.closeHotkeyDialog
-          }}
-          {...pickedUserDefinedHandlersAndOpts}
-          editorName={editorName}
-        />
-
-        <div
-          style={{
-            position: "relative",
-            flexGrow: "1",
-            minHeight: 0,
-            display: "flex"
-          }}
-          className="tg-editor-container"
-          id="section-to-print"
-        >
-          <DragDropContext
-            onDragStart={this.onTabDragStart}
-            onDragEnd={this.onTabDragEnd}
-          >
-            <ReflexContainer
-              onPanelCollapse={({ activePanelId }) => {
-                this.props.collapsePanel(activePanelId);
-              }}
-              /* style={{}} */ orientation="vertical"
-            >
-              {panels}
-            </ReflexContainer>
-          </DragDropContext>
-        </div>
-
-        <StatusBar
-          {...pickedUserDefinedHandlersAndOpts}
-          isProtein={sequenceData.isProtein}
-          showCircularity={showCircularity && !sequenceData.isProtein}
-          editorName={editorName}
-          {...StatusBarProps}
-        />
-      </DropHandler>
+      </React.Fragment>
     );
   }
 }

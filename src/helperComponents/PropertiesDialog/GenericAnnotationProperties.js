@@ -17,10 +17,10 @@ import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
 import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
+import { typeField } from "./typeField";
 
 const genericAnnotationProperties = ({
   annotationType,
-  noColor,
   noType,
   withTags
 }) => {
@@ -31,26 +31,12 @@ const genericAnnotationProperties = ({
       this.commands = commands(this);
       this.schema = {
         fields: [
-          ...(noColor
+          { path: "name", type: "string" },
+          ...(noType
             ? []
             : [
-                {
-                  path: "color",
-                  type: "string",
-                  render: (color) => {
-                    return (
-                      <div
-                        style={{ height: 20, width: 20, background: color }}
-                      />
-                      // <ColorPickerPopover>
-                      //   <div style={{ height: 20, width: 20, background: color }} />
-                      // </ColorPickerPopover>
-                    );
-                  }
-                }
+                typeField
               ]),
-          { path: "name", type: "string" },
-          ...(noType ? [] : [{ path: "type", type: "string" }]),
           sizeSchema,
           ...(withTags && this.props.allPartTags
             ? [

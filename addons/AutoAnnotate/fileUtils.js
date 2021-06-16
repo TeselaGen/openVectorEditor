@@ -18,7 +18,7 @@ const defaultCsvParserOptions = {
   header: true,
   skipEmptyLines: "greedy",
   trimHeaders: true,
-  delimiter: ","
+  // delimiter: ","
 };
 
 export const parseCsvFile = (csvFile, parserOptions = {}) => {

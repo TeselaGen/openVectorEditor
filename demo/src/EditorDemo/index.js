@@ -16,7 +16,6 @@ import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
 import { showConfirmationDialog } from "teselagen-react-components";
 import { autoAnnotateFeatures } from "../../../addons/AutoAnnotate";
-import { AutoAnnotateModal } from "../../../addons/AutoAnnotate";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -346,7 +345,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
     ].filter((i) => i);
     return (
       <React.Fragment>
-        <AutoAnnotateModal editorName={"DemoEditor"}></AutoAnnotateModal>
+        {/* <AutoAnnotateModal editorName={"DemoEditor"}></AutoAnnotateModal> */}
         {/* <button onClick={() => {
           const dragSource = document.querySelector(".veTabLinearMap")
     const dropTarget = document.querySelector(".veTabProperties")
