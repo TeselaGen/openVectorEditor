@@ -3,7 +3,6 @@ describe("copyPaste", function () {
     cy.visit("");
   });
   // it(`isProtein mode - copy via hotkey`, () => {
-  //   cy.tgToggle("isProtein");
   //   cy.contains(".tg-menu-bar button", "Edit").click();
   //   cy.contains(".bp3-menu-item", "Copy").click();
   //   cy.window().then(() => {
@@ -18,7 +17,8 @@ describe("copyPaste", function () {
   //   });
   // });
   it(`isProtein mode - copy genbank of protein`, () => {
-    cy.tgToggle("isProtein");
+    cy.get(`[data-test="moleculeType"]`).select("Protein");
+
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });
@@ -37,7 +37,7 @@ describe("copyPaste", function () {
     });
   });
   it(`isProtein mode - copy protein sequence`, () => {
-    cy.tgToggle("isProtein");
+    cy.get(`[data-test="moleculeType"]`).select("Protein");
     cy.contains(".veRowViewFeature", "araC")
       .first()
       .trigger("contextmenu", { force: true });

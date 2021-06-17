@@ -1,7 +1,7 @@
 describe("proteinEditor", function () {
   beforeEach(() => {
-    cy.visit("");
-    cy.tgToggle("isProtein");
+    cy.visit("/#/Editor?moleculeType=Protein");
+    // cy.get(`[data-test="moleculeType"]`).select('Protein')
   });
   it(`annotations shouldn't have a strand field to edit and all annotations be 'forward'`, () => {
     cy.contains(".veRowViewPart", "Part 0").rightclick();
@@ -16,7 +16,7 @@ describe("proteinEditor", function () {
   });
   it(`should be able to toggle between protein and dna mode after firing some actions`, () => {
     cy.contains(".veLabelText", "Part 0").click();
-    cy.tgToggle("isProtein", false);
+    cy.get(`[data-test="moleculeType"]`).select("DNA");
     cy.contains("Length: 5299 bps").should("exist");
   });
   it(`feature/part add/edit should be AA indexed`, () => {
