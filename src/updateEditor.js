@@ -66,7 +66,7 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
-            sequence: false,
+            sequence: true,
             reverseSequence: false,
             ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             translations: false,

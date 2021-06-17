@@ -437,7 +437,7 @@ updateEditor(store, "DemoEditor", {
               })}
               {renderToggle({
                 isSelect: true,
-                options: ["DNA", "RNA", "Protein"],
+                options: ["DNA", "RNA", "Protein", "mixedRnaAndDna"],
                 that: this,
                 label: "Molecule Type:",
                 type: "moleculeType",
@@ -503,6 +503,18 @@ certain dna specific tools and annotations are automatically disabled when isPro
                     updateEditor(store, "DemoEditor", {
                       readOnly: false,
                       sequenceData: { ...exampleSequenceData, isRna: true }
+                    });
+                  } else if (val === "mixedRnaAndDna") {
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: tidyUpSequenceData(
+                        {
+                          ...exampleSequenceData,
+                          sequence: "uuuu" + exampleSequenceData.sequence,
+                          isMixedRnaAndDna: true
+                        },
+                        {}
+                      )
                     });
                   } else {
                     updateEditor(store, "DemoEditor", {

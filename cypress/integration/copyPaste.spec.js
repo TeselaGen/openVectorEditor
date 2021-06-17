@@ -2,20 +2,6 @@ describe("copyPaste", function () {
   beforeEach(() => {
     cy.visit("");
   });
-  // it(`isProtein mode - copy via hotkey`, () => {
-  //   cy.contains(".tg-menu-bar button", "Edit").click();
-  //   cy.contains(".bp3-menu-item", "Copy").click();
-  //   cy.window().then(() => {
-  //     assert(
-  //       window.Cypress.textToCopy ===
-  //         "FCILLAAVSGAEGWGYYGCDEELVGPLYARSLGASSYYSLLTAPRFARLHGISGWSPRIGDPNPWLQIDLMKKHRIRAVATQGSFNSWDWVTRYMLLYGDRVDSWTPFYQRGHNSTFFGNVNESAVVRHDLHFHFTARYIRIVPLAWNPRGKIGLRLGLYGCPYKADILYFDGDDAISYRFPRGVSRSLWDVFAFSFKTEEKDGLLLHAEGAQGDYVTLELEGAHLLLHMSLGSSPIQPRPGHTTVSAGGVLNDQHWHYVRVDRFGRDVNFTLDGYVQRFILNGDFERLNLDTEMFIGGLVGAARKNLAYRHNFRGCIENVIFNRVNIADLAVRRHSRITFEGKVAFRCLDPVPHPINFGGPHNFVQVPGFPRRGRLAVSFRFRTWDLTGLLLFSRLGDGLGHVELTLSEGQVNVSIAQSGRKKLQFAAGYRLNDGFWHEVNFVAQENHAVISIDDVEGAEVRVSYPLLIRTGTSYFFGGCPKPASRWDCHSNQTAFHGCMELLKVDGQLVNLTLVEGRRLGFYAEVLFDTCGITDRCSPNMCEHDGRCYQSWDDFICYCELTGYKGETCHTPLYKESCEAYRLSGKTSGNFTIDPDGSGPLKPFVVYCDIRENRAWTVVRHDRLWTTRVTGSSMERPFLGAIQYWNASWEEVSALANASQHCEQWIEFSCYNSRLLNTAGGYPYSFWIGRNEEQHFYWGGSQPGIQRCACGLDRSCVDPALYCNCDADQPQWRTDKGLLTFVDHLPVTQVVIGDTNRSTSEAQFFLRPLRCYGDRNSWNTISFHTGAALRFPPIRANHSLDVSFYFRTSAPSGVFLENMGGPYCQWRRPYVRVELNTSRDVVFAFDVGNGDENLTVHSDDFEFNDDEWHLVRAEINVK"
-  //     );
-  //     assert(
-  //       window.Cypress.seqDataToCopy.proteinSequence ===
-  //         "fcillaavsgaegwgyygcdeelvgplyarslgassyyslltaprfarlhgisgwsprigdpnpwlqidlmkkhriravatqgsfnswdwvtrymllygdrvdswtpfyqrghnstffgnvnesavvrhdlhfhftaryirivplawnprgkiglrlglygcpykadilyfdgddaisyrfprgvsrslwdvfafsfkteekdglllhaegaqgdyvtlelegahlllhmslgsspiqprpghttvsaggvlndqhwhyvrvdrfgrdvnftldgyvqrfilngdferlnldtemfigglvgaarknlayrhnfrgcienvifnrvniadlavrrhsritfegkvafrcldpvphpinfggphnfvqvpgfprrgrlavsfrfrtwdltglllfsrlgdglghveltlsegqvnvsiaqsgrkklqfaagyrlndgfwhevnfvaqenhavisiddvegaevrvsypllirtgtsyffggcpkpasrwdchsnqtafhgcmellkvdgqlvnltlvegrrlgfyaevlfdtcgitdrcspnmcehdgrcyqswddficyceltgykgetchtplykesceayrlsgktsgnftidpdgsgplkpfvvycdirenrawtvvrhdrlwttrvtgssmerpflgaiqywnasweevsalanasqhceqwiefscynsrllntaggypysfwigrneeqhfywggsqpgiqrcacgldrscvdpalycncdadqpqwrtdkglltfvdhlpvtqvvigdtnrstseaqfflrplrcygdrnswntisfhtgaalrfppiranhsldvsfyfrtsapsgvflenmggpycqwrrpyvrvelntsrdvvfafdvgngdenltvhsddfefnddewhlvraeinvk"
-  //     );
-  //   });
-  // });
   it(`isProtein mode - copy genbank of protein`, () => {
     cy.get(`[data-test="moleculeType"]`).select("Protein");
 

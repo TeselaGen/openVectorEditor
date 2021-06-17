@@ -362,7 +362,7 @@ They look like this:
 
 # Protein Editor
 OVE can be set up to view and edit proteins (Amino Acid sequences) as first class citizens. 
-The protein editor can be seen here: http://teselagen.github.io/openVectorEditor/#/Editor?isProtein=true 
+The protein editor can be seen here: http://teselagen.github.io/openVectorEditor/#/Editor?moleculeType=Protein
 
 The editor supports Amino Acid sequences as well as DNA sequences!
 Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
