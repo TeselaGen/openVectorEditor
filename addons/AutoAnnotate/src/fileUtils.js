@@ -1,5 +1,4 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import Promise from "bluebird";
 import { parse } from "papaparse";
 
 export const allowedCsvFileTypes = [".csv", ".txt", ".xlsx"];

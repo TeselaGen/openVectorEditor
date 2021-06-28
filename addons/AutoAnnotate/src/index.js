@@ -4,14 +4,15 @@
 import {
   DialogFooter,
   FileUploadField,
+  InfoHelper,
   showConfirmationDialog,
   wrapDialog
 } from "teselagen-react-components";
 import React, { useState } from "react";
 import downloadjs from "downloadjs";
-import { showDialog } from "../../src/GlobalDialogUtils";
+import { showDialog } from "../../../src/GlobalDialogUtils";
 import { compose } from "recompose";
-import { withEditorProps } from "../../src";
+import { withEditorProps } from "../../../src";
 import { Colors, Tab, Tabs } from "@blueprintjs/core";
 import { reduxForm, SubmissionError } from "redux-form";
 import { autoAnnotate, convertApELikeRegexToRegex } from "./autoAnnotate";
@@ -26,6 +27,7 @@ import { startCase } from "lodash";
 import { unparse } from "papaparse";
 import CreateAnnotationsPage from "./CreateAnnotationsPage";
 import { formName } from "./constants";
+import { AutoAnnotateBpMatchingDialog } from "./AutoAnnotateBpMatchingDialog";
 
 export function autoAnnotateFeatures() {
   showDialog({
@@ -68,6 +70,25 @@ export const AutoAnnotateModal = compose(
           panel={
             <div>
               <div>
+                <InfoHelper
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    showDialog({
+                      ModalComponent: AutoAnnotateBpMatchingDialog
+                    });
+                  }}
+                  content={
+                    true ? (
+                      <span>
+                        Any valid regexes allowed. Click for more info about
+                        regex matching
+                      </span>
+                    ) : (
+                      `All valid IUPAC bases allowed as well as a couple special characters. Click for more info`
+                    )
+                  }
+                ></InfoHelper>
                 Select a CSV file with the following columns -
                 name,description,sequence,type,isRegex (
                 <a
@@ -257,10 +278,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               };
             });
 
-
             const seqId = "placeholderId";
-
-            return
             const { [seqId]: newAnns } = autoAnnotate({
               seqsToAnnotateById: {
                 [seqId]: { ...sequenceData, id: seqId }
@@ -268,8 +286,6 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               annotationsToCheckById
             });
 
-            console.log(`newAnns:`, newAnns);
-            return;
             if (newAnns && newAnns.length) {
               setNewAnns(
                 newAnns.map((a) => {

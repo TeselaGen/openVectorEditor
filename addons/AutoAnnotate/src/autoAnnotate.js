@@ -18,23 +18,36 @@ export function autoAnnotate({
 
   forEach(annotationsToCheckById, (ann) => {
     const reg = new RegExp(ann.sequence, "gi");
-
+    console.log(`reg:`, reg);
     forEach(
       omitBy(seqsToAnnotateById, (s) => !s.sequence.length),
       ({ circular, sequence }, id) => {
         function getMatches({ seqToMatchAgainst, isReverse, seqLen }) {
           let match;
+          let lastMatch;
           // const matches = []
           try {
             while ((match = reg.exec(seqToMatchAgainst))) {
               const { index: matchStart, 0: matchSeq } = match;
               if (matchStart >= seqLen) return;
+              console.log(`lastMatch:`, lastMatch);
               const matchEnd = matchStart + matchSeq.length;
+              if (lastMatch) {
+                if (matchStart > lastMatch.start && matchEnd <= lastMatch.end) {
+                  reg.lastIndex = match.index + 1;
+                  continue;
+                }
+              }
+              lastMatch = {
+                start: matchStart,
+                end: matchEnd
+              };
               const range = {
                 start: matchStart,
                 end: normalizePositionByRangeLength(matchEnd - 1, seqLen)
               };
-              if (!annotationsToAddBySeqId[id]) annotationsToAddBySeqId[id] = [];
+              if (!annotationsToAddBySeqId[id])
+                annotationsToAddBySeqId[id] = [];
               annotationsToAddBySeqId[id].push({
                 ...(isReverse
                   ? {
@@ -45,11 +58,11 @@ export function autoAnnotate({
                 strand: isReverse ? -1 : 1,
                 id: ann.id
               });
-  
+
               reg.lastIndex = match.index + 1;
             }
           } catch (error) {
-            console.error(`error:`,error) 
+            console.error(`error:`, error);
           }
         }
         const seqLen = sequence.length;
@@ -118,75 +131,95 @@ function getStartEndStr(
 
 export function convertApELikeRegexToRegex(regString = "") {
   let newstr = "";
-
+  let rightOfCaretHolder = "";
+  let afterRightCaretHolder = "";
+  let beforeRightCaret = "";
   let prevBp;
-  // let hitHash;
   let hitLeftCaret;
   let hitRightCaret;
 
   for (const bp of regString.replace("(", "").replace(")", "")) {
     /* eslint-disable no-loop-func*/
     /* eslint-disable no-inner-declarations*/
-    function maybeAddQuestion() {
+    function maybeHandleRightCaret(justAdded) {
       if (hitRightCaret) {
-        newstr += "?";
+        rightOfCaretHolder += justAdded;
+        afterRightCaretHolder = `${rightOfCaretHolder}${
+          afterRightCaretHolder.length ? "|" : ""
+        }${afterRightCaretHolder}`;
       }
     }
     /* eslint-enable no-loop-func*/
     /* eslint-enable no-inner-declarations*/
-
     const ambigVal = ambiguous_dna_values[bp.toUpperCase()];
     if (ambigVal && ambigVal.length > 1) {
+      let valToUse;
       if (ambigVal.length === 4) {
-        newstr += ".";
+        valToUse = ".";
       } else {
-        newstr += `[${ambigVal}]`;
+        valToUse = `[${ambigVal}]`;
       }
-      maybeAddQuestion();
+      newstr += valToUse;
+      maybeHandleRightCaret(valToUse);
       continue;
     }
     if (bp === "#") {
       if (hitRightCaret) throw new Error("Error converting regex");
-
-      newstr += prevBp ? `[^${prevBp}]*?` : `.*?`;
-      // hitHash = true;
+      const valToUse = prevBp ? `[^${prevBp}]*?` : `.*?`;
+      newstr += valToUse;
+      maybeHandleRightCaret(valToUse);
       continue;
     }
     if (bp === "<") {
-      // if (hitHash) throw new Error("Error converting regex");
-      if (hitRightCaret) throw new Error("Error converting regex");
-      if (hitLeftCaret) throw new Error("Error converting regex");
+      if (hitRightCaret) throw new Error("Error converting to regex");
+      if (hitLeftCaret) throw new Error("Error converting to regex");
       let holder = "";
-      let shouldAddQuesMark = true;
+      let stringToAdd = "";
+      let isGroupClosed = true;
       let closingBraceHit;
+      const groups = [];
       for (let index = 0; index < newstr.length; index++) {
         const char = newstr[index];
         const nextChar = newstr[index + 1];
         if (char === "[") {
-          shouldAddQuesMark = false;
+          isGroupClosed = false;
         } else if (char === "]" || closingBraceHit) {
           closingBraceHit = true;
           if (ambiguous_dna_values[nextChar] || nextChar === "[") {
-            shouldAddQuesMark = true;
+            isGroupClosed = true;
             closingBraceHit = false;
           }
         }
         holder += char;
-        if (shouldAddQuesMark && char !== "?") holder += "?";
+        if (isGroupClosed) {
+          groups.push(holder);
+          holder = "";
+        }
       }
-      newstr = holder;
+      let concattedEls = "";
+      groups.reverse();
+      groups.forEach((g) => {
+        concattedEls = g + concattedEls;
+        stringToAdd = `${concattedEls}${
+          stringToAdd.length ? "|" : ""
+        }${stringToAdd}`;
+      });
+      newstr = `(${stringToAdd})?`;
       hitLeftCaret = true;
       continue;
     }
     if (bp === ">") {
       if (hitRightCaret) throw new Error("Error converting regex");
       hitRightCaret = true;
+      beforeRightCaret = newstr;
       continue;
     }
     newstr += bp;
-    maybeAddQuestion();
-
+    maybeHandleRightCaret(bp);
     prevBp = bp;
+  }
+  if (hitRightCaret) {
+    newstr = `${beforeRightCaret}(${afterRightCaretHolder})?`;
   }
   return newstr;
 }

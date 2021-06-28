@@ -3,16 +3,11 @@ const path = require("path");
 module.exports = {
   type: "react-component",
   npm: {
-    umd: {
-      entry: {
-        pageOne: "./src/index.js",
-        pageTwo: "./addons/AutoAnnotate/src/index.js"
-      }
-    },
+    umd: {},
     // comment out the next line and comment in the following lines to avoid building anything but the umd build
-    // esModules: true
-    esModules: console.log("commentMeBackOut") || false,
-    cjs: console.log("commentMeBackOut") || false
+    esModules: true
+    // esModules: console.log("commentMeBackOut") || false,
+    // cjs: console.log("commentMeBackOut") || false
   },
   babel: {
     // runtime: false, //tnr: comment this back in once we're at a higher version of cypress on lims
@@ -21,9 +16,9 @@ module.exports = {
     //     chrome: "59"
     //   }
     // },
-    ...(process.env.WITH_COVERAGE && {
-      plugins: ["istanbul"]
-    })
+    // ...(process.env.WITH_COVERAGE && {
+    //   plugins: ["istanbul"]
+    // })
   },
   webpack: {
     aliases: {
@@ -44,20 +39,20 @@ module.exports = {
       //   path.resolve(__dirname, "../teselagen-react-components/src/"),
 
       //don't comment this out!
-      react: path.join(__dirname, "node_modules/react"),
-      // "../teselagen-react-components/node_modules/@blueprintjs/core/": path.join(
+      // react: path.join(__dirname, "../node_modules/react"),
+      // // "../teselagen-react-components/../node_modules/@blueprintjs/core/": path.join(
+      // //   __dirname,
+      // //   "../node_modules/@blueprintjs/core"
+      // // ),
+      // "@blueprintjs/core": path.join(
       //   __dirname,
-      //   "node_modules/@blueprintjs/core"
+      //   "../node_modules/@blueprintjs/core"
       // ),
-      "@blueprintjs/core": path.join(
-        __dirname,
-        "node_modules/@blueprintjs/core"
-      ),
-      // "@blueprintjs/core/lib": path.join(
-      //   __dirname,
-      //   "node_modules/@blueprintjs/core/lib"
-      // ),
-      "react-dom": path.join(__dirname, "node_modules/react-dom")
+      // // "@blueprintjs/core/lib": path.join(
+      // //   __dirname,
+      // //   "../node_modules/@blueprintjs/core/lib"
+      // // ),
+      // "react-dom": path.join(__dirname, "../node_modules/react-dom")
     },
     extra: {
       devtool: "source-map"

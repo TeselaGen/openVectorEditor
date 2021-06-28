@@ -8,8 +8,8 @@ import {
   withSelectedEntities,
   withSelectTableRecords
 } from "teselagen-react-components";
-import { hideDialog } from "../../src/GlobalDialogUtils";
-import { typeField } from "../../src/helperComponents/PropertiesDialog/typeField";
+import { hideDialog } from "../../../src/GlobalDialogUtils";
+import { typeField } from "../../../src/helperComponents/PropertiesDialog/typeField";
 import { formName } from "./constants";
 
 const schema = ["name", typeField, "start", "end", "strand"];
