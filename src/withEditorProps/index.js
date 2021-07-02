@@ -577,7 +577,7 @@ function mapStateToProps(state, ownProps) {
       uppercaseSequenceMapFont,
       sequenceData.sequence
     ),
-    parts: filteredParts,
+    filteredParts,
     filteredFeatures,
     cutsites,
     orfs,

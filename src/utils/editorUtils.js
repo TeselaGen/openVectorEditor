@@ -139,3 +139,10 @@ export function getClientX(event) {
 export function getClientY(event) {
   return event.clientY || get(event, "touches[0].clientY");
 }
+
+export function hideAnnByLengthFilter(hideOpts, ann, seqLen){
+  const featLength = getRangeLength(ann, seqLen)
+  return hideOpts.enabled &&
+  (featLength < hideOpts.min ||
+    featLength > hideOpts.max);
+}

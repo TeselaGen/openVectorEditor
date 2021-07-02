@@ -80,6 +80,10 @@ export default [
         shouldDismissPopover: false
       },
       {
+        cmd: "featureFilterIndividualCmd",
+        shouldDismissPopover: false
+      },
+      {
         cmd: "filterFeatureLengthsCmd",
         shouldDismissPopover: false
       }

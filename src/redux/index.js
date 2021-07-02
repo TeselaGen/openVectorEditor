@@ -31,6 +31,7 @@ import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
+import * as partLengthsToHide from "./partLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
@@ -67,6 +68,7 @@ const subReducers = {
   externalLabels,
   labelLineIntensity,
   labelSize,
+  partLengthsToHide,
   featureLengthsToHide,
   selectedPartTags
 };

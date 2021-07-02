@@ -7,6 +7,8 @@ import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateRed
 
 export const visibilityDefaultValues = {
   featureTypesToHide: {},
+  featureIndividualToHide: {},
+  partIndividualToHide: {},
   features: true,
   warnings: true,
   assemblyPieces: true,
@@ -42,12 +44,66 @@ export const annotationVisibilityShow = createAction(
 export const hideFeatureTypes = createAction("hideFeatureTypes");
 export const showFeatureTypes = createAction("showFeatureTypes");
 export const resetFeatureTypesToHide = createAction("resetFeatureTypesToHide");
+export const hideFeatureIndividual = createAction("hideFeatureIndividual");
+export const showFeatureIndividual = createAction("showFeatureIndividual");
+export const resetFeatureIndividualToHide = createAction("resetFeatureIndividualToHide");
+export const hidePartIndividual = createAction("hidePartIndividual");
+export const showPartIndividual = createAction("showPartIndividual");
+export const resetPartIndividualToHide = createAction("resetPartIndividualToHide");
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-let annotationVisibility = createMergedDefaultStateReducer(
+const annotationVisibility = createMergedDefaultStateReducer(
   {
+    [resetPartIndividualToHide]: state => {
+      return {
+        ...state,
+        partIndividualToHide: {}
+      };
+    },
+    [showPartIndividual]: (state, payload) => {
+      return {
+        ...state,
+        partIndividualToHide: omit(state.partIndividualToHide, payload)
+      };
+    },
+    [hidePartIndividual]: (state, payload) => {
+      return {
+        ...state,
+        partIndividualToHide: {
+          ...state.partIndividualToHide,
+          ...payload.reduce((acc, key) => {
+            acc[key] = true;
+            return acc;
+          }, {})
+        }
+      };
+    },
+    [resetFeatureIndividualToHide]: state => {
+      return {
+        ...state,
+        featureIndividualToHide: {}
+      };
+    },
+    [showFeatureIndividual]: (state, payload) => {
+      return {
+        ...state,
+        featureIndividualToHide: omit(state.featureIndividualToHide, payload)
+      };
+    },
+    [hideFeatureIndividual]: (state, payload) => {
+      return {
+        ...state,
+        featureIndividualToHide: {
+          ...state.featureIndividualToHide,
+          ...payload.reduce((acc, key) => {
+            acc[key] = true;
+            return acc;
+          }, {})
+        }
+      };
+    },
     [resetFeatureTypesToHide]: state => {
       return {
         ...state,

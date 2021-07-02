@@ -37,6 +37,7 @@ const genericAnnotationProperties = ({
                 {
                   path: "color",
                   type: "string",
+                  width: 50,
                   render: (color) => {
                     return (
                       <div

@@ -4,11 +4,11 @@ import createAction from "./utils/createMetaAction";
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const updateFeatureLengthsToHide = createAction(
-  "updateFeatureLengthsToHide"
+export const updatePartLengthsToHide = createAction(
+  "updatePartLengthsToHide"
 );
-export const toggleFeatureLengthsToHide = createAction(
-  "toggleFeatureLengthsToHide"
+export const togglePartLengthsToHide = createAction(
+  "togglePartLengthsToHide"
 );
 
 // ------------------------------------
@@ -16,10 +16,10 @@ export const toggleFeatureLengthsToHide = createAction(
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
-    [updateFeatureLengthsToHide]: (state, payload) => {
+    [updatePartLengthsToHide]: (state, payload) => {
       return { ...state, ...payload };
     },
-    [toggleFeatureLengthsToHide]: (state) => {
+    [togglePartLengthsToHide]: (state) => {
       return { ...state, enabled: !state["enabled"] };
     }
   },

@@ -9,6 +9,41 @@ describe("menuBar", function () {
     cy.contains(".ove-menu-toast", "Sequence Saving");
     cy.contains(".ove-menu-toast", "Sequence Saved");
   });
+  it("Should be able to hide individual features", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
+    cy.contains(".tg-menu-bar button", "View").click();
+
+    cy.contains(".veLabelText", "pSC101**");
+    cy.contains(".veLabelText", "araD");
+    cy.contains(".veLabelText", "araC");
+    cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Filter Individually")
+      .contains("22/22")
+      .trigger("mouseover");
+    cy.contains(".bp3-menu-item", "araD").click({ force: true });
+    cy.contains(".bp3-menu-item", "araC").click({ force: true });
+
+    cy.contains(".veLabelText", "araD").should("not.exist");
+    cy.contains(".veLabelText", "araC").should("not.exist");
+  });
+  it("Should be able to hide individual parts", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
+    cy.contains(".tg-menu-bar button", "View").click();
+
+    cy.contains(".veLabelText", "Part 0");
+    cy.contains(".veLabelText", "Curtis' Part");
+    cy.contains(".bp3-menu-item", "Parts").trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Filter Individually")
+      .contains("3/3")
+      .trigger("mouseover");
+    cy.contains(".bp3-menu-item", "Part 0").click({ force: true });
+    cy.contains(".veLabelText", "Part 0").should("not.exist");
+    cy.contains(".bp3-menu-item", "Uncheck All").click({ force: true });
+    cy.contains(".veLabelText", "Curtis' Part").should("not.exist");
+    cy.contains(".bp3-menu-item", "Check All").click({ force: true });
+    cy.contains(".veLabelText", "Part 0");
+    cy.contains(".veLabelText", "Curtis' Part");
+  });
   it("Should be able to filter features by length", () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".tg-menu-bar button", "View").click();
@@ -22,6 +57,16 @@ describe("menuBar", function () {
     cy.contains(".veLabelText", "araC").should("exist");
     cy.get("[data-test=filter-feature-length]").click("top");
     cy.contains(".veLabelText", "pSC101**").should("exist");
+  });
+  it("Should be able to filter part by length", () => {
+    cy.get(`[data-test="cutsiteHideShowTool"]`).click();
+    cy.contains(".tg-menu-bar button", "View").click();
+    cy.contains("Part - pj5_00001 - Start: 1 End: 5299");
+    cy.contains(".bp3-menu-item", "Part").trigger("mouseover");
+    cy.get("[data-test=filter-part-length]").click("top");
+    cy.contains("Part - pj5_00001 - Start: 1 End: 5299").should("not.exist");
+    cy.get('[data-test="max-part-length"]').type("{selectall}6000");
+    cy.contains("Part - pj5_00001 - Start: 1 End: 5299");
   });
   it("Should be able to change circular/linear from the menu bar", () => {
     cy.contains(".tg-menu-bar button", "Edit").click();
@@ -96,10 +141,10 @@ describe("menuBar", function () {
       .trigger("mouseover");
     cy.contains(".veLabelText", "araD");
     cy.contains(".veLabelText", "araC");
-    cy.contains(".bp3-menu-item", "misc_feature").click();
+    cy.contains(".bp3-menu-item", "misc_feature").click({force: true});
     cy.contains(".veLabelText", "araD").should("not.exist");
     cy.contains(".bp3-menu-item", "Filter By Type").contains("8/9");
-    cy.contains(".bp3-menu-item", "Uncheck All").click();
+    cy.contains(".bp3-menu-item", "Uncheck All").click({force: true});
     cy.contains(".bp3-menu-item", "Filter By Type").contains("0/9");
     cy.contains(".veLabelText", "araC").should("not.exist");
     cy.contains(".bp3-menu-item", "Check All").click({ force: true });
