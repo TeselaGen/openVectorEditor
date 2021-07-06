@@ -29,7 +29,7 @@ import {
   autoAnnotate,
 } from "ve-sequence-utils";
 
-type AddonGlobals = {
+type AddOnGlobals = {
   wrapDialog: wrapDialog,
   withEditorProps: withEditorProps,
   reduxForm: reduxForm,
@@ -59,6 +59,6 @@ type AddonGlobals = {
 }
 export global {
   interface Window {
-    addOnGlobals: AddonGlobals;
+    addOnGlobals: AddOnGlobals;
   }
 }
