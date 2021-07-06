@@ -86,7 +86,7 @@ describe("copyPaste", function () {
     cy.get(
       `.bp3-menu-item:contains("Include Features") .bp3-icon-small-tick`
     ).should("exist");
-    cy.contains(".bp3-menu-item", "Include Features").click();
+    cy.contains(".bp3-menu-item", "Include Features").click({ force: true });
     cy.get(
       `.bp3-menu-item:contains("Include Features") .bp3-icon-small-tick`
     ).should("not.exist");

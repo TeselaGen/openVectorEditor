@@ -17,7 +17,7 @@ describe("editor", function () {
     cy.contains(".bp3-menu-item", "Limits").click();
     cy.contains(".bp3-menu-item", "Max Cutsites To Show").click();
     cy.get(".bp3-menu-item:contains(100) .bp3-icon-small-tick");
-    cy.get(".bp3-menu-item:contains(400)").click();
+    cy.get(".bp3-menu-item:contains(400)").click({ force: true });
     cy.get(".bp3-menu-item:contains(400) .bp3-icon-small-tick");
     cy.contains(
       "Warning: More than 400 Cutsites. Only displaying 400 (Configure this under View > Limits)"
@@ -285,7 +285,7 @@ describe("editor", function () {
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".tg-menu-bar-popover").contains("Labels").click();
     cy.get(".tg-menu-bar-popover").contains("Label Line Intensity").click();
-    cy.get(".tg-menu-bar-popover").contains("High").click();
+    cy.get(".tg-menu-bar-popover").contains("High").click({ force: true });
     cy.get(".veLabelLine").should("have.css", "opacity", "0.9");
   });
   it(`should handle adjusting circular map label size.`, () => {
@@ -296,7 +296,7 @@ describe("editor", function () {
       cy.get(".tg-menu-bar").contains("View").click();
       cy.get(".tg-menu-bar-popover").contains("Labels").click();
       cy.get(".tg-menu-bar-popover").contains("Circular Label Size").click();
-      cy.get(".tg-menu-bar-popover").contains("50%").click();
+      cy.get(".tg-menu-bar-popover").contains("50%").click({ force: true });
       cy.get(".veCircularViewLabelText").then((fiftyPercentText) => {
         const halfFontSize = parseFloat(
           fiftyPercentText[0].style
