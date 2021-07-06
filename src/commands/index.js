@@ -19,7 +19,8 @@ import {
   filter,
   camelCase,
   reduce,
-  some
+  some,
+  sortBy
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
@@ -164,55 +165,8 @@ const fileCommandDefs = {
     },
     handler: () => {}
   },
-  filterFeatureLengthsCmd: {
-    name: (props) => {
-      return (
-        <div data-test="filter-feature-length">
-          Filter By Length
-          <div onClick={(e) => e.stopPropagation()}>
-            <NumericInput
-              onValueChange={function (valueAsNumber) {
-                const minimumFilterLength = parseInt(valueAsNumber, 10);
-                if (!(minimumFilterLength > -1)) return;
-                if (minimumFilterLength > props.sequenceLength) return;
-                props.updateFeatureLengthsToHide({
-                  enabled: true,
-                  min: minimumFilterLength
-                });
-              }}
-              value={props.featureLengthsToHide.min}
-              min={0}
-              // max={props.featureLengthsToHide.max} //tnr: I think it is better to not bound the max
-              fill={true}
-              clampValueOnBlur={true}
-              data-test="min-feature-length"
-            />
-            <NumericInput
-              onValueChange={function (valueAsNumber) {
-                const maximumFilterLength = parseInt(valueAsNumber, 10);
-                if (!(maximumFilterLength > -1)) return;
-                if (maximumFilterLength > props.sequenceLength) return;
-                props.updateFeatureLengthsToHide({
-                  enabled: true,
-                  max: maximumFilterLength
-                });
-              }}
-              value={props.featureLengthsToHide.max}
-              min={0}
-              // max={props.sequenceLength} //tnr: I think it is better to not bound the max
-              fill={true}
-              clampValueOnBlur={true}
-              data-test="max-feature-length"
-            />
-          </div>
-        </div>
-      );
-    },
-    isActive: (props) => props.featureLengthsToHide.enabled,
-    handler: (props) => {
-      props.toggleFeatureLengthsToHide();
-    }
-  },
+  filterFeatureLengthsCmd: getFilterByLengthCmd("feature"),
+  filterPartLengthsCmd: getFilterByLengthCmd("part"),
   featureTypesCmd: {
     name: (props) => {
       const total = Object.keys(
@@ -241,9 +195,8 @@ const fileCommandDefs = {
       const types = {};
       forEach(props.sequenceData.features, (feat) => {
         if (!feat.type) return;
-        const checked = !props.annotationVisibility.featureTypesToHide[
-          feat.type
-        ];
+        const checked =
+          !props.annotationVisibility.featureTypesToHide[feat.type];
         if (types[feat.type]) {
           types[feat.type].count++;
         } else {
@@ -291,6 +244,8 @@ const fileCommandDefs = {
     }
     // isDisabled:
   },
+  featureFilterIndividualCmd: getFilterIndividualCmd("feature"),
+  partFilterIndividualCmd: getFilterIndividualCmd("part"),
   exportSequenceAsGenbank: {
     name: (props) =>
       isProtein(props) ? "Download GenPept File" : "Download Genbank File",
@@ -1334,6 +1289,10 @@ const commandDefs = {
           cmd: "toggleParts",
           shouldDismissPopover: false
         },
+        {
+          cmd: "partFilterIndividualCmd",
+          shouldDismissPopover: false
+        },
         ...(props.allPartTags
           ? [
               {
@@ -1341,7 +1300,11 @@ const commandDefs = {
                 shouldDismissPopover: false
               }
             ]
-          : [])
+          : []),
+        {
+          cmd: "filterPartLengthsCmd",
+          shouldDismissPopover: false
+        }
       ];
     }
   },
@@ -1378,3 +1341,140 @@ const invertString = function (str) {
   }
   return s;
 };
+
+function getFilterByLengthCmd(type) {
+  return {
+    name: (props) => {
+      return (
+        <div data-test={`filter-${type}-length`}>
+          Filter By Length
+          <div onClick={(e) => e.stopPropagation()}>
+            <NumericInput
+              onValueChange={function (valueAsNumber) {
+                const minimumFilterLength = parseInt(valueAsNumber, 10);
+                if (!(minimumFilterLength > -1)) return;
+                if (minimumFilterLength > props.sequenceLength) return;
+                props[`update${startCase(type)}LengthsToHide`]({
+                  enabled: true,
+                  min: minimumFilterLength
+                });
+              }}
+              value={props[`${type}LengthsToHide`].min}
+              min={0}
+              // max={props[`${type}LengthsToHide`].max} //tnr: I think it is better to not bound the max
+              fill={true}
+              clampValueOnBlur={true}
+              data-test={`min-${type}-length`}
+            />
+            <NumericInput
+              onValueChange={function (valueAsNumber) {
+                const maximumFilterLength = parseInt(valueAsNumber, 10);
+                if (!(maximumFilterLength > -1)) return;
+                // if (maximumFilterLength > props.sequenceLength) return; //tnr: I think it is better not to bound the max
+                props[`update${startCase(type)}LengthsToHide`]({
+                  enabled: true,
+                  max: maximumFilterLength
+                });
+              }}
+              value={props[`${type}LengthsToHide`].max}
+              min={0}
+              // max={props.sequenceLength} //tnr: I think it is better to not bound the max
+              fill={true}
+              clampValueOnBlur={true}
+              data-test={`max-${type}-length`}
+            />
+          </div>
+        </div>
+      );
+    },
+    isActive: (props) => props[`${type}LengthsToHide`].enabled,
+    handler: (props) => {
+      props[`toggle${startCase(type)}LengthsToHide`]();
+    }
+  };
+}
+
+function getFilterIndividualCmd(type) {
+  const pluralType = pluralize(type);
+  const upperType = startCase(type);
+  return {
+    name: (props) => {
+      const total = Object.keys(
+        reduce(
+          props.sequenceData[pluralType],
+          (acc, feat) => {
+            acc[feat.id] = true;
+            return acc;
+          },
+          {}
+        )
+      ).length;
+      const toHideCount = Object.keys(
+        props.annotationVisibility[`${type}IndividualToHide`]
+      ).length;
+      return (
+        <span>
+          Filter Individually &nbsp;
+          <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
+            {total - toHideCount}/{total}
+          </Tag>
+        </span>
+      );
+    },
+    submenu: (props) => {
+      const individualAnns = {};
+      forEach(
+        sortBy(props.sequenceData[pluralType], ({ start }) => start + 1),
+        (ann) => {
+          if (!ann.id) return;
+          const checked =
+            !props.annotationVisibility[`${type}IndividualToHide`][ann.id];
+          if (individualAnns[ann.id]) {
+            console.error(`ann.id:`, ann.id);
+            console.error(`we should not be here!`);
+          } else {
+            individualAnns[ann.id] = {
+              shouldDismissPopover: false,
+              onClick: () =>
+                checked
+                  ? props[`hide${upperType}Individual`]([ann.id])
+                  : props[`show${upperType}Individual`]([ann.id]),
+              checked
+            };
+          }
+          individualAnns[ann.id].text = (
+            <span style={{ display: "flex", justifyContent: "space-between" }}>
+              {ann.name} &nbsp;{" "}
+              <span style={{ fontSize: 10 }}>
+                ({ann.start + 1}-{ann.end + 1})
+              </span>
+            </span>
+          );
+        }
+      );
+      const menu = map(individualAnns);
+      return [
+        {
+          text: "Uncheck All",
+          onClick: () =>
+            props[`hide${upperType}Individual`](Object.keys(individualAnns)),
+          shouldDismissPopover: false
+        },
+        {
+          text: "Check All",
+          onClick: () => props[`reset${upperType}IndividualToHide`](),
+          shouldDismissPopover: false
+        },
+        "--",
+        ...(menu.length
+          ? menu
+          : [
+              {
+                text: `No ${upperType}s To Filter`,
+                disabled: true
+              }
+            ])
+      ];
+    }
+  };
+}

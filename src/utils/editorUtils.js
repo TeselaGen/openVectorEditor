@@ -19,9 +19,9 @@ export function getSelectionMessage({
   GCDecimalDigits, //these are only passed in for the status bar
   isProtein
 }) {
-  let isSelecting = selectionLayer.start > -1;
+  const isSelecting = selectionLayer.start > -1;
   if (isSelecting) {
-    let length = getRangeLength(selectionLayer, sequenceLength);
+    const length = getRangeLength(selectionLayer, sequenceLength);
     const GCContent = (numDecimalDigits = 0) =>
       calculatePercentGC(
         getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence
@@ -36,7 +36,7 @@ export function getSelectionMessage({
       showGCContent && !isProtein ? ` (${GCContent(GCDecimalDigits)}% GC)` : ""
     }`;
   } else if (caretPosition > -1) {
-    let insertBetween = getInsertBetweenVals(
+    const insertBetween = getInsertBetweenVals(
       caretPosition,
       selectionLayer,
       sequenceLength
@@ -110,7 +110,7 @@ export function pareDownAnnotations(annotations, max) {
   let paredDown = false;
   if (Object.keys(annotations).length > max) {
     paredDown = true;
-    let sortedAnnotations = sortBy(annotations, function (annotation) {
+    const sortedAnnotations = sortBy(annotations, function (annotation) {
       return -getRangeLength(annotation);
     });
     annotationsToPass = sortedAnnotations
@@ -138,4 +138,11 @@ export function getClientX(event) {
 }
 export function getClientY(event) {
   return event.clientY || get(event, "touches[0].clientY");
+}
+
+export function hideAnnByLengthFilter(hideOpts, ann, seqLen) {
+  const featLength = getRangeLength(ann, seqLen);
+  return (
+    hideOpts.enabled && (featLength < hideOpts.min || featLength > hideOpts.max)
+  );
 }

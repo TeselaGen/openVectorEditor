@@ -77,42 +77,44 @@ const generatePngFromPrintDialog = async (props) => {
   return result;
 };
 
-export const handleSave = (props) => async (opts = {}) => {
-  const {
-    onSave,
-    onSaveAs,
-    generatePng,
-    readOnly,
-    alwaysAllowSave,
-    sequenceData,
-    lastSavedIdUpdate
-  } = props;
-  const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
+export const handleSave =
+  (props) =>
+  async (opts = {}) => {
+    const {
+      onSave,
+      onSaveAs,
+      generatePng,
+      readOnly,
+      alwaysAllowSave,
+      sequenceData,
+      lastSavedIdUpdate
+    } = props;
+    const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
 
-  const updateLastSavedIdToCurrent = () => {
-    lastSavedIdUpdate(sequenceData.stateTrackingId);
+    const updateLastSavedIdToCurrent = () => {
+      lastSavedIdUpdate(sequenceData.stateTrackingId);
+    };
+
+    // Optionally generate png
+    if (generatePng) {
+      opts.pngFile = await generatePngFromPrintDialog(props);
+    }
+
+    // TODO: pass additionalProps (blob or error) to the user
+    const promiseOrVal =
+      (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
+      saveHandler &&
+      saveHandler(
+        opts,
+        tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+        props,
+        updateLastSavedIdToCurrent
+      );
+
+    if (promiseOrVal && promiseOrVal.then) {
+      return promiseOrVal.then(updateLastSavedIdToCurrent);
+    }
   };
-
-  // Optionally generate png
-  if (generatePng) {
-    opts.pngFile = await generatePngFromPrintDialog(props);
-  }
-
-  // TODO: pass additionalProps (blob or error) to the user
-  const promiseOrVal =
-    (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
-    saveHandler &&
-    saveHandler(
-      opts,
-      tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-      props,
-      updateLastSavedIdToCurrent
-    );
-
-  if (promiseOrVal && promiseOrVal.then) {
-    return promiseOrVal.then(updateLastSavedIdToCurrent);
-  }
-};
 
 export const handleInverse = (props) => () => {
   const {
@@ -159,8 +161,7 @@ export const updateCircular = (props) => async (isCircular) => {
       intent: Intent.DANGER, //applied to the right most confirm button
       confirmButtonText: "Truncate Annotations",
       canEscapeKeyCancel: true, //this is false by default
-      text:
-        "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+      text: "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
     });
     if (!doAction) return; //stop early
     updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
@@ -170,37 +171,39 @@ export const updateCircular = (props) => async (isCircular) => {
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
 
-export const importSequenceFromFile = (props) => async (file, opts = {}) => {
-  const { updateSequenceData, onImport } = props;
-  const result = await anyToJson(file, { acceptParts: true, ...opts });
+export const importSequenceFromFile =
+  (props) =>
+  async (file, opts = {}) => {
+    const { updateSequenceData, onImport } = props;
+    const result = await anyToJson(file, { acceptParts: true, ...opts });
 
-  // TODO maybe handle import errors/warnings better
-  const failed = !result[0].success;
-  const messages = result[0].messages;
-  if (messages && messages.length) {
-    messages.forEach((msg) => {
-      const type = msg.substr(0, 20).toLowerCase().includes("error")
-        ? failed
-          ? "error"
-          : "warning"
-        : "info";
-      window.toastr[type](msg);
-    });
-  }
-  if (failed) {
-    window.toastr.error("Error importing sequence");
-  }
-  let seqData = result[0].parsedSequence;
+    // TODO maybe handle import errors/warnings better
+    const failed = !result[0].success;
+    const messages = result[0].messages;
+    if (messages && messages.length) {
+      messages.forEach((msg) => {
+        const type = msg.substr(0, 20).toLowerCase().includes("error")
+          ? failed
+            ? "error"
+            : "warning"
+          : "info";
+        window.toastr[type](msg);
+      });
+    }
+    if (failed) {
+      window.toastr.error("Error importing sequence");
+    }
+    let seqData = result[0].parsedSequence;
 
-  if (onImport) {
-    seqData = await onImport(seqData);
-  }
+    if (onImport) {
+      seqData = await onImport(seqData);
+    }
 
-  if (seqData) {
-    updateSequenceData(seqData);
-    window.toastr.success("Sequence Imported");
-  }
-};
+    if (seqData) {
+      updateSequenceData(seqData);
+      window.toastr.success("Sequence Imported");
+    }
+  };
 
 export const exportSequenceToFile = (props) => (format) => {
   const { sequenceData } = props;
@@ -324,8 +327,7 @@ export default compose(
             // intent: Intent.DANGER, //applied to the right most confirm button
             confirmButtonText: "Create Translation",
             canEscapeKeyCancel: true, //this is false by default
-            text:
-              "This region has already been translated. Are you sure you want to make another translation for it?"
+            text: "This region has already been translated. Are you sure you want to make another translation for it?"
           });
           if (!doAction) return; //stop early
         }
@@ -532,9 +534,8 @@ function mapStateToProps(state, ownProps) {
     ownProps.enzymeGroupsOverride
   );
   const cutsites = filteredCutsites.cutsitesArray;
-  const filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
-    editorState
-  );
+  const filteredRestrictionEnzymes =
+    s.filteredRestrictionEnzymesSelector(editorState);
   const orfs = s.orfsSelector(editorState);
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
@@ -577,7 +578,7 @@ function mapStateToProps(state, ownProps) {
       uppercaseSequenceMapFont,
       sequenceData.sequence
     ),
-    parts: filteredParts,
+    filteredParts,
     filteredFeatures,
     cutsites,
     orfs,

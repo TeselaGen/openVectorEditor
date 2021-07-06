@@ -274,8 +274,7 @@ export default class EditorDemo extends React.Component {
       renderToggle({
         that: this,
         type: "generatePng",
-        info:
-          "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
+        info: "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
       }),
       renderToggle({
         that: this,
@@ -292,14 +291,12 @@ export default class EditorDemo extends React.Component {
       renderToggle({
         that: this,
         type: "onCreateNewFromSubsequence",
-        info:
-          "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
+        info: "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
       }),
       renderToggle({
         that: this,
         type: "onDelete",
-        info:
-          "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
+        info: "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
       }),
       renderToggle({
         that: this,
@@ -447,8 +444,9 @@ updateEditor(store, "DemoEditor", {
               })}
               {renderToggle({
                 isSelect: true,
-                options: ["DNA", "RNA", "Protein"],
+                options: ["DNA", "RNA", "Protein", "mixedRnaAndDna"],
                 that: this,
+                label: "Molecule Type:",
                 type: "moleculeType",
                 info: `
 The editor supports Amino Acid sequences and RNA sequences as well as DNA sequences!
@@ -512,6 +510,18 @@ certain dna specific tools and annotations are automatically disabled when isPro
                     updateEditor(store, "DemoEditor", {
                       readOnly: false,
                       sequenceData: { ...exampleSequenceData, isRna: true }
+                    });
+                  } else if (val === "mixedRnaAndDna") {
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: tidyUpSequenceData(
+                        {
+                          ...exampleSequenceData,
+                          sequence: "uuuu" + exampleSequenceData.sequence,
+                          isMixedRnaAndDna: true
+                        },
+                        {}
+                      )
                     });
                   } else {
                     updateEditor(store, "DemoEditor", {
@@ -761,15 +771,13 @@ rightClickOverrides: {
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
-                info:
-                  "You can force a height for the editor by passing `height:500` (same for width) "
+                info: "You can force a height for the editor by passing `height:500` (same for width) "
               })}
               {renderToggle({
                 that: this,
                 type: "adjustCircularLabelSpacing",
                 label: "Adjust circular label spacing",
-                info:
-                  "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
+                info: "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
               })}
               {renderToggle({
                 that: this,

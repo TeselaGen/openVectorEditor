@@ -19,11 +19,7 @@ import { sizeSchema } from "./utils";
 import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 import { typeField } from "./typeField";
 
-const genericAnnotationProperties = ({
-  annotationType,
-  noType,
-  withTags
-}) => {
+const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
   const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
     constructor(props) {
@@ -35,7 +31,22 @@ const genericAnnotationProperties = ({
           ...(noType
             ? []
             : [
-                typeField
+                typeField,
+                {
+                  path: "color",
+                  type: "string",
+                  width: 50,
+                  render: (color) => {
+                    return (
+                      <div
+                        style={{ height: 20, width: 20, background: color }}
+                      />
+                      // <ColorPickerPopover>
+                      //   <div style={{ height: 20, width: 20, background: color }} />
+                      // </ColorPickerPopover>
+                    );
+                  }
+                }
               ]),
           sizeSchema,
           ...(withTags && this.props.allPartTags
@@ -91,12 +102,12 @@ const genericAnnotationProperties = ({
         selectionLayer,
         isProtein,
         allPartTags,
-        annotationPropertiesSelectedEntities: _annotationPropertiesSelectedEntities,
+        annotationPropertiesSelectedEntities:
+          _annotationPropertiesSelectedEntities,
         selectedAnnotationId
       } = this.props;
-      const annotationPropertiesSelectedEntities = _annotationPropertiesSelectedEntities.filter(
-        (a) => annotations[a.id]
-      );
+      const annotationPropertiesSelectedEntities =
+        _annotationPropertiesSelectedEntities.filter((a) => annotations[a.id]);
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
 

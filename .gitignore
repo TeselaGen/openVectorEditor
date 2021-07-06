@@ -4,6 +4,8 @@ lib
 node_modules
 umd
 demo/dist/
+/es
+/demo/dist/
 npm-debug.log*
 /.cache
 /cypress/videos

@@ -66,9 +66,10 @@ export default function renderToggle({
       />
     );
   } else if (isSelect) {
-    const { style, ...rest } = sharedProps;
+    const { style, label, ...rest } = sharedProps;
     toggleOrButton = (
       <div style={sharedProps.style}>
+        {label && <span>{label} &nbsp;</span>}
         <EnhancedSelect
           {...{
             options,
