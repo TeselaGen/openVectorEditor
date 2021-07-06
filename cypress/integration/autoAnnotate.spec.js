@@ -20,11 +20,45 @@ describe("autoAnnotate", function () {
     cy.contains("ApE File").click();
     cy.uploadFile(`.bp3-dialog .tg-dropzone`, "Default_Features.txt");
     cy.contains("button", "Annotate").click();
-    cy.contains(`Detected that Row 5 has a non-standard type of primer_zoink. We will assign it and all subsequent non-standard types to use the misc_feature type instead`)
-    cy.contains('button', 'OK').click()
+    cy.contains(
+      `Detected that Row 5 has a non-standard type of primer_zoink. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
+    );
+    cy.contains("button", "OK").click();
     cy.contains("19 Selected");
     cy.contains("button", "Add").click();
-    cy.contains(`T7 - Start: 217 End: 335`)
+    cy.contains(`T7 - Start: 217 End: 335`);
+  });
+  it(`auto annotating parts should work when the csv file has a 'type' column `, () => {
+    cy.tgToggle("withAutoAnnotateAddon");
+    cy.hideCutsites();
+    cy.hideParts();
+    cy.removeFeatures();
+    cy.triggerFileCmd("Auto Annotate Parts");
+    cy.uploadFile(
+      `.bp3-dialog .tg-dropzone`,
+      "csvAnnotationList.csv",
+      "text/csv"
+    );
+    cy.contains("button", "Annotate").click();
+    cy.contains("10 Selected");
+    cy.contains("button", "Add").click();
+    cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
+  });
+  it(`auto annotating parts should work when the csv file doesn't have a 'type' column `, () => {
+    cy.tgToggle("withAutoAnnotateAddon");
+    cy.hideCutsites();
+    cy.hideParts();
+    cy.removeFeatures();
+    cy.triggerFileCmd("Auto Annotate Parts");
+    cy.uploadFile(
+      `.bp3-dialog .tg-dropzone`,
+      "csvAnnotationList_no_type.csv",
+      "text/csv"
+    );
+    cy.contains("button", "Annotate").click();
+    cy.contains("10 Selected");
+    cy.contains("button", "Add").click();
+    cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
   });
   it(`the auto annotation csv upload addon should work`, () => {
     cy.tgToggle("withAutoAnnotateAddon");
@@ -47,7 +81,7 @@ describe("autoAnnotate", function () {
 
     cy.contains("button", "Add").click();
     cy.contains(".veCircularViewLabelText", "Example Feature 2");
-    cy.contains("Example Feature 2 - Start: 135 End: 165");
+    cy.contains("Feature (CDS) - Example Feature 2 - Start: 135 End: 165");
 
     cy.contains(".veCircularViewLabelText", "Example Feature 1").should(
       "not.exist"

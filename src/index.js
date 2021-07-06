@@ -1,3 +1,4 @@
+import "./addOnGlobals";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { showContextMenu } from "teselagen-react-components";
 import "./createVectorEditor";

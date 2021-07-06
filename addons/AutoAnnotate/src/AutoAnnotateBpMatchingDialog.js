@@ -1,7 +1,5 @@
 /* Copyright (C) 2018 TeselaGen Biotechnology, Inc. */
-import { wrapDialog } from "teselagen-react-components";
-import React from "react";
-import { Tab, Tabs } from "@blueprintjs/core";
+const { Tab, Tabs, wrapDialog, React } = window.addOnGlobals;
 
 const highlightStyle = {
   background: "red",

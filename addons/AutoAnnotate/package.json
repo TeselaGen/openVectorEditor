@@ -1,7 +1,8 @@
 {
   "name": "@ove/auto-annotate",
   "scripts": {
-    "build": "nwb build-react-component --copy-files --no-demo"
+    "build": "nwb build-react-component --copy-files --no-demo",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "downloadjs": "^1.4.7",

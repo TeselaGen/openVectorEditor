@@ -133,7 +133,11 @@ export default [
       {
         text: "Auto Annotate",
         cmd: "autoAnnotateHolder",
-        submenu: ["autoAnnotateFeatures", "autoAnnotateParts"]
+        submenu: [
+          "autoAnnotateFeatures",
+          "autoAnnotateParts",
+          "autoAnnotatePrimers"
+        ]
       }
     ]
   },

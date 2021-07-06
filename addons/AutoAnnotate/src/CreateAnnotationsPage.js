@@ -1,18 +1,21 @@
-import { startCase } from "lodash";
-import pluralize from "pluralize";
-import React, { useEffect } from "react";
-import { compose } from "recompose";
-import {
+import { formName } from "./constants";
+const {
+  startCase,
+  compose,
+  hideDialog,
+  typeField,
+  pluralize,
+  React,
+  useEffect,
   DataTable,
   DialogFooter,
   withSelectedEntities,
-  withSelectTableRecords
-} from "teselagen-react-components";
-import { hideDialog } from "../../../src/GlobalDialogUtils";
-import { typeField } from "../../../src/helperComponents/PropertiesDialog/typeField";
-import { formName } from "./constants";
+  withSelectTableRecords,
+  tidyUpAnnotation
+} = window.addOnGlobals;
 
-const schema = ["name", typeField, "start", "end", "strand"];
+const schemaFeatures = ["name", typeField, "start", "end", "strand"];
+const schemaOther = ["name", "start", "end", "strand"];
 export default compose(
   withSelectedEntities(formName),
   withSelectTableRecords(formName)
@@ -23,14 +26,15 @@ export default compose(
     annotationVisibilityShow,
     beforeAnnotationCreate,
     handleSubmit,
-    selectTableRecords
+    selectTableRecords,
+    sequenceData
   } = props;
   const ents = props[`${formName}SelectedEntities`];
   useEffect(() => {
     selectTableRecords(newAnnotations);
   }, [newAnnotations, selectTableRecords]);
   return (
-    <div className={"bp3-dialog-body"}>
+    <div className="bp3-dialog-body">
       <div>
         The following {annotationType}
         {newAnnotations.length > 1 ? "s" : ""} will be added:
@@ -39,14 +43,15 @@ export default compose(
           formName={formName}
           entities={newAnnotations}
           withCheckboxes
-          schema={schema}
+          schema={annotationType === "feature" ? schemaFeatures : schemaOther}
         ></DataTable>
       </div>
       <DialogFooter
+        hideModal={hideDialog}
         onClick={handleSubmit(async () => {
           const annotationTypePlural = pluralize(annotationType);
 
-          ents.forEach((newAnnotation) => {
+          ents.forEach((newAnnotation, i) => {
             beforeAnnotationCreate &&
               beforeAnnotationCreate({
                 annotationTypePlural,
@@ -54,7 +59,29 @@ export default compose(
                 props: props
               });
 
-            props[`upsert${startCase(annotationType)}`](newAnnotation);
+            let conditionals = {};
+            if (ents.length > 1) {
+              if (i === 0) {
+                conditionals = {
+                  batchUndoStart: true
+                };
+              } else if (i === ents.length - 1) {
+                conditionals = {
+                  batchUndoEnd: true
+                };
+              } else {
+                conditionals = {
+                  batchUndoMiddle: true
+                };
+              }
+            }
+            props[`upsert${startCase(annotationType)}`](
+              tidyUpAnnotation(newAnnotation, {
+                sequenceData,
+                annotationType: annotationTypePlural
+              }),
+              conditionals
+            );
             annotationVisibilityShow(annotationTypePlural);
           });
 

@@ -1,33 +1,42 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable no-throw-literal */
-import {
-  DialogFooter,
-  FileUploadField,
-  InfoHelper,
-  showConfirmationDialog,
-  wrapDialog
-} from "teselagen-react-components";
-import React, { useState } from "react";
-import downloadjs from "downloadjs";
-import { showDialog } from "../../../src/GlobalDialogUtils";
-import { compose } from "recompose";
-import { withEditorProps } from "../../../src";
-import { Colors, Tab, Tabs } from "@blueprintjs/core";
-import { reduxForm, SubmissionError } from "redux-form";
-import { autoAnnotate, convertApELikeRegexToRegex } from "./autoAnnotate";
-import { featureColors, FeatureTypes } from "ve-sequence-utils";
+import { unparse } from "papaparse";
+import CreateAnnotationsPage from "./CreateAnnotationsPage";
+import { formName } from "./constants";
+import { AutoAnnotateBpMatchingDialog } from "./AutoAnnotateBpMatchingDialog";
 import {
   parseCsvFile,
   validateCSVRequiredHeaders,
   validateCSVRow
 } from "./fileUtils";
-import shortid from "shortid";
-import { startCase } from "lodash";
-import { unparse } from "papaparse";
-import CreateAnnotationsPage from "./CreateAnnotationsPage";
-import { formName } from "./constants";
-import { AutoAnnotateBpMatchingDialog } from "./AutoAnnotateBpMatchingDialog";
+import downloadjs from "downloadjs";
+
+const {
+  shortid,
+  FileUploadField,
+  Colors,
+  Tab,
+  Tabs,
+  pluralize,
+  reduxForm,
+  SubmissionError,
+  featureColors,
+  FeatureTypes,
+  InfoHelper,
+  showConfirmationDialog,
+  wrapDialog,
+  showDialog,
+  withEditorProps,
+  DialogFooter,
+  useState,
+  hideDialog,
+  startCase,
+  compose,
+  React,
+  convertApELikeRegexToRegex,
+  autoAnnotate
+} = window.addOnGlobals;
 
 export function autoAnnotateFeatures() {
   showDialog({
@@ -37,9 +46,27 @@ export function autoAnnotateFeatures() {
     }
   });
 }
+export function autoAnnotateParts() {
+  showDialog({
+    ModalComponent: AutoAnnotateModal, //we want to use a ModalComponent here so our addon does not
+    props: {
+      annotationType: "part"
+    }
+  });
+}
+export function autoAnnotatePrimers() {
+  showDialog({
+    ModalComponent: AutoAnnotateModal, //we want to use a ModalComponent here so our addon does not
+    props: {
+      annotationType: "primer"
+    }
+  });
+}
 
 export const AutoAnnotateModal = compose(
-  wrapDialog({ title: "Auto Annotate" }),
+  wrapDialog((p) => ({
+    title: `Auto Annotate ${startCase(pluralize(p.annotationType))}`
+  })),
   withEditorProps,
   reduxForm({ form: formName })
 )((props) => {
@@ -60,7 +87,7 @@ export const AutoAnnotateModal = compose(
     );
   }
   return (
-    <div className={"bp3-dialog-body"}>
+    <div className="bp3-dialog-body">
       <Tabs
         renderActiveTabPanelOnly
         onChange={setSelectedImportType}
@@ -70,27 +97,41 @@ export const AutoAnnotateModal = compose(
           panel={
             <div>
               <div>
-                <InfoHelper
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    showDialog({
-                      ModalComponent: AutoAnnotateBpMatchingDialog
-                    });
-                  }}
-                  content={
-                    true ? (
-                      <span>
-                        Any valid regexes allowed. Click for more info about
-                        regex matching
-                      </span>
-                    ) : (
-                      `All valid IUPAC bases allowed as well as a couple special characters. Click for more info`
-                    )
-                  }
-                ></InfoHelper>
-                Select a CSV file with the following columns -
-                name,description,sequence,type,isRegex (
+                Select a CSV file with the following columns -<br></br>
+                <br></br>
+                <div style={{ display: "flex" }}>
+                  name,description,sequence,type,
+                  <span style={{ display: "flex" }}>
+                    isRegex &nbsp;
+                    <InfoHelper
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        showDialog({
+                          ModalComponent: AutoAnnotateBpMatchingDialog
+                        });
+                      }}
+                      content={
+                        true ? (
+                          <span>
+                            Any valid regexes allowed. Click for more info about
+                            regex matching
+                          </span>
+                        ) : (
+                          `All valid IUPAC bases allowed as well as a couple special characters. Click for more info`
+                        )
+                      }
+                    ></InfoHelper>
+                  </span>
+                </div>
+                <br></br>
+                {annotationType !== "feature" && (
+                  <React.Fragment>
+                    <i>Note: the "type" column is optional</i>
+                    <br></br>
+                  </React.Fragment>
+                )}
+                <br></br>
                 <a
                   onClick={() => {
                     const rows = [
@@ -126,13 +167,12 @@ export const AutoAnnotateModal = compose(
                 >
                   download example
                 </a>
-                ):
               </div>
               <FileUploadField
-                name={"csvFile"}
+                name="csvFile"
                 fileLimit={1}
                 isRequired
-                accept={".csv"}
+                accept=".csv"
               ></FileUploadField>
             </div>
           }
@@ -161,9 +201,9 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               </div>
               <FileUploadField
                 fileLimit={1}
-                name={"apeFile"}
+                name="apeFile"
                 isRequired
-                accept={".txt"}
+                accept=".txt"
               ></FileUploadField>
               {error && (
                 <div style={{ padding: 5, color: Colors.RED1 }}>{error}</div>
@@ -175,6 +215,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
         ></Tab>
       </Tabs>
       <DialogFooter
+        hideModal={hideDialog}
         onClick={handleSubmit(async ({ apeFile, csvFile }) => {
           let convertNonStandardTypes = false;
           const annsToCheck = [];
@@ -240,6 +281,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 };
               }
 
+              // eslint-disable-next-line no-unused-vars
               for (const [index, row] of data.entries()) {
                 const error = validateCSVRow(row, csvHeaders, index);
                 if (error) {
@@ -253,6 +295,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               const { data } = await parseCsvFile(apeFile[0], {
                 header: false
               });
+              // eslint-disable-next-line no-unused-vars
               for (const [i, [name, sequence, type]] of data.entries()) {
                 await validateRow({ name, sequence, type }, `Row ${i + 1}`);
               }
@@ -320,3 +363,8 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
     </div>
   );
 });
+
+if (!window._ove_addons) window._ove_addons = {};
+window._ove_addons.autoAnnotateFeatures = autoAnnotateFeatures;
+window._ove_addons.autoAnnotateParts = autoAnnotateParts;
+window._ove_addons.autoAnnotatePrimers = autoAnnotatePrimers;

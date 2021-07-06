@@ -15,7 +15,11 @@ import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { autoAnnotateFeatures } from "../../../addons/AutoAnnotate";
+import {
+  autoAnnotateFeatures,
+  autoAnnotateParts,
+  autoAnnotatePrimers
+} from "../../../addons/AutoAnnotate/src";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -1713,7 +1717,9 @@ clickOverrides: {
               }
             })}
             {...(withAutoAnnotateAddon && {
-              autoAnnotateFeatures
+              autoAnnotateFeatures,
+              autoAnnotateParts,
+              autoAnnotatePrimers
             })}
             // AutoAnnotateAddon={withAutoAnnotateAddon && AutoAnnotateAddon}
             generatePng={generatePng}
