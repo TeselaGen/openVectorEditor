@@ -20,6 +20,8 @@ import {
   autoAnnotateParts,
   autoAnnotatePrimers
 } from "../../../addons/AutoAnnotate/src";
+import { startCase } from "lodash";
+import pluralize from "pluralize";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -164,6 +166,32 @@ export default class EditorDemo extends React.Component {
   overrideAddEditFeatureDialogExample = {
     AddOrEditFeatureDialogOverride: AddEditFeatureOverrideExample
   };
+  getCustomAutoAnnotateList = async ({ annotationType, sequenceData }) => {
+    // const dataToReturn = await fetch("/my/endpoint/here", { ...someParams });
+    await sleep(500);
+    if (annotationType !== "feature") return false;
+    await sleep(1000);
+
+    return {
+      title: `My ${pluralize(startCase(annotationType))}`,
+      list: [
+        {
+          name: "I cover the full Seq",
+          sequence: sequenceData.sequence,
+          id: "1"
+        },
+        { name: "trypto", type: "cds", sequence: "agagagagagaga", id: "9" },
+        { name: "prom2", type: "promoter", sequence: "gcttctctctc", id: "10" },
+        {
+          name: "prom2",
+          type: "promoter",
+          sequence: "gctt.*ctctctc",
+          isRegex: true,
+          id: "10"
+        }
+      ]
+    };
+  };
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
@@ -235,6 +263,7 @@ export default class EditorDemo extends React.Component {
       forceHeightMode,
       passAutoAnnotateHandlers,
       withAutoAnnotateAddon,
+      withGetCustomAutoAnnotateList,
       adjustCircularLabelSpacing,
       withVersionHistory,
       shouldAutosave,
@@ -1200,10 +1229,47 @@ passing an autoAnnotateFeatures=()=>{} (or Primers/Parts) prop to the <Editor> w
                 label: "Enable autoAnnotateAddon",
                 type: "withAutoAnnotateAddon",
                 info: `Use this like so:
-                \`\`\`                
-import AutoAnnotateAddon from "@ove/AutoAnnotateAddon"
- <Editor AutoAnnotateAddon=AutoAnnotateAddon/>
+\`\`\`                
+import {
+  autoAnnotateFeatures,
+  autoAnnotateParts,
+  autoAnnotatePrimers
+} from "ove-auto-annotate";
+
+<Editor
+  {...{ autoAnnotateFeatures, autoAnnotateParts, autoAnnotatePrimers, ...etc }}
+/>;
  \`\`\` 
+ or if you're using umd: see usage example here: https://github.com/TeselaGen/openVectorEditor/blob/master/addons/README.md
+`
+              })}
+              {renderToggle({
+                that: this,
+                label: "getCustomAutoAnnotateList (requires autoAnnotateAddon)",
+                type: "withGetCustomAutoAnnotateList",
+                info: `
+The autoAnnotateAddon must be enabled for this to work
+\`\`\`
+getCustomAutoAnnotateList = async ({annotationType, sequenceData}) => {
+  const dataToReturn = await fetch("/my/endpoint/here", {...someParams})
+  
+  return {
+    title: 'My Annotations',
+    list: [
+  { name: "trypto", type: "cds", sequence: "agagagagagaga", id: "9" },
+  { name: "prom2", type: "promoter", sequence: "gcttctctctc", id: "10" },
+  {
+    name: "prom2",
+    type: "promoter",
+    sequence: "gctt.*ctctctc",
+    isRegex: true,
+    id: "10"
+  }
+]
+}
+}
+ \`\`\` 
+ or if you're using umd: see usage example here: https://github.com/TeselaGen/openVectorEditor/blob/master/addons/README.md
 `
               })}
               {renderToggle({
@@ -1729,7 +1795,9 @@ clickOverrides: {
               autoAnnotateParts,
               autoAnnotatePrimers
             })}
-            // AutoAnnotateAddon={withAutoAnnotateAddon && AutoAnnotateAddon}
+            {...(withGetCustomAutoAnnotateList && {
+              getCustomAutoAnnotateList: this.getCustomAutoAnnotateList
+            })}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
@@ -1804,4 +1872,8 @@ clickOverrides: {
 
 function exampleConversion(seq) {
   return seq;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

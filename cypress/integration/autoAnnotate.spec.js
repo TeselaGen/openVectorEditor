@@ -11,6 +11,31 @@ describe("autoAnnotate", function () {
     cy.contains("Auto Annotate Features").click();
     cy.contains("auto annotate features callback triggered");
   });
+  it(`the auto annotation addon custom list should work`, () => {
+    cy.tgToggle("withAutoAnnotateAddon");
+    cy.tgToggle("withGetCustomAutoAnnotateList");
+    cy.hideCutsites();
+    cy.hideParts();
+    cy.removeFeatures();
+    cy.triggerFileCmd("Auto Annotate Parts");
+    cy.contains("Loading...").should("exist");
+    cy.contains("Loading...").should("not.exist");
+    cy.contains("My Parts").should("not.exist");
+
+    cy.triggerFileCmd("Auto Annotate Features");
+    cy.contains("My Features").click();
+    cy.contains("button", "Annotate").click();
+    cy.contains(
+      `Detected that Row 1 (I cover the full Seq) has a non-standard type of`
+    );
+    cy.contains("button", "OK").click();
+    cy.contains("1 Selected");
+    cy.contains('.rt-tr:contains("I cover the full")', "5299");
+    cy.contains("button", "Add").click();
+    cy.contains(
+      `Feature (misc_feature) - I cover the full Seq - Start: 1 End: 5299`
+    );
+  });
   it(`the auto annotation ape upload addon should work`, () => {
     cy.tgToggle("withAutoAnnotateAddon");
     cy.hideCutsites();

@@ -64,6 +64,8 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
       - [onSave [optional] (not necessary unless using the standalone VersionHistoryView)](#onsave-optional-not-necessary-unless-using-the-standalone-versionhistoryview)
       - [exitVersionHistoryView [optional] (not necessary unless using the standalone VersionHistoryView)](#exitversionhistoryview-optional-not-necessary-unless-using-the-standalone-versionhistoryview)
       - [getCurrentSequenceData [optional] (not necessary unless using the standalone VersionHistoryView)](#getcurrentsequencedata-optional-not-necessary-unless-using-the-standalone-versionhistoryview)
+- [Addons](#addons)
+  - [Auto annotate addon:](#auto-annotate-addon)
 - [Implementing Autosave functionality](#implementing-autosave-functionality)
 - [Development:](#development)
   - [Prerequisites](#prerequisites)
@@ -556,7 +558,9 @@ window.createVectorEditor({getSequenceAtVersion, getVersionList, onSave, ToolBar
 #### getCurrentSequenceData [optional] (not necessary unless using the standalone VersionHistoryView)
  `() => teselagenSequenceData  //called upon initialization  `
 
-
+# Addons
+## Auto annotate addon:
+https://github.com/TeselaGen/openVectorEditor/tree/master/addons/AutoAnnotate
 
 # Implementing Autosave functionality
 pass shouldAutosave=true as a prop and in the onSave() handler, make sure to return a promise so that the UI responds correctly with a spinner indicating saving is in progress

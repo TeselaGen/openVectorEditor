@@ -1,4 +1,5 @@
 export const userDefinedHandlersAndOpts = [
+  "getCustomAutoAnnotateList",
   "allowPartsToOverlapSelf",
   "allPartTags",
   "editTagsLink",

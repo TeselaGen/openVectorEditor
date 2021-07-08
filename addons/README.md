@@ -8,7 +8,7 @@ If a node_module has already been used in the main OVE codebase, it should be re
 
 For example: 
 ```
-const { shortid } = window.addonGlobals
+const { shortid } = window.addOnGlobals
 ```
 
 It will also need to be added to the open-vector-editor/src/addOnGlobals.js file if it hasn't already been. 

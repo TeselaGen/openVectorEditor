@@ -35,7 +35,10 @@ const {
   compose,
   React,
   convertApELikeRegexToRegex,
-  autoAnnotate
+  autoAnnotate,
+  useEffect,
+  DataTable,
+  typeField
 } = window.addOnGlobals;
 
 export function autoAnnotateFeatures() {
@@ -74,10 +77,29 @@ export const AutoAnnotateModal = compose(
     sequenceData,
     handleSubmit,
     annotationType = "feature",
-    error
+    error,
+    getCustomAutoAnnotateList
   } = props;
   const [fileType, setSelectedImportType] = useState("csvFile");
   const [newAnnotations, setNewAnns] = useState(false);
+  const [customAnnResponse, setCustomAnnResponse] = useState();
+  const [loadingCustomAnnList, setLoadingCustomAnnList] = useState();
+  useEffect(() => {
+    (async () => {
+      if (getCustomAutoAnnotateList) {
+        setLoadingCustomAnnList(true);
+        try {
+          const anns = await getCustomAutoAnnotateList(props);
+          setCustomAnnResponse(anns);
+        } catch (e) {
+          window.toastr.warning("Error loading custom annotation list");
+          console.error(`e:`, e);
+        } finally {
+          setLoadingCustomAnnList(false);
+        }
+      }
+    })();
+  }, [getCustomAutoAnnotateList, props]);
   if (newAnnotations) {
     return (
       <CreateAnnotationsPage
@@ -213,9 +235,50 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
           id="apeFile"
           title="ApE File"
         ></Tab>
+        {getCustomAutoAnnotateList &&
+          (loadingCustomAnnList ? (
+            <Tab disabled title="Loading..."></Tab>
+          ) : (
+            customAnnResponse && (
+              <Tab
+                id="implementerDefined"
+                title={
+                  (customAnnResponse && customAnnResponse.title) ||
+                  "Custom List"
+                }
+                panel={
+                  customAnnResponse &&
+                  customAnnResponse.list &&
+                  customAnnResponse.list.length ? (
+                    <div>
+                      <DataTable
+                        isInfinite
+                        schema={
+                          annotationType === "feature"
+                            ? customAnnsSchema
+                            : customAnnsSchemaNoType
+                        }
+                        entities={customAnnResponse.list}
+                      ></DataTable>
+                    </div>
+                  ) : (
+                    <div>No Annotations Found</div>
+                  )
+                }
+              ></Tab>
+            )
+          ))}
       </Tabs>
       <DialogFooter
         hideModal={hideDialog}
+        disabled={
+          fileType === "implementerDefined" &&
+          !(
+            customAnnResponse &&
+            customAnnResponse.list &&
+            customAnnResponse.list.length
+          )
+        }
         onClick={handleSubmit(async ({ apeFile, csvFile }) => {
           let convertNonStandardTypes = false;
           const annsToCheck = [];
@@ -264,7 +327,19 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               }
               annsToCheck.push(row);
             };
-            if (fileType === "csvFile") {
+            if (fileType === "implementerDefined") {
+              for (const [
+                // eslint-disable-next-line no-unused-vars
+                i,
+                // eslint-disable-next-line no-unused-vars
+                { name, sequence, type, isRegex }
+              ] of customAnnResponse.list.entries()) {
+                await validateRow(
+                  { name, sequence, type, isRegex: isRegex ? "TRUE" : "FALSE" },
+                  `Row ${i + 1} (${name})`
+                );
+              }
+            } else if (fileType === "csvFile") {
               const csvHeaders = ["name", "description", "sequence"];
               if (annotationType === "feature") {
                 csvHeaders.push("type");
@@ -289,7 +364,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                     validationError: error
                   };
                 }
-                await validateRow(row, `Row ${index + 1}`);
+                await validateRow(row, `Row ${index + 1} (${row.name})`);
               }
             } else if (fileType === "apeFile") {
               const { data } = await parseCsvFile(apeFile[0], {
@@ -297,7 +372,10 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               });
               // eslint-disable-next-line no-unused-vars
               for (const [i, [name, sequence, type]] of data.entries()) {
-                await validateRow({ name, sequence, type }, `Row ${i + 1}`);
+                await validateRow(
+                  { name, sequence, type },
+                  `Row ${i + 1} (${name})`
+                );
               }
             } else {
               console.info(`we shouldn't be here!`);
@@ -368,3 +446,6 @@ if (!window._ove_addons) window._ove_addons = {};
 window._ove_addons.autoAnnotateFeatures = autoAnnotateFeatures;
 window._ove_addons.autoAnnotateParts = autoAnnotateParts;
 window._ove_addons.autoAnnotatePrimers = autoAnnotatePrimers;
+
+const customAnnsSchema = ["name", "sequence", typeField, "isRegex"];
+const customAnnsSchemaNoType = ["name", "sequence", typeField, "isRegex"];

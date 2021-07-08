@@ -41,7 +41,11 @@ export default compose(
         <DataTable
           isInfinite
           formName={formName}
-          entities={newAnnotations}
+          entities={newAnnotations.map((e) => ({
+            ...e,
+            start: e.start + 1,
+            end: e.end + 1
+          }))}
           withCheckboxes
           schema={annotationType === "feature" ? schemaFeatures : schemaOther}
         ></DataTable>
