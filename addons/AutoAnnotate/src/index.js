@@ -99,7 +99,8 @@ export const AutoAnnotateModal = compose(
         }
       }
     })();
-  }, [getCustomAutoAnnotateList, props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   if (newAnnotations) {
     return (
       <CreateAnnotationsPage
@@ -239,16 +240,12 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
           (loadingCustomAnnList ? (
             <Tab disabled title="Loading..."></Tab>
           ) : (
-            customAnnResponse && (
+            customAnnResponse &&
+            customAnnResponse.list && (
               <Tab
                 id="implementerDefined"
-                title={
-                  (customAnnResponse && customAnnResponse.title) ||
-                  "Custom List"
-                }
+                title={customAnnResponse.title || "Custom List"}
                 panel={
-                  customAnnResponse &&
-                  customAnnResponse.list &&
                   customAnnResponse.list.length ? (
                     <div>
                       <DataTable

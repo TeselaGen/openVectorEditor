@@ -168,7 +168,7 @@ export default class EditorDemo extends React.Component {
   };
   getCustomAutoAnnotateList = async ({ annotationType, sequenceData }) => {
     // const dataToReturn = await fetch("/my/endpoint/here", { ...someParams });
-    await sleep(500);
+    await sleep(1000);
     if (annotationType !== "feature") return false;
     await sleep(1000);
 

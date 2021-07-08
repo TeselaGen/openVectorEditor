@@ -21,6 +21,7 @@ describe("autoAnnotate", function () {
     cy.contains("Loading...").should("exist");
     cy.contains("Loading...").should("not.exist");
     cy.contains("My Parts").should("not.exist");
+    cy.closeDialog();
 
     cy.triggerFileCmd("Auto Annotate Features");
     cy.contains("My Features").click();
