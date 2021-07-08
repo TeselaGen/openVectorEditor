@@ -1,3 +1,8 @@
+# UI: 
+![image](https://user-images.githubusercontent.com/2730609/125001643-013bf980-e008-11eb-9385-b834b8e9573f.png)
+
+![image](https://user-images.githubusercontent.com/2730609/125001747-38120f80-e008-11eb-9981-292cebba847d.png)
+
 # Usage:
 
 ```js
@@ -42,6 +47,9 @@ window.createVectorEditor(yourDomNodeHere, {
 ```
 
 # Passing a custom list of existing annotations to choose from: 
+
+![image](https://user-images.githubusercontent.com/2730609/125001693-14e76000-e008-11eb-903b-e7f074a7747c.png)
+
 
 ```js
 async function getCustomAutoAnnotateList ({ annotationType, sequenceData }) { //annotationType = feature|part|oligo
