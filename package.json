@@ -55,7 +55,7 @@
     "react-measure": "^2.5.2",
     "react-redux": "^5",
     "react-router-dom": "^4.3.1",
-    "react-sizeme": "^2.5.2",
+    "react-sizeme": "^3.0.1",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
     "redux-act": "^1.8.0",
