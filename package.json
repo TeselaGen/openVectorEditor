@@ -72,29 +72,29 @@
     "ve-sequence-utils": "^5.1.1"
   },
   "peerDependencies": {
-    "react": "^16.10.2",
-    "react-dom": "^16.9.0"
+    "react": "16.x || 17.x",
+    "react-dom": "16.x || 17.x"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.4",
+    "@cypress/code-coverage": "^3.9.8",
     "@types/lodash": "npm:@types/lodash-es",
     "auto-changelog": "^2.3.0",
     "babel-plugin-istanbul": "^6.0.0",
     "copy-to-clipboard": "^3.3.1",
-    "cypress": "7.5.0",
+    "cypress": "^7.6.0",
     "drag-mock": "^1.4.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.30.0",
     "eslint-config-teselagen": "^5.0.9",
-    "gh-pages": "^3.2.0",
-    "husky": "^4.3.8",
+    "gh-pages": "^3.2.3",
+    "husky": "^7.0.0",
     "in-publish": "^2.0.1",
-    "lint-staged": "10.5.4",
+    "lint-staged": "11.0.0",
     "nwb": "0.25.2",
-    "prettier": "2.3.1",
-    "react": "^16.10.2",
+    "prettier": "2.3.2",
+    "react": "^17.0.2",
     "react-addons-perf": "^15.4.2",
-    "react-dom": "^16.9.0",
-    "react-markdown": "^4.3.1"
+    "react-dom": "^17.0.2",
+    "react-markdown": "^6.0.2"
   },
   "resolutions": {
     "listr": "0.14.3"
