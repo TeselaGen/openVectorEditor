@@ -66,7 +66,7 @@
     "shortid": "^2.2.16",
     "teselagen-react-components": "^30.3.6",
     "tg-react-reflex": "^2.0.10",
-    "typeface-ubuntu-mono": "^0.0.54",
+    "typeface-ubuntu-mono": "^1.1.13",
     "use-local-storage-state": "^9.0.2",
     "ve-range-utils": "^2.5.9",
     "ve-sequence-utils": "^5.1.1"
