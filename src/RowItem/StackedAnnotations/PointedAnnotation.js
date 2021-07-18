@@ -10,7 +10,7 @@ import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
-    let {
+    const {
       className,
       widthInBps,
       charWidth,
@@ -46,7 +46,7 @@ class PointedAnnotation extends React.PureComponent {
       viewName: "RowView"
     });
 
-    let width = (widthInBps + gapsInside) * charWidth;
+    const width = (widthInBps + gapsInside) * charWidth;
     let charWN = charWidth; //charWN is normalized
     if (charWidth < 15) {
       //allow the arrow width to adapt
@@ -56,7 +56,7 @@ class PointedAnnotation extends React.PureComponent {
         charWN = width;
       }
     }
-    let widthMinusOne = width - charWN;
+    const widthMinusOne = width - charWN;
     let path;
     let hasAPoint = false;
     const endLine = annotation.doesOverlapSelf
@@ -127,6 +127,14 @@ class PointedAnnotation extends React.PureComponent {
       textOffset = 0;
       nameToDisplay = "";
     }
+    let _textColor = textColor;
+    if (!textColor) {
+      try {
+        _textColor = Color(color).isDark() ? "white" : "black";
+      } catch (error) {
+        _textColor = "white";
+      }
+    }
 
     return (
       <g
@@ -163,7 +171,7 @@ class PointedAnnotation extends React.PureComponent {
             )}
             style={{
               fontSize: ".9em",
-              fill: textColor || (Color(color).isDark() ? "white" : "black")
+              fill: _textColor
             }}
             transform={`translate(${textOffset},${height - 2})`}
           >
