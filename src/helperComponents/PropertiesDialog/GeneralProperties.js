@@ -9,7 +9,7 @@ import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";
 
 class GeneralProperties extends React.Component {
-  updateSeqDesc = val => {
+  updateSeqDesc = (val) => {
     return this.props.sequenceDescriptionUpdate(val);
   };
   render() {
@@ -41,7 +41,7 @@ class GeneralProperties extends React.Component {
           <div className="ve-column-right">
             <InputField
               disabled={readOnly}
-              onFieldSubmit={val => {
+              onFieldSubmit={(val) => {
                 sequenceNameUpdate(val);
               }}
               name="name"
@@ -57,7 +57,7 @@ class GeneralProperties extends React.Component {
               {" "}
               <BPSelect
                 disabled={readOnly}
-                onChange={val => {
+                onChange={(val) => {
                   updateCircular(val === "circular");
                 }}
                 value={circular ? "circular" : "linear"}
@@ -77,7 +77,7 @@ class GeneralProperties extends React.Component {
               {" "}
               <BPSelect
                 disabled={readOnly}
-                onChange={val => {
+                onChange={(val) => {
                   updateAvailability(val === "available");
                 }}
                 value={materiallyAvailable ? "available" : "unavailable"}
@@ -103,7 +103,7 @@ class GeneralProperties extends React.Component {
               {" "}
               <BPSelect
                 disabled={!onSave || disableSetReadOnly}
-                onChange={val => {
+                onChange={(val) => {
                   updateReadOnlyMode(val === "readOnly");
                 }}
                 value={readOnly ? "readOnly" : "editable"}
@@ -121,6 +121,7 @@ class GeneralProperties extends React.Component {
           name="description"
           onFieldSubmit={this.updateSeqDesc}
           defaultValue={description}
+          disabled={readOnly}
         />
       </React.Fragment>
     );
