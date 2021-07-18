@@ -96,6 +96,16 @@ describe("editor", function () {
     cy.contains(".bp3-dialog button", "Save").should("be.disabled");
   });
 
+  it(`should allow you to view, but not edit the description when in read only mode`, () => {
+    cy.contains("Properties").click();
+    cy.contains(".tg-test-description", "Edit").should("exist");
+    cy.tgToggle("readOnly");
+    cy.contains(".tg-test-description", "Edit").should("not.exist");
+    // cy.contains(".veRowViewPart", "Part 0").first().rightclick();
+    // cy.contains(".bp3-menu-item", "View Part Details").click();
+    // cy.contains(".bp3-dialog button", "Save").should("be.disabled");
+  });
+
   it(`should autosave if autosave=true`, function () {
     //tnrnote: cut in cypress only works on electron, not firefox or chrome
     cy.tgToggle("shouldAutosave");
