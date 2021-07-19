@@ -47,7 +47,7 @@ describe("autoAnnotate", function () {
     cy.uploadFile(`.bp3-dialog .tg-dropzone`, "Default_Features.txt");
     cy.contains("button", "Annotate").click();
     cy.contains(
-      `Detected that Row 5 has a non-standard type of primer_zoink. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
+      `Detected that Row 5 (SP6) has a non-standard type of primer_zoink. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
     );
     cy.contains("button", "OK").click();
     cy.contains("19 Selected");
