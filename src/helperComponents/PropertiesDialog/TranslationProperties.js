@@ -54,7 +54,6 @@ class TranslationProperties extends React.Component {
         <DataTable
           noPadding
           onRowSelect={this.onRowSelect}
-          maxHeight={400}
           selectedIds={selectedAnnotationId}
           formName="translationProperties"
           noRouter

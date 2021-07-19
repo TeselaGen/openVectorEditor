@@ -112,7 +112,6 @@ class CutsiteProperties extends React.Component {
           noFullscreenButton
           noPadding
           defaults={{ order: ["numberOfCuts"] }}
-          maxHeight={400}
           formName="cutsiteProperties"
           noRouter
           withSearch={false}

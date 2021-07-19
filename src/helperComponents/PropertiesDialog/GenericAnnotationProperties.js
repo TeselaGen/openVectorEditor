@@ -134,7 +134,6 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
             noPadding
             noFullscreenButton
             onRowSelect={this.onRowSelect}
-            maxHeight={400}
             selectedIds={selectedAnnotationId}
             formName="annotationProperties"
             noRouter
