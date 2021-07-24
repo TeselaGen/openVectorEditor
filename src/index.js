@@ -1,3 +1,4 @@
+import "@fontsource/ubuntu-mono";
 import "./addOnGlobals";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { showContextMenu } from "teselagen-react-components";
@@ -5,7 +6,6 @@ import "./createVectorEditor";
 import "./style.css";
 
 window.tgCreateMenu = showContextMenu;
-require("typeface-ubuntu-mono");
 // window.tgCreateMenu = (menu, e, e2) => {
 //   (e||e2).stopPropagation()
 //   (e || e2)
