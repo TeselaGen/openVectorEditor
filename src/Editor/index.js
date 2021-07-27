@@ -277,9 +277,8 @@ export class Editor extends React.Component {
   };
 
   render() {
-    const {
-      previewModeFullscreen: uncontrolledPreviewModeFullscreen
-    } = this.state;
+    const { previewModeFullscreen: uncontrolledPreviewModeFullscreen } =
+      this.state;
     const {
       ToolBarProps = {},
       StatusBarProps = {},
@@ -313,7 +312,8 @@ export class Editor extends React.Component {
       handleFullscreenClose,
       onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
-      previewModeButtonMenu
+      previewModeButtonMenu,
+      allowPanelTabDraggable = true
     } = this.props;
 
     if (
@@ -415,6 +415,7 @@ export class Editor extends React.Component {
       );
     }
 
+    const tabDraggable = allowPanelTabDraggable && !isMobile();
     const { tabDragging } = this.state;
     let xOffset = 0;
     let yOffset = 0;
@@ -422,7 +423,7 @@ export class Editor extends React.Component {
       xOffset = fullScreenOffsets.xOffset || 0;
       yOffset = fullScreenOffsets.yOffset || 0;
     }
-    let w = window,
+    const w = window,
       d = document,
       e = d.documentElement,
       g = d.getElementsByTagName("body")[0],
@@ -492,7 +493,7 @@ export class Editor extends React.Component {
       const panelSpecificPropsToSpread =
         panelMap[activePanelType] &&
         panelMap[activePanelType].panelSpecificPropsToSpread;
-      let panel = Panel ? (
+      const panel = Panel ? (
         <Panel
           withRotateCircularView={withRotateCircularView}
           {...pickedUserDefinedHandlersAndOpts}
@@ -592,7 +593,7 @@ export class Editor extends React.Component {
                     }
                     return (
                       <Draggable
-                        isDragDisabled={isMobile()}
+                        isDragDisabled={!tabDraggable}
                         key={id}
                         index={index}
                         draggableId={id}
@@ -623,7 +624,7 @@ export class Editor extends React.Component {
                                 background: snapshot.isDragging
                                   ? "lightgreen"
                                   : "none",
-                                cursor: "move",
+                                cursor: tabDraggable ? "move" : "pointer",
                                 flex: "0 0 auto",
                                 ...provided.draggableProps.style
                               }}
