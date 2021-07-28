@@ -61,6 +61,7 @@ const defaultState = {
   showDemoOptions: !isMobile(),
   shouldAutosave: false,
   generatePng: false,
+  allowPanelTabDraggable: true,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
@@ -1391,6 +1392,13 @@ clickOverrides: {
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
+              {renderToggle({
+                that: this,
+                type: "allowPanelTabDraggable",
+                description: `If allowPanelTabDraggable=true is passed to <Editor/> 
+                then the panel tabs will be draggable (except mobiles).
+                `
+              })}
 
               {editorHandlers.length ? (
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
@@ -1494,6 +1502,7 @@ clickOverrides: {
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             allowPartsToOverlapSelf={this.state.allowPartsToOverlapSelf}
+            allowPanelTabDraggable={this.state.allowPanelTabDraggable}
             {...(this.state.corruptedOverrideManageEnzymes && {
               enzymeGroupsOverride: {
                 someGroup: [
