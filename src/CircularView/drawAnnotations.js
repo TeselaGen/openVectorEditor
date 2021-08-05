@@ -46,19 +46,14 @@ function drawAnnotations({
     return -getRangeLength(a, sequenceLength);
   })
     .map((annotation) => {
-      let {
-        startAngle,
-        endAngle,
-        totalAngle,
-        centerAngle,
-        locationAngles
-      } = getRangeAngles(
-        positionBy ? positionBy(annotation) : annotation,
-        sequenceLength
-      );
+      const { startAngle, endAngle, totalAngle, centerAngle, locationAngles } =
+        getRangeAngles(
+          positionBy ? positionBy(annotation) : annotation,
+          sequenceLength
+        );
 
-      let spansOrigin = startAngle > endAngle;
-      let annotationCopy = {
+      const spansOrigin = startAngle > endAngle;
+      const annotationCopy = {
         ...annotation,
         startAngle,
         endAngle,
@@ -69,7 +64,9 @@ function drawAnnotations({
       };
       if (!allOnSameLevel) {
         //expand the end angle if annotation spans the origin
-        let expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle;
+        const expandedEndAngle = spansOrigin
+          ? endAngle + 2 * Math.PI
+          : endAngle;
         let yOffset1;
         let yOffset2;
         if (spansOrigin) {
@@ -188,7 +185,7 @@ function drawAnnotations({
         };
       }
 
-      let annotationColor = getColor
+      const annotationColor = getColor
         ? getColor(annotation)
         : annotation.color || "purple";
 
@@ -204,7 +201,7 @@ function drawAnnotations({
             annotationType,
             showLabels,
             Annotation,
-            doesOverlapSelf: annotation.doesOverlapSelf,
+            overlapsSelf: annotation.overlapsSelf,
             labelCenter: centerAngle,
             startAngle,
             endAngle,

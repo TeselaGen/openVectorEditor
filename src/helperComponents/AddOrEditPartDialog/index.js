@@ -49,7 +49,7 @@ const renderAdvancedOptions = ({ readOnly }) => (
     inlineLabel
     tooltipError
     disabled={readOnly}
-    name="doesOverlapSelf"
+    name="overlapsSelf"
     label={
       <div style={{ display: "flex", alignItems: "center" }}>
         Part Overlaps Self
@@ -85,7 +85,7 @@ export default AddOrEditAnnotationDialog({
   },
   getProps: (props) => ({
     upsertAnnotation: props.upsertPart,
-    advancedDefaultOpen: get(props, "initialValues.doesOverlapSelf"),
+    advancedDefaultOpen: get(props, "initialValues.overlapsSelf"),
     advancedOptions: props.allowPartsToOverlapSelf
       ? renderAdvancedOptions({ readOnly: props.readOnly })
       : undefined,

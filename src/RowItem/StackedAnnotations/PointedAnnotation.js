@@ -59,12 +59,12 @@ class PointedAnnotation extends React.PureComponent {
     const widthMinusOne = width - charWN;
     let path;
     let hasAPoint = false;
-    const endLine = annotation.doesOverlapSelf
+    const endLine = annotation.overlapsSelf
       ? `L 0,${height / 2} 
     L -10,${height / 2} 
     L 0,${height / 2} `
       : "";
-    const arrowLine = annotation.doesOverlapSelf
+    const arrowLine = annotation.overlapsSelf
       ? `L ${width + 10},${height / 2} 
     L ${width},${height / 2} `
       : "";

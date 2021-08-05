@@ -2,11 +2,11 @@ import classnames from "classnames";
 import { startCase } from "lodash";
 
 export default function getAnnotationClassnames(
-  { doesOverlapSelf },
+  { overlapsSelf },
   { viewName, type }
 ) {
   const Type = startCase(type);
   return classnames(`ve${Type}`, `ve${viewName}${Type}`, {
-    doesOverlapSelf
+    overlapsSelf
   });
 }

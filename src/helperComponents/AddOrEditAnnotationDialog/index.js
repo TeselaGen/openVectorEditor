@@ -183,7 +183,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       annotationVisibilityShow,
       renderLocations,
       locations,
-      doesOverlapSelf,
+      overlapsSelf,
       start,
       end,
       advancedOptions,
@@ -226,7 +226,7 @@ class AddOrEditAnnotationDialog extends React.Component {
 
           const newAnnotation = tidyUpAnnotation(
             convertRangeTo0Based({
-              doesOverlapSelf: data.doesOverlapSelf,
+              overlapsSelf: data.overlapsSelf,
               ...updatedData,
               ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
                 ? { type: "primer_bind" }
@@ -235,8 +235,8 @@ class AddOrEditAnnotationDialog extends React.Component {
               ...(hasJoinedLocations && {
                 //only add locations if there are locations
                 start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
-                end:
-                  updatedData.locations[updatedData.locations.length - 1].end,
+                end: updatedData.locations[updatedData.locations.length - 1]
+                  .end,
                 locations: updatedData.locations.map(convertRangeTo0Based)
               })
             }),
@@ -348,9 +348,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
         >
           Length:{" "}
-          {doesOverlapSelf
-            ? sequenceLength + annotationLength
-            : annotationLength}
+          {overlapsSelf ? sequenceLength + annotationLength : annotationLength}
         </div>
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
         <Advanced
@@ -429,8 +427,7 @@ export default ({ formName, getProps, dialogProps }) => {
                 "In a non-circular sequence, joined spans must be in ascending order"
             };
             errors.locations[values.locations.length - 1] = {
-              end:
-                "In a non-circular sequence, joined spans must be in ascending order"
+              end: "In a non-circular sequence, joined spans must be in ascending order"
             };
           }
           values.locations.forEach((loc, index) => {
@@ -473,7 +470,7 @@ export default ({ formName, getProps, dialogProps }) => {
         return errors;
       }
     }),
-    formValues("start", "end", "doesOverlapSelf", "locations")
+    formValues("start", "end", "overlapsSelf", "locations")
   )(AddOrEditAnnotationDialog);
 };
 

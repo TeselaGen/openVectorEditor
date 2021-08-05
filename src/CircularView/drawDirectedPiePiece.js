@@ -13,16 +13,16 @@ export default function drawDirectedPiePiece({
   tailThickness = 0.6,
   arrowheadLength = 1,
   radius,
-  doesOverlapSelf,
+  overlapsSelf,
   annotationHeight,
   totalAngle
 }) {
-  let tailHeight = annotationHeight * tailThickness;
+  const tailHeight = annotationHeight * tailThickness;
 
-  let arrowheadOuterRadius = radius + annotationHeight / 2;
-  let arrowheadInnerRadius = radius - annotationHeight / 2;
-  let tailOuterRadius = radius + tailHeight / 2;
-  let tailInnerRadius = radius - tailHeight / 2;
+  const arrowheadOuterRadius = radius + annotationHeight / 2;
+  const arrowheadInnerRadius = radius - annotationHeight / 2;
+  const tailOuterRadius = radius + tailHeight / 2;
+  const tailInnerRadius = radius - tailHeight / 2;
 
   // var arrowheadAngle = totalAngle / 2
   let arrowheadAngle = arrowheadLength / (Math.PI * 2);
@@ -31,35 +31,41 @@ export default function drawDirectedPiePiece({
     //set arrowhead length to the angle in radians length
     arrowheadAngle = totalAngle;
   }
-  let arcAngle = totalAngle - arrowheadAngle;
+  const arcAngle = totalAngle - arrowheadAngle;
 
   //the main points we need to draw the arrow and in the order we draw them in:
-  let arrowheadPoint = polarToSpecialCartesian(radius, 0);
+  const arrowheadPoint = polarToSpecialCartesian(radius, 0);
 
-  let arrowheadPointInner = polarToSpecialCartesian(radius, -stickOutThisMuch);
+  const arrowheadPointInner = polarToSpecialCartesian(
+    radius,
+    -stickOutThisMuch
+  );
 
-  let arrowheadBottom = polarToSpecialCartesian(
+  const arrowheadBottom = polarToSpecialCartesian(
     arrowheadInnerRadius,
     arrowheadAngle
   );
-  let arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, arrowheadAngle);
-  let arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle);
-  let arcRightTop = polarToSpecialCartesian(tailOuterRadius, totalAngle);
-  let arcRightMiddle = polarToSpecialCartesian(radius, totalAngle);
-  let arcRightMiddleOuter = polarToSpecialCartesian(
+  const arcLeftBottom = polarToSpecialCartesian(
+    tailInnerRadius,
+    arrowheadAngle
+  );
+  const arcRightBottom = polarToSpecialCartesian(tailInnerRadius, totalAngle);
+  const arcRightTop = polarToSpecialCartesian(tailOuterRadius, totalAngle);
+  const arcRightMiddle = polarToSpecialCartesian(radius, totalAngle);
+  const arcRightMiddleOuter = polarToSpecialCartesian(
     radius,
     totalAngle + stickOutThisMuch
   );
-  let arcLeftTop = polarToSpecialCartesian(tailOuterRadius, arrowheadAngle);
-  let arrowheadTop = polarToSpecialCartesian(
+  const arcLeftTop = polarToSpecialCartesian(tailOuterRadius, arrowheadAngle);
+  const arrowheadTop = polarToSpecialCartesian(
     arrowheadOuterRadius,
     arrowheadAngle
   );
 
-  let largeArcFlag = arcAngle > Math.PI ? 1 : 0;
+  const largeArcFlag = arcAngle > Math.PI ? 1 : 0;
   let path = Path().moveto(arrowheadPoint.x, arrowheadPoint.y);
 
-  if (doesOverlapSelf) {
+  if (overlapsSelf) {
     path = path
       .lineto(arrowheadPointInner.x, arrowheadPointInner.y)
       .lineto(arrowheadPoint.x, arrowheadPoint.y);
@@ -78,7 +84,7 @@ export default function drawDirectedPiePiece({
       y: arcRightBottom.y
     });
 
-  if (doesOverlapSelf) {
+  if (overlapsSelf) {
     path = path
       .lineto(arcRightMiddle.x, arcRightMiddle.y)
       .lineto(arcRightMiddleOuter.x, arcRightMiddleOuter.y)

@@ -8,12 +8,12 @@ export default function Part({
   annotationHeight,
   totalAngle,
   color,
-  doesOverlapSelf,
+  overlapsSelf,
   className
 }) {
-  let path = drawDirectedPiePiece({
+  const path = drawDirectedPiePiece({
     radius,
-    doesOverlapSelf,
+    overlapsSelf,
     annotationHeight,
     totalAngle,
     arrowheadLength,
