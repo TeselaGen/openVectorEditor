@@ -201,6 +201,8 @@ function drawAnnotations({
             annotationType,
             showLabels,
             Annotation,
+            arrowheadLength:
+              annotation.rangeTypeOverride === "middle" ? 0 : undefined,
             overlapsSelf: annotation.overlapsSelf,
             labelCenter: centerAngle,
             startAngle,
@@ -252,6 +254,7 @@ const DrawAnnotation = withHover(function ({
   reverseAnnotations,
   Annotation = Feature,
   totalAngle,
+  arrowheadLength,
   annotationColor,
   isProtein,
   annotationRadius,
@@ -287,6 +290,7 @@ const DrawAnnotation = withHover(function ({
           totalAngle={totalAngle}
           color={annotationColor}
           isProtein={isProtein}
+          arrowheadLength={arrowheadLength}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
           {...annotationProps}

@@ -36,12 +36,26 @@ function filteredPartsSelector(
     });
   }
 
-  return omitBy(parts, (ann) => {
-    const hideIndividually = partIndividualToHide[ann.id];
-    return (
-      hideAnnByLengthFilter(lengthsToHide, ann, seqLen) || hideIndividually
-    );
-  });
+  const wrappedPartAddons = [];
+  const toRet = map(
+    omitBy(parts, (ann) => {
+      const hideIndividually = partIndividualToHide[ann.id];
+      const toRetInner =
+        hideAnnByLengthFilter(lengthsToHide, ann, seqLen) || hideIndividually;
+
+      if (!toRetInner && ann.overlapsSelf) {
+        wrappedPartAddons.push({
+          ...ann,
+          start: ann.end + 1,
+          end: ann.start - 1,
+          isWrappedAddon: true,
+          rangeTypeOverride: "middle" //we add this rangeTypeOverride here to get the wrapping piece to draw differently than normal
+        });
+      }
+      return toRetInner;
+    })
+  );
+  return [...toRet, ...wrappedPartAddons];
 }
 export default createSelector(
   partsSelector,

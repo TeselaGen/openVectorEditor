@@ -31,6 +31,7 @@ import {
   getParedDownWarning,
   pareDownAnnotations
 } from "../utils/editorUtils";
+import { getAllSelectionLayers } from "../utils/selectionLayer";
 
 function noop() {}
 
@@ -52,10 +53,10 @@ export function CircularView(props) {
     if (!clientX) {
       return;
     }
-    let boundingRect = circRef.current.getBoundingClientRect();
+    const boundingRect = circRef.current.getBoundingClientRect();
     //get relative click positions
-    let clickX = clientX - boundingRect.left - boundingRect.width / 2;
-    let clickY = clientY - boundingRect.top - boundingRect.height / 2;
+    const clickX = clientX - boundingRect.left - boundingRect.width / 2;
+    const clickY = clientY - boundingRect.top - boundingRect.height / 2;
 
     //get angle
     let angle = Math.atan2(clickY, clickX) + Math.PI / 2 - rotationRadians;
@@ -119,9 +120,9 @@ export function CircularView(props) {
     labelSize
   } = props;
 
-  let { sequence = "atgc", circular } = sequenceData;
-  let sequenceLength = sequence.length;
-  let sequenceName = hideName ? "" : sequenceData.name || "";
+  const { sequence = "atgc", circular } = sequenceData;
+  const sequenceLength = sequence.length;
+  const sequenceName = hideName ? "" : sequenceData.name || "";
   circularAndLinearTickSpacing =
     circularAndLinearTickSpacing ||
     (sequenceLength < 10
@@ -131,7 +132,7 @@ export function CircularView(props) {
       : Math.ceil(sequenceLength / 100) * 10);
 
   const baseRadius = 80;
-  let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+  const innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
   let radius = baseRadius;
   let annotationsSvgs = [];
   let labels = {};
@@ -143,7 +144,7 @@ export function CircularView(props) {
   //-Then we rotate the annotations as necessary (and optionally flip them):
   //<PositionAnnotationOnCircle>
 
-  let layersToDraw = [
+  const layersToDraw = [
     { zIndex: 10, layerName: "sequenceChars" },
     {
       zIndex: 20,
@@ -253,7 +254,7 @@ export function CircularView(props) {
   ];
   const paredDownMessages = [];
 
-  let output = layersToDraw
+  const output = layersToDraw
     .map((opts) => {
       const {
         layerName,
@@ -300,7 +301,7 @@ export function CircularView(props) {
           (maxAnnotationsToDisplay
             ? maxAnnotationsToDisplay[layerName]
             : limits[layerName]) || 50;
-        let [annotations, paredDown] = isAnnotation
+        const [annotations, paredDown] = isAnnotation
           ? pareDownAnnotations(
               sequenceData["filtered" + nameUpper] ||
                 sequenceData[layerName] ||
@@ -368,12 +369,11 @@ export function CircularView(props) {
 
   function drawSelectionLayer() {
     //DRAW SELECTION LAYER
-    let selectionLayers = [
-      ...additionalSelectionLayers,
-      ...searchLayers,
-      ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
-    ];
-    return selectionLayers
+    return getAllSelectionLayers({
+      additionalSelectionLayers,
+      searchLayers,
+      selectionLayer
+    })
       .map(function (selectionLayer, index) {
         if (
           selectionLayer.start >= 0 &&

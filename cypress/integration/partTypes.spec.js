@@ -3,9 +3,16 @@ describe("partTypes", function () {
     cy.visit("");
   });
   it(`parts that overlap with themselves should be supported`, () => {
+    cy.hideCutsites();
     cy.tgToggle("allowPartsToOverlapSelf");
+    cy.contains("I wrap myself - Start: 88 (wraps full sequence) End: 94");
+    cy.contains(".veCircularViewLabelText", "I wrap myself").dblclick();
+    cy.contains("Length: 5306");
+    cy.contains(".bp3-dialog div", "Overlaps Self").click();
+    cy.contains(".bp3-dialog button", "Save").click();
     cy.get(".veRowViewPart.overlapsSelf").should("not.exist");
     cy.get(".veCircularViewPart.overlapsSelf").should("not.exist");
+
     cy.contains(".veLabelText", "Part 0").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Edit Part").click();
     cy.contains(".bp3-dialog div", "Advanced").click();

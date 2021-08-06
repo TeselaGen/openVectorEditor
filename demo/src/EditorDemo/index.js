@@ -1101,6 +1101,31 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "allowPartsToOverlapSelf",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        parts: {
+                          101: {
+                            start: 10,
+                            end: 30,
+                            name: "Part 0",
+                            id: "101",
+                            tags: ["8"]
+                          },
+                          102: {
+                            start: 87,
+                            end: 93,
+                            forward: true,
+                            id: "102",
+                            overlapsSelf: true,
+                            name: "I wrap myself"
+                          }
+                        }
+                      }
+                    });
+                },
                 description: `If allowPartsToOverlapSelf=true is passed to <Editor/> 
                 then a new option will appear in the 
                 Edit/Create Part Dialog that a user can use to create a 

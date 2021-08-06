@@ -20,6 +20,7 @@ import StackedAnnotations from "./StackedAnnotations";
 import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
 import { rowHeights } from "../RowView/estimateRowHeight";
+import { getAllSelectionLayers } from "../utils/selectionLayer";
 
 function noop() {}
 
@@ -101,7 +102,7 @@ export class RowItem extends React.PureComponent {
       labelLineIntensity
     } = this.props;
 
-    let {
+    const {
       chromatogram: showChromatogram,
       // orfLabels: showOrfLabel,
       cutsites: showCutsites,
@@ -115,18 +116,15 @@ export class RowItem extends React.PureComponent {
       sequence: showSequence
     } = annotationVisibility;
 
-    let { sequence = "", cutsites = [] } = row;
+    const { sequence = "", cutsites = [] } = row;
 
-    let reverseSequence = getComplementSequenceString(
+    const reverseSequence = getComplementSequenceString(
       (alignmentData && alignmentData.sequence) || sequence
     );
     if (!row) {
       return null;
     }
-    const selectionLayers = [
-      ...additionalSelectionLayers,
-      ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
-    ];
+
     if (!width) {
       width = bpsPerRow * charWidth;
     } else {
@@ -332,7 +330,10 @@ export class RowItem extends React.PureComponent {
                 ? { start: 0, end: alignmentData.sequence.length - 1 }
                 : row
             }
-            regions={selectionLayers}
+            regions={getAllSelectionLayers({
+              additionalSelectionLayers,
+              selectionLayer
+            })}
           />
           {/* <Labels
             {...annotationCommonProps}

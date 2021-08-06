@@ -39,6 +39,7 @@ class PointedAnnotation extends React.PureComponent {
       externalLabels,
       onlyShowLabelsThatDoNotFit
     } = this.props;
+    const _rangeType = annotation.rangeTypeOverride || rangeType;
 
     const classNames = getAnnotationClassnames(annotation, {
       isProtein,
@@ -69,7 +70,7 @@ class PointedAnnotation extends React.PureComponent {
     L ${width},${height / 2} `
       : "";
     // starting from the top left of the annotation
-    if (rangeType === "middle") {
+    if (_rangeType === "middle") {
       //draw a rectangle
       path = `
           M 0,0 
@@ -80,7 +81,7 @@ class PointedAnnotation extends React.PureComponent {
           L ${0},${height}
           Q ${pointiness},${height / 2} ${0},${0}
           z`;
-    } else if (rangeType === "start") {
+    } else if (_rangeType === "start") {
       path = `
           M 0,0 
           L ${width - pointiness / 2},0 
@@ -90,7 +91,7 @@ class PointedAnnotation extends React.PureComponent {
           L 0,${height} 
           ${endLine}
           z`;
-    } else if (rangeType === "beginningAndEnd") {
+    } else if (_rangeType === "beginningAndEnd") {
       hasAPoint = true;
       path = `
           M 0,0 

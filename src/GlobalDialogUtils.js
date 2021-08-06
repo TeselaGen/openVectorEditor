@@ -1,6 +1,6 @@
 import shortid from "shortid";
 
-import { startCase } from "lodash";
+import { cloneDeep, startCase } from "lodash";
 import { convertRangeTo1Based } from "ve-range-utils";
 
 export const dialogHolder = {};
@@ -28,7 +28,10 @@ export function hideDialog() {
   dialogHolder.setUniqKey(shortid());
 }
 
-export function showAddOrEditAnnotationDialog({ type, annotation }) {
+export function showAddOrEditAnnotationDialog({
+  type,
+  annotation: _annotation
+}) {
   const typeToDialogType = {
     part: "AddOrEditPartDialog",
     feature: "AddOrEditFeatureDialog",
@@ -36,6 +39,13 @@ export function showAddOrEditAnnotationDialog({ type, annotation }) {
   };
   const dialogType = typeToDialogType[type];
   const nameUpper = startCase(type);
+  const annotation = cloneDeep(_annotation);
+  if (_annotation.isWrappedAddon) {
+    delete annotation.isWrappedAddon;
+    delete annotation.rangeTypeOverride;
+    annotation.start = _annotation.end + 1;
+    annotation.end = _annotation.start - 1;
+  }
   showDialog({
     overrideName: `AddOrEdit${nameUpper}DialogOverride`,
     dialogType,

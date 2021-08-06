@@ -256,6 +256,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
           original_selectionLayerUpdate &&
             original_selectionLayerUpdate({
+              overlapsSelf: data.overlapsSelf,
               start: newAnnotation.start,
               end: newAnnotation.end
             });
