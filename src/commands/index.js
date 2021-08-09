@@ -938,7 +938,15 @@ const cirularityCommandDefs = {
 };
 
 const labelToggleCommandDefs = {};
-["feature", "part", "cutsite"].forEach((type) => {
+[
+  "feature",
+  "part",
+  "cutsite",
+  "assemblyPieces",
+  "lineageAnnotations",
+  "warnings",
+  "primers"
+].forEach((type) => {
   const cmdId = `toggle${upperFirst(type)}Labels`;
   const plural = type + "s";
   labelToggleCommandDefs[cmdId] = {
