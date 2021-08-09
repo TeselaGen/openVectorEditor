@@ -5,6 +5,10 @@ import { MenuItem } from "@blueprintjs/core";
 const useAnnotationLimits = createLocalStorageStateHook("annotationLimits", {
   features: 50,
   parts: 50,
+  primers: 50,
+  warnings: 50,
+  assemblyPieces: 50,
+  lineageAnnotations: 50,
   cutsites: 100
 });
 export default useAnnotationLimits;

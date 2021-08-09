@@ -213,6 +213,26 @@ export default [
         text: "Max Cutsites To Show",
         component: LimitAnnotations,
         type: "cutsites"
+      },
+      {
+        text: "Max Primers To Show",
+        component: LimitAnnotations,
+        type: "primers"
+      },
+      {
+        text: "Max Warnings To Show",
+        component: LimitAnnotations,
+        type: "warnings"
+      },
+      {
+        text: "Max Assembly Pieces To Show",
+        component: LimitAnnotations,
+        type: "assemblyPieces"
+      },
+      {
+        text: "Max Lineage Annotations To Show",
+        component: LimitAnnotations,
+        type: "lineageAnnotations"
       }
     ]
   },
