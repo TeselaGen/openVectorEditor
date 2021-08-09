@@ -282,16 +282,20 @@ function VectorInteractionHOC(Component /* options */) {
 
       const seqData = tidyUpSequenceData(
         this.sequenceDataToCopy ||
-          getSequenceDataBetweenRange(sequenceData, selectionLayer, {
-            excludePartial: {
-              features: !copyOptions.partialFeatures,
-              parts: !copyOptions.partialParts
-            },
-            exclude: {
-              features: !copyOptions.features,
-              parts: !copyOptions.parts
+          getSequenceDataBetweenRange(
+            sequenceData,
+            getSelToUse(selectionLayer),
+            {
+              excludePartial: {
+                features: !copyOptions.partialFeatures,
+                parts: !copyOptions.partialParts
+              },
+              exclude: {
+                features: !copyOptions.features,
+                parts: !copyOptions.parts
+              }
             }
-          }),
+          ),
         { annotationsAsObjects: true }
       );
 
@@ -430,10 +434,8 @@ function VectorInteractionHOC(Component /* options */) {
       this.props.caretPositionUpdate(position);
     };
     selectionLayerUpdate = (newSelection) => {
-      const {
-        selectionLayer = { start: -1, end: -1 },
-        ignoreGapsOnHighlight
-      } = this.props;
+      const { selectionLayer = { start: -1, end: -1 }, ignoreGapsOnHighlight } =
+        this.props;
       if (!newSelection) return;
       const { start, end, forceUpdate } = newSelection;
       if (
@@ -538,19 +540,19 @@ function VectorInteractionHOC(Component /* options */) {
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = (annotation) => {
-      const { sequenceData, readOnly } = this.props;
+      const { sequenceData, readOnly, selectionLayer } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
             const { selectionLayer, editorName, store } = this.props;
-            const { sequenceData, copyOptions } = store.getState().VectorEditor[
-              editorName
-            ];
+            const { sequenceData, copyOptions } =
+              store.getState().VectorEditor[editorName];
+
             const selectedSeqData = getSequenceDataBetweenRange(
               sequenceData,
-              selectionLayer,
+              getSelToUse(selectionLayer),
               {
                 excludePartial: {
                   features: !copyOptions.partialFeatures,
@@ -628,7 +630,10 @@ function VectorInteractionHOC(Component /* options */) {
               }
             ]),
         {
-          text: "Copy",
+          text:
+            annotation.overlapsSelf || selectionLayer.overlapsSelf
+              ? "Copy Wrapped Range"
+              : "Copy",
           submenu: [
             ...(isProtein ? [aaCopy] : []),
             {
@@ -684,9 +689,10 @@ function VectorInteractionHOC(Component /* options */) {
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
                   (selectedSeqData) => {
-                    const revSeqData = getReverseComplementSequenceAndAnnotations(
-                      selectedSeqData
-                    );
+                    const revSeqData =
+                      getReverseComplementSequenceAndAnnotations(
+                        selectedSeqData
+                      );
                     const textToCopy = isProtein
                       ? revSeqData.proteinSequence.toUpperCase()
                       : getAminoAcidStringFromSequenceString(
@@ -785,6 +791,8 @@ function VectorInteractionHOC(Component /* options */) {
       ({ annotation }) => {
         return this.getSelectionMenuOptions({
           //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
+          isWrappedAddon: annotation.isWrappedAddon,
+          overlapsSelf: annotation.overlapsSelf,
           start: annotation.start,
           end: annotation.end
         });
@@ -860,7 +868,9 @@ function VectorInteractionHOC(Component /* options */) {
     partRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        isWrappedAddon: annotation.isWrappedAddon,
+        overlapsSelf: annotation.overlapsSelf
       });
       return [
         "editPart",
@@ -895,7 +905,7 @@ function VectorInteractionHOC(Component /* options */) {
         "--",
         ...this.getSelectionMenuOptions(annotation)
       ];
-    }, "partRightClicked");
+    }, "warningRightClicked");
     featureRightClicked = this.enhanceRightClickAction(
       ({ annotation, event }) => {
         this.props.selectionLayerUpdate({
@@ -928,8 +938,7 @@ function VectorInteractionHOC(Component /* options */) {
                         })
                       ) {
                         const doAction = await showConfirmationDialog({
-                          text:
-                            "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                          text: "A part already exists that matches this feature's range. Do you want to make one anyways?",
                           confirmButtonText: "Create Part",
                           canEscapeKeyCancel: true //this is false by default
                         });
@@ -1206,14 +1215,12 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   //   start: newSelectionLayerStart,
   //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
   // });
-  const [
-    newSeqData,
-    { maintainOriginSplit }
-  ] = wrappedInsertSequenceDataAtPositionOrRange(
-    seqDataToInsert,
-    sequenceData,
-    caretPosition > -1 ? caretPosition : selectionLayer
-  );
+  const [newSeqData, { maintainOriginSplit }] =
+    wrappedInsertSequenceDataAtPositionOrRange(
+      seqDataToInsert,
+      sequenceData,
+      caretPosition > -1 ? caretPosition : selectionLayer
+    );
   updateSequenceData(newSeqData);
   const seqDataInsertLength = seqDataToInsert.sequence
     ? seqDataToInsert.sequence.length
@@ -1242,3 +1249,16 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     end: newSelectionLayerEnd % newSeqData.sequence.length
   });
 };
+
+function getSelToUse(selectionLayer) {
+  const selToUse = {
+    ...selectionLayer
+  };
+  if (selectionLayer.isWrappedAddon) {
+    const oldEnd = selToUse.end;
+    selToUse.end = selToUse.start - 1;
+    selToUse.start = oldEnd + 1;
+    delete selToUse.isWrappedAddon;
+  }
+  return selToUse;
+}
