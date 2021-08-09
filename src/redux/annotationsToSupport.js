@@ -8,7 +8,10 @@ const initialSupportedTypes = {
   translations: true,
   primers: true,
   cutsites: true,
-  orfs: true
+  orfs: true,
+  warnings: true,
+  assemblyPieces: true,
+  lineageAnnotations: true
 };
 
 // ------------------------------------

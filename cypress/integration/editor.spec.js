@@ -198,17 +198,6 @@ describe("editor", function () {
       .contains("properties overrides successfull")
       .should("be.visible");
   });
-  it(`should show/hide a checkmark when toggling feature label visibility`, function () {
-    cy.get("body").type("{meta}/");
-    cy.focused().type(`Feature Labels`);
-    cy.contains(".bp3-menu-item", "Feature Labels")
-      .find(".bp3-icon-small-tick")
-      .should("exist");
-    cy.focused().type(`{enter}`);
-    cy.contains(".bp3-menu-item", "Feature Labels")
-      .find(".bp3-icon-small-tick")
-      .should("not.exist");
-  });
 
   it(`should handle custom menu filters correctly`, () => {
     // if (Cypress.browser !== "")

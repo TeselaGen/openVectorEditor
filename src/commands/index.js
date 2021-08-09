@@ -937,29 +937,52 @@ const cirularityCommandDefs = {
   }
 };
 
-const labelToggleCommandDefs = {};
-[
-  "feature",
-  "part",
-  "cutsite",
-  "assemblyPieces",
-  "lineageAnnotations",
-  "warnings",
-  "primers"
-].forEach((type) => {
-  const cmdId = `toggle${upperFirst(type)}Labels`;
-  const plural = type + "s";
-  labelToggleCommandDefs[cmdId] = {
-    toggle: ["show", "hide"],
-    handler: (props) => props.annotationLabelVisibilityToggle(plural),
-    isHidden: (props) => {
-      return props && props.typesToOmit && props.typesToOmit[plural] === false;
-    },
-    isActive: (props) => {
-      return props && props.annotationLabelVisibility[plural];
+const nicheAnnotations = [
+  {
+    type: "warnings",
+    isHidden: (p) => {
+      return !map(p.sequenceData["warnings"]).length;
     }
-  };
-});
+  },
+  {
+    type: "assemblyPieces",
+    isHidden: (p) => {
+      return !map(p.sequenceData["assemblyPieces"]).length;
+    }
+  },
+  {
+    type: "lineageAnnotations",
+    isHidden: (p) => {
+      return !map(p.sequenceData["lineageAnnotations"]).length;
+    }
+  }
+];
+const labelToggleCommandDefs = {};
+["feature", "part", "cutsite", "primer", ...nicheAnnotations].forEach(
+  (_type) => {
+    let rest = {};
+    let type = _type;
+    if (_type.type) {
+      type = _type.type.slice(0, -1);
+      rest = _type;
+    }
+    const cmdId = `toggle${upperFirst(type)}Labels`;
+    const plural = type + "s";
+    labelToggleCommandDefs[cmdId] = {
+      toggle: ["show", "hide"],
+      handler: (props) => props.annotationLabelVisibilityToggle(plural),
+      isHidden: (props) => {
+        return (
+          props && props.typesToOmit && props.typesToOmit[plural] === false
+        );
+      },
+      ...rest,
+      isActive: (props) => {
+        return props && props.annotationLabelVisibility[plural];
+      }
+    };
+  }
+);
 
 const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
   (acc, key) => {
@@ -1028,24 +1051,7 @@ const annotationToggleCommandDefs = {};
   "features",
   "parts",
 
-  {
-    type: "warnings",
-    isHidden: (p) => {
-      return !map(p.sequenceData["warnings"]).length;
-    }
-  },
-  {
-    type: "assemblyPieces",
-    isHidden: (p) => {
-      return !map(p.sequenceData["assemblyPieces"]).length;
-    }
-  },
-  {
-    type: "lineageAnnotations",
-    isHidden: (p) => {
-      return !map(p.sequenceData["lineageAnnotations"]).length;
-    }
-  },
+  ...nicheAnnotations,
   { type: "cutsites", isHidden: isProtein },
   "axis",
   { type: "orfs", text: "ORFs", isHidden: isProtein },

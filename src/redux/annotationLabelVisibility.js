@@ -6,7 +6,10 @@ const visibilityInitialValues = {
   features: true,
   parts: true,
   primers: true,
-  cutsites: true
+  cutsites: true,
+  assemblyPieces: true,
+  lineageAnnotations: true,
+  warnings: true
 };
 
 // ------------------------------------

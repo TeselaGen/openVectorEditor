@@ -222,6 +222,10 @@ export default [
       { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
       { cmd: "togglePartLabels", shouldDismissPopover: false },
       { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+      { cmd: "toggleAssemblyPieceLabels", shouldDismissPopover: false },
+      { cmd: "toggleLineageAnnotationLabels", shouldDismissPopover: false },
+      { cmd: "toggleWarningLabels", shouldDismissPopover: false },
+      { cmd: "togglePrimerLabels", shouldDismissPopover: false },
 
       { divider: "" },
 
