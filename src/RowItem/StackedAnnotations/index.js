@@ -12,7 +12,7 @@ import AnnotationPositioner from "../AnnotationPositioner";
 import PointedAnnotation from "./PointedAnnotation";
 
 function StackedAnnotations(props) {
-  let {
+  const {
     annotationRanges = [],
     bpsPerRow,
     charWidth,
@@ -42,7 +42,7 @@ function StackedAnnotations(props) {
     return null;
   }
   let maxAnnotationYOffset = 0;
-  let annotationsSVG = [];
+  const annotationsSVG = [];
   forEach(annotationRanges, function (annotationRange, index) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
@@ -52,12 +52,12 @@ function StackedAnnotations(props) {
       gapsBefore = 0;
       gapsInside = 0;
     }
-    let annotation = annotationRange.annotation;
-    let annotationColor =
+    const annotation = annotationRange.annotation;
+    const annotationColor =
       annotation.color ||
       (annotation.type && featureColors[annotation.type]) ||
       "#BBBBBB";
-    let result = getXStartAndWidthOfRowAnnotation(
+    const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
@@ -72,6 +72,7 @@ function StackedAnnotations(props) {
 
     annotationsSVG.push(
       <AnnotationPositioner
+        yOffset={annotationRange.yOffset}
         height={anotationHeightNoSpace}
         width={result.width}
         key={index}
@@ -123,7 +124,7 @@ function StackedAnnotations(props) {
     );
   });
 
-  let containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
+  const containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
   return (
     <AnnotationContainerHolder
       marginTop={marginTop}

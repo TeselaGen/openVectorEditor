@@ -12,8 +12,7 @@ import {
   LinearView,
   DigestTool,
   updateEditor,
-  EnzymeViewer,
-  SimpleCircularOrLinearView
+  EnzymeViewer
 } from "../../src";
 
 import exampleSequenceData from "./exampleData/exampleSequenceData";
@@ -39,10 +38,6 @@ const links = [
   { name: "StandaloneAlignment", url: "StandaloneAlignment" },
   { name: "Alignment", url: "Alignment" },
   { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
-  {
-    name: "SimpleCircularOrLinearViewNoRedux",
-    url: "SimpleCircularOrLinearViewNoRedux"
-  },
   { name: "DigestTool", url: "DigestTool" },
   { name: "EnzymeViewer", url: "EnzymeViewer" },
   { name: "CircularView", url: "CircularView" },
@@ -88,91 +83,6 @@ class Demo extends React.Component {
 
   render() {
     const { darkMode } = this.state;
-    if (window.location.href.includes("SimpleCircularOrLinearViewNoRedux")) {
-      return (
-        <div>
-          <SimpleCircularOrLinearView
-            {...{
-              noRedux: true,
-              sequenceData: {
-                size: 164,
-                sequence:
-                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc",
-                name: "Test Seq",
-                circular: true, //toggle to true to change this!
-                features: [
-                  {
-                    name: "Feat 1",
-                    id: "fakeId2",
-                    color: "green",
-                    start: 1,
-                    end: 20
-                  }
-                ],
-                parts: [
-                  {
-                    name: "Part 1",
-                    id: "fakeId1",
-                    start: 10,
-                    end: 20,
-                    ...(this.state.togglePartColor && { color: "override_red" })
-                  },
-                  {
-                    name: "Part 2",
-                    id: "fakeId3",
-                    start: 25,
-                    end: 30,
-                    ...(this.state.togglePartColor && {
-                      color: "override_blue"
-                    })
-                  }
-                ]
-              }
-            }}
-          ></SimpleCircularOrLinearView>
-          <SimpleCircularOrLinearView
-            {...{
-              noRedux: true,
-              sequenceData: {
-                size: 164,
-                sequence:
-                  "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc",
-                name: "Test Seq",
-                circular: false, //toggle to true to change this!
-                features: [
-                  {
-                    name: "Feat 1",
-                    id: "fakeId2",
-                    color: "green",
-                    start: 1,
-                    end: 20
-                  }
-                ],
-                parts: [
-                  {
-                    name: "Part 1",
-                    id: "fakeId1",
-                    start: 10,
-                    end: 20,
-                    ...(this.state.togglePartColor && { color: "override_red" })
-                  },
-                  {
-                    name: "Part 2",
-                    id: "fakeId3",
-                    start: 25,
-                    end: 30,
-                    ...(this.state.togglePartColor && {
-                      color: "override_blue"
-                    })
-                  }
-                ]
-              }
-            }}
-          ></SimpleCircularOrLinearView>
-        </div>
-      );
-    }
-
     return (
       <Provider store={store}>
         <Router>

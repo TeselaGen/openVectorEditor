@@ -4,6 +4,7 @@ class AnnotationPositioner extends React.PureComponent {
   render() {
     return (
       <svg
+        data-y-offset={this.props.yOffset}
         transform={this.props.transform || null}
         height={Math.max(0, this.props.height)}
         className={

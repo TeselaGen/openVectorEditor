@@ -3,9 +3,10 @@ import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";
 import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
+import { addWrappedAddons } from "./utils/addWrappedAddons";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
-export default props => {
+export default (props) => {
   const {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {}
@@ -19,7 +20,7 @@ export default props => {
           : _sequenceData.sequence.length) / 5
       );
   let sequenceData = _sequenceData;
-  let annotationVisibility = {
+  const annotationVisibility = {
     ...visibilityDefaultValues,
     ..._annotationVisibility
   };
@@ -43,6 +44,7 @@ export default props => {
       }
     };
   }
+  sequenceData.parts = addWrappedAddons(sequenceData.parts);
 
   return (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>

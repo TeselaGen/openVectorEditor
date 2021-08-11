@@ -5,6 +5,7 @@ import { some, keyBy, omitBy } from "lodash";
 import { map } from "lodash";
 import sequenceLengthSelector from "./sequenceLengthSelector";
 import { hideAnnByLengthFilter } from "../utils/editorUtils";
+import { addWrappedAddons } from "../utils/addWrappedAddons";
 
 function filteredPartsSelector(
   parts,
@@ -36,26 +37,15 @@ function filteredPartsSelector(
     });
   }
 
-  const wrappedPartAddons = [];
   const toRet = map(
     omitBy(parts, (ann) => {
       const hideIndividually = partIndividualToHide[ann.id];
-      const toRetInner =
-        hideAnnByLengthFilter(lengthsToHide, ann, seqLen) || hideIndividually;
-
-      if (!toRetInner && ann.overlapsSelf) {
-        wrappedPartAddons.push({
-          ...ann,
-          start: ann.end + 1,
-          end: ann.start - 1,
-          isWrappedAddon: true,
-          rangeTypeOverride: "middle" //we add this rangeTypeOverride here to get the wrapping piece to draw differently than normal
-        });
-      }
-      return toRetInner;
+      return (
+        hideAnnByLengthFilter(lengthsToHide, ann, seqLen) || hideIndividually
+      );
     })
   );
-  return [...toRet, ...wrappedPartAddons];
+  return addWrappedAddons(toRet);
 }
 export default createSelector(
   partsSelector,

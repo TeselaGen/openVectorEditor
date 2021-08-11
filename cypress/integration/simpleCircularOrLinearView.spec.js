@@ -2,6 +2,24 @@ describe("simpleCircularOrLinearView", function () {
   beforeEach(() => {
     cy.visit("/#/SimpleCircularOrLinearView");
   });
+  it(`should be able to view the SimpleCircularOrLinearViewNoRedux route and have everything work outside of a redux context if noRedux=true is passed`, () => {
+    cy.tgToggle("toggleNoRedux");
+    cy.get(".veLinearView");
+    cy.tgToggle("circular");
+    cy.get(".veCircularView");
+  });
+  it("parts that overlap self should draw on the same level", function () {
+    cy.get(
+      `[data-y-offset="1"].veRowViewAnnotationPosition:contains(Part 2)`
+    ).should("have.length", 3);
+    cy.tgToggle("withAdditionalParts");
+    cy.get(
+      `[data-y-offset="1"].veRowViewAnnotationPosition:contains(Part 2)`
+    ).should("have.length", 3);
+
+    // tnrtodo: fix the circular view drawing to force parts that wrap around self to draw on the same level
+    // cy.tgToggle('circular')
+  });
   it("can click and right click a part and have the handlers passed on the part be hit!", function () {
     cy.get(`.veRowViewPartsContainer path`)
       .first()

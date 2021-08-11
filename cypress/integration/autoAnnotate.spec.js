@@ -112,9 +112,10 @@ describe("autoAnnotate", function () {
     cy.contains(".veCircularViewLabelText", "Example Feature 1").should(
       "not.exist"
     );
-    cy.get(
-      `.veFeature:contains(Reverse Feature - Start: 1577 End: 2801) path[fill="#EF6500"]`
-    ); //it should be orange
+    cy.get(`.veFeature:contains(Reverse Feature - Start: 1577 End: 2801)`); //it should be orange
+    // cy.get(
+    //   `.veFeature:contains(Reverse Feature - Start: 1577 End: 2801) path[fill="#EF6500"]`
+    // ); //it should be orange
     cy.contains(".veCircularViewLabelText", "Example Feature 3").dblclick();
     cy.get(`.bp3-radio input[name="forward"][value="true"]`);
     cy.get(`.tg-select-value:contains(primer_bind)`);
