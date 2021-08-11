@@ -19,7 +19,7 @@ describe("menuBar", function () {
     cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
     cy.contains(".bp3-menu-item", "Filter Individually")
       .contains("22/22")
-      .trigger("mouseover");
+      .trigger("mouseover", { force: true });
     cy.contains(".bp3-menu-item", "araD").click({ force: true });
     cy.contains(".bp3-menu-item", "araC").click({ force: true });
 
@@ -35,7 +35,7 @@ describe("menuBar", function () {
     cy.contains(".bp3-menu-item", "Parts").trigger("mouseover");
     cy.contains(".bp3-menu-item", "Filter Individually")
       .contains("3/3")
-      .trigger("mouseover");
+      .trigger("mouseover", { force: true });
     cy.contains(".bp3-menu-item", "Part 0").click({ force: true });
     cy.contains(".veLabelText", "Part 0").should("not.exist");
     cy.contains(".bp3-menu-item", "Uncheck All").click({ force: true });
@@ -48,14 +48,16 @@ describe("menuBar", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".tg-menu-bar button", "View").click();
     cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
-    cy.get("[data-test=filter-feature-length]").click("top");
+    cy.get("[data-test=filter-feature-length]").click("top", { force: true });
     cy.contains(".veLabelText", "pSC101**").should("not.exist");
     cy.contains(".veLabelText", "araD").should("not.exist");
     cy.contains(".veLabelText", "araC").should("not.exist");
-    cy.get('[data-test="max-feature-length"]').type("{selectall}900");
+    cy.get('[data-test="max-feature-length"]').type("{selectall}900", {
+      force: true
+    });
     cy.contains(".veLabelText", "araD").should("exist");
     cy.contains(".veLabelText", "araC").should("exist");
-    cy.get("[data-test=filter-feature-length]").click("top");
+    cy.get("[data-test=filter-feature-length]").click("top", { force: true });
     cy.contains(".veLabelText", "pSC101**").should("exist");
   });
   it("Should be able to filter part by length", () => {
@@ -63,9 +65,11 @@ describe("menuBar", function () {
     cy.contains(".tg-menu-bar button", "View").click();
     cy.contains("Part - pj5_00001 - Start: 1 End: 5299");
     cy.contains(".bp3-menu-item", "Part").trigger("mouseover");
-    cy.get("[data-test=filter-part-length]").click("top");
+    cy.get("[data-test=filter-part-length]").click("top", { force: true });
     cy.contains("Part - pj5_00001 - Start: 1 End: 5299").should("not.exist");
-    cy.get('[data-test="max-part-length"]').type("{selectall}6000");
+    cy.get('[data-test="max-part-length"]').type("{selectall}6000", {
+      force: true
+    });
     cy.contains("Part - pj5_00001 - Start: 1 End: 5299");
   });
   it("Should be able to change circular/linear from the menu bar", () => {
@@ -73,7 +77,7 @@ describe("menuBar", function () {
     cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
       "mouseover"
     );
-    cy.get(":nth-child(2) > .bp3-menu-item").click();
+    cy.get(":nth-child(2) > .bp3-menu-item").click({ force: true });
     cy.contains("Truncate Annotations").click();
     cy.contains(".tg-menu-bar button", "Edit").click();
     cy.contains(".bp3-menu-item", "Change Circular/Linear").trigger(
@@ -104,11 +108,11 @@ describe("menuBar", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
     cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Upper Case Sequence").click();
+    cy.contains(".bp3-menu-item", "Upper Case Sequence").click({ force: true });
     cy.contains(".rowViewTextContainer", "GACGTCTTATGA");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Lower Case Sequence").click();
+    cy.contains(".bp3-menu-item", "Lower Case Sequence").click({ force: true });
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
   });
   it(`should be able permanently change selected sequence case`, () => {
@@ -138,7 +142,7 @@ describe("menuBar", function () {
     cy.contains(".bp3-menu-item", "Features").trigger("mouseover");
     cy.contains(".bp3-menu-item", "Filter By Type")
       .contains("9/9")
-      .trigger("mouseover");
+      .trigger("mouseover", { force: true });
     cy.contains(".veLabelText", "araD");
     cy.contains(".veLabelText", "araC");
     cy.contains(".bp3-menu-item", "misc_feature").click({ force: true });

@@ -22,7 +22,7 @@ describe("proteinEditor", function () {
   it(`feature/part add/edit should be AA indexed`, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.focused().type("NF");
     cy.get(`.tg-test-start input[value="1"]`);
     cy.get(`.tg-test-end [value="1"]`);

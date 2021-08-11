@@ -67,7 +67,7 @@ describe("find tool", function () {
       .should("be.visible")
       .rightclick(); //click the search layer
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.contains(".bp3-radio", "Positive")
       .find("input")
       .should("not.be.checked");

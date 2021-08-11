@@ -43,7 +43,7 @@ describe("partTypes", function () {
   it(`should be able to add a part type`, () => {
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Part").click();
+    cy.contains(".bp3-menu-item", "New Part").click({ force: true });
     cy.get(".tg-test-type").click();
     cy.contains(".tg-select-option", "misc_RNA").click();
     cy.get(".tg-test-name input").type("test part");
@@ -60,7 +60,7 @@ describe("partTypes", function () {
   it("should be able to make a part from feature", () => {
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.get(".tg-test-name input").type("test feature");
     cy.get(".tg-test-end input").type("0");
     cy.get(".tg-select").click();
