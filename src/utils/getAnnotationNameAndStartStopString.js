@@ -26,9 +26,7 @@ export default function getAnnotationNameAndStartStopString(
   }
   return `${startText ? startText : ""} ${typeToUse ? typeToUse + " -" : ""} ${
     name ? name : ""
-  } - Start: ${isProtein ? (start + 3) / 3 : start + 1} ${
-    overlapsSelf ? "(wraps full sequence) " : ""
-  }End: ${isProtein ? (end + 1) / 3 : end + 1} ${
-    message ? "\n" + message : ""
-  }`;
+  } - Start: ${isProtein ? (start + 3) / 3 : start + 1} End: ${
+    isProtein ? (end + 1) / 3 : end + 1
+  } ${overlapsSelf ? "(Overlaps Self) " : ""}${message ? "\n" + message : ""}`;
 }

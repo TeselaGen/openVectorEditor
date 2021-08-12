@@ -18,7 +18,7 @@ describe("partTypes", function () {
   it(`parts that overlap themselves should be supported`, () => {
     cy.hideCutsites();
     cy.tgToggle("allowPartsToOverlapSelf");
-    cy.contains("I wrap myself - Start: 88 (wraps full sequence) End: 94");
+    cy.contains("I wrap myself - Start: 88 End: 94 (Overlaps Self)");
     cy.contains(".veCircularViewLabelText", "I wrap myself").dblclick();
     cy.contains("Length: 5306");
     cy.contains(".bp3-dialog div", "Overlaps Self").click();
