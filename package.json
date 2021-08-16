@@ -65,11 +65,11 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "^30.3.11",
+    "teselagen-react-components": "^30.3.12",
     "tg-react-reflex": "^2.0.10",
-    "use-local-storage-state": "^9.0.2",
+    "use-local-storage-state": "^10.0.0",
     "ve-range-utils": "^2.5.9",
-    "ve-sequence-utils": "^5.1.3"
+    "ve-sequence-utils": "^5.1.4"
   },
   "peerDependencies": {
     "react": "^16.10.2",

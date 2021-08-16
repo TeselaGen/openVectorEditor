@@ -12912,10 +12912,10 @@ terser@^4.6.13:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^30.3.11:
-  version "30.3.11"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.3.11.tgz#b0736adc5fb426a26ad48c39690bf04bc66e2540"
-  integrity sha512-RZ44Qjz1Ogt0Lo0ACFahGsbY9GfLf/hX2ocqGbpz+eF96LDNbMgf4mp/HPvYqssSAaYSoL0K4M1cSlniuKZegw==
+teselagen-react-components@^30.3.12:
+  version "30.3.12"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.3.12.tgz#1b896aec5fd1f9dffbdd36d84f19fccbf484ed21"
+  integrity sha512-Gx310VkfAB5m8JYzkgvg+sX1RXkZGv/hrXA7rhsxJLQcYnx1k8jgm6kppGvpLHxqW1MTa+TMt81eF7RZRHxSMw==
   dependencies:
     "@blueprintjs/core" "^3.41.0"
     "@blueprintjs/datetime" "^3.21.2"
@@ -13505,10 +13505,10 @@ use-deep-compare-effect@^1.6.1:
     "@types/react" "^17.0.0"
     dequal "^2.0.2"
 
-use-local-storage-state@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/use-local-storage-state/-/use-local-storage-state-9.0.2.tgz#77ace2fd72c8d17d3da5be74cf6aa3e25b6e321c"
-  integrity sha512-loNVFqrzfsNoNVtM/3RJbjKVhSgTX15vPC5Tcuk7oflF0nonldRivMGAgFU3toi9v6hfTT/x8M+o6ifDN2n0OQ==
+use-local-storage-state@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/use-local-storage-state/-/use-local-storage-state-10.0.0.tgz#862d142e5d1fff30820102f0cd871e96e5527342"
+  integrity sha512-NCab0oYOMZA8oT9y4OE7tMT6JS21SiyPsTjZdapnyvHe7bVFlIMSp6LaiuHBdS1OvduuLtG+pX/duFIBkd0PCA==
 
 use-memo-one@^1.1.1:
   version "1.1.1"
@@ -13647,10 +13647,10 @@ ve-range-utils@^2.5.9:
     lodash "^4.17.4"
     validate.io-nonnegative-integer-array "^1.0.1"
 
-ve-sequence-utils@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.3.tgz#9e67130732e4842543344c62a879e7ac7b299b16"
-  integrity sha512-X0wnRZMzgTJBBV07o9dk9158ZIW3bN3+VAsEUF3Tuqq/33SiNLPUJlKzsr8i1wtpsVKoHStbhPGGi2uqifcR5A==
+ve-sequence-utils@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.4.tgz#0a4b7a0a533a48e810ec974f975c91a02f752830"
+  integrity sha512-tFFTnDIj1CGfTMWnB2lHc7q7OIzCruRsKk11cKLfI8WwaPonfgUUFMelk26ElUvC0kBQJ33cK4LWP6/OteLUmw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

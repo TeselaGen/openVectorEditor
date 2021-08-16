@@ -62,25 +62,34 @@ export class DigestTool extends React.Component {
             </Button>
           </div>
         )}
-        <Checkbox
-          onChange={() => {
-            updateComputePartialDigest(!computePartialDigest);
-          }}
-          checked={computePartialDigest}
-          label={
-            <span>
-              Show Partial Digests{" "}
-              {computePartialDigestDisabled ? (
-                <span style={{ fontSize: 10 }}>
-                  {" "}
-                  -- Disabled (only supports {MAX_PARTIAL_DIGEST_CUTSITES} or
-                  fewer cutsites){" "}
-                </span>
-              ) : null}
-            </span>
-          }
-          disabled={computePartialDigestDisabled}
-        ></Checkbox>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Checkbox
+            onChange={() => {
+              updateComputePartialDigest(!computePartialDigest);
+            }}
+            checked={computePartialDigest}
+            label={
+              <span>
+                Show Partial Digests{" "}
+                {computePartialDigestDisabled ? (
+                  <span style={{ fontSize: 10 }}>
+                    {" "}
+                    -- Disabled (only supports {MAX_PARTIAL_DIGEST_CUTSITES} or
+                    fewer cutsites){" "}
+                  </span>
+                ) : null}
+              </span>
+            }
+            disabled={computePartialDigestDisabled}
+          ></Checkbox>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="http://docs.teselagen.com/en/articles/5489322-restriction-digest-in-the-vector-editor"
+          >
+            Read the docs
+          </a>
+        </div>
         Choose your enzymes:
         <CutsiteFilter
           {...pick(this.props, userDefinedHandlersAndOpts)}
