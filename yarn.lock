@@ -11367,7 +11367,7 @@ readdirp@~3.5.0:
   dependencies:
     picomatch "^2.2.1"
 
-"recompose@npm:react-recompose":
+"recompose@npm:react-recompose@0.31.1":
   version "0.31.1"
   resolved "https://registry.yarnpkg.com/react-recompose/-/react-recompose-0.31.1.tgz#8946fd499634183a6b0fa3adbf42e2342debe08b"
   integrity sha512-FzKNgEO9aDfW4NWqKv/0QhmXXDr6qHEZRo3oyahNdJjWRSGo06KVGcvSCBZQckIcxP9o2f91eIfQmtyjwiuSGQ==
@@ -12925,10 +12925,10 @@ terser@^4.6.13:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^30.3.14:
-  version "30.3.14"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.3.14.tgz#7466c0085788f898d64a39f6d888e8ba42245621"
-  integrity sha512-/Uh9q4tUja92ari5S34LYtprUbztYROXg7+lKAjcV/wYZygx2ElNBH510s6DnA2s+MAeBWHUuniiFD7ErWINDw==
+teselagen-react-components@^30.3.16:
+  version "30.3.16"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.3.16.tgz#3c97560ba99f4c8e121ffc40b374b728d314481e"
+  integrity sha512-t6lZhbaWk8MAp54q7flf52T6imzl9N8rAh1FblXV4x7Agh/p08r9zm7rzBZniUXfM1GCVwU4lepn2rpV4ECThA==
   dependencies:
     "@blueprintjs/core" "^3.41.0"
     "@blueprintjs/datetime" "^3.21.2"
@@ -12952,7 +12952,7 @@ teselagen-react-components@^30.3.14:
     react-router-dom "^4.3.1"
     react-sortable-hoc "^0.6.8"
     react-transition-group "^2.4.0"
-    recompose "npm:react-recompose"
+    recompose "npm:react-recompose@0.31.1"
     redux-form "^7.4.2"
     shortid "^2.2.16"
     tg-client-query-builder "^2.13.1"
