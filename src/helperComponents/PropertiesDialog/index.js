@@ -84,16 +84,16 @@ export class PropertiesDialog extends React.Component {
           return null;
         }
       }
+      const title = (() => {
+        if (nameOrOverride.Comp) return name; //just use the user supplied name because this is a custom panel
+        if (name === "orfs") return "ORFs";
+        if (name === "cutsites") return "Cut Sites";
+        return startCase(name);
+      })();
       return (
         <Tab
           key={name}
-          title={
-            nameOrOverride.Comp
-              ? name //just use the user supplied name because this is a custom panel
-              : name === "orfs"
-              ? "ORFs"
-              : startCase(name)
-          }
+          title={title}
           id={name}
           panel={
             <Comp

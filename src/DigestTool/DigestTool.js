@@ -74,7 +74,7 @@ export class DigestTool extends React.Component {
                 <span style={{ fontSize: 10 }}>
                   {" "}
                   -- Disabled (only supports {MAX_PARTIAL_DIGEST_CUTSITES} or
-                  fewer cutsites){" "}
+                  fewer cut sites){" "}
                 </span>
               ) : null}
             </span>
@@ -95,7 +95,7 @@ export class DigestTool extends React.Component {
               fontSize: "15px"
             }}
           >
-            >{MAX_DIGEST_CUTSITES} cutsites detected. Filter out additional
+            >{MAX_DIGEST_CUTSITES} cut sites detected. Filter out additional
             restriction enzymes to visualize digest results
           </div>
         )}

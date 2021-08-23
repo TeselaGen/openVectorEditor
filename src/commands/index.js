@@ -1145,7 +1145,7 @@ const annotationToggleCommandDefs = {};
       }
       return (
         <span>
-          {obj.text || startCase(type)}
+          {obj.text || startCase(type === "cutsites" ? "Cut Sites" : type)}
           &nbsp;
           {hasCount && (
             <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
@@ -1231,7 +1231,7 @@ const toolCommandDefs = {
     isHidden: (props) => isProtein(props)
   },
   openFilterCutsites: {
-    name: "Filter Cutsites",
+    name: "Filter Cut Sites",
     handler: (props) => {
       props.openToolbarItemUpdate("cutsiteTool");
     },
