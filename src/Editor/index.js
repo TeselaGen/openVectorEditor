@@ -863,14 +863,16 @@ export class Editor extends React.Component {
               </ReflexContainer>
             </DragDropContext>
           </div>
-
           <StatusBar
             {...pickedUserDefinedHandlersAndOpts}
             isProtein={sequenceData.isProtein}
             showCircularity={
-              showCircularity &&
-              !sequenceData.isProtein &&
-              !sequenceData.isOligo
+              !!(
+                showCircularity &&
+                !sequenceData.isProtein &&
+                !sequenceData.isOligo &&
+                !sequenceData.isRna
+              )
             }
             editorName={editorName}
             {...StatusBarProps}
