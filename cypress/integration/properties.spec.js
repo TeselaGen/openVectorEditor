@@ -147,10 +147,10 @@ describe("properties", function () {
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.contains(".tg-select-option", "Van").click();
     cy.get(".veLabelText:contains(Van):first").rightclick();
-    cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
+    cy.contains(".bp3-menu-item", "View Cut Site Properties").click();
     cy.contains(".rt-tr-group.selected", "831");
     cy.get(".veLabelText:contains(Van):last").rightclick();
-    cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
+    cy.contains(".bp3-menu-item", "View Cut Site Properties").click();
     cy.contains(".rt-tr-group.selected", "4730");
   });
 });

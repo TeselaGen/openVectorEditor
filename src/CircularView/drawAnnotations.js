@@ -26,7 +26,7 @@ function drawAnnotations({
   useStartAngle, //use the startAngle instead of the centerAngle to position the labels
   onClick = noop,
   positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
-  allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
+  allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cut Sites for example just get drawn all on the same level
   onRightClicked = noop,
   onDoubleClick = noop,
   showLabels,
