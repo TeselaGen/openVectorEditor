@@ -19,6 +19,11 @@ export default function updateEditor(
     currentEditor.sequenceData && currentEditor.sequenceData.isProtein;
   const isAlreadyRnaEditor =
     currentEditor.sequenceData && currentEditor.sequenceData.isRna;
+  const isAlreadyOligoEditor =
+    currentEditor.sequenceData && currentEditor.sequenceData.isOligo;
+
+  const isAlreadySpecialEditor =
+    isAlreadyProteinEditor || isAlreadyRnaEditor || isAlreadyOligoEditor;
 
   let toSpread = {};
   let payload;
@@ -28,6 +33,8 @@ export default function updateEditor(
     };
   } else {
     if (sequenceData) {
+      const isDna =
+        !sequenceData.isOligo && !sequenceData.isRna && !sequenceData.isProtein;
       if (sequenceData.isProtein && !isAlreadyProteinEditor) {
         //we're editing a protein but haven't initialized the protein editor yet
         toSpread = {
@@ -40,6 +47,7 @@ export default function updateEditor(
             caret: true,
             sequence: false,
             reverseSequence: false,
+            cutsites: false,
             ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             translations: false,
             aminoAcidNumbers: false,
@@ -56,8 +64,33 @@ export default function updateEditor(
             ...annotationsToSupport
           }
         };
+      } else if (sequenceData.isOligo && !isAlreadyOligoEditor) {
+        toSpread = {
+          findTool: {
+            dnaOrAA: "DNA",
+            ...findTool //we spread this here to allow the user to override this .. if they must!
+          },
+          annotationVisibility: {
+            caret: true,
+            sequence: true,
+            reverseSequence: false,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
+            translations: false,
+            aminoAcidNumbers: false,
+            primaryProteinSequence: false
+          },
+          annotationsToSupport: {
+            features: true,
+            translations: true,
+            primaryProteinSequence: false,
+            parts: true,
+            orfs: false,
+            cutsites: true,
+            primers: false,
+            ...annotationsToSupport //we spread this here to allow the user to override this .. if they must!
+          }
+        };
       } else if (sequenceData.isRna && !isAlreadyRnaEditor) {
-        //we're editing a protein but haven't initialized the protein editor yet
         toSpread = {
           findTool: {
             dnaOrAA: "DNA",
@@ -83,7 +116,7 @@ export default function updateEditor(
             ...annotationsToSupport //we spread this here to allow the user to override this .. if they must!
           }
         };
-      } else if (isAlreadyProteinEditor && !sequenceData.isProtein) {
+      } else if (isAlreadySpecialEditor && isDna) {
         //we're editing dna but haven't initialized the dna editor yet
         sequenceData.isProtein = false;
         toSpread = {
@@ -130,6 +163,7 @@ export default function updateEditor(
     type: "VECTOR_EDITOR_UPDATE",
     payload,
     meta: {
+      mergeStateDeep: true,
       editorName,
       disregardUndo: true,
       ...extraMeta

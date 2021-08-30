@@ -33,7 +33,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from "../Reflex";
 
 import { flatMap, map, filter, pick, camelCase } from "lodash";
 
-import ToolBar from "../ToolBar";
+import { ToolBar } from "../ToolBar";
 import CircularView from "../CircularView";
 import LinearView from "../LinearView";
 import RowView from "../RowView";
@@ -289,6 +289,7 @@ export class Editor extends React.Component {
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
+      annotationsToSupport,
       withRotateCircularView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
@@ -770,7 +771,6 @@ export class Editor extends React.Component {
         </ReflexElement>
       );
     }
-
     return (
       <React.Fragment>
         <DropHandler
@@ -816,14 +816,14 @@ export class Editor extends React.Component {
             }
             isProtein={sequenceData.isProtein}
             userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
+            annotationsToSupport={annotationsToSupport}
             closeFullscreen={
               !!(isFullscreen ? handleFullscreenClose : previewModeFullscreen)
             }
             {...{
               modifyTools: this.props.modifyTools,
               contentLeft: this.props.contentLeft,
-              editorName,
-              toolList: this.props.toolList
+              editorName
             }}
             withDigestTool
             {...ToolBarProps}
@@ -867,7 +867,11 @@ export class Editor extends React.Component {
           <StatusBar
             {...pickedUserDefinedHandlersAndOpts}
             isProtein={sequenceData.isProtein}
-            showCircularity={showCircularity && !sequenceData.isProtein}
+            showCircularity={
+              showCircularity &&
+              !sequenceData.isProtein &&
+              !sequenceData.isOligo
+            }
             editorName={editorName}
             {...StatusBarProps}
           />
@@ -893,7 +897,7 @@ Editor.childContextTypes = {
 export default compose(
   connectToEditor(
     (
-      { panelsShown, versionHistory, sequenceData = {} },
+      { panelsShown, annotationsToSupport, versionHistory, sequenceData = {} },
       { additionalEnzymes }
     ) => {
       return {
@@ -901,6 +905,7 @@ export default compose(
           null,
           additionalEnzymes
         ),
+        annotationsToSupport,
         panelsShown,
         versionHistory,
         sequenceData

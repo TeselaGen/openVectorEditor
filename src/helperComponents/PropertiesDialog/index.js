@@ -1,7 +1,7 @@
 import React from "react";
 import { compose } from "redux";
 import { Tab, Tabs } from "@blueprintjs/core";
-import { startCase } from "lodash";
+import { flatMap, startCase } from "lodash";
 import FeatureProperties from "./FeatureProperties";
 import GeneralProperties from "./GeneralProperties";
 import CutsiteProperties from "./CutsiteProperties";
@@ -47,6 +47,7 @@ export class PropertiesDialog extends React.Component {
       showReadOnly,
       showAvailability,
       isProtein,
+      annotationsToSupport = {},
       disableSetReadOnly,
       propertiesList = [
         "general",
@@ -71,7 +72,11 @@ export class PropertiesDialog extends React.Component {
     ) {
       tabId = propertiesList[0].name || propertiesList[0];
     }
-    const propertiesTabs = propertiesList.map((nameOrOverride) => {
+    const propertiesTabs = flatMap(propertiesList, (nameOrOverride) => {
+      if (annotationsToSupport[nameOrOverride] === false) {
+        return [];
+      }
+
       const name = nameOrOverride.name || nameOrOverride;
       const Comp = nameOrOverride.Comp || allTabs[name];
       if (isProtein) {
@@ -155,7 +160,7 @@ export class PropertiesDialog extends React.Component {
 }
 
 export default compose(
-  connectToEditor(({ propertiesTool }) => {
-    return { propertiesTool };
+  connectToEditor(({ propertiesTool, annotationsToSupport }) => {
+    return { propertiesTool, annotationsToSupport };
   })
 )(PropertiesDialog);

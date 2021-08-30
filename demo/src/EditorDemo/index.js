@@ -474,12 +474,19 @@ updateEditor(store, "DemoEditor", {
               })}
               {renderToggle({
                 isSelect: true,
-                options: ["DNA", "RNA", "Protein", "mixedRnaAndDna"],
+                options: ["DNA", "RNA", "Protein", "mixedRnaAndDna", "Oligo"],
                 that: this,
                 label: "Molecule Type:",
                 type: "moleculeType",
                 info: `
-The editor supports Amino Acid sequences and RNA sequences as well as DNA sequences!
+The editor supports Amino Acid sequences and RNA sequences as well as DNA sequences and!
+
+Trigger the different modes with these flags: 
+isProtein
+isRna
+isOligo
+isMixedRnaAndDna
+
 Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
 \`\`\`
 updateEditor(store, "DemoEditor", {
@@ -540,6 +547,16 @@ certain dna specific tools and annotations are automatically disabled when isPro
                     updateEditor(store, "DemoEditor", {
                       readOnly: false,
                       sequenceData: { ...exampleSequenceData, isRna: true }
+                    });
+                  } else if (val === "Oligo") {
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: {
+                        sequence:
+                          "cccccttttttttcacacactactatattagtgagagagacccaca",
+                        isOligo: true,
+                        circular: false
+                      }
                     });
                   } else if (val === "mixedRnaAndDna") {
                     updateEditor(store, "DemoEditor", {

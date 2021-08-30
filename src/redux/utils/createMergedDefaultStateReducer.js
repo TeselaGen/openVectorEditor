@@ -1,5 +1,5 @@
 import { createReducer } from "redux-act";
-//simple wrapper function around createReducer to always keep around the default state unless specifically overridden
+//simple wrapper function around createReducer to keep around the default state if type === VECTOR_EDITOR_UPDATE or meta.mergeStateDeep=true
 // example:
 // defaultState = {features: true, parts: true}
 // newState = {features: false}
@@ -14,13 +14,16 @@ export default function createMergedDefaultStateReducer(
 ) {
   const reducer = createReducer(handlers);
   function enhancedReducer(newState = {}, action) {
-    return reducer(
-      {
-        ...defaultState,
-        ...newState
-      },
-      action
-    );
+    const stateToUse =
+      action &&
+      (action.type === "VECTOR_EDITOR_UPDATE" ||
+        (action.meta && action.meta.mergeStateDeep))
+        ? {
+            ...defaultState,
+            ...newState
+          }
+        : newState;
+    return reducer(stateToUse, action);
   }
   enhancedReducer.__shouldUseMergedState = true;
   return enhancedReducer;

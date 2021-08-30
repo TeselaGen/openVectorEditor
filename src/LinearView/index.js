@@ -15,7 +15,7 @@ import {
 } from "../utils/editorUtils";
 import useAnnotationLimits from "../utils/useAnnotationLimits";
 
-let defaultMarginWidth = 10;
+const defaultMarginWidth = 10;
 
 function noop() {}
 
@@ -23,15 +23,15 @@ class _LinearView extends React.Component {
   getNearestCursorPositionToMouseEvent(rowData, event, callback) {
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
-    let rowDomNode = this.linearView;
-    let boundingRowRect = rowDomNode.getBoundingClientRect();
+    const rowDomNode = this.linearView;
+    const boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
     if (getClientX(event) - boundingRowRect.left < 0) {
       nearestCaretPos = 0;
     } else {
-      let clickXPositionRelativeToRowContainer =
+      const clickXPositionRelativeToRowContainer =
         getClientX(event) - boundingRowRect.left;
-      let numberOfBPsInFromRowStart = Math.floor(
+      const numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
           this.charWidth
       );
@@ -82,7 +82,7 @@ class _LinearView extends React.Component {
             (maxAnnotationsToDisplay
               ? maxAnnotationsToDisplay[type]
               : limits[type]) || 50;
-          let [annotations, paredDown] = pareDownAnnotations(
+          const [annotations, paredDown] = pareDownAnnotations(
             sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
             maxToShow
           );
@@ -114,7 +114,7 @@ class _LinearView extends React.Component {
   };
 
   render() {
-    let {
+    const {
       //currently found in props
       sequenceData = { sequence: "" },
       alignmentData,
@@ -137,11 +137,11 @@ class _LinearView extends React.Component {
       isProtein,
       ...rest
     } = this.props;
-    let innerWidth = Math.max(width - marginWidth, 0);
+    const innerWidth = Math.max(width - marginWidth, 0);
     this.charWidth = charWidth || innerWidth / this.getMaxLength();
     const bpsPerRow = this.getMaxLength();
-    let sequenceName = hideName ? "" : sequenceData.name || "";
-    let rowData = this.getRowData();
+    const sequenceName = hideName ? "" : sequenceData.name || "";
+    const rowData = this.getRowData();
 
     return (
       <Draggable

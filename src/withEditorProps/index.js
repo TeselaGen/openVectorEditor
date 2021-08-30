@@ -598,6 +598,7 @@ function mapStateToProps(state, ownProps) {
       ...findTool,
       matchesTotal
     },
+    annotationsToSupport,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,

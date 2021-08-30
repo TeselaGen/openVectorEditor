@@ -25,7 +25,7 @@ export { default as SimpleCircularOrLinearView } from "./SimpleCircularOrLinearV
 export { default as RowView, RowView as RowViewUnconnected } from "./RowView";
 export { default as RowItem, RowItem as RowItemUnconnected } from "./RowItem";
 export { default as Editor, Editor as EditorUnconnected } from "./Editor";
-export { default as ToolBar, ToolBar as ToolBarUnconnected } from "./ToolBar";
+export { ToolBar } from "./ToolBar";
 export {
   default as CutsiteFilter,
   CutsiteFilter as CutsiteFilterUnconnected

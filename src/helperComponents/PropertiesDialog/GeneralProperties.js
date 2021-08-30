@@ -29,6 +29,7 @@ class GeneralProperties extends React.Component {
     const {
       description,
       name,
+      isOligo,
       sequence = "",
       proteinSequence = "",
       circular,
@@ -50,7 +51,7 @@ class GeneralProperties extends React.Component {
             />{" "}
           </div>
         </div>
-        {!isProtein && (
+        {!isProtein && !isOligo && (
           <div className="ve-flex-row circularLinearSelect">
             <div className="ve-column-left">Circular/Linear:</div>{" "}
             <div className="ve-column-right">
