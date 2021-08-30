@@ -126,7 +126,9 @@ export function getParedDownWarning({ nameUpper, maxToShow, isAdjustable }) {
   return (
     <VeWarning
       data-test={`ve-warning-max${nameUpper}ToDisplay`}
-      tooltip={`Warning: More than ${maxToShow} ${nameUpper}. Only displaying ${maxToShow} ${
+      tooltip={`Warning: More than ${maxToShow} ${
+        nameUpper === "Cutsites" ? "Cut Sites" : nameUpper
+      }. Only displaying ${maxToShow} ${
         isAdjustable ? "(Configure this under View > Limits)" : ""
       } `}
     />

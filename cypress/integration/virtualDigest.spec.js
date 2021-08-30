@@ -19,7 +19,7 @@ describe("virtualDigest", function () {
     cy.triggerFileCmd("Digest");
     cy.get(`.bp3-multi-select [data-icon="small-cross"`).click();
     cy.contains(
-      ">50 cutsites detected. Filter out additional restriction enzymes to visualize digest results"
+      ">50 cut sites detected. Filter out additional restriction enzymes to visualize digest results"
     );
     cy.contains("Disabled (only supports 10 or fewer cutsites)");
   });

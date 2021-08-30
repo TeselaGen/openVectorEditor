@@ -1030,8 +1030,9 @@ const viewPropertiesCommandDefs = [
   "translations"
 ].reduce((acc, key) => {
   const singularKey = pluralize.singular(key);
-  acc[`view${upperFirst(singularKey)}Properties`] = {
-    name: `View ${upperFirst(singularKey)} Properties`,
+  const upperKey = upperFirst(singularKey);
+  acc[`view${upperKey}Properties`] = {
+    name: `View ${upperKey === "Cutsite" ? "Cut Site" : upperKey} Properties`,
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
