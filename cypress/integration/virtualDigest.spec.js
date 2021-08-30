@@ -21,7 +21,7 @@ describe("virtualDigest", function () {
     cy.contains(
       ">50 cut sites detected. Filter out additional restriction enzymes to visualize digest results"
     );
-    cy.contains("Disabled (only supports 10 or fewer cutsites)");
+    cy.contains("Disabled (only supports 10 or fewer cut sites)");
   });
   it(`should give a right click create feature/part option and have the annotation name autofilled`, () => {
     cy.triggerFileCmd("Digest");
