@@ -58,7 +58,7 @@ function CutsiteToolDropDown({
   return (
     <div className="veToolbarCutsiteFilterHolder">
       <h6>
-        Filter Cutsites{" "}
+        Filter Cut Sites{" "}
         <span style={{ fontSize: 12, color: "grey" }}>
           (Search by name or # of cuts)
         </span>

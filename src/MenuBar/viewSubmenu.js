@@ -210,7 +210,7 @@ export default [
         component: LimitAnnotations
       },
       {
-        text: "Max Cutsites To Show",
+        text: "Max Cut Sites To Show",
         component: LimitAnnotations,
         type: "cutsites"
       },
