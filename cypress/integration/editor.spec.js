@@ -11,18 +11,18 @@ describe("editor", function () {
     cy.get(`.tg-select-clear-all`).click();
     cy.get(".veWarningMessage").trigger("mouseover");
     cy.contains(
-      "Warning: More than 100 Cutsites. Only displaying 100 (Configure this under View > Limits)"
+      "Warning: More than 100 Cut Sites. Only displaying 100 (Configure this under View > Limits)"
     );
     cy.contains(".tg-menu-bar-item", "View").click();
     cy.contains(".bp3-menu-item", "Limits").click();
-    cy.contains(".bp3-menu-item", "Max Cutsites To Show").click({
+    cy.contains(".bp3-menu-item", "Max Cut Sites To Show").click({
       force: true
     });
     cy.get(".bp3-menu-item:contains(100) .bp3-icon-small-tick");
     cy.get(".bp3-menu-item:contains(400)").click({ force: true });
     cy.get(".bp3-menu-item:contains(400) .bp3-icon-small-tick");
     cy.contains(
-      "Warning: More than 400 Cutsites. Only displaying 400 (Configure this under View > Limits)"
+      "Warning: More than 400 Cut Sites. Only displaying 400 (Configure this under View > Limits)"
     );
     cy.get(".veTabLinearMap").click({ force: true });
     cy.get(".veWarningMessage").should("exist");
