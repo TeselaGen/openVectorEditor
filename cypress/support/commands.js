@@ -251,5 +251,7 @@ Cypress.Commands.add("hideMenu", () => {
 });
 
 Cypress.Commands.add("closeToasts", () => {
-  cy.get(".bp3-toast .bp3-icon-cross").click({ multiple: true });
+  cy.get(".bp3-toast.bp3-toast-enter-done .bp3-icon-cross").click({
+    multiple: true
+  });
 });
