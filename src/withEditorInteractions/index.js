@@ -52,9 +52,16 @@ import {
   showDialog
 } from "../GlobalDialogUtils";
 
-function getAcceptedChars({ isProtein, isRna, isMixedRnaAndDna } = {}) {
+function getAcceptedChars({
+  isOligo,
+  isProtein,
+  isRna,
+  isMixedRnaAndDna
+} = {}) {
   return isProtein
     ? bioData.extended_protein_letters.toLowerCase()
+    : isOligo
+    ? bioData.ambiguous_rna_letters.toLowerCase() + "t"
     : isRna
     ? bioData.ambiguous_rna_letters.toLowerCase()
     : isMixedRnaAndDna
@@ -112,6 +119,7 @@ function VectorInteractionHOC(Component /* options */) {
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
+
     componentDidMount() {
       this.editorDragged = editorDragged.bind(this);
       this.editorClicked = editorClicked.bind(this);
@@ -128,7 +136,7 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        getAcceptedChars(this.props.sequenceData).split(""),
+        "-.*ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""),
         (event) => {
           this.handleDnaInsert(event);
         }
