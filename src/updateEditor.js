@@ -45,10 +45,10 @@ export default function updateEditor(
 
           annotationVisibility: {
             caret: true,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: false,
             reverseSequence: false,
             cutsites: false,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             translations: false,
             aminoAcidNumbers: false,
             primaryProteinSequence: true
@@ -72,9 +72,9 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
             reverseSequence: false,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             translations: false,
             aminoAcidNumbers: false,
             primaryProteinSequence: false
@@ -98,9 +98,9 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
             reverseSequence: false,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             translations: false,
             aminoAcidNumbers: false,
             primaryProteinSequence: false
@@ -126,9 +126,9 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
             reverseSequence: true,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             translations: false,
             aminoAcidNumbers: false,
             primaryProteinSequence: false
