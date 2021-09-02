@@ -287,7 +287,6 @@ function VectorInteractionHOC(Component /* options */) {
         copyOptions
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || (() => {});
-
       const seqData = tidyUpSequenceData(
         this.sequenceDataToCopy ||
           getSequenceDataBetweenRange(

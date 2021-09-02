@@ -3,6 +3,19 @@ describe("find tool", function () {
     cy.visit("");
   });
 
+  it(`the find tool shouldn't get stuck in a weird state where the match number is greater than the number of matches`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gatg"); //this should cause 1 region to be selected
+    cy.contains("1/2").should("not.exist");
+    cy.contains("1/49");
+    cy.get(`[data-test="veFindNextMatchButton"]`).click();
+    cy.get(`[data-test="veFindNextMatchButton"]`).click();
+    cy.contains("3/49");
+    cy.deleteRange(281, 5298);
+    cy.contains("3/3"); //the match number should stay at 3 if there are still at least 3 matches
+    cy.deleteRange(241, 281);
+    cy.contains("1/2"); //the match number should automatically return to 1 when the sequence changes and the number of matches change to be greater than the matchNumber
+  });
   it(`when there is only 1 search result, typing enter in the find tool should jump you back to the search layer`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("tgacaacttgacggcta"); //this should cause 1 region to be selected

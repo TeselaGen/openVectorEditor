@@ -94,6 +94,9 @@ export default class EditorDemo extends React.Component {
     window.ove_updateEditor = (vals) => {
       updateEditor(store, "DemoEditor", vals);
     };
+    window.ove_getEditorState = () => {
+      return store.getState().VectorEditor["DemoEditor"];
+    };
     updateEditor(store, "DemoEditor", {
       readOnly: false,
       sequenceData: exampleSequenceData

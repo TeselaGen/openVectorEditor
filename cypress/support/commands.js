@@ -1,4 +1,5 @@
 const { isString } = require("lodash");
+const { insertSequenceDataAtPositionOrRange } = require("ve-sequence-utils");
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -179,6 +180,21 @@ Cypress.Commands.add("selectRange", (start, end) => {
     });
   });
 });
+
+Cypress.Commands.add("deleteRange", (start, end) => {
+  cy.window().then((win) => {
+    const { sequenceData } = win.ove_getEditorState();
+    const newSeqData = insertSequenceDataAtPositionOrRange({}, sequenceData, {
+      start,
+      end
+    });
+
+    win.ove_updateEditor({
+      sequenceData: newSeqData
+    });
+  });
+});
+
 Cypress.Commands.add("removeFeatures", () => {
   cy.window().then((win) => {
     win.ove_updateEditor({
@@ -224,7 +240,9 @@ Cypress.Commands.add("replaceSelection", (sequenceString) => {
   cy.get(".sequenceInputBubble input").type(`${sequenceString}{enter}`);
 });
 Cypress.Commands.add("deleteSelection", () => {
-  cy.get(".veRowViewSelectionLayer.notCaret:not(.cutsiteLabelSelectionLayer)")
+  cy.get(
+    ".veRowViewSelectionLayer.notCaret:not(.cutsiteLabelSelectionLayer):not(.veSearchLayer)"
+  )
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Cut").click();

@@ -91,6 +91,20 @@ declare namespace Cypress {
      */
     selectRange(start, end): void;
     /**
+     * deleteRange
+     * deletes a 1 based range of the sequence
+     * @example
+     * cy.deleteRange(10, 20) 
+     */
+    deleteRange(start, end): void;
+    /**
+     * deleteSelection
+     * deletes the selected range
+     * @example
+     * cy.deleteSelection() 
+     */
+    deleteSelection(): void;
+    /**
      * dragBetweenSimple
      * drags between 2 els
      * @example

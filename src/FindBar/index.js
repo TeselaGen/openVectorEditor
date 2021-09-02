@@ -26,13 +26,22 @@ const opts = [
 ];
 export class FindBar extends React.Component {
   componentDidMount() {
-    const { findTool, updateMatchNumber } = this.props;
-    if (findTool.matchNumber !== 0) {
-      updateMatchNumber(0);
-    }
+    this.possiblyNormalizeMatchNumber();
     if (this.inputEl) {
       this.inputEl.select();
     }
+  }
+  possiblyNormalizeMatchNumber = () => {
+    const { findTool, updateMatchNumber } = this.props;
+    if (
+      findTool.matchNumber !== 0 &&
+      findTool.matchNumber >= findTool.matchesTotal
+    ) {
+      updateMatchNumber(0);
+    }
+  };
+  componentDidUpdate() {
+    this.possiblyNormalizeMatchNumber();
   }
   render() {
     const {
