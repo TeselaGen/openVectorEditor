@@ -26,6 +26,10 @@ const opts = [
 ];
 export class FindBar extends React.Component {
   componentDidMount() {
+    const { findTool, updateMatchNumber } = this.props;
+    if (findTool.matchNumber !== 0) {
+      updateMatchNumber(0);
+    }
     if (this.inputEl) {
       this.inputEl.select();
     }
@@ -220,7 +224,7 @@ export class FindBar extends React.Component {
           isInline
             ? {
                 display: "flex",
-                minWidth: 300 
+                minWidth: 300
               }
             : {
                 position: "fixed",
@@ -339,7 +343,7 @@ function AnnotationSearchMatchComp({
   annotationVisibilityShow,
   toggleFindTool
 }) {
-  let toReturn = (
+  const toReturn = (
     <div className="veAnnotationFindMatches">
       {searchableTypes.map((type, i) => {
         const annotationsFound = annotationSearchMatches[i];
