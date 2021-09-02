@@ -204,7 +204,7 @@ export class CutsiteFilter extends React.Component {
           onInputChange={(queryTracker) => {
             this.setState({ queryTracker });
           }}
-          placeholder="Filter cutsites..."
+          placeholder="Filter cut sites..."
           options={options}
           filteredRestrictionEnzymes={filteredRestrictionEnzymes}
           filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
