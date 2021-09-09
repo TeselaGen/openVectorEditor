@@ -74,6 +74,7 @@ export default function updateEditor(
             caret: true,
             ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
+            cutsites: false,
             reverseSequence: false,
             translations: false,
             aminoAcidNumbers: false,
