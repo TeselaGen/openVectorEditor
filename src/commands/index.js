@@ -1211,6 +1211,12 @@ const toolCommandDefs = {
     hotkeyProps: { preventDefault: true },
     isHidden: (props) => isProtein(props)
   },
+  createNewPrimers: {
+    handler: (props) => props.createNewPrimers(),
+    // hotkey: "mod+shift+d",
+    // hotkeyProps: { preventDefault: true },
+    isHidden: (props) => isProtein(props)
+  },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
     name: "Manage Enzymes",

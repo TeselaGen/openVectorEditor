@@ -37,6 +37,22 @@ export const createNewDigest = (unused, meta) => {
     dispatch(setPanelAsActive("digestTool", meta));
   };
 };
+export const createNewPrimers = (unused, meta) => {
+  return dispatch => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          id: "primerTool",
+          name: "New Primers",
+          active: true,
+          canClose: true
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive("primerTool", meta));
+  };
+};
 
 export const createNewAlignment = (payload, meta) => {
   return dispatch => {

@@ -44,6 +44,7 @@ import "./style.css";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
+import PrimerTool from "../PrimerTool/PrimerTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
@@ -64,6 +65,7 @@ const _panelMap = {
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
+  primerTool: PrimerTool,
   properties: {
     comp: Properties,
     panelSpecificPropsToSpread: ["PropertiesProps"]
