@@ -103,11 +103,13 @@ export default compose(
       annotationVisibility = {},
       sequenceData: { sequence = "" } = {},
       sequenceData,
-      minimumOrfSize
+      minimumOrfSize,
+      useAdditionalOrfStartCodons
     } = editorState;
     return {
       readOnly,
       annotationVisibility,
+      useAdditionalOrfStartCodons,
       orfs: selectors.orfsSelector(editorState),
       sequenceLength: sequence.length,
       sequenceData,
