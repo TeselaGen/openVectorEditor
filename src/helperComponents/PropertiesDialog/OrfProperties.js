@@ -78,7 +78,7 @@ class OrfProperties extends React.Component {
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
-                type: "string"
+                type: "number"
               },
               sizeSchema,
               { path: "frame", type: "number" },
