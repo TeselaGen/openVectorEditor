@@ -873,7 +873,11 @@ const editCommandDefs = {
               props.annotationVisibilityShow("orfs");
               props.minimumOrfSizeUpdate(minimumOrfSize);
             }}
-            value={props.minimumOrfSize}
+            defaultValue={props.minimumOrfSize}
+            onBlur={function (event) {
+              // show the valid value in input when blurred
+              event.target.value = props.minimumOrfSize;
+            }}
           />
         </div>
       );
