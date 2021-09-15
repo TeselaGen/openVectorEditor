@@ -703,8 +703,22 @@ const editCommandDefs = {
     hotkey: "ctrl+option+-"
   },
   createMenuHolder: {
+    name: "Create",
     isHidden: (props) => isProtein(props) && props.readOnly,
-    handler: () => {}
+    handler: () => {},
+    submenu: (props) => {
+      return [
+        "newFeature",
+        "newPart",
+        "newTranslation",
+        "newReverseTranslation",
+        "newPrimer",
+        "createNewFromSubsequence",
+        ...(props.getAdditionalCreateOpts
+          ? props.getAdditionalCreateOpts(props)
+          : [])
+      ];
+    }
   },
   // toggleSequenceMapFontNoPreference: {
   //   isActive: props =>

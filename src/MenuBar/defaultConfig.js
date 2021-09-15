@@ -16,15 +16,7 @@ export const copyOptionsMenu = {
 export const createNewAnnotationMenu = {
   text: "Create",
   cmd: "createMenuHolder",
-  showInSearchMenu: true,
-  submenu: [
-    "newFeature",
-    "newPart",
-    "newTranslation",
-    "newReverseTranslation",
-    "newPrimer",
-    "createNewFromSubsequence"
-  ]
+  showInSearchMenu: true
 };
 export default [
   {
