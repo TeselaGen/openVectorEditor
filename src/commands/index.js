@@ -867,9 +867,11 @@ const editCommandDefs = {
             type="number"
             className={classnames(Classes.INPUT, "minOrfSizeInput")}
             onChange={function (event) {
-              const minimumOrfSize = parseInt(event.target.value, 10);
-              if (!(minimumOrfSize > -1)) return;
-              if (minimumOrfSize > props.sequenceLength) return;
+              let minimumOrfSize = parseInt(event.target.value, 10);
+              if (!minimumOrfSize) {
+                minimumOrfSize = 0;
+              }
+              if (!(minimumOrfSize > -1)) minimumOrfSize = -minimumOrfSize;
               props.annotationVisibilityShow("orfs");
               props.minimumOrfSizeUpdate(minimumOrfSize);
             }}
@@ -878,7 +880,6 @@ const editCommandDefs = {
         </div>
       );
     },
-    // isActive: (props) => props.useAdditionalOrfStartCodons,
     handler: () => {}
   },
   hotkeyDialog: {
