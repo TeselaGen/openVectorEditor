@@ -6,19 +6,19 @@ import {
 import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
+import { ReactReduxContext } from "react-redux";
 import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
 import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
-import { getContext, branch } from "recompose";
+import { branch } from "recompose";
 
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
 
 import Combokeys from "combokeys";
-import PropTypes from "prop-types";
 import {
   showContextMenu,
   showConfirmationDialog,
@@ -1161,14 +1161,17 @@ function VectorInteractionHOC(Component /* options */) {
   };
 }
 
+function getReduxContext(WrappedComponent) {
+  return (props) => (
+    <ReactReduxContext.Consumer>
+      {({ store }) => <WrappedComponent {...props} store={store} />}
+    </ReactReduxContext.Consumer>
+  );
+}
+
 export default compose(
   //tnr: get the store from the context somehow and pass it to the FrameTranslationMenuItems
-  // withContext({ store: PropTypes.object }, ({ store }) => {
-  //   return { store };
-  // }),
-  getContext({
-    store: PropTypes.object
-  }),
+  getReduxContext,
   // connect(),
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
