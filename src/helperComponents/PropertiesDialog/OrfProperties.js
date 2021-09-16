@@ -43,7 +43,7 @@ class OrfProperties extends React.Component {
           strand: orf.forward ? 1 : -1
         }),
         size: getRangeLength(orf, sequenceLength),
-        sizeAa: Math.floor(getRangeLength(orf, sequenceLength) / 3)
+        sizeAa: Math.floor(getRangeLength(orf, sequenceLength) / 3 - 1)
       };
     });
     return (
