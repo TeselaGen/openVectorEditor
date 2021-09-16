@@ -78,7 +78,7 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
                 }
               ]
             : []),
-          { path: "strand", type: "string" }
+          { path: "strand", type: "number" }
         ]
       };
     }

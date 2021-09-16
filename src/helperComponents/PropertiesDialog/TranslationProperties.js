@@ -79,7 +79,7 @@ class TranslationProperties extends React.Component {
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
-                type: "string"
+                type: "number"
               },
               { path: "strand", type: "number" }
             ]

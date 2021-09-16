@@ -315,6 +315,10 @@ export default class EditorDemo extends React.Component {
       }),
       renderToggle({
         that: this,
+        type: "withGetAdditionalCreateOpts"
+      }),
+      renderToggle({
+        that: this,
         type: "onDuplicate"
       }),
       renderToggle({
@@ -1723,6 +1727,20 @@ clickOverrides: {
             {...(this.state.onDuplicate && {
               onDuplicate: () =>
                 window.toastr.success("onDuplicate callback triggered")
+            })}
+            {...(this.state.withGetAdditionalCreateOpts && {
+              getAdditionalCreateOpts: (props) => {
+                return [
+                  {
+                    text: "Additional Create Option",
+                    onClick: () => {
+                      window.toastr.success(
+                        `Selecting between ${props.selectionLayer.start} : ${props.selectionLayer.end}`
+                      );
+                    }
+                  }
+                ];
+              }
             })}
             {...(this.state.onSelectionOrCaretChanged && {
               onSelectionOrCaretChanged: ({ caretPosition, selectionLayer }) =>

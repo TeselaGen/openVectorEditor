@@ -703,8 +703,22 @@ const editCommandDefs = {
     hotkey: "ctrl+option+-"
   },
   createMenuHolder: {
+    name: "Create",
     isHidden: (props) => isProtein(props) && props.readOnly,
-    handler: () => {}
+    handler: () => {},
+    submenu: (props) => {
+      return [
+        "newFeature",
+        "newPart",
+        "newTranslation",
+        "newReverseTranslation",
+        "newPrimer",
+        "createNewFromSubsequence",
+        ...(props.getAdditionalCreateOpts
+          ? props.getAdditionalCreateOpts(props)
+          : [])
+      ];
+    }
   },
   // toggleSequenceMapFontNoPreference: {
   //   isActive: props =>
@@ -867,9 +881,11 @@ const editCommandDefs = {
             type="number"
             className={classnames(Classes.INPUT, "minOrfSizeInput")}
             onChange={function (event) {
-              const minimumOrfSize = parseInt(event.target.value, 10);
-              if (!(minimumOrfSize > -1)) return;
-              if (minimumOrfSize > props.sequenceLength) return;
+              let minimumOrfSize = parseInt(event.target.value, 10);
+              if (!minimumOrfSize) {
+                minimumOrfSize = 0;
+              }
+              if (!(minimumOrfSize > -1)) minimumOrfSize = -minimumOrfSize;
               props.annotationVisibilityShow("orfs");
               props.minimumOrfSizeUpdate(minimumOrfSize);
             }}
@@ -878,7 +894,6 @@ const editCommandDefs = {
         </div>
       );
     },
-    // isActive: (props) => props.useAdditionalOrfStartCodons,
     handler: () => {}
   },
   hotkeyDialog: {
