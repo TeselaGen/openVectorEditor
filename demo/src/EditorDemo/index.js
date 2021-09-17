@@ -22,6 +22,7 @@ import {
 } from "../../../addons/AutoAnnotate/src";
 import { startCase } from "lodash";
 import pluralize from "pluralize";
+import { useEffect, useState } from "react";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -1103,6 +1104,10 @@ sequenceData: {
                 that: this,
                 type: "overrideManageEnzymes"
               })}
+              {renderToggle({
+                that: this,
+                type: "getAdditionalEditAnnotationComps"
+              })}
               {this.state.overrideManageEnzymes &&
                 renderToggle({
                   that: this,
@@ -1655,6 +1660,11 @@ clickOverrides: {
             {...(this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
             })}
+            {...(this.state.getAdditionalEditAnnotationComps && {
+              getAdditionalEditAnnotationComps: ({ annotationTypePlural }) => {
+                return <SlowComp {...{ annotationTypePlural }}></SlowComp>;
+              }
+            })}
             {...(this.state.onImport && {
               onImport: (sequence) => {
                 window.toastr.success(
@@ -1948,4 +1958,21 @@ function exampleConversion(seq) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function SlowComp({ annotationTypePlural }) {
+  const [isOpen, setOpen] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setOpen(true);
+    }, 100);
+  }, []);
+  if (isOpen)
+    return (
+      <div>
+        I'm added via the getAdditionalEditAnnotationComps <br></br>{" "}
+        {annotationTypePlural} lalala <br></br> {annotationTypePlural} lalaa
+      </div>
+    );
+  return <div>yarp</div>;
 }

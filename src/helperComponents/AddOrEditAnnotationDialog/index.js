@@ -186,6 +186,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       overlapsSelf,
       start,
       end,
+      getAdditionalEditAnnotationComps,
       advancedOptions,
       advancedDefaultOpen,
       upsertAnnotation,
@@ -351,7 +352,10 @@ class AddOrEditAnnotationDialog extends React.Component {
           Length:{" "}
           {overlapsSelf ? sequenceLength + annotationLength : annotationLength}
         </div>
+        {getAdditionalEditAnnotationComps &&
+          getAdditionalEditAnnotationComps(this.props)}
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
+
         <Advanced
           advancedDefaultOpen={advancedDefaultOpen}
           advancedOptions={advancedOptions}
