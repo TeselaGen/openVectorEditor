@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { reduxForm, FieldArray, formValues } from "redux-form";
 
@@ -6,10 +6,11 @@ import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  wrapDialog
+  wrapDialog,
+  AdvancedOptions
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent, Classes, EditableText, Icon } from "@blueprintjs/core";
+import { Button, Intent, Classes, EditableText } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
@@ -356,10 +357,9 @@ class AddOrEditAnnotationDialog extends React.Component {
           getAdditionalEditAnnotationComps(this.props)}
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
 
-        <Advanced
-          advancedDefaultOpen={advancedDefaultOpen}
-          advancedOptions={advancedOptions}
-        ></Advanced>
+        <AdvancedOptions isOpenByDefault={advancedDefaultOpen}>
+          {advancedOptions}
+        </AdvancedOptions>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
@@ -566,23 +566,3 @@ const Notes = view(({ readOnly, notes }) => {
     </div>
   );
 });
-
-function Advanced({ advancedOptions, advancedDefaultOpen }) {
-  const [isOpen, setOpen] = useState(advancedDefaultOpen);
-  if (!advancedOptions) {
-    return null;
-  }
-  return (
-    <div style={{ marginTop: 5 }}>
-      <div
-        onClick={() => {
-          setOpen(!isOpen);
-        }}
-        style={{ cursor: "pointer" }}
-      >
-        Advanced <Icon icon={isOpen ? "caret-up" : "caret-down"}></Icon>
-      </div>
-      {isOpen && <div>{advancedOptions}</div>}
-    </div>
-  );
-}
