@@ -15,7 +15,7 @@ export default function getAnnotationNameAndStartStopString(
   { startText, isProtein } = {}
 ) {
   const typeToUse = annotationTypePlural
-    ? upperFirst(getSingular(annotationTypePlural)) +
+    ? upperFirst(getSingular(annotationTypePlural) === 'cutsite' ? 'cut site' : getSingular(annotationTypePlural)) +
       (annotationTypePlural === "features" ? ` (${type})` : "")
     : "";
 

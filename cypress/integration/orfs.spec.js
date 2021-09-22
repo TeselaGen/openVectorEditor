@@ -19,4 +19,17 @@ describe("orfs", function () {
     //the number of orfs displayed should update in real time
     cy.contains(".bp3-menu-item:contains(0)", "ORFs");
   });
+
+  it("'Use GTG And CTG As Start Codons' checkbox status should synchronize between toolbar and properties table", function () {
+    cy.visit("");
+    cy.contains(".tg-menu-bar button", "View").click();
+    cy.contains(".bp3-menu-item:contains(7)", "ORFs").click();
+    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons) .bp3-icon-blank").should("exist");
+    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons)").click({force: true});
+    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons) .bp3-icon-small-tick").should("exist");
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="orfs"]`).click();
+    cy.get(".bp3-checkbox:contains(Use GTG And CTG As Start Codons) input").should("be.checked");
+
+  })
 });
