@@ -80,7 +80,6 @@ const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPartDialog",
   dialogProps: {
-    // height: 550,
     width: 450
   },
   getProps: (props) => ({

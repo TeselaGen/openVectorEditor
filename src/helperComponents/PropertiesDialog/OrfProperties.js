@@ -78,7 +78,7 @@ class OrfProperties extends React.Component {
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
-                type: "string"
+                type: "number"
               },
               sizeSchema,
               { path: "frame", type: "number" },
@@ -103,11 +103,13 @@ export default compose(
       annotationVisibility = {},
       sequenceData: { sequence = "" } = {},
       sequenceData,
-      minimumOrfSize
+      minimumOrfSize,
+      useAdditionalOrfStartCodons
     } = editorState;
     return {
       readOnly,
       annotationVisibility,
+      useAdditionalOrfStartCodons,
       orfs: selectors.orfsSelector(editorState),
       sequenceLength: sequence.length,
       sequenceData,

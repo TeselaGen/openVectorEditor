@@ -1,4 +1,6 @@
 export const userDefinedHandlersAndOpts = [
+  "getAdditionalEditAnnotationComps",
+  "getAdditionalCreateOpts",
   "getCustomAutoAnnotateList",
   "allowPartsToOverlapSelf",
   "allPartTags",

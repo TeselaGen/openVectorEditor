@@ -522,18 +522,6 @@ function VectorInteractionHOC(Component /* options */) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
-
-    getCreateItems = () => {
-      const { readOnly, sequenceLength } = this.props;
-      return sequenceLength && readOnly
-        ? []
-        : [
-            {
-              text: "Create",
-              submenu: ["newFeature", "newPart", "newPrimer"]
-            }
-          ];
-    };
     insertHelper = {
       onClick: (e, ctxInfo) => {
         this.handleDnaInsert({
@@ -840,7 +828,7 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               ]),
           "rotateToCaretPosition",
-          ...this.getCreateItems(),
+          "createMenuHolder",
           {
             ...fullSequenceTranslationMenu,
             text: "View Full Sequence Translations"
@@ -884,9 +872,6 @@ function VectorInteractionHOC(Component /* options */) {
         "deletePart",
         "--",
         ...this.getSelectionMenuOptions(annotation),
-        "--",
-        "newTranslation",
-        "newReverseTranslation",
         "--",
         "showRemoveDuplicatesDialogParts",
         "viewPartProperties"
@@ -979,9 +964,6 @@ function VectorInteractionHOC(Component /* options */) {
               ]),
           "toggleCdsFeatureTranslations",
           "--",
-          "newTranslation",
-          "newReverseTranslation",
-          "--",
           "viewFeatureProperties"
         ];
       },
@@ -1001,8 +983,6 @@ function VectorInteractionHOC(Component /* options */) {
         "editPrimer",
         "deletePrimer",
         ...this.getSelectionMenuOptions(annotation),
-        "newTranslation",
-        "newReverseTranslation",
         "showRemoveDuplicatesDialogPrimers",
         "viewPrimerProperties"
       ];

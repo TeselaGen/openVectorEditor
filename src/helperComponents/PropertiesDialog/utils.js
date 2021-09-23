@@ -4,7 +4,7 @@ import { convertRangeTo1Based } from "ve-range-utils";
 
 export const sizeSchema = {
   path: "size",
-  type: "string",
+  type: "number",
   render: (val, _record, i, props) => {
     const record = props.isProtein
       ? convertDnaCaretPositionOrRangeToAA(_record)
