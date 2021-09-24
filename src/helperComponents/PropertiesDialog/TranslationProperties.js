@@ -42,7 +42,10 @@ class TranslationProperties extends React.Component {
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceLength),
-        sizeAa: Math.floor(getRangeLength(translation, sequenceLength) / 3),
+        sizeAa:
+          translation.translationType === "ORF"
+            ? Math.floor(getRangeLength(translation, sequenceLength) / 3 - 1)
+            : Math.floor(getRangeLength(translation, sequenceLength) / 3),
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
         })

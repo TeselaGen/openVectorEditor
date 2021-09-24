@@ -24,12 +24,38 @@ describe("orfs", function () {
     cy.visit("");
     cy.contains(".tg-menu-bar button", "View").click();
     cy.contains(".bp3-menu-item:contains(7)", "ORFs").click();
-    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons) .bp3-icon-blank").should("exist");
-    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons)").click({force: true});
-    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons) .bp3-icon-small-tick").should("exist");
+    cy.get(
+      ".bp3-menu-item:contains(Use GTG And CTG As Start Codons) .bp3-icon-blank"
+    ).should("exist");
+    cy.get(".bp3-menu-item:contains(Use GTG And CTG As Start Codons)").click({
+      force: true
+    });
+    cy.get(
+      ".bp3-menu-item:contains(Use GTG And CTG As Start Codons) .bp3-icon-small-tick"
+    ).should("exist");
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="orfs"]`).click();
-    cy.get(".bp3-checkbox:contains(Use GTG And CTG As Start Codons) input").should("be.checked");
+    cy.get(
+      ".bp3-checkbox:contains(Use GTG And CTG As Start Codons) input"
+    ).should("be.checked");
+  });
 
-  })
+  it("ORFs should have Size AA equals (sequence size / 3 - 1)", function () {
+    cy.visit("");
+    cy.get(".veTabProperties").click();
+    cy.get(`[data-tab-id="orfs"]`).click();
+    cy.get(`[data-copy-text="260"]`).should("exist");
+    cy.get(`[data-copy-text="783 (1236-2018)"]`).should("exist");
+
+    cy.get(
+      ".bp3-control.bp3-checkbox:contains(Show ORFs (Open Reading Frames))"
+    ).click({
+      force: true
+    });
+    cy.get(".bp3-control.bp3-checkbox:contains(7)").click({
+      force: true
+    });
+    cy.get(`[data-tab-id="translations"]`).click();
+    cy.get(`[data-copy-text="260"]`).should("exist");
+  });
 });
