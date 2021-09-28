@@ -2,7 +2,8 @@
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": "../node_modules",
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "outDir": "./build"
   },
   "include": ["**/*.*"],
   "exclude": ["./.eslintrc.js"]

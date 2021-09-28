@@ -321,6 +321,10 @@ export class RowView extends React.Component {
         rowTopComp = (
           <div style={rowJumpButtonStyle}>
             <Button
+              style={{ fontStyle: "italic" }}
+              intent="primary"
+              icon="arrow-down"
+              minimal
               data-test="jumpToEndButton"
               onClick={(e) => {
                 e.stopPropagation();
@@ -336,6 +340,10 @@ export class RowView extends React.Component {
         rowBottomComp = (
           <div style={rowJumpButtonStyle}>
             <Button
+              style={{ fontStyle: "italic" }}
+              intent="primary"
+              icon="arrow-up"
+              minimal
               data-test="jumpToStartButton"
               onClick={(e) => {
                 e.stopPropagation();

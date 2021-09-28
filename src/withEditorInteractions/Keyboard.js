@@ -23,7 +23,7 @@ class Clipboard extends React.Component {
     this.node.parentNode.removeEventListener("keyup", this.handleKeyUp, false);
   }
 
-  handleKeyDown = e => {
+  handleKeyDown = (e) => {
     if (
       document.activeElement &&
       ["input", "select", "textarea"].indexOf(
@@ -32,7 +32,7 @@ class Clipboard extends React.Component {
     ) {
       return; //stop early if we're inside an input
     }
-    let metaKeyIsDown = e.ctrlKey || e.metaKey;
+    const metaKeyIsDown = e.ctrlKey || e.metaKey;
     if (!metaKeyIsDown || !["x", "c", "v"].includes(e.key)) {
       this.origFocusedElement = null;
       return;
@@ -48,8 +48,8 @@ class Clipboard extends React.Component {
   };
 
   render() {
-    let value = this.props.value;
-    let style = {
+    const value = this.props.value;
+    const style = {
       position: "fixed",
       width: 1,
       height: 1,
@@ -62,7 +62,7 @@ class Clipboard extends React.Component {
     };
     return (
       <input
-        ref={c => {
+        ref={(c) => {
           if (c) {
             this.node = c;
           }

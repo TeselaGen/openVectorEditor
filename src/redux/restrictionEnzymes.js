@@ -17,7 +17,7 @@ export const filteredRestrictionEnzymesAdd = createAction(
 // ------------------------------------
 // Reducer
 // ------------------------------------
-let initialState = [specialCutsiteFilterOptions.single];
+const initialState = [specialCutsiteFilterOptions.single];
 // const userEnzymeGroups = window.localStorage.getItem("restrictionEnzymeGroups") || []
 
 export default combineReducers({

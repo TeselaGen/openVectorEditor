@@ -45,7 +45,7 @@ import {
   createNewAnnotationMenu
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
-import { getNodeToRefocus } from "../utils/editorUtils";
+import { getNodeToRefocus, getSelFromWrappedAddon } from "../utils/editorUtils";
 
 import {
   showAddOrEditAnnotationDialog,
@@ -291,7 +291,10 @@ function VectorInteractionHOC(Component /* options */) {
         this.sequenceDataToCopy ||
           getSequenceDataBetweenRange(
             sequenceData,
-            getSelToUse(selectionLayer),
+            getSelFromWrappedAddon(
+              selectionLayer,
+              sequenceData.sequence.length
+            ),
             {
               excludePartial: {
                 features: !copyOptions.partialFeatures,
@@ -547,7 +550,10 @@ function VectorInteractionHOC(Component /* options */) {
 
             const selectedSeqData = getSequenceDataBetweenRange(
               sequenceData,
-              getSelToUse(selectionLayer),
+              getSelFromWrappedAddon(
+                selectionLayer,
+                sequenceData.sequence.length
+              ),
               {
                 excludePartial: {
                   features: !copyOptions.partialFeatures,
@@ -1236,16 +1242,3 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     end: newSelectionLayerEnd % newSeqData.sequence.length
   });
 };
-
-function getSelToUse(selectionLayer) {
-  const selToUse = {
-    ...selectionLayer
-  };
-  if (selectionLayer.isWrappedAddon) {
-    const oldEnd = selToUse.end;
-    selToUse.end = selToUse.start - 1;
-    selToUse.start = oldEnd + 1;
-    delete selToUse.isWrappedAddon;
-  }
-  return selToUse;
-}

@@ -3,7 +3,7 @@ import { Icon, Tooltip } from "@blueprintjs/core";
 import "./style.css";
 
 function VeWarning(props) {
-  let { message, tooltip, ...rest } = props;
+  const { message, tooltip, ...rest } = props;
   return (
     <div className="veWarningMessage" {...rest}>
       <Tooltip

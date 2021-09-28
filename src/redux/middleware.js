@@ -18,7 +18,7 @@
 // }
 // );
 
-export default store => next => action => {
+export default (store) => (next) => (action) => {
   if (action.meta && action.meta.disregardUndo) {
     return next(action);
   }
@@ -55,7 +55,7 @@ export default store => next => action => {
     } else {
       store.dispatch({
         type: "SELECTION_LAYER_UPDATE",
-        payload: {...stateToUse.selectionLayer, forceUpdate: Math.random()},
+        payload: { ...stateToUse.selectionLayer, forceUpdate: Math.random() },
         meta: { editorName, disregardUndo }
       });
     }
@@ -70,12 +70,12 @@ export default store => next => action => {
     return next(action);
   } else {
     //pass batchUndoStart, batchUndoMiddle and batchUndoEnd to group actions together
-    const {batchUndoEnd, batchUndoStart, batchUndoMiddle} = action.meta || {}
+    const { batchUndoEnd, batchUndoStart, batchUndoMiddle } = action.meta || {};
     //get editor state(s)
     const OldVectorEditor = store.getState().VectorEditor;
-    let result = next(action);
+    const result = next(action);
     const NewVectorEditor = store.getState().VectorEditor;
-    Object.keys(NewVectorEditor).forEach(editorName => {
+    Object.keys(NewVectorEditor).forEach((editorName) => {
       const newEditorState = NewVectorEditor[editorName];
       const oldEditorState = OldVectorEditor[editorName];
       if (
@@ -84,23 +84,27 @@ export default store => next => action => {
         oldEditorState.sequenceData !== newEditorState.sequenceData
       ) {
         const { sequenceData, selectionLayer, caretPosition } = oldEditorState;
-        !batchUndoEnd && !batchUndoMiddle && store.dispatch({
-          type: "ADD_TO_UNDO_STACK",
-          payload: {
-            selectionLayer,
-            sequenceData,
-            caretPosition
-          },
-          meta: { editorName, disregardUndo }
-        });
-        !batchUndoStart && !batchUndoMiddle && store.dispatch({
-          type: "VE_SEQUENCE_CHANGED", //used for external autosave functionality
-          payload: {
-            sequenceData: newEditorState.sequenceData,
-            editorName
-          },
-          meta: { editorName, disregardUndo: true }
-        });
+        !batchUndoEnd &&
+          !batchUndoMiddle &&
+          store.dispatch({
+            type: "ADD_TO_UNDO_STACK",
+            payload: {
+              selectionLayer,
+              sequenceData,
+              caretPosition
+            },
+            meta: { editorName, disregardUndo }
+          });
+        !batchUndoStart &&
+          !batchUndoMiddle &&
+          store.dispatch({
+            type: "VE_SEQUENCE_CHANGED", //used for external autosave functionality
+            payload: {
+              sequenceData: newEditorState.sequenceData,
+              editorName
+            },
+            meta: { editorName, disregardUndo: true }
+          });
       }
     });
     return result;

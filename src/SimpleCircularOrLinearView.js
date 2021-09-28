@@ -44,7 +44,10 @@ export default (props) => {
       }
     };
   }
-  sequenceData.parts = addWrappedAddons(sequenceData.parts);
+  sequenceData.parts = addWrappedAddons(
+    sequenceData.parts,
+    sequenceData.sequence.length
+  );
 
   return (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>

@@ -8,6 +8,7 @@ import {
 } from "ve-sequence-utils";
 import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
+import normalizePositionByRangeLength from "ve-range-utils/lib/normalizePositionByRangeLength";
 
 export function getSelectionMessage({
   caretPosition = -1,
@@ -19,18 +20,20 @@ export function getSelectionMessage({
   GCDecimalDigits, //these are only passed in for the status bar
   isProtein
 }) {
+  let _selectionLayer = selectionLayer;
   const isSelecting = selectionLayer.start > -1;
   if (isSelecting) {
-    const length = getRangeLength(selectionLayer, sequenceLength);
+    _selectionLayer = getSelFromWrappedAddon(selectionLayer, sequenceLength);
+    const length = getRangeLength(_selectionLayer, sequenceLength);
     const GCContent = (numDecimalDigits = 0) =>
       calculatePercentGC(
-        getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence
+        getSequenceDataBetweenRange(sequenceData, _selectionLayer).sequence
       ).toFixed(numDecimalDigits);
     const seqLen = divideBy3(length, isProtein);
     return `${customTitle || "Selecting"} ${seqLen} ${
       (isProtein ? "AA" : "bp") + (seqLen === 1 ? "" : "s")
-    } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
-      selectionLayer.end + 1,
+    } from ${divideBy3(_selectionLayer.start, isProtein) + 1} to ${divideBy3(
+      _selectionLayer.end + 1,
       isProtein
     )}${
       showGCContent && !isProtein ? ` (${GCContent(GCDecimalDigits)}% GC)` : ""
@@ -38,7 +41,7 @@ export function getSelectionMessage({
   } else if (caretPosition > -1) {
     const insertBetween = getInsertBetweenVals(
       caretPosition,
-      selectionLayer,
+      _selectionLayer,
       sequenceLength
     );
     return (
@@ -147,4 +150,20 @@ export function hideAnnByLengthFilter(hideOpts, ann, seqLen) {
   return (
     hideOpts.enabled && (featLength < hideOpts.min || featLength > hideOpts.max)
   );
+}
+
+export function getSelFromWrappedAddon(selectionLayer, sequenceLength) {
+  const selToUse = {
+    ...selectionLayer
+  };
+  if (selectionLayer.isWrappedAddon) {
+    const oldEnd = selToUse.end;
+    selToUse.end = normalizePositionByRangeLength(
+      selToUse.start - 1,
+      sequenceLength
+    );
+    selToUse.start = normalizePositionByRangeLength(oldEnd + 1, sequenceLength);
+    delete selToUse.isWrappedAddon;
+  }
+  return selToUse;
 }

@@ -85,7 +85,7 @@ class SequenceInputNoHotkeys extends React.Component {
 
     let message;
     if (isReplace) {
-      let betweenVals = getInsertBetweenVals(
+      const betweenVals = getInsertBetweenVals(
         -1,
         selectionLayer,
         sequenceLength
@@ -260,10 +260,10 @@ const getActiveElement = function (document) {
     /* eslint-enable eqeqeq*/
   ) {
     // Get iframes
-    let iframes = document.getElementsByTagName("iframe");
+    const iframes = document.getElementsByTagName("iframe");
     for (let i = 0; i < iframes.length; i++) {
       // Recall
-      let focused = getActiveElement(iframes[i].contentWindow.document);
+      const focused = getActiveElement(iframes[i].contentWindow.document);
       if (focused !== false) {
         return focused; // The focused
       }

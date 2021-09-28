@@ -106,7 +106,6 @@ function Labels(props) {
         : xStart + width / 2;
 
     const xStartOriginal = xStart;
-    // if (annotation.name.includes("CmR I'm")) debugger
     let xEnd = xStart + annotationLength;
 
     if (xEnd > rowLength) {

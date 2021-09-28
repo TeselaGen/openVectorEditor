@@ -11,7 +11,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
 
-## Get the desktop app: https://github.com/tnrich/ove-electron/releases
+## Get the desktop app: https://github.com/teselagen/ove-electron/releases
 
 ## Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)
 
@@ -24,7 +24,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [[CHANGELOG](CHANGELOG.md)](#changelogchangelogmd)
   - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
-  - [Get the desktop app: https://github.com/tnrich/ove-electron/releases](#get-the-desktop-app-httpsgithubcomtnrichove-electronreleases)
+  - [Get the desktop app: https://github.com/teselagen/ove-electron/releases](#get-the-desktop-app-httpsgithubcomteselagenove-electronreleases)
   - [Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)](#cypress-tests-dashboard-httpsdashboardcypressioprojects1zj5vcruns-youll-need-to-make-a-login-with-cypress)
   - [OVE out in the wild:](#ove-out-in-the-wild)
 - [Table of Contents](#table-of-contents)

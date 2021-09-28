@@ -45,7 +45,7 @@ function filteredPartsSelector(
       );
     })
   );
-  return addWrappedAddons(toRet);
+  return addWrappedAddons(toRet, seqLen);
 }
 export default createSelector(
   partsSelector,

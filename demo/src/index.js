@@ -138,6 +138,12 @@ class Demo extends React.Component {
               <span style={{ marginTop: 5, marginLeft: 10 }}>
                 Version: {pjson.version}
               </span>{" "}
+              <a
+                href="https://github.com/TeselaGen/ove-electron#installation-instructions"
+                style={{ marginTop: 5, marginLeft: 10 }}
+              >
+                This is a developer demo. Get the App?
+              </a>{" "}
               <Tooltip
                 content={darkMode ? "Light Theme" : "Dark Theme"}
                 key="theme"

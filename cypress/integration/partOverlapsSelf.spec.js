@@ -2,6 +2,17 @@ describe("partTypes", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`parts that overlap themselves and start at 0 should still be clickable`, () => {
+    cy.hideCutsites();
+    cy.tgToggle("allowPartsToOverlapSelf");
+    cy.contains(".veCircularViewLabelText", "I wrap myself").dblclick();
+    cy.get(`.tg-test-start input`).clear().type(1);
+    cy.contains(".bp3-button", "Save").click();
+    cy.get(`.veRowItemWrapper .veLabelText:contains(I wrap myself)`)
+      .eq(2)
+      .click();
+    cy.contains("Selecting 5393 bps from 1 to 94");
+  });
   it(`parts that overlap themselves overlapsSelf should copy the full sequence and then some when copied`, () => {
     cy.hideCutsites();
     cy.tgToggle("allowPartsToOverlapSelf");

@@ -15,7 +15,7 @@ export default createSelector(
     filteredRestrictionEnzymes,
     enzymeGroupsOverride
   ) {
-    let returnVal = {
+    const returnVal = {
       cutsitesByName: {}
     };
     // const cutsitesByName = getLowerCaseObj(cutsitesByName);
@@ -51,7 +51,7 @@ export default createSelector(
           return;
         }
         const lowerValue = value.toLowerCase();
-        let cutsThisManyTimes =
+        const cutsThisManyTimes =
           specialCutsiteFilterOptions[value] &&
           specialCutsiteFilterOptions[value].cutsThisManyTimes;
         if (cutsThisManyTimes > 0) {

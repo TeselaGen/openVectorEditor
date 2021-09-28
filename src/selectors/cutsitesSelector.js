@@ -10,13 +10,13 @@ import { getLowerCaseObj } from "../utils/arrayUtils";
 
 function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
   //get the cutsites grouped by enzyme
-  let cutsitesByName = getLowerCaseObj(
+  const cutsitesByName = getLowerCaseObj(
     getCutsitesFromSequence(sequence, circular, map(enzymeList))
   );
   //tag each cutsite with a unique id
-  let cutsitesById = {};
+  const cutsitesById = {};
   Object.keys(cutsitesByName).forEach(function (enzymeName) {
-    let cutsitesForEnzyme = cutsitesByName[enzymeName];
+    const cutsitesForEnzyme = cutsitesByName[enzymeName];
     cutsitesForEnzyme.forEach(function (cutsite) {
       const numberOfCuts = cutsitesByName[enzymeName].length;
       const uniqueId = bsonObjectid().str;
@@ -41,7 +41,7 @@ function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
     });
   });
   // create an array of the cutsites
-  let cutsitesArray = flatmap(cutsitesByName, function (cutsitesForEnzyme) {
+  const cutsitesArray = flatmap(cutsitesByName, function (cutsitesForEnzyme) {
     return cutsitesForEnzyme;
   });
   return {
