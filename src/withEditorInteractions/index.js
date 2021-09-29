@@ -284,7 +284,8 @@ function VectorInteractionHOC(Component /* options */) {
         onCopy = () => {},
         sequenceData,
         selectionLayer,
-        copyOptions
+        copyOptions,
+        readOnly
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || (() => {});
       const seqData = tidyUpSequenceData(
@@ -314,7 +315,7 @@ function VectorInteractionHOC(Component /* options */) {
         !seqData.sequence.length
       )
         return window.toastr.warning(
-          `No Sequence Selected To ${isCut ? "Cut" : "Copy"}`
+          `No Sequence Selected To ${isCut && !readOnly ? "Cut" : "Copy"}`
         );
 
       const clipboardData = e.clipboardData;
@@ -331,7 +332,7 @@ function VectorInteractionHOC(Component /* options */) {
       clipboardData.setData("application/json", JSON.stringify(seqData));
       e.preventDefault();
 
-      if (isCut) {
+      if (isCut && !readOnly) {
         this.handleDnaDelete(false);
         onCut(
           e,
@@ -343,7 +344,9 @@ function VectorInteractionHOC(Component /* options */) {
         onCopy(e, seqData, this.props);
         document.body.removeEventListener("copy", this.handleCopy);
       }
-      window.toastr.success(`Selection ${isCut ? "Cut" : "Copied"}`);
+      window.toastr.success(
+        `Selection ${isCut && !readOnly ? "Cut" : "Copied"}`
+      );
       this.sequenceDataToCopy = undefined;
     };
     handleCut = this.handleCutOrCopy(true);
