@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { dialogHolder, hideDialog } from "./GlobalDialogUtils";
 
@@ -38,12 +38,19 @@ const Dialogs = {
 
 export function GlobalDialog(props) {
   const [uniqKey, setUniqKey] = useState();
+  useEffect(() => {
+    //on unmount, clear the global dialog state..
+    return () => {
+      hideDialog();
+    };
+  }, []);
   dialogHolder.setUniqKey = setUniqKey;
   const Comp =
     dialogHolder.CustomModalComponent ||
     props.dialogOverrides[dialogHolder.overrideName] ||
     Dialogs[dialogHolder.dialogType];
   if (!Comp) return null;
+
   return (
     <Comp
       key={uniqKey}

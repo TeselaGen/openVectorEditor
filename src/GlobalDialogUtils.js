@@ -25,7 +25,7 @@ export function hideDialog() {
   delete dialogHolder.CustomModalComponent;
   delete dialogHolder.props;
   delete dialogHolder.overrideName;
-  dialogHolder.setUniqKey(shortid());
+  dialogHolder.setUniqKey();
 }
 
 export function showAddOrEditAnnotationDialog({
