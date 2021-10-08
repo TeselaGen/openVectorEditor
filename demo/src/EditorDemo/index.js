@@ -23,6 +23,7 @@ import {
 import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
+import ab1ParsedGFPvv50 from "../../../scratch/ab1ParsedGFPvv50.json";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -1161,6 +1162,38 @@ sequenceData: {
                 part that "wraps around the whole sequence and back over itself". 
                 This will cause part.overlapsSelf = true
                 `
+              })}
+              {renderToggle({
+                that: this,
+                type: "chromatogramExample",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        chromatogram: true,
+                        features: false,
+                        primers: false,
+                        // parts: false,
+                        cutsites: false
+                        // orfTranslations: false
+                      },
+                      //JBEI sequence 'GFPvv50'
+
+                      sequenceData: {
+                        id: "1",
+                        chromatogramData: ab1ParsedGFPvv50,
+                        name: "GFPvv50",
+                        sequence:
+                          "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
+                      },
+                      alignmentData: {
+                        id: "1",
+                        sequence:
+                          "ttgtacact------------------------------------------------------------------------------------------------------------------------------------------tttttgttgatatgtcattcttgttgattacatgg-----------------tgatgttaatgggcacaaattttctgtcagtggagagggtgaa-----ggtgatgcaacatacggaaaacttacccttaaatttatttgcactactg------gaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcaga----------ccattatca--acaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacaca-atctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatcccggcttcagccggg"
+                      }
+                    });
+                },
+                description: `Show chromatogram data in the editor`
               })}
               {renderToggle({
                 that: this,

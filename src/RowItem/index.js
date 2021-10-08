@@ -384,14 +384,11 @@ export class RowItem extends React.PureComponent {
             onDoubleClick: translationDoubleClicked
           })}
 
-          {/* { &&
-            Object.keys(cutsites).length > 0 && (
-            )} */}
-
           {showChromatogram && chromatogramData && (
             <Chromatogram
               chromatogramData={chromatogramData}
               alignmentData={alignmentData}
+              isRowView={isRowView}
               {...annotationCommonProps}
             />
           )}

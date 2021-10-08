@@ -22,7 +22,7 @@ class Chromatogram extends React.Component {
         "charWidth",
         "row.start",
         "row.end"
-      ].some(key => props[key] !== newProps[key])
+      ].some((key) => props[key] !== newProps[key])
     ) {
       const charWidth = newProps.charWidth;
       const { scalePct } = this.state;
@@ -33,8 +33,9 @@ class Chromatogram extends React.Component {
   }
 
   updatePeakDrawing = (scalePct, charWidth) => {
-    const { chromatogramData, row, getGaps } = this.props;
+    const { isRowView, chromatogramData, row, getGaps } = this.props;
     const painter = new drawTrace({
+      isRowView,
       peakCanvas: this.canvasRef,
       traceData: chromatogramData,
       charWidth: charWidth,
@@ -46,7 +47,7 @@ class Chromatogram extends React.Component {
     painter.paintCanvas();
   };
 
-  scaleChromatogramYPeaksHigher = e => {
+  scaleChromatogramYPeaksHigher = (e) => {
     e.stopPropagation();
     const { charWidth } = this.props;
     const { scalePct } = this.state;
@@ -57,7 +58,7 @@ class Chromatogram extends React.Component {
     this.updatePeakDrawing(newScalePct, charWidth);
     this.setState({ scalePct: newScalePct });
   };
-  scaleChromatogramYPeaksLower = e => {
+  scaleChromatogramYPeaksLower = (e) => {
     e.stopPropagation();
     const { charWidth } = this.props;
     const { scalePct } = this.state;
@@ -116,7 +117,7 @@ class Chromatogram extends React.Component {
           }}
         >
           <canvas
-            ref={n => {
+            ref={(n) => {
               if (n) this.canvasRef = n;
             }}
             height="100"
@@ -136,6 +137,7 @@ function drawTrace({
   peakCanvas,
   endBp,
   getGaps,
+  isRowView,
   scalePct
 }) {
   const colors = {
@@ -173,7 +175,7 @@ function drawTrace({
   //   scalePct = scaledHeight / Math.max(aMax, tMax, gMax, cMax);
   // };
 
-  this.scalePeaks = function(traceIn) {
+  this.scalePeaks = function (traceIn) {
     const newPeaks = [];
     for (let count = 0; count < traceIn.length; count++) {
       newPeaks[count] = scalePct * traceIn[count];
@@ -181,7 +183,7 @@ function drawTrace({
     return newPeaks;
   };
 
-  this.preparePeaks = function() {
+  this.preparePeaks = function () {
     // this.findTallest();
     formattedPeaks.a = this.scalePeaks(traceData.aTrace);
     formattedPeaks.t = this.scalePeaks(traceData.tTrace);
@@ -189,7 +191,7 @@ function drawTrace({
     formattedPeaks.c = this.scalePeaks(traceData.cTrace);
   };
 
-  this.drawPeaks = function(trace, lineColor) {
+  this.drawPeaks = function (trace, lineColor) {
     ctx.beginPath();
     //loop through base positions [ 43, 53, 70, 77, ...]
     // looping through the entire sequence length
@@ -207,7 +209,6 @@ function drawTrace({
       } else {
         endBasePos = traceData.basePos[baseIndex + 1] - 5;
       }
-
       for (
         let innerIndex = startBasePos;
         innerIndex < endBasePos;
@@ -221,7 +222,6 @@ function drawTrace({
         const scalingFactor = charWidth / (endBasePos - startBasePos);
         let startXPosition =
           (baseIndex + gapsBeforeMinusBeginningGaps) * charWidth;
-
         if (
           getGaps(baseIndex - 1).gapsBefore !== getGaps(baseIndex).gapsBefore
         ) {
@@ -236,11 +236,15 @@ function drawTrace({
             scaledHeight - trace[innerIndex]
           );
         } else {
-          startXPosition =
-            (baseIndex +
-              getGaps(baseIndex - 1).gapsBefore -
-              gapsBeforeSequence) *
-            charWidth;
+          if (isRowView) {
+            startXPosition = (baseIndex - startBp) * charWidth;
+          } else {
+            // startXPosition =
+            //   (baseIndex +
+            //     getGaps(baseIndex - 1).gapsBefore -
+            //     gapsBeforeSequence) *
+            //   charWidth;
+          }
           ctx.lineTo(
             startXPosition + scalingFactor * (innerIndex - startBasePos),
             scaledHeight - trace[innerIndex]
@@ -277,19 +281,18 @@ function drawTrace({
   //           ctx.fillText(baseCall, positionToUse, maxHeight - baseBuffer);
   //       }
   //   }
-
-  this.drawQualityScoreHistogram = function() {
+  this.drawQualityScoreHistogram = function () {
     const qualMax = Math.max(...traceData.qualNums);
     const scalePctQual = scaledHeight / qualMax;
     const gapsBeforeSequence = getGaps(0).gapsBefore;
-    for (let count = 0; count < traceData.qualNums.length; count++) {
+    for (let baseIndex = startBp; baseIndex <= endBp; baseIndex++) {
       const gapsBeforeMinusBeginningGaps =
-        getGaps(count).gapsBefore - gapsBeforeSequence;
+        getGaps(baseIndex).gapsBefore - gapsBeforeSequence;
       ctx.rect(
-        (count + gapsBeforeMinusBeginningGaps) * charWidth,
-        scaledHeight - traceData.qualNums[count] * scalePctQual,
+        (baseIndex - startBp + gapsBeforeMinusBeginningGaps) * charWidth,
+        scaledHeight - traceData.qualNums[baseIndex] * scalePctQual,
         charWidth,
-        traceData.qualNums[count] * scalePctQual
+        traceData.qualNums[baseIndex] * scalePctQual
       );
     }
     ctx.fillStyle = "#f4f1fa";
@@ -298,7 +301,7 @@ function drawTrace({
     ctx.stroke();
   };
 
-  this.paintCanvas = function() {
+  this.paintCanvas = function () {
     this.drawQualityScoreHistogram();
     this.preparePeaks();
     this.drawPeaks(formattedPeaks.a, colors.adenine);
