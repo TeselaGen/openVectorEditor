@@ -14,6 +14,7 @@ import {
 } from "ve-range-utils";
 import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
+import { Tooltip } from "@blueprintjs/core";
 import withEditorInteractions from "../withEditorInteractions";
 import Part from "./Part";
 import drawAnnotations from "./drawAnnotations";
@@ -437,6 +438,9 @@ export function CircularView(props) {
   if (radius < 150) radius = 150;
   const widthToUse = Math.max(Number(width) || 300);
   const heightToUse = Math.max(Number(height) || 300);
+  const bpTitle = isProtein
+    ? `${Math.floor(sequenceLength / 3)} AAs`
+    : `${sequenceLength} bps`;
   return (
     <div
       style={{
@@ -472,30 +476,6 @@ export function CircularView(props) {
         onStop={editorDragStopped}
       >
         <div>
-          {!hideName && (
-            <div
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none"
-              }}
-            >
-              <div
-                key="circViewSvgCenterText"
-                className="veCircularViewMiddleOfVectorText"
-                style={{ width: innerRadius, textAlign: "center" }}
-              >
-                <span>{sequenceName} </span>
-                <br />
-                <span style={{ fontSize: 10 }}>
-                  {isProtein
-                    ? `${Math.floor(sequenceLength / 3)} AAs`
-                    : `${sequenceLength} bps`}
-                </span>
-              </div>
-            </div>
-          )}
           <svg
             key="circViewSvg"
             onClick={(event) => {
@@ -523,6 +503,38 @@ export function CircularView(props) {
             } ${radius * 2 * scale}`}
           >
             {annotationsSvgs}
+            {!hideName && (
+              <foreignObject
+                x={(-innerRadius * scale) / 2}
+                y={(-innerRadius * scale) / 2}
+                width={innerRadius * scale}
+                height={innerRadius * scale}
+              >
+                <div
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  key="circViewSvgCenterText"
+                  className="veCircularViewMiddleOfVectorText"
+                >
+                  <Tooltip position="top" content={sequenceName}>
+                    <div
+                      className="veCircularViewTextWrapper"
+                      style={{
+                        width: innerRadius * scale,
+                        maxHeight: innerRadius * scale - 15,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                      }}
+                    >
+                      <span title={sequenceName}>{sequenceName}</span>
+                    </div>
+                  </Tooltip>
+                  <br />
+                  <span title={bpTitle} style={{ fontSize: 10 }}>
+                    {bpTitle}
+                  </span>
+                </div>
+              </foreignObject>
+            )}
           </svg>
           <div className="veWarningContainer">
             {!circular && !noWarnings && (
