@@ -14,7 +14,6 @@ import {
 } from "ve-range-utils";
 import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
-import { Tooltip } from "@blueprintjs/core";
 import withEditorInteractions from "../withEditorInteractions";
 import Part from "./Part";
 import drawAnnotations from "./drawAnnotations";
@@ -515,19 +514,18 @@ export function CircularView(props) {
                   key="circViewSvgCenterText"
                   className="veCircularViewMiddleOfVectorText"
                 >
-                  <Tooltip position="top" content={sequenceName}>
-                    <div
-                      className="veCircularViewTextWrapper"
-                      style={{
-                        width: innerRadius * scale,
-                        maxHeight: innerRadius * scale - 15,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis"
-                      }}
-                    >
-                      <span title={sequenceName}>{sequenceName}</span>
-                    </div>
-                  </Tooltip>
+                  <div
+                    title={sequenceName}
+                    className="veCircularViewTextWrapper"
+                    style={{
+                      width: innerRadius * scale,
+                      maxHeight: innerRadius * scale - 15,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis"
+                    }}
+                  >
+                    <span>{sequenceName}</span>
+                  </div>
                   <br />
                   <span title={bpTitle} style={{ fontSize: 10 }}>
                     {bpTitle}
