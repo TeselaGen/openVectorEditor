@@ -526,7 +526,6 @@ export function CircularView(props) {
                   >
                     <span>{sequenceName}</span>
                   </div>
-                  <br />
                   <span title={bpTitle} style={{ fontSize: 10 }}>
                     {bpTitle}
                   </span>
