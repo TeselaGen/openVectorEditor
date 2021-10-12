@@ -20,6 +20,8 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
  - ove-electron -  https://github.com/teselagen/ove-electron (A simple desktop plasmid editor a la ApE)
  - JBEI - https://bioparts.org/ (an auto annotation and blast tool) 
  - JBEI - https://public-registry.jbei.org/ (a lab management and design tool)
+ - Labii - https://docs.labii.com/widgets/biology/open-vector-editor (lab management tool)
+ 
 
 # Table of Contents
 <!-- TOC -->
