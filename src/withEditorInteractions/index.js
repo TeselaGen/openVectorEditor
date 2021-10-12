@@ -407,7 +407,11 @@ function VectorInteractionHOC(Component /* options */) {
       }
       if (sequenceLength > 0) {
         let rangeToDelete = selectionLayer;
+        let isCaretAtEndOfSeq;
         if (caretPosition > 0) {
+          if (caretPosition === sequenceLength) {
+            isCaretAtEndOfSeq = true;
+          }
           rangeToDelete = {
             start: normalizePositionByRangeLength(
               caretPosition - (sequenceData.isProtein ? 3 : 1),
@@ -418,6 +422,10 @@ function VectorInteractionHOC(Component /* options */) {
               sequenceLength
             )
           };
+        } else {
+          if (rangeToDelete.end === sequenceLength - 1) {
+            isCaretAtEndOfSeq = true;
+          }
         }
         const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
           {},
@@ -426,7 +434,9 @@ function VectorInteractionHOC(Component /* options */) {
         );
         updateSequenceData(newSeqData);
         caretPositionUpdate(
-          rangeToDelete.start > newSeqData.sequence.length
+          isCaretAtEndOfSeq
+            ? newSeqData.sequence.length
+            : rangeToDelete.start > newSeqData.sequence.length
             ? //we're deleting around the origin so set the cursor to the 0 position
               0
             : normalizePositionByRangeLength(

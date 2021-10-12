@@ -11,12 +11,17 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
 ## Demo: http://teselagen.github.io/openVectorEditor/ 
 
-## Get the desktop app: https://github.com/teselagen/ove-electron/releases
+## Get the desktop app: https://github.com/teselagen/ove-electron#installation-instructions
 
 ## Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)
 
-## OVE out in the wild: 
- - https://j5.jbei.org/VectorEditor/VectorEditor.html
+## OVE out in the wild (Who's using OVE): 
+ - Teselagen - https://teselagen.com/ (Combinatorial DNA design + Lab management + Ordering + Biohub)
+ - ove-electron -  https://github.com/teselagen/ove-electron (A simple desktop plasmid editor a la ApE)
+ - JBEI - https://bioparts.org/ (an auto annotation and blast tool) 
+ - JBEI - https://public-registry.jbei.org/ (a lab management and design tool)
+ - Labii - https://docs.labii.com/widgets/biology/open-vector-editor (lab management tool)
+ 
 
 # Table of Contents
 <!-- TOC -->
@@ -24,9 +29,9 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [[CHANGELOG](CHANGELOG.md)](#changelogchangelogmd)
   - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
-  - [Get the desktop app: https://github.com/teselagen/ove-electron/releases](#get-the-desktop-app-httpsgithubcomteselagenove-electronreleases)
+  - [Get the desktop app: https://github.com/teselagen/ove-electron#installation-instructions](#get-the-desktop-app-httpsgithubcomteselagenove-electroninstallation-instructions)
   - [Cypress Tests Dashboard: https://dashboard.cypress.io/#/projects/1zj5vc/runs (you'll need to make a login with cypress)](#cypress-tests-dashboard-httpsdashboardcypressioprojects1zj5vcruns-youll-need-to-make-a-login-with-cypress)
-  - [OVE out in the wild:](#ove-out-in-the-wild)
+  - [OVE out in the wild (Who's using OVE):](#ove-out-in-the-wild-whos-using-ove)
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
 - [Using this module in React](#using-this-module-in-react)
