@@ -24,6 +24,7 @@ import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import ab1ParsedGFPvv50 from "../../../scratch/ab1ParsedGFPvv50.json";
+// import example1Ab1 from "../../../scratch/example1.ab1.json";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -1171,7 +1172,7 @@ sequenceData: {
                     updateEditor(store, "DemoEditor", {
                       annotationVisibility: {
                         chromatogram: true,
-                        features: false,
+                        features: true,
                         primers: false,
                         // parts: false,
                         cutsites: false
@@ -1181,16 +1182,46 @@ sequenceData: {
 
                       sequenceData: {
                         id: "1",
+                        // chromatogramData: example1Ab1,
+                        // sequence: example1Ab1.baseCalls.join(""),
                         chromatogramData: ab1ParsedGFPvv50,
-                        name: "GFPvv50",
-                        sequence:
-                          "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
+                        sequence: ab1ParsedGFPvv50.baseCalls.join(""),
+                        features: [
+                          {
+                            id: "yay",
+                            name: "feat1",
+                            start: 30,
+                            end: 80
+                          }
+                        ],
+
+                        // chromatogramData: ab1ParsedGFPvv50,
+                        name: "GFPvv50"
+                        // sequence:
+                        //   "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
                       },
-                      alignmentData: {
-                        id: "1",
-                        sequence:
-                          "ttgtacact------------------------------------------------------------------------------------------------------------------------------------------tttttgttgatatgtcattcttgttgattacatgg-----------------tgatgttaatgggcacaaattttctgtcagtggagagggtgaa-----ggtgatgcaacatacggaaaacttacccttaaatttatttgcactactg------gaaaactacctgttccatggccaacacttgtcactactttctcttatggtgttcaatgcttttcccgttatccggatcatatgaaacggcatgactttttcaagagtgccatgcccgaaggttatgtacaggaacgcactatatctttcaaagatgacgggaactacaagacgcgtgctgaagtcaagtttgaaggtgatacccttgttaatcgtatcgagttaaaaggtattgattttaaagaagatggaaacattctcggacacaaactcgaatacaactataactcacacaatgtatacatcacggcagacaaacaaaagaatggaatcaaagctaacttcaaaattcgccacaacattgaagatggatctgttcaactagcaga----------ccattatca--acaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtcgacaca-atctgccctttcgaaagatcccaacgaaaagcgtgaccacatggtccttcttgagtttgtaactgctgctgggattacacatggcatggatgagctcggcggcggcggcagcaaggtctacggcaaggaacagtttttgcggatgcgccagagcatgttccccgatcgctaaatcgagtaaggatctccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttatacctagggtacgggttttgctgcccgcaaacgggctgttctggtgttgctagtttgttatcagaatcgcagatcccggcttcagccggg"
-                      }
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map"
+                          },
+                          {
+                            id: "sequence",
+                            name: "Sequence Map",
+                            active: true
+                          },
+                          {
+                            // fullScreen: true,
+                            id: "circular",
+                            name: "Circular Map"
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
                     });
                 },
                 description: `Show chromatogram data in the editor`

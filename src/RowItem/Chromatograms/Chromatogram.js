@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@blueprintjs/core";
+import { get } from "lodash-es";
 // import { InfoHelper } from "teselagen-react-components";
 
 class Chromatogram extends React.Component {
@@ -13,27 +14,49 @@ class Chromatogram extends React.Component {
     const { scalePct } = this.state;
     this.updatePeakDrawing(scalePct, charWidth);
   }
-  shouldComponentUpdate(newProps) {
-    const { props } = this;
-    if (
-      [
-        "alignmentData",
-        "chromatogramData",
-        "charWidth",
-        "row.start",
-        "row.end"
-      ].some((key) => props[key] !== newProps[key])
-    ) {
-      const charWidth = newProps.charWidth;
-      const { scalePct } = this.state;
-      this.updatePeakDrawing(scalePct, charWidth);
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(newProps) {
+  //   const { props } = this;
+  //   if (
+  //     [
+  //       "alignmentData",
+  //       "chromatogramData",
+  //       "charWidth",
+  //       "row.start",
+  //       "row.end"
+  //     ].some((key) => props[key] !== newProps[key])
+  //   ) {
+  //     console.log(`row.start:`,newProps.row.start)
+  //     console.log(`newProps.row.end:`,newProps.row.end)
+  //     const charWidth = newProps.charWidth;
+  //     const { scalePct } = this.state;
+  //     this.updatePeakDrawing(scalePct, charWidth);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   updatePeakDrawing = (scalePct, charWidth) => {
     const { isRowView, chromatogramData, row, getGaps } = this.props;
+    if (!this.canvasRef) return;
+    if (!this.oldProps) this.oldProps = {};
+    const keys = [
+      "alignmentData",
+      "chromatogramData",
+      "charWidth",
+      "row.start",
+      "row.end"
+    ];
+    let shouldContinue;
+    if (
+      !this.oldProps ||
+      keys.some((key) => this.oldProps[key] !== get(this.props, key))
+    ) {
+      shouldContinue = true;
+    }
+    keys.forEach((k) => {
+      this.oldProps[k] = get(this.props, k);
+    });
+    if (!shouldContinue) return;
     const painter = new drawTrace({
       isRowView,
       peakCanvas: this.canvasRef,
@@ -74,6 +97,8 @@ class Chromatogram extends React.Component {
     const { getGaps, charWidth } = this.props;
     const gapsBeforeSequence = getGaps(0).gapsBefore;
     const posOfSeqRead = gapsBeforeSequence * charWidth;
+    const { scalePct } = this.state;
+    this.updatePeakDrawing(scalePct, charWidth);
 
     return (
       <div
@@ -160,7 +185,7 @@ function drawTrace({
   const seqLengthWithGaps =
     endBp - startBp + 1 + getGaps({ start: startBp, end: endBp }).gapsInside;
   const maxWidth = seqLengthWithGaps * charWidth;
-  // const maxWidth = endBpIncludingGaps * charWidth;
+
   peakCanvas.width = maxWidth;
   // ctx.fillStyle = "white";
   // ctx.fillRect(0, 0, peakCanvas.width, peakCanvas.height);
@@ -282,6 +307,7 @@ function drawTrace({
   //       }
   //   }
   this.drawQualityScoreHistogram = function () {
+    if (!traceData.qualNums) return;
     const qualMax = Math.max(...traceData.qualNums);
     const scalePctQual = scaledHeight / qualMax;
     const gapsBeforeSequence = getGaps(0).gapsBefore;

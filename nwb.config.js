@@ -27,12 +27,12 @@ module.exports = {
       // "ve-range-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../ve-range-utils/src/"),
-      // "ve-sequence-utils":
-      //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../ve-sequence-utils/src/"),
-      // "bio-parsers":
-      //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../ve-sequence-parsers/src/parsers/"),
+      "ve-sequence-utils":
+        console.log("comment me back out!") ||
+        path.resolve(__dirname, "../ve-sequence-utils/src/"),
+      "bio-parsers":
+        console.log("comment me back out!") ||
+        path.resolve(__dirname, "../ve-sequence-parsers/src/parsers/"),
       //downgrade to nwb @ 0.24.5 to get this to work for now
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||

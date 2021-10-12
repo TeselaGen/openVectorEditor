@@ -378,6 +378,9 @@ export class RowView extends React.Component {
             }}
             row={rowData[index]}
           />
+          {index === rowData.length - 1 ? (
+            <div className="veRowItemSpacer" />
+          ) : null}
         </div>
       );
       this.cache[index] = rowItem;
