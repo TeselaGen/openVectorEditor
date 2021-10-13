@@ -67,10 +67,11 @@ export class RowView extends React.Component {
 
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
-    const { annotationVisibility, annotationLabelVisibility } = this.props;
+    const { annotationVisibility, annotationLabelVisibility, sequenceData } = this.props;
     return estimateRowHeight({
       index,
       cache,
+      chromatogramData: sequenceData.chromatogramData,
       showJumpButtons: this.showJumpButtons,
       clearCache: this.clearCache,
       row: this.rowData[index],

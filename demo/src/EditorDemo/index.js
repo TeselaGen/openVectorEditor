@@ -23,7 +23,8 @@ import {
 import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
-import ab1ParsedGFPvv50 from "../../../scratch/ab1ParsedGFPvv50.json";
+// import chromData from "../../../scratch/ab1ParsedGFPvv50.json";
+import chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
@@ -1184,8 +1185,8 @@ sequenceData: {
                         id: "1",
                         // chromatogramData: example1Ab1,
                         // sequence: example1Ab1.baseCalls.join(""),
-                        chromatogramData: ab1ParsedGFPvv50,
-                        sequence: ab1ParsedGFPvv50.baseCalls.join(""),
+                        chromatogramData: chromData,
+                        sequence: chromData.baseCalls.join(""),
                         features: [
                           {
                             id: "yay",
@@ -1195,7 +1196,7 @@ sequenceData: {
                           }
                         ],
 
-                        // chromatogramData: ab1ParsedGFPvv50,
+                        // chromatogramData: chromData,
                         name: "GFPvv50"
                         // sequence:
                         //   "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"

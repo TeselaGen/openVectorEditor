@@ -47,6 +47,9 @@ class Chromatogram extends React.Component {
       "row.end"
     ];
     let shouldContinue;
+    if (this.oldProps.scalePct !== scalePct) {
+      shouldContinue = true;
+    }
     if (
       !this.oldProps ||
       keys.some((key) => this.oldProps[key] !== get(this.props, key))
@@ -56,6 +59,7 @@ class Chromatogram extends React.Component {
     keys.forEach((k) => {
       this.oldProps[k] = get(this.props, k);
     });
+    this.oldProps.scalePct = scalePct;
     if (!shouldContinue) return;
     const painter = new drawTrace({
       isRowView,
@@ -72,24 +76,14 @@ class Chromatogram extends React.Component {
 
   scaleChromatogramYPeaksHigher = (e) => {
     e.stopPropagation();
-    const { charWidth } = this.props;
     const { scalePct } = this.state;
-    const peakCanvas = this.canvasRef;
-    const ctx = peakCanvas.getContext("2d");
-    ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
     const newScalePct = scalePct + 0.01;
-    this.updatePeakDrawing(newScalePct, charWidth);
     this.setState({ scalePct: newScalePct });
   };
   scaleChromatogramYPeaksLower = (e) => {
     e.stopPropagation();
-    const { charWidth } = this.props;
     const { scalePct } = this.state;
-    const peakCanvas = this.canvasRef;
-    const ctx = peakCanvas.getContext("2d");
-    ctx.clearRect(0, 0, peakCanvas.width, peakCanvas.height);
     const newScalePct = scalePct - 0.01;
-    this.updatePeakDrawing(newScalePct, charWidth);
     this.setState({ scalePct: newScalePct });
   };
 
@@ -224,7 +218,7 @@ function drawTrace({
       // each base's beginning and end of its peak
       // grab the start and end (43, 53) , (53, 70) ...
       // looping through each base's peak
-      const startBasePos = traceData.basePos[baseIndex] - 5;
+      const startBasePos = traceData.basePos[baseIndex] - startOffset;
       let endBasePos;
       if (baseIndex === endBp) {
         // last bp does not have a 'basePos[baseIndex + 1]' to define endBasePos...so use the difference in endBasePos - startBasePos of previous bp
@@ -232,7 +226,7 @@ function drawTrace({
           traceData.basePos[baseIndex - 1] - traceData.basePos[baseIndex - 2];
         endBasePos = startBasePos + previousBpStartEndDifference;
       } else {
-        endBasePos = traceData.basePos[baseIndex + 1] - 5;
+        endBasePos = traceData.basePos[baseIndex + 1] - startOffset;
       }
       for (
         let innerIndex = startBasePos;
@@ -264,11 +258,11 @@ function drawTrace({
           if (isRowView) {
             startXPosition = (baseIndex - startBp) * charWidth;
           } else {
-            // startXPosition =
-            //   (baseIndex +
-            //     getGaps(baseIndex - 1).gapsBefore -
-            //     gapsBeforeSequence) *
-            //   charWidth;
+            startXPosition =
+              (baseIndex +
+                getGaps(baseIndex - 1).gapsBefore -
+                gapsBeforeSequence) *
+              charWidth;
           }
           ctx.lineTo(
             startXPosition + scalingFactor * (innerIndex - startBasePos),
@@ -343,3 +337,6 @@ function drawTrace({
 //   const painter = new drawTrace(ab1Parsed)
 //   painter.paintCanvas()
 // }
+
+const startOffset = 5;
+// const startOffset = 0
