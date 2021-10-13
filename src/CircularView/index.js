@@ -508,6 +508,7 @@ export function CircularView(props) {
                 y={(-innerRadius * scale) / 2}
                 width={innerRadius * scale}
                 height={innerRadius * scale}
+                transform={`rotate(-${(rotationRadians * 180) / Math.PI})`}
               >
                 <div
                   xmlns="http://www.w3.org/1999/xhtml"

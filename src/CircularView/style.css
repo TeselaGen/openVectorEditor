@@ -17,6 +17,7 @@
 
 /*# sourceMappingURL= style.css.map */
 
-.veHideLabels .veLabels {
+.veHideLabels .veLabels,
+.veHideLabels .veCircularViewMiddleOfVectorText {
   display: none;
 }
