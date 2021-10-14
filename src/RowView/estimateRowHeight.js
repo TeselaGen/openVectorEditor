@@ -1,6 +1,6 @@
 import { forEach } from "lodash";
 
-const debug = 1;
+const debug = 0;
 
 export const rowHeights = {
   rowJumpButtons: { height: 30 },
@@ -61,8 +61,7 @@ const annotationsToCompute = {
     hasYOffset: true
   },
   chromatogram: {
-    height: rowHeights.chromatogram.type,
-    hasYOffset: true
+    height: rowHeights.chromatogram.type
   },
   warnings: {
     height: rowHeights.warnings.type,
@@ -118,10 +117,10 @@ export default (props) => {
       key
       // i
     ) => {
-      if (key==="chromatogram") console.log(`_height:`,_height)
       const shouldShow =
         alwaysVisible || annotationVisibility[typeOverride || key];
       if (!shouldShow) return;
+      if (key === "chromatogram" && !chromatogramData) return;
       const heightKeys = getHeight ? getHeight(props) : _height;
       const [annotationHeight, marginHeight] = getSummedHeights(
         heightKeys,
@@ -129,7 +128,6 @@ export default (props) => {
       );
 
       let heightToAdd = annotationHeight;
-      if (key==="chromatogram") console.log(`heightToAdd:`,heightToAdd)
       if (hasYOffset) {
         const annotations = row[typeOverride || key];
         if (hasYOffset) {
