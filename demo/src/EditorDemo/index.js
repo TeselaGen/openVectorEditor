@@ -463,6 +463,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               </div>
 
               {renderToggle({
+                type: "randomizeSeqData",
                 info: `
 You can change the sequence in a given <Editor/> by calling: 
 \`\`\`js
@@ -1287,6 +1288,7 @@ other options are:
                 onClick: this.setLinearPanelAsActive,
                 isButton: true,
                 that: this,
+                type: "focusLinearView",
                 label: "Focus Linear View"
               })}
               {renderToggle({
@@ -1301,6 +1303,7 @@ other options are:
                 },
                 isButton: true,
                 that: this,
+                type: "triggerMenuToastrMessage",
                 label: "Trigger menu toastr message"
               })}
               {renderToggle({
@@ -1312,6 +1315,7 @@ other options are:
                 isButton: true,
                 that: this,
                 label: "Set A Selection",
+                type: "setASelection",
                 info: `
 You can programatically update the editor like so:                 
 \`\`\`

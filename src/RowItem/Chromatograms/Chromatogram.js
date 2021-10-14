@@ -1,8 +1,7 @@
 import React from "react";
-import { Button } from "@blueprintjs/core";
+import { Button, Tooltip } from "@blueprintjs/core";
 import { get } from "lodash-es";
-// import { InfoHelper } from "teselagen-react-components";
-
+import { getClientX, getClientY } from "../../utils/editorUtils";
 class Chromatogram extends React.Component {
   constructor(props) {
     super(props);
@@ -13,30 +12,44 @@ class Chromatogram extends React.Component {
     const { charWidth } = this.props;
     const { scalePct } = this.state;
     this.updatePeakDrawing(scalePct, charWidth);
-  }
-  // shouldComponentUpdate(newProps) {
-  //   const { props } = this;
-  //   if (
-  //     [
-  //       "alignmentData",
-  //       "chromatogramData",
-  //       "charWidth",
-  //       "row.start",
-  //       "row.end"
-  //     ].some((key) => props[key] !== newProps[key])
-  //   ) {
-  //     console.log(`row.start:`,newProps.row.start)
-  //     console.log(`newProps.row.end:`,newProps.row.end)
-  //     const charWidth = newProps.charWidth;
-  //     const { scalePct } = this.state;
-  //     this.updatePeakDrawing(scalePct, charWidth);
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
-  updatePeakDrawing = (scalePct, charWidth) => {
-    const { isRowView, chromatogramData, row, getGaps } = this.props;
+    // this.chromatogramRef.onmousemove = (e) => {
+    //   const boundingRowRect = this.chromatogramRef.getBoundingClientRect();
+    //   let nearestCaretPos;
+    //   if (
+    //     getClientY(e) > boundingRowRect.top &&
+    //     getClientY(e) < boundingRowRect.top + boundingRowRect.height
+    //   ) {
+    //     if (getClientX(e) - boundingRowRect.left < 0) {
+    //       nearestCaretPos = row.start;
+    //     } else {
+    //       const clickXPositionRelativeToRowContainer =
+    //         getClientX(e) - boundingRowRect.left;
+    //       const numberOfBPsInFromRowStart = Math.floor(
+    //         (clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth
+    //       );
+    //       nearestCaretPos = numberOfBPsInFromRowStart + row.start;
+    //       if (nearestCaretPos > row.end + 1) {
+    //         nearestCaretPos = row.end + 1;
+    //       }
+    //     }
+    //     // this.setState({
+    //     //   tooltipLeft: getClientX(e) - boundingRowRect.left + "px",
+    //     //   tooltipTop: getClientY(e) - boundingRowRect.top + "px"
+    //     // });
+    //     this.tooltipRef.style.left =
+    //       getClientX(e) - boundingRowRect.left + "px";
+    //     this.tooltipRef.style.top = getClientY(e) - boundingRowRect.top + "px";
+    //     if (this.tooltipHolderRef) {
+    //       this.tooltipHolderRef.reposition();
+    //     }
+    //   }
+
+    // };
+  }
+  updatePeakDrawing = () => {
+    const { isRowView, chromatogramData, row, getGaps, charWidth } = this.props;
+    const { scalePct } = this.state;
     if (!this.canvasRef) return;
     if (!this.oldProps) this.oldProps = {};
     const keys = [
@@ -109,7 +122,6 @@ class Chromatogram extends React.Component {
           style={{
             zIndex: 10,
             position: "sticky",
-            // left: 275
             left: 145
           }}
         />
@@ -121,20 +133,94 @@ class Chromatogram extends React.Component {
           style={{
             zIndex: 10,
             position: "sticky",
-            // left: 305
             left: 175
           }}
         />
         <br />
+
         <div
           className="chromatogram-trace"
           style={{
-            zIndex: -1,
+            zIndex: 1,
             position: "relative",
             left: posOfSeqRead,
             display: "inline-block"
           }}
+          onMouseEnter={() => {
+            this.setState({ showTooltip: true });
+          }}
+          onMouseLeave={() => {
+            this.setState({ showTooltip: false });
+          }}
+          onMouseMove={(e) => {
+            const { row } = this.props;
+            const boundingRowRect =
+              this.chromatogramRef.getBoundingClientRect();
+            let nearestCaretPos;
+            if (
+              getClientY(e) > boundingRowRect.top &&
+              getClientY(e) < boundingRowRect.top + boundingRowRect.height
+            ) {
+              if (getClientX(e) - boundingRowRect.left < 0) {
+                nearestCaretPos = row.start;
+              } else {
+                const clickXPositionRelativeToRowContainer =
+                  getClientX(e) - boundingRowRect.left;
+                const numberOfBPsInFromRowStart = Math.floor(
+                  (clickXPositionRelativeToRowContainer + charWidth / 2) /
+                    charWidth
+                );
+                nearestCaretPos = numberOfBPsInFromRowStart + row.start;
+                if (nearestCaretPos > row.end + 1) {
+                  nearestCaretPos = row.end + 1;
+                }
+              }
+              this.setState({
+                nearestCaretPos
+              });
+              if (this.tooltipRef) {
+                this.tooltipRef.style.left =
+                  getClientX(e) - boundingRowRect.left + "px";
+                this.tooltipRef.style.top =
+                  getClientY(e) - boundingRowRect.top + "px";
+              }
+              if (this.tooltipHolderRef) {
+                this.tooltipHolderRef.reposition();
+              }
+            }
+          }}
+          ref={(n) => {
+            if (n) this.chromatogramRef = n;
+          }}
         >
+          {this.state.showTooltip && (
+            <div
+              style={{
+                position: "absolute",
+                height: 1,
+                width: 1,
+                background: "white",
+                top: this.state.tooltipTop,
+                left: this.state.tooltipLeft
+              }}
+              ref={(n) => {
+                if (n) this.tooltipRef = n;
+              }}
+              className="tg-chromatogram-tooltip"
+            >
+              <Tooltip
+                hoverOpenDelay={300}
+                ref={(n) => {
+                  if (n) this.tooltipHolderRef = n;
+                }}
+                isOpen={true}
+                content={<div>{this.state.nearestCaretPos + 1}</div>}
+              >
+                <div></div>
+              </Tooltip>
+            </div>
+          )}
+
           <canvas
             ref={(n) => {
               if (n) this.canvasRef = n;
