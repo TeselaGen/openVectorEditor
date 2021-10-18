@@ -603,9 +603,6 @@ function RotateCircularView({ setRotationRadians, editorName }) {
           );
           el.style.transform = `rotate(${val}deg)`;
           el.classList.add("veHideLabels");
-          document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg .veLabels`
-          ).style.transform = `rotate(-${val}deg)`;
         }}
         onRelease={(val) => {
           setRotationRadians((val * Math.PI) / 180);
