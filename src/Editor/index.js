@@ -16,7 +16,6 @@ import { importSequenceFromFile } from "../withEditorProps";
 import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
 import "tg-react-reflex/styles.css";
 import React from "react";
-// import DrawChromatogram from "./DrawChromatogram";
 import AlignmentView from "../AlignmentView";
 // import * as customIcons from "teselagen-react-components";
 // import { Button } from "@blueprintjs/core";
