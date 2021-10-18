@@ -925,10 +925,11 @@ const editCommandDefs = {
 
   rotateToCaretPosition: {
     isHidden: (props) => props.readOnly || isProtein(props),
-
     isDisabled: (props) =>
+      (props.readOnly && readOnlyDisabledTooltip) ||
       (props.caretPosition === -1 && "You must first place cursor") ||
-      (!props.sequenceData.circular && "Disabled for Linear Sequences"),
+      (!props.sequenceData.circular && "Disabled for Linear Sequences") ||
+      props.sequenceLength === 0,
     handler: (props) => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
