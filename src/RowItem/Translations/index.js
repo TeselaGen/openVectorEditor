@@ -1,4 +1,5 @@
 import React from "react";
+import useAAColorType from "../../utils/useAAColorType";
 import StackedAnnotations from "../StackedAnnotations";
 import Translation from "./Translation";
 
@@ -8,6 +9,7 @@ function getExtraInnerCompProps(
     showAminoAcidNumbers,
     getGaps,
     isProtein,
+    colorType,
     annotationHeight,
     spaceBetweenAnnotations,
     sequenceLength,
@@ -23,24 +25,27 @@ function getExtraInnerCompProps(
     aminoAcidNumbersHeight,
     annotationRange,
     isProtein,
+    colorType,
     sequenceLength
   };
 }
 
 function Translations(props) {
+  const [colorType] = useAAColorType();
   return (
     <StackedAnnotations
       {...{
         ...props,
         annotationRanges: props.annotationRanges.filter(
-          t => !t.isJoinedLocation
+          (t) => !t.isJoinedLocation
         ),
         annotationHeight:
           props.annotationHeight +
           (props.showAminoAcidNumbers ? props.aminoAcidNumbersHeight : 0),
         disregardLocations: true,
         getExtraInnerCompProps,
-        InnerComp: Translation
+        InnerComp: Translation,
+        colorType
       }}
     />
   );

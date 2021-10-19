@@ -5,6 +5,7 @@ import {
 } from "ve-range-utils";
 import AASliver from "./AASliver";
 import pureNoFunc from "../../utils/pureNoFunc";
+import proteinAlphabet from "ve-sequence-utils/lib/proteinAlphabet";
 
 class Translation extends React.Component {
   state = {
@@ -21,7 +22,7 @@ class Translation extends React.Component {
     clearTimeout(this.timeout);
   }
   render() {
-    let {
+    const {
       annotationRange,
       height,
       showAminoAcidNumbers,
@@ -32,30 +33,31 @@ class Translation extends React.Component {
       onDoubleClick,
       sequenceLength,
       getGaps,
+      colorType,
       isProtein
     } = this.props;
     const { hasMounted } = this.state;
-    let { annotation } = annotationRange;
+    const { annotation } = annotationRange;
     if (!hasMounted && !isProtein) {
       return <g height={height} className="translationLayer" />;
     }
     //we have an amino acid representation of our entire annotation, but it is an array
     //starting at 0, even if the annotation starts at some arbitrary point in the sequence
-    let { aminoAcids = [] } = annotation;
+    const { aminoAcids = [] } = annotation;
     //so we "zero" our subRange by the annotation start
-    let subrangeStartRelativeToAnnotationStart = zeroSubrangeByContainerRange(
+    const subrangeStartRelativeToAnnotationStart = zeroSubrangeByContainerRange(
       annotationRange,
       annotation,
       sequenceLength
     );
     //which allows us to then get the amino acids for the subRange
-    let aminoAcidsForSubrange = getSequenceWithinRange(
+    const aminoAcidsForSubrange = getSequenceWithinRange(
       subrangeStartRelativeToAnnotationStart,
       aminoAcids
     );
 
     //we then loop over all the amino acids in the sub range and draw them onto the row
-    let translationSVG = aminoAcidsForSubrange.map(function(
+    const translationSVG = aminoAcidsForSubrange.map(function (
       aminoAcidSliver,
       index
     ) {
@@ -89,15 +91,25 @@ class Translation extends React.Component {
         end: aminoAcidSliver.sequenceIndex
       }).gapsInside;
       // var relativeAAPositionInTranslation = annotationRange.start % bpsPerRow + index;
-      let relativeAAPositionInTranslation = index;
+      const relativeAAPositionInTranslation = index;
       const aminoAcid = aminoAcidSliver.aminoAcid || {};
       //get the codonIndices relative to
+      const alphVal = proteinAlphabet[aminoAcid.value];
+      let color;
+      if (alphVal) {
+        color =
+          colorType === "byHydrophobicity"
+            ? alphVal.color
+            : alphVal.colorByFamily;
+      } else {
+        color = aminoAcid.color;
+      }
       return (
         <AASliver
           isFiller={isEndFiller || isStartFiller}
           isTruncatedEnd={isTruncatedEnd}
           isTruncatedStart={isTruncatedStart}
-          onClick={function(event) {
+          onClick={function (event) {
             onClick({
               annotation: aminoAcidSliver.codonRange,
               codonRange: aminoAcidSliver.codonRange,
@@ -106,7 +118,7 @@ class Translation extends React.Component {
               gapsBefore
             });
           }}
-          onContextMenu={function(event) {
+          onContextMenu={function (event) {
             onRightClick &&
               onRightClick({
                 annotation,
@@ -116,11 +128,12 @@ class Translation extends React.Component {
                 gapsBefore
               });
           }}
-          title={`${aminoAcid.name} -- Index: ${aminoAcidSliver.aminoAcidIndex +
-            1} -- Hydrophobicity ${aminoAcid.hydrophobicity}`}
+          title={`${aminoAcid.name} -- Index: ${
+            aminoAcidSliver.aminoAcidIndex + 1
+          } -- Hydrophobicity ${aminoAcid.hydrophobicity}`}
           showAminoAcidNumbers={showAminoAcidNumbers}
           aminoAcidIndex={aminoAcidSliver.aminoAcidIndex}
-          onDoubleClick={function(event) {
+          onDoubleClick={function (event) {
             onDoubleClick({ annotation, event });
           }}
           getGaps={getGaps}
@@ -134,7 +147,7 @@ class Translation extends React.Component {
             relativeAAPositionInTranslation + gapsInsideFeatureStartToBp
           }
           letter={aminoAcid.value}
-          color={aminoAcid.color}
+          color={color}
           positionInCodon={aminoAcidSliver.positionInCodon}
         />
       );

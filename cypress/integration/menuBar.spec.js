@@ -104,7 +104,19 @@ describe("menuBar", function () {
       .find("svg")
       .should("have.length", 2);
   });
-  it(`should be able permanently change sequence case`, () => {
+  it(`should be able to change the amino acid color (by hydrophobicity or by family)`, () => {
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(`.veRowViewTranslationsContainer .D[fill="#4D0000"]`);
+    cy.get(`.veRowViewTranslationsContainer .S[fill="#D60000"]`);
+    cy.contains("Amino Acid Colors").click({ force: true });
+    cy.contains("Color By Family").click({ force: true });
+    cy.get(`.veRowViewTranslationsContainer .D[fill="#EE82EE"]`);
+    cy.get(`.veRowViewTranslationsContainer .S[fill="#90EE90"]`);
+    cy.contains("Color By Hydrophobicity").click({ force: true });
+    cy.get(`.veRowViewTranslationsContainer .D[fill="#4D0000"]`);
+    cy.get(`.veRowViewTranslationsContainer .S[fill="#D60000"]`);
+  });
+  it(`should be able to permanently change sequence case`, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
     cy.contains(".bp3-menu-item", "Change Case").trigger("mouseover");
@@ -115,7 +127,7 @@ describe("menuBar", function () {
     cy.contains(".bp3-menu-item", "Lower Case Sequence").click({ force: true });
     cy.contains(".rowViewTextContainer", "gacgtcttatga");
   });
-  it(`should be able permanently change selected sequence case`, () => {
+  it(`should be able to permanently change selected sequence case`, () => {
     cy.contains(".veRowViewFeature", "araD").trigger("contextmenu", {
       force: true
     });

@@ -1,5 +1,6 @@
 import { MenuItem } from "@blueprintjs/core";
 import React from "react";
+import useAAColorType from "../utils/useAAColorType";
 import { LimitAnnotations } from "../utils/useAnnotationLimits";
 import useMeltingTemp from "../utils/useMeltingTemp";
 
@@ -193,6 +194,39 @@ export default [
   { cmd: "toggleSequence", shouldDismissPopover: false },
   { cmd: "toggleReverseSequence", shouldDismissPopover: false },
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
+  {
+    text: "Amino Acid Colors (by Hydrophobicity/by Family)",
+    component: function AAColorType(props) {
+      const [aaColorType, setAAColorType] = useAAColorType();
+      return (
+        <MenuItem
+          {...props}
+          text="Amino Acid Colors"
+          shouldDismissPopover={false}
+        >
+          <MenuItem
+            {...props}
+            text="Color By Hydrophobicity"
+            shouldDismissPopover={false}
+            onClick={() => {
+              setAAColorType("byHydrophobicity");
+            }}
+            icon={aaColorType === "byHydrophobicity" ? "small-tick" : "blank"}
+          ></MenuItem>
+          <MenuItem
+            {...props}
+            text="Color By Family"
+            shouldDismissPopover={false}
+            onClick={() => {
+              setAAColorType("byFamily");
+            }}
+            icon={aaColorType === "byFamily" ? "small-tick" : "blank"}
+          ></MenuItem>
+        </MenuItem>
+      );
+    },
+    shouldDismissPopover: false
+  },
 
   { divider: "" },
   {

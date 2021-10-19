@@ -1122,6 +1122,7 @@ const annotationToggleCommandDefs = {};
   },
   {
     type: "dnaColors",
+    name: () => "DNA Colors",
     isDisabled: (props) =>
       !props.annotationVisibility.sequence &&
       !props.annotationVisibility.reverseSequence &&
