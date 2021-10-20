@@ -6,8 +6,8 @@ import { divideBy3 } from "../utils/proteinUtils";
 import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 
-let Axis = function (props) {
-  let {
+const Axis = function (props) {
+  const {
     row,
     tickSpacing,
     bpsPerRow,
@@ -19,12 +19,13 @@ let Axis = function (props) {
     getGaps,
     scrollData,
     isProtein,
-    style
+    style,
+    isLinearView
   } = props;
   const noRows = row.start === 0 && row.end === 0;
   /* eslint-disable react-hooks/exhaustive-deps */
   //memoize this function because it does the heavy lifting
-  let tickMarkPositions = useMemo(() => {
+  const tickMarkPositions = useMemo(() => {
     if (noRows) return [];
     return calculateTickMarkPositionsForGivenRange({
       tickSpacing,
@@ -33,7 +34,7 @@ let Axis = function (props) {
       isProtein
     }).map((tickMarkPosition) => {
       const gaps = getGaps ? getGaps(tickMarkPosition).gapsBefore : 0;
-      let xCenter =
+      const xCenter =
         (tickMarkPosition - (isProtein ? 1 : 0) + gaps) * charWidth +
         charWidth / 2;
       return {
@@ -54,7 +55,7 @@ let Axis = function (props) {
   if (noRows) {
     return null;
   }
-  let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
+  const { xStart, width } = getXStartAndWidthOfRangeWrtRow({
     row,
     range: row,
     charWidth,
@@ -63,7 +64,7 @@ let Axis = function (props) {
   });
   //this function should take in a desired tickSpacing (eg 10 bps between tick mark)
   //and output an array of tickMarkPositions for the given row (eg, [0, 10, 20])
-  let xEnd = xStart + width;
+  const xEnd = xStart + width;
   let visibleStart, visibleEnd;
   if (scrollData) {
     const val = getVisibleStartEnd({
@@ -75,10 +76,10 @@ let Axis = function (props) {
     visibleEnd = val.visibleEnd + 400;
   }
 
-  let yStart = 0;
-  let yEnd = annotationHeight / 3;
+  const yStart = 0;
+  const yEnd = annotationHeight / 3;
 
-  let tickMarkSVG = [];
+  const tickMarkSVG = [];
 
   tickMarkPositions.forEach(function ({ tickMarkPosition, xCenter }, i) {
     // const xCenterPlusXStart = xCenter + xStart;
@@ -100,18 +101,22 @@ let Axis = function (props) {
 
       const positionLength = position.toString().length * 4;
       const textInner = divideBy3(position + (isProtein ? 1 : 0), isProtein);
+
+      let x = xCenter;
+      if (!isLinearView) {
+        x =
+          i === 0 //if first label in row, or last label in row, we add checks to make sure the axis number labels don't go outside of the width of the row
+            ? Math.max(positionLength, xCenter)
+            : i === tickMarkPositions.length - 1
+            ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
+            : xCenter;
+      }
       tickMarkSVG.push(
         <text
           data-tick-mark={textInner}
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
           stroke="black"
-          x={
-            i === 0 //if first label in row, or last label in row, we add checks to make sure the axis number labels don't go outside of the width of the row
-              ? Math.max(positionLength, xCenter)
-              : i === tickMarkPositions.length - 1
-              ? Math.min(bpsPerRow * charWidth - positionLength, xCenter)
-              : xCenter
-          }
+          x={x}
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
         >

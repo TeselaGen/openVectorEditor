@@ -230,6 +230,7 @@ class _LinearView extends React.Component {
               ...RowItemProps
             }}
             row={rowData[0]}
+            isLinearView
           />
         </div>
       </Draggable>

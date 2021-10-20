@@ -99,7 +99,8 @@ export class RowItem extends React.PureComponent {
       externalLabels,
       scrollData,
       onlyShowLabelsThatDoNotFit,
-      labelLineIntensity
+      labelLineIntensity,
+      isLinearView
     } = this.props;
 
     const {
@@ -127,7 +128,9 @@ export class RowItem extends React.PureComponent {
 
     if (!width) {
       width = bpsPerRow * charWidth;
+      if (isLinearView) width -= (charWidth * bpsPerRow.toString().length) / 2;
     } else {
+      if (isLinearView) width -= (charWidth * bpsPerRow.toString().length) / 2;
       charWidth = width / Math.max(bpsPerRow, 1);
     }
     const rowContainerStyle = {
@@ -617,6 +620,7 @@ export class RowItem extends React.PureComponent {
               annotationHeight={axisHeight}
               marginTop={axisMarginTop}
               {...annotationCommonProps}
+              isLinearView={isLinearView}
             />
           )}
           {caretPosition > -1 && (
