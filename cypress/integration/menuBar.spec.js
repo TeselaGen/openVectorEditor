@@ -106,15 +106,15 @@ describe("menuBar", function () {
   });
   it(`should be able to change the amino acid color (by hydrophobicity or by family)`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
-    cy.get(`.veRowViewTranslationsContainer .D[fill="#4D0000"]`);
-    cy.get(`.veRowViewTranslationsContainer .S[fill="#D60000"]`);
+    cy.get(`.veRowViewTranslationsContainer .D[fill="hsl(268.9, 100%, 69%)"]`);
+    cy.get(`.veRowViewTranslationsContainer .S[fill="hsl(298.6, 100%, 69%)"]`);
     cy.contains("Amino Acid Colors").click({ force: true });
     cy.contains("Color By Family").click({ force: true });
     cy.get(`.veRowViewTranslationsContainer .D[fill="#EE82EE"]`);
     cy.get(`.veRowViewTranslationsContainer .S[fill="#90EE90"]`);
     cy.contains("Color By Hydrophobicity").click({ force: true });
-    cy.get(`.veRowViewTranslationsContainer .D[fill="#4D0000"]`);
-    cy.get(`.veRowViewTranslationsContainer .S[fill="#D60000"]`);
+    cy.get(`.veRowViewTranslationsContainer .D[fill="hsl(268.9, 100%, 69%)"]`);
+    cy.get(`.veRowViewTranslationsContainer .S[fill="hsl(298.6, 100%, 69%)"]`);
   });
   it(`should be able to permanently change sequence case`, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();

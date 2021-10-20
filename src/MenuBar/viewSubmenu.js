@@ -1,5 +1,6 @@
 import { MenuItem } from "@blueprintjs/core";
 import React from "react";
+import { InfoHelper } from "teselagen-react-components";
 import useAAColorType from "../utils/useAAColorType";
 import { LimitAnnotations } from "../utils/useAnnotationLimits";
 import useMeltingTemp from "../utils/useMeltingTemp";
@@ -206,7 +207,33 @@ export default [
         >
           <MenuItem
             {...props}
-            text="Color By Hydrophobicity"
+            text={
+              <div style={{ display: "flex" }}>
+                <span style={{ marginRight: 10 }}>Color By Hydrophobicity</span>
+                <InfoHelper
+                  content={
+                    <div style={{ color: "white" }}>
+                      <div
+                        style={{
+                          padding: 2,
+                          backgroundColor: "hsl(258.1, 100%, 69%)"
+                        }}
+                      >
+                        More Hydrophilic (4.5)
+                      </div>
+                      <div
+                        style={{
+                          padding: 2,
+                          backgroundColor: "hsl(356.9, 100%, 69%)"
+                        }}
+                      >
+                        More Hydrophobic (-4.5)
+                      </div>
+                    </div>
+                  }
+                ></InfoHelper>
+              </div>
+            }
             shouldDismissPopover={false}
             onClick={() => {
               setAAColorType("byHydrophobicity");
@@ -215,7 +242,38 @@ export default [
           ></MenuItem>
           <MenuItem
             {...props}
-            text="Color By Family"
+            text={
+              <div style={{ display: "flex" }}>
+                <span style={{ marginRight: 10 }}>Color By Family</span>
+                <InfoHelper
+                  content={
+                    <div style={{ color: "black" }}>
+                      <div style={{ padding: 2, backgroundColor: "#FFC0CB" }}>
+                        Positive: K, H, R
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#EE82EE" }}>
+                        Negative: D, E
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#D3D3D3" }}>
+                        Amidic: N, Q
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#00FFFF" }}>
+                        Aliphatic: A, G, L, I, P, V
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#FFA500" }}>
+                        Aromatic: F, W, Y
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#FFFF00" }}>
+                        Sulfur: C, M
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#90EE90" }}>
+                        Hydroxylic: S, T
+                      </div>
+                    </div>
+                  }
+                ></InfoHelper>
+              </div>
+            }
             shouldDismissPopover={false}
             onClick={() => {
               setAAColorType("byFamily");

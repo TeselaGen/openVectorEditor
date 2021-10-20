@@ -54,7 +54,6 @@ function AASliver(props) {
               : "0,0 74,0 85,50 74,100 0,100 16,50 0,0"
           }
           strokeWidth="5"
-          opacity={0.5}
           fill={color || "gray"}
         />
       )}

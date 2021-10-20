@@ -5,7 +5,7 @@ import {
 } from "ve-range-utils";
 import AASliver from "./AASliver";
 import pureNoFunc from "../../utils/pureNoFunc";
-import proteinAlphabet from "ve-sequence-utils/lib/proteinAlphabet";
+import { proteinAlphabet } from "ve-sequence-utils";
 
 class Translation extends React.Component {
   state = {

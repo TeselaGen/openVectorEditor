@@ -76,9 +76,12 @@
   fill: #f5f8fa !important;
 }
 
-.bp3-dark .veRowViewAxis text,
-.bp3-dark .translationLayer text {
+.bp3-dark .veRowViewAxis text {
   stroke: #f5f8fa !important;
+}
+
+.bp3-dark .translationLayer text {
+  fill: black !important;
 }
 
 .bp3-dark .step-group.active .step-text {
