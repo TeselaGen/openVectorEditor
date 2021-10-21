@@ -14,10 +14,19 @@ export default function getAnnotationNameAndStartStopString(
   },
   { startText, isProtein } = {}
 ) {
-  const typeToUse = annotationTypePlural
-    ? upperFirst(getSingular(annotationTypePlural) === 'cutsite' ? 'cut site' : getSingular(annotationTypePlural)) +
-      (annotationTypePlural === "features" ? ` (${type})` : "")
-    : "";
+  const typeToUse = (() => {
+    if (annotationTypePlural) {
+      const singularKey = getSingular(annotationTypePlural);
+      if (singularKey === 'cutsite') {
+        return 'Cut site' + (annotationTypePlural === 'features' ? ` (${type})` : '');
+      }
+      if (singularKey === 'orf') {
+        return 'ORF' + (annotationTypePlural === 'features' ? ` (${type})` : '');
+      }
+      return upperFirst(getSingular(annotationTypePlural)) + (annotationTypePlural === 'features' ? ` (${type})` : '');
+    }
+    return '';
+  })();
 
   if (isWrappedAddon) {
     const oldEnd = end;

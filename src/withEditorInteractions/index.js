@@ -1029,7 +1029,7 @@ function VectorInteractionHOC(Component /* options */) {
         if (annotation.isOrf) {
           return [
             {
-              text: "Hide Orf Translations",
+              text: "Hide ORF Translations",
               onClick: () => {
                 annotationVisibilityToggle("orfTranslations");
               }

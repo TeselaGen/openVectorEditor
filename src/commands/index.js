@@ -1047,8 +1047,18 @@ const viewPropertiesCommandDefs = [
 ].reduce((acc, key) => {
   const singularKey = pluralize.singular(key);
   const upperKey = upperFirst(singularKey);
+  const name = (() => {
+    if (singularKey === 'cutsite') {
+      return "View Cut Site Properties";
+    }
+    if (singularKey === 'orf') {
+      return "View ORF Properties";
+    }
+    return `View ${upperFirst(singularKey)} Properties`;
+  })();
+
   acc[`view${upperKey}Properties`] = {
-    name: `View ${upperKey === "Cutsite" ? "Cut Site" : upperKey} Properties`,
+    name,
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
