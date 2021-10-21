@@ -60,7 +60,7 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3499 bps from 11 to 3509"]`);
+    cy.get(`[title="Selecting 3500 bps from 11 to 3510"]`);
   });
   it("the alignment should show axis numbers correctly", function () {
     cy.visit("#/Alignment?alignmentDataId=39");
@@ -79,7 +79,7 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3454 bps from 56 to 3509"]`);
+    cy.get(`[title="Selecting 3455 bps from 56 to 3510"]`);
   });
   it("scrolls the yellow scroll handle correctly", function () {
     cy.visit("#/Alignment");
