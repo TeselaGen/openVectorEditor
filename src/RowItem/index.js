@@ -54,7 +54,7 @@ export class RowItem extends React.PureComponent {
   render() {
     let {
       noRedux,
-      charWidth = 12,
+      charWidth,
       selectionLayer = { start: -1, end: -1 },
       deletionLayers = {},
       replacementLayers = {},
@@ -128,11 +128,12 @@ export class RowItem extends React.PureComponent {
 
     if (!width) {
       width = bpsPerRow * charWidth;
-      if (isLinearView) width -= (charWidth * bpsPerRow.toString().length) / 2;
-    } else {
-      if (isLinearView) width -= (charWidth * bpsPerRow.toString().length) / 2;
-      charWidth = width / Math.max(bpsPerRow, 1);
     }
+    if (isLinearView) {
+      width -= ((charWidth || 12) * bpsPerRow.toString().length) / 2;
+    }
+    charWidth = charWidth || width / Math.max(bpsPerRow, 1);
+
     const rowContainerStyle = {
       position: "relative",
       minHeight,

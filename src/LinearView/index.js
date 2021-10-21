@@ -137,9 +137,10 @@ class _LinearView extends React.Component {
       isProtein,
       ...rest
     } = this.props;
-    const innerWidth = Math.max(width - marginWidth, 0);
-    this.charWidth = charWidth || innerWidth / this.getMaxLength();
+
     const bpsPerRow = this.getMaxLength();
+    const innerWidth = Math.max(width - marginWidth, 0);
+    this.charWidth = charWidth || innerWidth / bpsPerRow;
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
 
