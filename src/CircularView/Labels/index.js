@@ -22,16 +22,16 @@ function Labels({
 }) {
   if (!labels.length) return null;
   outerRadius += 25;
-  let radius = outerRadius;
-  let outerPointRadius = outerRadius - 20;
+  const radius = outerRadius;
+  const outerPointRadius = outerRadius - 20;
   //we don't want the labels to grow too large on large screen devices,
   //so we start to decrease the fontWidth if the textScalingFactor is less than 1
-  let fontWidth = labelSize * (textScalingFactor < 1 ? textScalingFactor : 1);
+  const fontWidth = labelSize * (textScalingFactor < 1 ? textScalingFactor : 1);
 
-  let fontHeight = fontWidth * clamp(fontHeightMultiplier, 1.5, 3.5);
-  let labelPoints = labels
+  const fontHeight = fontWidth * clamp(fontHeightMultiplier, 1.5, 3.5);
+  const labelPoints = labels
     .map(function (label) {
-      let {
+      const {
         annotationCenterAngle: _annotationCenterAngle,
         annotationCenterRadius
       } = label;
@@ -72,7 +72,7 @@ function Labels({
       label.labelIds = { [label.id]: true };
       return label;
     });
-  let groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
+  const groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
     .filter((l) => !!l)
     .map((originalLabel) => {
       //we need to search the labelGroup to see if any of the sub labels are highPriorityLabels
@@ -130,7 +130,11 @@ function Labels({
   window.isLabelGroupOpen = false;
   return {
     component: (
-      <g key="veLabels" className="veLabels ve-monospace-font">
+      <g
+        key="veLabels"
+        className="veLabels ve-monospace-font"
+        transform={`rotate(-${(rotationRadians * 180) / Math.PI})`}
+      >
         <DrawGroupedLabels
           {...{
             editorName,
@@ -186,8 +190,8 @@ const DrawLabelGroup = withHover(function ({
     // }
   }
 
-  let labelLength = text.length * fontWidth;
-  let maxLabelLength = labelAndSublabels.reduce(function (
+  const labelLength = text.length * fontWidth;
+  const maxLabelLength = labelAndSublabels.reduce(function (
     currentLength,
     { text = "Unlabeled" }
   ) {
@@ -198,16 +202,17 @@ const DrawLabelGroup = withHover(function ({
   },
   0);
 
-  let maxLabelWidth = maxLabelLength * fontWidth;
-  let labelOnLeft = label.angle > Math.PI;
+  const maxLabelWidth = maxLabelLength * fontWidth;
+  const labelOnLeft = label.angle > Math.PI;
   let labelXStart = label.x - (labelOnLeft ? labelLength : 0);
   if (condenseOverflowingXLabels) {
-    let distancePastBoundary =
+    const distancePastBoundary =
       Math.abs(label.x + (labelOnLeft ? -labelLength : labelLength)) -
       (outerRadius + 90) * Math.max(1, circularViewWidthVsHeightRatio);
     // Math.max(outerRadius (circularViewWidthVsHeightRatio / 2 + 80));
     if (distancePastBoundary > 0) {
-      let numberOfCharsToChop = Math.ceil(distancePastBoundary / fontWidth) + 2;
+      const numberOfCharsToChop =
+        Math.ceil(distancePastBoundary / fontWidth) + 2;
       //   if (numberOfCharsToChop > text.length) numberOfCharsToChop = text.length
       //label overflows the boundaries!
       text = text.slice(0, -numberOfCharsToChop) + "..";
@@ -217,8 +222,8 @@ const DrawLabelGroup = withHover(function ({
       labelXStart += labelOnLeft ? distancePastBoundary : 0;
     }
   }
-  let dy = fontHeight;
-  let textYStart = label.y + dy / 2;
+  const dy = fontHeight;
+  const textYStart = label.y + dy / 2;
 
   //if label xStart or label xEnd don't fit within the canvas, we need to shorten the label..
 
@@ -244,8 +249,8 @@ const DrawLabelGroup = withHover(function ({
     }
     let labelYStart = label.y;
 
-    let labelGroupHeight = labelAndSublabels.length * dy;
-    let labelGroupBottom = label.y + labelGroupHeight;
+    const labelGroupHeight = labelAndSublabels.length * dy;
+    const labelGroupBottom = label.y + labelGroupHeight;
     // var numberOfLabelsToFitAbove = 0
     if (labelGroupBottom > outerRadius + 20) {
       // var diff = labelGroupBottom - (outerRadius+10)
@@ -256,7 +261,7 @@ const DrawLabelGroup = withHover(function ({
       }
     }
 
-    let line = LabelLine(
+    const line = LabelLine(
       [
         hoveredLabel.innerPoint,
         // hoveredLabel.labelAndSublabels &&
@@ -440,8 +445,8 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   labelLineIntensity
 }) {
   return groupedLabels.map(function (label, i) {
-    let { labelAndSublabels, labelIds } = label;
-    let multipleLabels = labelAndSublabels.length > 1;
+    const { labelAndSublabels, labelIds } = label;
+    const multipleLabels = labelAndSublabels.length > 1;
     return (
       <DrawLabelGroup
         key={i}

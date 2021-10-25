@@ -925,10 +925,11 @@ const editCommandDefs = {
 
   rotateToCaretPosition: {
     isHidden: (props) => props.readOnly || isProtein(props),
-
     isDisabled: (props) =>
+      (props.readOnly && readOnlyDisabledTooltip) ||
       (props.caretPosition === -1 && "You must first place cursor") ||
-      (!props.sequenceData.circular && "Disabled for Linear Sequences"),
+      (!props.sequenceData.circular && "Disabled for Linear Sequences") ||
+      props.sequenceLength === 0,
     handler: (props) => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
@@ -1046,8 +1047,18 @@ const viewPropertiesCommandDefs = [
 ].reduce((acc, key) => {
   const singularKey = pluralize.singular(key);
   const upperKey = upperFirst(singularKey);
+  const name = (() => {
+    if (singularKey === 'cutsite') {
+      return "View Cut Site Properties";
+    }
+    if (singularKey === 'orf') {
+      return "View ORF Properties";
+    }
+    return `View ${upperFirst(singularKey)} Properties`;
+  })();
+
   acc[`view${upperKey}Properties`] = {
-    name: `View ${upperKey === "Cutsite" ? "Cut Site" : upperKey} Properties`,
+    name,
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
@@ -1121,6 +1132,7 @@ const annotationToggleCommandDefs = {};
   },
   {
     type: "dnaColors",
+    name: () => "DNA Colors",
     isDisabled: (props) =>
       !props.annotationVisibility.sequence &&
       !props.annotationVisibility.reverseSequence &&

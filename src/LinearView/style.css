@@ -2,4 +2,9 @@
   overflow: visible !important;
 }
 
+.veLinearView .veRowItemWrapper {
+  display: flex;
+  justify-content: center;
+}
+
 /*# sourceMappingURL=style.css.map */

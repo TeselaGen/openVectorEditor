@@ -193,15 +193,26 @@ export const importSequenceFromFile =
     if (failed) {
       window.toastr.error("Error importing sequence");
     }
-    let seqData = result[0].parsedSequence;
-
-    if (onImport) {
-      seqData = await onImport(seqData);
+    if (result.length > 1) {
+      showDialog({
+        dialogType: "MultipleSeqsDetectedOnImportDialog",
+        props: {
+          finishDisplayingSeq,
+          results: result
+        }
+      });
+    } else {
+      finishDisplayingSeq(result[0].parsedSequence);
     }
+    async function finishDisplayingSeq(seqData) {
+      if (onImport) {
+        seqData = await onImport(seqData);
+      }
 
-    if (seqData) {
-      updateSequenceData(seqData);
-      window.toastr.success("Sequence Imported");
+      if (seqData) {
+        updateSequenceData(seqData);
+        window.toastr.success("Sequence Imported");
+      }
     }
   };
 

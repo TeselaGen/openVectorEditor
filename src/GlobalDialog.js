@@ -5,6 +5,7 @@ import { dialogHolder, hideDialog } from "./GlobalDialogUtils";
 import RenameSequenceDialog from "./helperComponents/RenameSequenceDialog";
 import PrintDialog from "./helperComponents/PrintDialog";
 import RemoveDuplicates from "./helperComponents/RemoveDuplicates";
+import { MultipleSeqsDetectedOnImportDialog } from "./helperComponents/MultipleSeqsDetectedOnImportDialog";
 import GoToDialog from "./helperComponents/GoToDialog";
 import SelectDialog from "./helperComponents/SelectDialog";
 import EnzymesDialog from "./helperComponents/EnzymesDialog";
@@ -22,6 +23,7 @@ import AddOrEditPrimerDialog from "./helperComponents/AddOrEditPrimerDialog";
 const Dialogs = {
   RenameSequenceDialog,
   PrintDialog,
+  MultipleSeqsDetectedOnImportDialog,
   RemoveDuplicates,
   GoToDialog,
   SelectDialog,

@@ -12,6 +12,10 @@
   width: fit-content;
 }
 
+.alignmentViewTrackContainer .veLinearView .veRowItemWrapper {
+  display: block;
+}
+
 .alignmentTracks .alignmentHolder::-webkit-scrollbar {
   display: none;
 }
