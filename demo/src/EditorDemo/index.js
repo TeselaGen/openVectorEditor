@@ -408,7 +408,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             minHeight: 0
           }}
         >
-          {this.state.showDemoOptions && (
+          {
             <div
               data-test="optionContainer"
               style={{
@@ -425,7 +425,14 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 display: "flex",
                 flexDirection: "column",
                 paddingRight: "5px",
-                borderRight: "1px solid lightgrey"
+                borderRight: "1px solid lightgrey",
+                ...(!this.state.showDemoOptions && {
+                  display: "none",
+                  width: 0,
+                  height: 0,
+                  minWidth: 0,
+                  maxWidth: 0
+                })
               }}
             >
               <div style={{ paddingLeft: 10, paddingRight: 10 }}>
@@ -1462,7 +1469,7 @@ clickOverrides: {
               <br />
               <br />
             </div>
-          )}
+          }
           {/* <div
             style={{
               display: "flex",
