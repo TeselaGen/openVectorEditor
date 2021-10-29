@@ -11,7 +11,7 @@ export default class DropHandler extends React.Component {
     return (
       <Dropzone
         disabled={disabled}
-        disableClick
+        onClick={evt => evt.preventDefault()}
         multiple={false}
         accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna"]}
         activeClassName="isActive"
