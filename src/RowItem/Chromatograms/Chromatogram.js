@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Tooltip } from "@blueprintjs/core";
+import { Button } from "@blueprintjs/core";
 import { get } from "lodash-es";
-import { getClientX, getClientY } from "../../utils/editorUtils";
+// import { getClientX, getClientY } from "../../utils/editorUtils";
 class Chromatogram extends React.Component {
   constructor(props) {
     super(props);
@@ -12,40 +12,6 @@ class Chromatogram extends React.Component {
     const { charWidth } = this.props;
     const { scalePct } = this.state;
     this.updatePeakDrawing(scalePct, charWidth);
-
-    // this.chromatogramRef.onmousemove = (e) => {
-    //   const boundingRowRect = this.chromatogramRef.getBoundingClientRect();
-    //   let nearestCaretPos;
-    //   if (
-    //     getClientY(e) > boundingRowRect.top &&
-    //     getClientY(e) < boundingRowRect.top + boundingRowRect.height
-    //   ) {
-    //     if (getClientX(e) - boundingRowRect.left < 0) {
-    //       nearestCaretPos = row.start;
-    //     } else {
-    //       const clickXPositionRelativeToRowContainer =
-    //         getClientX(e) - boundingRowRect.left;
-    //       const numberOfBPsInFromRowStart = Math.floor(
-    //         (clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth
-    //       );
-    //       nearestCaretPos = numberOfBPsInFromRowStart + row.start;
-    //       if (nearestCaretPos > row.end + 1) {
-    //         nearestCaretPos = row.end + 1;
-    //       }
-    //     }
-    //     // this.setState({
-    //     //   tooltipLeft: getClientX(e) - boundingRowRect.left + "px",
-    //     //   tooltipTop: getClientY(e) - boundingRowRect.top + "px"
-    //     // });
-    //     this.tooltipRef.style.left =
-    //       getClientX(e) - boundingRowRect.left + "px";
-    //     this.tooltipRef.style.top = getClientY(e) - boundingRowRect.top + "px";
-    //     if (this.tooltipHolderRef) {
-    //       this.tooltipHolderRef.reposition();
-    //     }
-    //   }
-
-    // };
   }
   updatePeakDrawing = () => {
     const { isRowView, chromatogramData, row, getGaps, charWidth } = this.props;
@@ -146,54 +112,55 @@ class Chromatogram extends React.Component {
             left: posOfSeqRead,
             display: "inline-block"
           }}
-          onMouseEnter={() => {
-            this.setState({ showTooltip: true });
-          }}
-          onMouseLeave={() => {
-            this.setState({ showTooltip: false });
-          }}
-          onMouseMove={(e) => {
-            const { row } = this.props;
-            const boundingRowRect =
-              this.chromatogramRef.getBoundingClientRect();
-            let nearestCaretPos;
-            if (
-              getClientY(e) > boundingRowRect.top &&
-              getClientY(e) < boundingRowRect.top + boundingRowRect.height
-            ) {
-              if (getClientX(e) - boundingRowRect.left < 0) {
-                nearestCaretPos = row.start;
-              } else {
-                const clickXPositionRelativeToRowContainer =
-                  getClientX(e) - boundingRowRect.left;
-                const numberOfBPsInFromRowStart = Math.floor(
-                  (clickXPositionRelativeToRowContainer + charWidth / 2) /
-                    charWidth
-                );
-                nearestCaretPos = numberOfBPsInFromRowStart + row.start;
-                if (nearestCaretPos > row.end + 1) {
-                  nearestCaretPos = row.end + 1;
-                }
-              }
-              this.setState({
-                nearestCaretPos
-              });
-              if (this.tooltipRef) {
-                this.tooltipRef.style.left =
-                  getClientX(e) - boundingRowRect.left + "px";
-                this.tooltipRef.style.top =
-                  getClientY(e) - boundingRowRect.top + "px";
-              }
-              if (this.tooltipHolderRef) {
-                this.tooltipHolderRef.reposition();
-              }
-            }
-          }}
+          // tnr comment back in for start of tooltip work
+          // onMouseEnter={() => {
+          //   this.setState({ showTooltip: true });
+          // }}
+          // onMouseLeave={() => {
+          //   this.setState({ showTooltip: false });
+          // }}
+          // onMouseMove={(e) => {
+          //   const { row } = this.props;
+          //   const boundingRowRect =
+          //     this.chromatogramRef.getBoundingClientRect();
+          //   let nearestCaretPos;
+          //   if (
+          //     getClientY(e) > boundingRowRect.top &&
+          //     getClientY(e) < boundingRowRect.top + boundingRowRect.height
+          //   ) {
+          //     if (getClientX(e) - boundingRowRect.left < 0) {
+          //       nearestCaretPos = row.start;
+          //     } else {
+          //       const clickXPositionRelativeToRowContainer =
+          //         getClientX(e) - boundingRowRect.left;
+          //       const numberOfBPsInFromRowStart = Math.floor(
+          //         (clickXPositionRelativeToRowContainer + charWidth / 2) /
+          //           charWidth
+          //       );
+          //       nearestCaretPos = numberOfBPsInFromRowStart + row.start;
+          //       if (nearestCaretPos > row.end + 1) {
+          //         nearestCaretPos = row.end + 1;
+          //       }
+          //     }
+          //     this.setState({
+          //       nearestCaretPos
+          //     });
+          //     if (this.tooltipRef) {
+          //       this.tooltipRef.style.left =
+          //         getClientX(e) - boundingRowRect.left + "px";
+          //       this.tooltipRef.style.top =
+          //         getClientY(e) - boundingRowRect.top + "px";
+          //     }
+          //     if (this.tooltipHolderRef) {
+          //       this.tooltipHolderRef.reposition();
+          //     }
+          //   }
+          // }}
           ref={(n) => {
             if (n) this.chromatogramRef = n;
           }}
         >
-          {this.state.showTooltip && (
+          {/* tnr comment back in for start of tooltip work {this.state.showTooltip && (
             <div
               style={{
                 position: "absolute",
@@ -219,7 +186,7 @@ class Chromatogram extends React.Component {
                 <div></div>
               </Tooltip>
             </div>
-          )}
+          )} */}
 
           <canvas
             ref={(n) => {
@@ -314,6 +281,7 @@ function drawTrace({
       } else {
         endBasePos = traceData.basePos[baseIndex + 1] - startOffset;
       }
+      // console.log(`endBasePos:`,endBasePos)
       for (
         let innerIndex = startBasePos;
         innerIndex < endBasePos;

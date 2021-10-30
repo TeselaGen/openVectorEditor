@@ -845,6 +845,11 @@ export class Editor extends React.Component {
               minHeight: 0,
               display: "flex"
             }}
+            // onMouseMove={(e) => {
+            // tnr: maybe add tooltip helper here..?
+            //   // console.log(`e:`,e)
+            //   console.log(`e.target:`,e.target)
+            // }}
             className="tg-editor-container"
             id="section-to-print"
           >
