@@ -52,7 +52,7 @@ class ToolbarItem extends React.Component {
     }
     // const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
 
-    const buttonTarget = (
+    const ButtonTarget = () => (
       <div
         className={
           `veToolbarItemOuter ve-tool-container-${toolName}` +
@@ -124,7 +124,7 @@ class ToolbarItem extends React.Component {
     );
     const content = (
       <div
-        ref={n => {
+        ref={(n) => {
           if (n) this.dropdownNode = n;
         }}
         style={{ padding: 10, minWidth: 250, maxWidth: 350 }}
@@ -140,9 +140,9 @@ class ToolbarItem extends React.Component {
       </div>
     );
     const target = IconWrapper ? (
-      <IconWrapper {...IconWrapperProps}> {buttonTarget}</IconWrapper>
+      <IconWrapper {...IconWrapperProps}>{() => <ButtonTarget />}</IconWrapper>
     ) : (
-      buttonTarget
+      <ButtonTarget />
     );
 
     return (
@@ -152,7 +152,7 @@ class ToolbarItem extends React.Component {
         <Popover
           disabled={popoverDisabled}
           isOpen={!!Dropdown && isOpen}
-          onClose={e => {
+          onClose={(e) => {
             let srcElement;
             if (e) {
               srcElement = e.srcElement || e.target;

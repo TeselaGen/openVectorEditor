@@ -11,7 +11,7 @@ export default class DropHandler extends React.Component {
     return (
       <Dropzone
         disabled={disabled}
-        onClick={evt => evt.preventDefault()}
+        onClick={(evt) => evt.preventDefault()}
         multiple={false}
         accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna"]}
         activeClassName="isActive"
@@ -22,8 +22,12 @@ export default class DropHandler extends React.Component {
         onDrop={this.handleDrop}
         {...{ style, className }}
       >
-        <DraggingMessage />
-        {children}
+        {() => (
+          <>
+            <DraggingMessage />
+            {children}
+          </>
+        )}
       </Dropzone>
     );
   }
