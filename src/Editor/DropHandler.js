@@ -20,13 +20,12 @@ export default class DropHandler extends React.Component {
           window.toastr.error("Error: Incorrect File Type");
         }}
         onDrop={this.handleDrop}
-        {...{ style, className }}
       >
         {() => (
-          <>
+          <div {...{ style, className }}>
             <DraggingMessage />
             {children}
-          </>
+          </div>
         )}
       </Dropzone>
     );

@@ -52,7 +52,7 @@ class ToolbarItem extends React.Component {
     }
     // const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
 
-    const ButtonTarget = () => (
+    const buttonTarget = (
       <div
         className={
           `veToolbarItemOuter ve-tool-container-${toolName}` +
@@ -140,9 +140,9 @@ class ToolbarItem extends React.Component {
       </div>
     );
     const target = IconWrapper ? (
-      <IconWrapper {...IconWrapperProps}>{() => <ButtonTarget />}</IconWrapper>
+      <IconWrapper {...IconWrapperProps}>{() => buttonTarget}</IconWrapper>
     ) : (
-      <ButtonTarget />
+      buttonTarget
     );
 
     return (
