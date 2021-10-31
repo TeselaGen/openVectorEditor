@@ -140,7 +140,14 @@ class ToolbarItem extends React.Component {
       </div>
     );
     const target = IconWrapper ? (
-      <IconWrapper {...IconWrapperProps}>{() => buttonTarget}</IconWrapper>
+      <IconWrapper {...IconWrapperProps}>
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {buttonTarget}
+          </div>
+        )}
+      </IconWrapper>
     ) : (
       buttonTarget
     );
