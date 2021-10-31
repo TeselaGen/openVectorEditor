@@ -1,5 +1,6 @@
 import React from "react";
 import Dropzone from "react-dropzone";
+import classNames from "classnames";
 import "./DropHandler.css";
 
 export default class DropHandler extends React.Component {
@@ -21,8 +22,14 @@ export default class DropHandler extends React.Component {
         }}
         onDrop={this.handleDrop}
       >
-        {() => (
-          <div {...{ style, className }}>
+        {({ getRootProps, isDragActive }) => (
+          <div
+            {...getRootProps()}
+            {...{
+              style,
+              className: classNames(className, { isActive: isDragActive })
+            }}
+          >
             <DraggingMessage />
             {children}
           </div>
