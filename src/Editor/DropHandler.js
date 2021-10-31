@@ -15,19 +15,20 @@ export default class DropHandler extends React.Component {
         onClick={(evt) => evt.preventDefault()}
         multiple={false}
         accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna"]}
-        activeClassName="isActive"
-        rejectClassName="isRejected"
         onDropRejected={() => {
           window.toastr.error("Error: Incorrect File Type");
         }}
         onDrop={this.handleDrop}
       >
-        {({ getRootProps, isDragActive }) => (
+        {({ getRootProps, isDragActive, isDragReject }) => (
           <div
             {...getRootProps()}
             {...{
               style,
-              className: classNames(className, { isActive: isDragActive })
+              className: classNames(className, {
+                isActive: isDragActive,
+                isRejected: isDragReject
+              })
             }}
           >
             <DraggingMessage />
