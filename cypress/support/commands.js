@@ -164,7 +164,7 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
     return cy.window().then((win) => {
       // this is using the File constructor from the application window
       const testFile = new win.File([blob], name, { type });
-      const event = { dataTransfer: { files: [testFile] } };
+      const event = { target: { files: [testFile] } };
       return cy.get(selector).trigger("drop", event);
     });
   });
