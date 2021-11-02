@@ -14,8 +14,7 @@ import getCommands from "../commands";
 export default connectToEditor(
   ({ annotationVisibility = {}, toolBar = {} }) => {
     return {
-      orfsToggled: annotationVisibility.orfs,
-      orfTranslationsToggled: annotationVisibility.orfTranslations,
+      toggled: annotationVisibility.orfs,
       isOpen: toolBar.openItem === "orfTool"
     };
   }
