@@ -55,7 +55,6 @@ describe("orfs", function () {
     cy.get(".bp3-control.bp3-checkbox:contains(7)").click({
       force: true
     });
-    cy.get(`[data-tab-id="translations"]`).click();
     cy.get(`[data-copy-text="260"]`).should("exist");
   });
 });
