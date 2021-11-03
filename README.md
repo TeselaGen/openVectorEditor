@@ -1,3 +1,4 @@
+[![openVectorEditor](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/mp89gp/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/mp89gp/runs)
 
 Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor Component 
  - Built With React & Redux
