@@ -67,7 +67,8 @@ export class RowView extends React.Component {
 
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
-    const { annotationVisibility, annotationLabelVisibility, sequenceData } = this.props;
+    const { annotationVisibility, annotationLabelVisibility, sequenceData } =
+      this.props;
     return estimateRowHeight({
       index,
       cache,
@@ -242,7 +243,8 @@ export class RowView extends React.Component {
       if (rowToScrollTo < start || rowToScrollTo > end) {
         //wrap this in a set timeout to give onDoubleClick enough time to fire before jumping the rowview around
         setTimeout(() => {
-          this.InfiniteScroller.scrollTo(rowToScrollTo);
+          this.InfiniteScroller &&
+            this.InfiniteScroller.scrollTo(rowToScrollTo);
         }, 0);
         clearInterval(this.jumpIntervalId);
         //this will try to run the following logic at most 10 times with a 100ms pause between each
@@ -254,7 +256,8 @@ export class RowView extends React.Component {
             );
             if (!el) {
               //sometimes the el isn't on the page even after the jump because of drawing issues, so we'll try the scroll one more time
-              this.InfiniteScroller.scrollTo(rowToScrollTo);
+              this.InfiniteScroller &&
+                this.InfiniteScroller.scrollTo(rowToScrollTo);
               return;
             } else {
               clearInterval(this.jumpIntervalId);

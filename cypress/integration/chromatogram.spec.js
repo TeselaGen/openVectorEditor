@@ -17,14 +17,14 @@ describe("chromatogram", function () {
     cy.get(".chromatogram");
     cy.selectRange(995, 998);
     //basically make sure the chromatogram gets bigger as more bases are inserted
-    cy.get(`[data-row-number="12"] .chromatogram-trace canvas`)
+    cy.get(`[data-row-number="9"] .chromatogram-trace canvas`)
       .invoke("width")
       .then((str) => {
         const w1 = parseInt(str);
         cy.replaceSelection("aaaaaa");
         cy.contains("Sequence Inserted Successfully");
         cy.get(".chromatogram");
-        cy.get(`[data-row-number="12"] .chromatogram-trace canvas`)
+        cy.get(`[data-row-number="9"] .chromatogram-trace canvas`)
           .invoke("width")
           .then((str) => {
             const w2 = parseInt(str);
