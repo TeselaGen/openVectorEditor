@@ -135,7 +135,10 @@ const annotationVisibility = createMergedDefaultStateReducer(
     [annotationVisibilityToggle]: (state, payload) => {
       return {
         ...state,
-        [payload]: !state[payload]
+        [payload]: !state[payload],
+        ...(payload === "orfs" && state.orfs === state.orfTranslations
+          ? { orfTranslations: !state.orfTranslations }
+          : null)
       };
     },
     [annotationVisibilityHide]: (state, payload) => {
