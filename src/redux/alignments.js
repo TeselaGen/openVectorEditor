@@ -2,6 +2,8 @@ import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
 import { /* createReducer, */ createAction } from "redux-act";
@@ -307,6 +309,15 @@ function checkForIssues(alignmentTracks, alignmentType) {
       console.error("incorrect chromatogram length", alignmentTracks);
 
       return "incorrect chromatogram length";
+    }
+    if (track.chromatogramData && !track.chromatogramData.baseTraces) {
+      if (!track.chromatogramData.basePos) {
+        console.error("corrupted chromatogram data", alignmentTracks);
+        return "corrupted chromatogram data";
+      }
+      track.chromatogramData = convertBasePosTraceToPerBpTrace(
+        track.chromatogramData
+      );
     }
     if (
       alignmentType !== "Parallel Part Creation" &&

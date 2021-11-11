@@ -38,11 +38,11 @@ export default compose(
           "please pass an editorName to the withHover() wrapped component"
         );
       }
-      let editorState = state.VectorEditor[editorName] || {};
-      let hoveredId = editorState.hoveredAnnotation || hoveredIdFromContext; //we can pass a hoveredId from context in order to still use the hover functionality without being connected to redux! see http://localhost:3344/#/SimpleCircularOrLinearView for an example
-      let isIdHashmap = typeof id === "object";
+      const editorState = state.VectorEditor[editorName] || {};
+      const hoveredId = editorState.hoveredAnnotation || hoveredIdFromContext; //we can pass a hoveredId from context in order to still use the hover functionality without being connected to redux! see http://localhost:3344/#/SimpleCircularOrLinearView for an example
+      const isIdHashmap = typeof id === "object";
 
-      let hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);
+      const hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);
       const newClassName = classnames(className, "hoverHelper", {
         veAnnotationHovered: hovered
       });
@@ -61,8 +61,8 @@ export default compose(
   withHandlers({
     onMouseOver: (props) => (e) => {
       const { editorName, id, hoveredAnnotationUpdate } = props;
-      let isIdHashmap = typeof id === "object";
-      let idToPass = isIdHashmap ? Object.keys(id)[0] : id;
+      const isIdHashmap = typeof id === "object";
+      const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
       //because the calling onHover can slow things down, we disable it if dragging or scrolling
       if (window.__veDragging || window.__veScrolling) return;
       e.stopPropagation();

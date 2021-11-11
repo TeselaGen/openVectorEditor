@@ -24,7 +24,7 @@ import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
-import { convertBasePosTraceToPerBpTrace } from "../../../src/RowItem/Chromatograms/convertBasePosTraceToPerBpTrace";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);

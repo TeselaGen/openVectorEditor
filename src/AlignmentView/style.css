@@ -44,3 +44,9 @@
   width: fit-content;
   height: fit-content;
 }
+.alignmentMinimapTracks {
+  background: #8a9ba8;
+}
+.minimapLane.lane-hovered .miniBluePath {
+  fill: rgb(169, 169, 245) !important;
+}
