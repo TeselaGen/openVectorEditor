@@ -3,6 +3,7 @@ import React from "react";
 import { InfoHelper } from "teselagen-react-components";
 import useAAColorType from "../utils/useAAColorType";
 import { LimitAnnotations } from "../utils/useAnnotationLimits";
+import { chromatogramMenu } from "../utils/useChromatogramPrefs";
 import useMeltingTemp from "../utils/useMeltingTemp";
 
 export const fullSequenceTranslationMenu = {
@@ -285,7 +286,7 @@ export default [
     },
     shouldDismissPopover: false
   },
-
+  chromatogramMenu(),
   { divider: "" },
   {
     text: "Limits",

@@ -1048,10 +1048,10 @@ const viewPropertiesCommandDefs = [
   const singularKey = pluralize.singular(key);
   const upperKey = upperFirst(singularKey);
   const name = (() => {
-    if (singularKey === 'cutsite') {
+    if (singularKey === "cutsite") {
       return "View Cut Site Properties";
     }
-    if (singularKey === 'orf') {
+    if (singularKey === "orf") {
       return "View ORF Properties";
     }
     return `View ${upperFirst(singularKey)} Properties`;
@@ -1323,6 +1323,11 @@ const labelCommandDefs = {
 };
 
 const commandDefs = {
+  showChromQualScoresMenu: {
+    isHidden: (props) =>
+      !props.sequenceData.chromatogramData ||
+      !props.sequenceData.chromatogramData.baseTraces
+  },
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,
     submenu: (props) => {

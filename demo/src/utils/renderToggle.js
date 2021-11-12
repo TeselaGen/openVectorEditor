@@ -68,7 +68,7 @@ export default function renderToggle({
   } else if (isSelect) {
     const { style, label, ...rest } = sharedProps;
     toggleOrButton = (
-      <div style={sharedProps.style}>
+      <div key={type + "iwuhwp"} style={sharedProps.style}>
         {label && <span>{label} &nbsp;</span>}
         <EnhancedSelect
           {...{
@@ -111,16 +111,17 @@ export default function renderToggle({
   }
   return (
     <div
+      key={type + "toggle-button-holder"}
       style={{ display: "flex", alignItems: "center", margin: "5px 5px" }}
       className="toggle-button-holder"
     >
-      <ShowInfo {...{ description, info }}></ShowInfo>
+      <ShowInfo {...{ description, info, type }}></ShowInfo>
       {toggleOrButton}
     </div>
   );
 }
 
-function ShowInfo({ description, info }) {
+function ShowInfo({ description, info, type }) {
   const [isOpen, setOpen] = useState(false);
   return (
     <React.Fragment>
@@ -131,6 +132,7 @@ function ShowInfo({ description, info }) {
         isOpen={isOpen}
       >
         <div
+          key={type + "dialog"}
           style={{ maxWidth: 600, overflow: "auto" }}
           className="bp3-dialog-body"
         >
@@ -139,7 +141,7 @@ function ShowInfo({ description, info }) {
       </Dialog>
 
       {(description || info) && (
-        <div>
+        <div key={type + "info"}>
           <Button
             onClick={() => {
               setOpen(true);

@@ -132,14 +132,14 @@ class AlignmentTool extends React.Component {
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
             const elementsToTrim = ["baseCalls", "basePos", "qualNums"];
             // eslint-disable-next-line no-unused-vars
-            for (let element in addedSequencesToUseTrimmed[i]
+            for (const element in addedSequencesToUseTrimmed[i]
               .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
-                addedSequencesToUseTrimmed[i].chromatogramData[
-                  element
-                ] = addedSequencesToUseTrimmed[i].chromatogramData[
-                  element
-                ].slice(suggestedTrimStart, suggestedTrimEnd + 1);
+                addedSequencesToUseTrimmed[i].chromatogramData[element] =
+                  addedSequencesToUseTrimmed[i].chromatogramData[element].slice(
+                    suggestedTrimStart,
+                    suggestedTrimEnd + 1
+                  );
               }
             }
           }
@@ -474,9 +474,10 @@ function array_move(arr, old_index, new_index) {
 }
 
 function mottTrim(qualNums) {
+  if (!qualNums) return;
   let startPos = 0;
   let endPos = 0;
-  let totalScoreInfo = [];
+  const totalScoreInfo = [];
   let score = 0;
   let totalScore = 0;
   const cutoff = 0.05;

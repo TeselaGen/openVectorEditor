@@ -530,7 +530,7 @@ Note: `alignmentData.sequence` is assumed to be the same length for EVERY track 
       "cTrace": [0,0,0,1,3,5,11,24,56,68,54,30,21,3,1,4,1,0,0, ...etc], //heights of the curve spaced 1 per x position (aka if the cTrace.length === 1000, then the max basePos can be is 1000)
       "basePos": [33, 46, 55,], //x position of the bases (can be unevenly spaced)
       "baseCalls": ["A","T", ...etc],
-      "qualNums": [],
+      "qualNums": [], //or undefined if no qualNums are detected on the file
     },
 ```
 
