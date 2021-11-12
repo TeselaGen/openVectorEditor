@@ -8,7 +8,7 @@ import {
 } from "ve-sequence-utils";
 import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
-import normalizePositionByRangeLength from "ve-range-utils";
+import { normalizePositionByRangeLength } from "ve-range-utils";
 
 export function getSelectionMessage({
   caretPosition = -1,
