@@ -27,6 +27,7 @@ import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
+import * as charWidth from "./charWidth";
 import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
@@ -63,6 +64,7 @@ const subReducers = {
   sequenceDataHistory,
   sequenceData,
   useAdditionalOrfStartCodons,
+  charWidth,
   uppercaseSequenceMapFont,
   showGCContent,
   externalLabels,

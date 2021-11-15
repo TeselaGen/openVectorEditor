@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag, Classes, NumericInput } from "@blueprintjs/core";
+import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
 import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
@@ -618,7 +618,7 @@ const editCommandDefs = {
       isHidden: isProtein,
       isDisabled: (props) => {
         if (props.readOnly) {
-          return "The sequence is read only. Try changing 'View > Sequence Case'";
+          return "The sequence is read only. Try changing 'View > Sequence > Case'";
         }
         if (isSelection && !(props.selectionLayer.start > -1)) {
           return "No Selection to Replace";
@@ -701,6 +701,28 @@ const editCommandDefs = {
       window.toastr.success(`Sequence Case View Changed`);
     },
     hotkey: "ctrl+option+-"
+  },
+  setRowViewSequenceSpacing: {
+    handler: () => {},
+    name: (props) => {
+      return (
+        <div data-test="setRowViewSequenceSpacing">
+          Spacing (in Sequence Map)
+          <div style={{ paddingLeft: 11, paddingRight: 11, paddingTop: 3 }}>
+            <Slider
+              stepSize={1}
+              onChange={(v) => {
+                props.updateSequenceSpacing(v);
+              }}
+              value={Number(props.charWidth)}
+              max={16}
+              min={8}
+              labelStepSize={1}
+            ></Slider>
+          </div>
+        </div>
+      );
+    }
   },
   createMenuHolder: {
     name: "Create",
@@ -1325,8 +1347,7 @@ const labelCommandDefs = {
 const commandDefs = {
   showChromQualScoresMenu: {
     isHidden: (props) =>
-      !props.sequenceData.chromatogramData ||
-      !props.sequenceData.chromatogramData.baseTraces
+      !props.chromatogramData || !props.chromatogramData.baseTraces
   },
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,

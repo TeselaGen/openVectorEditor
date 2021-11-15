@@ -7,15 +7,8 @@ import {
 } from "../../utils/useChromatogramPrefs";
 import classNames from "classnames";
 
-// import { getClientX, getClientY } from "../../utils/editorUtils";
-
-export default function Chromatogram({
-  isRowView,
-  chromatogramData,
-  row,
-  getGaps,
-  charWidth
-}) {
+export default function Chromatogram(props) {
+  const { isRowView, chromatogramData, row, getGaps, charWidth } = props;
   const [showChromQualScores] = useShowChromQualScores();
   const [scalePct, setScalePct] = useState(0.05);
 
