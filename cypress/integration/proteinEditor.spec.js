@@ -253,12 +253,14 @@ describe("proteinEditor", function () {
     cy.get(".bp3-menu")
       .contains("Full Sequence Translation")
       .should("not.exist");
-    cy.get(".bp3-menu").contains("Sequence Case").should("not.exist");
+
     cy.get(".bp3-menu").contains("Cut Sites").should("not.exist");
     cy.get(".bp3-menu").contains("Cut Site Labels").should("not.exist");
     cy.log("be able to hide/show the underlying dna sequence");
-    cy.get(`[cmd="toggleSequence"]`).click();
-    cy.get(".ve-row-item-sequence").should("exist");
+    cy.triggerFileCmd("DNA Sequence");
+    cy.get(".ve-row-item-sequence").first().click();
+    cy.triggerFileCmd("Case", { noEnter: true });
+    cy.get(".bp3-menu").contains("Case").should("not.exist");
   });
 });
 

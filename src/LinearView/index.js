@@ -132,7 +132,7 @@ class _LinearView extends React.Component {
       marginWidth = defaultMarginWidth,
       height,
       paddingBottom,
-      charWidth,
+      linearViewCharWidth,
       annotationVisibilityOverrides,
       isProtein,
       ...rest
@@ -140,7 +140,7 @@ class _LinearView extends React.Component {
 
     const bpsPerRow = this.getMaxLength();
     const innerWidth = Math.max(width - marginWidth, 0);
-    this.charWidth = charWidth || innerWidth / bpsPerRow;
+    this.charWidth = linearViewCharWidth || innerWidth / bpsPerRow;
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
 
@@ -204,7 +204,7 @@ class _LinearView extends React.Component {
           <RowItem
             {...{
               ...rest,
-              charWidth,
+              charWidth: linearViewCharWidth,
               scrollData,
               caretPosition,
               isProtein: sequenceData.isProtein,

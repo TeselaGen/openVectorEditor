@@ -7,9 +7,10 @@ import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
 const realCharWidth = 8;
+const fudge2 = 3; //used to help the end of the sequence in the row view position correctly
 class Sequence extends React.Component {
   render() {
-    let {
+    const {
       sequence,
       hideBps,
       charWidth,
@@ -27,8 +28,8 @@ class Sequence extends React.Component {
     } = this.props;
     // the fudge factor is used to position the sequence in the middle of the <text> element
     const fudge = charWidth - realCharWidth;
-    let gapsBeforeSequence = 0;
-    let seqReadWidth = 0;
+    const gapsBeforeSequence = 0;
+    const seqReadWidth = 0;
     const seqLen = sequence.length;
 
     if (alignmentData) {
@@ -36,14 +37,14 @@ class Sequence extends React.Component {
       // sequence = sequence.replace(/-/g, " ")
       // seqReadWidth = charWidth * sequence.length;
     }
-    let style = {
+    const style = {
       position: "relative",
       height,
       left: gapsBeforeSequence * charWidth,
       ...containerStyle
     };
 
-    let width = seqLen * charWidth;
+    const width = seqLen * charWidth;
     let coloredRects = null;
     if (showDnaColors) {
       coloredRects = <ColoredSequence {...{ ...this.props, width }} />;
@@ -88,7 +89,7 @@ class Sequence extends React.Component {
                       (isReverse ? " ve-sequence-reverse" : "")
                     }
                     {...{
-                      textLength: textLength - fudge,
+                      textLength: textLength - fudge - fudge2,
                       x: x + fudge / 2,
                       y: height - height / 4,
                       lengthAdjust: "spacing"
@@ -129,7 +130,8 @@ class Sequence extends React.Component {
                 {...{
                   x: 0 + fudge / 2,
                   y: height - height / 4,
-                  textLength: (alignmentData ? seqReadWidth : width) - fudge
+                  textLength:
+                    (alignmentData ? seqReadWidth : width) - fudge - fudge2
                 }}
               >
                 {sequence}

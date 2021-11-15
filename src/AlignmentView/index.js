@@ -703,7 +703,7 @@ class AlignmentView extends React.Component {
               overflowY: "hidden"
             },
             marginWidth: 0,
-            charWidth: charWidthInLinearView,
+            linearViewCharWidth: charWidthInLinearView,
             ignoreGapsOnHighlight: true,
             ...(linearViewOptions &&
               (isFunction(linearViewOptions)
