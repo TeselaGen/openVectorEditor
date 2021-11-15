@@ -1347,7 +1347,8 @@ const labelCommandDefs = {
 const commandDefs = {
   showChromQualScoresMenu: {
     isHidden: (props) =>
-      !props.chromatogramData || !props.chromatogramData.baseTraces
+      !props.sequenceData.chromatogramData ||
+      !props.sequenceData.chromatogramData.baseTraces
   },
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,
