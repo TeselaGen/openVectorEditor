@@ -380,6 +380,37 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
       }),
       renderToggle({
         that: this,
+        type: "allowEditBlockingAnnotations",
+        info: `if allowEditBlockingAnnotations=true features/parts can have an isEditBlocking=true flag set that prevents editing the sequence in the region that they span`,
+        hook: (shouldUpdate) => {
+          shouldUpdate &&
+            updateEditor(store, "DemoEditor", {
+              justPassingPartialSeqData: true,
+              sequenceData: {
+                features: shouldUpdate
+                  ? [
+                      {
+                        id: "feat123",
+                        name: "I'm an edit blocking feat",
+                        start: 10,
+                        end: 400,
+                        type: "CDS"
+                      },
+                      {
+                        id: "feat456",
+                        name: "I too stop editing",
+                        start: 600,
+                        end: 950,
+                        type: "misc_feature"
+                      }
+                    ]
+                  : []
+              }
+            });
+        }
+      }),
+      renderToggle({
+        that: this,
         type: "onCopy"
       }),
       renderToggle({
