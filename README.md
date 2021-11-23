@@ -41,9 +41,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Installation (react)](#installation-react)
   - [Code (react)](#code-react)
     - [Editor](#editor)
-    - [CircularView/CircularViewUnconnected](#circularviewcircularviewunconnected)
-    - [LinearView/LinearViewUnconnected](#linearviewlinearviewunconnected)
-    - [RowView/RowViewUnconnected](#rowviewrowviewunconnected)
+    - [SimpleCircularOrLinearView](#simplecircularorlinearview)
     - [EnzymeViewer](#enzymeviewer)
 - [Using this module outside of react apps (Universal):](#using-this-module-outside-of-react-apps-universal)
   - [Installation (Universal)](#installation-universal)
@@ -118,12 +116,26 @@ You can see an example repo where this works here: https://github.com/tnrich/ove
 
 The `<Editor {...editorProps}/>` component gives you a full blown editor.
 It takes in a list of editorProps as detailed below. 
-### CircularView/CircularViewUnconnected
-This gives you just the circular/plasmid map view. Either redux connected or unconnected (non-interactive)
-### LinearView/LinearViewUnconnected
-This gives you just the linear map view. Either redux connected or unconnected (non-interactive)
-### RowView/RowViewUnconnected
-This gives you just the detailed view of the sequence rows. Either redux connected or unconnected (non-interactive)
+
+### SimpleCircularOrLinearView
+This is a non-redux connected component that is easy to use: 
+```
+<SimpleCircularOrLinearView
+	sequenceData={{
+		circular: true, // or set to false to get a linear view
+		sequence: 'gagagagag',
+		features: [{id: 'lalala', name: "Mr Feature"}],
+	}}
+	editorName="previewEditor"
+	annotationLabelVisibility={{ //set visibilities as you please
+		features: true,
+		parts: true,
+		cutsites: false,
+		primers: true
+	}}
+></SimpleCircularOrLinearView>
+```
+
 ### EnzymeViewer
 A component used for viewing enzymes 
 
