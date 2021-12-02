@@ -34,13 +34,15 @@ function StackedAnnotations(props) {
     marginBottom,
     getExtraInnerCompProps,
     onlyShowLabelsThatDoNotFit,
-    externalLabels
+    externalLabels,
+    isStriped
   } = props;
 
   const InnerCompToUse = InnerComp || PointedAnnotation;
   if (annotationRanges.length === 0) {
     return null;
   }
+
   let maxAnnotationYOffset = 0;
   const annotationsSVG = [];
   forEach(annotationRanges, function (annotationRange, index) {
@@ -92,10 +94,12 @@ function StackedAnnotations(props) {
           onRightClick={onRightClick}
           annotation={annotation}
           isProtein={isProtein}
+          isStriped={isStriped}
           gapsInside={gapsInside}
           gapsBefore={gapsBefore}
           color={annotationColor}
           width={result.width}
+          annotationRange={annotationRange}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           forward={annotation.forward}

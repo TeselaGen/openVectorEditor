@@ -41,14 +41,7 @@ export class AddOrEditFeatureDialog extends React.Component {
       <div>
         {locations.length > 1 && (
           <div>
-            <div
-              style={{
-                /* fontSize: 16, */ /* fontWeight: "bold",  */ marginBottom: 10,
-                marginTop: 3
-              }}
-            >
-              Joined Feature Spans:
-            </div>
+            <label>Joined Feature Spans:</label>
             <div style={{ marginLeft: 50 }}>
               {!locations.length && (
                 <div style={{ marginBottom: 10 }}>
@@ -195,7 +188,7 @@ export class AddOrEditFeatureDialog extends React.Component {
             };
           })}
           name="type"
-          label="Type:"
+          label="Type"
         />
         {(!locations || locations.length < 2) && (
           <React.Fragment>
@@ -224,7 +217,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           inlineLabel
           tooltipError
           name="notes"
-          label="Notes:"
+          label="Notes"
           format={(v) => {
             let toReturn = v;
             if (typeof v !== "string" && v) {
@@ -278,9 +271,8 @@ export class AddOrEditFeatureDialog extends React.Component {
                   ...(hasJoinedLocations && {
                     //only add locations if there are locations
                     start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
-                    end:
-                      updatedData.locations[updatedData.locations.length - 1]
-                        .end,
+                    end: updatedData.locations[updatedData.locations.length - 1]
+                      .end,
                     locations: updatedData.locations.map(convertRangeTo0Based)
                   })
                 }),
@@ -316,7 +308,7 @@ export default compose(
   reduxForm({
     form: "AddOrEditFeatureDialog",
     validate: (values, { sequenceLength }) => {
-      let errors = {};
+      const errors = {};
       if (
         !isRangeWithinRange(
           convertRangeTo0Based(values, sequenceLength),

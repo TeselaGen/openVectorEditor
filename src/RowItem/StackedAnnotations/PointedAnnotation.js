@@ -4,9 +4,14 @@ import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
 import React from "react";
+import { map } from "lodash";
 import { doesLabelFitInAnnotation } from "../utils";
 import { noop } from "lodash";
 import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
+import { getStripedPattern } from "../../utils/editorUtils";
+import { fudge2, realCharWidth } from "../constants";
+import getSequenceWithinRange from "ve-range-utils/lib/getSequenceWithinRange";
+import { getComplementSequenceString } from "ve-sequence-utils/lib";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -19,10 +24,12 @@ class PointedAnnotation extends React.PureComponent {
       forward,
       name = "",
       type,
+      isStriped,
       onMouseLeave,
       onMouseOver,
       isProtein,
       id,
+      annotationRange,
       hideName,
       pointiness = 8,
       color = "orange",
@@ -57,6 +64,40 @@ class PointedAnnotation extends React.PureComponent {
         charWN = width;
       }
     }
+    let basesToShow;
+    if (annotation && annotation.bases) {
+      const basesForRange = getSequenceWithinRange(
+        {
+          start: annotationRange.start - annotation.start,
+          end: annotationRange.end - annotation.start
+        },
+        annotation.forward
+          ? annotation.bases
+          : annotation.bases.split("").reverse().join("")
+      );
+
+      const fudge = charWidth - realCharWidth;
+      const textLength = charWidth * basesForRange.length - fudge - fudge2;
+
+      basesToShow = (
+        <text {...{ textLength, x: fudge / 2 }} className="ve-monospace-font">
+          {/* {basesForRange} */}
+          {map(basesForRange.split(""), (b, i) => {
+            const indexOfBase = i + annotationRange.start;
+            let seqForBase = annotation.fullSeq[indexOfBase] || "";
+            if (!annotation.forward) {
+              seqForBase = getComplementSequenceString(seqForBase);
+            }
+            const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
+            return (
+              <tspan fill={isMatch ? "black" : "red"} textLength={textLength}>
+                {b}
+              </tspan>
+            );
+          })}
+        </text>
+      );
+    }
     const widthMinusOne = width - charWN;
     let path;
     let hasAPoint = false;
@@ -69,6 +110,7 @@ class PointedAnnotation extends React.PureComponent {
       ? `L ${width + 10},${height / 2} 
     L ${width},${height / 2} `
       : "";
+
     // starting from the top left of the annotation
     if (_rangeType === "middle") {
       //draw a rectangle
@@ -156,11 +198,13 @@ class PointedAnnotation extends React.PureComponent {
         <title>
           {getAnnotationNameAndStartStopString(annotation, { isProtein })}
         </title>
+        {basesToShow}
+        {isStriped && getStripedPattern(color)}
         <path
           strokeWidth="1"
           stroke={stroke || "black"}
           opacity={opacity}
-          fill={fill || color}
+          fill={isStriped ? "url(#diagonalHatch)" : fill || color}
           transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
           d={path}
         />

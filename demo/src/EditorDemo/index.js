@@ -25,6 +25,7 @@ import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+// import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);
@@ -1536,7 +1537,26 @@ clickOverrides: {
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}
               {editorHandlers}
-
+              {/* <AddOrEditPrimerDialog
+                {...{
+                  editorName: "DemoEditor" || console.log(`remove me!`),
+                  selectionLayer: {
+                    start: 1,
+                    end: 10
+                  },
+                  initialValues: {
+                    forward: false,
+                    start: 1,
+                    end: 10,
+                    name: "lol",
+                    readOnly: false
+                  },
+                  dialogProps: {
+                    title: "edit primer"
+                  },
+                  readOnly: false
+                }}
+              ></AddOrEditPrimerDialog> */}
               <br />
               <br />
             </div>

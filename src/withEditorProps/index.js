@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { some, map } from "lodash";
+import { some, map, keyBy } from "lodash";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
@@ -15,7 +15,12 @@ import {
   rotateSequenceDataToPosition
 } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
-import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+import {
+  convertRangeTo0Based,
+  getRangeLength,
+  invertRange,
+  normalizeRange
+} from "ve-range-utils";
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions, editorReducer } from "../redux";
 import s from "../selectors";
@@ -29,6 +34,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
+import { getStartEndFromBases } from "../utils/editorUtils";
 
 async function getSaveDialogEl() {
   return new Promise((resolve) => {
@@ -511,27 +517,22 @@ function mapStateToProps(state, ownProps) {
   );
   let annotationToAdd;
   [
-    "AddOrEditFeatureDialog",
-    "AddOrEditPrimerDialog",
-    "AddOrEditPartDialog"
-  ].forEach((n) => {
+    ["AddOrEditFeatureDialog", "filteredFeatures"],
+    ["AddOrEditPrimerDialog", "primers"],
+    ["AddOrEditPartDialog", "filteredParts"]
+  ].forEach(([n, type]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd = { ...vals, formName: n };
+      annotationToAdd = { ...vals, formName: n, type };
     }
   });
 
   const toReturn = {
     ...editorState,
     meta,
-    annotationToAdd,
-    ...(annotationToAdd && {
-      selectionLayer: {
-        start: (annotationToAdd.start || 1) - 1,
-        end: (annotationToAdd.end || 1) - 1
-      }
-    })
+    annotationToAdd
   };
+
   if (sequenceDataFromProps && allowSeqDataOverride) {
     //return early here because we don't want to override the sequenceData being passed in
     //this is a little hacky but allows us to track selectionLayer/caretIndex using redux but on a sequence that isn't being stored alongside that info
@@ -595,6 +596,30 @@ function mapStateToProps(state, ownProps) {
     orfs,
     translations
   };
+
+  if (annotationToAdd) {
+    const selectionLayer = convertRangeTo0Based(annotationToAdd);
+    const id = annotationToAdd.id || "tempId123";
+    const name = annotationToAdd.name || "";
+    const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
+    anns[id] = {
+      ...annotationToAdd,
+
+      id,
+      name,
+      ...selectionLayer,
+      ...(annotationToAdd.bases && {
+        ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+        fullSeq: sequenceData.sequence
+      }),
+      locations: annotationToAdd.locations
+        ? annotationToAdd.locations.map(convertRangeTo0Based)
+        : undefined
+    };
+    sequenceDataToUse[annotationToAdd.type] = anns;
+    toReturn.selectionLayer = selectionLayer;
+  }
+
   return {
     ...toReturn,
     selectedCutsites,

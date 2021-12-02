@@ -414,7 +414,10 @@ const DrawGroupInnerLabel = withHover(
         textLength={label.text.length * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
-        onDoubleClick={label.onDoubleClick}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          label.onDoubleClick(e);
+        }}
         onContextMenu={label.onContextMenu}
         dy={index === 0 ? dy / 2 : dy}
         style={{

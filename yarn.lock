@@ -11133,7 +11133,7 @@ react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-markdown@^4.3.1:
+react-markdown@^4.0.8, react-markdown@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-4.3.1.tgz#39f0633b94a027445b86c9811142d05381300f2f"
   integrity sha512-HQlWFTbDxTtNY6bjgp3C3uv1h2xcjCSi1zAEzfBW9OwJJvENSYiLXWNXN5hHLsoqai7RnZiiHzcnWdXk2Splzw==
@@ -12942,10 +12942,10 @@ terser@^4.6.13:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^30.5.2:
-  version "30.5.2"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.5.2.tgz#25d483a2d9f5192a193ba91d6718746a4b5f5cec"
-  integrity sha512-QqmQ1XbVN3WvtWNtkevfXlH7x5bel1+hL/ws56LEcyE0f17FHZ127tti8mMlb3qVZcbmKJJstrwuGRRGfGhz9w==
+teselagen-react-components@^30.5.7:
+  version "30.5.7"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.5.7.tgz#c8e430a8e8bd0e90101a5af54a7b2e13b51d69fb"
+  integrity sha512-10FiX3hoG75qm1ydTHNTDiB/l1Lp0+GjPQ+VDcTwGwE5Ayat0esEA5j5E2uhnGNMICNz08G7ohiQ930qszUhHw==
   dependencies:
     "@blueprintjs/core" "^3.41.0"
     "@blueprintjs/datetime" "^3.21.2"
@@ -12965,6 +12965,7 @@ teselagen-react-components@^30.5.2:
     qs "^6.9.6"
     react-color "^2.19.3"
     react-dropzone "^4.2.12"
+    react-markdown "^4.0.8"
     react-rnd "^10.2.4"
     react-router-dom "^4.3.1"
     react-sortable-hoc "^0.6.8"

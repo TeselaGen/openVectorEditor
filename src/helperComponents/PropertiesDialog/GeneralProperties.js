@@ -39,7 +39,7 @@ class GeneralProperties extends React.Component {
     return (
       <React.Fragment>
         <div className="ve-flex-row">
-          <div className="ve-column-left">Name:</div>{" "}
+          <div className="ve-column-left bp3-label">Name</div>{" "}
           <div className="ve-column-right">
             <InputField
               disabled={readOnly}
@@ -54,7 +54,7 @@ class GeneralProperties extends React.Component {
         </div>
         {!isProtein && !isOligo && !isRna && (
           <div className="ve-flex-row circularLinearSelect">
-            <div className="ve-column-left">Circular/Linear:</div>{" "}
+            <div className="ve-column-left bp3-label">Circular/Linear</div>{" "}
             <div className="ve-column-right">
               {" "}
               <BPSelect
@@ -74,7 +74,9 @@ class GeneralProperties extends React.Component {
 
         {showAvailability && (
           <div className="ve-flex-row">
-            <div className="ve-column-left">Material Availability:</div>{" "}
+            <div className="ve-column-left bp3-label">
+              Material Availability
+            </div>{" "}
             <div className="ve-column-right">
               {" "}
               <BPSelect
@@ -92,7 +94,7 @@ class GeneralProperties extends React.Component {
           </div>
         )}
         <div className="ve-flex-row">
-          <div className="ve-column-left">Length:</div>{" "}
+          <div className="ve-column-left bp3-label">Length</div>{" "}
           <div className="ve-column-right">
             {" "}
             {isProtein ? proteinSequence.length : sequence.length}
@@ -100,7 +102,7 @@ class GeneralProperties extends React.Component {
         </div>
         {showReadOnly && (
           <div className="ve-flex-row">
-            <div className="ve-column-left">Is Editable:</div>{" "}
+            <div className="ve-column-left bp3-label">Is Editable</div>{" "}
             <div className="ve-column-right">
               {" "}
               <BPSelect
@@ -117,7 +119,7 @@ class GeneralProperties extends React.Component {
             </div>
           </div>
         )}
-        <div>Description:</div>
+        <div>Description</div>
         <TextareaField
           clickToEdit
           name="description"

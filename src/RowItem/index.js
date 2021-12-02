@@ -21,11 +21,24 @@ import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
 import { rowHeights } from "../RowView/estimateRowHeight";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
+import { filter } from "lodash";
 
 function noop() {}
 
-function getPropsForType(props, type, pluralType) {
+function filterRanges(ranges, extraProps = {}) {
+  if (!ranges) return ranges;
+  if (extraProps.onlyForward) {
+    ranges = filter(ranges, (a) => a.annotation.forward);
+  }
+  if (extraProps.onlyReverse) {
+    ranges = filter(ranges, (a) => !a.annotation.forward);
+  }
+  return ranges;
+}
+function getPropsForType(props, type, pluralType, extraProps) {
   const upperPluralType = startCase(pluralType);
+  const annotationRanges = filterRanges(props.row[pluralType], extraProps);
+
   const toRet = {
     annotationColor: props[pluralType + "Color"],
     annotationHeight:
@@ -37,7 +50,7 @@ function getPropsForType(props, type, pluralType) {
       props[pluralType + "MarginTop"] || rowHeights[pluralType].marginTop,
     marginBottom:
       props[pluralType + "MarginBottom"] || rowHeights[pluralType].marginBottom,
-    annotationRanges: props.row[pluralType],
+    annotationRanges,
     showLabels:
       props.annotationLabelVisibility &&
       props.annotationLabelVisibility[pluralType],
@@ -176,12 +189,12 @@ export default function RowItem(props) {
     row: { start: row.start, end: row.end }
   };
 
-  const drawLabels = (type, noDraw) => {
+  const drawLabels = (type, noDraw, additionalOpts) => {
     if (noDraw) {
       return null;
     }
     const pluralType = pluralize(type);
-    const ranges =
+    const ranges = filterRanges(
       annotationLabelVisibility[pluralType] && annotationVisibility[pluralType]
         ? map(row[pluralType], (a) =>
             assign(a, {
@@ -190,7 +203,10 @@ export default function RowItem(props) {
               onDoubleClick: props[type + "DoubleClicked"]
             })
           )
-        : [];
+        : [],
+      additionalOpts
+    );
+
     return (
       <Labels
         {...annotationCommonProps}
@@ -209,6 +225,8 @@ export default function RowItem(props) {
       shouldShow,
       noPlural,
       alignmentType,
+      onlyForward,
+      onlyReverse,
       ...otherExtraProps
     } = extraProps;
     const pluralType = noPlural ? type : pluralize(type);
@@ -229,7 +247,7 @@ export default function RowItem(props) {
         containerClassName={camelCase("veRowView-" + pluralType + "Container")}
         alignmentType={alignmentType}
         {...annotationCommonProps}
-        {...getPropsForType(props, type, pluralType)}
+        {...getPropsForType(props, type, pluralType, extraProps)}
         {...otherExtraProps}
       />
     );
@@ -366,10 +384,12 @@ export default function RowItem(props) {
         {drawLabels("part", externalLabels !== "true")}
         {drawAnnotations("part", partProps)}
         {/* {!externalLabels && drawAnnotations("part", partProps)} */}
-        {drawLabels("primer", externalLabels !== "true")}
+        {drawLabels("primer", externalLabels !== "true", { onlyForward: true })}
 
         {drawAnnotations("primer", {
-          sequence: fullSequence
+          sequence: fullSequence,
+          isStriped: true,
+          onlyForward: true
         })}
         {drawAnnotations("orf", {
           CompOverride: Orfs
@@ -497,6 +517,12 @@ export default function RowItem(props) {
               );
             })}
         </div>
+        {drawLabels("primer", externalLabels !== "true", { onlyReverse: true })}
+        {drawAnnotations("primer", {
+          sequence: fullSequence,
+          isStriped: true,
+          onlyReverse: true
+        })}
         {drawLabels("feature", externalLabels !== "true")}
         {/* {externalLabels && drawAnnotations("part", partProps)} */}
         {drawAnnotations("feature")}

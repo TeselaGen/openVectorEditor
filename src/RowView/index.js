@@ -260,6 +260,12 @@ export class RowView extends React.Component {
                 this.InfiniteScroller.scrollTo(rowToScrollTo);
               return;
             } else {
+              el.scrollIntoView &&
+                el.scrollIntoView({
+                  behavior: "auto",
+                  block: "center",
+                  inline: "center"
+                });
               clearInterval(this.jumpIntervalId);
             }
             //tnr: we can't use the following because it messes up the scroll of the Reflex panels

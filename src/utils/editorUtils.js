@@ -4,7 +4,8 @@ import { divideBy3 } from "./proteinUtils";
 import {
   getInsertBetweenVals,
   calculatePercentGC,
-  getSequenceDataBetweenRange
+  getSequenceDataBetweenRange,
+  bioData
 } from "ve-sequence-utils";
 import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
@@ -166,4 +167,71 @@ export function getSelFromWrappedAddon(selectionLayer, sequenceLength) {
     delete selToUse.isWrappedAddon;
   }
   return selToUse;
+}
+
+export function getAcceptedChars({
+  isOligo,
+  isProtein,
+  isRna,
+  isMixedRnaAndDna
+} = {}) {
+  return isProtein
+    ? bioData.extended_protein_letters.toLowerCase()
+    : isOligo
+    ? bioData.ambiguous_rna_letters.toLowerCase() + "t"
+    : isRna
+    ? bioData.ambiguous_rna_letters.toLowerCase()
+    : isMixedRnaAndDna
+    ? bioData.ambiguous_rna_letters.toLowerCase() +
+      bioData.ambiguous_dna_letters.toLowerCase()
+    : //just plain old dna
+      bioData.ambiguous_dna_letters.toLowerCase();
+}
+export function getStripedPattern({ color }) {
+  return (
+    <pattern
+      id="diagonalHatch"
+      patternUnits="userSpaceOnUse"
+      width="4"
+      height="4"
+    >
+      <path
+        d="M-1,1 l2,-2
+           M0,4 l4,-4
+           M3,5 l2,-2"
+        style={{
+          stroke: color,
+          strokeWidth: 2,
+          fill: "blue",
+          opacity: 0.4
+        }}
+      />
+    </pattern>
+  );
+}
+
+export function getStartEndFromBases({
+  bases,
+  forward,
+  threePrimeLocation,
+  sequenceLength
+}) {
+  if (!bases) return {};
+  const annLength = bases.length;
+  const start = forward
+    ? normalizePositionByRangeLength(
+        threePrimeLocation - annLength,
+        sequenceLength
+      )
+    : threePrimeLocation - 1;
+  const end = forward
+    ? threePrimeLocation - 1
+    : normalizePositionByRangeLength(
+        threePrimeLocation + annLength - 2,
+        sequenceLength
+      );
+  return {
+    start,
+    end
+  };
 }

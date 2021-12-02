@@ -595,7 +595,7 @@ function positionCutsites(annotation) {
 
 function RotateCircularView({ setRotationRadians, editorName }) {
   return (
-    <div style={{ zIndex: 1000, position: "absolute" }}>
+    <div style={{ zIndex: 900, position: "absolute" }}>
       <UncontrolledSliderWithPlusMinusBtns
         onChange={(val) => {
           const el = document.querySelector(

@@ -3,11 +3,11 @@ import { times, map } from "lodash";
 import { DNAComplementMap } from "ve-sequence-utils";
 import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
+import { fudge2, realCharWidth } from "./constants";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
-const realCharWidth = 8;
-const fudge2 = 3; //used to help the end of the sequence in the row view position correctly
+
 class Sequence extends React.Component {
   render() {
     const {

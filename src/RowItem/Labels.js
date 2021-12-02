@@ -93,7 +93,11 @@ function Labels(props) {
       annotation = annotationRange;
     }
     const annotationLength =
-      (annotation.name || annotation.restrictionEnzyme.name).length * textWidth;
+      (
+        annotation.name ||
+        (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name) ||
+        ""
+      ).length * textWidth;
     let { xStart, width } = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,

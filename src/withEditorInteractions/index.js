@@ -24,7 +24,6 @@ import {
   showConfirmationDialog,
   commandMenuEnhancer
 } from "teselagen-react-components";
-import { bioData } from "ve-sequence-utils";
 import { jsonToGenbank } from "bio-parsers";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
@@ -45,31 +44,16 @@ import {
   createNewAnnotationMenu
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
-import { getNodeToRefocus, getSelFromWrappedAddon } from "../utils/editorUtils";
+import {
+  getAcceptedChars,
+  getNodeToRefocus,
+  getSelFromWrappedAddon
+} from "../utils/editorUtils";
 
 import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
-
-function getAcceptedChars({
-  isOligo,
-  isProtein,
-  isRna,
-  isMixedRnaAndDna
-} = {}) {
-  return isProtein
-    ? bioData.extended_protein_letters.toLowerCase()
-    : isOligo
-    ? bioData.ambiguous_rna_letters.toLowerCase() + "t"
-    : isRna
-    ? bioData.ambiguous_rna_letters.toLowerCase()
-    : isMixedRnaAndDna
-    ? bioData.ambiguous_rna_letters.toLowerCase() +
-      bioData.ambiguous_dna_letters.toLowerCase()
-    : //just plain old dna
-      bioData.ambiguous_dna_letters.toLowerCase();
-}
 
 const annotationClickHandlers = [
   "orfClicked",

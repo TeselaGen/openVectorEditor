@@ -10,7 +10,14 @@ import {
   AdvancedOptions
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent, Classes, EditableText } from "@blueprintjs/core";
+import {
+  Button,
+  Intent,
+  Classes,
+  EditableText,
+  FormGroup,
+  Label
+} from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
@@ -77,14 +84,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       <div>
         {locations.length > 1 && (
           <div>
-            <div
-              style={{
-                marginBottom: 10,
-                marginTop: 3
-              }}
-            >
-              Joined Feature Spans:
-            </div>
+            <Label>Joined Feature Spans</Label>
             <div style={{ marginLeft: 50 }}>
               {!locations.length && (
                 <div style={{ marginBottom: 10 }}>
@@ -101,25 +101,27 @@ class AddOrEditAnnotationDialog extends React.Component {
                         disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
+                        className="no-inline-label-margins"
                         tooltipError
                         min={1}
                         format={this.formatStart}
                         parse={this.parseStart}
                         max={sequenceLength || 1}
                         name={`${member}.start`}
-                        label="Start:"
+                        label="Start"
                       />
                       <NumericInputField
                         disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
+                        className="no-inline-label-margins"
                         tooltipError
                         min={1}
                         format={this.formatEnd}
                         parse={this.parseEnd}
                         max={sequenceLength || 1}
                         name={`${member}.end`}
-                        label="End:"
+                        label="End"
                       />
                       <Button
                         disabled={this.props.readOnly}
@@ -180,6 +182,11 @@ class AddOrEditAnnotationDialog extends React.Component {
       beforeAnnotationCreate,
       renderTypes,
       renderTags,
+      RenderBases,
+      bases,
+      forward,
+      threePrimeLocation,
+      change,
       annotationTypePlural,
       annotationVisibilityShow,
       renderLocations,
@@ -195,15 +202,18 @@ class AddOrEditAnnotationDialog extends React.Component {
     } = this.props;
     const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
-    const annotationLength = getRangeLength(
-      locations && locations.length
-        ? {
-            start: locations[0].start,
-            end: locations[locations.length - 1].end
-          }
-        : { start, end },
-      sequenceLength
-    );
+    const annotationLength =
+      typeof bases === "string"
+        ? bases.length
+        : getRangeLength(
+            locations && locations.length
+              ? {
+                  start: locations[0].start,
+                  end: locations[locations.length - 1].end
+                }
+              : { start, end },
+            sequenceLength
+          );
     return (
       <form
         onSubmit={handleSubmit((data) => {
@@ -290,12 +300,13 @@ class AddOrEditAnnotationDialog extends React.Component {
             }))}
           validate={required}
           name="name"
-          label="Name:"
+          label="Name"
         />
         {!isProtein && (
           <RadioGroupField
             disabled={this.props.readOnly}
             inlineLabel
+            inline
             tooltipError
             options={[
               { label: "Positive", value: "true" },
@@ -304,13 +315,28 @@ class AddOrEditAnnotationDialog extends React.Component {
             normalize={(value) => value === "true" || false}
             format={(value) => (value ? "true" : "false")}
             name="forward"
-            label="Strand:"
+            label="Strand"
             defaultValue={true}
           />
         )}
         {renderTypes || null}
         {renderTags || null}
-        {!renderLocations || !locations || locations.length < 2 ? (
+        {RenderBases ? (
+          <RenderBases
+            {...{
+              bases,
+              sequenceData,
+              start,
+              end,
+              threePrimeLocation,
+              forward,
+              change
+            }}
+          ></RenderBases>
+        ) : null}
+        {RenderBases ? null : !renderLocations ||
+          !locations ||
+          locations.length < 2 ? (
           <React.Fragment>
             <div
               style={{ marginBottom: 10, fontSize: 12, fontStyle: "italic" }}
@@ -327,7 +353,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="start"
-              label="Start:"
+              label="Start"
             />
             <NumericInputField
               disabled={this.props.readOnly}
@@ -339,7 +365,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="end"
-              label="End:"
+              label="End"
             />
           </React.Fragment>
         ) : null}
@@ -396,7 +422,7 @@ export default ({ formName, getProps, dialogProps }) => {
   return compose(
     wrapDialog({
       isDraggable: true,
-      width: 350,
+      width: 400,
       ...dialogProps
     }),
     withEditorProps,
@@ -475,19 +501,23 @@ export default ({ formName, getProps, dialogProps }) => {
         return errors;
       }
     }),
-    formValues("start", "end", "overlapsSelf", "locations")
+    formValues(
+      "start",
+      "end",
+      "overlapsSelf",
+      "locations",
+      "bases",
+      "forward",
+      "threePrimeLocation"
+    )
   )(AddOrEditAnnotationDialog);
 };
 
 const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
-      <div style={{ display: "flex" }}>
-        <div>Notes: </div>{" "}
-        <span style={{ marginLeft: 15, fontSize: 10, color: "grey" }}>
-          (Key -- Value)
-        </span>{" "}
-      </div>
+      <FormGroup inline label="Notes" labelInfo="(Key -- Value)"></FormGroup>
+
       {map(notes, (note, i) => {
         const { value, key } = note || {};
         return (

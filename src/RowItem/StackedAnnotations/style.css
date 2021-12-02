@@ -1,6 +1,7 @@
 .veAnnotationHovered .veRowViewFeature {
   stroke-dasharray: 3px;
 }
+
 .veAnnotationHovered:not(text) {
   stroke-dasharray: 3px;
 }
