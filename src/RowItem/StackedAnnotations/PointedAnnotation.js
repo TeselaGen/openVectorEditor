@@ -80,8 +80,10 @@ class PointedAnnotation extends React.PureComponent {
       const textLength = charWidth * basesForRange.length - fudge - fudge2;
 
       basesToShow = (
-        <text {...{ textLength, x: fudge / 2 }} className="ve-monospace-font">
-          {/* {basesForRange} */}
+        <text
+          {...{ textLength, y: forward ? 22 : -3, x: fudge / 2 }}
+          className="ve-monospace-font"
+        >
           {map(basesForRange.split(""), (b, i) => {
             const indexOfBase = i + annotationRange.start;
             let seqForBase = annotation.fullSeq[indexOfBase] || "";
@@ -90,7 +92,11 @@ class PointedAnnotation extends React.PureComponent {
             }
             const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
             return (
-              <tspan fill={isMatch ? "black" : "red"} textLength={textLength}>
+              <tspan
+                className={isMatch ? "" : "tg-no-match-seq"}
+                fill={isMatch ? "black" : "red"}
+                textLength={textLength}
+              >
                 {b}
               </tspan>
             );
@@ -193,6 +199,11 @@ class PointedAnnotation extends React.PureComponent {
         }}
         onContextMenu={function (event) {
           onRightClick({ annotation, event, gapsBefore, gapsInside });
+        }}
+        style={{
+          transform: `translateY(${
+            basesToShow ? (forward ? "-8px" : "6px") : 0
+          })`
         }}
       >
         <title>

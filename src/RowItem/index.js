@@ -384,13 +384,7 @@ export default function RowItem(props) {
         {drawLabels("part", externalLabels !== "true")}
         {drawAnnotations("part", partProps)}
         {/* {!externalLabels && drawAnnotations("part", partProps)} */}
-        {drawLabels("primer", externalLabels !== "true", { onlyForward: true })}
 
-        {drawAnnotations("primer", {
-          sequence: fullSequence,
-          isStriped: true,
-          onlyForward: true
-        })}
         {drawAnnotations("orf", {
           CompOverride: Orfs
         })}
@@ -408,7 +402,13 @@ export default function RowItem(props) {
           />
         )}
         {drawLabels("cutsite", !isRowView)}
+        {drawLabels("primer", externalLabels !== "true", { onlyForward: true })}
 
+        {drawAnnotations("primer", {
+          sequence: fullSequence,
+          isStriped: true,
+          onlyForward: true
+        })}
         <div
           className="veRowItemSequenceContainer"
           style={{ position: "relative" }}

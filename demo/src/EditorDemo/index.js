@@ -1532,12 +1532,19 @@ clickOverrides: {
                 then the panel tabs will be draggable (except mobiles).
                 `
               })}
+              {renderToggle({
+                that: this,
+                type: "allowPrimerBasesToBeEdited",
+                description: `If allowPrimerBasesToBeEdited=true is passed to <Editor/> 
+                then the bases of primers can be edited. 
+                `
+              })}
 
               {editorHandlers.length ? (
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}
               {editorHandlers}
-              {/* <AddOrEditPrimerDialog
+              {/* { <AddOrEditPrimerDialog
                 {...{
                   editorName: "DemoEditor" || console.log(`remove me!`),
                   selectionLayer: {
@@ -1556,7 +1563,7 @@ clickOverrides: {
                   },
                   readOnly: false
                 }}
-              ></AddOrEditPrimerDialog> */}
+              ></AddOrEditPrimerDialog>} */}
               <br />
               <br />
             </div>
@@ -1654,6 +1661,7 @@ clickOverrides: {
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             allowPartsToOverlapSelf={this.state.allowPartsToOverlapSelf}
+            allowPrimerBasesToBeEdited={this.state.allowPrimerBasesToBeEdited}
             allowPanelTabDraggable={this.state.allowPanelTabDraggable}
             {...(this.state.corruptedOverrideManageEnzymes && {
               enzymeGroupsOverride: {

@@ -22,4 +22,5 @@
 } */
 .tg-no-match-seq {
   color: red;
+  text-decoration: underline;
 }

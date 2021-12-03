@@ -183,6 +183,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       renderTypes,
       renderTags,
       RenderBases,
+      allowPrimerBasesToBeEdited,
       bases,
       forward,
       threePrimeLocation,
@@ -321,7 +322,7 @@ class AddOrEditAnnotationDialog extends React.Component {
         )}
         {renderTypes || null}
         {renderTags || null}
-        {RenderBases ? (
+        {allowPrimerBasesToBeEdited && RenderBases ? (
           <RenderBases
             {...{
               bases,
@@ -334,7 +335,7 @@ class AddOrEditAnnotationDialog extends React.Component {
             }}
           ></RenderBases>
         ) : null}
-        {RenderBases ? null : !renderLocations ||
+        {allowPrimerBasesToBeEdited && RenderBases ? null : !renderLocations ||
           !locations ||
           locations.length < 2 ? (
           <React.Fragment>

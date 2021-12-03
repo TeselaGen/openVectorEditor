@@ -3,6 +3,7 @@ export const userDefinedHandlersAndOpts = [
   "getAdditionalCreateOpts",
   "getCustomAutoAnnotateList",
   "allowPartsToOverlapSelf",
+  "allowPrimerBasesToBeEdited",
   "allPartTags",
   "editTagsLink",
   "readOnly",

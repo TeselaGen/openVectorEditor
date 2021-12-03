@@ -38,6 +38,9 @@ export function showAddOrEditAnnotationDialog({
     primer: "AddOrEditPrimerDialog"
   };
   const dialogType = typeToDialogType[type];
+  if (Object.values(typeToDialogType).includes(dialogHolder.dialogType)) {
+    return;
+  }
   const nameUpper = startCase(type);
   const annotation = cloneDeep(_annotation);
   if (_annotation.isWrappedAddon) {

@@ -18,6 +18,7 @@ import CaretPositioning, {
 } from "./EditCaretPosition";
 import { Menu, MenuItem } from "@blueprintjs/core";
 import getComplementSequenceString from "ve-sequence-utils/lib/getComplementSequenceString";
+import MeltingTemp from "../../StatusBar/MeltingTemp";
 
 // function getHtmlFromVal(val) {
 //   let html = "";
@@ -275,12 +276,11 @@ const RenderBases = (props) => {
         name="bases"
         label="Bases"
       />
-      <div
-        className="bp3-text-muted bp3-text-small"
-        style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
-      >
-        Melting Temp: 57
-      </div>
+
+      <MeltingTemp
+        InnerWrapper={InnerWrapperMeltingTemp}
+        sequence={bases}
+      ></MeltingTemp>
       <NumericInputField
         inlineLabel
         disabled={readOnly}
@@ -303,3 +303,12 @@ export default AddOrEditAnnotationDialog({
     RenderBases
   })
 });
+
+const InnerWrapperMeltingTemp = (p) => (
+  <div
+    className="bp3-text-muted bp3-text-small"
+    style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
+  >
+    {p.children}
+  </div>
+);

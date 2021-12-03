@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Button,
-  Classes,
-  HTMLSelect,
-  Icon,
-  Popover,
-  RadioGroup
-} from "@blueprintjs/core";
+import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
+
 import {
   connectToEditor,
   updateCircular,
@@ -17,14 +11,9 @@ import "./style.css";
 import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
-import {
-  calculateTm,
-  calculateNebTm,
-  getSequenceDataBetweenRange
-} from "ve-sequence-utils";
+import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import useMeltingTemp from "../utils/useMeltingTemp";
-import useLocalStorageState from "use-local-storage-state";
-import { isString } from "lodash";
+import MeltingTemp from "./MeltingTemp";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -92,8 +81,10 @@ const ShowSelectionItem = compose(
   }) => {
     const [showMeltingTemp] = useMeltingTemp();
 
-    const sequence = getSequenceDataBetweenRange(sequenceData, selectionLayer)
-      .sequence;
+    const sequence = getSequenceDataBetweenRange(
+      sequenceData,
+      selectionLayer
+    ).sequence;
 
     return (
       <React.Fragment>
@@ -119,7 +110,12 @@ const ShowSelectionItem = compose(
             Select Inverse
           </Button>
         </StatusBarItem>
-        {showMeltingTemp && <MeltingTemp sequence={sequence}></MeltingTemp>}
+        {showMeltingTemp && (
+          <MeltingTemp
+            WrapperToUse={StatusBarItem}
+            sequence={sequence}
+          ></MeltingTemp>
+        )}
       </React.Fragment>
     );
   }
@@ -259,63 +255,3 @@ function StatusBarItem({ children, dataTest }) {
 }
 
 export default StatusBar;
-
-function MeltingTemp({ sequence }) {
-  const [tmType, setTmType] = useLocalStorageState("tmType", "default");
-  const tm = (
-    {
-      default: calculateTm,
-      neb_tm: calculateNebTm
-    }[tmType] || calculateTm
-  )(sequence);
-  const hasWarning = isString(tm) && tm.length > 7 && tm;
-  return (
-    <StatusBarItem dataTest="veStatusBar-selection-tm">
-      <Popover
-        content={
-          <div style={{ maxWidth: 300, padding: 20 }}>
-            Using Tm calculations based on these{" "}
-            <a href="https://github.com/TeselaGen/ve-sequence-utils">
-              algorithms
-            </a>
-            <br></br>
-            <br></br>
-            <RadioGroup
-              label="Choose Tm Type:"
-              options={[
-                { value: "default", label: "Default Tm" },
-                { value: "neb_tm", label: "NEB Tm" }
-              ]}
-              onChange={(e) => setTmType(e.target.value)}
-              selectedValue={tmType}
-            ></RadioGroup>
-            {hasWarning && (
-              <div>
-                <Icon
-                  style={{ marginLeft: 5, marginRight: 5 }}
-                  size={10}
-                  icon="warning-sign"
-                ></Icon>
-                {hasWarning}
-                <br></br>
-                <br></br>
-                Try using the Default Tm
-              </div>
-            )}
-          </div>
-        }
-      >
-        <Button minimal small>
-          Melting Temp: {Number(tm) || 0}{" "}
-          {hasWarning && (
-            <Icon
-              style={{ marginLeft: 5, marginRight: 5 }}
-              size={10}
-              icon="warning-sign"
-            ></Icon>
-          )}
-        </Button>
-      </Popover>
-    </StatusBarItem>
-  );
-}
