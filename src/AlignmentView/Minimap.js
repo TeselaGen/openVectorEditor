@@ -73,7 +73,7 @@ export default class Minimap extends React.Component {
   };
 
   scrollMinimapVertical = ({ e, force }) => {
-    const clientY = getClientY(e)
+    const clientY = getClientY(e);
     try {
       if (
         !force &&
@@ -176,8 +176,8 @@ export default class Minimap extends React.Component {
           width={width}
           shapeRendering="geometricPrecision"
         >
-          <path d={bluePath} fill="#9abeff" />
-          <path d={redPath} fill="red" />
+          <path className="miniBluePath" d={bluePath} fill="#9abeff" />
+          <path className="miniRedPath" d={redPath} fill="red" />
         </svg>
       </div>
     );
@@ -364,7 +364,7 @@ const YellowScrollHandle = view(
                 height: minimapTracksPartialHeight || 0,
                 border: "none",
                 cursor: "move",
-                opacity: ".4",
+
                 zIndex: "10",
                 width: scrollHandleWidth,
                 background: "transparent"
@@ -379,9 +379,10 @@ const YellowScrollHandle = view(
                       verticalVisibleRange.start +
                       1) *
                     laneHeight,
-
                   zIndex: "-10",
-                  background: "yellow",
+                  background: "#fbfb2873",
+                  borderTop: "2px solid yellow",
+                  borderBottom: "2px solid yellow",
                   position: "relative",
                   top: verticalVisibleRange.start * laneHeight
                 }}

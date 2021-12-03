@@ -23,6 +23,11 @@ import {
 import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
+import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+// import _chromData from "../../../scratch/B_reverse.json";
+// import example1Ab1 from "../../../scratch/example1.ab1.json";
+const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -408,7 +413,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             minHeight: 0
           }}
         >
-          {this.state.showDemoOptions && (
+          {
             <div
               data-test="optionContainer"
               style={{
@@ -425,7 +430,14 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 display: "flex",
                 flexDirection: "column",
                 paddingRight: "5px",
-                borderRight: "1px solid lightgrey"
+                borderRight: "1px solid lightgrey",
+                ...(!this.state.showDemoOptions && {
+                  display: "none",
+                  width: 0,
+                  height: 0,
+                  minWidth: 0,
+                  maxWidth: 0
+                })
               }}
             >
               <div style={{ paddingLeft: 10, paddingRight: 10 }}>
@@ -460,6 +472,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               </div>
 
               {renderToggle({
+                type: "randomizeSeqData",
                 info: `
 You can change the sequence in a given <Editor/> by calling: 
 \`\`\`js
@@ -1164,6 +1177,68 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "chromatogramExample",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        chromatogram: true,
+                        features: true,
+                        primers: false,
+                        // parts: false,
+                        cutsites: false
+                        // orfTranslations: false
+                      },
+                      //JBEI sequence 'GFPvv50'
+
+                      sequenceData: {
+                        id: "1",
+                        // chromatogramData: example1Ab1,
+                        // sequence: example1Ab1.baseCalls.join(""),
+                        chromatogramData: chromData,
+                        sequence: chromData.baseCalls.join(""),
+                        features: [
+                          {
+                            id: "yay",
+                            name: "feat1",
+                            start: 30,
+                            end: 80
+                          }
+                        ],
+
+                        // chromatogramData: chromData,
+                        name: "GFPvv50"
+                        // sequence:
+                        //   "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
+                      },
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map"
+                          },
+                          {
+                            id: "sequence",
+                            name: "Sequence Map",
+                            active: true
+                          },
+                          {
+                            // fullScreen: true,
+                            id: "circular",
+                            name: "Circular Map"
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
+                    });
+                },
+                description: `Show chromatogram data in the editor`
+              })}
+              {renderToggle({
+                that: this,
                 type: "readOnly",
                 hook: (readOnly) => {
                   updateEditor(store, "DemoEditor", {
@@ -1222,6 +1297,7 @@ other options are:
                 onClick: this.setLinearPanelAsActive,
                 isButton: true,
                 that: this,
+                type: "focusLinearView",
                 label: "Focus Linear View"
               })}
               {renderToggle({
@@ -1236,6 +1312,7 @@ other options are:
                 },
                 isButton: true,
                 that: this,
+                type: "triggerMenuToastrMessage",
                 label: "Trigger menu toastr message"
               })}
               {renderToggle({
@@ -1247,6 +1324,7 @@ other options are:
                 isButton: true,
                 that: this,
                 label: "Set A Selection",
+                type: "setASelection",
                 info: `
 You can programatically update the editor like so:                 
 \`\`\`
@@ -1462,7 +1540,7 @@ clickOverrides: {
               <br />
               <br />
             </div>
-          )}
+          }
           {/* <div
             style={{
               display: "flex",

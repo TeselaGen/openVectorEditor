@@ -3,6 +3,7 @@ import React from "react";
 import { InfoHelper } from "teselagen-react-components";
 import useAAColorType from "../utils/useAAColorType";
 import { LimitAnnotations } from "../utils/useAnnotationLimits";
+import { chromatogramMenu } from "../utils/useChromatogramPrefs";
 import useMeltingTemp from "../utils/useMeltingTemp";
 
 export const fullSequenceTranslationMenu = {
@@ -161,27 +162,6 @@ export default [
     text: "Melting Temp of Selection",
     component: ToggleShowMeltingTemp
   },
-  {
-    text: "Sequence Case",
-    cmd: "sequenceCase",
-    submenu: [
-      {
-        cmd: "toggleSequenceMapFontUpper",
-        text: "Upper Case",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontRaw",
-        text: "No Preference",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontLower",
-        text: "Lower Case",
-        shouldDismissPopover: false
-      }
-    ]
-  },
   { divider: "" },
   fullSequenceTranslationMenu,
   { divider: "" },
@@ -192,9 +172,6 @@ export default [
     cmd: "toggleAminoAcidNumbers_protein",
     shouldDismissPopover: false
   },
-  { cmd: "toggleSequence", shouldDismissPopover: false },
-  { cmd: "toggleReverseSequence", shouldDismissPopover: false },
-  { cmd: "toggleDnaColors", shouldDismissPopover: false },
   {
     text: "Amino Acid Colors (by Hydrophobicity/by Family)",
     component: function AAColorType(props) {
@@ -284,6 +261,41 @@ export default [
       );
     },
     shouldDismissPopover: false
+  },
+  chromatogramMenu(),
+  { cmd: "toggleDnaColors", shouldDismissPopover: false },
+  {
+    text: "Sequence",
+    submenu: [
+      { cmd: "toggleSequence", shouldDismissPopover: false },
+      { cmd: "toggleReverseSequence", shouldDismissPopover: false },
+
+      {
+        text: "Case",
+        cmd: "sequenceCase",
+        submenu: [
+          {
+            cmd: "toggleSequenceMapFontUpper",
+            text: "Upper Case",
+            shouldDismissPopover: false
+          },
+          {
+            cmd: "toggleSequenceMapFontRaw",
+            text: "No Preference",
+            shouldDismissPopover: false
+          },
+          {
+            cmd: "toggleSequenceMapFontLower",
+            text: "Lower Case",
+            shouldDismissPopover: false
+          }
+        ]
+      },
+      {
+        cmd: "setRowViewSequenceSpacing",
+        shouldDismissPopover: false
+      }
+    ]
   },
 
   { divider: "" },
