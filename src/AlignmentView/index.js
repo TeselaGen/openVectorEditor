@@ -389,13 +389,15 @@ class AlignmentView extends React.Component {
     );
   };
   scrollAlignmentToPercent = (scrollPercentage) => {
-    this.easyStore.percentScrolled = scrollPercentage;
+    const scrollPercentageToUse = Math.min(Math.max(scrollPercentage, 0), 1);
+
+    this.easyStore.percentScrolled = scrollPercentageToUse;
     this.alignmentHolder.scrollLeft =
-      Math.min(Math.max(scrollPercentage, 0), 1) *
+      scrollPercentageToUse *
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     if (this.alignmentHolderTop) {
       this.alignmentHolderTop.scrollLeft =
-        Math.min(Math.max(scrollPercentage, 0), 1) *
+        scrollPercentageToUse *
         (this.alignmentHolderTop.scrollWidth -
           this.alignmentHolderTop.clientWidth);
     }

@@ -37,6 +37,9 @@ module.exports = {
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../teselagen-react-components/src/"),
+      // "react-draggable":
+      //   console.log("comment me back out!") ||
+      //   path.resolve(__dirname, "../react-draggable"),
 
       //don't comment this out!
       react: path.join(__dirname, "node_modules/react"),

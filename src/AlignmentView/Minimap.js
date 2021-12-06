@@ -90,7 +90,9 @@ export default class Minimap extends React.Component {
       some(lanes, (lane) => {
         const rect = lane.getBoundingClientRect();
         if (rect.top > clientY && rect.top - rect.height < clientY) {
-          this.props.scrollYToTrack(lane.getAttribute("data-lane-index"));
+          this.props.scrollYToTrack(
+            Math.max(lane.getAttribute("data-lane-index") - 3, 0)
+          );
           return true;
         }
         return false;

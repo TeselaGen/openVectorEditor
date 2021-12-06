@@ -134,6 +134,7 @@ describe("find tool", function () {
   cmd+f should do nothing if find tool is already open and focused
   esc should close the find tool if it is open and focused
   esc should do nothing if the find tool is open and not focused`, () => {
+    cy.contains(`.veCircularViewMiddleOfVectorText`, "pj5_00001");
     cy.get("body").type(`{meta}f`);
     cy.get(".tg-find-tool-input input").should("be.focused");
     cy.focused().type("gg").type(`{meta}f`);
