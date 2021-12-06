@@ -435,7 +435,17 @@ const editCommandDefs = {
   find: {
     isDisabled: (props) => props.sequenceLength === 0,
     name: "Find...",
-    handler: (props) => props.toggleFindTool(),
+    handler: (props) => {
+      if (props.findTool.isOpen) {
+        const inputEl =
+          document.querySelector("textarea.tg-find-tool-input") ||
+          document.querySelector(".tg-find-tool-input input");
+        if (!inputEl) return;
+        inputEl.focus && inputEl.focus();
+      } else {
+        props.toggleFindTool();
+      }
+    },
     hotkey: "mod+f",
     hotkeyProps: { preventDefault: true }
   },
