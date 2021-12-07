@@ -23,7 +23,7 @@ export default connectToEditor(
     <ToolbarItem
       {...{
         Icon: <Icon data-test="orfTool" icon={orfIcon} />,
-        onIconClick: function() {
+        onIconClick: function () {
           annotationVisibilityToggle("orfs");
         },
         toggled,

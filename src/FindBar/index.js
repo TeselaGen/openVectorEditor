@@ -149,9 +149,7 @@ export class FindBar extends React.Component {
       >
         <Tooltip
           disabled={matchesTotal <= MAX_MATCHES_DISPLAYED}
-          content={
-            "Disabled because there are >{MAX_MATCHES_DISPLAYED} matches"
-          }
+          content="Disabled because there are >{MAX_MATCHES_DISPLAYED} matches"
         >
           Highlight All
         </Tooltip>
@@ -263,6 +261,7 @@ export class FindBar extends React.Component {
                 resize: "vertical",
                 ...(!isInline && { width: 350, minHeight: 70 })
               }}
+              className="tg-find-tool-input"
               inputRef={(n) => {
                 if (n) this.inputEl = n;
               }}
@@ -270,7 +269,7 @@ export class FindBar extends React.Component {
                 e.persist();
                 if (e.metaKey && e.keyCode === 70) {
                   //cmd-f
-                  toggleFindTool();
+                  // toggleFindTool();
                   e.preventDefault();
                   e.stopPropagation();
                 } else if (e.keyCode === 13) {

@@ -128,6 +128,32 @@ describe("find tool", function () {
     cy.get(".veRowViewSelectionLayer").first().click({ force: true });
     cy.contains("3999 to 4007");
   });
+
+  it(`cmd+f should open find tool if it is closed
+  cmd+f should refocus find tool if it is already open and unfocused
+  cmd+f should do nothing if find tool is already open and focused
+  esc should close the find tool if it is open and focused
+  esc should do nothing if the find tool is open and not focused`, () => {
+    cy.contains(`.veCircularViewMiddleOfVectorText`, "pj5_00001");
+    cy.get("body").type(`{meta}f`);
+    cy.get(".tg-find-tool-input input").should("be.focused");
+    cy.focused().type("gg").type(`{meta}f`);
+    cy.get(".tg-find-tool-input input").should("be.focused");
+    cy.get(`[data-tick-mark="10"]`).then((el) => {
+      cy.get(`[data-tick-mark="20"]`).then((el2) => {
+        cy.dragBetweenSimple(el, el2);
+      });
+    });
+    cy.get("body").type(`{meta}f`);
+    cy.focused().type("gg"); //focus and typing should still work immediately after a drag
+    cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`).click();
+    cy.get("body").type(`{esc}`);
+    cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`);
+    cy.get(".tg-find-tool-input input").type(`{esc}`);
+    cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`).should(
+      "not.exist"
+    );
+  });
 });
 
 Cypress.on("uncaught:exception", (err, runnable) => {
