@@ -1156,10 +1156,17 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.2.0", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.2.0", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.15.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
   integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.1.2":
+  version "7.16.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
+  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1195,10 +1202,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@blueprintjs/colors@^4.0.0-alpha.1":
-  version "4.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/colors/-/colors-4.0.0-alpha.1.tgz#370684b404e5400494169c54cc3a31385fc6db6a"
-  integrity sha512-i95xW/cAIijJAMIBDrXw1WLbGVXVaRDRG1Ga0CxOtMVwL20zvdXlQj7EMqhkgVEJo9LaKNIDliPI+jsh7h5Lag==
+"@blueprintjs/colors@^4.0.0-alpha.2":
+  version "4.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/colors/-/colors-4.0.0-alpha.2.tgz#ce8e7450ae542fcddb72b372b49669adf13c0173"
+  integrity sha512-B8NX2oKVTPGVJd7ZCbm9FMPoEdQiLKceo0/UxsJ+gwqNiuo45RzdmrXACI6oFO4hGHL2WiLU0oysLNj2zpHDkA==
 
 "@blueprintjs/core@3.42.0":
   version "3.42.0"
@@ -1218,11 +1225,11 @@
     tslib "~1.13.0"
 
 "@blueprintjs/core@^3.42.0":
-  version "3.51.3"
-  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.51.3.tgz#d74dd9ac299c0d8f635f04a81c8bda7ef534f069"
-  integrity sha512-Z3xGWBMBuboKFx19uxWNAUjITsCmpm+594R/KEAM578uT6yoydT6s5S7N12APAsFe8w3H1Yu2hbWHlHTvRfOhA==
+  version "3.52.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.52.0.tgz#cfb558fb435ba4b3e79e44ed470c79a787fa3724"
+  integrity sha512-92Tsr0uw1ey8ZsdYSfPyeN1hbjI8PC+HWyXUSNG+nM4g5AYTuKXVXKTxxGBtZN9hG2LlmUld8YIMFWtuLBErDQ==
   dependencies:
-    "@blueprintjs/colors" "^4.0.0-alpha.1"
+    "@blueprintjs/colors" "^4.0.0-alpha.2"
     "@blueprintjs/icons" "^3.31.0"
     "@types/dom4" "^2.0.1"
     classnames "^2.2"
@@ -11646,10 +11653,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@^30.5.12:
-  version "30.5.12"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.5.12.tgz#edd8910511b144ad190f90fd64b3938b56dbb660"
-  integrity sha512-tVfi5M5BnPYn2Uwh7Uc6tT02RryR2MfCJob+w+J5me85vWoaJy4y1Jy7yBCvkawEb9RcpWD2DM8Tj4Qt6VxsYw==
+teselagen-react-components@^30.5.16:
+  version "30.5.16"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.5.16.tgz#2e998461a051106981cde6e16b6bb4fc8e47e6ad"
+  integrity sha512-kYu7VvjlsW/bgTmQPar3M+sKBckg0Zr5UzwF+40Ge3c2KfBnfq4a/iy7CeIqdkQxgnLB3C3GUC7PveERs1RnxA==
   dependencies:
     "@blueprintjs/core" "3.42.0"
     "@blueprintjs/datetime" "3.22.0"

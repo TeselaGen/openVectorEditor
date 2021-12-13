@@ -171,7 +171,9 @@ export class FindBar extends React.Component {
       <span>
         {isInline && (
           <Popover
+            enforceFocus={false}
             autoFocus={false}
+            shouldReturnFocusOnClose={false}
             position={Position.BOTTOM}
             target={
               <Button
