@@ -12270,10 +12270,10 @@ use-deep-compare-effect@^1.6.1:
     "@babel/runtime" "^7.12.5"
     dequal "^2.0.2"
 
-use-local-storage-state@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/use-local-storage-state/-/use-local-storage-state-10.0.0.tgz#862d142e5d1fff30820102f0cd871e96e5527342"
-  integrity sha512-NCab0oYOMZA8oT9y4OE7tMT6JS21SiyPsTjZdapnyvHe7bVFlIMSp6LaiuHBdS1OvduuLtG+pX/duFIBkd0PCA==
+use-local-storage-state@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/use-local-storage-state/-/use-local-storage-state-13.0.0.tgz#d74a446b96b023495fa0591611f7a22671ac74e3"
+  integrity sha512-dn7wltrMcYomTAEPyBAnPn3oWmfCOKFO0+oU6L94ovVFbP/O9FndAyoL0gmQ3qmZ4FFd5MuASEQZk46ZeyfRww==
 
 use-memo-one@^1.1.1:
   version "1.1.2"

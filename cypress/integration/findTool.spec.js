@@ -135,7 +135,7 @@ describe("find tool", function () {
   esc should close the find tool if it is open and focused
   esc should do nothing if the find tool is open and not focused`, () => {
     cy.contains(`.veCircularViewMiddleOfVectorText`, "pj5_00001");
-    cy.get("body").type(`{meta}f`);
+    cy.get(".veVectorInteractionWrapper:first").type(`{meta}f`);
     cy.get(".tg-find-tool-input input").should("be.focused");
     cy.focused().type("gg").type(`{meta}f`);
     cy.get(".tg-find-tool-input input").should("be.focused");
@@ -144,10 +144,10 @@ describe("find tool", function () {
         cy.dragBetweenSimple(el, el2);
       });
     });
-    cy.get("body").type(`{meta}f`);
+    cy.get(".veVectorInteractionWrapper:first").type(`{meta}f`);
     cy.focused().type("gg"); //focus and typing should still work immediately after a drag
     cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`).click();
-    cy.get("body").type(`{esc}`);
+    cy.get(".veVectorInteractionWrapper:first").focus().type(`{esc}`);
     cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`);
     cy.get(".tg-find-tool-input input").type(`{esc}`);
     cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`).should(

@@ -55,6 +55,8 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Demo (Universal): http://teselagen.github.io/openVectorEditor/](#demo-universal-httpteselagengithubioopenvectoreditor)
 - [editorProps](#editorprops)
 - [editorState](#editorstate)
+- [Setting Local Storage Persisted Values](#setting-local-storage-persisted-values)
+    - [Amino Acid Coloring](#amino-acid-coloring)
 - [Data Model](#data-model)
   - [Feature Locations (aka Feature Joins)](#feature-locations-aka-feature-joins)
 - [Protein Editor](#protein-editor)
@@ -405,6 +407,13 @@ These are the options to the `updateEditor()` action (the most generic redux act
 	caretPosition: 10,
 	...additional editor props can be passed here [Example Editor State](./editorStateExample.js)
 }
+```
+
+# Setting Local Storage Persisted Values
+### Amino Acid Coloring 
+
+```js
+localStorage.setItem("aaColorType", localStorage.getItem("aaColorType") || "byFamily") 
 ```
 
 # Data Model

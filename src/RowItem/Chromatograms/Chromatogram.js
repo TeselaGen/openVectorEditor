@@ -11,6 +11,7 @@ export default function Chromatogram(props) {
   const { isRowView, chromatogramData, row, getGaps, charWidth } = props;
   const [showChromQualScores] = useShowChromQualScores();
   const [scalePct, setScalePct] = useState(0.05);
+  const [hasDrawnOnce, setHasDrawnOnce] = useState(false);
 
   const canvasRef = useRef();
 
@@ -34,7 +35,9 @@ export default function Chromatogram(props) {
       scalePct: scalePct
     });
     painter.paintCanvas();
+    setHasDrawnOnce(true);
   }, [
+    setHasDrawnOnce,
     showChromQualScores,
     chromatogramData,
     charWidth,
@@ -89,7 +92,10 @@ export default function Chromatogram(props) {
       <br />
 
       <div
-        className="chromatogram-trace"
+        className={classNames({
+          "chromatogram-trace": true,
+          "chromatogram-trace-initialized": hasDrawnOnce
+        })}
         style={{
           zIndex: 1,
           position: "relative",

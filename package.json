@@ -67,7 +67,7 @@
     "shortid": "^2.2.16",
     "teselagen-react-components": "^30.5.12",
     "tg-react-reflex": "^2.0.10",
-    "use-local-storage-state": "^10.0.0",
+    "use-local-storage-state": "^13.0.0",
     "ve-range-utils": "^2.6.5",
     "ve-sequence-utils": "^5.1.12"
   },
@@ -115,6 +115,7 @@
   },
   "license": "MIT",
   "repository": "https://github.com/TeselaGen/openVectorEditor",
+  "homepage": "https://github.com/TeselaGen/openVectorEditor",
   "keywords": [
     "react-component",
     "plasmid",
