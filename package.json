@@ -29,9 +29,9 @@
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@blueprintjs/core": "3.42.0",
-    "@blueprintjs/datetime": "3.22.0",
-    "@blueprintjs/select": "3.15.9",
+    "@blueprintjs/core": "3.52.0",
+    "@blueprintjs/datetime": "3.23.19",
+    "@blueprintjs/select": "3.18.11",
     "@fontsource/ubuntu-mono": "^4.5.0",
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "^0.8.18",
@@ -65,7 +65,7 @@
     "redux-thunk": "2.3.0",
     "reselect": "^4.0.0",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "^30.5.16",
+    "teselagen-react-components": "^30.5.19",
     "tg-react-reflex": "^2.0.10",
     "use-local-storage-state": "^13.0.0",
     "ve-range-utils": "^2.6.5",
