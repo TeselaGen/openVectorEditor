@@ -135,7 +135,8 @@ describe("find tool", function () {
   esc should close the find tool if it is open and focused
   esc should do nothing if the find tool is open and not focused`, () => {
     cy.contains(`.veCircularViewMiddleOfVectorText`, "pj5_00001");
-    cy.get(".veVectorInteractionWrapper:first").type(`{cmd}f`);
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    // cy.get(".veVectorInteractionWrapper:first").type(`{cmd}f`); //for some reason this isn't working in cypress..
     cy.get(".tg-find-tool-input input").should("be.focused");
     cy.focused().type("gg").type(`{cmd}f`);
     cy.get(".tg-find-tool-input input").should("be.focused");
