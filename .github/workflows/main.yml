@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   cypress-run:
     name: Cypress run
-    runs-on: macos-11
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         # the actual items in the array do not matter,
