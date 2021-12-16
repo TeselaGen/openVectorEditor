@@ -19,12 +19,11 @@ import {
 } from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map, some } from "lodash";
-import PropTypes from "prop-types";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
-import { getContext, compose, branch, renderComponent } from "recompose";
+import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
@@ -50,6 +49,7 @@ import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
+import withStore from "../utils/withStore";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -1337,9 +1337,7 @@ class AlignmentView extends React.Component {
 }
 
 export default compose(
-  getContext({
-    store: PropTypes.object
-  }),
+  withStore,
   withEditorProps,
   connect(
     (state, ownProps) => {
