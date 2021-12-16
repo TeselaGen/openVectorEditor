@@ -1,6 +1,6 @@
 import React from "react";
 
-import { reduxForm, FieldArray, formValues } from "redux-form";
+import { reduxForm, FieldArray } from "redux-form";
 
 import {
   InputField,
@@ -25,6 +25,7 @@ import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
 import { map, flatMap } from "lodash";
 import "./style.css";
+import tgFormValues from "../../utils/tgFormValues";
 
 class AddOrEditAnnotationDialog extends React.Component {
   componentDidMount() {
@@ -475,7 +476,7 @@ export default ({ formName, getProps, dialogProps }) => {
         return errors;
       }
     }),
-    formValues("start", "end", "overlapsSelf", "locations")
+    tgFormValues("start", "end", "overlapsSelf", "locations")
   )(AddOrEditAnnotationDialog);
 };
 
