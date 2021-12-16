@@ -9,8 +9,9 @@ const tgFormValues =
     return (
       <FormName>
         {(formName) => {
+          const name = formName.form;
           const Wrapped = useMemo(() => {
-            const selector = formValueSelector(formName.form || "");
+            const selector = formValueSelector(name || "");
             const wrapper = connect((state) => {
               const vals = {};
               fieldNames.forEach((name) => {
@@ -19,7 +20,7 @@ const tgFormValues =
               return vals;
             });
             return wrapper(Component);
-          }, [formName]);
+          }, [name]);
           return <Wrapped {...props} />;
         }}
       </FormName>
