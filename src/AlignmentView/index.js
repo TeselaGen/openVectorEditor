@@ -21,6 +21,7 @@ import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map, some } from "lodash";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
+
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
