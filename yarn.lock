@@ -1207,7 +1207,24 @@
   resolved "https://registry.yarnpkg.com/@blueprintjs/colors/-/colors-4.0.0-alpha.2.tgz#ce8e7450ae542fcddb72b372b49669adf13c0173"
   integrity sha512-B8NX2oKVTPGVJd7ZCbm9FMPoEdQiLKceo0/UxsJ+gwqNiuo45RzdmrXACI6oFO4hGHL2WiLU0oysLNj2zpHDkA==
 
-"@blueprintjs/core@3.52.0", "@blueprintjs/core@^3.52.0":
+"@blueprintjs/core@3.42.0":
+  version "3.42.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.42.0.tgz#a686f9f37b7467792995c04dc907862477bf7809"
+  integrity sha512-ln+4SNqVUnAGKy8r39l+3u/ycI9YEdPUT7bWUI4lFTyckX+eQzj4Jznqvy8UljXXzJwjCNABFs83OjG70QdAQw==
+  dependencies:
+    "@blueprintjs/icons" "^3.26.0"
+    "@types/dom4" "^2.0.1"
+    classnames "^2.2"
+    dom4 "^2.1.5"
+    normalize.css "^8.0.1"
+    popper.js "^1.16.1"
+    react-lifecycles-compat "^3.0.4"
+    react-popper "^1.3.7"
+    react-transition-group "^2.9.0"
+    resize-observer-polyfill "^1.5.1"
+    tslib "~1.13.0"
+
+"@blueprintjs/core@3.52.0", "@blueprintjs/core@^3.42.0", "@blueprintjs/core@^3.52.0":
   version "3.52.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/core/-/core-3.52.0.tgz#cfb558fb435ba4b3e79e44ed470c79a787fa3724"
   integrity sha512-92Tsr0uw1ey8ZsdYSfPyeN1hbjI8PC+HWyXUSNG+nM4g5AYTuKXVXKTxxGBtZN9hG2LlmUld8YIMFWtuLBErDQ==
@@ -1225,6 +1242,17 @@
     resize-observer-polyfill "^1.5.1"
     tslib "~1.13.0"
 
+"@blueprintjs/datetime@3.22.0":
+  version "3.22.0"
+  resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.22.0.tgz#2fbeed9563bc5028845db81fe28b981d0b358529"
+  integrity sha512-jWE6S0doorYY4fpuXIv1CnqztM6Hh2AXnB7A2VAg4dyRbdeq81z1e2cxBN5vNKsqABWZIZekytSkQYj4VlkMAg==
+  dependencies:
+    "@blueprintjs/core" "^3.42.0"
+    classnames "^2.2"
+    react-day-picker "7.4.9"
+    react-lifecycles-compat "^3.0.4"
+    tslib "~1.13.0"
+
 "@blueprintjs/datetime@3.23.19":
   version "3.23.19"
   resolved "https://registry.yarnpkg.com/@blueprintjs/datetime/-/datetime-3.23.19.tgz#43145f7c68970d3880ec17a4299beef3632b7df6"
@@ -1236,7 +1264,7 @@
     react-lifecycles-compat "^3.0.4"
     tslib "~1.13.0"
 
-"@blueprintjs/icons@^3.31.0":
+"@blueprintjs/icons@^3.26.0", "@blueprintjs/icons@^3.31.0":
   version "3.31.0"
   resolved "https://registry.yarnpkg.com/@blueprintjs/icons/-/icons-3.31.0.tgz#9b3075a45e93dacaf4363390e9985263d2999c6e"
   integrity sha512-6pXhHC8zEvoDKN5KNsIHNuCRKsemmRbXNv1jweB95VaFzR1M+Mik+Qi+13Wd+VtZrzes2ZcWttIeyuK91NoLCw==
