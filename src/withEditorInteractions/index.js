@@ -89,11 +89,9 @@ const annotationClickHandlers = [
 ];
 //tnr: because this menu is being rendered outside the main render tree (by blueprint)
 //we need to make sure it re-renders whenever the redux state changes (so things like tick-marks will toggle properly etc..)
-// const Comp = ({ children, ...rest }) =>
-//   console.log(`ConnectedMenu <Menu> rerender rest.copyOptions.features:`, rest.copyOptions.features) || (
-//     <Menu changingProps={rest}>{children}</Menu>
-//   );
-// const x = withEditorProps(Comp);
+const ConnectedMenu = withEditorProps(({ children }) => (
+  <Menu>{children.map(React.cloneElement)}</Menu>
+));
 
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
 function VectorInteractionHOC(Component /* options */) {
@@ -114,13 +112,8 @@ function VectorInteractionHOC(Component /* options */) {
         };
       });
 
-      // this.x = (p) => {
-      //   console.log(`props.editorName:`, props.editorName);
-      //   console.log(`p.editorName:`, p.editorName);
-      //   return <ConnectedMenu   {...p} {...this.props} />;
-      // };
-      this.ConnectedMenu = (props) => {
-        return <Menu store={this.props.store} {...props} />;
+      this.ConnectedMenu = (p) => {
+        return <ConnectedMenu {...props} {...p} />;
       };
     }
     componentWillUnmount() {
@@ -804,7 +797,6 @@ function VectorInteractionHOC(Component /* options */) {
           },
           opts, // context here
           this.ConnectedMenu
-          // Menu
         );
       };
     };
