@@ -50,7 +50,6 @@ import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
-import withStore from "../utils/withStore";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -158,11 +157,8 @@ class AlignmentView extends React.Component {
     }
   };
   getAllAlignmentsFastaText = () => {
-    const selectionLayer =
-      this.props.store.getState().VectorEditor.__allEditorsOptions.alignments[
-        this.props.id
-      ].selectionLayer || {};
-    const { alignmentTracks } = this.props;
+    const { alignment = {}, alignmentTracks } = this.props;
+    const selectionLayer = alignment.selectionLayer || {};
     const seqDataOfAllTracksToCopy = [];
     alignmentTracks.forEach((track) => {
       const seqDataToCopy = getSequenceDataBetweenRange(
@@ -978,9 +974,7 @@ class AlignmentView extends React.Component {
                                         action: "copySpecificAlignmentFasta",
                                         text: () => {
                                           const { selectionLayer } =
-                                            this.props.store.getState()
-                                              .VectorEditor.__allEditorsOptions
-                                              .alignments[this.props.id] || {};
+                                            this.props.alignment;
                                           const seqDataToCopy =
                                             getSequenceDataBetweenRange(
                                               alignmentData,
@@ -1015,9 +1009,7 @@ class AlignmentView extends React.Component {
                                         action: "copySpecificAlignmentFasta",
                                         text: () => {
                                           const { selectionLayer } =
-                                            this.props.store.getState()
-                                              .VectorEditor.__allEditorsOptions
-                                              .alignments[this.props.id] || {};
+                                            this.props.alignment;
                                           const seqDataToCopy =
                                             getSequenceDataBetweenRange(
                                               alignmentData,
@@ -1338,7 +1330,6 @@ class AlignmentView extends React.Component {
 }
 
 export default compose(
-  withStore,
   withEditorProps,
   connect(
     (state, ownProps) => {
@@ -1443,6 +1434,7 @@ export default compose(
             .join("")
         },
         pairwiseAlignments,
+        alignment: alignment || {},
         alignmentType,
         alignmentTracks,
         scrollPercentageToJumpTo,

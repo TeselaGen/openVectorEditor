@@ -50,7 +50,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
-import withStore from "../utils/withStore";
+import { connect } from "react-redux";
 
 function getAcceptedChars({
   isOligo,
@@ -557,9 +557,8 @@ function VectorInteractionHOC(Component /* options */) {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
-            const { selectionLayer, editorName, store } = this.props;
-            const { sequenceData, copyOptions } =
-              store.getState().VectorEditor[editorName];
+            const { selectionLayer, editorState } = this.props;
+            const { sequenceData, copyOptions } = editorState;
 
             const selectedSeqData = getSequenceDataBetweenRange(
               sequenceData,
@@ -1161,8 +1160,12 @@ function VectorInteractionHOC(Component /* options */) {
 }
 
 const withEditorInteractions = compose(
-  withStore,
   withEditorProps,
+  connect((state, ownProps) => {
+    return {
+      editorState: state.VectorEditor[ownProps.editorName]
+    };
+  }),
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
 export default withEditorInteractions;
