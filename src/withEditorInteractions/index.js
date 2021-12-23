@@ -12,11 +12,9 @@ import {
 } from "ve-sequence-utils";
 import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
-import { branch } from "recompose";
-
+import { branch, getContext } from "recompose";
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
-
 import Combokeys from "combokeys";
 import {
   showContextMenu,
@@ -25,6 +23,8 @@ import {
 } from "teselagen-react-components";
 import { bioData } from "ve-sequence-utils";
 import { jsonToGenbank } from "bio-parsers";
+import PropTypes from "prop-types";
+
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
@@ -1161,6 +1161,9 @@ function VectorInteractionHOC(Component /* options */) {
 
 const withEditorInteractions = compose(
   withEditorProps,
+  getContext({
+    store: PropTypes.object
+  }),
   connect((state, ownProps) => {
     return {
       editorState: state.VectorEditor[ownProps.editorName]

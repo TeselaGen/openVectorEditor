@@ -54,7 +54,7 @@
     "react-draggable": "4.4.4",
     "react-dropzone": "^11.4.2",
     "react-measure": "^2.5.2",
-    "react-redux": "^7.2.6",
+    "react-redux": "^5",
     "react-router-dom": "^4.3.1",
     "react-sizeme": "^2.5.2",
     "recompose": "npm:react-recompose@0.31.1",

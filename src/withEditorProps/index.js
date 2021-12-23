@@ -597,6 +597,7 @@ function mapStateToProps(state, ownProps) {
   };
   return {
     ...toReturn,
+    editorState,
     selectedCutsites,
     sequenceLength,
     allCutsites,
