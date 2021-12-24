@@ -15,7 +15,8 @@ import {
 import {
   InfoHelper,
   Loading,
-  showContextMenu
+  showContextMenu,
+  withStore
 } from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
 import { throttle, cloneDeep, map, some } from "lodash";
@@ -50,7 +51,6 @@ import { view } from "@risingstack/react-easy-state";
 import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
-import withStore from "../utils/withStore";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
