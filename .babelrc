@@ -1,0 +1,51 @@
+{
+  "presets": [
+    [
+      "/Users/tnrich/Sites/openVectorEditor/node_modules/@babel/preset-env/lib/index.js",
+      {
+        "loose": true,
+        "modules": false
+      }
+    ],
+    [
+      "/Users/tnrich/Sites/openVectorEditor/node_modules/@babel/preset-react/lib/index.js",
+      {
+        "development": false
+      }
+    ],
+    [
+      "/Users/tnrich/Sites/openVectorEditor/node_modules/babel-preset-proposals/lib/index.js",
+      {
+        "loose": true,
+        "decorators": true,
+        "classProperties": true,
+        "exportDefaultFrom": true,
+        "exportNamespaceFrom": true,
+        "absolutePaths": true
+      }
+    ]
+  ],
+  "plugins": [
+    "/Users/tnrich/Sites/openVectorEditor/node_modules/@babel/plugin-proposal-optional-chaining/lib/index.js",
+    "/Users/tnrich/Sites/openVectorEditor/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/lib/index.js",
+    [
+      "/Users/tnrich/Sites/openVectorEditor/node_modules/babel-plugin-transform-react-remove-prop-types/lib/index.js",
+      {
+        "mode": "wrap"
+      }
+    ],
+    [
+      "/Users/tnrich/Sites/openVectorEditor/node_modules/@babel/plugin-transform-runtime/lib/index.js",
+      {
+        "absoluteRuntime": false,
+        "useESModules": true,
+        "helpers": false
+      }
+    ]
+  ],
+  "ignore": [
+    "**/*.spec.js",
+    "**/*.test.js",
+    "**/__tests__/"
+  ]
+}
