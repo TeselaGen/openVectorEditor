@@ -21,7 +21,8 @@ import Combokeys from "combokeys";
 import {
   showContextMenu,
   showConfirmationDialog,
-  commandMenuEnhancer
+  commandMenuEnhancer,
+  withStore
 } from "teselagen-react-components";
 import { bioData } from "ve-sequence-utils";
 import { jsonToGenbank } from "bio-parsers";
@@ -50,7 +51,6 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
-import withStore from "../utils/withStore";
 
 function getAcceptedChars({
   isOligo,
