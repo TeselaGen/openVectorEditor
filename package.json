@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "17.1.5",
+  "version": "17.1.6",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -11,7 +11,7 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component --copy-files --no-demo",
+    "build": "echo BUILDING && nwb build-react-component --copy-files --no-demo",
     "buildWithDemo": "nwb build-react-component --copy-files",
     "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
     "clean": "nwb clean-module && npm clean-demo",
