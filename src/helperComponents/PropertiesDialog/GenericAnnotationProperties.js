@@ -130,6 +130,12 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
                 cmd={this.commands[`toggle${annotationTypeUpper + "s"}`]}
               />
             }
+            onDoubleClick={(annotation) => {
+              showAddOrEditAnnotationDialog({
+                type: annotationType,
+                annotation
+              });
+            }}
             annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             noPadding
             noFullscreenButton

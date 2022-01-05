@@ -22,6 +22,7 @@ import Chromatogram from "./Chromatograms/Chromatogram";
 import { rowHeights } from "../RowView/estimateRowHeight";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
 import { filter } from "lodash";
+import { defaultCharWidth } from "../constants/rowviewContants";
 
 function noop() {}
 
@@ -65,7 +66,7 @@ function getPropsForType(props, type, pluralType, extraProps) {
 export default function RowItem(props) {
   let {
     noRedux,
-    charWidth,
+    charWidth = defaultCharWidth,
     selectionLayer = { start: -1, end: -1 },
     deletionLayers = {},
     replacementLayers = {},

@@ -32,18 +32,17 @@ function getSnipForRow(
   index
 ) {
   if (!isPositionWithinRange(snipPosition, row)) return;
-
-  let { xStart } = getXStartAndWidthOfRangeWrtRow({
+  const { xStart } = getXStartAndWidthOfRangeWrtRow({
     range: { start: snipPosition, end: snipPosition },
     row,
     charWidth,
     sequenceLength
   });
 
-  let newCursorStyle = assign({}, snipStyle, {
-    left: xStart + 2
+  const newCursorStyle = assign({}, snipStyle, {
+    left: xStart
   });
-  let cursorEl = (
+  const cursorEl = (
     <div key={index} className="veRowViewCutsite snip" style={newCursorStyle} />
   );
   return cursorEl;
@@ -65,7 +64,7 @@ function getSnipConnector(
   // }
   //then mask the range by the row
 
-  let overlaps = getOverlapsOfPotentiallyCircularRanges(
+  const overlaps = getOverlapsOfPotentiallyCircularRanges(
     snipRange,
     { ...row, end: row.end + 1 },
     sequenceLength
@@ -79,11 +78,11 @@ function getSnipConnector(
     });
     width -= charWidth;
     //the second logical operator catches the special case where we're at the very end of the sequence..
-    let newCursorStyle = assign({}, snipConnectorStyle, {
-      left: xStart + 2,
+    const newCursorStyle = assign({}, snipConnectorStyle, {
+      left: xStart,
       width
     });
-    let cursorEl = (
+    const cursorEl = (
       <div
         key={index + index2}
         className="veRowViewCutsite snipConnector"
@@ -95,7 +94,7 @@ function getSnipConnector(
 }
 
 function Cutsites(props) {
-  let {
+  const {
     annotationRanges,
     charWidth,
     bpsPerRow,
@@ -105,10 +104,10 @@ function Cutsites(props) {
     sequenceLength,
     topStrand
   } = props;
-  let snips = [];
-  let snipConnectors = [];
+  const snips = [];
+  const snipConnectors = [];
   Object.keys(annotationRanges).forEach(function (key) {
-    let annotationRange = annotationRanges[key];
+    const annotationRange = annotationRanges[key];
     let { annotation } = annotationRange;
     if (!annotation) {
       annotation = annotationRange;
@@ -125,7 +124,6 @@ function Cutsites(props) {
     bottomSnipPosition = bottomSnipPosition && Number(bottomSnipPosition);
     upstreamTopSnip = upstreamTopSnip && Number(upstreamTopSnip);
     upstreamBottomSnip = upstreamBottomSnip && Number(upstreamBottomSnip);
-
     snipStyle = {
       ...snipStyle,
       background: annotation.restrictionEnzyme.color || "black"
@@ -137,7 +135,7 @@ function Cutsites(props) {
 
     let newSnip;
     let newConnector;
-    let snipRange = {};
+    const snipRange = {};
 
     if (areNonNegativeIntegers([bottomSnipPosition, topSnipPosition])) {
       if (topStrand) {
