@@ -65,7 +65,7 @@ class PointedAnnotation extends React.PureComponent {
       }
     }
     let basesToShow;
-    if (annotation && annotation.bases) {
+    if (annotation && annotation.bases && annotation.fullSeq) {
       const basesForRange = getSequenceWithinRange(
         {
           start: annotationRange.start - annotation.start,

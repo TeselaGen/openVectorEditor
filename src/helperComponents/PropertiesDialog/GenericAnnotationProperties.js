@@ -18,8 +18,15 @@ import commands from "../../commands";
 import { sizeSchema } from "./utils";
 import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 import { typeField } from "./typeField";
+import { getSequenceWithinRange } from "ve-range-utils";
+import { getReverseComplementSequenceString } from "ve-sequence-utils";
 
-const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
+const genericAnnotationProperties = ({
+  annotationType,
+  noType,
+  withTags,
+  withBases
+}) => {
   const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
     constructor(props) {
@@ -28,6 +35,24 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
       this.schema = {
         fields: [
           { path: "name", type: "string" },
+          ...(!withBases
+            ? []
+            : [
+                {
+                  path: "bases",
+                  type: "string",
+                  render: (bases, primer, row, props) => {
+                    let bps = bases;
+                    if (!bases) {
+                      bps = getSequenceWithinRange(primer, props.sequence);
+                      if (!primer.forward) {
+                        bps = getReverseComplementSequenceString(bps);
+                      }
+                    }
+                    return bps;
+                  }
+                }
+              ]),
           ...(noType
             ? []
             : [
@@ -100,6 +125,7 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
         annotationVisibility,
         sequenceLength,
         selectionLayer,
+        sequence,
         isProtein,
         allPartTags,
         annotationPropertiesSelectedEntities:
@@ -137,6 +163,7 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
               });
             }}
             annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            sequence={sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             noPadding
             noFullscreenButton
             onRowSelect={this.onRowSelect}
@@ -214,6 +241,7 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
           annotationVisibility,
           selectionLayer,
           readOnly,
+          sequence: sequenceData.sequence,
           annotations: sequenceData[annotationType + "s"],
           [annotationType + "s"]: sequenceData[annotationType + "s"],
           sequenceLength: sequenceData.sequence.length

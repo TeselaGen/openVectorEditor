@@ -79,8 +79,6 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     const newVal = e.target.innerText;
     const savedCaretPosition = CaretPositioning.saveSelection(e.currentTarget);
     setCaretPosition(savedCaretPosition);
-
-    // console.log(`inputRef.current:`,inputRef.current)
     const acceptedChars = getAcceptedChars(sequenceData);
     let newBases = "";
     newVal.split("").forEach((letter) => {
@@ -97,15 +95,6 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     const restore = selectionSaveCaretPosition(inputRef.current);
 
     input.onChange(newBases || "");
-
-    // const newRange = getStartEndFromBases({
-    //   bases: newBases,
-    //   threePrimeLocation,
-    //   forward,
-    //   sequenceLength: seqLen
-    // });
-    // change("start", newRange.start + 1);
-    // change("end", newRange.end + 1);
     setTimeout(() => {
       restore();
     }, 0);

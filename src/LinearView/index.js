@@ -204,7 +204,7 @@ class _LinearView extends React.Component {
           <RowItem
             {...{
               ...rest,
-              charWidth: linearViewCharWidth,
+              charWidth: this.charWidth,
               scrollData,
               caretPosition,
               isProtein: sequenceData.isProtein,

@@ -622,6 +622,51 @@ ToolBarProps: {
               })}
               {renderToggle({
                 that: this,
+                label: "Focus Properties",
+                type: "focusProperties",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      propertiesTool: {
+                        tabId:
+                          new URL(
+                            `https://1.com?${
+                              window.location.href.split("?")[1]
+                            }`
+                          ).searchParams.get("propertyTab") || "parts"
+                      },
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map",
+                            active: true
+                          },
+                          {
+                            id: "circular",
+                            name: "Circular Map"
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            name: "Sequence Map"
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties",
+                            active: true
+                          }
+                        ]
+                      ]
+                    });
+                },
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
+                
+                `
+              })}
+              {renderToggle({
+                that: this,
                 label: "Customize tabs",
                 type: "customizeTabs",
                 hook: (shouldUpdate) => {

@@ -187,6 +187,7 @@ export default function RowItem(props) {
     getGaps,
     isProtein,
     sequenceLength,
+    isRowView,
     row: { start: row.start, end: row.end }
   };
 
@@ -398,7 +399,6 @@ export default function RowItem(props) {
           <Chromatogram
             chromatogramData={chromatogramData}
             alignmentData={alignmentData}
-            isRowView={isRowView}
             {...annotationCommonProps}
           />
         )}
