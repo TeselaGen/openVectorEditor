@@ -51,6 +51,10 @@ module.exports = {
         __dirname,
         "node_modules/@blueprintjs/core"
       ),
+      "@blueprintjs/datetime": path.join(
+        __dirname,
+        "node_modules/@blueprintjs/datetime"
+      ),
       // "@blueprintjs/core/lib": path.join(
       //   __dirname,
       //   "node_modules/@blueprintjs/core/lib"

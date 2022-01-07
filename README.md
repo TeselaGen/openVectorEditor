@@ -10,6 +10,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
 ## [CHANGELOG](CHANGELOG.md)
 
+
 ## Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10
 
 ## Demo: http://teselagen.github.io/openVectorEditor/
@@ -734,3 +735,4 @@ open ./nwb.config.js
 comment in whatever module you want to have linked locally (ve-range-utils, ve-sequence-utils, bio-parsers, teselagen-react-components)
 you'll need to have that module cloned down from github on your machine's file system for this to work
 ```
+

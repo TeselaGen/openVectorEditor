@@ -2,7 +2,7 @@ import { convertRangeTo0Based } from "ve-range-utils";
 import classNames from "classnames";
 import React from "react";
 
-import { reduxForm, formValues } from "redux-form";
+import { reduxForm } from "redux-form";
 import { wrapDialog } from "teselagen-react-components";
 import { compose } from "redux";
 import { Button, Intent, Classes } from "@blueprintjs/core";
@@ -11,6 +11,7 @@ import { NumericInputField } from "teselagen-react-components";
 import { get } from "lodash";
 import { getRangeLength } from "ve-range-utils";
 import { tryToRefocusEditor } from "../utils/editorUtils";
+import tgFormValues from "../utils/tgFormValues";
 
 // Single validation function - from & to have the same range
 const validate = (val, vals, props) => {
@@ -23,7 +24,7 @@ const validate = (val, vals, props) => {
     return "Wrong from/to order";
   }
 };
-
+// const selector = formValueSelector("selectDialog");
 export default compose(
   wrapDialog({
     isDraggable: true,
@@ -35,19 +36,21 @@ export default compose(
   reduxForm({
     form: "selectDialog"
   }),
-  formValues("from", "to")
+  tgFormValues("from", "to")
 )(
   class SelectDialog extends React.Component {
-    updateTempHighlight = ({ isStart, isEnd } = {}) => (val) => {
-      const { selectionLayerUpdate, from, to, invalid } = this.props;
-      if (invalid) return;
-      selectionLayerUpdate(
-        convertRangeTo0Based({
-          start: isStart ? Math.round(val) : from,
-          end: isEnd ? Math.round(val) : to
-        })
-      );
-    };
+    updateTempHighlight =
+      ({ isStart, isEnd } = {}) =>
+      (val) => {
+        const { selectionLayerUpdate, from, to, invalid } = this.props;
+        if (invalid) return;
+        selectionLayerUpdate(
+          convertRangeTo0Based({
+            start: isStart ? Math.round(val) : from,
+            end: isEnd ? Math.round(val) : to
+          })
+        );
+      };
     componentDidMount() {
       const { from, to, initialCaretPosition } = this.props;
       this.initialSelection = { from, to, initialCaretPosition };

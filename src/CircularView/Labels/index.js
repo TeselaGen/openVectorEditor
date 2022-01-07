@@ -7,6 +7,15 @@ import { cloneDeep, clamp } from "lodash";
 
 const fontWidthToFontSize = 1.75;
 
+const getTextLength = (text) => {
+  let len = (text || "Unlabeled").length;
+  // eslint-disable-next-line no-control-regex
+  const nonEnInputReg = /[^\x00-\xff]+/g;
+  const nonEnStrings = (text || "Unlabeled").match(nonEnInputReg) || [];
+  nonEnStrings.forEach((str) => (len += str.length * 0.5));
+  return len;
+};
+
 function Labels({
   labels = [],
   radius: outerRadius,
@@ -39,7 +48,7 @@ function Labels({
         _annotationCenterAngle + (rotationRadians || 0);
       return {
         ...label,
-        width: (label.text || "Unlabeled").length * fontWidth,
+        width: getTextLength(label.text) * fontWidth,
         //three points define the label:
         innerPoint: {
           ...polarToSpecialCartesian(
@@ -180,6 +189,8 @@ const DrawLabelGroup = withHover(function ({
   // isIdHashmap,
 }) {
   let { text = "Unlabeled" } = label;
+
+  const textLength = getTextLength(text);
   let groupLabelXStart;
   //Add the number of unshown labels
   if (label.labelAndSublabels && label.labelAndSublabels.length > 1) {
@@ -190,13 +201,14 @@ const DrawLabelGroup = withHover(function ({
     // }
   }
 
-  const labelLength = text.length * fontWidth;
+  const labelLength = textLength * fontWidth;
   const maxLabelLength = labelAndSublabels.reduce(function (
     currentLength,
     { text = "Unlabeled" }
   ) {
-    if (text.length > currentLength) {
-      return text.length;
+    const _textLength = getTextLength(text);
+    if (_textLength > currentLength) {
+      return _textLength;
     }
     return currentLength;
   },
@@ -325,7 +337,7 @@ const DrawLabelGroup = withHover(function ({
       <text
         key="text"
         x={labelXStart}
-        textLength={text.length * fontWidth}
+        textLength={getTextLength(text) * fontWidth}
         lengthAdjust="spacing"
         className={
           labelClass + label.className + (hovered ? " veAnnotationHovered" : "")
@@ -411,7 +423,7 @@ const DrawGroupInnerLabel = withHover(
     return (
       <tspan
         x={labelXStart}
-        textLength={label.text.length * fontWidth}
+        textLength={getTextLength(label.text) * fontWidth}
         lengthAdjust="spacing"
         onClick={label.onClick}
         onDoubleClick={(e) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import uuid from "shortid";
 
-import { reduxForm, formValues } from "redux-form";
+import { reduxForm } from "redux-form";
 
 import {
   InputField,
@@ -16,6 +16,7 @@ import classNames from "classnames";
 import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "teselagen-react-components";
 import "./style.css";
+import tgFormValues from "../../utils/tgFormValues";
 
 class MergeFeaturesDialog extends React.Component {
   render() {
@@ -248,5 +249,5 @@ export default compose(
       return errors;
     }
   }),
-  formValues("id1", "id2")
+  tgFormValues("id1", "id2")
 )(MergeFeaturesDialog);

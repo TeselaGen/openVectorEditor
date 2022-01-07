@@ -12,17 +12,17 @@ import {
 } from "ve-sequence-utils";
 import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
-import { getContext, branch } from "recompose";
+import { branch } from "recompose";
 
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
 
 import Combokeys from "combokeys";
-import PropTypes from "prop-types";
 import {
   showContextMenu,
   showConfirmationDialog,
-  commandMenuEnhancer
+  commandMenuEnhancer,
+  withStore
 } from "teselagen-react-components";
 import { jsonToGenbank } from "bio-parsers";
 import withEditorProps from "../withEditorProps";
@@ -73,8 +73,8 @@ const annotationClickHandlers = [
 ];
 //tnr: because this menu is being rendered outside the main render tree (by blueprint)
 //we need to make sure it re-renders whenever the redux state changes (so things like tick-marks will toggle properly etc..)
-const ConnectedMenu = withEditorProps(({ children, ...rest }) => (
-  <Menu changingProps={rest}>{children}</Menu>
+const ConnectedMenu = withEditorProps(({ children }) => (
+  <Menu>{children.map(React.cloneElement)}</Menu>
 ));
 
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
@@ -96,9 +96,9 @@ function VectorInteractionHOC(Component /* options */) {
         };
       });
 
-      this.ConnectedMenu = (props) => (
-        <ConnectedMenu store={this.props.store} {...props} />
-      );
+      this.ConnectedMenu = (p) => {
+        return <ConnectedMenu {...props} {...p} />;
+      };
     }
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
@@ -1144,18 +1144,12 @@ function VectorInteractionHOC(Component /* options */) {
   };
 }
 
-export default compose(
-  //tnr: get the store from the context somehow and pass it to the FrameTranslationMenuItems
-  // withContext({ store: PropTypes.object }, ({ store }) => {
-  //   return { store };
-  // }),
-  getContext({
-    store: PropTypes.object
-  }),
-  // connect(),
+const withEditorInteractions = compose(
+  withStore,
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
+export default withEditorInteractions;
 
 function getGenbankFromSelection(selectedSeqData, sequenceData) {
   const spansEntireSeq =

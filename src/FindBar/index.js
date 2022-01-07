@@ -171,6 +171,8 @@ export class FindBar extends React.Component {
       <span>
         {isInline && (
           <Popover
+            autoFocus={false}
+            enforceFocus={false}
             position={Position.BOTTOM}
             target={
               <Button
@@ -253,8 +255,8 @@ export class FindBar extends React.Component {
       >
         {isInline && <Button onClick={toggleFindTool} icon="cross" />}
         <Popover
-          enforceFocus={false}
           autoFocus={false}
+          enforceFocus={false}
           target={
             <InputToUse
               autoFocus

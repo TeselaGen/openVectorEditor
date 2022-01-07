@@ -132,6 +132,20 @@ const ShowLengthItem = connectToEditor(
   )} ${isProtein ? "AAs" : "bps"}`}</StatusBarItem>
 ));
 
+const ShowTypeItem = connectToEditor(({ sequenceData }) => ({
+  isProtein: sequenceData.isProtein,
+  isOligo: sequenceData.isOligo,
+  isRna: sequenceData.isRna,
+  isMixedRnaAndDna: sequenceData.isMixedRnaAndDna
+}))(({ isProtein, isOligo, isRna, isMixedRnaAndDna }) => {
+  let type = "DNA";
+  if (isProtein) type = "Protein";
+  if (isRna) type = "RNA";
+  if (isOligo) type = "Oligo";
+  if (isMixedRnaAndDna) type = "Mixed RNA/DNA";
+  return <StatusBarItem dataTest="veStatusBar-type">{type}</StatusBarItem>;
+});
+
 const EditCircularityItem = compose(
   connectToEditor(
     ({
@@ -206,6 +220,7 @@ export function StatusBar({
   onSave,
   editorName,
   showCircularity = true,
+  showMoleculeType = true,
   showReadOnly = true,
   showAvailability = false,
   showGCContentByDefault,
@@ -215,6 +230,9 @@ export function StatusBar({
 }) {
   return (
     <div className="veStatusBar">
+      {showMoleculeType && (
+        <ShowTypeItem editorName={editorName}></ShowTypeItem>
+      )}
       <EditReadOnlyItem
         editorName={editorName}
         {...{

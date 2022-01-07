@@ -30,7 +30,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
         onDragStart={preventDefaultStopPropagation}
         onDragEnd={preventDefaultStopPropagation}
         onMouseDown={preventDefaultStopPropagation}
-        onMouseUp={preventDefaultStopPropagation}
+        // onMouseUp={preventDefaultStopPropagation} //tnr: commenting this out because it was breaking sliders onRelease
         title={title}
         style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
       >

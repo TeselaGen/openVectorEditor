@@ -1,4 +1,19 @@
 describe("statusBar", function () {
+  it("molcule type should be an option in the menu bar", function () {
+    cy.visit("");
+    cy.contains(`[data-test="veStatusBar-type"]`, "DNA");
+    cy.get(`[data-test="moleculeType"]`).select("Protein");
+    cy.contains(`[data-test="veStatusBar-type"]`, "Protein");
+    cy.get(`[data-test="moleculeType"]`).select("RNA");
+    cy.contains(`[data-test="veStatusBar-type"]`, "RNA");
+    cy.get(`[data-test="moleculeType"]`).select("Oligo");
+    cy.contains(`[data-test="veStatusBar-type"]`, "Oligo");
+    cy.get(`[data-test="moleculeType"]`).select("mixedRnaAndDna");
+    cy.contains(`[data-test="veStatusBar-type"]`, "Mixed RNA/DNA");
+
+    cy.tgToggle("showMoleculeType", false);
+    cy.get(`[data-test="veStatusBar-type"]`).should("not.exist");
+  });
   it("melting temp should be an option in the menu bar", function () {
     cy.visit("");
     cy.selectRange(10, 30);

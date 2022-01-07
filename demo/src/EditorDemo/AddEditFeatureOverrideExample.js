@@ -1,6 +1,6 @@
 import React from "react";
 
-import { reduxForm, FieldArray, formValues } from "redux-form";
+import { reduxForm, FieldArray } from "redux-form";
 
 import {
   InputField,
@@ -25,6 +25,7 @@ import {
 import classNames from "classnames";
 
 import { withEditorProps } from "../../../src";
+import tgFormValues from "../../../src/utils/tgFormValues";
 
 export class AddOrEditFeatureDialog extends React.Component {
   renderLocations = (props) => {
@@ -368,5 +369,5 @@ export default compose(
       return errors;
     }
   }),
-  formValues("start", "end", "locations")
+  tgFormValues("start", "end", "locations")
 )(AddOrEditFeatureDialog);
