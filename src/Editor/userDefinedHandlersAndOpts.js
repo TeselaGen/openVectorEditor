@@ -12,6 +12,7 @@ export const userDefinedHandlersAndOpts = [
   "disableSetReadOnly",
   "showReadOnly",
   "showCircularity",
+  "showMoleculeType",
   "showAvailability",
   "showGCContentByDefault",
   "GCDecimalDigits",

@@ -54,6 +54,7 @@ const defaultState = {
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
+  showMoleculeType: true,
   showGCContentByDefault: false,
   GCDecimalDigits: 1,
   onlyShowLabelsThatDoNotFit: true,
@@ -1456,6 +1457,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "showMoleculeType",
+                info: `pass showMoleculeType=false to the <Editor> to not display the molecule type status item`
+              })}
+              {renderToggle({
+                that: this,
                 type: "showAvailability",
                 info: `pass showAvailability=false to the <Editor> to not display the availability toggle`
               })}
@@ -2001,7 +2007,8 @@ clickOverrides: {
             disableSetReadOnly={this.state.disableSetReadOnly}
             withRotateCircularView={this.state.withRotateCircularView}
             showReadOnly={this.state.showReadOnly}
-            showCircularity={this.state.showCircularity}
+            showCircularity={!!this.state.showCircularity}
+            showMoleculeType={this.state.showMoleculeType}
             showGCContentByDefault={this.state.showGCContentByDefault}
             onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
