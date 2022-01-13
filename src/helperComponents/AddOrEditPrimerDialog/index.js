@@ -17,7 +17,7 @@ import CaretPositioning, {
   selectionSaveCaretPosition
 } from "./EditCaretPosition";
 import { Menu, MenuItem } from "@blueprintjs/core";
-import getComplementSequenceString from "ve-sequence-utils/lib/getComplementSequenceString";
+import { getComplementSequenceString } from "ve-sequence-utils";
 import MeltingTemp from "../../StatusBar/MeltingTemp";
 
 // function getHtmlFromVal(val) {

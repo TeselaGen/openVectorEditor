@@ -1022,12 +1022,44 @@ export default {
   ],
   primers: [
     {
+      name: "Example Primer -1",
+      start: 12,
+      end: 45,
+      type: "primer_bind",
+      forward: true,
+      // bases: '(GACT)AAGTGAATGATGTAGCCGTCAAGTTG'
+
+      bases:
+        "(GTAAGCAGAGAt)TGAAGAA(ttttgagagagaga)AAAGTGAA-CCTGTAG(AAGAGAGAGAGASDggagaggaAA)CCGTCAAGTTG(GG)"
+    },
+    {
+      name: "Example Primer 0",
+      start: 12,
+      end: 45,
+      type: "primer_bind",
+      forward: false,
+      // bases: '(GACT)AAGTGAATGATGTAGCCGTCAAGTTG'
+
+      bases:
+        "(GTAAGCAGAGAt)TGAAGAA(ttttgagagagaga)AAAGTGAA-CCTGTAG(AAGAGAGAGAGASDggagaggaAA)CCGTCAAGTTG(GG)"
+    },
+    {
       name: "Example Primer 1",
       start: 280,
       end: 300,
       type: "primer_bind",
-      forward: true
+      forward: true,
+      bases:
+        "(GTAAGCAGAGAt)TGTGC(ttttgagagagaga)GACG(AAGAGAGAGAGASDggagaggaAA)CTGG-GA(GG)TATCA"
     }
+    // {
+    //   name: "Example Primer 2",
+    //   start: 302,
+    //   end: 320,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   bases: '(GTAAGCAGAGAt)TGTGC(ttttgagagagaga)GACG(AAGAGAGAGAGASDggagaggaAA)CTGG-GA(GG)TATCA'
+    // }
   ],
   features: [
     {

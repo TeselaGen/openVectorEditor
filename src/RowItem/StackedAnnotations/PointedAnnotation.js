@@ -4,14 +4,10 @@ import withHover from "../../helperComponents/withHover";
 import getAnnotationNameAndStartStopString from "../../utils/getAnnotationNameAndStartStopString";
 
 import React from "react";
-import { map } from "lodash";
 import { doesLabelFitInAnnotation } from "../utils";
 import { noop } from "lodash";
 import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
 import { getStripedPattern } from "../../utils/editorUtils";
-import { fudge2, realCharWidth } from "../constants";
-import getSequenceWithinRange from "ve-range-utils/lib/getSequenceWithinRange";
-import { getComplementSequenceString } from "ve-sequence-utils/lib";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -29,9 +25,13 @@ class PointedAnnotation extends React.PureComponent {
       onMouseOver,
       isProtein,
       id,
-      annotationRange,
+      extraHeight,
+      flipAnnotation,
+      insertPaths,
+      insertTicks,
       hideName,
       pointiness = 8,
+      arrowPointiness = 1,
       color = "orange",
       fill,
       stroke,
@@ -64,46 +64,8 @@ class PointedAnnotation extends React.PureComponent {
         charWN = width;
       }
     }
-    let basesToShow;
-    if (annotation && annotation.bases && annotation.fullSeq) {
-      const basesForRange = getSequenceWithinRange(
-        {
-          start: annotationRange.start - annotation.start,
-          end: annotationRange.end - annotation.start
-        },
-        annotation.forward
-          ? annotation.bases
-          : annotation.bases.split("").reverse().join("")
-      );
+    charWN = arrowPointiness * charWN;
 
-      const fudge = charWidth - realCharWidth;
-      const textLength = charWidth * basesForRange.length - fudge - fudge2;
-
-      basesToShow = (
-        <text
-          {...{ textLength, y: forward ? 22 : -3, x: fudge / 2 }}
-          className="ve-monospace-font"
-        >
-          {map(basesForRange.split(""), (b, i) => {
-            const indexOfBase = i + annotationRange.start;
-            let seqForBase = annotation.fullSeq[indexOfBase] || "";
-            if (!annotation.forward) {
-              seqForBase = getComplementSequenceString(seqForBase);
-            }
-            const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
-            return (
-              <tspan
-                className={isMatch ? "" : "tg-no-match-seq"}
-                fill={isMatch ? "black" : "red"}
-                textLength={textLength}
-              >
-                {b}
-              </tspan>
-            );
-          })}
-        </text>
-      );
-    }
     const widthMinusOne = width - charWN;
     let path;
     let hasAPoint = false;
@@ -112,6 +74,9 @@ class PointedAnnotation extends React.PureComponent {
     L -10,${height / 2} 
     L 0,${height / 2} `
       : "";
+    const bottomLine = `${insertTicks || ""} L 0,${height}`;
+    const startLines = `M 0,0 
+    ${insertPaths || ""}`;
     const arrowLine = annotation.overlapsSelf
       ? `L ${width + 10},${height / 2} 
     L ${width},${height / 2} `
@@ -121,44 +86,46 @@ class PointedAnnotation extends React.PureComponent {
     if (_rangeType === "middle") {
       //draw a rectangle
       path = `
-          M 0,0 
+          ${startLines}
           L ${width - pointiness / 2},0
           Q ${width + pointiness / 2},${height / 2} ${
         width - pointiness / 2
       },${height}
-          L ${0},${height}
+          ${bottomLine}
           Q ${pointiness},${height / 2} ${0},${0}
           z`;
     } else if (_rangeType === "start") {
       path = `
-          M 0,0 
+          ${startLines}
           L ${width - pointiness / 2},0 
+          
           Q ${width + pointiness / 2},${height / 2} ${
         width - pointiness / 2
       },${height}
-          L 0,${height} 
+      
+          ${bottomLine} 
           ${endLine}
           z`;
     } else if (_rangeType === "beginningAndEnd") {
       hasAPoint = true;
       path = `
-          M 0,0 
+          ${startLines}
           L ${widthMinusOne},0 
           L ${width},${height / 2} 
           ${arrowLine}
           L ${widthMinusOne},${height} 
-          L 0,${height} 
+          ${bottomLine} 
           ${endLine}
           z`;
     } else {
       hasAPoint = true;
       path = `
-        M 0,0 
+        ${startLines}
         L ${widthMinusOne},0 
         L ${width},${height / 2} 
         ${arrowLine}
         L ${widthMinusOne},${height} 
-        L 0,${height} 
+        ${bottomLine} 
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
     }
@@ -200,23 +167,25 @@ class PointedAnnotation extends React.PureComponent {
         onContextMenu={function (event) {
           onRightClick({ annotation, event, gapsBefore, gapsInside });
         }}
-        style={{
-          transform: `translateY(${
-            basesToShow ? (forward ? "-8px" : "6px") : 0
-          })`
-        }}
       >
         <title>
           {getAnnotationNameAndStartStopString(annotation, { isProtein })}
         </title>
-        {basesToShow}
         {isStriped && getStripedPattern(color)}
         <path
           strokeWidth="1"
           stroke={stroke || "black"}
           opacity={opacity}
           fill={isStriped ? "url(#diagonalHatch)" : fill || color}
-          transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
+          transform={
+            forward
+              ? null
+              : "translate(" +
+                width +
+                `,${flipAnnotation ? -extraHeight + 10 : 0}) scale(-1,${
+                  flipAnnotation ? "-" : ""
+                }1) `
+          }
           d={path}
         />
         {!hideName && nameToDisplay && (

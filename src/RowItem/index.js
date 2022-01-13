@@ -79,6 +79,7 @@ export default function RowItem(props) {
     cutsiteLabelHeight = rowHeights.cutsiteLabels.height,
     sequenceHeight = rowHeights.sequence.height,
     axisHeight = rowHeights.axis.height,
+    primerHeight = rowHeights.primers.height,
     axisMarginTop = rowHeights.axis.marginTop,
     width,
     annotationVisibility = {},
@@ -191,7 +192,7 @@ export default function RowItem(props) {
     row: { start: row.start, end: row.end }
   };
 
-  const drawLabels = (type, noDraw, additionalOpts) => {
+  const drawLabels = (type, noDraw, additionalOpts, extraProps) => {
     if (noDraw) {
       return null;
     }
@@ -208,7 +209,7 @@ export default function RowItem(props) {
         : [],
       additionalOpts
     );
-
+    if (!ranges.length) return null;
     return (
       <Labels
         {...annotationCommonProps}
@@ -217,6 +218,7 @@ export default function RowItem(props) {
         rangeMax={bpsPerRow}
         annotationRanges={ranges}
         annotationHeight={cutsiteLabelHeight}
+        {...extraProps}
       />
     );
   };
@@ -246,6 +248,7 @@ export default function RowItem(props) {
         externalLabels={externalLabels === "true"}
         onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
         type={type}
+        // fullSeq={}
         containerClassName={camelCase("veRowView-" + pluralType + "Container")}
         alignmentType={alignmentType}
         {...annotationCommonProps}
@@ -403,11 +406,17 @@ export default function RowItem(props) {
           />
         )}
         {drawLabels("cutsite", !isRowView)}
-        {drawLabels("primer", externalLabels !== "true", { onlyForward: true })}
+        {drawLabels(
+          "primer",
+          false,
+          { onlyForward: true },
+          { noLabelLine: true }
+        )}
 
         {drawAnnotations("primer", {
           sequence: fullSequence,
           isStriped: true,
+          annotationHeight: primerHeight,
           onlyForward: true
         })}
         <div
@@ -518,12 +527,19 @@ export default function RowItem(props) {
               );
             })}
         </div>
-        {drawLabels("primer", externalLabels !== "true", { onlyReverse: true })}
+
         {drawAnnotations("primer", {
           sequence: fullSequence,
           isStriped: true,
+          annotationHeight: primerHeight,
           onlyReverse: true
         })}
+        {drawLabels(
+          "primer",
+          externalLabels !== "true",
+          { onlyReverse: true },
+          { noLabelLine: true }
+        )}
         {drawLabels("feature", externalLabels !== "true")}
         {/* {externalLabels && drawAnnotations("part", partProps)} */}
         {drawAnnotations("feature")}

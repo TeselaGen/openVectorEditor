@@ -1,6 +1,6 @@
 import React from "react";
 
-let AnnotationContainerHolder = function(props) {
+const AnnotationContainerHolder = function (props) {
   return (
     <div
       className={props.className || "annotationContainer"}
@@ -9,7 +9,7 @@ let AnnotationContainerHolder = function(props) {
         height: props.containerHeight,
         position: "relative",
         display: "block",
-        marginTop: props.marginTop,
+        marginTop: props.marginTop + props.extraMargin,
         marginBottom: props.marginBottom
       }}
     >

@@ -6,7 +6,7 @@ class AnnotationPositioner extends React.PureComponent {
       <svg
         data-y-offset={this.props.yOffset}
         transform={this.props.transform || null}
-        height={Math.max(0, this.props.height)}
+        height={`${Math.max(0, this.props.height)}px`}
         className={
           (this.props.className || "") + " veRowViewAnnotationPosition"
         }

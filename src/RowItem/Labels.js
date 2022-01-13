@@ -23,7 +23,8 @@ function Labels(props) {
     editorName,
     labelLineIntensity,
     isProtein,
-    noRedux
+    noRedux,
+    noLabelLine
   } = props;
 
   if (annotationRanges.length === 0) {
@@ -75,7 +76,10 @@ function Labels(props) {
     if (onlyShowLabelsThatDoNotFit) {
       //tnrtodo: more work needs to be done here to make this actually configurable
       //check if annotation name will fit
-      if (r.annotation.annotationTypePlural === "cutsites") {
+      if (
+        r.annotation.annotationTypePlural === "cutsites" ||
+        r.annotation.annotationTypePlural === "primers"
+      ) {
         //we don't want to filter out any cutsite labels
         return true;
       }
@@ -134,6 +138,7 @@ function Labels(props) {
         {...{
           editorName,
           annotation,
+          noLabelLine,
           className: `${annotationRange.annotation.labelClassName || ""} ${
             labelClassNames[pluralType]
           } veLabel `,
@@ -191,6 +196,7 @@ const DrawLabel = withHover(
         className,
         annotation,
         onClick,
+        noLabelLine,
         onDoubleClick,
         onRightClick,
         height,
@@ -203,7 +209,6 @@ const DrawLabel = withHover(
         labelLineIntensity,
         textWidth
       } = this.props;
-
       let heightToUse = height;
       let bottom = 0;
       if (hovered) {
@@ -286,22 +291,24 @@ const DrawLabel = withHover(
             {truncateLabelIfNeeded(labelText, xStart)}
           </div>
 
-          <div
-            ref={(n) => {
-              if (n) this.n = n;
-            }}
-            className="veLabelLine"
-            style={{
-              zIndex: 50,
-              position: "absolute",
-              left: xStartOriginal,
-              bottom,
-              height: Math.max(heightToUse, 3),
-              width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : labelLineIntensity
-              // background: "black"
-            }}
-          />
+          {!noLabelLine && (
+            <div
+              ref={(n) => {
+                if (n) this.n = n;
+              }}
+              className="veLabelLine"
+              style={{
+                zIndex: 50,
+                position: "absolute",
+                left: xStartOriginal,
+                bottom,
+                height: Math.max(heightToUse, 3),
+                width: hovered ? 2 : 1,
+                opacity: hovered ? 1 : labelLineIntensity
+                // background: "black"
+              }}
+            />
+          )}
         </div>
       );
     }
