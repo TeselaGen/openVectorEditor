@@ -274,34 +274,39 @@ Cypress.Commands.add("closeToasts", () => {
   });
 });
 
-Cypress.Commands.overwrite("type", (originalFn, subject, text, options) => {
-  if (text === "{selectall}{del}") {
-    return originalFn(subject, text, options); // explicit return required
-  } else {
-    cy.wrap(subject, { log: false })
-      .invoke("val")
-      .then((prevValue) => {
-        if (
-          (options && options.parseSpecialCharSequences === false) ||
-          text.includes("{") //if special chars are getting used just try it out
-        ) {
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(0, { log: false }).then(
-            { timeout: (options && options.timeout) || 40000 },
-            () => originalFn(subject, text, options)
-          );
-        } else {
-          // eslint-disable-next-line cypress/no-unnecessary-waiting
-          cy.wait(0, { log: false }).then(
-            { timeout: (options && options.timeout) || 40000 },
-            () => originalFn(subject, text, options)
-          );
-          // Adds guarding that asserts that the value is typed.
-          cy.wrap(subject, { log: false }).should(
-            "have.value",
-            `${prevValue}${text}`
-          );
-        }
-      });
+Cypress.Commands.overwrite(
+  "type",
+  (originalFn, subject, text, options = {}) => {
+    if (text === "{selectall}{del}") {
+      return originalFn(subject, text, options); //pass thru .clear() calls
+    } else {
+      cy.wrap(subject, { log: false })
+        .invoke("val")
+        .then((prevValue) => {
+          if (
+            options.passThru ||
+            options.parseSpecialCharSequences === false ||
+            (text.includes && text.includes("{")) //if special chars are getting used just pass them thru
+          ) {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
+            cy.wait(0, { log: false }).then(
+              { timeout: options.timeout || 40000 },
+              () => originalFn(subject, text, options)
+            );
+          } else {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
+            cy.wait(0, { log: false }).then(
+              { timeout: options.timeout || 40000 },
+              () => originalFn(subject, text, options)
+            );
+            // Adds guarding that asserts that the value is typed.
+            cy.wrap(subject, { log: false }).should(
+              "have.value",
+              options.assertVal ||
+                `${options.noPrevValue ? "" : prevValue}${text}`
+            );
+          }
+        });
+    }
   }
-});
+);

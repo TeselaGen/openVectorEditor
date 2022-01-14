@@ -2,7 +2,7 @@ describe("editing", function () {
   beforeEach(() => {
     cy.visit("");
   });
-  // it.only(`should handle focus correctly while editing`, ()=> {
+  // it(`should handle focus correctly while editing`, ()=> {
   //   cy.selectRange(5297, 3);
   //   cy.deleteSelection();
   //   // cy.window()
@@ -24,10 +24,10 @@ describe("editing", function () {
     cy.contains(".veCircularView text", "Part 0").click();
     cy.contains(".veCircularView text", "Part 0")
       .closest(".veVectorInteractionWrapper")
-      .type("t");
+      .type("t", { passThru: true });
     cy.focused().type("ttaaa{enter}");
     cy.contains("Selecting 5 bps from 11 to 15");
-    cy.focused().type("t");
+    cy.focused().type("t", { passThru: true });
     cy.focused().type("ccccttaaa{enter}");
     cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veCircularView"); //the circular view should still be focused
@@ -36,10 +36,10 @@ describe("editing", function () {
     cy.contains(".veRowView text", "Part 0")
       .click()
       .closest(".veVectorInteractionWrapper")
-      .type("t");
+      .type("t", { passThru: true });
     cy.focused().type("ttaaa{enter}");
     cy.contains("Selecting 5 bps from 11 to 15");
-    cy.focused().type("t");
+    cy.focused().type("t", { passThru: true });
     cy.focused().type("ccccttaaa{enter}");
     cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veRowView"); //the row view should still be focused
