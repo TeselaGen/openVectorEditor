@@ -10,7 +10,8 @@ export default function VersionSwitcher() {
     (async function fetchData() {
       try {
         let res = await Axios.get(
-          "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
+          "https://api.github.com/repos/TeselaGen/openVectorEditor/git/trees/6482359250ac5b3b3ed7103e17bfe53a32a136b1"
+          // "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
         );
         // console.log(`res:`,res)
         const versionNode = res.data.tree.find((e) => {
