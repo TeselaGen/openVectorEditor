@@ -56,16 +56,12 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
+      - uses: bahmutov/npm-install@v1
         with:
           working-directory: addons/AutoAnnotate
     
-      - name: npm install and build webpack
-        run: |
-          npm install;
-          npm run buildWithDemo
-        with:
-          persist-credentials: false
-    
+      - run: npm run buildWithDemo
+
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
