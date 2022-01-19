@@ -1,43 +1,89 @@
-name: Cypress tests
-on: [push, pull_request]
+# name: Cypress tests
+# on: [push, pull_request]
+# jobs:
+#   cypress-run:
+#     name: Cypress run
+#     runs-on: ubuntu-20.04
+#     strategy:
+#       matrix:
+#         # the actual items in the array do not matter,
+#         # just the number - to force CI to sping 3 copies
+#         # of the current job in parallel
+#         machines: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v1
+#       - uses: bahmutov/npm-install@v1
+#         with:
+#           working-directory: addons/AutoAnnotate
+#       - name: Cypress run
+#         uses: cypress-io/github-action@v2
+#         with:
+#           record: true
+#           parallel: true
+#           start: yarn start
+#           wait-on: http://localhost:3344
+#         env:
+#           WITH_COVERAGE: true
+#           # pass the Dashboard record key as an environment variable
+#           CYPRESS_RECORD_KEY: 373658d4-4931-4ffd-9263-8eb78a838ab9
+#           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Upload coverage to Codecov
+#         if: always()
+#         uses: codecov/codecov-action@v1
+#         with:
+#           directory: ./coverage/
+#           name: codecov-umbrella
+#           # fail_ci_if_error: true
+#           path_to_write_report: ./coverage/codecov_report.gz
+#       # - name: Upload coverage result
+#       #   uses: actions/upload-artifact@v2
+#       #   with:
+#       #     name: cypress-coverage
+#       #     path: coverage
+
+name: deploy
+# only deploy site from master branch
+on:
+  push:
+    branches:
+      - master
 jobs:
-  cypress-run:
-    name: Cypress run
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        # the actual items in the array do not matter,
-        # just the number - to force CI to sping 3 copies
-        # of the current job in parallel
-        machines: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  deploy:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      # https://github.com/actions/checkout
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: addons/AutoAnnotate
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
+    
+      - name: npm install and build webpack
+        run: |
+          npm install;
+          npm run buildWithDemo
         with:
-          record: true
-          parallel: true
-          start: yarn start
-          wait-on: http://localhost:3344
-        env:
-          WITH_COVERAGE: true
-          # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: 373658d4-4931-4ffd-9263-8eb78a838ab9
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload coverage to Codecov
-        if: always()
-        uses: codecov/codecov-action@v1
+          persist-credentials: false
+    
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      # https://github.com/marketplace/actions/github-pages-action
+      - name: Deploy 🚀
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          directory: ./coverage/
-          name: codecov-umbrella
-          # fail_ci_if_error: true
-          path_to_write_report: ./coverage/codecov_report.gz
-      # - name: Upload coverage result
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: cypress-coverage
-      #     path: coverage
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # deploy the current public folder
+          # to <base url>/x.y.z version subfolder
+          publish_dir: ./demo/dist
+          destination_dir: ${{steps.package-version.outputs.current-version}}
+
+      - name: Deploy redirect 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./redirect
+          keep_files: true
+
