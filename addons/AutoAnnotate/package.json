@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "downloadjs": "^1.4.7",

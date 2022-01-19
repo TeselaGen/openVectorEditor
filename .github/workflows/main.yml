@@ -74,7 +74,7 @@ jobs:
           # deploy the current public folder
           # to <base url>/x.y.z version subfolder
           publish_dir: ./demo/dist
-          destination_dir: /version/${{steps.package-version.outputs.current-version}}
+          destination_dir: version/${{steps.package-version.outputs.current-version}}
 
       - name: Deploy redirect 🚀
         uses: peaceiris/actions-gh-pages@v3
