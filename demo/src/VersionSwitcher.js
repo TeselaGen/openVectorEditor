@@ -1,29 +1,30 @@
 import { HTMLSelect } from "@blueprintjs/core";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
+import pjson from "../../package.json";
 
 export default function VersionSwitcher() {
   const [options, setOptions] = useState([]);
-  const [selected, setSelected] = useState(false);
 
+  //runs on component load
   useEffect(() => {
     (async function fetchData() {
       try {
         let res = await Axios.get(
-          "https://api.github.com/repos/TeselaGen/openVectorEditor/git/trees/6482359250ac5b3b3ed7103e17bfe53a32a136b1"
-          // "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
+          "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
         );
-        // console.log(`res:`,res)
         const versionNode = res.data.tree.find((e) => {
           return e.path.toLowerCase() === "version";
         });
-
-        let selected;
         res = await Axios.get(versionNode.url);
-        const opts = res.data.tree.map((e) => {
+
+        //set the options
+        const options = res.data.tree.map((e) => {
           return { value: e.path, label: e.path };
         });
-        opts.sort((e1, e2) => {
+
+        // sort the list so it looks nice
+        options.sort((e1, e2) => {
           const e1Arr = e1.label.split(".");
           const e2Arr = e2.label.split(".");
           for (let i = 0; i < e1Arr.length && i < e2Arr.length; i++) {
@@ -34,42 +35,30 @@ export default function VersionSwitcher() {
           }
           return e1.label === e2.label ? 0 : e2.label < e1.label ? -1 : 1;
         });
-        opts.unshift({ value: "main", label: "main" });
-        const path = window.location.pathname.toLowerCase();
-        if (path.startsWith("/version/")) {
-          const start = 18;
-          const end = path.indexOf("/", start);
-          selected = path.substring(start, end);
-        } else {
-          selected = "main";
-        }
-        setOptions(opts);
-        setSelected(selected);
+
+        setOptions(options);
       } catch (e) {
         console.error(`e:`, e);
       }
     })();
-  });
-  return (
-    !!options.length && (
+  }, []);
+
+  return options.length ? (
+    <div>
+      <div style={{ height: "100%", marginTop: 5, display: "inline-block" }}>
+        Version:
+      </div>{" "}
       <HTMLSelect
-        onChange={function onChange() {
-          const targetVersionPath =
-            selected === "main" ? "" : `/version/${selected}`;
-          const path = window.location.pathname.toLowerCase();
-          let startIdx = 9;
-          const versionIdx = path.indexOf("/version/");
-          if (versionIdx >= 0) {
-            startIdx = versionIdx + 9;
-          }
-          const endIdx = path.indexOf("/", startIdx);
-          window.location.pathname =
-            window.location.pathname.substring(0, 9) +
-            targetVersionPath +
-            window.location.pathname.substring(endIdx);
+        small
+        minimal
+        onChange={function onChange(e) {
+          window.location.href = `https://teselagen.github.io/openVectorEditor/version/${e.currentTarget.value}/#/Editor`;
         }}
+        value={pjson.version}
         options={options}
       ></HTMLSelect>
-    )
+    </div>
+  ) : (
+    <div style={{ marginTop: 5 }}>Version: {pjson.version}</div>
   );
 }
