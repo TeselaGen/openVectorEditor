@@ -39,6 +39,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [OVE out in the wild (Who's using OVE):](#ove-out-in-the-wild-whos-using-ove)
 - [Table of Contents](#table-of-contents)
 - [Upgrade Instructions for Major and Minor Versions](#upgrade-instructions-for-major-and-minor-versions)
+- [Publishing](#publishing)
 - [Using this module in React](#using-this-module-in-react)
   - [Example CRA repo with OVE](#example-cra-repo-with-ove)
   - [Installation (react)](#installation-react)
@@ -91,6 +92,9 @@ https://github.com/TeselaGen/openVectorEditor/commits/master
 
 Upgrade instructions for any major or minor change can be found here:
 [Upgrade instructions](UPGRADE_INSTRUCTIONS.md)
+
+# Publishing
+To publish just bump the package.json version number and commit to master. A github action will take care of building, publishing to npm and deploying to github pages.
 
 # Using this module in React
 
