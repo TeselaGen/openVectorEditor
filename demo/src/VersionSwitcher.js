@@ -1,6 +1,5 @@
 import { HTMLSelect } from "@blueprintjs/core";
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import pjson from "../../package.json";
 
 export default function VersionSwitcher() {
@@ -10,16 +9,19 @@ export default function VersionSwitcher() {
   useEffect(() => {
     (async function fetchData() {
       try {
-        let res = await Axios.get(
-          "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
-        );
-        const versionNode = res.data.tree.find((e) => {
+        let res = await (
+          await window.fetch(
+            "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"
+          )
+        ).json();
+        const versionNode = res.tree.find((e) => {
           return e.path.toLowerCase() === "version";
         });
-        res = await Axios.get(versionNode.url);
+
+        res = await (await window.fetch(versionNode.url)).json();
 
         //set the options
-        const options = res.data.tree.map((e) => {
+        const options = res.tree.map((e) => {
           return { value: e.path, label: e.path };
         });
 
@@ -59,6 +61,7 @@ export default function VersionSwitcher() {
       ></HTMLSelect>
     </div>
   ) : (
+    //fallback to just showing the version
     <div style={{ marginTop: 5 }}>Version: {pjson.version}</div>
   );
 }
