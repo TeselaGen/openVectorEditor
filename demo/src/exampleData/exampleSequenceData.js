@@ -1022,6 +1022,14 @@ export default {
   ],
   primers: [
     {
+      name: "Example Primer simple",
+      start: 59,
+      end: 79,
+      type: "primer_bind",
+      forward: true,
+      bases: "(CGGG)ACTCGCTCGGGCTGGCCCCGG"
+    },
+    {
       name: "Example Primer -1",
       start: 12,
       end: 45,
