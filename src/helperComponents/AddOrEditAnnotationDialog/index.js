@@ -207,7 +207,7 @@ class AddOrEditAnnotationDialog extends React.Component {
     );
     return (
       <form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
           let updatedData;
           if (data.forward === true && data.strand !== 1) {
             updatedData = { ...data, strand: 1 };
@@ -248,12 +248,14 @@ class AddOrEditAnnotationDialog extends React.Component {
               annotationType: annotationTypePlural
             }
           );
-          beforeAnnotationCreate &&
-            beforeAnnotationCreate({
+
+          if (beforeAnnotationCreate) {
+            await beforeAnnotationCreate({
               annotationTypePlural,
               annotation: newAnnotation,
               props: this.props
             });
+          }
 
           //update the selection layer so we don't jump away from where we're editing
           //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
