@@ -76,7 +76,7 @@ class SequenceInputNoHotkeys extends React.Component {
       selectionLayer,
       sequenceLength,
       isProtein,
-
+      replaceChars,
       caretPosition,
       acceptedChars,
       maxInsertSize
@@ -137,7 +137,13 @@ class SequenceInputNoHotkeys extends React.Component {
           onChange={(e) => {
             let sanitizedVal = "";
             e.target.value.split("").forEach((letter) => {
-              if (acceptedChars.includes(letter.toLowerCase())) {
+              const lowerLetter = letter.toLowerCase();
+              if (replaceChars && replaceChars[lowerLetter]) {
+                const isUpper = lowerLetter !== letter;
+                sanitizedVal += isUpper
+                  ? replaceChars[lowerLetter].toUpperCase()
+                  : replaceChars[lowerLetter];
+              } else if (acceptedChars.includes(lowerLetter)) {
                 sanitizedVal += letter;
               }
             });

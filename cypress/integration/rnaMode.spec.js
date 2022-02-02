@@ -10,8 +10,8 @@ describe("rna editing in OVE", function () {
     cy.get(".veSelectionLayer").first().rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Replace").click();
     cy.focused().type("tguugttuuuuuuuuuuuuuuuaa{enter}");
-    cy.contains("Selecting 21 bps from 10 to 30"); //the t's should be filtered out
-    cy.contains("guuguuuuuuuuuuuuuuuaa");
+    cy.contains("Selecting 24 bps from 10 to 33"); //the t's should be converted to u's
+    cy.contains("uguuguuuuuuuuuuuuuuuuuaa");
   });
   it(`should support mixed rna and dna editing`, () => {
     cy.get(`[data-test="moleculeType"]`).select("mixedRnaAndDna");
