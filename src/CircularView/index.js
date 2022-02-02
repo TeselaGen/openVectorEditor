@@ -204,7 +204,7 @@ export function CircularView(props) {
       spaceBefore: 10
     },
     {
-      spaceBefore: 5,
+      spaceBefore: 10,
       spaceAfter: 5,
       zIndex: 20,
       Comp: Primer,
