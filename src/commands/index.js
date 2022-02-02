@@ -747,7 +747,7 @@ const editCommandDefs = {
         "newPrimer",
         "createNewFromSubsequence",
         ...(props.getAdditionalCreateOpts
-          ? props.getAdditionalCreateOpts(props)
+          ? props.getAdditionalCreateOpts(props) || []
           : [])
       ];
     }

@@ -88,13 +88,13 @@ describe("find tool", function () {
   });
   it(`clear search layers when closed and retain the previous search and be selected when re-opened`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
-    cy.focused().type("gattac"); //this should cause 1 region to be selected
+    cy.focused().type("gattac", { noPrevValue: true }); //this should cause 1 region to be selected
     cy.get(".veSearchLayerContainer").should("exist");
     cy.get(".veFindBar .bp3-icon-cross").click();
     cy.get(".veSearchLayerContainer").should("not.exist");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.get(".veSearchLayerContainer").should("exist"); //test that the search didn't get cleared
-    cy.focused().type("gattac"); //this should override the existing search because the existing search should already be highlighted
+    cy.focused().type("gattac", { noPrevValue: true }); //this should override the existing search because the existing search should already be highlighted
     cy.get(".veSearchLayerContainer").should("exist"); //asserts that there is at least 1 valid search found
   });
 

@@ -78,7 +78,9 @@ describe("proteinEditor", function () {
     cy.get(".veRowViewSelectionLayer.notCaret").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
 
-    cy.get(".sequenceInputBubble input").type(".*-masdzz,");
+    cy.get(".sequenceInputBubble input").type(".*-masdzz,", {
+      assertVal: ".*-masdzz"
+    });
     cy.contains("Press ENTER to replace 1 AAs between 1386 and 2");
     cy.get(".sequenceInputBubble input").type("{enter}");
     cy.contains("Selecting 9 AAs from 1 to 9");
@@ -116,8 +118,8 @@ describe("proteinEditor", function () {
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
-    cy.get(`[label="From:"]`).clear().type("10");
-    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
+    cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true });
     cy.get(".tg-min-width-dialog").contains("Select 11 AAs").click();
     cy.get(".veStatusBarItem")
       .contains("Selecting 11 AAs from 10 to 20")

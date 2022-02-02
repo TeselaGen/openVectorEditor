@@ -239,16 +239,22 @@ describe("menuBar", function () {
     cy.contains(".veStatusBarItem", "11 to 31");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
-    cy.get(`[label="From:"]`).should("have.value", "11").clear().type("10");
-    cy.get(`[label="To:"]`).should("have.value", "31").clear().type("20");
+    cy.get(`[label="From:"]`)
+      .should("have.value", "11")
+      .clear()
+      .type("10", { noPrevValue: true });
+    cy.get(`[label="To:"]`)
+      .should("have.value", "31")
+      .clear()
+      .type("20", { noPrevValue: true });
     cy.get(".tg-min-width-dialog").contains("Select 11 BPs").click();
     cy.contains(".veStatusBarItem", "10 to 20").should("be.visible");
   });
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
-    cy.get(`[label="From:"]`).clear().type("10");
-    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
+    cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true });
     cy.get(".tg-min-width-dialog").contains("Select 11 BPs").click();
     cy.get(".veStatusBarItem").contains("10 to 20").should("be.visible");
   });
@@ -281,13 +287,13 @@ describe("menuBar", function () {
   `, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Go To").click();
-    cy.focused().clear().type("0");
+    cy.focused().clear().type("0", { noPrevValue: true });
     cy.get(".bp3-dialog").contains("OK").should("be.enabled");
-    cy.focused().clear().type("5299");
+    cy.focused().clear().type("5299", { noPrevValue: true });
     cy.get(".bp3-dialog").contains("OK").should("be.enabled");
-    cy.focused().clear().type("2000000");
+    cy.focused().clear().type("2000000", { noPrevValue: true });
     cy.get(".bp3-dialog").contains("OK").should("be.disabled");
-    cy.focused().clear().type("20");
+    cy.focused().clear().type("20", { noPrevValue: true });
     cy.get(".bp3-dialog").contains("OK").click();
     cy.contains("Caret Between Bases 20 and 21");
     cy.get(".tg-menu-bar").contains("Edit").click();
@@ -299,16 +305,16 @@ describe("menuBar", function () {
   `, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Go To").click();
-    cy.focused().clear().type("10");
+    cy.focused().clear().type("10", { noPrevValue: true });
     cy.get(".bp3-dialog").contains("OK").click();
-    cy.focused().type("a");
+    cy.focused().type("a", { passThru: true });
     cy.contains(".sequenceInputBubble", "Press ENTER to insert");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
-    cy.get(`[label="From:"]`).clear().type("10");
-    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
+    cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true });
     cy.get(`.dialog-buttons`).contains("Select 11 BPs").click();
-    cy.focused().type("a");
+    cy.focused().type("a", { passThru: true });
 
     cy.contains(".sequenceInputBubble", "Press ENTER to replace");
   });
@@ -321,14 +327,14 @@ describe("menuBar", function () {
   `, function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
-    cy.get(`[label="From:"]`).clear().type("10");
+    cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
 
     cy.get(`[label="To:"]`).clear();
     cy.get(`.dialog-buttons`).contains("Select 0 BPs").should("be.disabled");
-    cy.get(`[label="To:"]`).clear().type("20000000");
+    cy.get(`[label="To:"]`).clear().type("20000000", { noPrevValue: true });
     cy.get(`.dialog-buttons`).contains("Select 0 BPs").should("be.disabled");
 
-    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true });
     cy.get(`.dialog-buttons`).contains("Select 11 BPs").click();
     cy.get(".veStatusBar").contains(`10 to 20`);
 
@@ -345,8 +351,8 @@ describe("menuBar", function () {
   //   // cy.
   //   cy.get('.tg-menu-bar').contains("Edit").click()
   //   cy.get('.tg-menu-bar-popover').contains("Select").click()
-  //   cy.get(`[label="From:"]`).clear().type("10")
-  //   cy.get(`[label="To:"]`).clear().type("20")
+  //   cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true })
+  //   cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true })
   //   cy.get(`.dialog-buttons`).contains("OK").click()
   //   cy.get(".veStatusBar").contains(`10 to 20`)
   // });

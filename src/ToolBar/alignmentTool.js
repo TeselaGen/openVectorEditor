@@ -10,7 +10,6 @@ import {
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
-import axios from "axios";
 import uniqid from "shortid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
@@ -89,11 +88,6 @@ class AlignmentToolDropdown extends React.Component {
   }
 }
 const ConnectedAlignmentToolDropdown = withEditorProps(AlignmentToolDropdown);
-
-const instance = axios.create({
-  // timeout: 1000,
-  // headers: getJ5AuthorizationHeaders()
-});
 
 class AlignmentTool extends React.Component {
   state = {
@@ -187,20 +181,22 @@ class AlignmentTool extends React.Component {
     });
 
     const {
-      data: {
-        alignedSequences: _alignedSequences,
-        pairwiseAlignments,
-        alignmentsToRefSeq
-      } = {}
-    } = await instance.post(
-      replaceProtocol("http://j5server.teselagen.com/alignment/run"),
-      {
-        //only send over the bear necessities :)
-        sequencesToAlign: seqInfoToSend,
-        isPairwiseAlignment,
-        isAlignToRefSeq
-      }
-    );
+      alignedSequences: _alignedSequences,
+      pairwiseAlignments,
+      alignmentsToRefSeq
+    } = await (
+      await fetch({
+        url: replaceProtocol("http://j5server.teselagen.com/alignment/run"),
+        method: "post",
+        body: JSON.stringify({
+          //only send over the bear necessities :)
+          sequencesToAlign: seqInfoToSend,
+          isPairwiseAlignment,
+          isAlignToRefSeq
+        })
+      })
+    ).json();
+
     // alignmentsToRefSeq set to alignedSequences for now
     let alignedSequences = _alignedSequences;
     if (alignmentsToRefSeq) {

@@ -21,9 +21,9 @@ import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
-import pjson from "../../package.json";
 import EditorDemo from "./EditorDemo";
 import "./style.css";
+import VersionSwitcher from "./VersionSwitcher";
 
 const Demo = () => {
   const [isDarkMode, setDarkMode] = useState(
@@ -127,9 +127,7 @@ const Demo = () => {
               minimal
               icon="menu"
             ></Button>
-            <span style={{ marginTop: 5, marginLeft: 10 }}>
-              Version: {pjson.version}
-            </span>{" "}
+            <VersionSwitcher></VersionSwitcher>
             <a
               href="https://github.com/TeselaGen/ove-electron#installation-instructions"
               style={{ marginTop: 5, marginLeft: 10 }}

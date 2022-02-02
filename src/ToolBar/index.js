@@ -138,7 +138,7 @@ export function ToolBar(props) {
   }
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="veToolbar-outer" style={{ display: "flex" }}>
       {contentLeft}
       <div
         style={{

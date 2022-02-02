@@ -1532,6 +1532,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "onPreviewModeFullscreenClose",
+                info: `handle for when fullscreenMode is exited`
+              })}
+              {renderToggle({
+                that: this,
                 type: "withPartTags",
                 info: `Passing allPartTags to the <Editor/> allows the tags to be rendered in the Edit Part dialog. You can optionally pass a editTagsLink prop too!
                 \`\`\` 
@@ -1639,6 +1644,11 @@ clickOverrides: {
             }}
             {...(this.state.readOnly && { readOnly: true })}
             editorName="DemoEditor"
+            onPreviewModeFullscreenClose={() => {
+              window.toastr.success(
+                "onPreviewModeFullscreenClose hit -- Fullscreen Closed"
+              );
+            }}
             maxAnnotationsToDisplay={
               this.state.maxAnnotationsToDisplayAdjustment
                 ? { features: 5 }

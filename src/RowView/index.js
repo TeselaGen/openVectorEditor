@@ -188,6 +188,7 @@ export class RowView extends React.Component {
       selectionLayer: selectionLayerOld = {},
       matchedSearchLayer: matchedSearchLayerOld = {}
     } = oldProps;
+    const bpsPerRow = getBpsPerRow(newProps);
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     // let previousBp;
     let scrollToBp = -1;
@@ -229,8 +230,6 @@ export class RowView extends React.Component {
       // previousBp = selectionLayerOld.end;
       scrollToBp = selectionLayer.end;
     }
-
-    const bpsPerRow = getBpsPerRow(newProps);
     if (
       scrollToBp > -1 &&
       this.InfiniteScroller &&
@@ -462,17 +461,9 @@ export class RowView extends React.Component {
     let {
       //currently found in props
       sequenceData,
-      // bpToJumpTo,
-      // editorDragged,
-      // editorDragStarted,
-      // editorClicked,
-      // backgroundRightClicked,
-      // editorDragStopped,
-      // onScroll,
       width,
       marginWidth,
       height
-      // RowItemProps,
     } = this.props;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
@@ -486,22 +477,18 @@ export class RowView extends React.Component {
     this.bpsPerRow = bpsPerRow;
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
-    // const containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
-    //  propsToUse.charWidth * bpsPerRow;
     const rowData = this.getRowData(sequenceData, bpsPerRow);
     this.rowData = rowData;
 
     const shouldClear = this.shouldClearCache();
     return (
       <Draggable
-        // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={bounds}
         onDrag={this.onDrag}
         onStart={this.onStart}
         onStop={this.onStop}
       >
         <div
-          // tabIndex="0"
           ref={this.getRef}
           className="veRowView"
           style={{
@@ -513,7 +500,6 @@ export class RowView extends React.Component {
             paddingRight: marginWidth / 2,
             ...(isMobile && { touchAction: "inherit" })
           }}
-          // onScroll={disablePointers} //tnr: this doesn't actually help much with scrolling performance
           onContextMenu={this.onContextMenu}
           onScroll={onScroll}
           onClick={this.onClick}
