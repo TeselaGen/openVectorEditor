@@ -4,7 +4,7 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import throttle from "lodash.throttle";
+import { throttle } from "lodash";
 import Measure from "react-measure";
 import PropTypes from "prop-types";
 import Browser from "./Browser";
