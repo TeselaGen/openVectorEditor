@@ -253,7 +253,8 @@ class AddOrEditAnnotationDialog extends React.Component {
             await beforeAnnotationCreate({
               annotationTypePlural,
               annotation: newAnnotation,
-              props: this.props
+              props: this.props,
+              isEdit: !!this.props.initialValues.id
             });
           }
 

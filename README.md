@@ -247,6 +247,7 @@ These props consist of hooks and editor config options that can be passed like s
 		//UMD only:
 		editor.close() //this calls reactDom.unmountComponent at the node you passed as the first arg
 	},
+	onPreviewModeFullscreenClose: () => {}, //user defined handler for tracking when fullscreen is closed from preview mode
 	showReadOnly: false, //default true
   disableSetReadOnly: true, //default false
 	onSave: function(event, sequenceDataToSave, editorState, onSuccessCallback) {
@@ -289,7 +290,8 @@ These props consist of hooks and editor config options that can be passed like s
 	beforeAnnotationCreate: ({ //also works for edits (!)
 		annotationTypePlural, //features/parts/primers
 		annotation, //annotation info
-		props //general props to the dialog
+		props, //general props to the dialog
+		isEdit //true if this is an edit instead of a create
 	}) => {
 		//a handler to hook into when annotations (features/primers/parts) are being created
 	},

@@ -40,6 +40,7 @@ export const userDefinedHandlersAndOpts = [
   "autoAnnotateParts",
   "autoAnnotatePrimers",
   "onCreateNewFromSubsequence",
+  "onPreviewModeFullscreenClose",
   "onPaste",
   "menuFilter",
   "externalLabels"

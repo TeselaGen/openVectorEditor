@@ -14,7 +14,8 @@ import PropTypes from "prop-types";
 import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
 import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
-import "tg-react-reflex/styles.css";
+import "../Reflex/reflex-styles.css";
+
 import React from "react";
 import AlignmentView from "../AlignmentView";
 // import * as customIcons from "teselagen-react-components";
@@ -40,7 +41,6 @@ import StatusBar from "../StatusBar";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
 import "./style.css";
-
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
@@ -88,8 +88,8 @@ const getListStyle = (isDraggingOver /* isDragging */) => {
     flex: "0 0 auto",
     flexDirection: "row",
     overflowX: "auto", //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
-    borderBottom: "1px solid lightgray",
-    borderTop: "1px solid lightgray",
+    borderBottom: "1px solid #F5F8FA",
+    // borderTop: "1px solid #F5F8FA",
     paddingTop: 3,
     paddingBottom: 3,
     // ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
@@ -266,13 +266,23 @@ export class Editor extends React.Component {
   };
 
   togglePreviewFullscreen = () => {
-    const { togglePreviewFullscreen } = this.props;
+    const {
+      togglePreviewFullscreen,
+      onPreviewModeFullscreenClose,
+      previewModeFullscreen: controlledPreviewModeFullscreen
+    } = this.props;
     if (togglePreviewFullscreen) togglePreviewFullscreen();
-    else {
-      this.setState({
-        previewModeFullscreen: !this.state.previewModeFullscreen
-      });
+    const previewModeFullscreen = this.state.previewModeFullscreen;
+    if (
+      controlledPreviewModeFullscreen === undefined
+        ? previewModeFullscreen
+        : controlledPreviewModeFullscreen
+    ) {
+      onPreviewModeFullscreenClose();
     }
+    this.setState({
+      previewModeFullscreen: !previewModeFullscreen
+    });
   };
 
   render() {
@@ -337,9 +347,9 @@ export class Editor extends React.Component {
       );
     }
     const previewModeFullscreen = !!(
-      uncontrolledPreviewModeFullscreen ||
-      controlledPreviewModeFullscreen ||
-      isFullscreen
+      (controlledPreviewModeFullscreen === undefined
+        ? uncontrolledPreviewModeFullscreen
+        : controlledPreviewModeFullscreen) || isFullscreen
     );
     const editorNode =
       document.querySelector(".veEditor") ||

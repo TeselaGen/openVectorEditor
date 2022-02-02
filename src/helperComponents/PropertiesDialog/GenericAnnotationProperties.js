@@ -141,6 +141,12 @@ const genericAnnotationProperties = ({ annotationType, noType, withTags }) => {
             keyedPartTags={getKeyedTagsAndTagOptions(allPartTags)}
             compact
             isInfinite
+            onDoubleClick={(r) => {
+              showAddOrEditAnnotationDialog({
+                type: annotationType,
+                annotation: r
+              });
+            }}
             schema={this.schema}
             entities={annotationsToUse}
           />

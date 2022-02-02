@@ -53,7 +53,7 @@ export default class ReflexElement extends React.Component {
     this.state = {
       dimensions: {
         height: "100%",
-        width: 300
+        width: "100%"
       }
     };
   }
@@ -66,7 +66,7 @@ export default class ReflexElement extends React.Component {
     if (props.size !== this.props.size) {
       const directions = this.toArray(props.direction);
 
-      for (let dir of directions) {
+      for (const dir of directions) {
         await this.props.events.emit("element.size", {
           size: props.size,
           direction: dir,
