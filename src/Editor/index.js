@@ -278,7 +278,7 @@ export class Editor extends React.Component {
         ? previewModeFullscreen
         : controlledPreviewModeFullscreen
     ) {
-      onPreviewModeFullscreenClose();
+      onPreviewModeFullscreenClose && onPreviewModeFullscreenClose();
     }
     this.setState({
       previewModeFullscreen: !previewModeFullscreen
