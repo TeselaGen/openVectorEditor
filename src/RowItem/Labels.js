@@ -23,7 +23,8 @@ function Labels(props) {
     editorName,
     labelLineIntensity,
     isProtein,
-    noRedux
+    noRedux,
+    noLabelLine
   } = props;
 
   if (annotationRanges.length === 0) {
@@ -141,6 +142,7 @@ function Labels(props) {
           height,
           xStart,
           xEnd,
+          noLabelLine,
           textWidth,
           labelLineIntensity,
           noRedux
@@ -197,6 +199,7 @@ const DrawLabel = withHover(
         onMouseOver,
         editorName,
         labelLineIntensity,
+        noLabelLine,
         textWidth
       } = this.props;
 
@@ -282,22 +285,24 @@ const DrawLabel = withHover(
             {truncateLabelIfNeeded(labelText, xStart)}
           </div>
 
-          <div
-            ref={(n) => {
-              if (n) this.n = n;
-            }}
-            className="veLabelLine"
-            style={{
-              zIndex: 50,
-              position: "absolute",
-              left: xStartOriginal,
-              bottom,
-              height: Math.max(heightToUse, 3),
-              width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : labelLineIntensity
-              // background: "black"
-            }}
-          />
+          {!noLabelLine && (
+            <div
+              ref={(n) => {
+                if (n) this.n = n;
+              }}
+              className="veLabelLine"
+              style={{
+                zIndex: 50,
+                position: "absolute",
+                left: xStartOriginal,
+                bottom,
+                height: Math.max(heightToUse, 3),
+                width: hovered ? 2 : 1,
+                opacity: hovered ? 1 : labelLineIntensity
+                // background: "black"
+              }}
+            />
+          )}
         </div>
       );
     }

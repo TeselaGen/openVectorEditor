@@ -21,6 +21,8 @@ import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
 import { rowHeights } from "../RowView/estimateRowHeight";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
+import { connectToEditor } from "../withEditorProps";
+import classNames from "classnames";
 
 function noop() {}
 
@@ -176,7 +178,7 @@ export default function RowItem(props) {
     row: { start: row.start, end: row.end }
   };
 
-  const drawLabels = (type, noDraw) => {
+  const drawLabels = (type, noDraw, { noLabelLine } = {}) => {
     if (noDraw) {
       return null;
     }
@@ -196,6 +198,7 @@ export default function RowItem(props) {
         {...annotationCommonProps}
         onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
         labelLineIntensity={labelLineIntensity}
+        noLabelLine={noLabelLine}
         rangeMax={bpsPerRow}
         annotationRanges={ranges}
         annotationHeight={cutsiteLabelHeight}
@@ -387,7 +390,7 @@ export default function RowItem(props) {
             {...annotationCommonProps}
           />
         )}
-        {drawLabels("cutsite", !isRowView)}
+        {drawLabels("cutsite", !isRowView, { noLabelLine: true })}
 
         <div
           className="veRowItemSequenceContainer"
@@ -441,31 +444,6 @@ export default function RowItem(props) {
               {deletionLayerStrikeThrough}
             </Sequence>
           )}
-          {/* 
-            cutsiteLabelSelectionLayer.map(function() {
-            return "";
-            // let { color = "black" } = layer;
-            // return (
-            //   layer.start > -1 && (
-            //     <SelectionLayer
-            //       {...{
-            //         height: showReverseSequence
-            //           ? sequenceHeight * 2 + 1
-            //           : sequenceHeight + 1,
-            //         hideCarets: true,
-            //         opacity: 0.3,
-            //         className: "cutsiteLabelSelectionLayer",
-            //         border: `2px solid ${color}`,
-            //         // background: 'none',
-            //         background: color,
-            //         regions: [layer]
-            //       }}
-            //       {...annotationCommonProps}
-            //     />
-            //   )
-            // );
-          })
-           */}
           {showCutsites &&
             showCutsitesInSequence &&
             Object.keys(cutsites).map(function (id, index) {
@@ -473,20 +451,15 @@ export default function RowItem(props) {
               const layer = cutsite.annotation.recognitionSiteRange;
               return (
                 layer.start > -1 && (
-                  <SelectionLayer
+                  <CutsiteSelectionLayer
                     hideTitle
                     {...annotationCommonProps}
                     {...{
+                      id: cutsite.id,
                       key: "restrictionSiteRange" + index,
                       height: showReverseSequence
                         ? sequenceHeight * 2
                         : sequenceHeight,
-                      hideCarets: true,
-                      opacity: 0.3,
-                      className: "cutsiteLabelSelectionLayer",
-                      border: `2px solid ${"lightblue"}`,
-                      // background: 'none',
-                      background: "lightblue",
                       regions: [layer],
                       row: alignmentData
                         ? { start: 0, end: alignmentData.sequence.length - 1 }
@@ -647,3 +620,21 @@ function getGapsDefault() {
     gapsInside: 0
   };
 }
+
+const CutsiteSelectionLayer = connectToEditor(({ hoveredAnnotation }) => ({
+  hoveredAnnotation
+}))(function CutsiteSelectionLayerInner({ hoveredAnnotation, id, ...rest }) {
+  const isHovered = hoveredAnnotation === id;
+  if (!isHovered) return null;
+  return (
+    <SelectionLayer
+      {...{
+        ...rest,
+        className: classNames("cutsiteLabelSelectionLayer", {
+          cutsiteLabelSelectionLayerHovered: isHovered
+        }),
+        hideCarets: true
+      }}
+    ></SelectionLayer>
+  );
+});
