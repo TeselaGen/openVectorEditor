@@ -32,6 +32,7 @@ function getSnipForRow(
   index
 ) {
   if (!isPositionWithinRange(snipPosition, row)) return;
+
   const { xStart } = getXStartAndWidthOfRangeWrtRow({
     range: { start: snipPosition, end: snipPosition },
     row,
@@ -41,6 +42,7 @@ function getSnipForRow(
 
   const newCursorStyle = assign({}, snipStyle, {
     left: xStart
+    // left: xStart + 2
   });
   const cursorEl = (
     <div key={index} className="veRowViewCutsite snip" style={newCursorStyle} />
@@ -80,6 +82,7 @@ function getSnipConnector(
     //the second logical operator catches the special case where we're at the very end of the sequence..
     const newCursorStyle = assign({}, snipConnectorStyle, {
       left: xStart,
+      // left: xStart + 2,
       width
     });
     const cursorEl = (

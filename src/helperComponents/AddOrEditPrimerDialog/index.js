@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
+  AdvancedOptions,
+  CheckboxField,
   DropdownButton,
   generateField,
-  NumericInputField
+  RadioGroupField
 } from "teselagen-react-components";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
 
@@ -111,7 +113,7 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     const index = forward
       ? threePrimeLocation - i - 1
       : threePrimeLocation + basesToUse.length - i - 2;
-    let baseAtIndex = sequenceData.sequence[index];
+    let baseAtIndex = sequenceData.sequence[index] || "";
     if (!forward) baseAtIndex = getComplementSequenceString(baseAtIndex);
     if (!baseAtIndex) {
       return html[forward ? "unshift" : "push"](
@@ -171,9 +173,11 @@ const CustomContentEditable = generateField(function CustomContentEditable({
 const RenderBases = (props) => {
   const {
     sequenceData,
-    readOnly,
+    // readOnly,
     start,
     end,
+    linkedOligo,
+    useLinkedOligo,
     // threePrimeLocation,
     bases,
     forward,
@@ -206,71 +210,97 @@ const RenderBases = (props) => {
   }
 
   return (
-    <React.Fragment>
-      <DropdownButton
-        intent="primary"
-        small
-        menu={
-          <Menu>
-            <MenuItem
-              onClick={() => {
-                change("threePrimeLocation", end);
-                change("forward", true);
-                change(
-                  "bases",
-                  getSequenceWithinRange(
-                    normalizedSelection,
-                    sequenceData.sequence
-                  )
-                );
-              }}
-              key="forward"
-              text="Forward"
-            ></MenuItem>
-            <MenuItem
-              onClick={() => {
-                change("forward", false);
-                change("threePrimeLocation", start);
-                change(
-                  "bases",
-                  getReverseComplementSequenceString(
-                    getSequenceWithinRange(
-                      normalizedSelection,
-                      sequenceData.sequence
-                    )
-                  )
-                );
-              }}
-              key="reverse"
-              text="Reverse"
-            ></MenuItem>
-          </Menu>
-        }
-      >
-        Set From Selection
-      </DropdownButton>
-      <div style={{ height: 5 }}></div>
-      <CustomContentEditable
-        inlineLabel
-        showErrorIfUntouched
-        tooltipError
-        validate={validate}
-        disabled={props.readOnly}
-        {...props}
-        {...(defaultValue
-          ? {
-              defaultValue
+    <div style={{ padding: 5 }} className="bp3-card">
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <CheckboxField
+          name="useLinkedOligo"
+          label="Linked Oligo?"
+          noMarginBottom
+        ></CheckboxField>
+        {useLinkedOligo && (
+          <div>{linkedOligo || "Will Be Created On Save"}</div>
+        )}
+      </div>
+      {useLinkedOligo && (
+        <div>
+          <DropdownButton
+            intent="primary"
+            small
+            menu={
+              <Menu>
+                <MenuItem
+                  onClick={() => {
+                    change("threePrimeLocation", end);
+                    change("forward", true);
+                    change(
+                      "bases",
+                      getSequenceWithinRange(
+                        normalizedSelection,
+                        sequenceData.sequence
+                      )
+                    );
+                  }}
+                  key="forward"
+                  text="Forward"
+                ></MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    change("forward", false);
+                    change("threePrimeLocation", start);
+                    change(
+                      "bases",
+                      getReverseComplementSequenceString(
+                        getSequenceWithinRange(
+                          normalizedSelection,
+                          sequenceData.sequence
+                        )
+                      )
+                    );
+                  }}
+                  key="reverse"
+                  text="Reverse"
+                ></MenuItem>
+              </Menu>
             }
-          : {})}
-        name="bases"
-        label="Bases"
-      />
+          >
+            Set From Selection
+          </DropdownButton>
+          <div style={{ height: 5 }}></div>
+          <CustomContentEditable
+            // inlineLabel
+            showErrorIfUntouched
+            tooltipError
+            validate={validate}
+            disabled={props.readOnly}
+            {...props}
+            {...(defaultValue
+              ? {
+                  defaultValue
+                }
+              : {})}
+            name="bases"
+            label="Bases"
+          />
+          <AdvancedOptions style={{ marginBottom: 10 }}>
+            <RadioGroupField
+              name="alignTo3Prime"
+              inline
+              label="Align To"
+              tooltipError
+              options={[
+                { label: "5'", value: "5prime" },
+                { label: "3'", value: "3prime" }
+              ]}
+            ></RadioGroupField>
+          </AdvancedOptions>
 
-      <MeltingTemp
-        InnerWrapper={InnerWrapperMeltingTemp}
-        sequence={bases}
-      ></MeltingTemp>
-      <NumericInputField
+          <MeltingTemp
+            InnerWrapper={InnerWrapperMeltingTemp}
+            sequence={bases}
+          ></MeltingTemp>
+        </div>
+      )}
+      {/* <NumericInputField
         inlineLabel
         disabled={readOnly}
         tooltipError
@@ -279,8 +309,8 @@ const RenderBases = (props) => {
         max={seqLen || 1}
         name="threePrimeLocation"
         label="3' Location"
-      />
-    </React.Fragment>
+      /> */}
+    </div>
   );
 };
 

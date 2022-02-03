@@ -23,6 +23,8 @@ import { rowHeights } from "../RowView/estimateRowHeight";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
 import { filter } from "lodash";
 import { defaultCharWidth } from "../constants/rowviewContants";
+import { connectToEditor } from "../withEditorProps";
+import classNames from "classnames";
 
 function noop() {}
 
@@ -192,7 +194,7 @@ export default function RowItem(props) {
     row: { start: row.start, end: row.end }
   };
 
-  const drawLabels = (type, noDraw, additionalOpts, extraProps) => {
+  const drawLabels = (type, noDraw, { filterOpts, ...extraProps } = {}) => {
     if (noDraw) {
       return null;
     }
@@ -207,7 +209,7 @@ export default function RowItem(props) {
             })
           )
         : [],
-      additionalOpts
+      filterOpts
     );
     if (!ranges.length) return null;
     return (
@@ -405,12 +407,13 @@ export default function RowItem(props) {
             {...annotationCommonProps}
           />
         )}
+
         {drawLabels("cutsite", !isRowView)}
         {drawLabels(
           "primer",
           false,
-          { onlyForward: true },
-          { noLabelLine: true }
+
+          { noLabelLine: true, filterOpts: { onlyForward: true } }
         )}
 
         {drawAnnotations("primer", {
@@ -471,31 +474,6 @@ export default function RowItem(props) {
               {deletionLayerStrikeThrough}
             </Sequence>
           )}
-          {/* 
-            cutsiteLabelSelectionLayer.map(function() {
-            return "";
-            // let { color = "black" } = layer;
-            // return (
-            //   layer.start > -1 && (
-            //     <SelectionLayer
-            //       {...{
-            //         height: showReverseSequence
-            //           ? sequenceHeight * 2 + 1
-            //           : sequenceHeight + 1,
-            //         hideCarets: true,
-            //         opacity: 0.3,
-            //         className: "cutsiteLabelSelectionLayer",
-            //         border: `2px solid ${color}`,
-            //         // background: 'none',
-            //         background: color,
-            //         regions: [layer]
-            //       }}
-            //       {...annotationCommonProps}
-            //     />
-            //   )
-            // );
-          })
-           */}
           {showCutsites &&
             showCutsitesInSequence &&
             Object.keys(cutsites).map(function (id, index) {
@@ -503,20 +481,15 @@ export default function RowItem(props) {
               const layer = cutsite.annotation.recognitionSiteRange;
               return (
                 layer.start > -1 && (
-                  <SelectionLayer
+                  <CutsiteSelectionLayer
                     hideTitle
                     {...annotationCommonProps}
                     {...{
+                      id: cutsite.id,
                       key: "restrictionSiteRange" + index,
                       height: showReverseSequence
                         ? sequenceHeight * 2
                         : sequenceHeight,
-                      hideCarets: true,
-                      opacity: 0.3,
-                      className: "cutsiteLabelSelectionLayer",
-                      border: `2px solid ${"lightblue"}`,
-                      // background: 'none',
-                      background: "lightblue",
                       regions: [layer],
                       row: alignmentData
                         ? { start: 0, end: alignmentData.sequence.length - 1 }
@@ -537,8 +510,8 @@ export default function RowItem(props) {
         {drawLabels(
           "primer",
           externalLabels !== "true",
-          { onlyReverse: true },
-          { noLabelLine: true }
+
+          { noLabelLine: true, filterOpts: { onlyReverse: true } }
         )}
         {drawLabels("feature", externalLabels !== "true")}
         {/* {externalLabels && drawAnnotations("part", partProps)} */}
@@ -690,3 +663,21 @@ function getGapsDefault() {
     gapsInside: 0
   };
 }
+
+const CutsiteSelectionLayer = connectToEditor(({ hoveredAnnotation }) => ({
+  hoveredAnnotation
+}))(function CutsiteSelectionLayerInner({ hoveredAnnotation, id, ...rest }) {
+  const isHovered = hoveredAnnotation === id;
+  if (!isHovered) return null;
+  return (
+    <SelectionLayer
+      {...{
+        ...rest,
+        className: classNames("cutsiteLabelSelectionLayer", {
+          cutsiteLabelSelectionLayerHovered: isHovered
+        }),
+        hideCarets: true
+      }}
+    ></SelectionLayer>
+  );
+});

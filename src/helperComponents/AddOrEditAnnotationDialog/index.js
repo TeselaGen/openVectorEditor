@@ -188,6 +188,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       bases,
       forward,
       threePrimeLocation,
+      useLinkedOligo,
       change,
       annotationTypePlural,
       annotationVisibilityShow,
@@ -326,22 +327,9 @@ class AddOrEditAnnotationDialog extends React.Component {
         )}
         {renderTypes || null}
         {renderTags || null}
-        {allowPrimerBasesToBeEdited && RenderBases ? (
-          <RenderBases
-            {...{
-              bases,
-              sequenceData,
-              start,
-              end,
-              threePrimeLocation,
-              forward,
-              change
-            }}
-          ></RenderBases>
-        ) : null}
-        {allowPrimerBasesToBeEdited && RenderBases ? null : !renderLocations ||
-          !locations ||
-          locations.length < 2 ? (
+
+        {/* {allowPrimerBasesToBeEdited && RenderBases ? null : !renderLocations || */}
+        {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
             <div
               style={{ marginBottom: 10, fontSize: 12, fontStyle: "italic" }}
@@ -358,7 +346,9 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="start"
-              label="Start"
+              label={`${
+                annotationTypePlural === "primers" ? "Bind " : ""
+              } Start`}
             />
             <NumericInputField
               disabled={this.props.readOnly}
@@ -370,7 +360,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="end"
-              label="End"
+              label={`${annotationTypePlural === "primers" ? "Bind " : ""} End`}
             />
           </React.Fragment>
         ) : null}
@@ -381,9 +371,26 @@ class AddOrEditAnnotationDialog extends React.Component {
           className="bp3-text-muted bp3-text-small"
           style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
         >
-          Length:{" "}
+          {`${
+            annotationTypePlural === "primers" ? "Binding Site " : ""
+          }Length: `}
+
           {overlapsSelf ? sequenceLength + annotationLength : annotationLength}
         </div>
+        {allowPrimerBasesToBeEdited && RenderBases ? (
+          <RenderBases
+            {...{
+              bases,
+              sequenceData,
+              start,
+              end,
+              threePrimeLocation,
+              forward,
+              useLinkedOligo,
+              change
+            }}
+          ></RenderBases>
+        ) : null}
         {getAdditionalEditAnnotationComps &&
           getAdditionalEditAnnotationComps(this.props)}
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
@@ -512,6 +519,7 @@ export default ({ formName, getProps, dialogProps }) => {
       "overlapsSelf",
       "locations",
       "bases",
+      "useLinkedOligo",
       "forward",
       "threePrimeLocation"
     )

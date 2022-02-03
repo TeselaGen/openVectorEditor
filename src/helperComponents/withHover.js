@@ -9,7 +9,7 @@ export const HoveredIdContext = React.createContext({
   hoveredId: "" // default value
 });
 
-function withHoveredIdFromContext(Component) {
+export function withHoveredIdFromContext(Component) {
   return function HoveredIdComponent(props) {
     return (
       <HoveredIdContext.Consumer>

@@ -6,24 +6,38 @@
   overflow-x: visible;
 }
 
-/* .veRowItem div {
-  overflow-x: visible;
-} */
-
+.bp3-dark .cutsiteLabelSelectionLayer {
+  background: #606468 !important;
+}
 .cutsiteLabelSelectionLayer {
-  background: none !important;
+  background: #d8e1e8 !important;
   height: 119%;
   opacity: 1;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  border-radius: 6px;
+  z-index: -1;
 }
 
-.cutsiteLabelSelectionLayer.isTrueStart {
-  border-left: 2px solid black;
+.cutsiteLabelSelectionLayer.cutsiteLabelSelectionLayerHovered {
+  border-top: 2px solid #202b33;
+  border-bottom: 2px solid #202b33;
+}
+.bp3-dark .cutsiteLabelSelectionLayer.cutsiteLabelSelectionLayerHovered {
+  border-top: 2px solid #99aebd;
+  border-bottom: 2px solid #99aebd;
 }
 
-.cutsiteLabelSelectionLayer.isTrueEnd {
-  border-right: 2px solid black;
+.cutsiteLabelSelectionLayerHovered.isTrueStart {
+  border-left: 2px solid #202b33;
+}
+.bp3-dark .cutsiteLabelSelectionLayerHovered.isTrueStart {
+  border-left: 2px solid #99aebd;
+}
+
+.cutsiteLabelSelectionLayerHovered.isTrueEnd {
+  border-right: 2px solid #202b33;
+}
+.bp3-dark .cutsiteLabelSelectionLayerHovered.isTrueEnd {
+  border-right: 2px solid #99aebd;
 }
 
 .veRowViewCutsite {

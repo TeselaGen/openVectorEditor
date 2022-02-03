@@ -355,10 +355,9 @@ function VectorInteractionHOC(Component /* options */) {
         createSequenceInputPopup({
           useEventPositioning,
           isReplace,
+          replaceChars: sequenceData.isRna ? { t: "u" } : undefined,
           acceptedChars: getAcceptedChars(sequenceData),
           isProtein: sequenceData.isProtein,
-          isRna: sequenceData.isRna,
-          isMixedRnaAndDna: sequenceData.isMixedRnaAndDna,
           selectionLayer,
           sequenceLength,
           caretPosition,
