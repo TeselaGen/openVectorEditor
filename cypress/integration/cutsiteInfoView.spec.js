@@ -2,6 +2,10 @@ describe("cutsiteInfoView", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`enzyme preview should be rendering cutsites correctly`, () => {
+    cy.contains(".veLabelText", "AatII").dblclick();
+    cy.get(`.bp3-dialog .snipPosition-12`);
+  });
 
   it(`filtering for an enzyme with 0 cuts should bring up a No Active Results.. These inactive enzymes match: message`, () => {
     cy.tgToggle("overrideManageEnzymes");

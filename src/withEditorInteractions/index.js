@@ -491,7 +491,14 @@ function VectorInteractionHOC(Component /* options */) {
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
-      this.updateSelectionOrCaret(event.shiftKey, annotation.topSnipPosition);
+      this.updateSelectionOrCaret(
+        event.shiftKey,
+        event.metaKey
+          ? annotation
+          : event.altKey
+          ? annotation.bottomSnipPosition
+          : annotation.topSnipPosition
+      );
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };

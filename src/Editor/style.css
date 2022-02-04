@@ -196,3 +196,21 @@ tspan.vePart {
   right: 5px;
   display: flex;
 }
+
+.ve-draggable-tabs {
+  display: flex;
+  align-items: flex-end;
+  flex: 0 0 auto;
+  flex-direction: row;
+  overflow-x: auto;
+  border-bottom: 1px solid #f5f8fa;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.bp3-dark .veEditor .ve-draggable-tabs {
+  color: #f5f8fa !important;
+  border-bottom: 1px solid #4a4b4b;
+}
+.ve-draggable-tabs::-webkit-scrollbar {
+  display: none;
+}

@@ -7,10 +7,6 @@
   background: #293742 !important;
 }
 
-.bp3-dark .veEditor .ve-draggable-tabs {
-  color: #f5f8fa !important;
-}
-
 .bp3-dark .veCaret,
 .bp3-dark .veRowViewAxis path,
 .veLabelLine {
@@ -28,11 +24,6 @@
 
 .bp3-dark .veEditor text {
   fill: #f5f8fa;
-}
-
-.bp3-dark .veRowViewCutsite {
-  margin-left: -2px;
-  background: #f5f8fa !important;
 }
 
 .bp3-dark .veRowViewPartsContainer text,

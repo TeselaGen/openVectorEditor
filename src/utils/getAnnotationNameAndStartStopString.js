@@ -17,15 +17,22 @@ export default function getAnnotationNameAndStartStopString(
   const typeToUse = (() => {
     if (annotationTypePlural) {
       const singularKey = getSingular(annotationTypePlural);
-      if (singularKey === 'cutsite') {
-        return 'Cut site' + (annotationTypePlural === 'features' ? ` (${type})` : '');
+      if (singularKey === "cutsite") {
+        return (
+          "Cut site" + (annotationTypePlural === "features" ? ` (${type})` : "")
+        );
       }
-      if (singularKey === 'orf') {
-        return 'ORF' + (annotationTypePlural === 'features' ? ` (${type})` : '');
+      if (singularKey === "orf") {
+        return (
+          "ORF" + (annotationTypePlural === "features" ? ` (${type})` : "")
+        );
       }
-      return upperFirst(getSingular(annotationTypePlural)) + (annotationTypePlural === 'features' ? ` (${type})` : '');
+      return (
+        upperFirst(getSingular(annotationTypePlural)) +
+        (annotationTypePlural === "features" ? ` (${type})` : "")
+      );
     }
-    return '';
+    return "";
   })();
 
   if (isWrappedAddon) {
@@ -37,5 +44,13 @@ export default function getAnnotationNameAndStartStopString(
     name ? name : ""
   } - Start: ${isProtein ? (start + 3) / 3 : start + 1} End: ${
     isProtein ? (end + 1) / 3 : end + 1
-  } ${overlapsSelf ? "(Overlaps Self) " : ""}${message ? "\n" + message : ""}`;
+  } ${overlapsSelf ? "(Overlaps Self) " : ""}${message ? "\n" + message : ""} ${
+    annotationTypePlural === "cutsites"
+      ? `
+
+ click --> top cut position
+ alt/option+click --> bottom cut position
+ cmd/ctrl+click --> recognition range`
+      : ""
+  }`;
 }

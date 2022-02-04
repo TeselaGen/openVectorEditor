@@ -23,8 +23,7 @@ import { rowHeights } from "../RowView/estimateRowHeight";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
 import { filter } from "lodash";
 import { defaultCharWidth } from "../constants/rowviewContants";
-import { connectToEditor } from "../withEditorProps";
-import classNames from "classnames";
+import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
 
 function noop() {}
 
@@ -474,31 +473,19 @@ export default function RowItem(props) {
               {deletionLayerStrikeThrough}
             </Sequence>
           )}
-          {showCutsites &&
-            showCutsitesInSequence &&
-            Object.keys(cutsites).map(function (id, index) {
-              const cutsite = cutsites[id];
-              const layer = cutsite.annotation.recognitionSiteRange;
-              return (
-                layer.start > -1 && (
-                  <CutsiteSelectionLayer
-                    hideTitle
-                    {...annotationCommonProps}
-                    {...{
-                      id: cutsite.id,
-                      key: "restrictionSiteRange" + index,
-                      height: showReverseSequence
-                        ? sequenceHeight * 2
-                        : sequenceHeight,
-                      regions: [layer],
-                      row: alignmentData
-                        ? { start: 0, end: alignmentData.sequence.length - 1 }
-                        : row
-                    }}
-                  />
-                )
-              );
-            })}
+          {showCutsites && showCutsitesInSequence && (
+            <CutsiteSelectionLayers
+              {...{
+                editorName,
+                cutsites,
+                annotationCommonProps,
+                showReverseSequence,
+                sequenceHeight,
+                alignmentData,
+                row
+              }}
+            ></CutsiteSelectionLayers>
+          )}
         </div>
 
         {drawAnnotations("primer", {
@@ -663,21 +650,3 @@ function getGapsDefault() {
     gapsInside: 0
   };
 }
-
-const CutsiteSelectionLayer = connectToEditor(({ hoveredAnnotation }) => ({
-  hoveredAnnotation
-}))(function CutsiteSelectionLayerInner({ hoveredAnnotation, id, ...rest }) {
-  const isHovered = hoveredAnnotation === id;
-  if (!isHovered) return null;
-  return (
-    <SelectionLayer
-      {...{
-        ...rest,
-        className: classNames("cutsiteLabelSelectionLayer", {
-          cutsiteLabelSelectionLayerHovered: isHovered
-        }),
-        hideCarets: true
-      }}
-    ></SelectionLayer>
-  );
-});
