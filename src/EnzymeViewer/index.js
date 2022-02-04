@@ -11,7 +11,8 @@ export default ({
   paddingEnd = "-------",
   paddingStart = "-------",
   reverseSnipPosition,
-  forwardSnipPosition
+  forwardSnipPosition,
+  charWidth = 13
 }) => {
   const seqPlusPadding = paddingStart + sequence + paddingEnd;
 
@@ -31,6 +32,7 @@ export default ({
       ></Icon>
       <RowItem
         {...{
+          charWidth,
           tickSpacing: 1,
           annotationVisibility: {
             cutsites: true,

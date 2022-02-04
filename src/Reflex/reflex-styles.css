@@ -66,6 +66,10 @@
   width: 2px;
   margin-top: 33px;
 }
+.bp3-dark .reflex-layout.vertical > .reflex-splitter {
+  border-right: 1px solid #4a4b4b;
+  border-left: 1px solid #4a4b4b;
+}
 
 .reflex-layout.vertical > .reflex-splitter:hover,
 .reflex-layout.vertical > .reflex-splitter.active {

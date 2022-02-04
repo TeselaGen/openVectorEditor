@@ -83,15 +83,6 @@ const tabHeight = 34;
 
 const getListStyle = (isDraggingOver /* isDragging */) => {
   return {
-    display: "flex",
-    alignItems: "flex-end",
-    flex: "0 0 auto",
-    flexDirection: "row",
-    overflowX: "auto", //can't be overflowX: "scroll" because firefox has issues with hiding the scroll bar https://github.com/TeselaGen/openVectorEditor/issues/352
-    borderBottom: "1px solid #F5F8FA",
-    // borderTop: "1px solid #F5F8FA",
-    paddingTop: 3,
-    paddingBottom: 3,
     // ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
     ...(isDraggingOver && { background: "#e5f3ff" })
   };

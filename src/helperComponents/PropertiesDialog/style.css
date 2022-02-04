@@ -8,9 +8,7 @@
 .ve-propertiesPanel .bp3-tab-list::-webkit-scrollbar {
   display: none;
 }
-.ve-draggable-tabs::-webkit-scrollbar {
-  display: none;
-}
+
 .ve-propertiesPanel .data-table-header {
   margin-top: 3px;
   margin-right: 3px;
