@@ -16,9 +16,6 @@ import {
 } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";
 import { AlignmentToolDialog } from "./ToolBar/alignmentTool";
 import MergeFeaturesDialog from "./helperComponents/MergeFeaturesDialog";
-import AddOrEditPartDialog from "./helperComponents/AddOrEditPartDialog";
-import AddOrEditFeatureDialog from "./helperComponents/AddOrEditFeatureDialog";
-import AddOrEditPrimerDialog from "./helperComponents/AddOrEditPrimerDialog";
 
 const Dialogs = {
   RenameSequenceDialog,
@@ -32,10 +29,7 @@ const Dialogs = {
   AdditionalCutsiteInfoDialog,
   CompareEnzymeGroupsDialog,
   AlignmentToolDialog,
-  MergeFeaturesDialog,
-  AddOrEditPartDialog,
-  AddOrEditFeatureDialog,
-  AddOrEditPrimerDialog
+  MergeFeaturesDialog
 };
 
 export function GlobalDialog(props) {

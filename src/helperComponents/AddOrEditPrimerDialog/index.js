@@ -211,14 +211,22 @@ const RenderBases = (props) => {
 
   return (
     <div style={{ padding: 5 }} className="bp3-card">
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
         <CheckboxField
           name="useLinkedOligo"
           label="Linked Oligo?"
           noMarginBottom
         ></CheckboxField>
         {useLinkedOligo && (
-          <div>{linkedOligo || "Will Be Created On Save"}</div>
+          <div style={{ marginTop: -5, fontStyle: "italic", fontSize: 11 }}>
+            {linkedOligo || "Will Be Created On Save"}
+          </div>
         )}
       </div>
       {useLinkedOligo && (
@@ -285,6 +293,7 @@ const RenderBases = (props) => {
             <RadioGroupField
               name="alignTo3Prime"
               inline
+              inlineLabel
               label="Align To"
               tooltipError
               options={[

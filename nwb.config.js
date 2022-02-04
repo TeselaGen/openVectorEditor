@@ -59,7 +59,10 @@ module.exports = {
       //   __dirname,
       //   "node_modules/@blueprintjs/core/lib"
       // ),
-      "react-dom": path.join(__dirname, "node_modules/react-dom")
+      "react-dom": path.join(__dirname, "node_modules/react-dom"),
+      "react-redux": path.join(__dirname, "node_modules/react-redux"),
+      "redux-form": path.join(__dirname, "node_modules/redux-form"),
+      "redux": path.join(__dirname, "node_modules/redux"),
     },
     extra: {
       devtool: "source-map"

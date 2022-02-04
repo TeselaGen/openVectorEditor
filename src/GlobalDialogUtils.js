@@ -2,6 +2,9 @@ import shortid from "shortid";
 
 import { cloneDeep, startCase } from "lodash";
 import { convertRangeTo1Based } from "ve-range-utils";
+import AddOrEditPartDialog from "./helperComponents/AddOrEditPartDialog";
+import AddOrEditFeatureDialog from "./helperComponents/AddOrEditFeatureDialog";
+import AddOrEditPrimerDialog from "./helperComponents/AddOrEditPrimerDialog";
 
 export const dialogHolder = {};
 //if an overrideName is passed, then that dialog can be overridden if an overriding dialog is passed as a prop to the <Editor/>
@@ -28,16 +31,26 @@ export function hideDialog() {
   dialogHolder.setUniqKey();
 }
 
+const typeToDialogType = {
+  part: "AddOrEditPartDialog",
+  feature: "AddOrEditFeatureDialog",
+  primer: "AddOrEditPrimerDialog"
+};
+const typeToDialog = {
+  part: AddOrEditPartDialog,
+  feature: AddOrEditFeatureDialog,
+  primer: AddOrEditPrimerDialog
+};
+
 export function showAddOrEditAnnotationDialog({
   type,
   annotation: _annotation
 }) {
-  const typeToDialogType = {
-    part: "AddOrEditPartDialog",
-    feature: "AddOrEditFeatureDialog",
-    primer: "AddOrEditPrimerDialog"
-  };
+  // AddOrEditPartDialog
+  // AddOrEditFeatureDialog
+  // AddOrEditPrimerDialog
   const dialogType = typeToDialogType[type];
+  const dialog = typeToDialog[type];
   if (Object.values(typeToDialogType).includes(dialogHolder.dialogType)) {
     return;
   }
@@ -52,6 +65,7 @@ export function showAddOrEditAnnotationDialog({
   showDialog({
     overrideName: `AddOrEdit${nameUpper}DialogOverride`,
     dialogType,
+    ModalComponent: dialog,
     props: {
       dialogProps: {
         title:
