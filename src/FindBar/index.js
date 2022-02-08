@@ -204,6 +204,7 @@ export class FindBar extends React.Component {
         <Button
           data-test="veFindPreviousMatchButton"
           minimal
+          small
           disabled={matchesTotal <= 0}
           onClick={() => {
             updateMatchNumber(
@@ -215,6 +216,7 @@ export class FindBar extends React.Component {
         <Button
           data-test="veFindNextMatchButton"
           minimal
+          small
           disabled={matchesTotal <= 0}
           onClick={() => {
             updateMatchNumber(
@@ -223,6 +225,9 @@ export class FindBar extends React.Component {
           }}
           icon="caret-down"
         />
+        {isInline && (
+          <Button minimal small onClick={toggleFindTool} icon="small-cross" />
+        )}
       </span>
     );
 
@@ -253,7 +258,6 @@ export class FindBar extends React.Component {
         }
         className="veFindBar"
       >
-        {isInline && <Button onClick={toggleFindTool} icon="cross" />}
         <Popover
           autoFocus={false}
           enforceFocus={false}
