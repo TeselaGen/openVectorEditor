@@ -381,6 +381,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           <RenderBases
             {...{
               bases,
+              readOnly: this.props.readOnly,
               sequenceData,
               start,
               end,

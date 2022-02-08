@@ -1026,40 +1026,63 @@ export default {
       start: 59,
       end: 79,
       type: "primer_bind",
-      forward: true,
-      bases: "(CGGG)ACTCGCTCGGGCTGGCCCCGG"
-    },
-    {
-      name: "Example Primer -1",
-      start: 12,
-      end: 45,
-      type: "primer_bind",
-      forward: true,
-      // bases: '(GACT)AAGTGAATGATGTAGCCGTCAAGTTG'
+      // forward: true,
 
-      bases:
-        "(GTAAGCAGAGAt)TGAAGAA(ttttgagagagaga)AAAGTGAA-CCTGTAG(AAGAGAGAGAGASDggagaggaAA)CCGTCAAGTTG(GG)"
+      bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
+      primerBindsOn: "5prime",
+      useLinkedOligo: true,
+      linkedOligoLink: "oli 1"
     },
     {
-      name: "Example Primer 0",
-      start: 12,
-      end: 45,
-      type: "primer_bind",
-      forward: false,
-      // bases: '(GACT)AAGTGAATGATGTAGCCGTCAAGTTG'
-
-      bases:
-        "(GTAAGCAGAGAt)TGAAGAA(ttttgagagagaga)AAAGTGAA-CCTGTAG(AAGAGAGAGAGASDggagaggaAA)CCGTCAAGTTG(GG)"
-    },
-    {
-      name: "Example Primer 1",
-      start: 280,
-      end: 300,
+      name: "Example Primer simple",
+      start: 59,
+      end: 79,
       type: "primer_bind",
       forward: true,
-      bases:
-        "(GTAAGCAGAGAt)TGTGC(ttttgagagagaga)GACG(AAGAGAGAGAGASDggagaggaAA)CTGG-GA(GG)TATCA"
+
+      bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
+      primerBindsOn: "5prime",
+      useLinkedOligo: true,
+      linkedOligoLink: "oli 1"
+    },
+    {
+      name: "Example Primer simple",
+      start: 59,
+      end: 79,
+      type: "primer_bind",
+      forward: true,
+
+      bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
+      useLinkedOligo: true,
+      linkedOligoLink: "oli 1"
     }
+    // {
+    //   name: "Example Primer -1",
+    //   start: 12,
+    //   end: 45,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   bases:
+    //     "GTAAGCAGAGAtTGAAGAAttttgagagagagaAAAGTGAA-CCTGTAGAAGAGAGAGAGASDggagaggaAACCGTCAAGTTGGG"
+    // },
+    // {
+    //   name: "Example Primer 0",
+    //   start: 12,
+    //   end: 45,
+    //   type: "primer_bind",
+    //   forward: false,
+    //   bases:
+    //     "GTAAGCAGAGAtTGAAGAAttttgagagagagaAAAGTGAA-CCTGTAGAAGAGAGAGAGASDggagaggaAACCGTCAAGTTGGG"
+    // },
+    // {
+    //   name: "Example Primer 1",
+    //   start: 280,
+    //   end: 300,
+    //   type: "primer_bind",
+    //   forward: true,
+    //   bases:
+    //     "GTAAGCAGAGAtTGTGCttttgagagagagaGACGAAGAGAGAGAGASDggagaggaAACTGG-GAGGTATCA"
+    // }
     // {
     //   name: "Example Primer 2",
     //   start: 302,

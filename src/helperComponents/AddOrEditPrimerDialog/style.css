@@ -24,3 +24,10 @@
   color: red;
   text-decoration: underline;
 }
+
+.tg-bases-label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}

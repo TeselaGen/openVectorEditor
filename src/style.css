@@ -65,6 +65,7 @@ body.tg-no-scroll-body {
 }
 
 .veToolbar-outer {
+  padding-bottom: 1px;
   background: #ebf1f5;
 }
 .bp3-dark .veToolbar-outer {

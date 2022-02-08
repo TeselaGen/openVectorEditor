@@ -1,9 +1,11 @@
 import React from "react";
 import { map } from "lodash";
 import { fudge2, realCharWidth } from "../constants";
-import getSequenceWithinRange from "ve-range-utils/lib/getSequenceWithinRange";
+import { getSequenceWithinRange } from "ve-range-utils";
 import { getComplementSequenceString } from "ve-sequence-utils";
 import getYOffset from "../../CircularView/getYOffset";
+import { getRangeLength } from "ve-range-utils";
+import { getStructuredBases } from "./getStructuredBases";
 
 export function getBasesToShow({
   annotation,
@@ -11,13 +13,18 @@ export function getBasesToShow({
   charWidth,
   bpsPerRow,
   fullSeq,
-  iTree
+  iTree,
+  sequenceLength
 }) {
   const basesToShow = {};
   if (annotation && annotation.bases) {
     const fudge = charWidth - realCharWidth;
-    const forward = annotation.forward;
-    const { basesNoInserts, inserts } = getStructuredBases(annotation.bases);
+    const { forward, primerBindsOn } = annotation;
+
+    const { basesNoInserts, inserts } = getStructuredBases({
+      ...annotation,
+      sequenceLength
+    });
     const aRange = {
       //tnr: this probably needs to be changed in case annotation wraps origin
       start: annotationRange.start - annotation.start,
@@ -25,40 +32,53 @@ export function getBasesToShow({
     };
     const basesForRange = getSequenceWithinRange(
       aRange,
-      annotation.forward
-        ? basesNoInserts
-        : basesNoInserts.split("").reverse().join("")
+      forward ? basesNoInserts : basesNoInserts.split("").reverse().join("")
     );
-
+    const annLen = getRangeLength(annotation, sequenceLength);
+    const aRangeLen = getRangeLength(annotationRange, sequenceLength);
     const startOffset = annotationRange.start % bpsPerRow;
     const endOffset = bpsPerRow - (annotationRange.end % bpsPerRow);
     basesToShow.insertPaths = "";
     basesToShow.insertTicks = "";
-    basesToShow.flipAnnotation = !annotation.forward;
+    basesToShow.flipAnnotation = !forward;
     basesToShow.extraHeight = 0;
     const insertText = [];
-    const level1Height = forward ? -10 : -3;
+    const level1Height = -10;
     const level2Height = 11;
     inserts.forEach((i, n) => {
       //loop thru all inserts
-      if (aRange.start <= i.index && aRange.end >= i.index) {
+      const indexToUse = forward ? i.index : annLen - i.index - 1;
+      if (
+        aRange.start - (primerBindsOn === "5prime" ? 1 : 0) <= indexToUse &&
+        aRange.end + (primerBindsOn === "5prime" ? 1 : 0) >= indexToUse
+      ) {
         //only draw if insert falls within the annotation range
         let xStart = i.index - aRange.start - Math.ceil(0.5 * i.bases.length); //calculate initial xStart
-        let xEnd = i.index - aRange.start + Math.ceil(0.5 * i.bases.length);
+        let xEnd = i.index - aRange.start + Math.floor(0.5 * i.bases.length);
+        if (aRange.end + 3 < xEnd) {
+          xStart -= xEnd - aRange.end - 3;
+          xEnd -= xEnd - aRange.end - 3;
+        }
         if (i.index === 0) {
           //for the first chunk, try to make it hang off the end if possible
           xStart -= xEnd - 1;
           xEnd -= xEnd - 1;
         }
-        if (xStart < -(forward ? startOffset : endOffset)) {
+        const forwAnd3Prime = forward;
+
+        if (xStart < -(forwAnd3Prime ? startOffset : endOffset)) {
           //if the xStart is going to fall off the row to the left, correct it by moving the xStart to the right
-          const offsetLeft = -(forward ? startOffset : endOffset) - xStart;
+          const offsetLeft =
+            -(forwAnd3Prime ? startOffset : endOffset) - xStart;
           xStart += offsetLeft;
           xEnd += offsetLeft;
-        } else if (xEnd + (forward ? startOffset : endOffset) > bpsPerRow) {
+        } else if (
+          xEnd + (forwAnd3Prime ? startOffset : endOffset) >
+          bpsPerRow
+        ) {
           //if the xStart is going to fall off the row to the right, correct it by moving the xStart to the left
           const offsetLeft =
-            bpsPerRow - xEnd - (forward ? startOffset : endOffset);
+            bpsPerRow - xEnd - (forwAnd3Prime ? startOffset : endOffset);
           xStart += offsetLeft;
           xEnd += offsetLeft;
         }
@@ -74,37 +94,47 @@ export function getBasesToShow({
           basesToShow.extraHeight,
           15 + yOffset * 20
         );
+        const insertStart =
+          (indexToUse - (forward ? aRange.start : aRange.end)) *
+          (!forward && primerBindsOn === "5prime" ? -1 : 1);
         basesToShow.insertPaths += getInsertPath({
           xStart,
           xEnd,
           charWidth,
           level: yOffset,
-          insertStart: i.index - aRange.start
+          insertStart
         });
-        basesToShow.insertTicks += getInsertTick({
-          charWidth,
-          height: level2Height,
-          insertStart: i.index - aRange.start
-        });
+
+        if (indexToUse !== aRange.end + 1 && indexToUse !== -1) {
+          basesToShow.insertTicks += getInsertTick({
+            charWidth,
+            height: level2Height,
+            insertStart
+          });
+        }
         const textLength = charWidth * i.bases.length - fudge - fudge2;
-        const xToUse = xStart * charWidth - fudge;
         insertText.push(
           <text
             style={{ pointerEvents: "none" }}
             className="ve-monospace-font"
             textLength={textLength}
+            transform={
+              forward
+                ? ""
+                : `translate(${aRangeLen * charWidth},-5) scale(-1,-1) `
+            }
             key={n}
             x={
               forward
-                ? xToUse
-                : ((annotationRange.end % bpsPerRow) - xEnd - 10) * charWidth -
-                  fudge
+                ? (xStart - 1) * charWidth + fudge
+                : xStart * charWidth - fudge / 2
             }
-            y={forward ? level1Height - yOffset * 20 : yOffset * 20 - 10}
+            y={level1Height - yOffset * 20 - (forward ? 0 : 5)}
           >
             {i.bases.split("").map((b, i) => (
               <tspan
                 key={i}
+                rotate={forward ? 0 : 180}
                 className="tg-no-match-seq"
                 fill="red"
                 textLength={textLength}
@@ -155,27 +185,6 @@ export function getBasesToShow({
   return basesToShow;
 }
 
-function getStructuredBases(bps) {
-  const r = {
-    basesNoInserts: bps,
-    inserts: []
-  };
-  let m;
-
-  do {
-    m = /\([^)]*\)/g.exec(r.basesNoInserts);
-    if (m) {
-      r.basesNoInserts = r.basesNoInserts.replace(m[0], "");
-      const matchInner = m[0].replaceAll(")", "").replaceAll("(", "");
-      r.inserts.push({
-        bases: matchInner,
-        index: m.index
-      });
-    }
-  } while (m);
-  return r;
-}
-
 function getInsertTick({ insertStart, charWidth, height }) {
   if (insertStart === 0) return "";
   const insertLocation = insertStart * charWidth;
@@ -192,8 +201,8 @@ function getInsertPath({ charWidth, xStart, xEnd, insertStart, level = 0 }) {
   const insertLocation = insertStart * charWidth;
   const insertHeight = 15;
   const levelHeight = -5 - level * 20;
-  const leftX = xStart * charWidth - charWidth / 2;
-  const rightX = xEnd * charWidth - charWidth / 2;
+  const leftX = (xStart - 1) * charWidth;
+  const rightX = (xEnd - 1) * charWidth;
 
   const jutUp = `
    L ${insertLocation - 6},${0}

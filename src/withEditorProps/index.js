@@ -34,7 +34,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
-import { getStartEndFromBases } from "../utils/editorUtils";
+// import { getStartEndFromBases } from "../utils/editorUtils";
 
 async function getSaveDialogEl() {
   return new Promise((resolve) => {
@@ -609,7 +609,7 @@ function mapStateToProps(state, ownProps) {
       name,
       ...selectionLayer,
       ...(annotationToAdd.bases && {
-        ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
         fullSeq: sequenceData.sequence
       }),
       locations: annotationToAdd.locations

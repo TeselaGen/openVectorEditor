@@ -209,29 +209,3 @@ export function getStripedPattern({ color }) {
     </pattern>
   );
 }
-
-export function getStartEndFromBases({
-  bases,
-  forward,
-  threePrimeLocation,
-  sequenceLength
-}) {
-  if (!bases) return {};
-  const annLength = bases.length;
-  const start = forward
-    ? normalizePositionByRangeLength(
-        threePrimeLocation - annLength,
-        sequenceLength
-      )
-    : threePrimeLocation - 1;
-  const end = forward
-    ? threePrimeLocation - 1
-    : normalizePositionByRangeLength(
-        threePrimeLocation + annLength - 2,
-        sequenceLength
-      );
-  return {
-    start,
-    end
-  };
-}

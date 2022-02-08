@@ -171,7 +171,7 @@ class PointedAnnotation extends React.PureComponent {
         <title>
           {getAnnotationNameAndStartStopString(annotation, { isProtein })}
         </title>
-        {isStriped && getStripedPattern(color)}
+        {isStriped && getStripedPattern({ color })}
         <path
           strokeWidth="1"
           stroke={stroke || "black"}

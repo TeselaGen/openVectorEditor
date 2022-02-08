@@ -32,6 +32,7 @@ function StackedAnnotations(props) {
     alignmentType,
     getGaps,
     marginTop,
+    sequenceLength,
     sequence: fullSeq,
     marginBottom,
     getExtraInnerCompProps,
@@ -81,8 +82,8 @@ function StackedAnnotations(props) {
       insertTicks,
       flipAnnotation
     } = getBasesToShow({
+      sequenceLength,
       iTree,
-      // iTree: annotation.forward ? iTreeForward : iTreeReverse,
       fullSeq,
       annotation,
       annotationRange,

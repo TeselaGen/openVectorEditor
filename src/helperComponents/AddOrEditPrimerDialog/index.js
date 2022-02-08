@@ -64,16 +64,16 @@ import MeltingTemp from "../../StatusBar/MeltingTemp";
 
 const CustomContentEditable = generateField(function CustomContentEditable({
   input,
-  // readOnly,
+  disabled,
   sequenceData,
-  // start,
-  // end,
+  start,
+  end,
   bases,
-  threePrimeLocation,
+  // threePrimeLocation,
   forward
 }) {
   const [hasTempError, setTempError] = useState(false);
-
+  const threePrimeLocation = forward ? end : start;
   const inputRef = useRef(null);
   const [caretPosition, setCaretPosition] = useState({ start: 0, end: 0 });
 
@@ -133,7 +133,12 @@ const CustomContentEditable = generateField(function CustomContentEditable({
   html = html.join("");
 
   return (
-    <div style={{ display: "flex" }}>
+    <div
+      style={{
+        display: "flex",
+        ...(disabled ? { pointerEvents: "none" } : {})
+      }}
+    >
       <span
         style={{
           verticalAlign: "top",
@@ -148,7 +153,7 @@ const CustomContentEditable = generateField(function CustomContentEditable({
       <span
         ref={inputRef}
         spellcheck="false"
-        contentEditable
+        contentEditable={!disabled}
         className={classNames("bp3-input tg-custom-sequence-editable", {
           hasTempError
         })}
@@ -208,9 +213,13 @@ const RenderBases = (props) => {
     }
     defaultValue = bps;
   }
-
   return (
-    <div style={{ padding: 5 }} className="bp3-card">
+    <div
+      style={{
+        borderTop: "1px solid #A7B6C2",
+        borderBottom: "1px solid #A7B6C2"
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -222,6 +231,7 @@ const RenderBases = (props) => {
           name="useLinkedOligo"
           label="Linked Oligo?"
           noMarginBottom
+          disabled={props.readOnly}
         ></CheckboxField>
         {useLinkedOligo && (
           <div style={{ marginTop: -5, fontStyle: "italic", fontSize: 11 }}>
@@ -231,49 +241,6 @@ const RenderBases = (props) => {
       </div>
       {useLinkedOligo && (
         <div>
-          <DropdownButton
-            intent="primary"
-            small
-            menu={
-              <Menu>
-                <MenuItem
-                  onClick={() => {
-                    change("threePrimeLocation", end);
-                    change("forward", true);
-                    change(
-                      "bases",
-                      getSequenceWithinRange(
-                        normalizedSelection,
-                        sequenceData.sequence
-                      )
-                    );
-                  }}
-                  key="forward"
-                  text="Forward"
-                ></MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    change("forward", false);
-                    change("threePrimeLocation", start);
-                    change(
-                      "bases",
-                      getReverseComplementSequenceString(
-                        getSequenceWithinRange(
-                          normalizedSelection,
-                          sequenceData.sequence
-                        )
-                      )
-                    );
-                  }}
-                  key="reverse"
-                  text="Reverse"
-                ></MenuItem>
-              </Menu>
-            }
-          >
-            Set From Selection
-          </DropdownButton>
-          <div style={{ height: 5 }}></div>
           <CustomContentEditable
             // inlineLabel
             showErrorIfUntouched
@@ -287,18 +254,68 @@ const RenderBases = (props) => {
                 }
               : {})}
             name="bases"
-            label="Bases"
+            label={
+              <div className="tg-bases-label">
+                <div>Bases</div>
+                <div style={{ width: "fit-content" }}>
+                  <DropdownButton
+                    disabled={props.readOnly}
+                    intent="primary"
+                    small
+                    menu={
+                      <Menu>
+                        <MenuItem
+                          onClick={() => {
+                            // change("threePrimeLocation", end);
+                            change("forward", true);
+                            change(
+                              "bases",
+                              getSequenceWithinRange(
+                                normalizedSelection,
+                                sequenceData.sequence
+                              )
+                            );
+                          }}
+                          key="forward"
+                          text="Forward"
+                        ></MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            change("forward", false);
+                            // change("threePrimeLocation", start);
+                            change(
+                              "bases",
+                              getReverseComplementSequenceString(
+                                getSequenceWithinRange(
+                                  normalizedSelection,
+                                  sequenceData.sequence
+                                )
+                              )
+                            );
+                          }}
+                          key="reverse"
+                          text="Reverse"
+                        ></MenuItem>
+                      </Menu>
+                    }
+                  >
+                    Set From Selection
+                  </DropdownButton>
+                </div>
+              </div>
+            }
           />
           <AdvancedOptions style={{ marginBottom: 10 }}>
             <RadioGroupField
-              name="alignTo3Prime"
+              name="primerBindsOn"
               inline
               inlineLabel
-              label="Align To"
+              disabled={props.readOnly}
+              label="Oligo Binds On"
               tooltipError
               options={[
-                { label: "5'", value: "5prime" },
-                { label: "3'", value: "3prime" }
+                { label: "5' End", value: "5prime" },
+                { label: "3' End", value: "3prime" }
               ]}
             ></RadioGroupField>
           </AdvancedOptions>
