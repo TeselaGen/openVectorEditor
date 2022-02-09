@@ -1139,7 +1139,29 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "additionalEnzymes",
-                description: `additionalEnzymes`
+                description: `Additional enzymes, including ones that are hidden by default, can be shown by passing the following to the Editor 
+\`\`\`
+additionalEnzymes: {
+  specialEnzyme1: {
+    name: "specialEnzyme1",
+    site: "attttttaaatacccgcg",
+    forwardRegex: "attttttaaatacccgcg",
+    reverseRegex: "cgcgggtatttaaaaaat",
+    topSnipOffset: 9,
+    bottomSnipOffset: 10
+  },
+  Esp3I: {
+    name: "Esp3I",
+    isType2S: true,
+    site: "cgtctc",
+    forwardRegex: "cgtctc",
+    reverseRegex: "gagacg",
+    topSnipOffset: 7,
+    bottomSnipOffset: 11
+  },
+}
+\`\`\`
+                `
               })}
               {renderToggle({
                 that: this,
@@ -1739,6 +1761,15 @@ clickOverrides: {
                   reverseRegex: "tttttttccccccc",
                   topSnipOffset: 9,
                   bottomSnipOffset: 10
+                },
+                Esp3I: {
+                  name: "Esp3I",
+                  isType2S: true,
+                  site: "cgtctc",
+                  forwardRegex: "cgtctc",
+                  reverseRegex: "gagacg",
+                  topSnipOffset: 7,
+                  bottomSnipOffset: 11
                 }
               }
             })}
