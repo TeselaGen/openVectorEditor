@@ -4,11 +4,13 @@ import { divideBy3 } from "./proteinUtils";
 import {
   getInsertBetweenVals,
   calculatePercentGC,
-  getSequenceDataBetweenRange
+  getSequenceDataBetweenRange,
+  aliasedEnzymesByName
 } from "ve-sequence-utils";
 import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
 import { normalizePositionByRangeLength } from "ve-range-utils";
+import { filter } from "lodash";
 
 export function getSelectionMessage({
   caretPosition = -1,
@@ -167,3 +169,14 @@ export function getSelFromWrappedAddon(selectionLayer, sequenceLength) {
   }
   return selToUse;
 }
+
+export const getEnzymeAliases = (enzyme) => {
+  let lowerName = (enzyme.name && enzyme.name.toLowerCase()) || "";
+  if (typeof enzyme === "string") {
+    lowerName = enzyme.toLowerCase();
+  }
+  return filter(
+    (aliasedEnzymesByName[lowerName] || {}).aliases,
+    (n) => n.toLowerCase() !== lowerName //filter out current enzyme
+  );
+};

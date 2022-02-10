@@ -7,13 +7,26 @@ describe("cutsiteInfoView", function () {
     cy.get(`.bp3-dialog .snipPosition-12`);
   });
 
+  it(`filtering for a hidden enzyme should bring up a 'These Hidden enzymes match' message`, () => {
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(`.veToolbarCutsiteFilterHolder input`).type("esp3i");
+    cy.contains(`These Hidden enzymes match`);
+    cy.contains("Esp3I (2 cuts)").click();
+    cy.get(`.veToolbarCutsiteFilterHolder input`).should("not.exist"); //clicking the hidden enzyme should close the filter
+    cy.contains("Esp3I (2 cuts) hidden");
+    cy.get(
+      `.bp3-dialog:contains(Aliases:):contains(BstGZ53I):contains(BstGZ53I)`
+    );
+    cy.get(`.bp3-dialog:contains(Aliases:) .bp3-tag:contains(BsmBI)`).click();
+    cy.contains("BsmBI (2 cuts) inactive");
+  });
   it(`filtering for an enzyme with 0 cuts should bring up a No Active Results.. These inactive enzymes match: message`, () => {
     cy.tgToggle("overrideManageEnzymes");
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder input`).type("bsai");
     cy.contains(`No Active Results.. These inactive enzymes match:`);
     cy.contains("BsaI (0 cuts)").click();
-
+    cy.get(`.veToolbarCutsiteFilterHolder input`).should("not.exist"); //clicking the hidden enzyme should close the filter
     cy.contains(".ve-enzymeSubrow", "ggtctc");
     cy.get(`.veToolbarCutsiteFilterHolder input`).type("{selectAll}nocuts");
     cy.contains("noCutsEnzyme (0 cuts)").click();

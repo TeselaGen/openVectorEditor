@@ -157,8 +157,7 @@ describe("editor", function () {
   });
   it(`should fire the beforeAnnotationCreate callback if one is passed`, function () {
     cy.tgToggle("beforeAnnotationCreate");
-    cy.get(".veRowViewSelectionLayer").first().rightclick();
-
+    cy.contains(".veLabelText", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
     cy.contains(".bp3-menu-item", "New Primer").click();
     cy.focused().type("new primer");

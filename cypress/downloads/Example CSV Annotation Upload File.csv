@@ -1,3 +1,0 @@
-name,description,sequence,type,isRegex
-Example Feature 1,I'm a description,gatNNtacaggttt,cds,false
-Example Feature 2,I'm another description,gat.*tacccc.*aggttt,cds,true
