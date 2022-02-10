@@ -34,9 +34,9 @@ module.exports = {
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../ve-sequence-parsers/src/parsers/"),
       //downgrade to nwb @ 0.24.5 to get this to work for now
-      "teselagen-react-components":
-        console.log("comment me back out!") ||
-        path.resolve(__dirname, "../teselagen-react-components/src/"),
+      // "teselagen-react-components":
+      //   console.log("comment me back out!") ||
+      //   path.resolve(__dirname, "../teselagen-react-components/src/"),
       // "react-draggable":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../react-draggable"),
