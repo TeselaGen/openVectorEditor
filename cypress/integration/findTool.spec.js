@@ -90,7 +90,7 @@ describe("find tool", function () {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gattac", { noPrevValue: true }); //this should cause 1 region to be selected
     cy.get(".veSearchLayerContainer").should("exist");
-    cy.get(".veFindBar .bp3-icon-cross").click();
+    cy.get(".veFindBar .bp3-icon-small-cross").click();
     cy.get(".veSearchLayerContainer").should("not.exist");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.get(".veSearchLayerContainer").should("exist"); //test that the search didn't get cleared

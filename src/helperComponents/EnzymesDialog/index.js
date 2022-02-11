@@ -205,11 +205,8 @@ class EnzymesDialog extends React.Component {
   render() {
     const { hideModal } = this.props;
     if (!this.enzymeGroups) return null;
-    const {
-      selectedEnzymeGroup,
-      searchInput,
-      enzymeGroupToMoveTo
-    } = this.state;
+    const { selectedEnzymeGroup, searchInput, enzymeGroupToMoveTo } =
+      this.state;
     const selectedEnzymesKey = `selectedEnzymes_${selectedEnzymeGroup}`;
     const selectedEnzymesForGroup = this.state[selectedEnzymesKey] || {};
     const selectedCount = countBy(selectedEnzymesForGroup, (e) => e).true || 0;
@@ -248,9 +245,8 @@ class EnzymesDialog extends React.Component {
             });
           }}
           className={classNames(Classes.MENU_ITEM, "veEnzymeDialogEnzyme", {
-            [`${Classes.ACTIVE} ${Classes.INTENT_PRIMARY}`]: selectedEnzymesForGroup[
-              enz.name
-            ]
+            [`${Classes.ACTIVE} ${Classes.INTENT_PRIMARY}`]:
+              selectedEnzymesForGroup[enz.name]
           })}
           key={i}
         >
@@ -486,7 +482,8 @@ class EnzymesDialog extends React.Component {
                   height: "fit-parent",
                   overflowY: "auto",
                   display: "flex",
-                  flexWrap: "wrap"
+                  flexWrap: "wrap",
+                  maxWidth: "100%"
                 }}
               >
                 {/* <span style={{fontSize: 10}}>{fullSelectedEnzGroup.message || "Enzymes added here can be filtered for in the Cutsite Filter"}  </span> */}
@@ -860,7 +857,9 @@ const HoverView = view(({ allEnzymesByName }) => {
       className="hoveredEnzymeContainer"
       style={{
         overflow: "hidden",
-        maxWidth: "100%",
+        // maxWidth: "100%",
+        minWidth: 0,
+        // width: "100%",
         margin: "20px",
         minHeight: 30,
         maxHeight: 30,

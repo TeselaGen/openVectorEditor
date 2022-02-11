@@ -82,3 +82,16 @@
   /* needs a z-index less than the selection layer so you can right click the selection above a sequence https://github.com/TeselaGen/openVectorEditor/issues/625 */
   z-index: 1;
 }
+
+.tg-prime-direction {
+  position: absolute;
+  color: lightgray;
+  font-size: 9px;
+  top: 2px;
+}
+.tg-right-prime-direction {
+  right: -10px;
+}
+.tg-left-prime-direction {
+  left: -10px;
+}

@@ -27,16 +27,16 @@ module.exports = {
       // "ve-range-utils":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../ve-range-utils/src/"),
-      "ve-sequence-utils":
-        console.log("comment me back out!") ||
-        path.resolve(__dirname, "../ve-sequence-utils/src/"),
+      // "ve-sequence-utils":
+      //   console.log("comment me back out!") ||
+      //   path.resolve(__dirname, "../ve-sequence-utils/src/"),
       // "bio-parsers":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../ve-sequence-parsers/src/parsers/"),
       //downgrade to nwb @ 0.24.5 to get this to work for now
-      "teselagen-react-components":
-        console.log("comment me back out!") ||
-        path.resolve(__dirname, "../teselagen-react-components/src/"),
+      // "teselagen-react-components":
+      //   console.log("comment me back out!") ||
+      //   path.resolve(__dirname, "../teselagen-react-components/src/"),
       // "react-draggable":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../react-draggable"),
@@ -62,7 +62,7 @@ module.exports = {
       "react-dom": path.join(__dirname, "node_modules/react-dom"),
       "react-redux": path.join(__dirname, "node_modules/react-redux"),
       "redux-form": path.join(__dirname, "node_modules/redux-form"),
-      "redux": path.join(__dirname, "node_modules/redux"),
+      redux: path.join(__dirname, "node_modules/redux")
     },
     extra: {
       devtool: "source-map"

@@ -25,10 +25,12 @@ describe("chromatogram", function () {
         cy.replaceSelection("aaaaaa");
         cy.contains("Sequence Inserted Successfully");
         cy.get(".chromatogram");
+        cy.log(w1);
         cy.get(`[data-row-number="9"] .chromatogram-trace-initialized canvas`)
           .invoke("width")
           .then((str) => {
             const w2 = parseInt(str);
+            cy.log(w2);
             assert.deepEqual(w2 > w1, true);
           });
       });

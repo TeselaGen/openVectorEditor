@@ -268,6 +268,7 @@ export default [
     text: "Sequence",
     submenu: [
       { cmd: "toggleSequence", shouldDismissPopover: false },
+      { cmd: "toggleFivePrimeThreePrimeHints", shouldDismissPopover: false },
       { cmd: "toggleReverseSequence", shouldDismissPopover: false },
 
       {

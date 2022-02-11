@@ -25,6 +25,7 @@ export const visibilityDefaultValues = {
   dnaColors: false,
   sequence: true,
   reverseSequence: true,
+  fivePrimeThreePrimeHints: true,
   axisNumbers: true
 };
 

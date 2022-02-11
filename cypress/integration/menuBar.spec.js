@@ -2,6 +2,12 @@ describe("menuBar", function () {
   beforeEach(() => {
     cy.visit("");
   });
+  it(`fivePrimeThreePrimeHints should be toggleable`, () => {
+    cy.visit("");
+    cy.get(`.tg-left-prime-direction:contains(5')`);
+    cy.triggerFileCmd(`5' 3' Hints`);
+    cy.get(`.tg-left-prime-direction:contains(5')`).should("not.exist");
+  });
   it(`the menu should allow for custom toastr messages`, () => {
     cy.visit("");
 
