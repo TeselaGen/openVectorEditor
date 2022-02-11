@@ -1163,6 +1163,10 @@ const annotationToggleCommandDefs = {};
       isProtein(props) ? "DNA Reverse Sequence" : "Reverse Sequence"
   },
   {
+    type: "fivePrimeThreePrimeHints",
+    name: () => "5' 3' Hints"
+  },
+  {
     type: "dnaColors",
     name: () => "DNA Colors",
     isDisabled: (props) =>

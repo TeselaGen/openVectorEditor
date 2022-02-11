@@ -23,6 +23,7 @@ class Sequence extends React.Component {
       chunkSize = 100,
       scrollData,
       showDnaColors,
+      fivePrimeThreePrimeHints,
       // getGaps,
       alignmentData
     } = this.props;
@@ -111,6 +112,24 @@ class Sequence extends React.Component {
           style={style}
           className={(className ? className : "") + " ve-row-item-sequence"}
         >
+          {fivePrimeThreePrimeHints && (
+            <div
+              className={`tg-${
+                isReverse ? "left" : "right"
+              }-prime-direction tg-prime-direction`}
+            >
+              3'
+            </div>
+          )}
+          {fivePrimeThreePrimeHints && (
+            <div
+              className={`tg-${
+                isReverse ? "right" : "left"
+              }-prime-direction tg-prime-direction`}
+            >
+              5'
+            </div>
+          )}
           {!hideBps && (
             <svg
               style={{

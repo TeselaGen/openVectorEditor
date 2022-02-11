@@ -112,6 +112,7 @@ export default function RowItem(props) {
     // yellowAxis: showYellowAxis,
     aminoAcidNumbers: showAminoAcidNumbers,
     dnaColors: showDnaColors,
+    fivePrimeThreePrimeHints,
     reverseSequence: showReverseSequence,
     sequence: showSequence
   } = annotationVisibility;
@@ -399,6 +400,7 @@ export default function RowItem(props) {
             <Sequence
               cutsites={cutsites} //pass this in order to get children cutsites to re-render
               showDnaColors={showDnaColors}
+              fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               scrollData={scrollData}
               hideBps={charWidth < 7}
               sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
@@ -423,6 +425,7 @@ export default function RowItem(props) {
 
           {showReverseSequence && (
             <Sequence
+              fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               isReverse
               cutsites={cutsites} //pass this in order to get children cutsites to re-render
               showDnaColors={showDnaColors}
