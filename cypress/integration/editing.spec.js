@@ -44,20 +44,19 @@ describe("editing", function () {
     cy.contains("Selecting 9 bps from 11 to 19");
     cy.focused().find(".veRowView"); //the row view should still be focused
   });
-  it(`should be able to delete data around the origin correctly
-  - the cursor should be place at the origin`, () => {
+  it(`should be able to delete data around the origin correctly - the cursor should be placed at the origin`, () => {
     cy.selectRange(5297, 3);
     cy.get(`[title="Caret Between Bases 5296 and 5297"]`);
     cy.deleteSelection();
     cy.contains("Caret Between Bases 5293 and 1");
-    cy.contains(".ve-row-item-sequence", /^gtcttatga/);
+    cy.contains(".ve-row-item-sequence", "5'gtcttatga");
   });
   it(`should be able to insert data around the origin correctly 
   - new sequence should be inserted after the origin`, () => {
     cy.selectRange(5297, 3);
     cy.replaceSelection("aaaaaa");
     cy.contains("Selecting 6 bps from 1 to 6");
-    cy.contains(".ve-row-item-sequence", /^aaaaaagtcttatga/);
+    cy.contains(".ve-row-item-sequence", "5'aaaaaagtcttatga");
     cy.selectRange(3, 5);
     cy.replaceSelection("tt");
     cy.contains("Selecting 2 bps from 3 to 4");
@@ -69,13 +68,13 @@ describe("editing", function () {
     cy.contains("button", "Jump to end").should("exist");
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", /Complement Selection/).click();
-    cy.contains(".ve-row-item-sequence", /^ctggtcttat/);
+    cy.contains(".ve-row-item-sequence", "5'ctggtcttat");
 
     cy.contains("button", "Edit").click();
     cy.contains(".bp3-menu-item", "Reverse Complement Selection").click();
 
     cy.contains("Selecting 6 bps from 5297 to 3");
-    cy.contains(".ve-row-item-sequence", /^ctagtcttatg/);
+    cy.contains(".ve-row-item-sequence", "5'ctagtcttatg");
   });
   it("should be able to change the color of features by changing the feature type", () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();

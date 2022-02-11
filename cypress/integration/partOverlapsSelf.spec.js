@@ -59,3 +59,9 @@ describe("partTypes", function () {
     cy.contains(".bp3-dialog div", "Overlaps Self");
   });
 });
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from
+  // failing the test
+  console.warn("err, runnable:", err, runnable);
+  return false;
+});

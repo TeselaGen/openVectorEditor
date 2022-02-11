@@ -135,3 +135,10 @@ describe("dialogs", function () {
       .should("be.checked");
   });
 });
+
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from
+  // failing the test
+  console.warn("err, runnable:", err, runnable);
+  return false;
+});

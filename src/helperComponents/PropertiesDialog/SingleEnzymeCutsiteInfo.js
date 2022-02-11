@@ -1,15 +1,12 @@
 import React from "react";
-import compose from "recompose/compose";
 import { DataTable } from "teselagen-react-components";
 
 import { CutsiteTag } from "../../CutsiteFilter/AdditionalCutsiteInfoDialog";
-import { withRestrictionEnzymes } from "../../CutsiteFilter/withRestrictionEnzymes";
 
 import EnzymeViewer from "../../EnzymeViewer";
 import { getEnzymeAliases } from "../../utils/editorUtils";
-import withEditorProps from "../../withEditorProps";
 
-function SingleEnzymeCutsiteInfo({
+export default function SingleEnzymeCutsiteInfo({
   cutsiteGroup,
   enzyme,
   dispatch,
@@ -128,7 +125,7 @@ const schema = {
   ]
 };
 
-export default compose(
-  withEditorProps,
-  withRestrictionEnzymes
-)(SingleEnzymeCutsiteInfo);
+// export default compose(
+//   withEditorProps,
+//   withRestrictionEnzymes
+// )(SingleEnzymeCutsiteInfo);
