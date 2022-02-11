@@ -186,8 +186,9 @@ class AddOrEditAnnotationDialog extends React.Component {
       RenderBases,
       allowPrimerBasesToBeEdited,
       bases,
+      initialValues,
       forward,
-      threePrimeLocation,
+      primerBindsOn,
       useLinkedOligo,
       change,
       annotationTypePlural,
@@ -380,13 +381,16 @@ class AddOrEditAnnotationDialog extends React.Component {
         {allowPrimerBasesToBeEdited && RenderBases ? (
           <RenderBases
             {...{
+              // ...this.props,
               bases,
               readOnly: this.props.readOnly,
               sequenceData,
               start,
               end,
-              threePrimeLocation,
+              sequenceLength,
+              primerBindsOn,
               forward,
+              linkedOligo: initialValues.linkedOligo,
               useLinkedOligo,
               change
             }}
@@ -522,7 +526,7 @@ export default ({ formName, getProps, dialogProps }) => {
       "bases",
       "useLinkedOligo",
       "forward",
-      "threePrimeLocation"
+      "primerBindsOn"
     )
   )(AddOrEditAnnotationDialog);
 };

@@ -1,8 +1,6 @@
 import React from "react";
 import { map } from "lodash";
 import { fudge2, realCharWidth } from "../constants";
-import { getSequenceWithinRange } from "ve-range-utils";
-import { getComplementSequenceString } from "ve-sequence-utils";
 import getYOffset from "../../CircularView/getYOffset";
 import { getRangeLength } from "ve-range-utils";
 import { getStructuredBases } from "./getStructuredBases";
@@ -21,19 +19,13 @@ export function getBasesToShow({
     const fudge = charWidth - realCharWidth;
     const { forward, primerBindsOn } = annotation;
 
-    const { basesNoInserts, inserts } = getStructuredBases({
+    const { basesNoInsertsWithMetaData, inserts, aRange } = getStructuredBases({
       ...annotation,
+      fullSeq,
+      annotationRange,
       sequenceLength
     });
-    const aRange = {
-      //tnr: this probably needs to be changed in case annotation wraps origin
-      start: annotationRange.start - annotation.start,
-      end: annotationRange.end - annotation.start
-    };
-    const basesForRange = getSequenceWithinRange(
-      aRange,
-      forward ? basesNoInserts : basesNoInserts.split("").reverse().join("")
-    );
+
     const annLen = getRangeLength(annotation, sequenceLength);
     const aRangeLen = getRangeLength(annotationRange, sequenceLength);
     const startOffset = annotationRange.start % bpsPerRow;
@@ -147,7 +139,8 @@ export function getBasesToShow({
       }
     });
 
-    const textLength = charWidth * basesForRange.length - fudge - fudge2;
+    const textLength =
+      charWidth * basesNoInsertsWithMetaData.length - fudge - fudge2;
 
     basesToShow.baseEl = (
       <React.Fragment>
@@ -160,15 +153,10 @@ export function getBasesToShow({
           style={{ pointerEvents: "none" }}
           className="ve-monospace-font"
         >
-          {map(basesForRange.split(""), (b, i) => {
-            const indexOfBase = i + annotationRange.start;
-            let seqForBase = (fullSeq && fullSeq[indexOfBase]) || "";
-            if (!annotation.forward) {
-              seqForBase = getComplementSequenceString(seqForBase);
-            }
-            const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
+          {map(basesNoInsertsWithMetaData, ({ b, isMatch }, i) => {
             return (
               <tspan
+                key={i}
                 className={isMatch ? "" : "tg-no-match-seq"}
                 fill={isMatch ? "black" : "red"}
                 textLength={textLength}

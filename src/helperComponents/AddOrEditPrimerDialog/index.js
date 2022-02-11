@@ -19,8 +19,9 @@ import CaretPositioning, {
   selectionSaveCaretPosition
 } from "./EditCaretPosition";
 import { Menu, MenuItem } from "@blueprintjs/core";
-import { getComplementSequenceString } from "ve-sequence-utils";
+
 import MeltingTemp from "../../StatusBar/MeltingTemp";
+import { getStructuredBases } from "../../RowItem/StackedAnnotations/getStructuredBases";
 
 // function getHtmlFromVal(val) {
 //   let html = "";
@@ -66,14 +67,14 @@ const CustomContentEditable = generateField(function CustomContentEditable({
   input,
   disabled,
   sequenceData,
+  sequenceLength,
   start,
   end,
+  primerBindsOn,
   bases,
-  // threePrimeLocation,
   forward
 }) {
   const [hasTempError, setTempError] = useState(false);
-  const threePrimeLocation = forward ? end : start;
   const inputRef = useRef(null);
   const [caretPosition, setCaretPosition] = useState({ start: 0, end: 0 });
 
@@ -106,29 +107,20 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     CaretPositioning.restoreSelection(inputRef.current, caretPosition);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bases]);
-  let html = [];
-  let basesToUse = bases || "";
-  if (forward) basesToUse = basesToUse.split("").reverse().join("");
-  basesToUse.split("").forEach((b, i) => {
-    const index = forward
-      ? threePrimeLocation - i - 1
-      : threePrimeLocation + basesToUse.length - i - 2;
-    let baseAtIndex = sequenceData.sequence[index] || "";
-    if (!forward) baseAtIndex = getComplementSequenceString(baseAtIndex);
-    if (!baseAtIndex) {
-      return html[forward ? "unshift" : "push"](
-        `<span class="tg-no-match-seq">${b}</span>`
-      );
-    }
-    if (baseAtIndex.toLowerCase() === b.toLowerCase()) {
-      html[forward ? "unshift" : "push"](
-        `<span class="tg-match-seq">${b}</span>`
-      );
-    } else {
-      html[forward ? "unshift" : "push"](
-        `<span class="tg-no-match-seq">${b}</span>`
-      );
-    }
+
+  const basesToUse = bases || "";
+  const { allBasesWithMetaData } = getStructuredBases({
+    annotationRange: { start: start - 1, end: end - 1 },
+    forward,
+    bases: basesToUse,
+    start: start - 1,
+    end: end - 1,
+    fullSeq: sequenceData.sequence,
+    primerBindsOn,
+    sequenceLength
+  });
+  let html = allBasesWithMetaData.map(({ b, isMatch }) => {
+    return `<span class="tg-${isMatch ? "" : "no-"}match-seq">${b}</span>`;
   });
   html = html.join("");
 
@@ -178,12 +170,13 @@ const CustomContentEditable = generateField(function CustomContentEditable({
 const RenderBases = (props) => {
   const {
     sequenceData,
-    // readOnly,
+    readOnly,
     start,
     end,
     linkedOligo,
     useLinkedOligo,
-    // threePrimeLocation,
+    sequenceLength,
+    primerBindsOn,
     bases,
     forward,
     change
@@ -231,7 +224,8 @@ const RenderBases = (props) => {
           name="useLinkedOligo"
           label="Linked Oligo?"
           noMarginBottom
-          disabled={props.readOnly}
+          defaultValue={true}
+          disabled={readOnly}
         ></CheckboxField>
         {useLinkedOligo && (
           <div style={{ marginTop: -5, fontStyle: "italic", fontSize: 11 }}>
@@ -245,8 +239,10 @@ const RenderBases = (props) => {
             // inlineLabel
             showErrorIfUntouched
             tooltipError
+            primerBindsOn={primerBindsOn}
             validate={validate}
-            disabled={props.readOnly}
+            sequenceLength={sequenceLength}
+            disabled={readOnly}
             {...props}
             {...(defaultValue
               ? {
@@ -259,7 +255,7 @@ const RenderBases = (props) => {
                 <div>Bases</div>
                 <div style={{ width: "fit-content" }}>
                   <DropdownButton
-                    disabled={props.readOnly}
+                    disabled={readOnly}
                     intent="primary"
                     small
                     menu={
@@ -310,7 +306,7 @@ const RenderBases = (props) => {
               name="primerBindsOn"
               inline
               inlineLabel
-              disabled={props.readOnly}
+              disabled={readOnly}
               label="Oligo Binds On"
               tooltipError
               options={[

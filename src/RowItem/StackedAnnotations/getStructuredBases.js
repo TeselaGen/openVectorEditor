@@ -1,13 +1,26 @@
-import { getRangeLength } from "ve-range-utils";
+import { clone } from "lodash";
+import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
+import { getComplementSequenceString } from "ve-sequence-utils";
 
 export function getStructuredBases({
+  annotationRange,
+  forward,
   bases,
   start,
   end,
+  fullSeq,
   primerBindsOn,
   sequenceLength
 }) {
+  //  console.log(`annotationRange:`,annotationRange)
+  //  console.log(`bases:`,bases)
+  const aRange = {
+    //tnr: this probably needs to be changed in case annotation wraps origin
+    start: annotationRange.start - start,
+    end: annotationRange.end - start
+  };
   const r = {
+    aRange,
     basesNoInserts: bases,
     inserts: []
   };
@@ -32,5 +45,37 @@ export function getStructuredBases({
       }
     ];
   }
+  const basesForRange = getSequenceWithinRange(
+    aRange,
+    forward ? r.basesNoInserts : r.basesNoInserts.split("").reverse().join("")
+  );
+  r.basesNoInsertsWithMetaData = basesForRange.split("").map((b, i) => {
+    const indexOfBase = i + annotationRange.start;
+    let seqForBase = (fullSeq && fullSeq[indexOfBase]) || "";
+    if (!forward) {
+      seqForBase = getComplementSequenceString(seqForBase);
+    }
+    const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
+    return {
+      b,
+      isMatch
+    };
+  });
+  r.allBasesWithMetaData = clone(r.basesNoInsertsWithMetaData);
+  if (!forward) {
+    r.allBasesWithMetaData = r.allBasesWithMetaData.reverse();
+  }
+  r.inserts
+    .sort((a, b) => a.index - b.index)
+    .forEach(({ bases, index }) => {
+      // console.log(`bases:`,bases)
+      // console.log(`index:`,index)
+      r.allBasesWithMetaData.splice(
+        index,
+        0,
+        ...bases.split("").map((b) => ({ b, isMatch: false }))
+      );
+    });
+
   return r;
 }

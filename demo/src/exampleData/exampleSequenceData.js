@@ -1024,7 +1024,7 @@ export default {
     {
       name: "Example Primer simple",
       start: 59,
-      end: 79,
+      end: 82,
       type: "primer_bind",
       // forward: true,
 
@@ -1032,30 +1032,30 @@ export default {
       primerBindsOn: "5prime",
       useLinkedOligo: true,
       linkedOligoLink: "oli 1"
-    },
-    {
-      name: "Example Primer simple",
-      start: 59,
-      end: 79,
-      type: "primer_bind",
-      forward: true,
-
-      bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
-      primerBindsOn: "5prime",
-      useLinkedOligo: true,
-      linkedOligoLink: "oli 1"
-    },
-    {
-      name: "Example Primer simple",
-      start: 59,
-      end: 79,
-      type: "primer_bind",
-      forward: true,
-
-      bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
-      useLinkedOligo: true,
-      linkedOligoLink: "oli 1"
     }
+    // {
+    //   name: "Example Primer simple",
+    //   start: 59,
+    //   end: 79,
+    //   type: "primer_bind",
+    //   forward: true,
+
+    //   bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
+    //   primerBindsOn: "5prime",
+    //   useLinkedOligo: true,
+    //   linkedOligoLink: "oli 1"
+    // },
+    // {
+    //   name: "Example Primer simple",
+    //   start: 59,
+    //   end: 79,
+    //   type: "primer_bind",
+    //   forward: true,
+
+    //   bases: "taaaaaaCGGGACTCGCTCGGGCTGGCCCCGG",
+    //   useLinkedOligo: true,
+    //   linkedOligoLink: "oli 1"
+    // }
     // {
     //   name: "Example Primer -1",
     //   start: 12,
