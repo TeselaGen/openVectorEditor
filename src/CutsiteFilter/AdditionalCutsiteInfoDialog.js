@@ -234,7 +234,10 @@ export const AdditionalCutsiteInfoDialog = compose(
             editorName,
             selectedAnnotationId,
             cutsiteGroup,
-            enzyme
+            enzyme,
+            allRestrictionEnzymes,
+            allCutsites: props.allCutsites,
+            filteredCutsites: props.filteredCutsites
           }}
         ></SingleEnzymeCutsiteInfo>
       </div>

@@ -28,6 +28,7 @@ describe("cutsiteInfoView", function () {
     cy.contains("BsaI (0 cuts)").click();
     cy.get(`.veToolbarCutsiteFilterHolder input`).should("not.exist"); //clicking the hidden enzyme should close the filter
     cy.contains(".ve-enzymeSubrow", "ggtctc");
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder input`).type("{selectAll}nocuts");
     cy.contains("noCutsEnzyme (0 cuts)").click();
     cy.contains(".ve-enzymeSubrow", "gggggggaaaaaaa");
