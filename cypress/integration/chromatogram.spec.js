@@ -29,8 +29,9 @@ describe("chromatogram", function () {
           .invoke("width")
           .then((str) => {
             const w2 = parseInt(str);
-            cy.log(w2);
-            assert.deepEqual(w2 > w1, true);
+            cy.log(w2).then(() => {
+              assert.deepEqual(w2 > w1, true);
+            });
           });
       });
   });
