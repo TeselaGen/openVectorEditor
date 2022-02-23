@@ -23,6 +23,7 @@ function StackedAnnotations(props) {
     onClick,
     isProtein,
     onDoubleClick,
+    isRowView,
     disregardLocations,
     InnerComp,
     onRightClick,
@@ -75,6 +76,7 @@ function StackedAnnotations(props) {
     if (!disregardLocations && annotationRange.containsLocations) {
       top += annotationHeight / 2 - annotationHeight / 16;
     }
+
     const {
       baseEl,
       extraHeight = 0,
@@ -82,6 +84,7 @@ function StackedAnnotations(props) {
       insertTicks,
       flipAnnotation
     } = getBasesToShow({
+      isRowView,
       sequenceLength,
       iTree,
       fullSeq,
@@ -90,6 +93,7 @@ function StackedAnnotations(props) {
       charWidth,
       bpsPerRow
     });
+
     const anotationHeightNoSpace = annotationHeight - spaceBetweenAnnotations;
     extraHeightForContainer += extraHeight;
     annotationsSVG.push(

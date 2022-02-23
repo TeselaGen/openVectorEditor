@@ -14,7 +14,7 @@ import { getAcceptedChars } from "../../utils/editorUtils";
 import classNames from "classnames";
 import "./style.css";
 import { getSequenceWithinRange } from "ve-range-utils";
-
+import { flatMap } from "lodash";
 import CaretPositioning, {
   selectionSaveCaretPosition
 } from "./EditCaretPosition";
@@ -22,46 +22,6 @@ import { Menu, MenuItem } from "@blueprintjs/core";
 
 import MeltingTemp from "../../StatusBar/MeltingTemp";
 import { getStructuredBases } from "../../RowItem/StackedAnnotations/getStructuredBases";
-
-// function getHtmlFromVal(val) {
-//   let html = "";
-//   val.split("").forEach((b, i) => {
-//     if (i % 2 === 0) {
-//       html += `<span class="match">${b}</span>`;
-//     } else {
-//       html += `<span class="no-match">${b}</span>`;
-//     }
-//   });
-//   return html;
-// }
-
-// export default function CustomEditable({setVal, val, getHtmlFromVal}) {
-//   // const [val, setVal] = useState("gaga");
-
-//   const inputRef = useRef(null);
-//   const [caretPosition, setCaretPosition] = useState({ start: 0, end: 0 });
-
-//   const emitChange = (e) => {
-//     const newVal = e.target.innerText;
-//     let savedCaretPosition = CaretPositioning.saveSelection(e.currentTarget);
-//     setCaretPosition(savedCaretPosition);
-//     setVal(newVal);
-//   };
-
-//   useEffect(() => {
-//     CaretPositioning.restoreSelection(inputRef.current, caretPosition);
-//   }, [val]);
-
-//   return (
-//     <div
-//         ref={inputRef}
-//         contentEditable
-//         className="tg-contenteditable"
-//         onInput={emitChange}
-//         dangerouslySetInnerHTML={{ __html: (getHtmlFromVal(val)) }} // innerHTML of the editable div
-//       />
-//   );
-// }
 
 const CustomContentEditable = generateField(function CustomContentEditable({
   input,
@@ -119,7 +79,8 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     primerBindsOn,
     sequenceLength
   });
-  let html = allBasesWithMetaData.map(({ b, isMatch }) => {
+  let html = flatMap(allBasesWithMetaData, ({ b, isMatch }) => {
+    if (b === "&") return [];
     return `<span class="tg-${isMatch ? "" : "no-"}match-seq">${b}</span>`;
   });
   html = html.join("");
@@ -144,7 +105,7 @@ const CustomContentEditable = generateField(function CustomContentEditable({
       </span>
       <span
         ref={inputRef}
-        spellcheck="false"
+        spellCheck="false"
         contentEditable={!disabled}
         className={classNames("bp3-input tg-custom-sequence-editable", {
           hasTempError
@@ -174,6 +135,7 @@ const RenderBases = (props) => {
     start,
     end,
     linkedOligo,
+    getLinkedOligoLink,
     useLinkedOligo,
     sequenceLength,
     primerBindsOn,
@@ -228,8 +190,13 @@ const RenderBases = (props) => {
           disabled={readOnly}
         ></CheckboxField>
         {useLinkedOligo && (
-          <div style={{ marginTop: -5, fontStyle: "italic", fontSize: 11 }}>
-            {linkedOligo || "Will Be Created On Save"}
+          <div
+            className="tg-linked-oligo-holder"
+            style={{ marginTop: -5, fontStyle: "italic", fontSize: 11 }}
+          >
+            {(getLinkedOligoLink && getLinkedOligoLink(props)) ||
+              linkedOligo ||
+              "Will Be Created On Save"}
           </div>
         )}
       </div>
@@ -252,7 +219,13 @@ const RenderBases = (props) => {
             name="bases"
             label={
               <div className="tg-bases-label">
-                <div>Bases</div>
+                <div style={{ display: "flex" }}>
+                  Bases{" "}
+                  <div style={{ fontSize: 10 }}>
+                    {" "}
+                    &nbsp; (Length: {bases ? bases.length : 0})
+                  </div>
+                </div>
                 <div style={{ width: "fit-content" }}>
                   <DropdownButton
                     disabled={readOnly}
@@ -262,7 +235,6 @@ const RenderBases = (props) => {
                       <Menu>
                         <MenuItem
                           onClick={() => {
-                            // change("threePrimeLocation", end);
                             change("forward", true);
                             change(
                               "bases",
@@ -278,7 +250,6 @@ const RenderBases = (props) => {
                         <MenuItem
                           onClick={() => {
                             change("forward", false);
-                            // change("threePrimeLocation", start);
                             change(
                               "bases",
                               getReverseComplementSequenceString(
@@ -322,16 +293,6 @@ const RenderBases = (props) => {
           ></MeltingTemp>
         </div>
       )}
-      {/* <NumericInputField
-        inlineLabel
-        disabled={readOnly}
-        tooltipError
-        defaultValue={forward ? end : start}
-        min={1}
-        max={seqLen || 1}
-        name="threePrimeLocation"
-        label="3' Location"
-      /> */}
     </div>
   );
 };

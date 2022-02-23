@@ -5,15 +5,28 @@ import { getComplementSequenceString } from "ve-sequence-utils";
 export function getStructuredBases({
   annotationRange,
   forward,
-  bases,
+  bases = "",
   start,
   end,
   fullSeq,
   primerBindsOn,
   sequenceLength
 }) {
-  //  console.log(`annotationRange:`,annotationRange)
-  //  console.log(`bases:`,bases)
+  const annLen = getRangeLength({ start, end }, sequenceLength);
+  let basesToUse = bases;
+  if (bases.length < annLen) {
+    if (forward && primerBindsOn === "3prime") {
+      const toAddLen = annLen - bases.length;
+      for (let index = 0; index < toAddLen; index++) {
+        basesToUse = "&" + basesToUse;
+      }
+    } else if (!forward && primerBindsOn === "5prime") {
+      const toAddLen = annLen - bases.length;
+      for (let index = 0; index < toAddLen; index++) {
+        basesToUse = basesToUse + "&";
+      }
+    }
+  }
   const aRange = {
     //tnr: this probably needs to be changed in case annotation wraps origin
     start: annotationRange.start - start,
@@ -21,19 +34,18 @@ export function getStructuredBases({
   };
   const r = {
     aRange,
-    basesNoInserts: bases,
+    basesNoInserts: basesToUse,
     inserts: []
   };
 
-  const annLen = getRangeLength({ start, end }, sequenceLength);
-  const baseLen = bases.length;
+  const baseLen = basesToUse.length;
   const diffLen = baseLen - annLen;
   if (diffLen > 0) {
-    r.basesNoInserts = bases.slice(
+    r.basesNoInserts = basesToUse.slice(
       primerBindsOn === "5prime" ? 0 : diffLen,
       primerBindsOn === "5prime" ? annLen : baseLen
     );
-    const insertBases = bases.slice(
+    const insertBases = basesToUse.slice(
       primerBindsOn === "5prime" ? annLen : 0,
       primerBindsOn === "5prime" ? baseLen : diffLen
     );
@@ -68,8 +80,6 @@ export function getStructuredBases({
   r.inserts
     .sort((a, b) => a.index - b.index)
     .forEach(({ bases, index }) => {
-      // console.log(`bases:`,bases)
-      // console.log(`index:`,index)
       r.allBasesWithMetaData.splice(
         index,
         0,

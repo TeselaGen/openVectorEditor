@@ -24,6 +24,10 @@
   color: red;
   text-decoration: underline;
 }
+.tg-no-show-seq {
+  /* display: none; */
+  opacity: 0;
+}
 
 .tg-bases-label {
   width: 100%;

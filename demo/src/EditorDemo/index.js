@@ -298,7 +298,8 @@ export default class EditorDemo extends React.Component {
       }),
       renderToggle({
         that: this,
-        type: "beforeAnnotationCreate"
+        type: "beforeAnnotationCreate",
+        info: "Pass a beforeAnnotationCreate to do additional actions before the annotation is created/edited. Return false to cancel the create/edit. It will be passed all the props the edit annotation dialog receives."
       }),
       renderToggle({
         that: this,

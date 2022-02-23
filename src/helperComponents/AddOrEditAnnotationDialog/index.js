@@ -184,12 +184,14 @@ class AddOrEditAnnotationDialog extends React.Component {
       renderTypes,
       renderTags,
       RenderBases,
+      getLinkedOligoLink,
       allowPrimerBasesToBeEdited,
       bases,
       initialValues,
       forward,
       primerBindsOn,
       useLinkedOligo,
+      submitting,
       change,
       annotationTypePlural,
       annotationVisibilityShow,
@@ -206,18 +208,15 @@ class AddOrEditAnnotationDialog extends React.Component {
     } = this.props;
     const { isProtein } = sequenceData;
     const sequenceLength = sequenceData.sequence.length;
-    const annotationLength =
-      typeof bases === "string"
-        ? bases.length
-        : getRangeLength(
-            locations && locations.length
-              ? {
-                  start: locations[0].start,
-                  end: locations[locations.length - 1].end
-                }
-              : { start, end },
-            sequenceLength
-          );
+    const annotationLength = getRangeLength(
+      locations && locations.length
+        ? {
+            start: locations[0].start,
+            end: locations[locations.length - 1].end
+          }
+        : { start, end },
+      sequenceLength
+    );
     return (
       <form
         onSubmit={handleSubmit(async (data) => {
@@ -263,12 +262,13 @@ class AddOrEditAnnotationDialog extends React.Component {
           );
 
           if (beforeAnnotationCreate) {
-            await beforeAnnotationCreate({
+            const shouldContinue = await beforeAnnotationCreate({
               annotationTypePlural,
               annotation: newAnnotation,
               props: this.props,
               isEdit: !!this.props.initialValues.id
             });
+            if (shouldContinue === false) return;
           }
 
           //update the selection layer so we don't jump away from where we're editing
@@ -383,10 +383,12 @@ class AddOrEditAnnotationDialog extends React.Component {
             {...{
               // ...this.props,
               bases,
+              getLinkedOligoLink,
               readOnly: this.props.readOnly,
               sequenceData,
               start,
               end,
+              initialValues,
               sequenceLength,
               primerBindsOn,
               forward,
@@ -420,6 +422,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           </Button>
           <Button
             type="submit"
+            loading={submitting}
             disabled={this.props.readOnly}
             intent={Intent.PRIMARY}
           >

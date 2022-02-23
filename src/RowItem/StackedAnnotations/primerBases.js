@@ -6,6 +6,7 @@ import { getRangeLength } from "ve-range-utils";
 import { getStructuredBases } from "./getStructuredBases";
 
 export function getBasesToShow({
+  isRowView,
   annotation,
   annotationRange,
   charWidth,
@@ -14,6 +15,7 @@ export function getBasesToShow({
   iTree,
   sequenceLength
 }) {
+  if (!isRowView) return {};
   const basesToShow = {};
   if (annotation && annotation.bases) {
     const fudge = charWidth - realCharWidth;
@@ -108,7 +110,8 @@ export function getBasesToShow({
         insertText.push(
           <text
             style={{ pointerEvents: "none" }}
-            className="ve-monospace-font"
+            data-insert-bases={i.bases}
+            className="ve-monospace-font tg-primer-bases-insert"
             textLength={textLength}
             transform={
               forward
@@ -141,23 +144,33 @@ export function getBasesToShow({
 
     const textLength =
       charWidth * basesNoInsertsWithMetaData.length - fudge - fudge2;
-
+    // const diffLen =
+    //   (forward && primerBindsOn === "3prime") ||
+    //   (!forward && primerBindsOn === "5prime")
+    //     ? aRangeLen - basesNoInsertsWithMetaData.length
+    //     : 0;
     basesToShow.baseEl = (
       <React.Fragment>
         <text
           {...{
             textLength,
             y: forward ? level2Height : -(basesToShow.extraHeight - 5),
-            x: forward ? fudge / 2 : fudge / 2 + 0.2
+            x: forward ? fudge / 2 : fudge / 2 + 0.2 /* + diffLen * charWidth */
           }}
           style={{ pointerEvents: "none" }}
-          className="ve-monospace-font"
+          className="ve-monospace-font tg-primer-bases"
         >
           {map(basesNoInsertsWithMetaData, ({ b, isMatch }, i) => {
             return (
               <tspan
                 key={i}
-                className={isMatch ? "" : "tg-no-match-seq"}
+                className={
+                  b === "&"
+                    ? "tg-no-show-seq"
+                    : isMatch
+                    ? ""
+                    : "tg-no-match-seq"
+                }
                 fill={isMatch ? "black" : "red"}
                 textLength={textLength}
               >

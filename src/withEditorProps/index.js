@@ -1,3 +1,4 @@
+import { featureColors } from "ve-sequence-utils";
 import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 
@@ -523,7 +524,12 @@ function mapStateToProps(state, ownProps) {
   ].forEach(([n, type]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd = { ...vals, formName: n, type };
+      annotationToAdd = {
+        color: featureColors[vals.type || "primer_bind"], //we won't have the correct color yet so we set it here
+        ...vals,
+        formName: n,
+        type
+      };
     }
   });
 
