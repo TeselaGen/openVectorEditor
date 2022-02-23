@@ -85,7 +85,8 @@ const Demo = () => {
             height: "100%",
             display: "flex",
             flexGrow: 1,
-            flexDirection: "column"
+            flexDirection: "column",
+            overflow: "hidden"
           }}
         >
           <Drawer

@@ -1022,7 +1022,7 @@ export default {
   ],
   primers: [
     {
-      name: "Example Primer simple",
+      name: "Example Primer 1",
       start: 59,
       end: 82,
       type: "primer_bind",

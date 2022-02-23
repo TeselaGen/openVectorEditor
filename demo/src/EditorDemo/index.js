@@ -635,7 +635,7 @@ ToolBarProps: {
                             `https://1.com?${
                               window.location.href.split("?")[1]
                             }`
-                          ).searchParams.get("propertyTab") || "parts"
+                          ).searchParams.get("propertyTab") || "General"
                       },
                       panelsShown: [
                         [
