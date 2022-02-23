@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "17.2.21",
+  "version": "17.3.0",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
