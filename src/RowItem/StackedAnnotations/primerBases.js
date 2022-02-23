@@ -144,11 +144,6 @@ export function getBasesToShow({
 
     const textLength =
       charWidth * basesNoInsertsWithMetaData.length - fudge - fudge2;
-    // const diffLen =
-    //   (forward && primerBindsOn === "3prime") ||
-    //   (!forward && primerBindsOn === "5prime")
-    //     ? aRangeLen - basesNoInsertsWithMetaData.length
-    //     : 0;
     basesToShow.baseEl = (
       <React.Fragment>
         <text
