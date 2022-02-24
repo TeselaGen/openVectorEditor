@@ -5,13 +5,21 @@ describe("primers.spec", () => {
     );
     cy.contains(
       `[data-test="tgCell_bases"]`,
-      `tgtgcgacgctggcgatatca`
+      `agggaaACTCGCTCGGGGTGGCCCCGGTGC`
     ).dblclick();
-    cy.get(`.tg-custom-sequence-editable:contains(tgtgcgacgctggcgatatca)`).type(
-      "{uparrow}AAA"
-    ); //add the uparrow to make sure we're at the start of the input
+
+    cy.get(
+      `.tg-custom-sequence-editable:contains(agggaaACTCGCTCGGGGTGGCCCCGGTGC)`
+    ).type("{uparrow}AAA"); //add the uparrow to make sure we're at the start of the input
     cy.get("button:contains(Save)").click();
-    cy.contains(`[data-test="tgCell_bases"]`, `AAAtgtgcgacgctggcgatatca`);
+
+    cy.contains(
+      `[data-test="tgCell_bases"]`,
+      `AAAagggaaACTCGCTCGGGGTGGCCCCGGTGC`
+    );
+    cy.get(`[data-copy-text="agggaaACTCGCTCGGGGTGGCCCCGGTGC"]`).should(
+      "not.exist"
+    );
   });
   it(`allowPrimerBasesToBeEdited=true should allow bases to be specified for a given primer`, function () {
     cy.visit("/#/Editor?allowPrimerBasesToBeEdited=true");
@@ -38,9 +46,9 @@ describe("primers.spec", () => {
     );
     cy.contains(".veRowViewPrimer", "Example Primer 1").dblclick();
     // cy.contains(`.tg-custom-sequence-editable`, "tgtgcgacgctggcgatatca");
-    cy.get(`.tg-custom-sequence-editable:contains(tgtgcgacgctggcgatatca)`).type(
-      "{uparrow}AAA"
-    ); //add the uparrow to make sure we're at the start of the input
+    cy.get(
+      `.tg-custom-sequence-editable:contains(agggaaACTCGCTCGGGGTGGCCCCGGTGC)`
+    ).type("{uparrow}AAA"); //add the uparrow to make sure we're at the start of the input
     // cy.contains(`Length: 24`)
     // cy.contains(`.veRowViewPrimer`, 'AAAtgtgcgacgctggcgatatca') //shows up in the row view live
     // cy.get(`.bp3-dialog .tg-no-match-seq:contains(A)`).should('have.length', 3); //the A's should be shown as non-matches

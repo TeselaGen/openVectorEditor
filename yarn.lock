@@ -2584,10 +2584,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^8.3.21:
-  version "8.3.21"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.21.tgz#4eeeb84d6f5ce251d537eba592ec3a520cb203f9"
-  integrity sha512-UpppmKSbaDtf49iWB4G+0DZ77ynZTMdj5j23R6PQoFkyQ8u1M+QEwLfa6f58AOInKLdop5+oOWybgAq4vtBRRg==
+bio-parsers@^8.3.22:
+  version "8.3.22"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.22.tgz#491a1e27730cbc2843960f59423586113d741f47"
+  integrity sha512-LFA58+V9zOkj/5chBAnXE+r4aV+8/Ka+m8EZcQaiVxAcQwdyoJyLyJUsV5ITCPsLiJPG84J7Iq11IUacWHC8/A==
   dependencies:
     "@gmod/gff" "^1.1.2"
     buffer "^6.0.3"

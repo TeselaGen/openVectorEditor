@@ -1614,6 +1614,30 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "allowPrimerBasesToBeEdited",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        primers: shouldUpdate
+                          ? {
+                              "2o03j32o": {
+                                name: "Example Primer 1",
+                                id: "2o03j32o",
+                                start: 59,
+                                end: 82,
+                                type: "primer_bind",
+                                forward: true,
+                                bases: "agggaaACTCGCTCGGGGTGGCCCCGGTGC",
+                                primerBindsOn: "3prime",
+                                useLinkedOligo: true,
+                                linkedOligoLink: "oli 1"
+                              }
+                            }
+                          : []
+                      }
+                    });
+                },
                 description: `If allowPrimerBasesToBeEdited=true is passed to <Editor/> 
                 then the bases of primers can be edited. 
                 `
