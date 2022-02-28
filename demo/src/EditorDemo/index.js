@@ -403,7 +403,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             that: this,
             alwaysShow: true,
             type: "showDemoOptions",
-            label: "Show Demo Options"
+            label: "Show Demo Options",
+            hotkey: `cmd+'`
           })}
         </div>
 
@@ -658,6 +659,49 @@ ToolBarProps: {
                             id: "properties",
                             name: "Properties",
                             active: true
+                          }
+                        ]
+                      ]
+                    });
+                },
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
+                
+                `
+              })}
+              {renderToggle({
+                that: this,
+                hotkey: "cmd+b",
+                label: "Focus Digest Tool",
+                type: "focusDigestTool",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map",
+                            active: true
+                          },
+                          {
+                            id: "circular",
+                            name: "Circular Map"
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            name: "Sequence Map"
+                          },
+                          {
+                            id: "digestTool",
+                            name: "New Digest",
+                            active: true,
+                            canClose: true
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties"
                           }
                         ]
                       ]
@@ -1620,8 +1664,8 @@ clickOverrides: {
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         primers: shouldUpdate
-                          ? {
-                              "2o03j32o": {
+                          ? [
+                              {
                                 name: "Example Primer 1",
                                 id: "2o03j32o",
                                 start: 59,
@@ -1633,7 +1677,7 @@ clickOverrides: {
                                 useLinkedOligo: true,
                                 linkedOligoLink: "oli 1"
                               }
-                            }
+                            ]
                           : []
                       }
                     });
@@ -1642,7 +1686,6 @@ clickOverrides: {
                 then the bases of primers can be edited. 
                 `
               })}
-
               {editorHandlers.length ? (
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}

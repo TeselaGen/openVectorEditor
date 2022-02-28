@@ -1,9 +1,10 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from "react";
 import { TgSelect } from "teselagen-react-components";
+import html2canvas from "html2canvas";
 
 import "./Ladder.css";
-import { Tooltip } from "@blueprintjs/core";
+import { Button, Tooltip } from "@blueprintjs/core";
 
 export default function Ladder({
   // gelDigestEnzymes = [],
@@ -16,40 +17,15 @@ export default function Ladder({
       value: "geneRuler1KB",
       label: "GeneRuler 1kb + DNA 75-20,000 bp",
       markings: [
-        20000,
-        10000,
-        7000,
-        5000,
-        4000,
-        3000,
-        2000,
-        1500,
-        1000,
-        700,
-        500,
-        400,
-        300,
-        200,
-        75
+        20000, 10000, 7000, 5000, 4000, 3000, 2000, 1500, 1000, 700, 500, 400,
+        300, 200, 75
       ]
     },
     {
       value: "geneRuler100BP",
       label: "GeneRuler 100bp + DNA 100-3000 bp",
       markings: [
-        3000,
-        2000,
-        1500,
-        1200,
-        1000,
-        900,
-        800,
-        700,
-        600,
-        500,
-        400,
-        300,
-        200,
+        3000, 2000, 1500, 1200, 1000, 900, 800, 700, 600, 500, 400, 300, 200,
         100
       ]
     },
@@ -57,24 +33,8 @@ export default function Ladder({
       value: "invitrogen1KbPlus",
       label: "Invitrogen 1kb + DNA 100-15,000 bp",
       markings: [
-        15000,
-        10000,
-        8000,
-        7000,
-        6000,
-        5000,
-        4000,
-        3000,
-        2000,
-        1500,
-        1000,
-        850,
-        650,
-        500,
-        400,
-        300,
-        200,
-        100
+        15000, 10000, 8000, 7000, 6000, 5000, 4000, 3000, 2000, 1500, 1000, 850,
+        650, 500, 400, 300, 200, 100
       ]
     }
   ]
@@ -94,7 +54,7 @@ export default function Ladder({
   if (!ladderInfo) {
     return console.error("Uh oh there needs to be ladder info here!");
   }
-
+  const sharedStyle = { color: "white", background: "black" }; //use a shared style to get the copy image to look nice
   const upperBoundary = ladderInfo.markings[0];
   return (
     <div>
@@ -106,13 +66,45 @@ export default function Ladder({
       />
       <br />
       <div
-        style={{ width: "fit-content", color: "white", background: "black" }}
+        className="ve-digest-outer-container"
+        style={{
+          position: "relative",
+          width: "fit-content",
+          ...sharedStyle
+        }}
       >
+        <Button
+          icon="duplicate"
+          minimal
+          style={{ position: "absolute", top: 5, right: 5, color: "white" }}
+          onClick={() => {
+            try {
+              html2canvas(document.querySelector(".ve-digest-container")).then(
+                (canvas) => {
+                  canvas.toBlob((blob) =>
+                    navigator.clipboard.write([
+                      new window.ClipboardItem({ "image/png": blob })
+                    ])
+                  );
+                  window.toastr.success("Image copied to clipboard!");
+                }
+              );
+            } catch (e) {
+              window.toastr.error(
+                "Error copying the image, try just taking a screenshot instead ;)"
+              );
+            }
+          }}
+          intent="primary"
+        ></Button>
         <div style={{ padding: 3, paddingLeft: 7, width: 290 }}>
           Highlighted Fragment:{" "}
           {highlightedFragment ? highlightedFragment.size : "--"}{" "}
         </div>
-        <div style={{ height: boxHeight }} className="ve-digest-container">
+        <div
+          style={{ height: boxHeight, ...sharedStyle }}
+          className="ve-digest-container"
+        >
           <div
             style={{ width: 100 }}
             className="ve-digest-column ve-digest-ladder"

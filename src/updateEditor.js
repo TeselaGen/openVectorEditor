@@ -29,7 +29,14 @@ export default function updateEditor(
   let payload;
   if (justPassingPartialSeqData) {
     payload = {
-      sequenceData: { ...currentEditor.sequenceData, ...sequenceData }
+      sequenceData: tidyUpSequenceData(
+        { ...currentEditor.sequenceData, ...sequenceData },
+        {
+          convertAnnotationsFromAAIndices,
+          //if we have sequence data coming in make sure to tidy it up for the user :)
+          annotationsAsObjects: true
+        }
+      )
     };
   } else {
     if (sequenceData) {

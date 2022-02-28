@@ -61,18 +61,18 @@ describe("clickDragCaretAndSelectionLogic", function () {
           cy.dragBetweenSimple(el, el2);
         });
       });
-    cy.get(`[title="Selecting 4622 bps from 151 to 4772"]`);
+    cy.get(`[title="Selecting 4619 bps from 151 to 4769"]`);
   });
   it(`should not allow origin spanning click if linear (circular view click with previous selection present)`, () => {
     cy.tgToggle("linear");
     cy.selectRange(13, 15);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "4770").click();
-    cy.get(`[title="Selecting 4759 bps from 13 to 4771"]`);
+    cy.get(`[title="Selecting 4755 bps from 13 to 4767"]`);
     cy.selectRange(4000, 4010);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "530").click();
-    cy.get(`[title="Selecting 3483 bps from 528 to 4010"]`);
+    cy.get(`[title="Selecting 3485 bps from 526 to 4010"]`);
   });
 
   it(`should handle dragging correctly`, () => {

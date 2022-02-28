@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Switch, Button, HTMLSelect, Dialog } from "@blueprintjs/core";
+import React, { useMemo, useState } from "react";
+import {
+  Switch,
+  Button,
+  HTMLSelect,
+  Dialog,
+  useHotkeys,
+  KeyCombo
+} from "@blueprintjs/core";
 import {
   getStringFromReactComponent,
   doesSearchValMatchText
@@ -34,6 +41,7 @@ export default function renderToggle({
   alwaysShow,
   description,
   hook,
+  hotkey,
   disabled = false,
   ...rest
 }) {
@@ -46,6 +54,7 @@ export default function renderToggle({
     text: labelOrText,
     ...rest
   };
+  let switchOnChange;
   if (that.state.searchInput && !alwaysShow) {
     if (
       !doesSearchValMatchText(
@@ -90,6 +99,12 @@ export default function renderToggle({
       </div>
     );
   } else {
+    switchOnChange = () => {
+      hook && hook(!(that.state || {})[type]);
+      that.setState({
+        [type]: !(that.state || {})[type]
+      });
+    };
     toggleOrButton = (
       <EnhancedSwitch
         {...{
@@ -99,12 +114,7 @@ export default function renderToggle({
           },
           checked: (that.state || {})[type],
           disabled: disabled,
-          onChange: () => {
-            hook && hook(!(that.state || {})[type]);
-            that.setState({
-              [type]: !(that.state || {})[type]
-            });
-          }
+          onChange: switchOnChange
         }}
       />
     );
@@ -117,8 +127,38 @@ export default function renderToggle({
     >
       <ShowInfo {...{ description, info, type }}></ShowInfo>
       {toggleOrButton}
+      {switchOnChange && hotkey && (
+        <React.Fragment>
+          <HandleHotkeys
+            onKeyDown={switchOnChange}
+            combo={hotkey}
+          ></HandleHotkeys>
+          <div
+            style={{
+              marginLeft: 5,
+              transform: "scale(0.8)"
+            }}
+          >
+            <KeyCombo minimal combo={hotkey}></KeyCombo>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
+}
+function HandleHotkeys({ combo, onKeyDown }) {
+  const hotkeys = useMemo(
+    () => [
+      {
+        combo,
+        global: true,
+        onKeyDown
+      }
+    ],
+    [combo, onKeyDown]
+  );
+  useHotkeys(hotkeys);
+  return null;
 }
 
 function ShowInfo({ description, info, type }) {

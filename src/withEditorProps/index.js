@@ -530,6 +530,9 @@ function mapStateToProps(state, ownProps) {
         formName: n,
         type
       };
+      if (!vals.useLinkedOligo) {
+        delete annotationToAdd.bases;
+      }
     }
   });
 
