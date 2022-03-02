@@ -349,7 +349,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               name="start"
               label={`${
                 annotationTypePlural === "primers" ? "Bind " : ""
-              } Start`}
+              }Start`}
             />
             <NumericInputField
               disabled={this.props.readOnly}
@@ -361,7 +361,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="end"
-              label={`${annotationTypePlural === "primers" ? "Bind " : ""} End`}
+              label={`${annotationTypePlural === "primers" ? "Bind " : ""}End`}
             />
           </React.Fragment>
         ) : null}

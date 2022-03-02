@@ -73,7 +73,7 @@ const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
       tooltipError
       options={tags}
       name="tags"
-      label="Tags:"
+      label="Tags"
     />
   );
 };

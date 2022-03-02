@@ -68,7 +68,7 @@ describe("clickDragCaretAndSelectionLogic", function () {
     cy.selectRange(13, 15);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "4770").click();
-    cy.get(`[title="Selecting 4755 bps from 13 to 4767"]`);
+    cy.get(`[title="Selecting 4756 bps from 13 to 4768"]`);
     cy.selectRange(4000, 4010);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "530").click();
