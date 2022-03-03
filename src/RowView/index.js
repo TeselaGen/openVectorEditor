@@ -21,6 +21,7 @@ import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 import "./style.css";
 import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
 import isMobile from "is-mobile";
+import classnames from "classnames";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
@@ -463,7 +464,8 @@ export class RowView extends React.Component {
       sequenceData,
       width,
       marginWidth,
-      height
+      height,
+      className
     } = this.props;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
@@ -490,7 +492,7 @@ export class RowView extends React.Component {
       >
         <div
           ref={this.getRef}
-          className="veRowView"
+          className={classnames("veRowView", className)}
           style={{
             overflowY: "auto",
             overflowX: "visible",

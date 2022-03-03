@@ -14,6 +14,7 @@ import {
   pareDownAnnotations
 } from "../utils/editorUtils";
 import useAnnotationLimits from "../utils/useAnnotationLimits";
+import { SequenceName } from "./SequenceName";
 
 const defaultMarginWidth = 10;
 
@@ -237,20 +238,6 @@ class _LinearView extends React.Component {
       </Draggable>
     );
   }
-}
-
-function SequenceName({ sequenceName, sequenceLength, isProtein }) {
-  return (
-    <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
-      <span>{sequenceName} </span>
-      <br />
-      <span>
-        {isProtein
-          ? `${Math.floor(sequenceLength / 3)} AAs`
-          : `${sequenceLength} bps`}
-      </span>
-    </div>
-  );
 }
 
 const WithAnnotationLimitsHoc = (Component) => (props) => {

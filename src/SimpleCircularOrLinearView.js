@@ -1,9 +1,11 @@
 import React from "react";
 import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";
+
 import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
+import { SimpleOligoPreview } from "./SimpleOligoPreview";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default (props) => {
@@ -11,7 +13,11 @@ export default (props) => {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {}
   } = props;
-  const Component = _sequenceData.circular ? CircularView : LinearView;
+  const Component = _sequenceData.circular
+    ? CircularView
+    : _sequenceData.isOligo && _sequenceData.sequence
+    ? SimpleOligoPreview
+    : LinearView;
   const tickSpacing = _sequenceData.circular
     ? undefined
     : Math.floor(
@@ -53,12 +59,14 @@ export default (props) => {
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
       <Component
         {...{
+          className: "tg-simple-dna-view",
           width: 300,
           height: 300,
           ...props,
           tickSpacing,
           annotationVisibility,
-          sequenceData
+          sequenceData,
+          showTitle: true
         }}
       />
     </HoveredIdContext.Provider>
