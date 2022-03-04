@@ -1392,6 +1392,12 @@ updateEditor(store, "DemoEditor", {
 `
               })}
               {renderToggle({
+                that: this,
+                type: "initialAnnotationToEdit",
+                label: "Pass an initial annotation to edit",
+                description: `Say for example if you want to pop open the edit-part dialog the first time the user navigates to the sequence editor, you can pass an initialAnnotationToEdit={"part-someidhere"} `
+              })}
+              {renderToggle({
                 info: `Any panel can be programatically focused from outside the editor. 
 Here is how to do that for the linear view:
 \`\`\`js
@@ -2189,6 +2195,9 @@ clickOverrides: {
             disableSetReadOnly={this.state.disableSetReadOnly}
             withRotateCircularView={this.state.withRotateCircularView}
             showReadOnly={this.state.showReadOnly}
+            initialAnnotationToEdit={
+              this.state.initialAnnotationToEdit ? "part-10" : undefined
+            }
             showCircularity={!!this.state.showCircularity}
             showMoleculeType={this.state.showMoleculeType}
             showGCContentByDefault={this.state.showGCContentByDefault}

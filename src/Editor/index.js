@@ -1,4 +1,4 @@
-import { debounce, get, some } from "lodash";
+import { debounce, find, get, some } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import {
@@ -14,6 +14,8 @@ import PropTypes from "prop-types";
 import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
 import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
+import { showAddOrEditAnnotationDialog } from "../GlobalDialogUtils";
+
 import "../Reflex/reflex-styles.css";
 
 import React from "react";
@@ -121,6 +123,26 @@ export class Editor extends React.Component {
     return { blueprintPortalClassName: "ove-portal" };
   }
   componentDidUpdate(prevProps) {
+    if (
+      this.props.initialAnnotationToEdit &&
+      !this.hasShownInitialAnnotationToEditDialog &&
+      !this.inPreviewMode
+    ) {
+      ["part", "feature", "primer"].forEach((type) => {
+        if (this.props.initialAnnotationToEdit.startsWith(type)) {
+          const annid = this.props.initialAnnotationToEdit.replace(
+            type + "-",
+            ""
+          );
+          const anns = this.props.sequenceData[type + "s"];
+          const annotation = find(anns, (a) => a.id === annid);
+          if (annotation) {
+            showAddOrEditAnnotationDialog({ type, annotation });
+            this.hasShownInitialAnnotationToEditDialog = true;
+          }
+        }
+      });
+    }
     //autosave if necessary!
     if (
       this.props.shouldAutosave &&
@@ -374,6 +396,7 @@ export class Editor extends React.Component {
     }
 
     if (withPreviewMode && !previewModeFullscreen) {
+      this.inPreviewMode = true;
       return (
         <div style={{ ...style }} className="preview-mode-container">
           <div style={{ position: "relative" }}>
@@ -414,6 +437,8 @@ export class Editor extends React.Component {
           </div>
         </div>
       );
+    } else {
+      this.inPreviewMode = false;
     }
 
     const tabDraggable = allowPanelTabDraggable && !isMobile();
