@@ -14,7 +14,7 @@ export const AddLaddersDialog = compose(
 )(function AddLaddersDialog({ setSelectedLadder }) {
   const [additionalLadders, setLadders] = useLadders();
   return (
-    <div className={"bp3-dialog-body"}>
+    <div className="bp3-dialog-body">
       <FileUploadField
         fileLimit={1}
         threeDotMenuItems={
@@ -26,8 +26,8 @@ export const AddLaddersDialog = compose(
   "value": "exampleRuler",
   "label": "Example Ladder 2Kb",
   "markings": [
-    20000, 10000, 7000, 5000, 4000, 3000, 2000, 1500, 1000, 700, 500, 400, 300,
-    200, 75
+    40000, 20000, 8000, 3000, 1500, 900, 440, 333,
+    222, 17
   ]
 }
 `,
