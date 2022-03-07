@@ -4555,6 +4555,11 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
+downloadjs@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
+  integrity sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=
+
 drag-mock@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/drag-mock/-/drag-mock-1.4.0.tgz#f22d64f8ede36d17e56ac936d9da77482970cbf0"

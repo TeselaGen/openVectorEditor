@@ -65,14 +65,16 @@ export default function MeltingTemp({
           </div>
         }
       >
-        <InnerWrapper>Melting Temp: {Number(tm) || 0} </InnerWrapper>
-        {hasWarning && (
-          <Icon
-            style={{ marginLeft: 5, marginRight: 5 }}
-            size={10}
-            icon="warning-sign"
-          ></Icon>
-        )}
+        <React.Fragment>
+          <InnerWrapper>Melting Temp: {Number(tm) || 0} </InnerWrapper>
+          {hasWarning && (
+            <Icon
+              style={{ marginLeft: 5, marginRight: 5 }}
+              size={10}
+              icon="warning-sign"
+            ></Icon>
+          )}
+        </React.Fragment>
       </Popover>
     </WrapperToUse>
   );

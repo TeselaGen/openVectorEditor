@@ -90,7 +90,7 @@ class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////////
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     const children = this.getValidChildren(props);
 
     if (

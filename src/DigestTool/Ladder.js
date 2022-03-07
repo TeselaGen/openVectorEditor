@@ -1,10 +1,16 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from "react";
-import { TgSelect } from "teselagen-react-components";
+import { showConfirmationDialog, TgSelect } from "teselagen-react-components";
 import html2canvas from "html2canvas";
 
 import "./Ladder.css";
 import { Button, Tooltip } from "@blueprintjs/core";
+import { showDialog } from "../GlobalDialogUtils";
+import { AddLaddersDialog } from "./AddLaddersDialog";
+import { ladderDefaults } from "./ladderDefaults";
+import useLadders from "../utils/useLadders";
+import { map } from "lodash";
+import { filter } from "lodash";
 
 export default function Ladder({
   // gelDigestEnzymes = [],
@@ -12,37 +18,56 @@ export default function Ladder({
   lanes = [],
   digestLaneRightClicked,
   selectedFragment,
-  ladders = [
-    {
-      value: "geneRuler1KB",
-      label: "GeneRuler 1kb + DNA 75-20,000 bp",
-      markings: [
-        20000, 10000, 7000, 5000, 4000, 3000, 2000, 1500, 1000, 700, 500, 400,
-        300, 200, 75
-      ]
-    },
-    {
-      value: "geneRuler100BP",
-      label: "GeneRuler 100bp + DNA 100-3000 bp",
-      markings: [
-        3000, 2000, 1500, 1200, 1000, 900, 800, 700, 600, 500, 400, 300, 200,
-        100
-      ]
-    },
-    {
-      value: "invitrogen1KbPlus",
-      label: "Invitrogen 1kb + DNA 100-15,000 bp",
-      markings: [
-        15000, 10000, 8000, 7000, 6000, 5000, 4000, 3000, 2000, 1500, 1000, 850,
-        650, 500, 400, 300, 200, 100
-      ]
-    }
-  ]
+  ladders = ladderDefaults
 }) {
+  const [additionalLadders, setLadders] = useLadders();
+  const laddersToUse = [
+    ...ladders,
+    ...map(additionalLadders, (l, i) => ({
+      ...l,
+      label: (
+        <div
+          key={i}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%"
+          }}
+        >
+          {l.label}{" "}
+          <Button
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const confirm = await showConfirmationDialog({
+                text: "Are you sure you want to delete this custom ladder? You cannot undo this action",
+                intent: "danger",
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel",
+                canEscapeKeyCancel: true
+              });
+              if (!confirm) {
+                return;
+              }
+              setSelectedLadder(ladders[0].value);
+              setLadders(
+                filter(additionalLadders, (lad) => lad.value !== l.value)
+              );
+            }}
+            intent="danger"
+            small
+            minimal
+            icon="trash"
+          ></Button>
+        </div>
+      )
+    }))
+  ];
   const [highlightedFragment, setHighlightedFragment] = useState();
   const [selectedLadder, setSelectedLadder] = useState(ladders[0].value);
   let ladderInfo;
-  ladders.forEach((ladder) => {
+  laddersToUse.forEach((ladder) => {
     if (ladder.value === selectedLadder)
       ladderInfo = {
         ...ladder,
@@ -59,11 +84,31 @@ export default function Ladder({
   return (
     <div>
       Ladder:
-      <TgSelect
-        value={selectedLadder}
-        onChange={(val) => setSelectedLadder(val.value)}
-        options={ladders}
-      />
+      <div style={{ display: "flex" }}>
+        <TgSelect
+          className={"tg-ladder-selector"}
+          value={selectedLadder}
+          onChange={(val) => setSelectedLadder(val.value)}
+          options={laddersToUse}
+        />
+        <Button
+          onClick={() => {
+            showDialog({
+              ModalComponent: AddLaddersDialog,
+              props: {
+                setSelectedLadder
+              }
+            });
+          }}
+          style={{ minWidth: 150 }}
+          minimal
+          small
+          icon="plus"
+          intent="primary"
+        >
+          Add Ladder
+        </Button>
+      </div>
       <br />
       <div
         className="ve-digest-outer-container"

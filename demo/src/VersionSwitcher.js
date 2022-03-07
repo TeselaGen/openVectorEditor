@@ -51,7 +51,6 @@ export default function VersionSwitcher() {
         Version:
       </div>{" "}
       <HTMLSelect
-        small
         minimal
         onChange={function onChange(e) {
           window.location.href = `https://teselagen.github.io/openVectorEditor/version/${e.currentTarget.value}/#/Editor`;

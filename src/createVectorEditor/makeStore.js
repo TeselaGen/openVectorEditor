@@ -14,7 +14,7 @@ const makeStore = () => {
         //   replacer: (key, value) => {
         //   }
         // },
-        actionsBlacklist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"]
+        actionsDenylist: ["HOVEREDANNOTATIONUPDATE", "HOVEREDANNOTATIONCLEAR"]
       })) ||
     compose;
 

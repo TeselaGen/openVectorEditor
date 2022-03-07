@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "17.3.6",
+  "version": "17.3.7",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -35,6 +35,7 @@
     "combokeys": "^3.0.1",
     "deep-equal": "^1.0.1",
     "dom-to-image": "^2.6.0",
+    "downloadjs": "^1.4.7",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "is-mobile": "^3.0.0",

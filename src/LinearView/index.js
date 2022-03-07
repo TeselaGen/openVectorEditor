@@ -138,13 +138,14 @@ class _LinearView extends React.Component {
       isProtein,
       ...rest
     } = this.props;
-
     const bpsPerRow = this.getMaxLength();
-    const innerWidth = Math.max(width - marginWidth, 0);
+    let innerWidth = Math.max(width - marginWidth, 0);
+    if (isNaN(innerWidth)) {
+      innerWidth = 0;
+    }
     this.charWidth = linearViewCharWidth || innerWidth / bpsPerRow;
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
-
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
