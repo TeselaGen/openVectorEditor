@@ -528,7 +528,8 @@ function mapStateToProps(state, ownProps) {
         color: featureColors[vals.type || "primer_bind"], //we won't have the correct color yet so we set it here
         ...vals,
         formName: n,
-        type
+        type,
+        name: vals.name || "Untitled"
       };
       if (!vals.useLinkedOligo) {
         delete annotationToAdd.bases;

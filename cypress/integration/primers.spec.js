@@ -1,4 +1,10 @@
 describe("primers.spec", () => {
+  it(`should be able to create a primer when no range is selected`, function () {
+    cy.visit("/#/Editor?allowPrimerBasesToBeEdited=true");
+    cy.triggerFileCmd("New Primer");
+    cy.contains("Linked Oligo");
+    cy.contains(`.veLabel`, "Untitled");
+  });
   it(`primers should have their custom bases or underlying bases displayed in the properties panel`, function () {
     cy.visit(
       "/#/Editor?allowPrimerBasesToBeEdited=true&focusProperties=true&propertyTab=primers"
