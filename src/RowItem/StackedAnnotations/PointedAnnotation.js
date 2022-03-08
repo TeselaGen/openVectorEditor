@@ -8,6 +8,7 @@ import { doesLabelFitInAnnotation } from "../utils";
 import { noop } from "lodash";
 import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
 import { getStripedPattern } from "../../utils/editorUtils";
+import { ANNOTATION_LABEL_FONT_WIDTH } from "../constants";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
@@ -30,7 +31,7 @@ class PointedAnnotation extends React.PureComponent {
       insertPaths,
       insertTicks,
       hideName,
-      pointiness = 8,
+      pointiness = 4,
       arrowPointiness = 1,
       color = "orange",
       fill,
@@ -44,6 +45,7 @@ class PointedAnnotation extends React.PureComponent {
       gapsBefore,
       annotation,
       externalLabels,
+      truncateLabelsThatDoNotFit,
       onlyShowLabelsThatDoNotFit
     } = this.props;
     const _rangeType = annotation.rangeTypeOverride || rangeType;
@@ -140,8 +142,28 @@ class PointedAnnotation extends React.PureComponent {
         !onlyShowLabelsThatDoNotFit &&
         ["parts", "features"].includes(annotation.annotationTypePlural))
     ) {
-      textOffset = 0;
-      nameToDisplay = "";
+      if (truncateLabelsThatDoNotFit && !externalLabels) {
+        const fractionToDisplay =
+          width / (name.length * ANNOTATION_LABEL_FONT_WIDTH);
+        const numLetters = Math.floor(fractionToDisplay * name.length);
+        nameToDisplay = name.slice(0, numLetters);
+        if (nameToDisplay.length > 3) {
+          if (nameToDisplay.length !== name.length) {
+            nameToDisplay += "..";
+          }
+
+          textOffset =
+            width / 2 -
+            (nameToDisplay.length * 5) / 2 -
+            (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0);
+        } else {
+          textOffset = 0;
+          nameToDisplay = "";
+        }
+      } else {
+        textOffset = 0;
+        nameToDisplay = "";
+      }
     }
     let _textColor = textColor;
     if (!textColor) {

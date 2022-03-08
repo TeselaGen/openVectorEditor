@@ -316,6 +316,7 @@ export class RowView extends React.Component {
       width,
       marginWidth,
       height,
+      truncateLabelsThatDoNotFit,
       RowItemProps,
       ...rest
     } = this.props;
@@ -375,6 +376,7 @@ export class RowView extends React.Component {
             {...{
               ...rest,
               rowTopComp,
+              truncateLabelsThatDoNotFit,
               rowBottomComp,
               isRowView: true,
               isProtein: sequenceData.isProtein,

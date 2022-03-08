@@ -36,6 +36,7 @@ function StackedAnnotations(props) {
     sequenceLength,
     sequence: fullSeq,
     marginBottom,
+    truncateLabelsThatDoNotFit,
     getExtraInnerCompProps,
     onlyShowLabelsThatDoNotFit,
     externalLabels,
@@ -113,6 +114,7 @@ function StackedAnnotations(props) {
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
+          truncateLabelsThatDoNotFit={truncateLabelsThatDoNotFit}
           insertPaths={insertPaths}
           insertTicks={insertTicks}
           onDoubleClick={onDoubleClick}

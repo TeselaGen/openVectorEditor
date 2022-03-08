@@ -6,8 +6,29 @@ export const doesLabelFitInAnnotation = (
   { range, width },
   charWidth
 ) => {
-  let textLength = text.length * ANNOTATION_LABEL_FONT_WIDTH;
-  let widthMinusOne =
+  const textLength = text.length * ANNOTATION_LABEL_FONT_WIDTH;
+  const widthMinusOne =
     (range ? getWidth(range, charWidth, 0) : width) - charWidth;
   return widthMinusOne > textLength;
 };
+
+// export const getTruncatedLabel = (
+//   text = "",
+//   widthInBps,
+// ) => {
+//   const textLength = text.length * ANNOTATION_LABEL_FONT_WIDTH;
+//   const widthMinusOne =
+//     (range ? getWidth(range, charWidth, 0) : width) - charWidth;
+//   const doesFit = widthMinusOne > textLength;
+//   if (returnTextThatFits) {
+//     console.log(`doesFit:`,doesFit)
+//     if (doesFit) {
+//       return text;
+//     } else {
+//       console.log(`widthMinusOne:`,widthMinusOne)
+//       return text.slice(0, widthMinusOne);
+//     }
+//   } else {
+//     return doesFit;
+//   }
+// };

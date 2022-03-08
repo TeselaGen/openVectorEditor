@@ -90,6 +90,7 @@ const defaultState = {
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
   maxAnnotationsToDisplayAdjustment: false,
+  truncateLabelsThatDoNotFit: true,
   withPartTags: true,
   onCopy: true,
   onPaste: true
@@ -604,6 +605,13 @@ certain dna specific tools and annotations are automatically disabled when isPro
                 }
               })}
 
+              {renderToggle({
+                that: this,
+                label: "Truncated Internal Labels (when externalLabels=false)",
+                type: "truncateLabelsThatDoNotFit",
+                info: `By default truncateLabelsThatDoNotFit=true 
+In the Row View Or Linear View this option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
+              })}
               {renderToggle({
                 that: this,
                 label: "Customize tool bar",
@@ -1739,6 +1747,9 @@ clickOverrides: {
               ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
             {...(this.state.readOnly && { readOnly: true })}
+            {...(!this.state.truncateLabelsThatDoNotFit && {
+              truncateLabelsThatDoNotFit: false
+            })}
             editorName="DemoEditor"
             onPreviewModeFullscreenClose={() => {
               window.toastr.success(

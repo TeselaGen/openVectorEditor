@@ -76,6 +76,7 @@ export default function RowItem(props) {
     rowBottomComp,
     isProtein,
     tickSpacing,
+    truncateLabelsThatDoNotFit = true,
     aminoAcidNumbersHeight = rowHeights.aminoAcidNumbers.height,
     cutsiteLabelHeight = rowHeights.cutsiteLabels.height,
     sequenceHeight = rowHeights.sequence.height,
@@ -247,6 +248,7 @@ export default function RowItem(props) {
     const CompToUse = CompOverride || StackedAnnotations;
     return (
       <CompToUse
+        truncateLabelsThatDoNotFit={truncateLabelsThatDoNotFit}
         externalLabels={externalLabels === "true"}
         onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
         type={type}
