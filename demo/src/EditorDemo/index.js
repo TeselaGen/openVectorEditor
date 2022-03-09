@@ -607,7 +607,8 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
               {renderToggle({
                 that: this,
-                label: "Truncated Internal Labels (when externalLabels=false)",
+                label:
+                  "Truncate Labels That Don't Fit (when externalLabels=false)",
                 type: "truncateLabelsThatDoNotFit",
                 info: `By default truncateLabelsThatDoNotFit=true 
 In the Row View Or Linear View this option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
@@ -1422,11 +1423,12 @@ other options are:
 "properties"
 \`\`\`
               `,
-                onClick: this.setLinearPanelAsActive,
-                isButton: true,
                 that: this,
                 type: "focusLinearView",
-                label: "Focus Linear View"
+                label: "Focus Linear View",
+                hook: (show) => {
+                  show && this.setLinearPanelAsActive();
+                }
               })}
               {renderToggle({
                 info: `Triggers a menu toastr message`,

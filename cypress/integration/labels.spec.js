@@ -1,4 +1,11 @@
 describe("label tests", () => {
+  it(`the truncateLabelsThatDoNotFit should function correctly`, () => {
+    cy.visit("/#/Editor?focusLinearView=true");
+    cy.contains(".veLabelText", "pS8c-vector..");
+    cy.tgToggle("truncateLabelsThatDoNotFit", false);
+    cy.contains(".veLabelText", "GFPuv");
+    cy.contains("veLabelText", "pS8c-vector..").should("not.exist");
+  });
   it(`should show/hide a checkmark when toggling feature label visibility`, function () {
     cy.visit("");
     cy.contains(".veCircularViewLabelText", "araC");
