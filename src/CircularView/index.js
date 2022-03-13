@@ -519,13 +519,17 @@ export function CircularView(props) {
                     title={sequenceName}
                     className="veCircularViewTextWrapper"
                     style={{
-                      width: innerRadius * scale,
-                      maxHeight: innerRadius * scale - 15,
+                      display: "-webkit-box",
+                      WebkitLineClamp: "3",
+                      WebkitBoxOrient: "vertical",
                       overflow: "hidden",
-                      textOverflow: "ellipsis"
+                      textOverflow: "ellipsis",
+                      width: innerRadius * scale,
+                      maxHeight: innerRadius * scale - 15
                     }}
                   >
-                    <span>{sequenceName}</span>
+                    {sequenceName}
+                    {/* <span>{}</span> */}
                   </div>
                   <span title={bpTitle} style={{ fontSize: 10 }}>
                     {bpTitle}

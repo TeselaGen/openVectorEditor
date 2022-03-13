@@ -1222,6 +1222,19 @@ sequenceData: {
                 that: this,
                 type: "getAdditionalEditAnnotationComps"
               })}
+              {renderToggle({
+                that: this,
+                type: "longSequenceName",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        name: `LALALALA I'm a really Long Sequence Name gahhahaghaghaghahg hagahghah lorem ipsum stacato lorem ipsum stacato`
+                      }
+                    });
+                }
+              })}
               {this.state.overrideManageEnzymes &&
                 renderToggle({
                   that: this,
