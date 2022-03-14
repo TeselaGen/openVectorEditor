@@ -27,6 +27,7 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 - JBEI - https://bioparts.org/ (an auto annotation and blast tool)
 - JBEI - https://public-registry.jbei.org/ (a lab management and design tool)
 - Labii - https://docs.labii.com/widgets/biology/open-vector-editor (lab management tool)
+- eLabFTW - https://www.elabftw.net/ (A free and open source electronic lab notebook) [Live demo](https://demo.elabftw.net/login.php)
 
 # Table of Contents
 
@@ -128,7 +129,7 @@ import {Editor, RowView} from "open-vector-editor"
 
 ### Editor
 
-To use the <Editor> component, you'll need to do a bit more work to set up a redux store.
+To use the `<Editor>` component, you'll need to do a bit more work to set up a redux store.
 You can see an example repo where this works here: https://github.com/tnrich/ove-react-demo-repo
 
 The `<Editor {...editorProps}/>` component gives you a full blown editor.
@@ -172,7 +173,7 @@ A component used for viewing enzymes
 
 # Using this module outside of react apps (Universal):
 
-The universal build can be used in any app with or without react. It corresponds to using the <Editor/> component in the React version. You will be able to customize the Editor just like in the react build, but you will not be able to use the individual components like <CircularView/> or <EnzymeViewer/>. For that you'll need to use React.
+The universal build can be used in any app with or without react. It corresponds to using the `<Editor/>` component in the React version. You will be able to customize the Editor just like in the react build, but you will not be able to use the individual components like `<CircularView/>` or `<EnzymeViewer/>`. For that you'll need to use React.
 
 ## Installation (Universal)
 
