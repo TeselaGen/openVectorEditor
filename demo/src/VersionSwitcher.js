@@ -58,6 +58,14 @@ export default function VersionSwitcher() {
         value={pjson.version}
         options={options}
       ></HTMLSelect>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ marginLeft: 10 }}
+        href="https://github.com/TeselaGen/openVectorEditor/blob/master/CHANGELOG.md"
+      >
+        Changelog
+      </a>
     </div>
   ) : (
     //fallback to just showing the version
