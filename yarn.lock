@@ -11699,6 +11699,11 @@ tg-client-query-builder@^2.13.1:
   dependencies:
     lodash "^4.17.4"
 
+tg-use-local-storage-state@^16.0.1:
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/tg-use-local-storage-state/-/tg-use-local-storage-state-16.0.1.tgz#21b1b23dee38a11c4a9239ac5e4a67ff346eb2f3"
+  integrity sha512-Oy2l5enKVG54q6hAtqZXh3/AabbRZ049VCzBE9U2NFJknFteOlwwjMIVLelbT7bObf3wAV590zlF1Onff1nalA==
+
 throttle-debounce@^2.1.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-2.3.0.tgz#fd31865e66502071e411817e241465b3e9c372e2"

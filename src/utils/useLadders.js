@@ -1,4 +1,6 @@
-import { createLocalStorageStateHook } from "use-local-storage-state";
+import tgUseLocalStorageState from "tg-use-local-storage-state";
 
-const useLadders = createLocalStorageStateHook("tg-additional-ladder", []);
+const useLadders = () => {
+  return tgUseLocalStorageState("tg-additional-ladder", { defaultValue: [] });
+};
 export default useLadders;

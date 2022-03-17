@@ -1,7 +1,8 @@
-import { createLocalStorageStateHook } from "use-local-storage-state";
+import tgUseLocalStorageState from "tg-use-local-storage-state";
 
-const useAAColorType = createLocalStorageStateHook(
-  "aaColorType",
-  "byHydrophobicity"
-);
+const useAAColorType = () =>
+  tgUseLocalStorageState("aaColorType", {
+    isSimpleString: true,
+    defaultValue: "byHydrophobicity"
+  });
 export default useAAColorType;

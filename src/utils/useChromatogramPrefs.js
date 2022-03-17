@@ -1,11 +1,11 @@
-import { createLocalStorageStateHook } from "use-local-storage-state";
 import React from "react";
 import { MenuItem } from "@blueprintjs/core";
+import tgUseLocalStorageState from "tg-use-local-storage-state";
 
-const useShowChromQualScores = createLocalStorageStateHook(
-  "showChromQualScores",
-  true
-);
+const useShowChromQualScores = () => {
+  return tgUseLocalStorageState("showChromQualScores", { defaultValue: true });
+};
+
 const ShowChromQualScoresMenu = ({ noOuter } = {}) =>
   function ShowChromQualScoresMenu(props) {
     const [showChromQualScores, setShowChromQualScores] =
