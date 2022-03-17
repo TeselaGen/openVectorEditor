@@ -19,7 +19,7 @@
     "localj5": "AMQP=localhost:5672 REMOTE_J5=http://localhost:10000 nwb serve-react-demo --port 3344",
     "c": "yarn cypress open",
     "test-e2e": "yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "changelog": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
     "@blueprintjs/core": "3.52.0",
@@ -94,7 +94,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn version; lint-staged"
+      "pre-commit": "yarn changelog; lint-staged"
     }
   },
   "lint-staged": {
