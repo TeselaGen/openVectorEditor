@@ -17,17 +17,37 @@ export const filteredRestrictionEnzymesAdd = createAction(
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = [specialCutsiteFilterOptions.single];
-// const userEnzymeGroups = window.localStorage.getItem("restrictionEnzymeGroups") || []
+const defaultInitialState = [specialCutsiteFilterOptions.single];
+let initialState = defaultInitialState;
+const localDefault = window.localStorage.getItem("tgInitialCutsiteFilter");
+const sessionDefault = window.sessionStorage.getItem("tgInitialCutsiteFilter");
+
+if (sessionDefault || localDefault) {
+  try {
+    initialState = JSON.parse(sessionDefault || localDefault);
+    if (!Array.isArray(initialState)) throw new Error("Must be an array");
+  } catch (e) {
+    initialState = defaultInitialState;
+  }
+}
+
+const persist = (s) => {
+  try {
+    window.sessionStorage.setItem("tgInitialCutsiteFilter", JSON.stringify(s));
+  } catch (e) {
+    console.warn(`e 1201240098 - Something went wrong setting initial enzymes`);
+  }
+  return s;
+};
 
 export default combineReducers({
   //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
   filteredRestrictionEnzymes: createReducer(
     {
-      [filteredRestrictionEnzymesReset]: () => initialState,
-      [filteredRestrictionEnzymesUpdate]: (state, payload) => payload,
+      [filteredRestrictionEnzymesReset]: () => persist(defaultInitialState),
+      [filteredRestrictionEnzymesUpdate]: (state, payload) => persist(payload),
       [filteredRestrictionEnzymesAdd]: function (state, payload) {
-        return [...state, payload];
+        return persist([...state, payload]);
       }
     },
     initialState

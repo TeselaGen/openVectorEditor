@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Icon } from "@blueprintjs/core";
+import tgUseLocalStorageState from "tg-use-local-storage-state";
 
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
@@ -8,7 +10,7 @@ import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOption
 import React from "react";
 
 import "./style.css";
-import { TgSelect } from "teselagen-react-components";
+import { InfoHelper, TgSelect } from "teselagen-react-components";
 
 import { map, flatMap, includes, pickBy, isEmpty } from "lodash";
 import { omit } from "lodash";
@@ -275,20 +277,58 @@ export class CutsiteFilter extends React.Component {
           })}
         />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a
-          onClick={() => {
-            enzymeManageOverride
-              ? enzymeManageOverride(this.props)
-              : showDialog({
-                  dialogType: "EnzymesDialog"
-                  // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
-                });
-            closeDropDown();
-          }}
-          style={{ width: "fit-content", fontSize: 11 }}
-        >
-          Manage Enzymes...
-        </a>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <a
+            onClick={() => {
+              enzymeManageOverride
+                ? enzymeManageOverride(this.props)
+                : showDialog({
+                    dialogType: "EnzymesDialog"
+                    // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
+                  });
+              closeDropDown();
+            }}
+            style={{ width: "fit-content", fontSize: 11 }}
+          >
+            Manage Enzymes...
+          </a>{" "}
+          &nbsp;&nbsp;
+          <div
+            className="tg-persist-cutsite-filter"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <a
+              onClick={() => {
+                try {
+                  window.localStorage.setItem(
+                    "tgInitialCutsiteFilter",
+                    JSON.stringify(filteredRestrictionEnzymes)
+                  );
+                  window.toastr.success(
+                    `Successfully set a new default filter`
+                  );
+                } catch (error) {
+                  window.toastr.error("Error setting the default filter");
+                }
+              }}
+              style={{ width: "fit-content", fontSize: 11 }}
+            >
+              Persist Filter
+            </a>
+            <InfoHelper
+              noMarginTop
+              style={{
+                marginTop: "-6px",
+                marginLeft: "5px"
+              }}
+              size={10}
+            >
+              Set the current filter as a default for all <i>new</i> windows.
+              Note - existing windows will still use their old filters.
+            </InfoHelper>
+            <RemovePersist></RemovePersist>
+          </div>
+        </div>
       </div>
     );
   }
@@ -309,4 +349,28 @@ function addClickableLabel(toRet, { closeDropDown }) {
         }
       : {})
   };
+}
+
+function RemovePersist() {
+  const [hasInitial] = tgUseLocalStorageState("tgInitialCutsiteFilter");
+  if (!hasInitial) return null;
+  return (
+    <InfoHelper
+      noMarginTop
+      intent="danger"
+      style={{
+        cursor: "pointer",
+        marginTop: "-6px",
+        marginLeft: "5px"
+      }}
+      onClick={() => {
+        window.sessionStorage.removeItem("tgInitialCutsiteFilter");
+        window.localStorage.removeItem("tgInitialCutsiteFilter");
+      }}
+      icon="cross"
+      size={10}
+    >
+      Revert back to the default filter
+    </InfoHelper>
+  );
 }
