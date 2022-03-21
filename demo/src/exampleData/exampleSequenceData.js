@@ -1,3 +1,8 @@
+// export default {
+//   sequence: 'aaa',
+//   parts: [{name: 'hello there', start: 0,end:3, id: '1241i'}],
+//   features: [{name: 'oh hi', start: 0,end:3, id: '12kkoo'}],
+// }
 export default {
   parts: [
     {

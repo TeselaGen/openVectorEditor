@@ -143,7 +143,8 @@ class _LinearView extends React.Component {
     if (isNaN(innerWidth)) {
       innerWidth = 0;
     }
-    this.charWidth = linearViewCharWidth || innerWidth / bpsPerRow;
+    this.charWidth =
+      linearViewCharWidth || Math.min(innerWidth / bpsPerRow, 20);
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
     return (
