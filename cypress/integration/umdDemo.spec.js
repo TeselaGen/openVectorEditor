@@ -4,6 +4,6 @@ describe("umd demo", function () {
     cy.contains("Untitled Sequence");
     cy.contains("Another Sequence");
     cy.contains("Wait for Me!");
-    cy.contains(".veLabelText", "2nd Feature");
+    cy.contains(".veLabelText", "2nd Featur..");
   });
 });
