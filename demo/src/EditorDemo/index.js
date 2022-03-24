@@ -1609,10 +1609,7 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                hook: (show) => {
-                  show && window.localStorage.clear();
-                },
-                label: "Show GC Content by default (reload required)",
+                label: "Show GC Content by default",
                 type: "showGCContentByDefault",
                 info: `pass showGCContentByDefault=true to the <Editor/> to display the %GC content by default (note this will still allow the user to override that preference)`
               })}

@@ -1,4 +1,9 @@
 export default {
+  type2s: {
+    value: "type2s",
+    label: "Type IIS Enzymes",
+    isSpecialGroup: true
+  },
   single: {
     value: "single",
     label: "Single cutters",

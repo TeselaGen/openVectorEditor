@@ -1,4 +1,4 @@
-import { debounce, find, get, some } from "lodash";
+import { debounce, find, get, some, isArray } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import {
@@ -169,6 +169,42 @@ export class Editor extends React.Component {
         }
       });
       this.props.collapseSplitScreen(firstActivePanelId);
+    }
+    if (this.props.sequenceData?.id) {
+      let hasSetSpecificFilter;
+      try {
+        try {
+          const cutsiteFilterDefaultForThisSpecificSeq = JSON.parse(
+            localStorage.getItem(
+              `tgInitialCutsiteFilter-${this.props.sequenceData?.id}`
+            )
+          );
+          if (
+            cutsiteFilterDefaultForThisSpecificSeq &&
+            isArray(cutsiteFilterDefaultForThisSpecificSeq)
+          ) {
+            hasSetSpecificFilter = true;
+            this.props.filteredRestrictionEnzymesUpdate(
+              cutsiteFilterDefaultForThisSpecificSeq
+            );
+          }
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
+        const cutsiteFilterDefaultForAllSeqs = JSON.parse(
+          localStorage.getItem(`tgInitialCutsiteFilter`)
+        );
+
+        if (
+          !hasSetSpecificFilter &&
+          cutsiteFilterDefaultForAllSeqs &&
+          isArray(cutsiteFilterDefaultForAllSeqs)
+        ) {
+          this.props.filteredRestrictionEnzymesUpdate(
+            cutsiteFilterDefaultForAllSeqs
+          );
+        }
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
     }
     window.addEventListener("resize", this.updateDimensions);
     this.forceUpdate(); //we need to do this to get an accurate height measurement on first render

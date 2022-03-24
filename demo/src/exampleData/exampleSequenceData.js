@@ -242,5 +242,6 @@ export default {
   teselagen_unique_id: "5adf735aa1811801e17d8aac",
   extraLines: [],
   type: "DNA",
-  size: 5299
+  size: 5299,
+  id: "jdosjio81"
 };

@@ -16,7 +16,7 @@ import {
 import SingleEnzymeCutsiteInfo from "../helperComponents/PropertiesDialog/SingleEnzymeCutsiteInfo";
 import { showDialog } from "../GlobalDialogUtils";
 
-import { aliasedEnzymesByName } from "ve-sequence-utils";
+import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { getEnzymeAliases } from "../utils/editorUtils";
 
@@ -28,7 +28,6 @@ function isGroup({ cutsiteOrGroupKey }) {
   const isUserCreatedGroup = cutsiteOrGroupKey.startsWith("__userCreatedGroup");
   const specialCutsiteFilterOption =
     specialCutsiteFilterOptions[cutsiteOrGroupKey];
-
   return isUserCreatedGroup || specialCutsiteFilterOption;
 }
 
@@ -369,7 +368,21 @@ const getGroupElAndCutsites = ({
     }
   });
 
-  if (isUserEnzymeGroup(cutsiteOrGroupKey)) {
+  if (cutsiteOrGroupKey === "type2s") {
+    const nameArray = flatMap(defaultEnzymesByName, (e) =>
+      e.isType2S ? e.name : []
+    );
+    label = "Type IIS Enzymes";
+
+    sortBy(nameArray).forEach((name) => {
+      const cutsites = allCutsites.cutsitesByName[name.toLowerCase()];
+      if (!cutsites) {
+        enzymesThatDontCutInSeq.push({ name, sites: [] });
+      } else {
+        enzymesThatCutInSeq.push({ name, sites: cutsites });
+      }
+    });
+  } else if (isUserEnzymeGroup(cutsiteOrGroupKey)) {
     const name = cutsiteOrGroupKey.replace("__userCreatedGroup", "");
     const nameArray = userEnzymeGroups[name];
     label = getUserGroupLabel({ name, nameArray });

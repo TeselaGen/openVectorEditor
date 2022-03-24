@@ -54,7 +54,17 @@ export default createSelector(
         const cutsThisManyTimes =
           specialCutsiteFilterOptions[value] &&
           specialCutsiteFilterOptions[value].cutsThisManyTimes;
-        if (cutsThisManyTimes > 0) {
+        if (value === "type2s") {
+          Object.keys(cutsitesByName).forEach(function (key) {
+            if (hiddenEnzymesByName[key]) return; //don't show that cutsite
+            if (
+              cutsitesByName[key].length &&
+              cutsitesByName[key][0]?.restrictionEnzyme?.isType2S
+            ) {
+              returnVal.cutsitesByName[key] = cutsitesByName[key];
+            }
+          });
+        } else if (cutsThisManyTimes > 0) {
           //the cutter type is either 1,2,3 for single, double or triple cutters
           Object.keys(cutsitesByName).forEach(function (key) {
             if (hiddenEnzymesByName[key]) return; //don't show that cutsite
