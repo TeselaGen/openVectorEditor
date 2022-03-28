@@ -368,6 +368,7 @@ export class Editor extends React.Component {
       fullScreenOffsets,
       withPreviewMode,
       isFullscreen,
+      hoveredId,
       handleFullscreenClose,
       onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
@@ -458,6 +459,7 @@ export class Editor extends React.Component {
             >
               <SimpleCircularOrLinearView
                 sequenceData={sequenceData}
+                hoveredId={hoveredId}
                 tabHeight={tabHeight}
                 editorName={editorName}
                 height={null}

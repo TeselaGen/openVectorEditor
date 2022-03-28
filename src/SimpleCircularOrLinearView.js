@@ -64,6 +64,7 @@ export default (props) => {
           height: 300,
           ...props,
           tickSpacing,
+          hoveredId: props.hoveredId,
           annotationVisibility,
           sequenceData,
           showTitle: true

@@ -117,6 +117,7 @@ export function CircularView(props) {
     noWarnings,
     labelLineIntensity,
     fontHeightMultiplier,
+    hoveredId,
     labelSize
   } = props;
 
@@ -322,6 +323,7 @@ export function CircularView(props) {
         results = drawAnnotations({
           Annotation: Comp || Feature,
           fontStyle: fontStyle,
+          hoveredId: hoveredId,
           annotationType: singularName,
           type: singularName,
           reverseAnnotations: true,
