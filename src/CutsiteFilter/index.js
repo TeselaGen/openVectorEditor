@@ -20,7 +20,7 @@ import {
   getUserGroupLabel
 } from "./AdditionalCutsiteInfoDialog";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
-import { aliasedEnzymesByName } from "ve-sequence-utils";
+import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
 
 const NoResults = withRestrictionEnzymes(
   ({
@@ -181,14 +181,15 @@ export class CutsiteFilter extends React.Component {
       additionalEnzymes,
       sequenceData
     } = this.props;
-
     const filteredRestrictionEnzymesUpdate = (enzymes) => {
       _filteredRestrictionEnzymesUpdate(enzymes);
       if (sequenceData?.id) {
         try {
           window.localStorage.setItem(
             `tgInitialCutsiteFilter-${sequenceData.id}`,
-            JSON.stringify(enzymes)
+            JSON.stringify(
+              enzymes.map((e) => omit(e, "canBeHidden", "nameArray", "label"))
+            )
           );
         } catch (err) {
           // eslint-disable-next-line no-console
@@ -224,6 +225,27 @@ export class CutsiteFilter extends React.Component {
         })
     ].map((n) => addClickableLabel(n, { closeDropDown }));
 
+    const value = filteredRestrictionEnzymes.map((filteredOpt) => {
+      let toRet;
+      if (filteredOpt.cutsThisManyTimes || filteredOpt.isSpecialGroup) {
+        toRet = filteredOpt;
+      } else if (filteredOpt.value.includes("__userCreatedGroup")) {
+        toRet = filteredOpt;
+      } else {
+        const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
+        const label = getCutsiteWithNumCuts({
+          numCuts,
+          name: numCuts
+            ? cutsitesByName[filteredOpt.value][0].name
+            : defaultEnzymesByName[filteredOpt.value]?.name || filteredOpt.value
+        });
+        toRet = {
+          ...filteredOpt,
+          label
+        };
+      }
+      return addClickableLabel(toRet, { closeDropDown });
+    });
     return (
       <div
         style={{
@@ -267,27 +289,7 @@ export class CutsiteFilter extends React.Component {
               })
             );
           }}
-          value={filteredRestrictionEnzymes.map((filteredOpt) => {
-            let toRet;
-            if (filteredOpt.cutsThisManyTimes || filteredOpt.isSpecialGroup) {
-              toRet = filteredOpt;
-            } else if (filteredOpt.value.includes("__userCreatedGroup")) {
-              toRet = filteredOpt;
-            } else {
-              const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
-              const label = getCutsiteWithNumCuts({
-                numCuts,
-                name: numCuts
-                  ? cutsitesByName[filteredOpt.value][0].name
-                  : filteredOpt.value
-              });
-              toRet = {
-                ...filteredOpt,
-                label
-              };
-            }
-            return addClickableLabel(toRet, { closeDropDown });
-          })}
+          value={value}
         />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -305,22 +307,6 @@ export class CutsiteFilter extends React.Component {
           >
             Manage Enzymes...
           </a>
-          {/* <Popover
-            position="bottom"
-            minimal
-            content={
-              <PersistPopover
-                filteredRestrictionEnzymes={filteredRestrictionEnzymes}
-              ></PersistPopover>
-            }
-          >
-            <a
-              className="tg-persist-cutsite-filter"
-              style={{ width: "fit-content", fontSize: 11 }}
-            >
-              Set as Default...
-            </a>
-          </Popover> */}
         </div>
       </div>
     );
@@ -343,128 +329,3 @@ function addClickableLabel(toRet, { closeDropDown }) {
       : {})
   };
 }
-
-// function PersistPopover({ filteredRestrictionEnzymes }) {
-//   // const [filterForJustThisSeq] = tgUseLocalStorageState(
-//   //   `tgInitialCutsiteFilter-${seqId}`
-//   // );
-//   const [filterForAllSeqs] = tgUseLocalStorageState("tgInitialCutsiteFilter");
-//   return (
-//     <div
-//       style={{
-//         padding: 15,
-//         display: "flex",
-//         flexDirection: "column",
-//         flexWrap: "wrap",
-//         justifyContent: "center"
-//       }}
-//     >
-//       <h6 style={{ maxWidth: 250 }}>
-//         Use the current filter as the default filter for:
-//       </h6>
-//       {/* {seqId && (
-//         <div
-//           className={"tg-this-seq-filter-ctrls"}
-//           style={{
-//             display: "flex",
-//             justifyContent: "space-between"
-//           }}
-//         >
-//           <Button
-//             style={{ minWidth: 200 }}
-//             text="This sequence"
-//             disabled={deepEqual(
-//               filterForJustThisSeq,
-//               filteredRestrictionEnzymes
-//             )}
-//             onClick={() => {
-//               try {
-//                 window.localStorage.setItem(
-//                   `tgInitialCutsiteFilter-${seqId}`,
-//                   JSON.stringify(filteredRestrictionEnzymes)
-//                 );
-//                 window.toastr.success(
-//                   `Successfully set a default filter for this sequence`
-//                 );
-//               } catch (error) {
-//                 window.toastr.error(
-//                   `Error setting a default filter for this sequence`
-//                 );
-//               }
-//             }}
-//           ></Button>{" "}
-//           <Tooltip
-//             content={
-//               <div style={{ maxWidth: 300 }}>
-//                 Unset default filter for this sequence - &nbsp;
-//                 {filterForJustThisSeq
-//                   ? map(filterForJustThisSeq, (i) => i.label || i.value).join(
-//                       ", "
-//                     )
-//                   : "None Set"}
-//               </div>
-//             }
-//           >
-//             <AnchorButton
-//               onClick={() => {
-//                 localStorage.removeItem(`tgInitialCutsiteFilter-${seqId}`);
-//               }}
-//               disabled={!filterForJustThisSeq}
-//               icon="trash"
-//               intent="danger"
-//             ></AnchorButton>
-//           </Tooltip>{" "}
-//         </div>
-//       )} */}
-//       <div
-//         className="tg-all-seqs-filter-ctrls"
-//         style={{ display: "flex", justifyContent: "space-between" }}
-//       >
-//         <Button
-//           style={{ minWidth: 200 }}
-//           text="All Sequences"
-//           disabled={deepEqual(filterForAllSeqs, filteredRestrictionEnzymes)}
-//           onClick={() => {
-//             try {
-//               window.localStorage.setItem(
-//                 "tgInitialCutsiteFilter",
-//                 JSON.stringify(filteredRestrictionEnzymes)
-//               );
-//               window.toastr.success(
-//                 `Successfully set a new global default filter`
-//               );
-//             } catch (error) {
-//               window.toastr.error("Error setting a new default filter");
-//             }
-//           }}
-//         ></Button>{" "}
-//         <Tooltip
-//           content={
-//             <div style={{ maxWidth: 300 }}>
-//               Unset default global filter for all sequences - &nbsp;
-//               {filterForAllSeqs
-//                 ? map(filterForAllSeqs, (i) => i.label || i.value).join(", ")
-//                 : "None Set"}
-//             </div>
-//           }
-//         >
-//           <AnchorButton
-//             onClick={() => {
-//               localStorage.removeItem(`tgInitialCutsiteFilter`);
-//             }}
-//             disabled={!filterForAllSeqs}
-//             icon="trash"
-//             intent="danger"
-//           ></AnchorButton>
-//         </Tooltip>{" "}
-//       </div>
-//       <br></br>
-//       <Callout style={{ maxWidth: 250 }} intent="primary">
-//         This default will only be applied to sequences that have NOT already had
-//         an enzyme selection applied to them. Also note, this setting is stored
-//         in your browser so will not transfer between devices or affect other
-//         users{" "}
-//       </Callout>
-//     </div>
-//   );
-// }

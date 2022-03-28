@@ -4,6 +4,7 @@ import { FocusStyleManager } from "@blueprintjs/core";
 import { showContextMenu } from "teselagen-react-components";
 import "./createVectorEditor";
 import "./style.css";
+export { getUserGroupLabel } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";
 
 window.tgCreateMenu = showContextMenu;
 // window.tgCreateMenu = (menu, e, e2) => {
@@ -16,6 +17,7 @@ FocusStyleManager.onlyShowFocusOnTabs();
 export { default as createVectorEditor } from "./createVectorEditor";
 export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
+export { default as specialCutsiteFilterOptions } from "./constants/specialCutsiteFilterOptions";
 //export components
 export {
   default as CircularView,

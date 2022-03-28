@@ -17,4 +17,9 @@
   color: #f5f8fa !important;
 }
 
+.veToolbarCutsiteFilterHolder .tg-select {
+  overflow: auto;
+  max-height: 50vh;
+}
+
 /*# sourceMappingURL= style.css.map */
