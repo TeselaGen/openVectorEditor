@@ -363,6 +363,7 @@ export class Editor extends React.Component {
       caretPositionUpdate,
       getVersionList,
       getSequenceAtVersion,
+      selectionLayer,
       VersionHistoryViewProps,
       sequenceData = {},
       fullScreenOffsets,
@@ -461,6 +462,7 @@ export class Editor extends React.Component {
                 sequenceData={sequenceData}
                 hoveredId={hoveredId}
                 tabHeight={tabHeight}
+                selectionLayer={selectionLayer}
                 editorName={editorName}
                 height={null}
                 isProtein={sequenceData.isProtein}
@@ -967,7 +969,13 @@ Editor.childContextTypes = {
 export default compose(
   connectToEditor(
     (
-      { panelsShown, annotationsToSupport, versionHistory, sequenceData = {} },
+      {
+        panelsShown,
+        annotationsToSupport,
+        versionHistory,
+        sequenceData = {},
+        selectionLayer
+      },
       { additionalEnzymes }
     ) => {
       return {
@@ -976,6 +984,7 @@ export default compose(
           additionalEnzymes
         ),
         annotationsToSupport,
+        selectionLayer,
         panelsShown,
         versionHistory,
         sequenceData

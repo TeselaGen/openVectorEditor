@@ -6,6 +6,7 @@ import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
+import { cloneDeep } from "lodash";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default (props) => {
@@ -25,7 +26,7 @@ export default (props) => {
           ? _sequenceData.size
           : _sequenceData.sequence.length) / 5
       );
-  let sequenceData = _sequenceData;
+  let sequenceData = cloneDeep(_sequenceData);
   const annotationVisibility = {
     ...visibilityDefaultValues,
     ..._annotationVisibility
@@ -33,10 +34,10 @@ export default (props) => {
 
   //here we're making it possible to not pass a sequenceData.sequence
   //we can just pass a .size property to save having to send the whole sequence if it isn't needed!
-  if (_sequenceData.noSequence) {
+  if (sequenceData.noSequence) {
     annotationVisibility.sequence = false;
     annotationVisibility.reverseSequence = false;
-    if (_sequenceData.size === undefined) {
+    if (sequenceData.size === undefined) {
       return (
         <div>
           Error: No sequenceData.size detected when using noSequence flag{" "}
@@ -44,9 +45,9 @@ export default (props) => {
       );
     }
     sequenceData = {
-      ..._sequenceData,
+      ...sequenceData,
       sequence: {
-        length: _sequenceData.size
+        length: sequenceData.size
       }
     };
   }
