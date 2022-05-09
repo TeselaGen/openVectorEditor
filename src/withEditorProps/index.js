@@ -22,6 +22,8 @@ import {
   invertRange,
   normalizeRange
 } from "ve-range-utils";
+import shortid from "shortid";
+
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions, editorReducer } from "../redux";
 import s from "../selectors";
@@ -217,6 +219,7 @@ export const importSequenceFromFile =
       }
 
       if (seqData) {
+        seqData.stateTrackingId = shortid();
         updateSequenceData(seqData);
         window.toastr.success("Sequence Imported");
       }

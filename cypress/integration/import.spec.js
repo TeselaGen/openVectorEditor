@@ -5,6 +5,15 @@ describe("import", function () {
   it("import tool should be able to import a genbank file", function () {
     cy.uploadFile(`[data-test="veImportTool"]`, "pj5_00002.gb");
     cy.contains("Sequence Imported").should("exist");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100);
+    cy.contains("onSave Callback").should("not.exist");
+  });
+  it("import tool should be able to import a genbank file, it should trigger the save function if shouldAutosave=true", function () {
+    cy.tgToggle("shouldAutosave");
+    cy.uploadFile(`[data-test="veImportTool"]`, "pj5_00002.gb");
+    cy.contains("Sequence Imported").should("exist");
+    cy.contains("onSave callback triggered");
   });
   it("importing multiple files should pop up a dialog to allow users to choose which sequence they'd like to focus on", function () {
     cy.uploadFile(`[data-test="veImportTool"]`, "multiseq.gb");
