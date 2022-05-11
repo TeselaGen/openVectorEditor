@@ -86,7 +86,7 @@ export default function Ladder({
       Ladder:
       <div style={{ display: "flex" }}>
         <TgSelect
-          className={"tg-ladder-selector"}
+          className="tg-ladder-selector"
           value={selectedLadder}
           onChange={(val) => setSelectedLadder(val.value)}
           options={laddersToUse}
@@ -118,30 +118,31 @@ export default function Ladder({
           ...sharedStyle
         }}
       >
-        <Button
-          icon="duplicate"
-          minimal
-          style={{ position: "absolute", top: 5, right: 5, color: "white" }}
-          onClick={() => {
-            try {
-              html2canvas(document.querySelector(".ve-digest-container")).then(
-                (canvas) => {
+        {navigator.clipboard && window.isSecureContext && (
+          <Button
+            icon="duplicate"
+            minimal
+            style={{ position: "absolute", top: 5, right: 5, color: "white" }}
+            onClick={() => {
+              try {
+                html2canvas(
+                  document.querySelector(".ve-digest-container")
+                ).then((canvas) => {
                   canvas.toBlob((blob) =>
                     navigator.clipboard.write([
                       new window.ClipboardItem({ "image/png": blob })
                     ])
                   );
                   window.toastr.success("Image copied to clipboard!");
-                }
-              );
-            } catch (e) {
-              window.toastr.error(
-                "Error copying the image, try just taking a screenshot instead ;)"
-              );
-            }
-          }}
-          intent="primary"
-        ></Button>
+                });
+              } catch (e) {
+                window.toastr.error(
+                  "Error copying the image, try just taking a screenshot instead ;)"
+                );
+              }
+            }}
+          ></Button>
+        )}
         <div style={{ padding: 3, paddingLeft: 7, width: 290 }}>
           Highlighted Fragment:{" "}
           {highlightedFragment ? highlightedFragment.size : "--"}{" "}
