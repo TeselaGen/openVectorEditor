@@ -32,6 +32,7 @@ import {
   pareDownAnnotations
 } from "../utils/editorUtils";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
+import classNames from "classnames";
 
 function noop() {}
 
@@ -449,7 +450,7 @@ export function CircularView(props) {
         height: heightToUse
       }}
       // tabIndex="0"
-      className="veCircularView"
+      className={classNames("veCircularView", props.className)}
     >
       {withRotateCircularView && (
         <RotateCircularView

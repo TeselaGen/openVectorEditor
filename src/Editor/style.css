@@ -149,6 +149,11 @@
   fill: #0099ff;
   background: #0099ff;
 }
+.tg-simple-dna-view .veSelectionLayer:not(.veCaret) {
+  fill: #0099ff;
+  background: #0099ff;
+}
+
 .veVectorInteractionWrapper:focus .veCaret:not(.selectionLayerCaret) {
   animation: blinker 1s step-start infinite;
 }

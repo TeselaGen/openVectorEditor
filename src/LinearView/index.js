@@ -15,6 +15,7 @@ import {
 } from "../utils/editorUtils";
 import useAnnotationLimits from "../utils/useAnnotationLimits";
 import { SequenceName } from "./SequenceName";
+import classNames from "classnames";
 
 const defaultMarginWidth = 10;
 
@@ -125,6 +126,7 @@ class _LinearView extends React.Component {
       editorClicked = noop,
       editorDragStopped = noop,
       width = 400,
+      className,
       tickSpacing,
       scrollData,
       caretPosition,
@@ -169,7 +171,7 @@ class _LinearView extends React.Component {
       >
         <div
           ref={(ref) => (this.linearView = ref)}
-          className="veLinearView"
+          className={classNames("veLinearView", className)}
           style={{
             width,
             ...(height && { height }),
