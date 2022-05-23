@@ -79,10 +79,19 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     primerBindsOn,
     sequenceLength
   });
-  let html = flatMap(allBasesWithMetaData, ({ b, isMatch }) => {
-    if (b === "&") return [];
-    return `<span class="tg-${isMatch ? "" : "no-"}match-seq">${b}</span>`;
-  });
+  let html = flatMap(
+    allBasesWithMetaData,
+    ({ b, isMatch, isAmbiguousMatch }) => {
+      if (b === "&") return [];
+      return `<span class="${
+        isMatch
+          ? ""
+          : isAmbiguousMatch
+          ? "tg-ambiguous-match-seq"
+          : "tg-no-match-seq"
+      }">${b}</span>`;
+    }
+  );
   html = html.join("");
 
   return (

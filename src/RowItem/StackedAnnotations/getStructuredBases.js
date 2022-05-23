@@ -1,6 +1,7 @@
 import { clone } from "lodash";
 import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
 import { getComplementSequenceString } from "ve-sequence-utils";
+import { ambiguous_dna_values } from "ve-sequence-utils/lib/bioData";
 
 export function getStructuredBases({
   annotationRange,
@@ -68,9 +69,14 @@ export function getStructuredBases({
       seqForBase = getComplementSequenceString(seqForBase);
     }
     const isMatch = seqForBase.toLowerCase() === b.toLowerCase();
+    const isAmbiguousMatch =
+      !isMatch &&
+      ambiguous_dna_values[b.toUpperCase()].length > 1 &&
+      ambiguous_dna_values[b.toUpperCase()].includes(seqForBase.toUpperCase());
     return {
       b,
-      isMatch
+      isMatch,
+      isAmbiguousMatch
     };
   });
   r.allBasesWithMetaData = clone(r.basesNoInsertsWithMetaData);

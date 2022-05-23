@@ -131,7 +131,6 @@ export function getBasesToShow({
                 key={i}
                 rotate={forward ? 0 : 180}
                 className="tg-no-match-seq"
-                fill="red"
                 textLength={textLength}
               >
                 {b}
@@ -155,24 +154,28 @@ export function getBasesToShow({
           style={{ pointerEvents: "none" }}
           className="ve-monospace-font tg-primer-bases"
         >
-          {map(basesNoInsertsWithMetaData, ({ b, isMatch }, i) => {
-            return (
-              <tspan
-                key={i}
-                className={
-                  b === "&"
-                    ? "tg-no-show-seq"
-                    : isMatch
-                    ? ""
-                    : "tg-no-match-seq"
-                }
-                fill={isMatch ? "black" : "red"}
-                textLength={textLength}
-              >
-                {b}
-              </tspan>
-            );
-          })}
+          {map(
+            basesNoInsertsWithMetaData,
+            ({ b, isMatch, isAmbiguousMatch }, i) => {
+              return (
+                <tspan
+                  key={i}
+                  className={
+                    b === "&"
+                      ? "tg-no-show-seq"
+                      : isMatch
+                      ? ""
+                      : isAmbiguousMatch
+                      ? "tg-ambiguous-match-seq"
+                      : "tg-no-match-seq"
+                  }
+                  textLength={textLength}
+                >
+                  {b}
+                </tspan>
+              );
+            }
+          )}
         </text>
         {insertText}
       </React.Fragment>
