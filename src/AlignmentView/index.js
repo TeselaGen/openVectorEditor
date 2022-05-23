@@ -19,7 +19,7 @@ import {
   withStore
 } from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
-import { throttle, cloneDeep, map, some } from "lodash";
+import { throttle, cloneDeep, map, some, forEach } from "lodash";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
 
@@ -421,6 +421,16 @@ class AlignmentView extends React.Component {
       annotationLabelVisibility:
         alignmentVisibilityToolOptions.alignmentAnnotationLabelVisibility
     });
+  };
+
+  getMaxLinearViewWidth = () => {
+    let maxWidth = 0;
+    const charWidthInLinearView = this.getCharWidthInLinearView();
+    forEach(this.props.alignmentTracks, (t) => {
+      const w = (t.alignmentData || t.sequenceData).sequence.length;
+      if (w > maxWidth) maxWidth = w;
+    });
+    return maxWidth * charWidthInLinearView;
   };
 
   renderItem = (_i, key, isTemplate) => {
@@ -1316,6 +1326,8 @@ class AlignmentView extends React.Component {
                   dimensions: {
                     width: Math.max(this.state.width, 10) || 10
                   },
+                  nameDivOffsetPercent:
+                    nameDivWidth / this.getMaxLinearViewWidth(),
                   scrollYToTrack: this.scrollYToTrack,
                   onSizeAdjust: this.onMinimapSizeAdjust,
                   minSliderSize,

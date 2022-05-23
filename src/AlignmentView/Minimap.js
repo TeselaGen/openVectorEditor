@@ -194,6 +194,7 @@ export default class Minimap extends React.Component {
       minSliderSize,
       onMinimapScrollX,
       easyStore,
+      nameDivOffsetPercent,
       selectionLayerComp
     } = this.props;
 
@@ -248,7 +249,13 @@ export default class Minimap extends React.Component {
           />
           <ReactList
             itemsRenderer={(items, ref) => (
-              <div style={{ marginTop: -3 }} ref={ref}>
+              <div
+                style={{
+                  marginTop: -3,
+                  paddingLeft: nameDivOffsetPercent * width
+                }}
+                ref={ref}
+              >
                 {items}
               </div>
             )}
