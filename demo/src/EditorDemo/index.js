@@ -1,6 +1,6 @@
 import { Button, Icon, InputGroup } from "@blueprintjs/core";
 import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
-import React from "react";
+import React, { useRef } from "react";
 import { isRangeOrPositionWithinRange } from "ve-range-utils";
 import isMobile from "is-mobile";
 
@@ -25,6 +25,7 @@ import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
@@ -419,36 +420,11 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
           }}
         >
           {
-            <div
-              data-test="optionContainer"
-              style={{
-                // background: "white",
-                zIndex: 1000,
-                position: "absolute",
-                overflowY: "auto",
-                left: 0,
-                paddingTop: 10,
-                width: 250,
-                height: "100%",
-                minWidth: 250,
-                maxWidth: 250,
-                display: "flex",
-                flexDirection: "column",
-                paddingRight: "5px",
-                borderRight: "1px solid lightgrey",
-                ...(!this.state.showDemoOptions && {
-                  display: "none",
-                  width: 0,
-                  height: 0,
-                  minWidth: 0,
-                  maxWidth: 0
-                })
-              }}
-            >
+            <DraggablePanel showDemoOptions={this.state.showDemoOptions}>
               <div style={{ paddingLeft: 10, paddingRight: 10 }}>
                 <Button
                   icon="refresh"
-                  style={{ marginLeft: 10, marginRight: 10, marginBottom: 5 }}
+                  style={{ marginBottom: 5 }}
                   onClick={this.resetDefaultState}
                 >
                   Reset Demo Defaults
@@ -1738,7 +1714,7 @@ clickOverrides: {
               ></AddOrEditPrimerDialog>} */}
               <br />
               <br />
-            </div>
+            </DraggablePanel>
           }
           {/* <div
             style={{
@@ -1756,7 +1732,8 @@ clickOverrides: {
               // display: "flex",
               // flexDirection: "column",
               // flexGrow: 1,
-              ...(this.state.showDemoOptions && { paddingLeft: 250 })
+              // ...(this.state.showDemoOptions && { paddingLeft: 250 })
+              width: "unset"
             }}
             {...(this.state.readOnly && { readOnly: true })}
             {...(!this.state.truncateLabelsThatDoNotFit && {
@@ -2274,4 +2251,71 @@ function SlowComp({ annotationTypePlural }) {
       </div>
     );
   return <div>yarp</div>;
+}
+
+function DraggablePanel({ children, showDemoOptions }) {
+  const [width, setWidth] = useState(250);
+  const m_pos = useRef(0);
+  if (!showDemoOptions) return null;
+  return (
+    <div
+      data-test="optionContainer"
+      style={{
+        width: width,
+        // borderRight: "4px solid black",
+        height: "100%",
+        // minWidth: width,
+        // maxWidth: width,
+        // background: "white",
+        zIndex: 1000,
+        // paddingTop: 10,
+        display: "flex",
+        // position: "absolute",
+        ...(!showDemoOptions && {
+          display: "none",
+          width: 0,
+          height: 0,
+          minWidth: 0,
+          maxWidth: 0
+        })
+      }}
+    >
+      <div
+        style={{
+          overflowY: "auto",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        {children}
+      </div>
+      <div
+        // onDrag={(e) => {
+        //   // const dx = m_pos.current - e.clientX;
+        //   // m_pos.current = e.clientX;
+        //   // setWidth(width - dx);
+        //   // let m_pos;
+        //   // function resize(e){
+        //   //   if (!m_pos)
+        //   // }
+        // }}
+
+        onDragEnd={(e) => {
+          const dx = m_pos.current - e.clientX;
+          setWidth(width - dx);
+        }}
+        onDragStart={(e) => {
+          m_pos.current = e.clientX;
+        }}
+        draggable
+        style={{
+          cursor: "col-resize",
+          height: "100%",
+          paddingRight: "5px",
+          borderRight: "4px solid lightgrey"
+        }}
+      ></div>
+    </div>
+  );
 }
