@@ -32,34 +32,33 @@ class GenbankView extends React.Component {
     }
 
     return (
-      <div className="genbankFileView">
+      <>
         <HTMLSelect
+          className="genbankFileView-type"
           fill={false}
           options={[
             { label: "Genbank", value: "genbank" },
             { label: "Fasta", value: "fasta" },
             { label: "Teselagen JSON", value: "teselagen" }
           ]}
-          onChange={e => {
+          onChange={(e) => {
             this.setState({ fileTypeToView: e.target.value });
           }}
         />
         <textarea
           data-test="ve-genbank-text"
           readOnly
-          // wrap="soft"
           style={{
             whiteSpace: "pre",
             overflowWrap: "normal",
             overflowX: "scroll",
             fontSize: 11,
             fontFamily: "monospace",
-            width: 540,
             height: 350
           }}
           value={filestring}
         />
-      </div>
+      </>
     );
   }
 }

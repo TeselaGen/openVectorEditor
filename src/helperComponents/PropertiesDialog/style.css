@@ -58,7 +58,8 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.genbankFileView .bp3-html-select {
+.genbankFileView-type {
+  display: block;
   width: fit-content;
   margin-bottom: 5px;
 }
