@@ -11636,10 +11636,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.7.9:
-  version "30.7.9"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.7.9.tgz#b539f0418da9fe13600475e08fb88c1b91ac2da3"
-  integrity sha512-y1wPwlPCv2/KMyO6YmaVtsP4kX3NWASafCYtSR+PdG/gHfw7n8nfv/yosXl0a7hKZ9HLkzq2f5dNiUewFcQ4eA==
+teselagen-react-components@30.7.22:
+  version "30.7.22"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.7.22.tgz#6b0c7666cb0d25b1df0dff07a665114ca7624529"
+  integrity sha512-Vx7Ea/8x/sMC8s52uRGUpr7fWh4FGIlkw9Mmkbb4zYH7H5hCncf+xdHavGla/d0mHV9mEf2MZuRmh6hsBRbLpA==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -12402,10 +12402,10 @@ ve-range-utils@^2.6.5:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.1.14:
-  version "5.1.14"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.14.tgz#fc57f50dc684b282e96acdcda713f70247febe91"
-  integrity sha512-pw2AyqHMOLteYrpk32Y6EIiQqZcdH2aKEJwtwc/qaNE6scuWYrkYboKsfazIDgnWT9xUjH9q338WBqJKhtUH3A==
+ve-sequence-utils@^5.1.16:
+  version "5.1.16"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.16.tgz#449bcf2d6fa91e74b01d0ddeaad8b0c50948918b"
+  integrity sha512-SfKMv5RsVbAai+mEZHVB8LkZ954hGaXBu1v0x4ffy5VApWMOcZRM/6nGhBDny3DpoHS4xwgt3EjqbFks68KIKw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

@@ -71,7 +71,7 @@ class CutsiteProperties extends React.Component {
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <>
         <div
           style={{
             marginBottom: 10,
@@ -124,7 +124,7 @@ class CutsiteProperties extends React.Component {
           schema={this.schema}
           entities={cutsitesToUse}
         />
-      </div>
+      </>
     );
   }
 }
