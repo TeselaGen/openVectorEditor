@@ -129,9 +129,11 @@
   margin-left: 10px;
   margin-bottom: 10px;
 }
+
 .veToolbarViewOptionsHolder label {
   margin: 40px 10px;
 }
+
 .ve-toolbar-item-popover {
   /* the z-index has to be high for it to work with ice */
   z-index: 4000;

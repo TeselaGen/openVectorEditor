@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { flatMap, pick } from "lodash";
 import versionHistoryTool from "./versionHistoryTool";
 // import {connectToEditor} from "../withEditorProps";
-import MenuBar from "../MenuBar";
+// import MenuBar from "../MenuBar";
 import "./style.css";
-import { Button, Tooltip } from "@blueprintjs/core";
+import { Button, Tooltip, Icon } from "@blueprintjs/core";
+import { EuiTabs, EuiTab } from "@elastic/eui";
 
 import downloadTool from "./downloadTool";
 import importTool from "./importTool";
@@ -64,6 +65,8 @@ export function ToolBar(props) {
   const userDefinedProps = {
     ...pick(props, userDefinedHandlersAndOpts)
   };
+
+  const [selectedTabId, setSelectedTabId] = useState("view");
 
   const toolListToUse = useMemo(() => {
     return flatMap(toolList, (toolNameOrOverrides) => {
@@ -137,6 +140,60 @@ export function ToolBar(props) {
     items = modifyTools(items);
   }
 
+  const menuItems = [
+    {
+      id: "view",
+      name: "View",
+      icon: <Icon size={14} icon="eye-open" />
+    },
+    {
+      id: "edit",
+      name: "Edit",
+      icon: <Icon size={14} icon="annotation" />
+    },
+    {
+      id: "select",
+      name: "Select",
+      icon: <Icon size={14} icon="select" />
+    },
+    {
+      id: "tools",
+      name: "Tools",
+      icon: <Icon size={14} icon="build" />
+    },
+    {
+      id: "cutsites",
+      name: "Cut Sites",
+      icon: <Icon size={14} icon="cut" />
+    },
+    {
+      id: "labels",
+      name: "Labels",
+      icon: <Icon size={14} icon="tag" />
+    }
+  ];
+
+  const onSelectTabChanged = (id) => {
+    setSelectedTabId(id);
+  };
+
+  const menuBar = (
+    <EuiTabs>
+      {menuItems.map((item) => {
+        return (
+          <EuiTab
+            key={item.id}
+            prepend={item.icon}
+            isSelected={item.id === selectedTabId}
+            onClick={() => onSelectTabChanged(item.id)}
+          >
+            {item.name}
+          </EuiTab>
+        );
+      })}
+    </EuiTabs>
+  );
+
   return (
     <div className="veToolbar-outer" style={{ display: "flex" }}>
       {contentLeft}
@@ -151,22 +208,13 @@ export function ToolBar(props) {
               }
             : {
                 display: "flex",
-                width: "100%",
+                idth: "100%",
                 justifyContent: "center",
                 flexWrap: "wrap"
               })
         }}
         className="veToolbar"
       >
-        {showMenuBar && (
-          <MenuBar
-            openHotkeyDialog={openHotkeyDialog}
-            {...userDefinedProps}
-            onSave={onSave} //needs to be passed so that editor commands will have it
-            style={{ marginLeft: 0 }}
-            editorName={editorName}
-          />
-        )}
         {displayMenuBarAboveTools && showMenuBar ? (
           <div
             className="veTools-displayMenuBarAboveTools"
@@ -183,7 +231,7 @@ export function ToolBar(props) {
               // width: "100%"
             }}
           >
-            {items}
+            {menuBar}
           </div>
         ) : (
           items
