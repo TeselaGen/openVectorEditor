@@ -195,7 +195,8 @@ class ColoredSequence extends React.Component {
     return false;
   }
   drawRects = () => {
-    let { charWidth, sequence, height, isReverse, alignmentData } = this.props;
+    let { charWidth, sequence, height, isReverse, alignmentData, getGaps } =
+      this.props;
     if (alignmentData) {
       sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
     }
@@ -204,10 +205,11 @@ class ColoredSequence extends React.Component {
       acc[color] = "";
       return acc;
     }, {});
-
+    const gapsBefore = getGaps({ start: 0, end: 0 }).gapsBefore;
     sequence.split("").forEach((char, i) => {
       const width = charWidth;
-      const x = i * charWidth;
+
+      const x = (i + gapsBefore) * charWidth;
       const y = 0;
       colorPaths[getDnaColor(char, isReverse)] =
         (colorPaths[getDnaColor(char, isReverse)] || "") +
