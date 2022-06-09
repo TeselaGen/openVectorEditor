@@ -5,7 +5,12 @@ import versionHistoryTool from "./versionHistoryTool";
 // import MenuBar from "../MenuBar";
 import "./style.css";
 import { Button, Tooltip, Icon } from "@blueprintjs/core";
-import { EuiTabs, EuiTab } from "@elastic/eui";
+import {
+  EuiTabbedContent,
+  EuiKeyPadMenu,
+  EuiKeyPadMenuItem,
+  EuiIcon
+} from "@elastic/eui";
 
 import downloadTool from "./downloadTool";
 import importTool from "./importTool";
@@ -24,7 +29,7 @@ import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 import { isString } from "util";
 import isMobile from "is-mobile";
-import { useMemo } from "react";
+import { useMemo, Fragment } from "react";
 
 const allTools = {
   downloadTool,
@@ -44,6 +49,74 @@ const allTools = {
   undoTool,
   redoTool
 };
+
+const tabs = [
+  {
+    id: "view",
+    name: "View",
+    prepend: <Icon size={14} icon="eye-open" />,
+    content: (
+      <>
+        <EuiKeyPadMenu className="veTabItems">
+          <EuiKeyPadMenuItem label="Show All">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="Hide All">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="Features">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="Parts">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="ORFs">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="Translations">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="Cut Sites">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+          <EuiKeyPadMenuItem label="Primers">
+            <EuiIcon type="dashboardApp" size="l" />
+          </EuiKeyPadMenuItem>
+        </EuiKeyPadMenu>
+      </>
+    )
+  },
+  {
+    id: "edit",
+    name: "Edit",
+    prepend: <Icon size={14} icon="annotation" />,
+    content: <div>test</div>
+  },
+  {
+    id: "select",
+    name: "Select",
+    prepend: <Icon size={14} icon="select" />,
+    content: <div>test</div>
+  },
+  {
+    id: "tools",
+    name: "Tools",
+    prepend: <Icon size={14} icon="build" />,
+    content: <div>test</div>
+  },
+  {
+    id: "cutsites",
+    name: "Cut Sites",
+    prepend: <Icon size={14} icon="cut" />,
+    content: <div>test</div>
+  },
+  {
+    id: "labels",
+    name: "Labels",
+    prepend: <Icon size={14} icon="tag" />,
+    content: <div>test</div>
+  }
+];
 
 export function ToolBar(props) {
   const {
@@ -66,7 +139,7 @@ export function ToolBar(props) {
     ...pick(props, userDefinedHandlersAndOpts)
   };
 
-  const [selectedTabId, setSelectedTabId] = useState("view");
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const toolListToUse = useMemo(() => {
     return flatMap(toolList, (toolNameOrOverrides) => {
@@ -140,59 +213,9 @@ export function ToolBar(props) {
     items = modifyTools(items);
   }
 
-  const menuItems = [
-    {
-      id: "view",
-      name: "View",
-      icon: <Icon size={14} icon="eye-open" />
-    },
-    {
-      id: "edit",
-      name: "Edit",
-      icon: <Icon size={14} icon="annotation" />
-    },
-    {
-      id: "select",
-      name: "Select",
-      icon: <Icon size={14} icon="select" />
-    },
-    {
-      id: "tools",
-      name: "Tools",
-      icon: <Icon size={14} icon="build" />
-    },
-    {
-      id: "cutsites",
-      name: "Cut Sites",
-      icon: <Icon size={14} icon="cut" />
-    },
-    {
-      id: "labels",
-      name: "Labels",
-      icon: <Icon size={14} icon="tag" />
-    }
-  ];
-
   const onSelectTabChanged = (id) => {
-    setSelectedTabId(id);
+    setSelectedTab(id);
   };
-
-  const menuBar = (
-    <EuiTabs>
-      {menuItems.map((item) => {
-        return (
-          <EuiTab
-            key={item.id}
-            prepend={item.icon}
-            isSelected={item.id === selectedTabId}
-            onClick={() => onSelectTabChanged(item.id)}
-          >
-            {item.name}
-          </EuiTab>
-        );
-      })}
-    </EuiTabs>
-  );
 
   return (
     <div className="veToolbar-outer" style={{ display: "flex" }}>
@@ -231,7 +254,11 @@ export function ToolBar(props) {
               // width: "100%"
             }}
           >
-            {menuBar}
+            <EuiTabbedContent
+              tabs={tabs}
+              selectedTab={selectedTab}
+              onTabClick={onSelectTabChanged}
+            />
           </div>
         ) : (
           items

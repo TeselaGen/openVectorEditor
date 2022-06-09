@@ -138,3 +138,8 @@
   /* the z-index has to be high for it to work with ice */
   z-index: 4000;
 }
+
+.veTabItems {
+  width: 100% !important;
+  margin-right: 0 !important;
+}
