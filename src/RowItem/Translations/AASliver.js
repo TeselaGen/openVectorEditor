@@ -105,7 +105,6 @@ function AASliver(props) {
                   L ${roundedCorner * dirX2}, ${roundedCorner * dirY2}
                   Q 0 0 ${roundedCorner / 3} 0
                   z`;
-
   return (
     <>
       <g
@@ -159,7 +158,9 @@ function AASliver(props) {
             fontSize={25}
             stroke="black"
             strokeWidth={2}
-            transform={`scale(3,3) translate(${forward ? 45 : 55},21)`}
+            transform={`scale(${(3 / width) * 10},3) translate(${
+              ((forward ? 45 : 55) * width) / 10
+            },21)`}
             x="0"
             y="4"
             style={{ textAnchor: "middle" }}
@@ -173,7 +174,9 @@ function AASliver(props) {
             fontSize={25}
             stroke="black"
             strokeWidth={2}
-            transform={`scale(3,3) translate(${forward ? 45 : 55},51)`}
+            transform={`scale(${(3 / width) * 10},3) translate(${
+              ((forward ? 45 : 55) * width) / 10
+            },51)`}
             x="0"
             y="4"
             style={{ textAnchor: "middle" }}
