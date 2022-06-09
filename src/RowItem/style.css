@@ -26,7 +26,7 @@
 .veRowViewCutsite {
   background: #8a9ba8;
   margin-left: -2px;
-  z-index: -1;
+  /* z-index: -1; */
 }
 .bp3-dark .veRowViewCutsite.snipHovered {
   background: #c5e3fa !important;

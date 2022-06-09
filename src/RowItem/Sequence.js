@@ -205,14 +205,14 @@ class ColoredSequence extends React.Component {
       acc[color] = "";
       return acc;
     }, {});
-    const gapsBefore = getGaps({ start: 0, end: 0 }).gapsBefore;
+    const gapsBefore = getGaps ? getGaps({ start: 0, end: 0 }).gapsBefore : 0;
     sequence.split("").forEach((char, i) => {
-      const width = charWidth;
-
+      const width = Number(charWidth);
+      const color = getDnaColor(char, isReverse);
       const x = (i + gapsBefore) * charWidth;
       const y = 0;
-      colorPaths[getDnaColor(char, isReverse)] =
-        (colorPaths[getDnaColor(char, isReverse)] || "") +
+      colorPaths[color] =
+        (colorPaths[color] || "") +
         `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
           y + height
         }`;
