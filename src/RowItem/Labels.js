@@ -256,7 +256,7 @@ const DrawLabel = withHover(
         <div>
           <div
             {...{ onMouseLeave, onMouseOver }}
-            className={className + "veLabelText ve-monospace-font"}
+            className={className + " veLabelText ve-monospace-font"}
             onClick={function (event) {
               onClick({ event, annotation });
               event.stopPropagation();

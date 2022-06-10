@@ -36,6 +36,7 @@
 
 .veCutsiteLabel {
   font-style: italic;
+  user-select: none;
 }
 
 .veCutsiteLabel:hover {

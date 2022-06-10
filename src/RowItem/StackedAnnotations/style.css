@@ -9,3 +9,6 @@
 .veRowViewAnnotationPosition {
   z-index: 20;
 }
+.veLabelText {
+  user-select: none;
+}
