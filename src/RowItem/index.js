@@ -112,6 +112,8 @@ export default function RowItem(props) {
     bpsPerRow = sequenceLength,
     editorName,
     externalLabels,
+    rowContainerStyle,
+    onScroll,
     scrollData,
     onlyShowLabelsThatDoNotFit,
     labelLineIntensity,
@@ -177,7 +179,7 @@ export default function RowItem(props) {
   }
   charWidth = charWidth || width / Math.max(bpsPerRow, 1);
 
-  const rowContainerStyle = {
+  const rowStyle = {
     position: "relative",
     minHeight,
     width: width + "px"
@@ -323,9 +325,14 @@ export default function RowItem(props) {
   };
 
   return (
-    <div onContextMenu={backgroundRightClicked} className="veRowItemWrapper">
+    <div
+      style={rowContainerStyle}
+      onContextMenu={backgroundRightClicked}
+      onScroll={onScroll}
+      className="veRowItemWrapper"
+    >
       {rowTopComp && rowTopComp}
-      <div className="veRowItem" style={rowContainerStyle}>
+      <div className="veRowItem" style={rowStyle}>
         {/* <div className="vespacer" /> */}
 
         <SelectionLayer

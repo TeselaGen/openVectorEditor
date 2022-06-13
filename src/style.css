@@ -2,7 +2,12 @@
   font-family: "Ubuntu Mono", "Lucida Console", Monaco, monospace;
   font-size: 12px;
 }
-
+.rowViewTextContainer text {
+  user-select: none;
+}
+.translationLayer text {
+  user-select: none;
+}
 .ve-sequence-reverse {
   fill: #b0b0b0;
 }
