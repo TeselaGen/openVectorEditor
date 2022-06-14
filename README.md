@@ -368,7 +368,7 @@ These are the options to the `updateEditor()` action (the most generic redux act
 {
 
 	//note, sequence data passed here will be coerced to fit the Teselagen data model (Teselagen JSON)
-	sequenceData: { Open Vector Editor data model
+	sequenceData: { //Open Vector Editor data model -- https://github.com/TeselaGen/ve-sequence-parsers#format-specification
 		sequence: "atagatagagaggcccg",
 		features: [
 			{
