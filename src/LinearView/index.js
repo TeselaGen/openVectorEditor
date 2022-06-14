@@ -380,28 +380,16 @@ function ZoomLinearView({
       <UncontrolledSliderWithPlusMinusBtns
         noWraparound
         bindOutsideChangeHelper={bindOutsideChangeHelper}
+        onClick={() => {
+          setTimeout(scrollToCaret, 0);
+        }}
         onChange={(zoomLvl) => {
+          //zoomLvl is in the range of 0 to 10
           const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
-          //calculate total width at 12 px  ==> max width
-
-          //get totalWidth at initialCharWidth ==> initialWidth
-
-          // currrentWidth = initialCharWidth * scaleFactor ^ zoomLvl
-          // when zoomlvl = 0, currentwidth = initialCharWidth
-          // when zoomlvl = 10, currentwidth = maxwidth = initialCharWidth * scaleFactor^10
-          // scaleFactor = (maxwidth / initialCharWidth)^(.1)
-          // starting from
           const newCharWidth =
             initialCharWidth * Math.pow(scaleFactor, zoomLvl);
-          // console.log(`newCharWidth:`, newCharWidth);
-          //val is in the range of 0 to 10
           setCharWidth(newCharWidth);
-
-          const el = window.document.querySelector(
-            ".veLinearView .veRowViewCaret"
-          );
-          if (!el) return;
-          el.scrollIntoView({ inline: "center" });
+          scrollToCaret();
           afterOnChange && afterOnChange();
         }}
         leftIcon="minus"
@@ -424,3 +412,8 @@ function ZoomLinearView({
     </div>
   );
 }
+const scrollToCaret = () => {
+  const el = window.document.querySelector(".veLinearView .veRowViewCaret");
+  if (!el) return;
+  el.scrollIntoView({ inline: "center" });
+};

@@ -28,6 +28,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       style,
       min,
       max,
+      onClick,
       bindOutsideChangeHelper,
       ...rest
     } = this.props;
@@ -50,7 +51,10 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     }
     return (
       <div
-        onClick={preventDefaultStopPropagation}
+        onClick={(e) => {
+          onClick && onClick(e);
+          preventDefaultStopPropagation(e);
+        }}
         onDrag={preventDefaultStopPropagation}
         onDragStart={preventDefaultStopPropagation}
         onDragEnd={preventDefaultStopPropagation}
