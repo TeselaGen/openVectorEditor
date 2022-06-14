@@ -19,6 +19,7 @@ export default pureNoFunc(function AlignmentVisibilityTool(props) {
       target={
         <Tooltip content="Visibility Options">
           <Button
+            className="tg-alignment-visibility-toggle"
             small
             rightIcon="caret-down"
             intent={Intent.PRIMARY}
