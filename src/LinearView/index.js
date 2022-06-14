@@ -257,22 +257,25 @@ class _LinearView extends React.Component {
             );
           }}
         >
-          {withZoomLinearView && bpsPerRow > 50 && (
-            <ZoomLinearView
-              charWidth={this.charWidth}
-              bindOutsideChangeHelper={this.bindOutsideChangeHelper}
-              initialCharWidth={initialCharWidth}
-              editorName={editorName}
-              setCharWidth={(v) => {
-                this.setState({
-                  charWidthInLinearView: v === initialCharWidth ? undefined : v
-                });
-              }}
-              afterOnChange={() => {
-                this.updateLabelsForInViewFeatures();
-              }}
-            ></ZoomLinearView>
-          )}
+          {withZoomLinearView &&
+            bpsPerRow > 50 &&
+            bpsPerRow < 20000 && ( //so this for conditonal rendering
+              <ZoomLinearView
+                charWidth={this.charWidth}
+                bindOutsideChangeHelper={this.bindOutsideChangeHelper}
+                initialCharWidth={initialCharWidth}
+                editorName={editorName}
+                setCharWidth={(v) => {
+                  this.setState({
+                    charWidthInLinearView:
+                      v === initialCharWidth ? undefined : v
+                  });
+                }}
+                afterOnChange={() => {
+                  this.updateLabelsForInViewFeatures();
+                }}
+              ></ZoomLinearView>
+            )}
           {!hideName && (
             <SequenceName
               {...{
@@ -307,6 +310,7 @@ class _LinearView extends React.Component {
               );
               this.updateLabelsForInViewFeatures();
             }}
+            enabled={bpsPerRow > 50 && bpsPerRow < 20000}
           >
             <RowItem
               {...{

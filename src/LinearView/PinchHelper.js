@@ -1,7 +1,11 @@
 import { usePinch } from "@use-gesture/react";
 import React from "react";
 
-export default function PinchHelper({ children, onPinch: _onPinch }) {
+export default function PinchHelper({
+  children,
+  onPinch: _onPinch,
+  enabled = true
+}) {
   const target = React.useRef();
   // useGesture(
   //   {
@@ -21,10 +25,12 @@ export default function PinchHelper({ children, onPinch: _onPinch }) {
 
   usePinch(
     (arg) => {
-      // console.log(`arg:`,arg)
-      // arg.preventDefault()
-      // arg.event.preventDefault();
-      if (_onPinch) _onPinch(arg);
+      if (enabled) {
+        // console.log(`arg:`,arg)
+        // arg.preventDefault()
+        // arg.event.preventDefault();
+        if (_onPinch) _onPinch(arg);
+      }
     },
     {
       target
