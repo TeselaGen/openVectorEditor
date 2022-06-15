@@ -16,12 +16,19 @@ describe("zoomLinearView.spec", function () {
     cy.get(".veRowItemWrapper").scrollTo(500, 0);
     cy.get(".veRowViewFeaturesContainer").contains("araD").should("exist");
   });
-  it("zoom should be disabled for bps < 50 and bps > 20K", function () {
-    cy.visit("#/Editor?sequenceLength=25000");
+  it("zoom should be disabled for bps < 50 and bps > 30K", function () {
+    cy.visit("#/Editor?focusLinearView=true&sequenceLength=45000");
     cy.get(`.tg-zoom-bar`).should("not.exist");
-    cy.visit("#/Editor?sequenceLength=10");
+    cy.visit("#/Editor?focusLinearView=true");
+    cy.get(`.tg-zoom-bar`).should("exist");
+    cy.visit("#/Editor?focusLinearView=true&sequenceLength=10");
     cy.get(`.tg-zoom-bar`).should("not.exist");
   });
+  // tnr: maybe enable this some day
+  // it("scroll wheel should zoom in/out", function () {
+  //   cy.visit("#/Editor?focusLinearView=true");
+  //   cy.get('.veLinearView .veRowItem').trigger("wheel", { deltaY: 66.666666, wheelDelta: 240, wheelDeltaX: 120, wheelDeltaY: 120, bubbles: true})
+  // });
   it("selecting 'dbl' term feature and then zooming 6 times should make the label show up for that feature", function () {
     cy.visit("#/Editor?focusLinearView=true");
     cy.get(".veRowViewFeature:contains(dbl term):first").click();

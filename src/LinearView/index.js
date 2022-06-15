@@ -212,7 +212,7 @@ class _LinearView extends React.Component {
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
     const linearZoomEnabled =
-      bpsPerRow > 50 && bpsPerRow < 20000 && withZoomLinearView;
+      bpsPerRow > 50 && bpsPerRow < 30000 && withZoomLinearView;
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
