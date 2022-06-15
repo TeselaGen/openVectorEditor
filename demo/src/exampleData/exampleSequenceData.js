@@ -36,6 +36,16 @@ export default {
       forward: true
     }
   ],
+  // features: [
+  //   {
+  //     notes: {},
+  //     type: "promoter",
+  //     strand: -1,
+  //     name: "araE promoter",
+  //     start: 1035,
+  //     end: 1063
+  //   },
+  // ],
   features: [
     {
       notes: {},

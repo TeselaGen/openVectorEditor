@@ -720,6 +720,7 @@ IMPORTANT! First make sure you make an issue for whatever it is you'd like to se
 fork your own branch of openVectorEditor from https://github.com/TeselaGen/openVectorEditor
 cd openVectorEditor
 yarn
+(cd addons/AutoAnnotate; yarn);
 yarn start
 navigate to http://localhost:3344/ once the demo app has built
 modify the openVectorEditor code base to fix/build whatever it is you're trying to do

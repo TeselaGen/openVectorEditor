@@ -6,7 +6,6 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "downloadjs": "^1.4.7",
     "papaparse": "^5.3.1"
   },
   "devDependencies": {

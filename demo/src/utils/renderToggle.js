@@ -36,6 +36,7 @@ export default function renderToggle({
   that,
   type,
   label,
+  hidden,
   onClick,
   info,
   alwaysShow,
@@ -45,6 +46,7 @@ export default function renderToggle({
   disabled = false,
   ...rest
 }) {
+  if (hidden) return null;
   let toggleOrButton;
   const labelOrText = label ? <span>{label}</span> : type;
   const sharedProps = {

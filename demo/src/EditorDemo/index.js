@@ -498,6 +498,7 @@ updateEditor(store, "DemoEditor", {
                 that: this,
                 label: "Randomize Sequence Data"
               })}
+
               {renderToggle({
                 isSelect: true,
                 options: ["DNA", "RNA", "Protein", "mixedRnaAndDna", "Oligo"],
@@ -597,11 +598,51 @@ certain dna specific tools and annotations are automatically disabled when isPro
                       )
                     });
                   } else {
-                    updateEditor(store, "DemoEditor", {
-                      readOnly: false,
-                      sequenceData: exampleSequenceData
-                    });
+                    if (
+                      this.state.sequenceLength !== 5299 ||
+                      !this.state.sequenceLength
+                    ) {
+                      updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
+                    }
                   }
+                }
+              })}
+              {renderToggle({
+                isSelect: true,
+                type: "sequenceLength",
+                info: `
+                Select your desired sequence length for random generation
+              `,
+                that: this,
+                label: "Sequence of Length",
+                options: [
+                  "5299",
+                  "10",
+                  "20",
+                  "50",
+                  "100",
+                  "1000",
+                  "10000",
+                  "25000",
+                  "45000"
+                ],
+                hidden:
+                  this.state.moleculeType !== "DNA" && this.state.moleculeType,
+                hook: (val) => {
+                  if (!val) return;
+                  updateEditor(store, "DemoEditor", {
+                    sequenceDataHistory: {},
+                    sequenceData:
+                      val === "5299"
+                        ? exampleSequenceData
+                        : generateSequenceData({
+                            isProtein: false,
+                            sequenceLength: parseInt(val)
+                          })
+                  });
                 }
               })}
 
