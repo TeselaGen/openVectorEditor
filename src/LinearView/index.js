@@ -379,7 +379,7 @@ function ZoomLinearView({
   afterOnChange
 }) {
   return (
-    <div style={{ zIndex: 900, position: "absolute" }}>
+    <div className="tg-zoom-bar" style={{ zIndex: 900, position: "absolute" }}>
       <UncontrolledSliderWithPlusMinusBtns
         noWraparound
         bindOutsideChangeHelper={bindOutsideChangeHelper}

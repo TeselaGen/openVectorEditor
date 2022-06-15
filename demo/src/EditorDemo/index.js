@@ -500,6 +500,25 @@ updateEditor(store, "DemoEditor", {
               })}
               {renderToggle({
                 isSelect: true,
+                type: "sequenceLength",
+                info: `
+                Select your desired sequence length for random generation
+              `,
+                that: this,
+                label: "Sequence of Length",
+                options: ["10", "20", "50", "100", "1000", "10000", "25000"],
+                hook: (val) => {
+                  updateEditor(store, "DemoEditor", {
+                    sequenceDataHistory: {},
+                    sequenceData: generateSequenceData({
+                      isProtein: false,
+                      sequenceLength: parseInt(val)
+                    })
+                  });
+                }
+              })}
+              {renderToggle({
+                isSelect: true,
                 options: ["DNA", "RNA", "Protein", "mixedRnaAndDna", "Oligo"],
                 that: this,
                 label: "Molecule Type:",
