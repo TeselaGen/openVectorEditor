@@ -442,6 +442,7 @@ const editCommandDefs = {
           document.querySelector(".tg-find-tool-input input");
         if (!inputEl) return;
         inputEl.focus && inputEl.focus();
+        inputEl.select && inputEl.select();
       } else {
         props.toggleFindTool();
       }
