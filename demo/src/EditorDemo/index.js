@@ -629,7 +629,8 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   "25000",
                   "45000"
                 ],
-                hidden: this.state.moleculeType !== "DNA",
+                hidden:
+                  this.state.moleculeType !== "DNA" && this.state.moleculeType,
                 hook: (val) => {
                   if (!val) return;
                   updateEditor(store, "DemoEditor", {
