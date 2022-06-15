@@ -189,7 +189,7 @@ class _LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
-      withZoomLinearView = true,
+      withZoomLinearView = false,
       editorName,
       paddingBottom,
       linearViewCharWidth,
