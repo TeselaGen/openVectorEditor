@@ -211,6 +211,8 @@ class _LinearView extends React.Component {
     const isLinViewZoomed = this.charWidth !== initialCharWidth;
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
+    const linearZoomEnabled =
+      bpsPerRow > 50 && bpsPerRow < 20000 && withZoomLinearView;
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -257,25 +259,22 @@ class _LinearView extends React.Component {
             );
           }}
         >
-          {withZoomLinearView &&
-            bpsPerRow > 50 &&
-            bpsPerRow < 20000 && ( //so this for conditonal rendering
-              <ZoomLinearView
-                charWidth={this.charWidth}
-                bindOutsideChangeHelper={this.bindOutsideChangeHelper}
-                initialCharWidth={initialCharWidth}
-                editorName={editorName}
-                setCharWidth={(v) => {
-                  this.setState({
-                    charWidthInLinearView:
-                      v === initialCharWidth ? undefined : v
-                  });
-                }}
-                afterOnChange={() => {
-                  this.updateLabelsForInViewFeatures();
-                }}
-              ></ZoomLinearView>
-            )}
+          {linearZoomEnabled && ( //so this for conditonal rendering
+            <ZoomLinearView
+              charWidth={this.charWidth}
+              bindOutsideChangeHelper={this.bindOutsideChangeHelper}
+              initialCharWidth={initialCharWidth}
+              editorName={editorName}
+              setCharWidth={(v) => {
+                this.setState({
+                  charWidthInLinearView: v === initialCharWidth ? undefined : v
+                });
+              }}
+              afterOnChange={() => {
+                this.updateLabelsForInViewFeatures();
+              }}
+            ></ZoomLinearView>
+          )}
           {!hideName && (
             <SequenceName
               {...{
@@ -310,7 +309,7 @@ class _LinearView extends React.Component {
               );
               this.updateLabelsForInViewFeatures();
             }}
-            enabled={bpsPerRow > 50 && bpsPerRow < 20000}
+            enabled={linearZoomEnabled}
           >
             <RowItem
               {...{

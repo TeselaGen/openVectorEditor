@@ -26,12 +26,11 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       label,
       clickStepSize,
       style,
-      min,
-      max,
       onClick,
       bindOutsideChangeHelper,
       ...rest
     } = this.props;
+    const { min, max } = this.props;
 
     const stepSize = this.props.stepSize || (max - min) / 10;
     if (bindOutsideChangeHelper) {
