@@ -21,8 +21,8 @@
         "id": "0bd61b29-d822-474f-86e1-877c476fb5dc",
         "features": [{
           "start": 10,
-          "end": 50,
-          "name": "cds feature",
+          "end": 500,
+          "name": "long feat whose label should still appear",
           "type": "CDS",
           "id": "5ac3f0a199aae6653c0e7d41",
           "forward": true,
