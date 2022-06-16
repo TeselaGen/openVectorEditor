@@ -51,6 +51,7 @@ import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
+import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -803,7 +804,7 @@ class AlignmentView extends React.Component {
   };
 
   render() {
-    const charWidthInLinearView = this.getCharWidthInLinearView();
+    //const charWidthInLinearView = this.getCharWidthInLinearView();
     const {
       alignmentTracks = [],
       height,
@@ -1246,6 +1247,7 @@ class AlignmentView extends React.Component {
                     this.setCharWidthInLinearView({
                       charWidthInLinearView: newCharWidth
                     });
+                    updateLabelsForInViewFeatures();
                     //afterOnChange && afterOnChange(); this is where a version of label updating will happen
                   }}
                   title="Adjust Zoom Level"
@@ -1253,9 +1255,9 @@ class AlignmentView extends React.Component {
                   className="ove-slider"
                   labelRenderer={false}
                   stepSize={0.05} //was 0.01
-                  initialValue={charWidthInLinearView}
-                  max={10}
-                  min={this.getMinCharWidth()}
+                  initialValue={0} //was charWidthInLinearView
+                  max={10} //was 14
+                  min={0} //was this.getMinCharWidth()
                   clickStepSize={0.5}
                 />
               )}
