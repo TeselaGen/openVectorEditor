@@ -1226,36 +1226,47 @@ class AlignmentView extends React.Component {
                   onClick={() => {
                     setTimeout(this.scrollToCaret, 0);
                   }}
-                  onRelease={(val) => {
-                    this.setCharWidthInLinearView({
-                      charWidthInLinearView: val
-                    });
-                    // this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
-                    // const percentScrollage = this.easyStore.percentScrolled;
-                    // setTimeout(() => {
-                    //   this.blockScroll = false;
-                    //   this.scrollAlignmentToPercent(percentScrollage);
-                    // });
-                  }}
+                  minCharWidth={this.getMinCharWidth()}
+                  // onRelease={(zoomLvl) => {
+
+                  // }}
+                  // onRelease={(val) => {
+                  //   this.setCharWidthInLinearView({
+                  //     charWidthInLinearView: val
+                  //   });
+                  //   // this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                  //   // const percentScrollage = this.easyStore.percentScrolled;
+                  //   // setTimeout(() => {
+                  //   //   this.blockScroll = false;
+                  //   //   this.scrollAlignmentToPercent(percentScrollage);
+                  //   // });
+                  // }}
                   onChange={(zoomLvl) => {
+                    // if (!this.startSliderDrag) {
+
+                    // }
+                    // this.startSliderDrag = true
+
                     // zoomLvl is in the range of 0 to 10
-                    const initialCharWidth = this.getCharWidthInLinearView();
-                    const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
+                    const minCharWidth = this.getMinCharWidth();
+                    const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
                     const newCharWidth =
-                      initialCharWidth * Math.pow(scaleFactor, zoomLvl);
+                      minCharWidth * Math.pow(scaleFactor, zoomLvl);
                     this.setCharWidthInLinearView({
                       charWidthInLinearView: newCharWidth
                     });
+                    this.scrollToCaret();
                     //afterOnChange && afterOnChange(); this is where a version of label updating will happen
                   }}
+                  coerceInitialValue={coerceInitialValue}
                   title="Adjust Zoom Level"
                   style={{ paddingTop: "4px", width: 100 }}
                   className="ove-slider"
                   labelRenderer={false}
-                  stepSize={0.05} //was 0.01
                   initialValue={charWidthInLinearView}
+                  stepSize={0.05} //was 0.01
                   max={10}
-                  min={this.getMinCharWidth()}
+                  min={0}
                   clickStepSize={0.5}
                 />
               )}
@@ -1655,3 +1666,23 @@ const PerformantSelectionLayer = view(({ easyStore, ...rest }) => {
 const PerformantCaret = view(({ easyStore, ...rest }) => {
   return <Caret caretPosition={easyStore.caretPosition} {...rest} />;
 });
+
+function coerceInitialValue({ initialValue, minCharWidth }) {
+  //char width 12 = 10
+  //zoomLvl = 0 -> charWidth = minCharWidth
+  //zoomLvl = 10 -> charWidth = 12
+
+  // const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
+  // newCharWidth = initialCharWidth * Math.pow(scaleFactor, zoomLvl)
+  // 12 = initialCharWidth * Math.pow(scaleFactor, 10)
+  // 12/initialCharWidth = Math.pow(scaleFactor, 10)
+  // Math.pow(12/minCharWidth, 1/10) = scaleFactor
+
+  // newCharWidth/minCharWidth =  * Math.pow(scaleFactor, zoomLvl)
+
+  const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+
+  const zoomLvl = Math.log(initialValue / minCharWidth) / Math.log(scaleFactor);
+
+  return zoomLvl;
+}

@@ -213,6 +213,7 @@ class _LinearView extends React.Component {
     const rowData = this.getRowData();
     const linearZoomEnabled =
       bpsPerRow > 50 && bpsPerRow < 30000 && withZoomLinearView;
+    const minCharWidth = initialCharWidth;
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -263,7 +264,7 @@ class _LinearView extends React.Component {
             <ZoomLinearView
               charWidth={this.charWidth}
               bindOutsideChangeHelper={this.bindOutsideChangeHelper}
-              initialCharWidth={initialCharWidth}
+              minCharWidth={minCharWidth}
               editorName={editorName}
               setCharWidth={(v) => {
                 this.setState({
@@ -374,7 +375,7 @@ export default withEditorInteractions(LinearView);
 
 function ZoomLinearView({
   setCharWidth,
-  initialCharWidth,
+  minCharWidth,
   bindOutsideChangeHelper,
   afterOnChange
 }) {
@@ -388,9 +389,8 @@ function ZoomLinearView({
         }}
         onChange={(zoomLvl) => {
           //zoomLvl is in the range of 0 to 10
-          const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
-          const newCharWidth =
-            initialCharWidth * Math.pow(scaleFactor, zoomLvl);
+          const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+          const newCharWidth = minCharWidth * Math.pow(scaleFactor, zoomLvl);
           setCharWidth(newCharWidth);
           scrollToCaret();
           afterOnChange && afterOnChange();
@@ -410,7 +410,7 @@ function ZoomLinearView({
         // clickStepSize={1}
         // initialValue={charWidth}
         // max={12}
-        // min={initialCharWidth}
+        // min={minCharWidth}
       ></UncontrolledSliderWithPlusMinusBtns>
     </div>
   );

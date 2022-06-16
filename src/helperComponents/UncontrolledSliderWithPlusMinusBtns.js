@@ -7,9 +7,13 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
   state = { value: 0 };
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    //potentially coerce the initial value coming in
     if (prevState.oldInitialValue !== nextProps.initialValue) {
+      const val = nextProps.coerceInitialValue
+        ? nextProps.coerceInitialValue(nextProps)
+        : nextProps.initialValue;
       return {
-        value: nextProps.initialValue, //set the state value if a new initial value comes in!
+        value: val, //set the state value if a new initial value comes in!
         oldInitialValue: nextProps.initialValue
       };
     } else {
@@ -31,7 +35,6 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       ...rest
     } = this.props;
     const { min, max } = this.props;
-
     const stepSize = this.props.stepSize || (max - min) / 10;
     if (bindOutsideChangeHelper) {
       bindOutsideChangeHelper.triggerChange = (fn) => {
@@ -64,7 +67,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       >
         <Icon
           onClick={() => {
-            let newVal = this.state.value - (clickStepSize || stepSize);
+            let newVal = value - (clickStepSize || stepSize);
             if (newVal < min) {
               if (noWraparound) {
                 newVal = min;
@@ -84,6 +87,9 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
         />
         <Slider
           {...{ ...rest, value }}
+          onRelease={(newVal) =>
+            this.props.onRelease && this.props.onRelease(newVal)
+          }
           onChange={(value) => {
             this.setState({ value });
             this.props.onChange && this.props.onChange(value);
@@ -91,7 +97,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
         />
         <Icon
           onClick={() => {
-            let newVal = this.state.value + (clickStepSize || stepSize);
+            let newVal = value + (clickStepSize || stepSize);
             if (newVal > max) {
               if (noWraparound) {
                 newVal = max;
