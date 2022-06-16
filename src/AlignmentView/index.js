@@ -3,8 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   Button,
-  Icon,
-  Slider,
   Intent,
   Popover,
   InputGroup,
@@ -52,6 +50,8 @@ import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
+
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
 try {
@@ -67,6 +67,7 @@ try {
 }
 
 class AlignmentView extends React.Component {
+  bindOutsideChangeHelper = {};
   constructor(props) {
     super(props);
     window.scrollAlignmentToPercent = this.scrollAlignmentToPercent;
@@ -389,6 +390,13 @@ class AlignmentView extends React.Component {
       window.localStorage.getItem("charWidthInLinearViewDefault")
     );
   };
+
+  scrollToCaret = () => {
+    const el = window.document.querySelector(".veCaret"); //adding .veRowViewCaret breaks this for some reason
+    if (!el) return;
+    el.scrollIntoView({ inline: "center" });
+  };
+
   scrollAlignmentToPercent = (scrollPercentage) => {
     const scrollPercentageToUse = Math.min(Math.max(scrollPercentage, 0), 1);
 
@@ -1213,25 +1221,42 @@ class AlignmentView extends React.Component {
               )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
+                  noWraparound
+                  bindOutsideChangeHelper={this.bindOutsideChangeHelper}
+                  onClick={() => {
+                    setTimeout(this.scrollToCaret, 0);
+                  }}
                   onRelease={(val) => {
                     this.setCharWidthInLinearView({
                       charWidthInLinearView: val
                     });
-                    this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
-                    const percentScrollage = this.easyStore.percentScrolled;
-                    setTimeout(() => {
-                      this.blockScroll = false;
-                      this.scrollAlignmentToPercent(percentScrollage);
+                    // this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                    // const percentScrollage = this.easyStore.percentScrolled;
+                    // setTimeout(() => {
+                    //   this.blockScroll = false;
+                    //   this.scrollAlignmentToPercent(percentScrollage);
+                    // });
+                  }}
+                  onChange={(zoomLvl) => {
+                    // zoomLvl is in the range of 0 to 10
+                    const initialCharWidth = this.getCharWidthInLinearView();
+                    const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
+                    const newCharWidth =
+                      initialCharWidth * Math.pow(scaleFactor, zoomLvl);
+                    this.setCharWidthInLinearView({
+                      charWidthInLinearView: newCharWidth
                     });
+                    //afterOnChange && afterOnChange(); this is where a version of label updating will happen
                   }}
                   title="Adjust Zoom Level"
                   style={{ paddingTop: "4px", width: 100 }}
                   className="ove-slider"
                   labelRenderer={false}
-                  stepSize={0.01}
+                  stepSize={0.05} //was 0.01
                   initialValue={charWidthInLinearView}
-                  max={14}
+                  max={10}
                   min={this.getMinCharWidth()}
+                  clickStepSize={0.5}
                 />
               )}
               {!noVisibilityOptions && !isInPairwiseOverviewView && (
@@ -1516,70 +1541,6 @@ export default compose(
     })
   )
 )(AlignmentView);
-
-class UncontrolledSliderWithPlusMinusBtns extends React.Component {
-  state = { value: 0 };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.oldInitialValue !== nextProps.initialValue) {
-      return {
-        value: nextProps.initialValue, //set the state value if a new initial value comes in!
-        oldInitialValue: nextProps.initialValue
-      };
-    } else {
-      return null;
-    }
-  }
-
-  render() {
-    const { value } = this.state;
-    const { title, initialValue, style, ...rest } = this.props;
-
-    return (
-      <div
-        title={title}
-        style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
-      >
-        <Icon
-          onClick={() => {
-            const newVal = Math.max(
-              this.state.value - (this.props.max - this.props.min) / 10,
-              this.props.min
-            );
-            this.setState({
-              value: newVal
-            });
-            this.props.onRelease(newVal);
-          }}
-          style={{ cursor: "pointer", marginRight: 5 }}
-          intent={Intent.PRIMARY}
-          icon="minus"
-        />
-        <Slider
-          {...{ ...rest, value }}
-          onChange={(value) => {
-            this.setState({ value });
-          }}
-        />
-        <Icon
-          onClick={() => {
-            const newVal = Math.min(
-              this.state.value + (this.props.max - this.props.min) / 10,
-              this.props.max
-            );
-            this.setState({
-              value: newVal
-            });
-            this.props.onRelease(newVal);
-          }}
-          style={{ cursor: "pointer", marginLeft: 5 }}
-          intent={Intent.PRIMARY}
-          icon="plus"
-        />
-      </div>
-    );
-  }
-}
 
 //this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {
