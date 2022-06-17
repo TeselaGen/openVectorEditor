@@ -1,4 +1,15 @@
 describe("alignment", function () {
+  it("it should re-draw the labels of features/parts/primers when a feature is so long that the middle of the label does not fit into view", function () {
+    cy.visit("#/Alignment");
+    cy.get(".tg-alignment-visibility-toggle").click();
+    cy.contains("cds feature").should("not.exist");
+    cy.get(".bp3-popover .bp3-control:contains(Features)").click();
+    cy.contains("cds feature");
+    cy.get(".tg-alignment-visibility-toggle").click();
+    cy.contains("text", "long feat whose label should still appear").should(
+      "be.visible"
+    );
+  });
   it("it should show an unmapped warning", function () {
     cy.visit("#/Alignment");
     cy.get(".bp3-icon-warning-sign");

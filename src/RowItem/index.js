@@ -404,10 +404,11 @@ export default function RowItem(props) {
         {drawAnnotations("orf", {
           CompOverride: Orfs
         })}
-        {drawAnnotations("translation", {
-          ...translationCommonProps,
-          onDoubleClick: translationDoubleClicked
-        })}
+        {charWidth > 4 &&
+          drawAnnotations("translation", {
+            ...translationCommonProps,
+            onDoubleClick: translationDoubleClicked
+          })}
 
         {showChromatogram && chromatogramData && (
           <Chromatogram

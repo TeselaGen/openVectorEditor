@@ -3,8 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   Button,
-  Icon,
-  Slider,
   Intent,
   Popover,
   InputGroup,
@@ -52,6 +50,9 @@ import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 
+import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
+import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
+
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
 try {
@@ -67,6 +68,7 @@ try {
 }
 
 class AlignmentView extends React.Component {
+  bindOutsideChangeHelper = {};
   constructor(props) {
     super(props);
     window.scrollAlignmentToPercent = this.scrollAlignmentToPercent;
@@ -225,6 +227,9 @@ class AlignmentView extends React.Component {
     this.editorDragStarted = editorDragStarted.bind(this);
     this.editorDragStopped = editorDragStopped.bind(this);
     setTimeout(() => {
+      updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
+    }, 0);
+    setTimeout(() => {
       this.setVerticalScrollRange();
     }, 500);
   }
@@ -362,6 +367,7 @@ class AlignmentView extends React.Component {
     if (this.alignmentHolderTop) {
       this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
     }
+    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   };
   handleTopScroll = () => {
     this.alignmentHolder.scrollLeft = this.alignmentHolderTop.scrollLeft;
@@ -377,6 +383,7 @@ class AlignmentView extends React.Component {
       this.scrollAlignmentToPercent(newPercent);
       this.blockScroll = false;
     });
+    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   };
 
   setCharWidthInLinearView = ({ charWidthInLinearView }) => {
@@ -389,6 +396,13 @@ class AlignmentView extends React.Component {
       window.localStorage.getItem("charWidthInLinearViewDefault")
     );
   };
+
+  scrollToCaret = () => {
+    const el = window.document.querySelector(".veCaret"); //adding .veRowViewCaret breaks this for some reason
+    if (!el) return;
+    el.scrollIntoView({ inline: "center" });
+  };
+
   scrollAlignmentToPercent = (scrollPercentage) => {
     const scrollPercentageToUse = Math.min(Math.max(scrollPercentage, 0), 1);
 
@@ -1213,25 +1227,55 @@ class AlignmentView extends React.Component {
               )}
               {!isInPairwiseOverviewView && (
                 <UncontrolledSliderWithPlusMinusBtns
-                  onRelease={(val) => {
-                    this.setCharWidthInLinearView({
-                      charWidthInLinearView: val
+                  noWraparound
+                  bindOutsideChangeHelper={this.bindOutsideChangeHelper}
+                  onClick={() => {
+                    setTimeout(this.scrollToCaret, 0);
+                  }}
+                  minCharWidth={this.getMinCharWidth()}
+                  // onRelease={(zoomLvl) => {
+
+                  // }}
+                  // onRelease={(val) => {
+                  //   this.setCharWidthInLinearView({
+                  //     charWidthInLinearView: val
+                  //   });
+                  //   // this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
+                  //   // const percentScrollage = this.easyStore.percentScrolled;
+                  //   // setTimeout(() => {
+                  //   //   this.blockScroll = false;
+                  //   //   this.scrollAlignmentToPercent(percentScrollage);
+                  //   // });
+                  // }}
+                  onChange={async (zoomLvl) => {
+                    // if (!this.startSliderDrag) {
+
+                    // }
+                    // this.startSliderDrag = true
+
+                    // zoomLvl is in the range of 0 to 10
+                    const minCharWidth = this.getMinCharWidth();
+                    const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+                    const newCharWidth =
+                      minCharWidth * Math.pow(scaleFactor, zoomLvl);
+                    await this.setCharWidthInLinearView({
+                      charWidthInLinearView: newCharWidth
                     });
-                    this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
-                    const percentScrollage = this.easyStore.percentScrolled;
-                    setTimeout(() => {
-                      this.blockScroll = false;
-                      this.scrollAlignmentToPercent(percentScrollage);
+                    await this.scrollToCaret();
+                    await updateLabelsForInViewFeatures({
+                      rectElement: ".alignmentHolder"
                     });
                   }}
+                  coerceInitialValue={coerceInitialValue}
                   title="Adjust Zoom Level"
                   style={{ paddingTop: "4px", width: 100 }}
                   className="ove-slider"
                   labelRenderer={false}
-                  stepSize={0.01}
                   initialValue={charWidthInLinearView}
-                  max={14}
-                  min={this.getMinCharWidth()}
+                  stepSize={0.05} //was 0.01
+                  max={10}
+                  min={0}
+                  clickStepSize={0.5}
                 />
               )}
               {!noVisibilityOptions && !isInPairwiseOverviewView && (
@@ -1467,6 +1511,11 @@ export default compose(
             name,
             { useChecked, checked } = {}
           ) => {
+            setTimeout(() => {
+              updateLabelsForInViewFeatures({
+                rectElement: ".alignmentHolder"
+              });
+            }, 0);
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationVisibility: {
@@ -1516,70 +1565,6 @@ export default compose(
     })
   )
 )(AlignmentView);
-
-class UncontrolledSliderWithPlusMinusBtns extends React.Component {
-  state = { value: 0 };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.oldInitialValue !== nextProps.initialValue) {
-      return {
-        value: nextProps.initialValue, //set the state value if a new initial value comes in!
-        oldInitialValue: nextProps.initialValue
-      };
-    } else {
-      return null;
-    }
-  }
-
-  render() {
-    const { value } = this.state;
-    const { title, initialValue, style, ...rest } = this.props;
-
-    return (
-      <div
-        title={title}
-        style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
-      >
-        <Icon
-          onClick={() => {
-            const newVal = Math.max(
-              this.state.value - (this.props.max - this.props.min) / 10,
-              this.props.min
-            );
-            this.setState({
-              value: newVal
-            });
-            this.props.onRelease(newVal);
-          }}
-          style={{ cursor: "pointer", marginRight: 5 }}
-          intent={Intent.PRIMARY}
-          icon="minus"
-        />
-        <Slider
-          {...{ ...rest, value }}
-          onChange={(value) => {
-            this.setState({ value });
-          }}
-        />
-        <Icon
-          onClick={() => {
-            const newVal = Math.min(
-              this.state.value + (this.props.max - this.props.min) / 10,
-              this.props.max
-            );
-            this.setState({
-              value: newVal
-            });
-            this.props.onRelease(newVal);
-          }}
-          style={{ cursor: "pointer", marginLeft: 5 }}
-          intent={Intent.PRIMARY}
-          icon="plus"
-        />
-      </div>
-    );
-  }
-}
 
 //this view is shown if we detect pairwise alignments
 class PairwiseAlignmentView extends React.Component {
@@ -1694,3 +1679,23 @@ const PerformantSelectionLayer = view(({ easyStore, ...rest }) => {
 const PerformantCaret = view(({ easyStore, ...rest }) => {
   return <Caret caretPosition={easyStore.caretPosition} {...rest} />;
 });
+
+function coerceInitialValue({ initialValue, minCharWidth }) {
+  //char width 12 = 10
+  //zoomLvl = 0 -> charWidth = minCharWidth
+  //zoomLvl = 10 -> charWidth = 12
+
+  // const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
+  // newCharWidth = initialCharWidth * Math.pow(scaleFactor, zoomLvl)
+  // 12 = initialCharWidth * Math.pow(scaleFactor, 10)
+  // 12/initialCharWidth = Math.pow(scaleFactor, 10)
+  // Math.pow(12/minCharWidth, 1/10) = scaleFactor
+
+  // newCharWidth/minCharWidth =  * Math.pow(scaleFactor, zoomLvl)
+
+  const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+
+  const zoomLvl = Math.log(initialValue / minCharWidth) / Math.log(scaleFactor);
+
+  return zoomLvl;
+}
