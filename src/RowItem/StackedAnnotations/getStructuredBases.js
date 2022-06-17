@@ -1,7 +1,7 @@
 import { clone } from "lodash";
 import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
 import { getComplementSequenceString } from "ve-sequence-utils";
-import { ambiguous_dna_values } from "ve-sequence-utils/lib/bioData";
+import { ambiguous_dna_values } from "ve-sequence-utils";
 
 export function getStructuredBases({
   annotationRange,
