@@ -5,7 +5,8 @@ describe("alignment", function () {
     cy.contains("cds feature").should("not.exist");
     cy.get(".bp3-popover .bp3-control:contains(Features)").click();
     cy.contains("cds feature");
-    cy.contains("long feat whose label should still appear").should(
+    cy.get(".tg-alignment-visibility-toggle").click();
+    cy.contains("text", "long feat whose label should still appear").should(
       "be.visible"
     );
   });

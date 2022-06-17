@@ -220,7 +220,6 @@ class AlignmentView extends React.Component {
       });
     };
     window.updateAlignmentSelection = updateAlignmentSelection;
-    window.addEventListener("load", this.handleLoad);
     if (window.Cypress)
       window.Cypress.updateAlignmentSelection = updateAlignmentSelection;
     this.editorDragged = editorDragged.bind(this);
@@ -228,12 +227,11 @@ class AlignmentView extends React.Component {
     this.editorDragStarted = editorDragStarted.bind(this);
     this.editorDragStopped = editorDragStopped.bind(this);
     setTimeout(() => {
+      updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
+    }, 0);
+    setTimeout(() => {
       this.setVerticalScrollRange();
     }, 500);
-  }
-
-  handleLoad() {
-    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   }
 
   annotationClicked = ({
@@ -1513,6 +1511,11 @@ export default compose(
             name,
             { useChecked, checked } = {}
           ) => {
+            setTimeout(() => {
+              updateLabelsForInViewFeatures({
+                rectElement: ".alignmentHolder"
+              });
+            }, 0);
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationVisibility: {
