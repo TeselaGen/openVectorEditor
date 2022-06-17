@@ -581,6 +581,7 @@ export class Editor extends React.Component {
           isProtein={sequenceData.isProtein}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
+          nameFontSizeCircularView={this.props.nameFontSizeCircularView}
           {...editorDimensions}
           isInsideEditor //pass this prop to let the sub components know they're being rendered as an editor tab
         />
