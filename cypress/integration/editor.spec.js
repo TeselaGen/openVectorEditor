@@ -271,15 +271,15 @@ describe("editor", function () {
     cy.contains("Selecting 4 bps from 5295 to 1");
   });
   it(`should adjust font size of sequence name in circular view`, () => {
+    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then((text) => {
+      const fontSize = parseInt(text[0].style.getPropertyValue("font-size"));
+      expect(fontSize).to.equal(14);
+    });
     cy.tgToggle("nameFontSizeCircularView");
-    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then(
-      (reducedText) => {
-        const reducedFontSize = parseInt(
-          reducedText[0].style.getPropertyValue("font-size")
-        );
-        expect(reducedFontSize).to.equal(10);
-      }
-    );
+    cy.contains(".veCircularViewTextWrapper", "pj5_00001").then((text) => {
+      const fontSize = parseInt(text[0].style.getPropertyValue("font-size"));
+      expect(fontSize).to.equal(10);
+    });
   });
   it(`should handle enabling external labels and then only showing labels that don't fit`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
