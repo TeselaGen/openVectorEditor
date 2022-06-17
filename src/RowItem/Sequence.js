@@ -3,13 +3,14 @@ import { times, map } from "lodash";
 import { DNAComplementMap } from "ve-sequence-utils";
 import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
+import { fudge2, realCharWidth } from "./constants";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
-const realCharWidth = 8;
+
 class Sequence extends React.Component {
   render() {
-    let {
+    const {
       sequence,
       hideBps,
       charWidth,
@@ -22,13 +23,14 @@ class Sequence extends React.Component {
       chunkSize = 100,
       scrollData,
       showDnaColors,
+      fivePrimeThreePrimeHints,
       // getGaps,
       alignmentData
     } = this.props;
     // the fudge factor is used to position the sequence in the middle of the <text> element
     const fudge = charWidth - realCharWidth;
-    let gapsBeforeSequence = 0;
-    let seqReadWidth = 0;
+    const gapsBeforeSequence = 0;
+    const seqReadWidth = 0;
     const seqLen = sequence.length;
 
     if (alignmentData) {
@@ -36,14 +38,14 @@ class Sequence extends React.Component {
       // sequence = sequence.replace(/-/g, " ")
       // seqReadWidth = charWidth * sequence.length;
     }
-    let style = {
+    const style = {
       position: "relative",
       height,
       left: gapsBeforeSequence * charWidth,
       ...containerStyle
     };
 
-    let width = seqLen * charWidth;
+    const width = seqLen * charWidth;
     let coloredRects = null;
     if (showDnaColors) {
       coloredRects = <ColoredSequence {...{ ...this.props, width }} />;
@@ -88,7 +90,7 @@ class Sequence extends React.Component {
                       (isReverse ? " ve-sequence-reverse" : "")
                     }
                     {...{
-                      textLength: textLength - fudge,
+                      textLength: textLength - fudge - fudge2,
                       x: x + fudge / 2,
                       y: height - height / 4,
                       lengthAdjust: "spacing"
@@ -110,6 +112,24 @@ class Sequence extends React.Component {
           style={style}
           className={(className ? className : "") + " ve-row-item-sequence"}
         >
+          {fivePrimeThreePrimeHints && (
+            <div
+              className={`tg-${
+                isReverse ? "left" : "right"
+              }-prime-direction tg-prime-direction`}
+            >
+              3'
+            </div>
+          )}
+          {fivePrimeThreePrimeHints && (
+            <div
+              className={`tg-${
+                isReverse ? "right" : "left"
+              }-prime-direction tg-prime-direction`}
+            >
+              5'
+            </div>
+          )}
           {!hideBps && (
             <svg
               style={{
@@ -129,7 +149,8 @@ class Sequence extends React.Component {
                 {...{
                   x: 0 + fudge / 2,
                   y: height - height / 4,
-                  textLength: (alignmentData ? seqReadWidth : width) - fudge
+                  textLength:
+                    (alignmentData ? seqReadWidth : width) - fudge - fudge2
                 }}
               >
                 {sequence}
@@ -174,7 +195,8 @@ class ColoredSequence extends React.Component {
     return false;
   }
   drawRects = () => {
-    let { charWidth, sequence, height, isReverse, alignmentData } = this.props;
+    let { charWidth, sequence, height, isReverse, alignmentData, getGaps } =
+      this.props;
     if (alignmentData) {
       sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
     }
@@ -183,13 +205,14 @@ class ColoredSequence extends React.Component {
       acc[color] = "";
       return acc;
     }, {});
-
+    const gapsBefore = getGaps ? getGaps({ start: 0, end: 0 }).gapsBefore : 0;
     sequence.split("").forEach((char, i) => {
-      const width = charWidth;
-      const x = i * charWidth;
+      const width = Number(charWidth);
+      const color = getDnaColor(char, isReverse);
+      const x = (i + gapsBefore) * charWidth;
       const y = 0;
-      colorPaths[getDnaColor(char, isReverse)] =
-        (colorPaths[getDnaColor(char, isReverse)] || "") +
+      colorPaths[color] =
+        (colorPaths[color] || "") +
         `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
           y + height
         }`;

@@ -26,7 +26,7 @@ function drawAnnotations({
   useStartAngle, //use the startAngle instead of the centerAngle to position the labels
   onClick = noop,
   positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
-  allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
+  allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cut Sites for example just get drawn all on the same level
   onRightClicked = noop,
   onDoubleClick = noop,
   showLabels,
@@ -46,19 +46,14 @@ function drawAnnotations({
     return -getRangeLength(a, sequenceLength);
   })
     .map((annotation) => {
-      let {
-        startAngle,
-        endAngle,
-        totalAngle,
-        centerAngle,
-        locationAngles
-      } = getRangeAngles(
-        positionBy ? positionBy(annotation) : annotation,
-        sequenceLength
-      );
+      const { startAngle, endAngle, totalAngle, centerAngle, locationAngles } =
+        getRangeAngles(
+          positionBy ? positionBy(annotation) : annotation,
+          sequenceLength
+        );
 
-      let spansOrigin = startAngle > endAngle;
-      let annotationCopy = {
+      const spansOrigin = startAngle > endAngle;
+      const annotationCopy = {
         ...annotation,
         startAngle,
         endAngle,
@@ -69,7 +64,9 @@ function drawAnnotations({
       };
       if (!allOnSameLevel) {
         //expand the end angle if annotation spans the origin
-        let expandedEndAngle = spansOrigin ? endAngle + 2 * Math.PI : endAngle;
+        const expandedEndAngle = spansOrigin
+          ? endAngle + 2 * Math.PI
+          : endAngle;
         let yOffset1;
         let yOffset2;
         if (spansOrigin) {
@@ -188,7 +185,7 @@ function drawAnnotations({
         };
       }
 
-      let annotationColor = getColor
+      const annotationColor = getColor
         ? getColor(annotation)
         : annotation.color || "purple";
 
@@ -204,7 +201,9 @@ function drawAnnotations({
             annotationType,
             showLabels,
             Annotation,
-            doesOverlapSelf: annotation.doesOverlapSelf,
+            arrowheadLength:
+              annotation.rangeTypeOverride === "middle" ? 0 : undefined,
+            overlapsSelf: annotation.overlapsSelf,
             labelCenter: centerAngle,
             startAngle,
             endAngle,
@@ -255,6 +254,7 @@ const DrawAnnotation = withHover(function ({
   reverseAnnotations,
   Annotation = Feature,
   totalAngle,
+  arrowheadLength,
   annotationColor,
   isProtein,
   annotationRadius,
@@ -290,6 +290,7 @@ const DrawAnnotation = withHover(function ({
           totalAngle={totalAngle}
           color={annotationColor}
           isProtein={isProtein}
+          arrowheadLength={arrowheadLength}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
           {...annotationProps}

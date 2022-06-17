@@ -2,7 +2,7 @@ import { compose } from "recompose";
 import { wrapDialog, DropdownButton } from "teselagen-react-components";
 import React from "react";
 import { Classes, Icon, Menu, MenuItem, Tag } from "@blueprintjs/core";
-import withEditorProps, { connectToEditor } from "../withEditorProps";
+import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 import {
   differenceBy,
@@ -16,128 +16,74 @@ import {
 import SingleEnzymeCutsiteInfo from "../helperComponents/PropertiesDialog/SingleEnzymeCutsiteInfo";
 import { showDialog } from "../GlobalDialogUtils";
 
-import restrictionEnzymesSelector from "../selectors/restrictionEnzymesSelector";
+import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
+import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
+import { getEnzymeAliases } from "../utils/editorUtils";
 
-export const withRestrictionEnzymes = connectToEditor(
-  (editorState, ownProps) => {
-    const allRestrictionEnzymes = restrictionEnzymesSelector(
-      editorState,
-      ownProps.additionalEnzymes,
-      ownProps.enzymeGroupsOverride
-    );
-    return {
-      allRestrictionEnzymes
-    };
-  }
-);
+function getUserEnzymeGroups(p) {
+  return p.enzymeGroupsOverride || window.getExistingEnzymeGroups();
+}
 
-const sharedWrapper = compose(
-  wrapDialog({ isDraggable: true }),
+function isGroup({ cutsiteOrGroupKey }) {
+  const isUserCreatedGroup = cutsiteOrGroupKey.startsWith("__userCreatedGroup");
+  const specialCutsiteFilterOption =
+    specialCutsiteFilterOptions[cutsiteOrGroupKey];
+  return isUserCreatedGroup || specialCutsiteFilterOption;
+}
+
+export const AdditionalCutsiteInfoDialog = compose(
   withEditorProps,
-  withRestrictionEnzymes
-);
-
-export const AdditionalCutsiteInfoDialog = sharedWrapper(function (props) {
+  withRestrictionEnzymes,
+  wrapDialog({
+    isDraggable: true,
+    getDialogProps: (props) => {
+      if (isGroup(props)) {
+        return {
+          title: (
+            <div style={{ display: "flex" }}>
+              Group - &nbsp;
+              {getGroupElAndCutsites(props).title}
+            </div>
+          )
+        };
+      } else {
+        return {
+          title: (
+            <div style={{ display: "flex" }}>
+              Enzyme - &nbsp;
+              <CutsiteTag
+                noClick
+                showActiveText
+                allRestrictionEnzymes={props.allRestrictionEnzymes}
+                cutsitesByNameActive={props.filteredCutsites.cutsitesByName}
+                cutsitesByName={props.allCutsites.cutsitesByName}
+                name={props.cutsiteOrGroupKey}
+              ></CutsiteTag>
+            </div>
+          )
+        };
+      }
+    }
+  })
+)(function (props) {
   const {
     dispatch,
     editorName,
     cutsiteOrGroupKey,
-    filteredRestrictionEnzymes,
     allCutsites: { cutsitesByName },
     filteredCutsites: { cutsitesByName: cutsitesByNameActive },
     selectedAnnotationId,
-    enzymeGroupsOverride,
     allRestrictionEnzymes
   } = props;
 
-  const userEnzymeGroups =
-    enzymeGroupsOverride || window.getExistingEnzymeGroups();
-
-  const isUserCreatedGroup = cutsiteOrGroupKey.startsWith("__userCreatedGroup");
-  let specialCutsiteFilterOption =
-    specialCutsiteFilterOptions[cutsiteOrGroupKey];
   let inner;
-  let enzymesThatCutInSeq = [];
-  let enzymesThatDontCutInSeq = [];
-  if (isUserCreatedGroup || specialCutsiteFilterOption) {
-    //grour case
-    const ret = getGroupElAndCutsites({
-      cutsitesByName,
-      filteredRestrictionEnzymes,
-      groupKey: cutsiteOrGroupKey,
-      userEnzymeGroups
-    });
-    enzymesThatCutInSeq = ret.enzymesThatCutInSeq;
-    enzymesThatDontCutInSeq = ret.enzymesThatDontCutInSeq;
-  } else if (
-    //single enzyme case
-    cutsitesByName[cutsiteOrGroupKey.toLowerCase()] ||
-    allRestrictionEnzymes[cutsiteOrGroupKey.toLowerCase()]
-  ) {
-    const inTheseUserGroups = [];
-    const cutsiteGroup = cutsitesByName[cutsiteOrGroupKey.toLowerCase()] || [];
-    const enzyme = cutsiteGroup[0]
-      ? cutsiteGroup[0].restrictionEnzyme
-      : allRestrictionEnzymes[cutsiteOrGroupKey.toLowerCase()];
 
-    if (cutsiteGroup.length && cutsiteGroup.length <= 3) {
-      const { el } = getGroupElAndCutsites({
-        cutsitesByName,
-        userEnzymeGroups,
-        groupKey: find(
-          specialCutsiteFilterOptions,
-          ({ cutsThisManyTimes }) => cutsThisManyTimes === cutsiteGroup.length
-        ).value,
-        filteredRestrictionEnzymes
-      });
-
-      inTheseUserGroups.push(el);
-    }
-
-    const enzymeName = enzyme.name;
-
-    forEach(userEnzymeGroups, (nameArray, name) => {
-      let isInGroup;
-      forEach(nameArray, (n) => {
-        if (n.toLowerCase() === enzymeName.toLowerCase()) {
-          isInGroup = true;
-        }
-      });
-      if (isInGroup) {
-        const groupKey = "__userCreatedGroup" + name;
-
-        const { el } = getGroupElAndCutsites({
-          cutsitesByName,
-          userEnzymeGroups,
-          groupKey,
-          filteredRestrictionEnzymes
-        });
-
-        inTheseUserGroups.push(el);
-      }
-    });
-    inner = (
-      <div>
-        {!!inTheseUserGroups.length && (
-          <div style={{ marginBottom: 20 }}>{inTheseUserGroups}</div>
-        )}
-        <SingleEnzymeCutsiteInfo
-          {...{
-            dispatch,
-            editorName,
-            selectedAnnotationId,
-            cutsiteGroup,
-            enzyme
-          }}
-        ></SingleEnzymeCutsiteInfo>
-      </div>
-    );
-  } else {
-    console.error(`we shouldn't be here!:`, cutsiteOrGroupKey);
-    return null;
-  }
-
-  if (!inner) {
+  const userEnzymeGroups = getUserEnzymeGroups(props);
+  if (isGroup(props)) {
+    //group case
+    const ret = getGroupElAndCutsites(props);
+    const enzymesThatCutInSeq = ret.enzymesThatCutInSeq;
+    const enzymesThatDontCutInSeq = ret.enzymesThatDontCutInSeq;
     inner = (
       <div>
         <div>
@@ -197,6 +143,8 @@ export const AdditionalCutsiteInfoDialog = sharedWrapper(function (props) {
               >
                 {enzymesThatCutInSeq.map((e, i) => (
                   <CutsiteTag
+                    allRestrictionEnzymes={props.allRestrictionEnzymes}
+                    cutsitesByName={props.allCutsites.cutsitesByName}
                     cutsitesByNameActive={cutsitesByNameActive}
                     key={i}
                     {...e}
@@ -212,11 +160,12 @@ export const AdditionalCutsiteInfoDialog = sharedWrapper(function (props) {
                   display: "flex",
                   flexDirection: "column",
                   overflow: "auto"
-                  // maxHeight: 400
                 }}
               >
                 {enzymesThatDontCutInSeq.map((e, i) => (
                   <CutsiteTag
+                    allRestrictionEnzymes={props.allRestrictionEnzymes}
+                    cutsitesByName={props.allCutsites.cutsitesByName}
                     cutsitesByNameActive={cutsitesByNameActive}
                     key={i}
                     {...e}
@@ -228,35 +177,99 @@ export const AdditionalCutsiteInfoDialog = sharedWrapper(function (props) {
         </div>
       </div>
     );
+  } else if (
+    //single enzyme case
+    cutsitesByName[cutsiteOrGroupKey.toLowerCase()] ||
+    allRestrictionEnzymes[cutsiteOrGroupKey.toLowerCase()] ||
+    aliasedEnzymesByName[cutsiteOrGroupKey.toLowerCase()]
+  ) {
+    const inTheseUserGroups = [];
+    const cutsiteGroup = cutsitesByName[cutsiteOrGroupKey.toLowerCase()] || [];
+    const enzyme = cutsiteGroup[0]
+      ? cutsiteGroup[0].restrictionEnzyme
+      : allRestrictionEnzymes[cutsiteOrGroupKey.toLowerCase()] ||
+        aliasedEnzymesByName[cutsiteOrGroupKey.toLowerCase()];
+
+    if (cutsiteGroup.length && cutsiteGroup.length <= 3) {
+      const { el } = getGroupElAndCutsites({
+        ...props,
+        cutsiteOrGroupKey: find(
+          specialCutsiteFilterOptions,
+          ({ cutsThisManyTimes }) => cutsThisManyTimes === cutsiteGroup.length
+        ).value
+      });
+
+      inTheseUserGroups.push(el);
+    }
+
+    const enzymeName = enzyme.name;
+
+    forEach(userEnzymeGroups, (nameArray, name) => {
+      let isInGroup;
+      forEach(nameArray, (n) => {
+        if (n.toLowerCase() === enzymeName.toLowerCase()) {
+          isInGroup = true;
+        }
+      });
+      if (isInGroup) {
+        const cutsiteOrGroupKey = "__userCreatedGroup" + name;
+
+        const { el } = getGroupElAndCutsites({
+          ...props,
+          cutsiteOrGroupKey
+        });
+
+        inTheseUserGroups.push(el);
+      }
+    });
+    inner = (
+      <div>
+        {!!inTheseUserGroups.length && (
+          <div style={{ marginBottom: 20 }}>{inTheseUserGroups}</div>
+        )}
+        <SingleEnzymeCutsiteInfo
+          {...{
+            dispatch,
+            editorName,
+            selectedAnnotationId,
+            cutsiteGroup,
+            enzyme,
+            allRestrictionEnzymes,
+            allCutsites: props.allCutsites,
+            filteredCutsites: props.filteredCutsites
+          }}
+        ></SingleEnzymeCutsiteInfo>
+      </div>
+    );
+  } else {
+    console.error(`we shouldn't be here!:`, cutsiteOrGroupKey);
+    return null;
   }
+
   return <div className={Classes.DIALOG_BODY}>{inner}</div>;
 });
 
-export const CompareEnzymeGroupsDialog = sharedWrapper(function (props) {
+export const CompareEnzymeGroupsDialog = compose(
+  withEditorProps,
+  withRestrictionEnzymes,
+  wrapDialog({
+    isDraggable: true
+  })
+)(function (props) {
   const {
     group1,
     group2,
-    enzymeGroupsOverride,
-    filteredRestrictionEnzymes,
-    allCutsites: { cutsitesByName },
     filteredCutsites: { cutsitesByName: cutsitesByNameActive }
   } = props;
 
-  const userEnzymeGroups =
-    enzymeGroupsOverride || window.getExistingEnzymeGroups();
-
   const g1 = getGroupElAndCutsites({
-    cutsitesByName,
-    userEnzymeGroups,
-    groupKey: group1,
-    filteredRestrictionEnzymes
+    ...props,
+    cutsiteOrGroupKey: group1
   });
 
   const g2 = getGroupElAndCutsites({
-    cutsitesByName,
-    userEnzymeGroups,
-    groupKey: group2,
-    filteredRestrictionEnzymes
+    ...props,
+    cutsiteOrGroupKey: group2
   });
   const byNameLower = (n) => n.name.toLowerCase();
   const shared = intersectionBy(
@@ -279,6 +292,8 @@ export const CompareEnzymeGroupsDialog = sharedWrapper(function (props) {
         body={g1Only.map((e, i) => {
           return (
             <CutsiteTag
+              allRestrictionEnzymes={props.allRestrictionEnzymes}
+              cutsitesByName={props.allCutsites.cutsitesByName}
               cutsitesByNameActive={cutsitesByNameActive}
               key={i}
               {...e}
@@ -298,6 +313,8 @@ export const CompareEnzymeGroupsDialog = sharedWrapper(function (props) {
         body={shared.map((e, i) => {
           return (
             <CutsiteTag
+              allRestrictionEnzymes={props.allRestrictionEnzymes}
+              cutsitesByName={props.allCutsites.cutsitesByName}
               cutsitesByNameActive={cutsitesByNameActive}
               key={i}
               {...e}
@@ -313,6 +330,8 @@ export const CompareEnzymeGroupsDialog = sharedWrapper(function (props) {
         body={g2Only.map((e, i) => {
           return (
             <CutsiteTag
+              allRestrictionEnzymes={props.allRestrictionEnzymes}
+              cutsitesByName={props.allCutsites.cutsitesByName}
               cutsitesByNameActive={cutsitesByNameActive}
               key={i}
               {...e}
@@ -330,29 +349,46 @@ function isUserEnzymeGroup(group) {
 }
 
 const getGroupElAndCutsites = ({
-  userEnzymeGroups,
-  groupKey,
+  enzymeGroupsOverride,
+  cutsiteOrGroupKey,
   filteredRestrictionEnzymes,
-  cutsitesByName
+  allCutsites
 }) => {
+  const userEnzymeGroups =
+    enzymeGroupsOverride || window.getExistingEnzymeGroups();
+
   let isGroupActive;
   let label;
 
-  let enzymesThatDontCutInSeq = [];
+  const enzymesThatDontCutInSeq = [];
   let enzymesThatCutInSeq = [];
   forEach(filteredRestrictionEnzymes, (g) => {
-    if (g.value === groupKey) {
+    if (g.value === cutsiteOrGroupKey) {
       isGroupActive = true;
     }
   });
 
-  if (isUserEnzymeGroup(groupKey)) {
-    const name = groupKey.replace("__userCreatedGroup", "");
+  if (cutsiteOrGroupKey === "type2s") {
+    const nameArray = flatMap(defaultEnzymesByName, (e) =>
+      e.isType2S ? e.name : []
+    );
+    label = "Type IIS Enzymes";
+
+    sortBy(nameArray).forEach((name) => {
+      const cutsites = allCutsites.cutsitesByName[name.toLowerCase()];
+      if (!cutsites) {
+        enzymesThatDontCutInSeq.push({ name, sites: [] });
+      } else {
+        enzymesThatCutInSeq.push({ name, sites: cutsites });
+      }
+    });
+  } else if (isUserEnzymeGroup(cutsiteOrGroupKey)) {
+    const name = cutsiteOrGroupKey.replace("__userCreatedGroup", "");
     const nameArray = userEnzymeGroups[name];
     label = getUserGroupLabel({ name, nameArray });
 
     sortBy(nameArray).forEach((name) => {
-      let cutsites = cutsitesByName[name.toLowerCase()];
+      const cutsites = allCutsites.cutsitesByName[name.toLowerCase()];
       if (!cutsites) {
         enzymesThatDontCutInSeq.push({ name, sites: [] });
       } else {
@@ -361,32 +397,34 @@ const getGroupElAndCutsites = ({
     });
   } else {
     //it's a single/double/etc
-    let specialCutsiteFilterOption = specialCutsiteFilterOptions[groupKey];
+    const specialCutsiteFilterOption =
+      specialCutsiteFilterOptions[cutsiteOrGroupKey];
     label = specialCutsiteFilterOption.label;
-    enzymesThatCutInSeq = map(cutsitesByName, (cutsites) =>
+    enzymesThatCutInSeq = map(allCutsites.cutsitesByName, (cutsites) =>
       cutsites.length === specialCutsiteFilterOption.cutsThisManyTimes
         ? { name: cutsites[0].name, sites: cutsites }
         : null
     ).filter((n) => n !== null);
   }
-
+  const title = (
+    <div style={{ display: "flex" }}>
+      {label} &nbsp;
+      {isGroupActive ? "" : "(inactive)"}
+    </div>
+  );
   const el = addCutsiteGroupClickHandler({
-    cutsiteOrGroupKey: groupKey,
+    cutsiteOrGroupKey,
     el: (
-      <Tag intent={isGroupActive && "primary"} style={{ margin: 3 }}>
+      <Tag minimal intent={isGroupActive && "primary"} style={{ margin: 3 }}>
         {label}
       </Tag>
     ),
-    title: (
-      <div>
-        {label}
-        {isGroupActive ? "" : " (inactive)"}
-      </div>
-    )
+    title
   });
 
   return {
     el,
+    title,
     enzymesThatDontCutInSeq,
     enzymesThatCutInSeq,
     allEnzymesInGroup: [...enzymesThatCutInSeq, ...enzymesThatDontCutInSeq]
@@ -395,47 +433,75 @@ const getGroupElAndCutsites = ({
 };
 
 export const CutsiteTag = ({
+  allRestrictionEnzymes,
+  showActiveText,
   cutsitesByNameActive,
+  cutsitesByName,
   name,
-  numCuts: _numCuts,
-  sites,
+  onWrapperClick,
+  doNotShowCuts,
+  noClick,
   forceOpenCutsiteInfo
 }) => {
-  const numCuts = sites ? sites.length : _numCuts;
+  const isHidden = getIsEnzymeHidden({ name, allRestrictionEnzymes });
+
+  let numCuts = (cutsitesByName[name.toLowerCase()] || []).length;
+
+  const aliases = getEnzymeAliases(name);
+  aliases.forEach((alias) => {
+    if (numCuts === 0) {
+      numCuts = (cutsitesByName[alias.toLowerCase()] || []).length;
+    }
+  });
+  const isActive = numCuts
+    ? cutsitesByNameActive[name.toLowerCase()]
+      ? "primary"
+      : undefined
+    : undefined;
 
   const el = (
     <Tag
-      intent={
-        numCuts
-          ? cutsitesByNameActive[name.toLowerCase()]
-            ? "primary"
-            : undefined
-          : undefined
-      }
-      style={{ margin: 3 }}
+      onClick={onWrapperClick}
+      intent={isActive}
+      style={{ margin: 3, opacity: isHidden ? 0.5 : 1 }}
     >
-      {getCutsiteWithNumCuts({
-        name,
-        numCuts
-      })}
+      <div style={{ display: "flex" }}>
+        {getCutsiteWithNumCuts({
+          name,
+          numCuts,
+          doNotShowCuts
+        })}
+        {showActiveText ? (
+          isHidden ? (
+            <span>&nbsp; hidden</span>
+          ) : isActive ? (
+            <span>&nbsp; active</span>
+          ) : (
+            <span>&nbsp; inactive</span>
+          )
+        ) : null}
+      </div>
     </Tag>
   );
 
   return addCutsiteGroupClickHandler({
     el,
+    noClick,
     cutsiteOrGroupKey: name,
-    title: el,
     forceOpenCutsiteInfo
   });
 };
 
 export const getUserGroupLabel = ({ name, nameArray }) => (
-  <span title={`User created enzyme group ${name} -- ${nameArray.join(" ")}`}>
+  <span
+    style={{ display: "flex", alignItems: "center" }}
+    title={`User created enzyme group ${name} -- ${nameArray.join(" ")}`}
+  >
     <Icon size={10} icon="user"></Icon>&nbsp;{name}
   </span>
 );
 
-export const getCutsiteWithNumCuts = ({ name, numCuts }) => {
+export const getCutsiteWithNumCuts = ({ name, numCuts, doNotShowCuts }) => {
   return (
     <div
       style={{
@@ -446,9 +512,11 @@ export const getCutsiteWithNumCuts = ({ name, numCuts }) => {
     >
       {" "}
       <div>{name}</div>{" "}
-      <div style={{ fontSize: 12 }}>
-        &nbsp;({numCuts} cut{numCuts === 1 ? "" : "s"})
-      </div>
+      {!doNotShowCuts && (
+        <div style={{ fontSize: 12 }}>
+          &nbsp;({numCuts} cut{numCuts === 1 ? "" : "s"})
+        </div>
+      )}
     </div>
   );
 };
@@ -457,26 +525,29 @@ export const addCutsiteGroupClickHandler = ({
   closeDropDown = () => {},
   cutsiteOrGroupKey,
   el,
-  title,
+  noClick,
   forceOpenCutsiteInfo
 }) => (
   <div
-    className="tg-clickable-cutsite-label"
-    style={{ cursor: "pointer" }}
-    onClick={(e) => {
-      const isInMultiSelect = e.target.closest(".bp3-multi-select-popover");
-      if (!forceOpenCutsiteInfo && isInMultiSelect) return true;
-      closeDropDown();
-      showDialog({
-        dialogType: "AdditionalCutsiteInfoDialog",
-        props: {
-          dialogProps: {
-            title: <div style={{ display: "flex" }}>{title || el}</div>
-          },
-          cutsiteOrGroupKey
-        }
-      });
-    }}
+    className={noClick ? "tg-cutsite-label" : "tg-clickable-cutsite-label"}
+    style={noClick ? {} : { cursor: "pointer" }}
+    onClick={
+      noClick
+        ? undefined
+        : (e) => {
+            const isInMultiSelect = e.target.closest(
+              ".bp3-multi-select-popover"
+            );
+            if (!forceOpenCutsiteInfo && isInMultiSelect) return true;
+            closeDropDown();
+            showDialog({
+              dialogType: "AdditionalCutsiteInfoDialog",
+              props: {
+                cutsiteOrGroupKey
+              }
+            });
+          }
+    }
   >
     {el}
   </div>
@@ -499,4 +570,12 @@ function Column({ dataTest, header, body, title }) {
       {body}
     </div>
   );
+}
+
+function getIsEnzymeHidden({ name, allRestrictionEnzymes }) {
+  let isHidden = true;
+  if (allRestrictionEnzymes[name.toLowerCase()]) {
+    isHidden = false;
+  }
+  return isHidden;
 }

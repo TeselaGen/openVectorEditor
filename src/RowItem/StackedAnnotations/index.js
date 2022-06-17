@@ -3,16 +3,17 @@ import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
-
+import IntervalTree from "node-interval-tree";
 import getXStartAndWidthOfRowAnnotation from "../getXStartAndWidthOfRowAnnotation";
 
 import { getAnnotationRangeType } from "ve-range-utils";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";
 import PointedAnnotation from "./PointedAnnotation";
+import { getBasesToShow } from "./primerBases";
 
 function StackedAnnotations(props) {
-  let {
+  const {
     annotationRanges = [],
     bpsPerRow,
     charWidth,
@@ -22,6 +23,7 @@ function StackedAnnotations(props) {
     onClick,
     isProtein,
     onDoubleClick,
+    isRowView,
     disregardLocations,
     InnerComp,
     onRightClick,
@@ -31,18 +33,25 @@ function StackedAnnotations(props) {
     alignmentType,
     getGaps,
     marginTop,
+    sequenceLength,
+    sequence: fullSeq,
     marginBottom,
+    truncateLabelsThatDoNotFit,
     getExtraInnerCompProps,
     onlyShowLabelsThatDoNotFit,
-    externalLabels
+    externalLabels,
+    isStriped
   } = props;
 
+  const iTree = new IntervalTree(Math.ceil(bpsPerRow / 2));
   const InnerCompToUse = InnerComp || PointedAnnotation;
   if (annotationRanges.length === 0) {
     return null;
   }
+
   let maxAnnotationYOffset = 0;
-  let annotationsSVG = [];
+  const annotationsSVG = [];
+  let extraHeightForContainer = 0;
   forEach(annotationRanges, function (annotationRange, index) {
     if (annotationRange.yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = annotationRange.yOffset;
@@ -52,12 +61,12 @@ function StackedAnnotations(props) {
       gapsBefore = 0;
       gapsInside = 0;
     }
-    let annotation = annotationRange.annotation;
-    let annotationColor =
+    const annotation = annotationRange.annotation;
+    const annotationColor =
       annotation.color ||
       (annotation.type && featureColors[annotation.type]) ||
       "#BBBBBB";
-    let result = getXStartAndWidthOfRowAnnotation(
+    const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
       charWidth,
@@ -68,11 +77,30 @@ function StackedAnnotations(props) {
     if (!disregardLocations && annotationRange.containsLocations) {
       top += annotationHeight / 2 - annotationHeight / 16;
     }
-    const anotationHeightNoSpace = annotationHeight - spaceBetweenAnnotations;
 
+    const {
+      baseEl,
+      extraHeight = 0,
+      insertPaths,
+      insertTicks,
+      flipAnnotation
+    } = getBasesToShow({
+      isRowView,
+      sequenceLength,
+      iTree,
+      fullSeq,
+      annotation,
+      annotationRange,
+      charWidth,
+      bpsPerRow
+    });
+
+    const anotationHeightNoSpace = annotationHeight - spaceBetweenAnnotations;
+    extraHeightForContainer += extraHeight;
     annotationsSVG.push(
       <AnnotationPositioner
-        height={anotationHeightNoSpace}
+        yOffset={annotationRange.yOffset}
+        height={anotationHeightNoSpace + extraHeight}
         width={result.width}
         key={index}
         top={top}
@@ -86,15 +114,22 @@ function StackedAnnotations(props) {
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
+          truncateLabelsThatDoNotFit={truncateLabelsThatDoNotFit}
+          insertPaths={insertPaths}
+          insertTicks={insertTicks}
           onDoubleClick={onDoubleClick}
           type={type}
+          flipAnnotation={flipAnnotation}
+          extraHeight={extraHeight}
           onRightClick={onRightClick}
           annotation={annotation}
           isProtein={isProtein}
+          isStriped={isStriped}
           gapsInside={gapsInside}
           gapsBefore={gapsBefore}
           color={annotationColor}
           width={result.width}
+          annotationRange={annotationRange}
           widthInBps={annotationRange.end - annotationRange.start + 1}
           charWidth={charWidth}
           forward={annotation.forward}
@@ -108,28 +143,34 @@ function StackedAnnotations(props) {
                   annotation.forward
                 )
           }
+          {...(annotation.bases && { pointiness: 3, arrowPointiness: 0.2 })}
           {...(annotation.noDirectionality && { pointiness: 0 })}
           height={
             annotationRange.containsLocations && !disregardLocations
               ? anotationHeightNoSpace / 8
               : anotationHeightNoSpace
           }
-          hideName={annotationRange.containsLocations && !disregardLocations}
+          hideName={
+            type === "primer" ||
+            (annotationRange.containsLocations && !disregardLocations)
+          }
           name={annotation.name}
           {...(getExtraInnerCompProps &&
             getExtraInnerCompProps(annotationRange, props))}
         />
+        {baseEl}
       </AnnotationPositioner>
     );
   });
 
-  let containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
+  const containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
   return (
     <AnnotationContainerHolder
       marginTop={marginTop}
       marginBottom={marginBottom}
       className={containerClassName}
       containerHeight={containerHeight}
+      extraMargin={extraHeightForContainer}
     >
       {annotationsSVG}
     </AnnotationContainerHolder>

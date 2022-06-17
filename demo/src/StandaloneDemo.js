@@ -72,7 +72,6 @@ export default class StandaloneDemo extends React.Component {
           onCopy: function (event, copiedSequenceData /* , editorState */) {
             //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
             const clipboardData = event.clipboardData;
-            clipboardData.setData("text/plain", copiedSequenceData.sequence);
             clipboardData.setData(
               "application/json",
               //for example here you could change teselagen parts into jbei parts

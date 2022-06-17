@@ -31,6 +31,8 @@ import {
   getParedDownWarning,
   pareDownAnnotations
 } from "../utils/editorUtils";
+import { getAllSelectionLayers } from "../utils/selectionLayer";
+import classNames from "classnames";
 
 function noop() {}
 
@@ -52,10 +54,10 @@ export function CircularView(props) {
     if (!clientX) {
       return;
     }
-    let boundingRect = circRef.current.getBoundingClientRect();
+    const boundingRect = circRef.current.getBoundingClientRect();
     //get relative click positions
-    let clickX = clientX - boundingRect.left - boundingRect.width / 2;
-    let clickY = clientY - boundingRect.top - boundingRect.height / 2;
+    const clickX = clientX - boundingRect.left - boundingRect.width / 2;
+    const clickY = clientY - boundingRect.top - boundingRect.height / 2;
 
     //get angle
     let angle = Math.atan2(clickY, clickX) + Math.PI / 2 - rotationRadians;
@@ -116,12 +118,13 @@ export function CircularView(props) {
     noWarnings,
     labelLineIntensity,
     fontHeightMultiplier,
+    hoveredId,
     labelSize
   } = props;
 
-  let { sequence = "atgc", circular } = sequenceData;
-  let sequenceLength = sequence.length;
-  let sequenceName = hideName ? "" : sequenceData.name || "";
+  const { sequence = "atgc", circular } = sequenceData;
+  const sequenceLength = sequence.length;
+  const sequenceName = hideName ? "" : sequenceData.name || "";
   circularAndLinearTickSpacing =
     circularAndLinearTickSpacing ||
     (sequenceLength < 10
@@ -131,7 +134,7 @@ export function CircularView(props) {
       : Math.ceil(sequenceLength / 100) * 10);
 
   const baseRadius = 80;
-  let innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
+  const innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
   let radius = baseRadius;
   let annotationsSvgs = [];
   let labels = {};
@@ -143,7 +146,7 @@ export function CircularView(props) {
   //-Then we rotate the annotations as necessary (and optionally flip them):
   //<PositionAnnotationOnCircle>
 
-  let layersToDraw = [
+  const layersToDraw = [
     { zIndex: 10, layerName: "sequenceChars" },
     {
       zIndex: 20,
@@ -203,7 +206,7 @@ export function CircularView(props) {
       spaceBefore: 10
     },
     {
-      spaceBefore: 5,
+      spaceBefore: 10,
       spaceAfter: 5,
       zIndex: 20,
       Comp: Primer,
@@ -253,7 +256,7 @@ export function CircularView(props) {
   ];
   const paredDownMessages = [];
 
-  let output = layersToDraw
+  const output = layersToDraw
     .map((opts) => {
       const {
         layerName,
@@ -300,7 +303,7 @@ export function CircularView(props) {
           (maxAnnotationsToDisplay
             ? maxAnnotationsToDisplay[layerName]
             : limits[layerName]) || 50;
-        let [annotations, paredDown] = isAnnotation
+        const [annotations, paredDown] = isAnnotation
           ? pareDownAnnotations(
               sequenceData["filtered" + nameUpper] ||
                 sequenceData[layerName] ||
@@ -321,6 +324,7 @@ export function CircularView(props) {
         results = drawAnnotations({
           Annotation: Comp || Feature,
           fontStyle: fontStyle,
+          hoveredId: hoveredId,
           annotationType: singularName,
           type: singularName,
           reverseAnnotations: true,
@@ -368,12 +372,11 @@ export function CircularView(props) {
 
   function drawSelectionLayer() {
     //DRAW SELECTION LAYER
-    let selectionLayers = [
-      ...additionalSelectionLayers,
-      ...searchLayers,
-      ...(Array.isArray(selectionLayer) ? selectionLayer : [selectionLayer])
-    ];
-    return selectionLayers
+    return getAllSelectionLayers({
+      additionalSelectionLayers,
+      searchLayers,
+      selectionLayer
+    })
       .map(function (selectionLayer, index) {
         if (
           selectionLayer.start >= 0 &&
@@ -437,6 +440,9 @@ export function CircularView(props) {
   if (radius < 150) radius = 150;
   const widthToUse = Math.max(Number(width) || 300);
   const heightToUse = Math.max(Number(height) || 300);
+  const bpTitle = isProtein
+    ? `${Math.floor(sequenceLength / 3)} AAs`
+    : `${sequenceLength} bps`;
   return (
     <div
       style={{
@@ -444,7 +450,7 @@ export function CircularView(props) {
         height: heightToUse
       }}
       // tabIndex="0"
-      className="veCircularView"
+      className={classNames("veCircularView", props.className)}
     >
       {withRotateCircularView && (
         <RotateCircularView
@@ -472,30 +478,6 @@ export function CircularView(props) {
         onStop={editorDragStopped}
       >
         <div>
-          {!hideName && (
-            <div
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                pointerEvents: "none"
-              }}
-            >
-              <div
-                key="circViewSvgCenterText"
-                className="veCircularViewMiddleOfVectorText"
-                style={{ width: innerRadius, textAlign: "center" }}
-              >
-                <span>{sequenceName} </span>
-                <br />
-                <span style={{ fontSize: 10 }}>
-                  {isProtein
-                    ? `${Math.floor(sequenceLength / 3)} AAs`
-                    : `${sequenceLength} bps`}
-                </span>
-              </div>
-            </div>
-          )}
           <svg
             key="circViewSvg"
             onClick={(event) => {
@@ -523,6 +505,41 @@ export function CircularView(props) {
             } ${radius * 2 * scale}`}
           >
             {annotationsSvgs}
+            {!hideName && (
+              <foreignObject
+                x={(-innerRadius * scale) / 2}
+                y={(-innerRadius * scale) / 2}
+                width={innerRadius * scale}
+                height={innerRadius * scale}
+                transform={`rotate(-${(rotationRadians * 180) / Math.PI})`}
+              >
+                <div
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  key="circViewSvgCenterText"
+                  className="veCircularViewMiddleOfVectorText"
+                >
+                  <div
+                    title={sequenceName}
+                    className="veCircularViewTextWrapper"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: "3",
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      width: innerRadius * scale,
+                      maxHeight: innerRadius * scale - 15
+                    }}
+                  >
+                    {sequenceName}
+                    {/* <span>{}</span> */}
+                  </div>
+                  <span title={bpTitle} style={{ fontSize: 10 }}>
+                    {bpTitle}
+                  </span>
+                </div>
+              </foreignObject>
+            )}
           </svg>
           <div className="veWarningContainer">
             {!circular && !noWarnings && (
@@ -585,7 +602,7 @@ function positionCutsites(annotation) {
 
 function RotateCircularView({ setRotationRadians, editorName }) {
   return (
-    <div style={{ zIndex: 1000, position: "absolute" }}>
+    <div style={{ zIndex: 900, position: "absolute" }}>
       <UncontrolledSliderWithPlusMinusBtns
         onChange={(val) => {
           const el = document.querySelector(
@@ -593,9 +610,6 @@ function RotateCircularView({ setRotationRadians, editorName }) {
           );
           el.style.transform = `rotate(${val}deg)`;
           el.classList.add("veHideLabels");
-          document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg .veLabels`
-          ).style.transform = `rotate(-${val}deg)`;
         }}
         onRelease={(val) => {
           setRotationRadians((val * Math.PI) / 180);

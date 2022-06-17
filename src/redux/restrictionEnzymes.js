@@ -17,19 +17,29 @@ export const filteredRestrictionEnzymesAdd = createAction(
 // ------------------------------------
 // Reducer
 // ------------------------------------
-let initialState = [specialCutsiteFilterOptions.single];
-// const userEnzymeGroups = window.localStorage.getItem("restrictionEnzymeGroups") || []
+const defaultInitialState = [specialCutsiteFilterOptions.single];
+// let initialState = defaultInitialState;
+// const localDefault = window.localStorage.getItem("tgInitialCutsiteFilter");
+
+// if (localDefault) {
+//   try {
+//     initialState = JSON.parse(localDefault);
+//     if (!Array.isArray(initialState)) throw new Error("Must be an array");
+//   } catch (e) {
+//     initialState = defaultInitialState;
+//   }
+// }
 
 export default combineReducers({
   //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
   filteredRestrictionEnzymes: createReducer(
     {
-      [filteredRestrictionEnzymesReset]: () => initialState,
+      [filteredRestrictionEnzymesReset]: () => defaultInitialState,
       [filteredRestrictionEnzymesUpdate]: (state, payload) => payload,
       [filteredRestrictionEnzymesAdd]: function (state, payload) {
         return [...state, payload];
       }
     },
-    initialState
+    defaultInitialState
   )
 });

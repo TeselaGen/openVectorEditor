@@ -44,7 +44,7 @@ describe("partTags", function () {
   it(`should be able to add/edit tags on parts`, () => {
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Part").click();
+    cy.contains(".bp3-menu-item", "New Part").click({ force: true });
     cy.focused().type("np");
     cy.get(".tg-test-tags").click();
     cy.contains(".bp3-menu-item", "status: ready").click();

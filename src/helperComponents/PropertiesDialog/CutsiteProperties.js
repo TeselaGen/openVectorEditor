@@ -14,6 +14,7 @@ import commands from "../../commands";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
 import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
+import { withRestrictionEnzymes } from "../../CutsiteFilter/withRestrictionEnzymes";
 
 class CutsiteProperties extends React.Component {
   constructor(props) {
@@ -25,6 +26,9 @@ class CutsiteProperties extends React.Component {
     return (
       <SingleEnzymeCutsiteInfo
         {...{
+          allRestrictionEnzymes: this.props.allRestrictionEnzymes,
+          allCutsites: this.props.allCutsites,
+          filteredCutsites: this.props.filteredCutsites,
           editorName: this.props.editorName,
           dispatch: this.props.dispatch,
           selectedAnnotationId: this.props.selectedAnnotationId,
@@ -67,7 +71,7 @@ class CutsiteProperties extends React.Component {
       };
     });
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <>
         <div
           style={{
             marginBottom: 10,
@@ -112,7 +116,6 @@ class CutsiteProperties extends React.Component {
           noFullscreenButton
           noPadding
           defaults={{ order: ["numberOfCuts"] }}
-          maxHeight={400}
           formName="cutsiteProperties"
           noRouter
           withSearch={false}
@@ -121,7 +124,7 @@ class CutsiteProperties extends React.Component {
           schema={this.schema}
           entities={cutsitesToUse}
         />
-      </div>
+      </>
     );
   }
 }
@@ -133,11 +136,17 @@ export default compose(
       ownProps.additionalEnzymes,
       ownProps.enzymeGroupsOverride
     );
+    const allCutsites = selectors.cutsitesSelector(
+      editorState,
+      ownProps.additionalEnzymes
+    );
     return {
       annotationVisibility: editorState.annotationVisibility || {},
       filteredCutsites: cutsites,
+      allCutsites,
       cutsites: cutsites.cutsitesArray
     };
   }),
+  withRestrictionEnzymes,
   withSelectedEntities("cutsiteProperties")
 )(CutsiteProperties);

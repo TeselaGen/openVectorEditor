@@ -1,12 +1,12 @@
 import { mapAnnotationsToRows } from "ve-sequence-utils";
 import { annotationTypes } from "ve-sequence-utils";
 export default function prepareRowData(sequenceData, bpsPerRow) {
-  let sequenceLength = sequenceData.noSequence
+  const sequenceLength = sequenceData.noSequence
     ? sequenceData.size
     : sequenceData.sequence.length;
-  let totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
-  let rows = [];
-  let rowMap = {};
+  const totalRows = Math.ceil(sequenceLength / bpsPerRow) || 1; //this check makes sure there is always at least 1 row!
+  const rows = [];
+  const rowMap = {};
   if (sequenceData.isProtein) {
     rowMap.primaryProteinSequence = mapAnnotationsToRows(
       [
@@ -23,11 +23,12 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
       bpsPerRow
     );
   }
-  annotationTypes.forEach(function(type) {
+  annotationTypes.forEach(function (type) {
     rowMap[type] = mapAnnotationsToRows(
       sequenceData[type],
       sequenceLength,
-      bpsPerRow
+      bpsPerRow,
+      { splitForwardReverse: type === "primers" }
     );
   });
 
@@ -42,7 +43,7 @@ export default function prepareRowData(sequenceData, bpsPerRow) {
     if (row.end < 0) {
       row.end = 0;
     }
-    annotationTypes.forEach(function(type) {
+    annotationTypes.forEach(function (type) {
       row[type] = rowMap[type][rowNumber] || [];
     });
     if (sequenceData.isProtein) {

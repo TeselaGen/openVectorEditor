@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { reduxForm, FieldArray, formValues } from "redux-form";
+import { reduxForm, FieldArray } from "redux-form";
 
 import {
   InputField,
   RadioGroupField,
   NumericInputField,
-  wrapDialog
+  wrapDialog,
+  AdvancedOptions
 } from "teselagen-react-components";
 import { compose } from "redux";
-import { Button, Intent, Classes, EditableText, Icon } from "@blueprintjs/core";
+import {
+  Button,
+  Intent,
+  Classes,
+  EditableText,
+  FormGroup,
+  Label
+} from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   isRangeWithinRange,
@@ -24,6 +32,7 @@ import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
 import { map, flatMap } from "lodash";
 import "./style.css";
+import tgFormValues from "../../utils/tgFormValues";
 
 class AddOrEditAnnotationDialog extends React.Component {
   componentDidMount() {
@@ -76,14 +85,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       <div>
         {locations.length > 1 && (
           <div>
-            <div
-              style={{
-                marginBottom: 10,
-                marginTop: 3
-              }}
-            >
-              Joined Feature Spans:
-            </div>
+            <Label>Joined Feature Spans</Label>
             <div style={{ marginLeft: 50 }}>
               {!locations.length && (
                 <div style={{ marginBottom: 10 }}>
@@ -100,25 +102,27 @@ class AddOrEditAnnotationDialog extends React.Component {
                         disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
+                        className="no-inline-label-margins"
                         tooltipError
                         min={1}
                         format={this.formatStart}
                         parse={this.parseStart}
                         max={sequenceLength || 1}
                         name={`${member}.start`}
-                        label="Start:"
+                        label="Start"
                       />
                       <NumericInputField
                         disabled={this.props.readOnly}
                         containerStyle={{ marginBottom: 0, marginRight: 10 }}
                         inlineLabel
+                        className="no-inline-label-margins"
                         tooltipError
                         min={1}
                         format={this.formatEnd}
                         parse={this.parseEnd}
                         max={sequenceLength || 1}
                         name={`${member}.end`}
-                        label="End:"
+                        label="End"
                       />
                       <Button
                         disabled={this.props.readOnly}
@@ -179,13 +183,24 @@ class AddOrEditAnnotationDialog extends React.Component {
       beforeAnnotationCreate,
       renderTypes,
       renderTags,
+      RenderBases,
+      getLinkedOligoLink,
+      allowPrimerBasesToBeEdited,
+      bases,
+      initialValues,
+      forward,
+      primerBindsOn,
+      useLinkedOligo,
+      submitting,
+      change,
       annotationTypePlural,
       annotationVisibilityShow,
       renderLocations,
       locations,
-      doesOverlapSelf,
+      overlapsSelf,
       start,
       end,
+      getAdditionalEditAnnotationComps,
       advancedOptions,
       advancedDefaultOpen,
       upsertAnnotation,
@@ -204,7 +219,7 @@ class AddOrEditAnnotationDialog extends React.Component {
     );
     return (
       <form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
           let updatedData;
           if (data.forward === true && data.strand !== 1) {
             updatedData = { ...data, strand: 1 };
@@ -226,7 +241,7 @@ class AddOrEditAnnotationDialog extends React.Component {
 
           const newAnnotation = tidyUpAnnotation(
             convertRangeTo0Based({
-              doesOverlapSelf: data.doesOverlapSelf,
+              overlapsSelf: data.overlapsSelf,
               ...updatedData,
               ...(annotationTypePlural === "primers" //if we're making a primer it should automatically have a type of primer
                 ? { type: "primer_bind" }
@@ -235,8 +250,8 @@ class AddOrEditAnnotationDialog extends React.Component {
               ...(hasJoinedLocations && {
                 //only add locations if there are locations
                 start: updatedData.locations[0].start, //override the start and end to use the start and end of the joined locations
-                end:
-                  updatedData.locations[updatedData.locations.length - 1].end,
+                end: updatedData.locations[updatedData.locations.length - 1]
+                  .end,
                 locations: updatedData.locations.map(convertRangeTo0Based)
               })
             }),
@@ -245,17 +260,22 @@ class AddOrEditAnnotationDialog extends React.Component {
               annotationType: annotationTypePlural
             }
           );
-          beforeAnnotationCreate &&
-            beforeAnnotationCreate({
+
+          if (beforeAnnotationCreate) {
+            const shouldContinue = await beforeAnnotationCreate({
               annotationTypePlural,
               annotation: newAnnotation,
-              props: this.props
+              props: this.props,
+              isEdit: !!this.props.initialValues.id
             });
+            if (shouldContinue === false) return;
+          }
 
           //update the selection layer so we don't jump away from where we're editing
           //the original_ is there to differentiate it from the one we override to control the selection layer while in the dialog
           original_selectionLayerUpdate &&
             original_selectionLayerUpdate({
+              overlapsSelf: data.overlapsSelf,
               start: newAnnotation.start,
               end: newAnnotation.end
             });
@@ -287,12 +307,13 @@ class AddOrEditAnnotationDialog extends React.Component {
             }))}
           validate={required}
           name="name"
-          label="Name:"
+          label="Name"
         />
         {!isProtein && (
           <RadioGroupField
             disabled={this.props.readOnly}
             inlineLabel
+            inline
             tooltipError
             options={[
               { label: "Positive", value: "true" },
@@ -301,12 +322,14 @@ class AddOrEditAnnotationDialog extends React.Component {
             normalize={(value) => value === "true" || false}
             format={(value) => (value ? "true" : "false")}
             name="forward"
-            label="Strand:"
+            label="Strand"
             defaultValue={true}
           />
         )}
         {renderTypes || null}
         {renderTags || null}
+
+        {/* {allowPrimerBasesToBeEdited && RenderBases ? null : !renderLocations || */}
         {!renderLocations || !locations || locations.length < 2 ? (
           <React.Fragment>
             <div
@@ -324,7 +347,9 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="start"
-              label="Start:"
+              label={`${
+                annotationTypePlural === "primers" ? "Bind " : ""
+              }Start`}
             />
             <NumericInputField
               disabled={this.props.readOnly}
@@ -336,7 +361,7 @@ class AddOrEditAnnotationDialog extends React.Component {
               min={1}
               max={sequenceLength || 1}
               name="end"
-              label="End:"
+              label={`${annotationTypePlural === "primers" ? "Bind " : ""}End`}
             />
           </React.Fragment>
         ) : null}
@@ -347,16 +372,39 @@ class AddOrEditAnnotationDialog extends React.Component {
           className="bp3-text-muted bp3-text-small"
           style={{ marginBottom: 15, marginTop: -5, fontStyle: "italic" }}
         >
-          Length:{" "}
-          {doesOverlapSelf
-            ? sequenceLength + annotationLength
-            : annotationLength}
+          {`${
+            annotationTypePlural === "primers" ? "Binding Site " : ""
+          }Length: `}
+
+          {overlapsSelf ? sequenceLength + annotationLength : annotationLength}
         </div>
+        {allowPrimerBasesToBeEdited && RenderBases ? (
+          <RenderBases
+            {...{
+              // ...this.props,
+              bases,
+              getLinkedOligoLink,
+              readOnly: this.props.readOnly,
+              sequenceData,
+              start,
+              end,
+              initialValues,
+              sequenceLength,
+              primerBindsOn,
+              forward,
+              linkedOligo: initialValues.linkedOligo,
+              useLinkedOligo,
+              change
+            }}
+          ></RenderBases>
+        ) : null}
+        {getAdditionalEditAnnotationComps &&
+          getAdditionalEditAnnotationComps(this.props)}
         <Notes readOnly={this.props.readOnly} notes={this.notes}></Notes>
-        <Advanced
-          advancedDefaultOpen={advancedDefaultOpen}
-          advancedOptions={advancedOptions}
-        ></Advanced>
+
+        <AdvancedOptions isOpenByDefault={advancedDefaultOpen}>
+          {advancedOptions}
+        </AdvancedOptions>
         <div
           style={{ display: "flex", justifyContent: "flex-end" }}
           className="width100"
@@ -374,6 +422,7 @@ class AddOrEditAnnotationDialog extends React.Component {
           </Button>
           <Button
             type="submit"
+            loading={submitting}
             disabled={this.props.readOnly}
             intent={Intent.PRIMARY}
           >
@@ -393,7 +442,7 @@ export default ({ formName, getProps, dialogProps }) => {
   return compose(
     wrapDialog({
       isDraggable: true,
-      width: 350,
+      width: 400,
       ...dialogProps
     }),
     withEditorProps,
@@ -429,8 +478,7 @@ export default ({ formName, getProps, dialogProps }) => {
                 "In a non-circular sequence, joined spans must be in ascending order"
             };
             errors.locations[values.locations.length - 1] = {
-              end:
-                "In a non-circular sequence, joined spans must be in ascending order"
+              end: "In a non-circular sequence, joined spans must be in ascending order"
             };
           }
           values.locations.forEach((loc, index) => {
@@ -473,19 +521,24 @@ export default ({ formName, getProps, dialogProps }) => {
         return errors;
       }
     }),
-    formValues("start", "end", "doesOverlapSelf", "locations")
+    tgFormValues(
+      "start",
+      "end",
+      "overlapsSelf",
+      "locations",
+      "bases",
+      "useLinkedOligo",
+      "forward",
+      "primerBindsOn"
+    )
   )(AddOrEditAnnotationDialog);
 };
 
 const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
-      <div style={{ display: "flex" }}>
-        <div>Notes: </div>{" "}
-        <span style={{ marginLeft: 15, fontSize: 10, color: "grey" }}>
-          (Key -- Value)
-        </span>{" "}
-      </div>
+      <FormGroup inline label="Notes" labelInfo="(Key -- Value)"></FormGroup>
+
       {map(notes, (note, i) => {
         const { value, key } = note || {};
         return (
@@ -564,23 +617,3 @@ const Notes = view(({ readOnly, notes }) => {
     </div>
   );
 });
-
-function Advanced({ advancedOptions, advancedDefaultOpen }) {
-  const [isOpen, setOpen] = useState(advancedDefaultOpen);
-  if (!advancedOptions) {
-    return null;
-  }
-  return (
-    <div style={{ marginTop: 5 }}>
-      <div
-        onClick={() => {
-          setOpen(!isOpen);
-        }}
-        style={{ cursor: "pointer" }}
-      >
-        Advanced <Icon icon={isOpen ? "caret-up" : "caret-down"}></Icon>
-      </div>
-      {isOpen && <div>{advancedOptions}</div>}
-    </div>
-  );
-}

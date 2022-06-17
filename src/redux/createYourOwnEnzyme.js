@@ -25,7 +25,7 @@ const initialValues = {
 };
 export default createReducer(
   {
-    [createYourOwnEnzymeClose]: (state, payload = {}) => {
+    [createYourOwnEnzymeClose]: () => {
       return { ...initialValues, isOpen: false };
     },
     [createYourOwnEnzymeReset]: (state, payload = {}) => {

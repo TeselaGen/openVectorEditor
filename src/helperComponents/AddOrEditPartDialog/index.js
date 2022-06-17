@@ -41,7 +41,7 @@ const renderTypes = ({ readOnly }) => (
       };
     })}
     name="type"
-    label="Type:"
+    label="Type"
   />
 );
 const renderAdvancedOptions = ({ readOnly }) => (
@@ -49,7 +49,7 @@ const renderAdvancedOptions = ({ readOnly }) => (
     inlineLabel
     tooltipError
     disabled={readOnly}
-    name="doesOverlapSelf"
+    name="overlapsSelf"
     label={
       <div style={{ display: "flex", alignItems: "center" }}>
         Part Overlaps Self
@@ -73,19 +73,18 @@ const getRenderTags = ({ readOnly, editTagsLink, tags }) => {
       tooltipError
       options={tags}
       name="tags"
-      label="Tags:"
+      label="Tags"
     />
   );
 };
 export default AddOrEditAnnotationDialog({
   formName: "AddOrEditPartDialog",
   dialogProps: {
-    // height: 550,
     width: 450
   },
   getProps: (props) => ({
     upsertAnnotation: props.upsertPart,
-    advancedDefaultOpen: get(props, "initialValues.doesOverlapSelf"),
+    advancedDefaultOpen: get(props, "initialValues.overlapsSelf"),
     advancedOptions: props.allowPartsToOverlapSelf
       ? renderAdvancedOptions({ readOnly: props.readOnly })
       : undefined,

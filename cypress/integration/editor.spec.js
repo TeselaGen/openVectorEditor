@@ -11,16 +11,18 @@ describe("editor", function () {
     cy.get(`.tg-select-clear-all`).click();
     cy.get(".veWarningMessage").trigger("mouseover");
     cy.contains(
-      "Warning: More than 100 Cutsites. Only displaying 100 (Configure this under View > Limits)"
+      "Warning: More than 100 Cut Sites. Only displaying 100 (Configure this under View > Limits)"
     );
     cy.contains(".tg-menu-bar-item", "View").click();
     cy.contains(".bp3-menu-item", "Limits").click();
-    cy.contains(".bp3-menu-item", "Max Cutsites To Show").click();
+    cy.contains(".bp3-menu-item", "Max Cut Sites To Show").click({
+      force: true
+    });
     cy.get(".bp3-menu-item:contains(100) .bp3-icon-small-tick");
-    cy.get(".bp3-menu-item:contains(400)").click();
+    cy.get(".bp3-menu-item:contains(400)").click({ force: true });
     cy.get(".bp3-menu-item:contains(400) .bp3-icon-small-tick");
     cy.contains(
-      "Warning: More than 400 Cutsites. Only displaying 400 (Configure this under View > Limits)"
+      "Warning: More than 400 Cut Sites. Only displaying 400 (Configure this under View > Limits)"
     );
     cy.get(".veTabLinearMap").click({ force: true });
     cy.get(".veWarningMessage").should("exist");
@@ -96,6 +98,16 @@ describe("editor", function () {
     cy.contains(".bp3-dialog button", "Save").should("be.disabled");
   });
 
+  it(`should allow you to view, but not edit the description when in read only mode`, () => {
+    cy.contains("Properties").click();
+    cy.contains(".tg-test-description", "Edit").should("exist");
+    cy.tgToggle("readOnly");
+    cy.contains(".tg-test-description", "Edit").should("not.exist");
+    // cy.contains(".veRowViewPart", "Part 0").first().rightclick();
+    // cy.contains(".bp3-menu-item", "View Part Details").click();
+    // cy.contains(".bp3-dialog button", "Save").should("be.disabled");
+  });
+
   it(`should autosave if autosave=true`, function () {
     //tnrnote: cut in cypress only works on electron, not firefox or chrome
     cy.tgToggle("shouldAutosave");
@@ -145,8 +157,7 @@ describe("editor", function () {
   });
   it(`should fire the beforeAnnotationCreate callback if one is passed`, function () {
     cy.tgToggle("beforeAnnotationCreate");
-    cy.get(".veRowViewSelectionLayer").first().rightclick();
-
+    cy.contains(".veLabelText", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Create").trigger("mouseover");
     cy.contains(".bp3-menu-item", "New Primer").click();
     cy.focused().type("new primer");
@@ -188,17 +199,6 @@ describe("editor", function () {
       .contains("properties overrides successfull")
       .should("be.visible");
   });
-  it(`should show/hide a checkmark when toggling feature label visibility`, function () {
-    cy.get("body").type("{meta}/");
-    cy.focused().type(`Feature Labels`);
-    cy.contains(".bp3-menu-item", "Feature Labels")
-      .find(".bp3-icon-small-tick")
-      .should("exist");
-    cy.focused().type(`{enter}`);
-    cy.contains(".bp3-menu-item", "Feature Labels")
-      .find(".bp3-icon-small-tick")
-      .should("not.exist");
-  });
 
   it(`should handle custom menu filters correctly`, () => {
     // if (Cypress.browser !== "")
@@ -208,14 +208,16 @@ describe("editor", function () {
     cy.get(".bp3-toast").contains("No Sequence Selected To Copy");
     cy.get(".tg-menu-bar").contains("File").click();
     cy.get(".bp3-menu-item").contains("Export Sequence").trigger("mouseover");
-    cy.contains(".bp3-menu-item", "Custom export option!").click();
+    cy.contains(".bp3-menu-item", "Custom export option!").click({
+      force: true
+    });
     cy.get(".bp3-toast").contains("Custom export hit!");
   });
   it(`should handle custom dialog overrides correctly`, () => {
     cy.tgToggle("overrideAddEditFeatureDialog");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.contains("I Am Overridden. Any custom React can go here");
   });
   it(`should focus the linear view`, () => {
@@ -271,7 +273,9 @@ describe("editor", function () {
   it(`should handle enabling external labels and then only showing labels that don't fit`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".tg-menu-bar-popover").contains("Labels").click();
-    cy.get(".tg-menu-bar-popover").contains("External Labels").click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("External Labels")
+      .click({ force: true });
     cy.get(".veTabProperties").contains("Properties").click();
     cy.get(".veTabLinearMap").contains("Linear Map").click();
     cy.contains("text", "pSC101**");
@@ -284,8 +288,10 @@ describe("editor", function () {
     cy.get(".veLabelLine").should("have.css", "opacity", "0.1");
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".tg-menu-bar-popover").contains("Labels").click();
-    cy.get(".tg-menu-bar-popover").contains("Label Line Intensity").click();
-    cy.get(".tg-menu-bar-popover").contains("High").click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("Label Line Intensity")
+      .click({ force: true });
+    cy.get(".tg-menu-bar-popover").contains("High").click({ force: true });
     cy.get(".veLabelLine").should("have.css", "opacity", "0.9");
   });
   it(`should handle adjusting circular map label size.`, () => {
@@ -295,8 +301,10 @@ describe("editor", function () {
       );
       cy.get(".tg-menu-bar").contains("View").click();
       cy.get(".tg-menu-bar-popover").contains("Labels").click();
-      cy.get(".tg-menu-bar-popover").contains("Circular Label Size").click();
-      cy.get(".tg-menu-bar-popover").contains("50%").click();
+      cy.get(".tg-menu-bar-popover")
+        .contains("Circular Label Size")
+        .click({ force: true });
+      cy.get(".tg-menu-bar-popover").contains("50%").click({ force: true });
       cy.get(".veCircularViewLabelText").then((fiftyPercentText) => {
         const halfFontSize = parseFloat(
           fiftyPercentText[0].style
@@ -343,5 +351,20 @@ describe("editor", function () {
               });
           });
       });
+  });
+  it(`should handle very long external labels in RowView`, () => {
+    cy.get(".tg-menu-bar").contains("View").click();
+    cy.get(".tg-menu-bar-popover").contains("Labels").click();
+    cy.get(".tg-menu-bar-popover")
+      .contains("External Labels")
+      .click({ force: true });
+    cy.contains(".veLabelText", "Part 0").rightclick();
+    cy.contains(".bp3-menu-item", "Edit Part").click();
+    const longName =
+      "long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name{enter}";
+    cy.focused().type(longName);
+    cy.contains(
+      "Part 0long_name_long_name_long_name_long_name_long_name_long_name_long_nam.."
+    );
   });
 });

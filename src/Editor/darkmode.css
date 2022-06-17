@@ -7,10 +7,6 @@
   background: #293742 !important;
 }
 
-.bp3-dark .veEditor .ve-draggable-tabs {
-  color: #f5f8fa !important;
-}
-
 .bp3-dark .veCaret,
 .bp3-dark .veRowViewAxis path,
 .veLabelLine {
@@ -28,27 +24,6 @@
 
 .bp3-dark .veEditor text {
   fill: #f5f8fa;
-}
-
-.bp3-dark .cutsiteLabelSelectionLayer {
-  background: none !important;
-  height: 119%;
-  opacity: 1;
-  border-top: 2px solid #f5f8fa;
-  border-bottom: 2px solid #f5f8fa;
-}
-
-.bp3-dark .cutsiteLabelSelectionLayer.isTrueStart {
-  border-left: 2px solid #f5f8fa;
-}
-
-.bp3-dark .cutsiteLabelSelectionLayer.isTrueEnd {
-  border-right: 2px solid #f5f8fa;
-}
-
-.bp3-dark .veRowViewCutsite {
-  margin-left: -2px;
-  background: #f5f8fa !important;
 }
 
 .bp3-dark .veRowViewPartsContainer text,
@@ -76,9 +51,12 @@
   fill: #f5f8fa !important;
 }
 
-.bp3-dark .veRowViewAxis text,
-.bp3-dark .translationLayer text {
+.bp3-dark .veRowViewAxis text {
   stroke: #f5f8fa !important;
+}
+
+.bp3-dark .translationLayer text {
+  fill: black !important;
 }
 
 .bp3-dark .step-group.active .step-text {

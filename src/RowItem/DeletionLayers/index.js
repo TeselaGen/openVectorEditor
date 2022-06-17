@@ -9,7 +9,7 @@ import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 
 function DeletionLayers(props) {
-  let {
+  const {
     charWidth,
     row,
     sequenceLength,
@@ -19,7 +19,7 @@ function DeletionLayers(props) {
     deletionLineHeight = 6
   } = props;
 
-  let deletionLayersToUse = Object.keys(deletionLayers).map(function (key) {
+  const deletionLayersToUse = Object.keys(deletionLayers).map(function (key) {
     return deletionLayers[key];
   });
   if (!deletionLayersToUse.length) return null;
@@ -33,25 +33,25 @@ function DeletionLayers(props) {
           return deletionLayer.inBetweenBps ? 1 : 0;
         })
         .map(function (deletionLayer, index) {
-          let rangeSpansSequence =
+          const rangeSpansSequence =
             deletionLayer.start === deletionLayer.end + 1 ||
             (deletionLayer.start === 0 &&
               deletionLayer.end === sequenceLength - 1);
-          let { /* className = "", style = {},  */ color } = deletionLayer;
-          let overlaps = getOverlapsOfPotentiallyCircularRanges(
+          const { /* className = "", style = {},  */ color } = deletionLayer;
+          const overlaps = getOverlapsOfPotentiallyCircularRanges(
             deletionLayer,
             row,
             sequenceLength
           );
           return overlaps.map(function (overlap) {
-            let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
+            const { xStart, width } = getXStartAndWidthOfRangeWrtRow({
               range: overlap,
               row,
               charWidth,
               sequenceLength
             });
-            let deletionStart = overlap.start === deletionLayer.start;
-            let deletionEnd = overlap.end === deletionLayer.end;
+            const deletionStart = overlap.start === deletionLayer.start;
+            const deletionEnd = overlap.end === deletionLayer.end;
 
             return [
               <AnnotationPositioner

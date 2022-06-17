@@ -2,7 +2,7 @@ describe("enzyme overrides", () => {
   it(`if an enzyme group is updated it should update`, () => {
     cy.visit("");
     cy.tgToggle("overrideManageEnzymes");
-    cy.triggerFileCmd("Filter Cutsites");
+    cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.get(".bp3-icon-small-cross").click(); //clear single cutters
     cy.contains("someGroup").click();
@@ -15,7 +15,7 @@ describe("enzyme overrides", () => {
   it(`shouldn't fail when messed up enzyme overrides are passed`, () => {
     cy.visit("");
     cy.tgToggle("corruptedOverrideManageEnzymes");
-    cy.triggerFileCmd("Filter Cutsites");
+    cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.get(".bp3-icon-small-cross").click(); //clear single cutters
     cy.contains("someGroup").click();
@@ -38,7 +38,7 @@ describe("enzyme overrides", () => {
   it(`should be able to override the enzyme manage and group functionality`, () => {
     cy.visit("");
     cy.tgToggle("overrideManageEnzymes");
-    cy.triggerFileCmd("Filter Cutsites");
+    cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.get(".bp3-icon-small-cross").click(); //clear single cutters
     cy.contains("someGroup").click();
@@ -70,17 +70,13 @@ describe("enzyme overrides", () => {
     cy.contains("Copy 2 Enzyme(s)");
     cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
 
-    cy.closeToasts();
     cy.closeDialog();
 
     cy.contains(".veLabelText", "Bpa36II").should("not.exist");
-    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click({ force: true }); //the toastr was getting in the way
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
 
-    cy.contains(
-      ".veToolbarCutsiteFilterHolder .bp3-menu-item",
-      "newGroup"
-    ).click();
+    cy.contains(".bp3-menu-item", "newGroup").click();
     cy.contains(".veLabelText", "specialEnzyme1").should("exist");
     cy.contains(".veLabelText", "specialEnzyme2").should("exist");
   });

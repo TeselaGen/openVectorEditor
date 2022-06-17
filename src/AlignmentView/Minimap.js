@@ -73,7 +73,7 @@ export default class Minimap extends React.Component {
   };
 
   scrollMinimapVertical = ({ e, force }) => {
-    const clientY = getClientY(e)
+    const clientY = getClientY(e);
     try {
       if (
         !force &&
@@ -90,7 +90,9 @@ export default class Minimap extends React.Component {
       some(lanes, (lane) => {
         const rect = lane.getBoundingClientRect();
         if (rect.top > clientY && rect.top - rect.height < clientY) {
-          this.props.scrollYToTrack(lane.getAttribute("data-lane-index"));
+          this.props.scrollYToTrack(
+            Math.max(lane.getAttribute("data-lane-index") - 3, 0)
+          );
           return true;
         }
         return false;
@@ -176,8 +178,8 @@ export default class Minimap extends React.Component {
           width={width}
           shapeRendering="geometricPrecision"
         >
-          <path d={bluePath} fill="#9abeff" />
-          <path d={redPath} fill="red" />
+          <path className="miniBluePath" d={bluePath} fill="#9abeff" />
+          <path className="miniRedPath" d={redPath} fill="red" />
         </svg>
       </div>
     );
@@ -192,6 +194,7 @@ export default class Minimap extends React.Component {
       minSliderSize,
       onMinimapScrollX,
       easyStore,
+      nameDivOffsetPercent,
       selectionLayerComp
     } = this.props;
 
@@ -246,7 +249,13 @@ export default class Minimap extends React.Component {
           />
           <ReactList
             itemsRenderer={(items, ref) => (
-              <div style={{ marginTop: -3 }} ref={ref}>
+              <div
+                style={{
+                  marginTop: -3,
+                  paddingLeft: nameDivOffsetPercent * width
+                }}
+                ref={ref}
+              >
                 {items}
               </div>
             )}
@@ -364,7 +373,7 @@ const YellowScrollHandle = view(
                 height: minimapTracksPartialHeight || 0,
                 border: "none",
                 cursor: "move",
-                opacity: ".4",
+
                 zIndex: "10",
                 width: scrollHandleWidth,
                 background: "transparent"
@@ -379,9 +388,10 @@ const YellowScrollHandle = view(
                       verticalVisibleRange.start +
                       1) *
                     laneHeight,
-
                   zIndex: "-10",
-                  background: "yellow",
+                  background: "#fbfb2873",
+                  borderTop: "2px solid yellow",
+                  borderBottom: "2px solid yellow",
                   position: "relative",
                   top: verticalVisibleRange.start * laneHeight
                 }}

@@ -1,12 +1,19 @@
-import { createLocalStorageStateHook } from "use-local-storage-state";
 import React from "react";
 import { MenuItem } from "@blueprintjs/core";
+import tgUseLocalStorageState from "tg-use-local-storage-state";
 
-const useAnnotationLimits = createLocalStorageStateHook("annotationLimits", {
-  features: 50,
-  parts: 50,
-  cutsites: 100
-});
+const useAnnotationLimits = () =>
+  tgUseLocalStorageState("annotationLimits", {
+    defaultValue: {
+      features: 50,
+      parts: 50,
+      primers: 50,
+      warnings: 50,
+      assemblyPieces: 50,
+      lineageAnnotations: 50,
+      cutsites: 100
+    }
+  });
 export default useAnnotationLimits;
 
 export function LimitAnnotations({ type, ...rest }) {

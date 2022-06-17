@@ -35,7 +35,7 @@ const renderTypes = ({ readOnly }) => (
       };
     })}
     name="type"
-    label="Type:"
+    label="Type"
   />
 );
 

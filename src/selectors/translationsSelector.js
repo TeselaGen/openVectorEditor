@@ -25,7 +25,7 @@ function translationsSelector(
   translations,
   frameTranslations
 ) {
-  let translationsToPass = {
+  const translationsToPass = {
     ...translationSearchMatches.reduce((acc, match) => {
       if (!match) return acc;
       const id = match.id || uuid();

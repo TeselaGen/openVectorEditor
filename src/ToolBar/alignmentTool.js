@@ -10,7 +10,6 @@ import {
 import { reduxForm, FieldArray } from "redux-form";
 import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
-import axios from "axios";
 import uniqid from "shortid";
 import { cloneDeep } from "lodash";
 import classNames from "classnames";
@@ -90,11 +89,6 @@ class AlignmentToolDropdown extends React.Component {
 }
 const ConnectedAlignmentToolDropdown = withEditorProps(AlignmentToolDropdown);
 
-const instance = axios.create({
-  // timeout: 1000,
-  // headers: getJ5AuthorizationHeaders()
-});
-
 class AlignmentTool extends React.Component {
   state = {
     templateSeqIndex: 0
@@ -132,14 +126,14 @@ class AlignmentTool extends React.Component {
             ].sequence.slice(suggestedTrimStart, suggestedTrimEnd + 1);
             const elementsToTrim = ["baseCalls", "basePos", "qualNums"];
             // eslint-disable-next-line no-unused-vars
-            for (let element in addedSequencesToUseTrimmed[i]
+            for (const element in addedSequencesToUseTrimmed[i]
               .chromatogramData) {
               if (elementsToTrim.indexOf(element) !== -1) {
-                addedSequencesToUseTrimmed[i].chromatogramData[
-                  element
-                ] = addedSequencesToUseTrimmed[i].chromatogramData[
-                  element
-                ].slice(suggestedTrimStart, suggestedTrimEnd + 1);
+                addedSequencesToUseTrimmed[i].chromatogramData[element] =
+                  addedSequencesToUseTrimmed[i].chromatogramData[element].slice(
+                    suggestedTrimStart,
+                    suggestedTrimEnd + 1
+                  );
               }
             }
           }
@@ -187,20 +181,22 @@ class AlignmentTool extends React.Component {
     });
 
     const {
-      data: {
-        alignedSequences: _alignedSequences,
-        pairwiseAlignments,
-        alignmentsToRefSeq
-      } = {}
-    } = await instance.post(
-      replaceProtocol("http://j5server.teselagen.com/alignment/run"),
-      {
-        //only send over the bear necessities :)
-        sequencesToAlign: seqInfoToSend,
-        isPairwiseAlignment,
-        isAlignToRefSeq
-      }
-    );
+      alignedSequences: _alignedSequences,
+      pairwiseAlignments,
+      alignmentsToRefSeq
+    } = await (
+      await fetch({
+        url: replaceProtocol("http://j5server.teselagen.com/alignment/run"),
+        method: "post",
+        body: JSON.stringify({
+          //only send over the bear necessities :)
+          sequencesToAlign: seqInfoToSend,
+          isPairwiseAlignment,
+          isAlignToRefSeq
+        })
+      })
+    ).json();
+
     // alignmentsToRefSeq set to alignedSequences for now
     let alignedSequences = _alignedSequences;
     if (alignmentsToRefSeq) {
@@ -474,9 +470,10 @@ function array_move(arr, old_index, new_index) {
 }
 
 function mottTrim(qualNums) {
+  if (!qualNums) return;
   let startPos = 0;
   let endPos = 0;
-  let totalScoreInfo = [];
+  const totalScoreInfo = [];
   let score = 0;
   let totalScore = 0;
   const cutoff = 0.05;

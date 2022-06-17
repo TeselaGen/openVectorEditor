@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag, Classes, NumericInput } from "@blueprintjs/core";
+import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
 import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
@@ -18,7 +18,9 @@ import {
   get,
   filter,
   camelCase,
-  reduce
+  reduce,
+  some,
+  sortBy
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
 import { defaultCopyOptions } from "../redux/copyOptions";
@@ -31,7 +33,7 @@ import {
 } from "../GlobalDialogUtils";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
-
+const partsPrimersFeatures = ["Parts", "Features", "Primers"];
 const getNewTranslationHandler = (isReverse) => ({
   handler: (props, state, ctxInfo) => {
     const annotation =
@@ -163,55 +165,8 @@ const fileCommandDefs = {
     },
     handler: () => {}
   },
-  filterFeatureLengthsCmd: {
-    name: (props) => {
-      return (
-        <div data-test="filter-feature-length">
-          Filter By Length
-          <div onClick={(e) => e.stopPropagation()}>
-            <NumericInput
-              onValueChange={function (valueAsNumber) {
-                let minimumFilterLength = parseInt(valueAsNumber, 10);
-                if (!(minimumFilterLength > -1)) return;
-                if (minimumFilterLength > props.sequenceLength) return;
-                props.updateFeatureLengthsToHide({
-                  enabled: true,
-                  min: minimumFilterLength
-                });
-              }}
-              value={props.featureLengthsToHide.min}
-              min={0}
-              // max={props.featureLengthsToHide.max} //tnr: I think it is better to not bound the max
-              fill={true}
-              clampValueOnBlur={true}
-              data-test="min-feature-length"
-            />
-            <NumericInput
-              onValueChange={function (valueAsNumber) {
-                let maximumFilterLength = parseInt(valueAsNumber, 10);
-                if (!(maximumFilterLength > -1)) return;
-                if (maximumFilterLength > props.sequenceLength) return;
-                props.updateFeatureLengthsToHide({
-                  enabled: true,
-                  max: maximumFilterLength
-                });
-              }}
-              value={props.featureLengthsToHide.max}
-              min={0}
-              // max={props.sequenceLength} //tnr: I think it is better to not bound the max
-              fill={true}
-              clampValueOnBlur={true}
-              data-test="max-feature-length"
-            />
-          </div>
-        </div>
-      );
-    },
-    isActive: (props) => props.featureLengthsToHide.enabled,
-    handler: (props) => {
-      props.toggleFeatureLengthsToHide();
-    }
-  },
+  filterFeatureLengthsCmd: getFilterByLengthCmd("feature"),
+  filterPartLengthsCmd: getFilterByLengthCmd("part"),
   featureTypesCmd: {
     name: (props) => {
       const total = Object.keys(
@@ -240,9 +195,8 @@ const fileCommandDefs = {
       const types = {};
       forEach(props.sequenceData.features, (feat) => {
         if (!feat.type) return;
-        const checked = !props.annotationVisibility.featureTypesToHide[
-          feat.type
-        ];
+        const checked =
+          !props.annotationVisibility.featureTypesToHide[feat.type];
         if (types[feat.type]) {
           types[feat.type].count++;
         } else {
@@ -290,6 +244,8 @@ const fileCommandDefs = {
     }
     // isDisabled:
   },
+  featureFilterIndividualCmd: getFilterIndividualCmd("feature"),
+  partFilterIndividualCmd: getFilterIndividualCmd("part"),
   exportSequenceAsGenbank: {
     name: (props) =>
       isProtein(props) ? "Download GenPept File" : "Download Genbank File",
@@ -322,7 +278,7 @@ const fileCommandDefs = {
       }),
     hotkey: "mod+p"
   },
-  ...["Parts", "Features", "Primers"].reduce((acc, type) => {
+  ...partsPrimersFeatures.reduce((acc, type) => {
     //showRemoveDuplicatesDialogFeatures showRemoveDuplicatesDialogParts showRemoveDuplicatesDialogPrimers
     acc[`showRemoveDuplicatesDialog${type}`] = {
       name: `Remove Duplicate ${startCase(type)}`,
@@ -338,6 +294,31 @@ const fileCommandDefs = {
             }
           }
         })
+    };
+    return acc;
+  }, {}),
+  autoAnnotateHolder: {
+    isHidden: (props) =>
+      !some(partsPrimersFeatures, (type) => props[`autoAnnotate${type}`])
+  },
+  ...partsPrimersFeatures.reduce((acc, type) => {
+    const handlerName = `autoAnnotate${type}`;
+    acc[handlerName] = {
+      name: `Auto Annotate ${type}`,
+      isDisabled: (props) => props.readOnly,
+      isHidden: (props) => !props[handlerName],
+      handler: async (props) => {
+        if (props[handlerName]) {
+          const lowerType = type.toLowerCase();
+          const toAdd = await props[handlerName](props);
+          props.updateSequenceData({
+            ...props.sequenceData,
+            [lowerType]: { ...props.sequenceData[lowerType], ...toAdd }
+          });
+        } else {
+          console.warn(`we shouldn't be here..`);
+        }
+      }
     };
     return acc;
   }, {})
@@ -454,7 +435,18 @@ const editCommandDefs = {
   find: {
     isDisabled: (props) => props.sequenceLength === 0,
     name: "Find...",
-    handler: (props) => props.toggleFindTool(),
+    handler: (props) => {
+      if (props.findTool.isOpen) {
+        const inputEl =
+          document.querySelector("textarea.tg-find-tool-input") ||
+          document.querySelector(".tg-find-tool-input input");
+        if (!inputEl) return;
+        inputEl.focus && inputEl.focus();
+        inputEl.select && inputEl.select();
+      } else {
+        props.toggleFindTool();
+      }
+    },
     hotkey: "mod+f",
     hotkeyProps: { preventDefault: true }
   },
@@ -637,7 +629,7 @@ const editCommandDefs = {
       isHidden: isProtein,
       isDisabled: (props) => {
         if (props.readOnly) {
-          return "The sequence is read only. Try changing 'View > Sequence Case'";
+          return "The sequence is read only. Try changing 'View > Sequence > Case'";
         }
         if (isSelection && !(props.selectionLayer.start > -1)) {
           return "No Selection to Replace";
@@ -661,7 +653,7 @@ const editCommandDefs = {
         }
         const func = type.includes("lower") ? "toLowerCase" : "toUpperCase";
         let newSeq;
-        let orginalSeq = isSelection
+        const orginalSeq = isSelection
           ? getSequenceWithinRange(selectionLayer, sequence)
           : sequence;
         if (type.includes("flip")) {
@@ -721,9 +713,45 @@ const editCommandDefs = {
     },
     hotkey: "ctrl+option+-"
   },
+  setRowViewSequenceSpacing: {
+    handler: () => {},
+    name: (props) => {
+      return (
+        <div data-test="setRowViewSequenceSpacing">
+          Spacing (in Sequence Map)
+          <div style={{ paddingLeft: 11, paddingRight: 11, paddingTop: 3 }}>
+            <Slider
+              stepSize={1}
+              onChange={(v) => {
+                props.updateSequenceSpacing(v);
+              }}
+              value={Number(props.charWidth)}
+              max={16}
+              min={8}
+              labelStepSize={1}
+            ></Slider>
+          </div>
+        </div>
+      );
+    }
+  },
   createMenuHolder: {
+    name: "Create",
     isHidden: (props) => isProtein(props) && props.readOnly,
-    handler: () => {}
+    handler: () => {},
+    submenu: (props) => {
+      return [
+        "newFeature",
+        "newPart",
+        "newTranslation",
+        "newReverseTranslation",
+        "newPrimer",
+        "createNewFromSubsequence",
+        ...(props.getAdditionalCreateOpts
+          ? props.getAdditionalCreateOpts(props) || []
+          : [])
+      ];
+    }
   },
   // toggleSequenceMapFontNoPreference: {
   //   isActive: props =>
@@ -887,8 +915,10 @@ const editCommandDefs = {
             className={classnames(Classes.INPUT, "minOrfSizeInput")}
             onChange={function (event) {
               let minimumOrfSize = parseInt(event.target.value, 10);
-              if (!(minimumOrfSize > -1)) return;
-              if (minimumOrfSize > props.sequenceLength) return;
+              if (!minimumOrfSize) {
+                minimumOrfSize = 0;
+              }
+              if (!(minimumOrfSize > -1)) minimumOrfSize = -minimumOrfSize;
               props.annotationVisibilityShow("orfs");
               props.minimumOrfSizeUpdate(minimumOrfSize);
             }}
@@ -897,7 +927,6 @@ const editCommandDefs = {
         </div>
       );
     },
-    // isActive: (props) => props.useAdditionalOrfStartCodons,
     handler: () => {}
   },
   hotkeyDialog: {
@@ -929,10 +958,11 @@ const editCommandDefs = {
 
   rotateToCaretPosition: {
     isHidden: (props) => props.readOnly || isProtein(props),
-
     isDisabled: (props) =>
+      (props.readOnly && readOnlyDisabledTooltip) ||
       (props.caretPosition === -1 && "You must first place cursor") ||
-      (!props.sequenceData.circular && "Disabled for Linear Sequences"),
+      (!props.sequenceData.circular && "Disabled for Linear Sequences") ||
+      props.sequenceLength === 0,
     handler: (props) => props.handleRotateToCaretPosition(),
     hotkey: "mod+b"
   },
@@ -956,21 +986,52 @@ const cirularityCommandDefs = {
   }
 };
 
-const labelToggleCommandDefs = {};
-["feature", "part", "cutsite"].forEach((type) => {
-  const cmdId = `toggle${upperFirst(type)}Labels`;
-  const plural = type + "s";
-  labelToggleCommandDefs[cmdId] = {
-    toggle: ["show", "hide"],
-    handler: (props) => props.annotationLabelVisibilityToggle(plural),
-    isHidden: (props) => {
-      return props && props.typesToOmit && props.typesToOmit[plural] === false;
-    },
-    isActive: (props) => {
-      return props && props.annotationLabelVisibility[plural];
+const nicheAnnotations = [
+  {
+    type: "warnings",
+    isHidden: (p) => {
+      return !map(p.sequenceData["warnings"]).length;
     }
-  };
-});
+  },
+  {
+    type: "assemblyPieces",
+    isHidden: (p) => {
+      return !map(p.sequenceData["assemblyPieces"]).length;
+    }
+  },
+  {
+    type: "lineageAnnotations",
+    isHidden: (p) => {
+      return !map(p.sequenceData["lineageAnnotations"]).length;
+    }
+  }
+];
+const labelToggleCommandDefs = {};
+["feature", "part", "cutsite", "primer", ...nicheAnnotations].forEach(
+  (_type) => {
+    let rest = {};
+    let type = _type;
+    if (_type.type) {
+      type = _type.type.slice(0, -1);
+      rest = _type;
+    }
+    const cmdId = `toggle${upperFirst(type)}Labels`;
+    const plural = type + "s";
+    labelToggleCommandDefs[cmdId] = {
+      toggle: ["show", "hide"],
+      handler: (props) => props.annotationLabelVisibilityToggle(plural),
+      isHidden: (props) => {
+        return (
+          props && props.typesToOmit && props.typesToOmit[plural] === false
+        );
+      },
+      ...rest,
+      isActive: (props) => {
+        return props && props.annotationLabelVisibility[plural];
+      }
+    };
+  }
+);
 
 const editAnnotationCommandDefs = ["feature", "part", "primer"].reduce(
   (acc, key) => {
@@ -1018,8 +1079,19 @@ const viewPropertiesCommandDefs = [
   "translations"
 ].reduce((acc, key) => {
   const singularKey = pluralize.singular(key);
-  acc[`view${upperFirst(singularKey)}Properties`] = {
-    name: `View ${upperFirst(singularKey)} Properties`,
+  const upperKey = upperFirst(singularKey);
+  const name = (() => {
+    if (singularKey === "cutsite") {
+      return "View Cut Site Properties";
+    }
+    if (singularKey === "orf") {
+      return "View ORF Properties";
+    }
+    return `View ${upperFirst(singularKey)} Properties`;
+  })();
+
+  acc[`view${upperKey}Properties`] = {
+    name,
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
       props.propertiesViewOpen();
@@ -1039,24 +1111,7 @@ const annotationToggleCommandDefs = {};
   "features",
   "parts",
 
-  {
-    type: "warnings",
-    isHidden: (p) => {
-      return !map(p.sequenceData["warnings"]).length;
-    }
-  },
-  {
-    type: "assemblyPieces",
-    isHidden: (p) => {
-      return !map(p.sequenceData["assemblyPieces"]).length;
-    }
-  },
-  {
-    type: "lineageAnnotations",
-    isHidden: (p) => {
-      return !map(p.sequenceData["lineageAnnotations"]).length;
-    }
-  },
+  ...nicheAnnotations,
   { type: "cutsites", isHidden: isProtein },
   "axis",
   { type: "orfs", text: "ORFs", isHidden: isProtein },
@@ -1109,7 +1164,12 @@ const annotationToggleCommandDefs = {};
       isProtein(props) ? "DNA Reverse Sequence" : "Reverse Sequence"
   },
   {
+    type: "fivePrimeThreePrimeHints",
+    name: () => "5' 3' Hints"
+  },
+  {
     type: "dnaColors",
+    name: () => "DNA Colors",
     isDisabled: (props) =>
       !props.annotationVisibility.sequence &&
       !props.annotationVisibility.reverseSequence &&
@@ -1150,7 +1210,7 @@ const annotationToggleCommandDefs = {};
       }
       return (
         <span>
-          {obj.text || startCase(type)}
+          {obj.text || startCase(type === "cutsites" ? "Cut Sites" : type)}
           &nbsp;
           {hasCount && (
             <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
@@ -1183,6 +1243,10 @@ const additionalAnnotationCommandsDefs = {
   showAll: {
     handler: (props) => {
       annotationTypes.forEach((type) => {
+        if (props.isProtein) {
+          if (type === "translations" || type === "cutsites")
+            return props.annotationVisibilityHide(type);
+        }
         props.annotationVisibilityShow(type);
       });
     }
@@ -1232,7 +1296,7 @@ const toolCommandDefs = {
     isHidden: (props) => isProtein(props)
   },
   openFilterCutsites: {
-    name: "Filter Cutsites",
+    name: "Filter Cut Sites",
     handler: (props) => {
       props.openToolbarItemUpdate("cutsiteTool");
     },
@@ -1296,12 +1360,21 @@ const labelCommandDefs = {
 };
 
 const commandDefs = {
+  showChromQualScoresMenu: {
+    isHidden: (props) =>
+      !props.sequenceData.chromatogramData ||
+      !props.sequenceData.chromatogramData.baseTraces
+  },
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,
     submenu: (props) => {
       return [
         {
           cmd: "toggleParts",
+          shouldDismissPopover: false
+        },
+        {
+          cmd: "partFilterIndividualCmd",
           shouldDismissPopover: false
         },
         ...(props.allPartTags
@@ -1311,7 +1384,11 @@ const commandDefs = {
                 shouldDismissPopover: false
               }
             ]
-          : [])
+          : []),
+        {
+          cmd: "filterPartLengthsCmd",
+          shouldDismissPopover: false
+        }
       ];
     }
   },
@@ -1348,3 +1425,140 @@ const invertString = function (str) {
   }
   return s;
 };
+
+function getFilterByLengthCmd(type) {
+  return {
+    name: (props) => {
+      return (
+        <div data-test={`filter-${type}-length`}>
+          Filter By Length
+          <div onClick={(e) => e.stopPropagation()}>
+            <NumericInput
+              onValueChange={function (valueAsNumber) {
+                const minimumFilterLength = parseInt(valueAsNumber, 10);
+                if (!(minimumFilterLength > -1)) return;
+                if (minimumFilterLength > props.sequenceLength) return;
+                props[`update${startCase(type)}LengthsToHide`]({
+                  enabled: true,
+                  min: minimumFilterLength
+                });
+              }}
+              value={props[`${type}LengthsToHide`].min}
+              min={0}
+              // max={props[`${type}LengthsToHide`].max} //tnr: I think it is better to not bound the max
+              fill={true}
+              clampValueOnBlur={true}
+              data-test={`min-${type}-length`}
+            />
+            <NumericInput
+              onValueChange={function (valueAsNumber) {
+                const maximumFilterLength = parseInt(valueAsNumber, 10);
+                if (!(maximumFilterLength > -1)) return;
+                // if (maximumFilterLength > props.sequenceLength) return; //tnr: I think it is better not to bound the max
+                props[`update${startCase(type)}LengthsToHide`]({
+                  enabled: true,
+                  max: maximumFilterLength
+                });
+              }}
+              value={props[`${type}LengthsToHide`].max}
+              min={0}
+              // max={props.sequenceLength} //tnr: I think it is better to not bound the max
+              fill={true}
+              clampValueOnBlur={true}
+              data-test={`max-${type}-length`}
+            />
+          </div>
+        </div>
+      );
+    },
+    isActive: (props) => props[`${type}LengthsToHide`].enabled,
+    handler: (props) => {
+      props[`toggle${startCase(type)}LengthsToHide`]();
+    }
+  };
+}
+
+function getFilterIndividualCmd(type) {
+  const pluralType = pluralize(type);
+  const upperType = startCase(type);
+  return {
+    name: (props) => {
+      const total = Object.keys(
+        reduce(
+          props.sequenceData[pluralType],
+          (acc, feat) => {
+            acc[feat.id] = true;
+            return acc;
+          },
+          {}
+        )
+      ).length;
+      const toHideCount = Object.keys(
+        props.annotationVisibility[`${type}IndividualToHide`]
+      ).length;
+      return (
+        <span>
+          Filter Individually &nbsp;
+          <Tag className="tg-smallTag" round style={{ marginLeft: 4 }}>
+            {total - toHideCount}/{total}
+          </Tag>
+        </span>
+      );
+    },
+    submenu: (props) => {
+      const individualAnns = {};
+      forEach(
+        sortBy(props.sequenceData[pluralType], ({ start }) => start + 1),
+        (ann) => {
+          if (!ann.id) return;
+          const checked =
+            !props.annotationVisibility[`${type}IndividualToHide`][ann.id];
+          if (individualAnns[ann.id]) {
+            console.error(`ann.id:`, ann.id);
+            console.error(`we should not be here!`);
+          } else {
+            individualAnns[ann.id] = {
+              shouldDismissPopover: false,
+              onClick: () =>
+                checked
+                  ? props[`hide${upperType}Individual`]([ann.id])
+                  : props[`show${upperType}Individual`]([ann.id]),
+              checked
+            };
+          }
+          individualAnns[ann.id].text = (
+            <span style={{ display: "flex", justifyContent: "space-between" }}>
+              {ann.name} &nbsp;{" "}
+              <span style={{ fontSize: 10 }}>
+                ({ann.start + 1}-{ann.end + 1})
+              </span>
+            </span>
+          );
+        }
+      );
+      const menu = map(individualAnns);
+      return [
+        {
+          text: "Uncheck All",
+          onClick: () =>
+            props[`hide${upperType}Individual`](Object.keys(individualAnns)),
+          shouldDismissPopover: false
+        },
+        {
+          text: "Check All",
+          onClick: () => props[`reset${upperType}IndividualToHide`](),
+          shouldDismissPopover: false
+        },
+        "--",
+        ...(menu.length
+          ? menu
+          : [
+              {
+                text: `No ${upperType}s To Filter`,
+                disabled: true
+              }
+            ])
+      ];
+    }
+  };
+}

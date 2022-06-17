@@ -1,0 +1,41 @@
+.tg-custom-sequence-editable {
+  height: auto;
+  line-height: inherit;
+  max-width: 100%;
+  padding: 10px;
+  flex: 1 1 auto;
+  width: 100%;
+  word-break: break-all;
+  max-height: 300px;
+  overflow-y: auto;
+  /* min-width: 190px; */
+}
+.tg-custom-sequence-editable.hasTempError {
+  box-shadow: inset 0 0 3px 1px red;
+}
+.tg-has-error .tg-custom-sequence-editable {
+  box-shadow: inset 0 0 3px 1px red;
+}
+
+/* .tg-match-seq {
+  background-color: aquamarine;
+} */
+.tg-no-match-seq {
+  color: red;
+  fill: red;
+  text-decoration: underline;
+}
+.tg-ambiguous-match-seq {
+  color: blue;
+  fill: blue;
+}
+.tg-no-show-seq {
+  opacity: 0;
+}
+
+.tg-bases-label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}

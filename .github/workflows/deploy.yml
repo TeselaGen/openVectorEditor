@@ -1,0 +1,60 @@
+name: Publish and Deploy
+# only deploy site from master branch
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'master') # Publish it only if the push comes from the master branch
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Check version changes
+        uses: EndBug/version-check@v1
+        id: check
+        with: 
+          diff-search: true
+
+      - name: Version update detected
+        if: steps.check.outputs.changed == 'true'
+        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+
+      - uses: bahmutov/npm-install@v1
+        if: steps.check.outputs.changed == 'true'
+      - uses: bahmutov/npm-install@v1
+        if: steps.check.outputs.changed == 'true'
+        with:
+          working-directory: addons/AutoAnnotate
+    
+      - run: npm run buildWithDemo
+        if: steps.check.outputs.changed == 'true'
+      
+      - uses: JS-DevTools/npm-publish@v1
+        if: steps.check.outputs.changed == 'true'
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+
+      - name: get-npm-version
+        if: steps.check.outputs.changed == 'true'
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: Deploy Version  🚀
+        if: steps.check.outputs.changed == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./demo/dist # The folder the action should deploy.
+          target-folder: version/${{steps.package-version.outputs.current-version}}
+      - name: Deploy Main App  🚀
+        if: steps.check.outputs.changed == 'true'
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./demo/dist # The folder the action should deploy.
+          clean: true # Automatically remove deleted files from the deploy branch
+          clean-exclude: version
+

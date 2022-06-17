@@ -35,8 +35,6 @@ export default createMergedDefaultStateReducer(
     }
   },
   {
-    propertiesSideBarOpen: false,
-    // propertiesSideBarOpen: true,
     tabId: "general"
   }
 );

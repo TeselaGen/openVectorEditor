@@ -1,5 +1,5 @@
 import React from "react";
-import { reduxForm, formValues } from "redux-form";
+import { reduxForm } from "redux-form";
 
 import {
   wrapDialog,
@@ -15,6 +15,7 @@ import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash";
 import { sizeSchema } from "../PropertiesDialog/utils";
 import { getRangeLength } from "ve-range-utils";
+import tgFormValues from "../../utils/tgFormValues";
 
 const schema = {
   fields: [
@@ -189,5 +190,5 @@ export default compose(
   reduxForm({
     form: "RemoveDuplicatesDialog"
   }),
-  formValues("ignoreName", "ignoreStrand", "ignoreStartAndEnd")
+  tgFormValues("ignoreName", "ignoreStrand", "ignoreStartAndEnd")
 )(RemoveDuplicatesDialog);

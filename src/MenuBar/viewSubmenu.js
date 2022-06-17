@@ -1,6 +1,9 @@
 import { MenuItem } from "@blueprintjs/core";
 import React from "react";
+import { InfoHelper } from "teselagen-react-components";
+import useAAColorType from "../utils/useAAColorType";
 import { LimitAnnotations } from "../utils/useAnnotationLimits";
+import { chromatogramMenu } from "../utils/useChromatogramPrefs";
 import useMeltingTemp from "../utils/useMeltingTemp";
 
 export const fullSequenceTranslationMenu = {
@@ -80,6 +83,10 @@ export default [
         shouldDismissPopover: false
       },
       {
+        cmd: "featureFilterIndividualCmd",
+        shouldDismissPopover: false
+      },
+      {
         cmd: "filterFeatureLengthsCmd",
         shouldDismissPopover: false
       }
@@ -155,27 +162,6 @@ export default [
     text: "Melting Temp of Selection",
     component: ToggleShowMeltingTemp
   },
-  {
-    text: "Sequence Case",
-    cmd: "sequenceCase",
-    submenu: [
-      {
-        cmd: "toggleSequenceMapFontUpper",
-        text: "Upper Case",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontRaw",
-        text: "No Preference",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleSequenceMapFontLower",
-        text: "Lower Case",
-        shouldDismissPopover: false
-      }
-    ]
-  },
   { divider: "" },
   fullSequenceTranslationMenu,
   { divider: "" },
@@ -186,9 +172,132 @@ export default [
     cmd: "toggleAminoAcidNumbers_protein",
     shouldDismissPopover: false
   },
-  { cmd: "toggleSequence", shouldDismissPopover: false },
-  { cmd: "toggleReverseSequence", shouldDismissPopover: false },
+  {
+    text: "Amino Acid Colors (by Hydrophobicity/by Family)",
+    component: function AAColorType(props) {
+      const [aaColorType, setAAColorType] = useAAColorType();
+      return (
+        <MenuItem
+          {...props}
+          text="Amino Acid Colors"
+          shouldDismissPopover={false}
+        >
+          <MenuItem
+            {...props}
+            text={
+              <div style={{ display: "flex" }}>
+                <span style={{ marginRight: 10 }}>Color By Hydrophobicity</span>
+                <InfoHelper
+                  content={
+                    <div style={{ color: "white" }}>
+                      <div
+                        style={{
+                          padding: 2,
+                          backgroundColor: "hsl(258.1, 100%, 69%)"
+                        }}
+                      >
+                        More Hydrophilic (4.5)
+                      </div>
+                      <div
+                        style={{
+                          padding: 2,
+                          backgroundColor: "hsl(356.9, 100%, 69%)"
+                        }}
+                      >
+                        More Hydrophobic (-4.5)
+                      </div>
+                    </div>
+                  }
+                ></InfoHelper>
+              </div>
+            }
+            shouldDismissPopover={false}
+            onClick={() => {
+              setAAColorType("byHydrophobicity");
+            }}
+            icon={aaColorType === "byHydrophobicity" ? "small-tick" : "blank"}
+          ></MenuItem>
+          <MenuItem
+            {...props}
+            text={
+              <div style={{ display: "flex" }}>
+                <span style={{ marginRight: 10 }}>Color By Family</span>
+                <InfoHelper
+                  content={
+                    <div style={{ color: "black" }}>
+                      <div style={{ padding: 2, backgroundColor: "#FFC0CB" }}>
+                        Positive: K, H, R
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#EE82EE" }}>
+                        Negative: D, E
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#D3D3D3" }}>
+                        Amidic: N, Q
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#00FFFF" }}>
+                        Aliphatic: A, G, L, I, P, V
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#FFA500" }}>
+                        Aromatic: F, W, Y
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#FFFF00" }}>
+                        Sulfur: C, M
+                      </div>
+                      <div style={{ padding: 2, backgroundColor: "#90EE90" }}>
+                        Hydroxylic: S, T
+                      </div>
+                    </div>
+                  }
+                ></InfoHelper>
+              </div>
+            }
+            shouldDismissPopover={false}
+            onClick={() => {
+              setAAColorType("byFamily");
+            }}
+            icon={aaColorType === "byFamily" ? "small-tick" : "blank"}
+          ></MenuItem>
+        </MenuItem>
+      );
+    },
+    shouldDismissPopover: false
+  },
+  chromatogramMenu(),
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
+  {
+    text: "Sequence",
+    submenu: [
+      { cmd: "toggleSequence", shouldDismissPopover: false },
+      { cmd: "toggleFivePrimeThreePrimeHints", shouldDismissPopover: false },
+      { cmd: "toggleReverseSequence", shouldDismissPopover: false },
+
+      {
+        text: "Case",
+        cmd: "sequenceCase",
+        submenu: [
+          {
+            cmd: "toggleSequenceMapFontUpper",
+            text: "Upper Case",
+            shouldDismissPopover: false
+          },
+          {
+            cmd: "toggleSequenceMapFontRaw",
+            text: "No Preference",
+            shouldDismissPopover: false
+          },
+          {
+            cmd: "toggleSequenceMapFontLower",
+            text: "Lower Case",
+            shouldDismissPopover: false
+          }
+        ]
+      },
+      {
+        cmd: "setRowViewSequenceSpacing",
+        shouldDismissPopover: false
+      }
+    ]
+  },
 
   { divider: "" },
   {
@@ -206,9 +315,29 @@ export default [
         component: LimitAnnotations
       },
       {
-        text: "Max Cutsites To Show",
+        text: "Max Cut Sites To Show",
         component: LimitAnnotations,
         type: "cutsites"
+      },
+      {
+        text: "Max Primers To Show",
+        component: LimitAnnotations,
+        type: "primers"
+      },
+      {
+        text: "Max Warnings To Show",
+        component: LimitAnnotations,
+        type: "warnings"
+      },
+      {
+        text: "Max Assembly Pieces To Show",
+        component: LimitAnnotations,
+        type: "assemblyPieces"
+      },
+      {
+        text: "Max Lineage Annotations To Show",
+        component: LimitAnnotations,
+        type: "lineageAnnotations"
       }
     ]
   },
@@ -218,6 +347,10 @@ export default [
       { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
       { cmd: "togglePartLabels", shouldDismissPopover: false },
       { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
+      { cmd: "toggleAssemblyPieceLabels", shouldDismissPopover: false },
+      { cmd: "toggleLineageAnnotationLabels", shouldDismissPopover: false },
+      { cmd: "toggleWarningLabels", shouldDismissPopover: false },
+      { cmd: "togglePrimerLabels", shouldDismissPopover: false },
 
       { divider: "" },
 

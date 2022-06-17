@@ -1,10 +1,12 @@
+import "@fontsource/ubuntu-mono";
+import "./addOnGlobals";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { showContextMenu } from "teselagen-react-components";
 import "./createVectorEditor";
 import "./style.css";
+export { getUserGroupLabel } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";
 
 window.tgCreateMenu = showContextMenu;
-require("typeface-ubuntu-mono");
 // window.tgCreateMenu = (menu, e, e2) => {
 //   (e||e2).stopPropagation()
 //   (e || e2)
@@ -15,6 +17,7 @@ FocusStyleManager.onlyShowFocusOnTabs();
 export { default as createVectorEditor } from "./createVectorEditor";
 export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
+export { default as specialCutsiteFilterOptions } from "./constants/specialCutsiteFilterOptions";
 //export components
 export {
   default as CircularView,
@@ -22,9 +25,9 @@ export {
 } from "./CircularView";
 export { default as SimpleCircularOrLinearView } from "./SimpleCircularOrLinearView";
 export { default as RowView, RowView as RowViewUnconnected } from "./RowView";
-export { default as RowItem, RowItem as RowItemUnconnected } from "./RowItem";
+export { default as RowItem } from "./RowItem";
 export { default as Editor, Editor as EditorUnconnected } from "./Editor";
-export { default as ToolBar, ToolBar as ToolBarUnconnected } from "./ToolBar";
+export { ToolBar } from "./ToolBar";
 export {
   default as CutsiteFilter,
   CutsiteFilter as CutsiteFilterUnconnected

@@ -179,7 +179,7 @@ let CreateCustomEnzyme = function (props) {
         onClick={() => {
           addCustomEnzyme(enzyme);
           dispatch({
-            type: "FILTERED_RESTRICTION_ENZYMES_ADD",
+            type: "FILTERED_RESTRICTION_ENZYMES_ADD", //filteredRestrictionEnzymesAdd
             payload: {
               value: name
             },
@@ -187,11 +187,6 @@ let CreateCustomEnzyme = function (props) {
               editorName
             }
           });
-          // addRestrictionEnzyme(enzyme)
-          // filteredRestrictionEnzymesAdd({
-          //   label: name,
-          //   value: name,
-          // })
           hideModal && hideModal();
         }}
       ></DialogFooter>

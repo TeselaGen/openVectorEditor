@@ -1,6 +1,7 @@
 import React from "react";
 import { Icon, Slider, Intent } from "@blueprintjs/core";
 import { preventDefaultStopPropagation } from "../utils/editorUtils";
+import { clamp, isNumber } from "lodash";
 
 export default class UncontrolledSliderWithPlusMinusBtns extends React.Component {
   state = { value: 0 };
@@ -18,33 +19,64 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
 
   render() {
     const { value } = this.state;
-    const { title, initialValue, label, style, ...rest } = this.props;
+    const {
+      noWraparound,
+      title,
+      initialValue,
+      label,
+      clickStepSize,
+      style,
+      onClick,
+      bindOutsideChangeHelper,
+      ...rest
+    } = this.props;
+    const { min, max } = this.props;
 
-    const stepSize =
-      this.props.stepSize || (this.props.max - this.props.min) / 10;
-
+    const stepSize = this.props.stepSize || (max - min) / 10;
+    if (bindOutsideChangeHelper) {
+      bindOutsideChangeHelper.triggerChange = (fn) => {
+        const valToPass =
+          isNumber(value) && !isNaN(value) ? value : initialValue;
+        return fn({
+          value: valToPass,
+          changeValue: (newVal) => {
+            const newnew = clamp(newVal, min, max);
+            // console.log(`newnew:`, newnew);
+            this.setState({ value: newnew });
+            this.props.onChange && this.props.onChange(newnew);
+          }
+        });
+      };
+    }
     return (
       <div
-        onClick={preventDefaultStopPropagation}
+        onClick={(e) => {
+          onClick && onClick(e);
+          preventDefaultStopPropagation(e);
+        }}
         onDrag={preventDefaultStopPropagation}
         onDragStart={preventDefaultStopPropagation}
         onDragEnd={preventDefaultStopPropagation}
         onMouseDown={preventDefaultStopPropagation}
-        onMouseUp={preventDefaultStopPropagation}
+        // onMouseUp={preventDefaultStopPropagation} //tnr: commenting this out because it was breaking sliders onRelease
         title={title}
         style={{ ...style, display: "flex", marginLeft: 15, marginRight: 20 }}
       >
         <Icon
           onClick={() => {
-            let newVal = this.state.value - stepSize;
-            if (newVal < this.props.min) {
-              newVal = this.props.max - stepSize;
+            let newVal = this.state.value - (clickStepSize || stepSize);
+            if (newVal < min) {
+              if (noWraparound) {
+                newVal = min;
+              } else {
+                newVal = max - (clickStepSize || stepSize);
+              }
             }
             this.setState({
               value: newVal
             });
             this.props.onChange(newVal);
-            this.props.onRelease(newVal);
+            this.props.onRelease && this.props.onRelease(newVal);
           }}
           style={{ cursor: "pointer", marginRight: 10 }}
           intent={Intent.PRIMARY}
@@ -59,15 +91,19 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
         />
         <Icon
           onClick={() => {
-            let newVal = this.state.value + stepSize;
-            if (newVal > this.props.max) {
-              newVal = this.props.min + stepSize;
+            let newVal = this.state.value + (clickStepSize || stepSize);
+            if (newVal > max) {
+              if (noWraparound) {
+                newVal = max;
+              } else {
+                newVal = min + (clickStepSize || stepSize);
+              }
             }
             this.setState({
               value: newVal
             });
             this.props.onChange(newVal);
-            this.props.onRelease(newVal);
+            this.props.onRelease && this.props.onRelease(newVal);
           }}
           style={{ cursor: "pointer", marginLeft: 10 }}
           intent={Intent.PRIMARY}

@@ -363,7 +363,7 @@ function handleSelectionEndGrabbed({
       selectionStartOrEndGrabbed = "end";
       //there must be a selection layer
       //we need to move the selection layer
-      let newEnd = normalizePositionByRangeLength(
+      const newEnd = normalizePositionByRangeLength(
         nearestCaretPos - 1,
         sequenceLength
       );
@@ -388,7 +388,7 @@ export function handleNoSelectionLayerYet({
   //        n
   //
 
-  let dragEnd = {
+  const dragEnd = {
     start: caretPosition,
     end: normalizePositionByRangeLength(
       nearestCaretPos - 1,
@@ -396,7 +396,7 @@ export function handleNoSelectionLayerYet({
       true
     )
   };
-  let dragStart = {
+  const dragStart = {
     start: nearestCaretPos,
     end: normalizePositionByRangeLength(caretPosition - 1, sequenceLength, true)
   };
@@ -436,7 +436,9 @@ export function updateSelectionOrCaret({
     newRange = {
       start: newRangeOrCaret.start,
       end: newRangeOrCaret.end,
-      forceUpdate: newRangeOrCaret.forceUpdate
+      forceUpdate: newRangeOrCaret.forceUpdate,
+      overlapsSelf: newRangeOrCaret.overlapsSelf,
+      isWrappedAddon: newRangeOrCaret.isWrappedAddon
     };
   }
   if (shiftHeld) {
@@ -459,13 +461,13 @@ export function updateSelectionOrCaret({
       //there is already a selection layer
       if (newCaret > -1) {
         //new caret passed
-        let distanceFromStart = getMinRangeLength(
+        const distanceFromStart = getMinRangeLength(
           selectionLayer.start,
           newCaret,
           sequenceLength,
           doNotWrapOrigin
         );
-        let distanceFromEnd = getMinRangeLength(
+        const distanceFromEnd = getMinRangeLength(
           selectionLayer.end,
           newCaret,
           sequenceLength,
@@ -489,7 +491,7 @@ export function updateSelectionOrCaret({
       } else {
         //new range passed
         // return selectionLayerUpdate(newRange);
-        let selectionFullyContained = !trimRangeByAnotherRange(
+        const selectionFullyContained = !trimRangeByAnotherRange(
           selectionLayer,
           newRange
         );
@@ -497,22 +499,22 @@ export function updateSelectionOrCaret({
           return selectionLayerUpdate(newRange);
         }
 
-        let newRangeFullyContained = !trimRangeByAnotherRange(
+        const newRangeFullyContained = !trimRangeByAnotherRange(
           newRange,
           selectionLayer
         );
 
-        let { newRange: range1 } = expandOrContractRangeToPosition(
+        const { newRange: range1 } = expandOrContractRangeToPosition(
           selectionLayer,
           newRange.start,
           sequenceLength
         );
-        let { newRange: range2 } = expandOrContractRangeToPosition(
+        const { newRange: range2 } = expandOrContractRangeToPosition(
           selectionLayer,
           newRange.end + 1,
           sequenceLength
         ); //+1 to go from range end to position
-        let range1Shorter =
+        const range1Shorter =
           getRangeLength(range1, sequenceLength) <
           getRangeLength(range2, sequenceLength);
 
@@ -553,8 +555,8 @@ export function updateSelectionOrCaret({
 // }
 
 function getMinRangeLength(start, end, sequenceLength, doNotWrapOrigin) {
-  let range1 = getRangeLength({ start, end }, sequenceLength);
-  let range2 = getRangeLength({ start: end, end: start }, sequenceLength);
+  const range1 = getRangeLength({ start, end }, sequenceLength);
+  const range2 = getRangeLength({ start: end, end: start }, sequenceLength);
   if (doNotWrapOrigin) {
     if (start < end) {
       return range1;

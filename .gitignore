@@ -1,10 +1,13 @@
 /coverage
+es
+lib
+node_modules
+umd
+demo/dist/
 /es
-/lib
-/node_modules
-/umd
 /demo/dist/
 npm-debug.log*
+yarn-error.log
 /.cache
 /cypress/videos
 /cypress/screenshots

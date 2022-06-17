@@ -6,29 +6,62 @@
   overflow-x: visible;
 }
 
-/* .veRowItem div {
-  overflow-x: visible;
-} */
-
+.bp3-dark .cutsiteLabelSelectionLayer {
+  background: #606468 !important;
+}
 .cutsiteLabelSelectionLayer {
-  background: none !important;
+  background: #d8e1e8 !important;
   height: 119%;
   opacity: 1;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  z-index: -2;
 }
-
 .cutsiteLabelSelectionLayer.isTrueStart {
-  border-left: 2px solid black;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
-
 .cutsiteLabelSelectionLayer.isTrueEnd {
-  border-right: 2px solid black;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+.veRowViewCutsite {
+  background: #8a9ba8;
+  margin-left: -2px;
+  /* z-index: -1; */
+}
+.bp3-dark .veRowViewCutsite.snipHovered {
+  background: #c5e3fa !important;
+}
+.veRowViewCutsite.topStrandSnip {
+  top: 1px;
+}
+.veRowViewCutsite.bottomStrandSnip {
+  top: -1px;
+}
+.veRowViewCutsite.snipHovered {
+  background: black;
 }
 
-.veRowViewCutsite {
-  margin-left: -2px;
-  background: black !important;
+.cutsiteLabelSelectionLayer.cutsiteLabelSelectionLayerHovered {
+  border-top: 2px solid #202b33;
+  border-bottom: 2px solid #202b33;
+}
+.bp3-dark .cutsiteLabelSelectionLayer.cutsiteLabelSelectionLayerHovered {
+  border-top: 2px solid #c5e3fa;
+  border-bottom: 2px solid #c5e3fa;
+}
+
+.cutsiteLabelSelectionLayerHovered.isTrueStart {
+  border-left: 2px solid #202b33;
+}
+.bp3-dark .cutsiteLabelSelectionLayerHovered.isTrueStart {
+  border-left: 2px solid #c5e3fa;
+}
+
+.cutsiteLabelSelectionLayerHovered.isTrueEnd {
+  border-right: 2px solid #202b33;
+}
+.bp3-dark .cutsiteLabelSelectionLayerHovered.isTrueEnd {
+  border-right: 2px solid #c5e3fa;
 }
 
 .veRowViewOrfsContainer {
@@ -48,4 +81,17 @@
 .veRowViewPrimaryProteinSequenceContainer {
   /* needs a z-index less than the selection layer so you can right click the selection above a sequence https://github.com/TeselaGen/openVectorEditor/issues/625 */
   z-index: 1;
+}
+
+.tg-prime-direction {
+  position: absolute;
+  color: lightgray;
+  font-size: 9px;
+  top: 2px;
+}
+.tg-right-prime-direction {
+  right: -10px;
+}
+.tg-left-prime-direction {
+  left: -10px;
 }

@@ -1,9 +1,13 @@
 import React from "react";
 import Dropzone from "react-dropzone";
+import classNames from "classnames";
 import "./DropHandler.css";
 
 export default class DropHandler extends React.Component {
   handleDrop = (files) => {
+    if (!files || !files.length) {
+      return window.toastr.warning("Unrecognized File Type");
+    }
     this.props.importSequenceFromFile(files[0]);
   };
   render() {
@@ -11,19 +15,29 @@ export default class DropHandler extends React.Component {
     return (
       <Dropzone
         disabled={disabled}
-        disableClick
+        onClick={(evt) => evt.preventDefault()}
         multiple={false}
-        accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna"]}
-        activeClassName="isActive"
-        rejectClassName="isRejected"
+        accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna", ".ab1"]}
         onDropRejected={() => {
           window.toastr.error("Error: Incorrect File Type");
         }}
         onDrop={this.handleDrop}
-        {...{ style, className }}
       >
-        <DraggingMessage />
-        {children}
+        {({ getRootProps, isDragActive, isDragReject }) => (
+          <div
+            {...getRootProps()}
+            {...{
+              style,
+              className: classNames(className, {
+                isActive: isDragActive,
+                isRejected: isDragReject
+              })
+            }}
+          >
+            <DraggingMessage />
+            {children}
+          </div>
+        )}
       </Dropzone>
     );
   }

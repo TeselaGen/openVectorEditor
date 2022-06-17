@@ -1,3 +1,6 @@
+.enzyme-rowitem {
+  z-index: 1;
+}
 .enzyme-rowitem:hover .tg-icon-duplicate-inner {
   display: block !important;
 }

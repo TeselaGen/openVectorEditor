@@ -22,9 +22,10 @@ declare namespace Cypress {
      * @example
      * cy.triggerFileCmd("Select All")
      * cy.triggerFileCmd("Digest")
+     * cy.triggerFileCmd("Digest", {noEnter: true})
      */
-    triggerFileCmd(text: string): void;
-    
+    triggerFileCmd(text: string, options: { noEnter: boolean }): void;
+
     /**
      * waits for .bp3-dialog to not exist
      * @example
@@ -59,7 +60,28 @@ declare namespace Cypress {
      * cy.hideMenu()
      */
     hideMenu(): void;
-    
+
+    /**
+     * removeFeatures
+     * remove all features on the sequence
+     * @example
+     * cy.removeFeatures() 
+     */
+    removeFeatures(): void;
+    /**
+     * hideCutsites
+     * hide all cutsites on the sequence
+     * @example
+     * cy.hideCutsites() 
+     */
+    hideCutsites(): void;
+    /**
+     * hideParts
+     * hide all parts on the sequence
+     * @example
+     * cy.hideParts() 
+     */
+    hideParts(): void;
     /**
      * selectRange
      * selects a 1 based range of the sequence
@@ -68,6 +90,20 @@ declare namespace Cypress {
      * //user would see this as: "Selecting 11 bps from 10 to 20"
      */
     selectRange(start, end): void;
+    /**
+     * deleteRange
+     * deletes a 1 based range of the sequence
+     * @example
+     * cy.deleteRange(10, 20) 
+     */
+    deleteRange(start, end): void;
+    /**
+     * deleteSelection
+     * deletes the selected range
+     * @example
+     * cy.deleteSelection() 
+     */
+    deleteSelection(): void;
     /**
      * dragBetweenSimple
      * drags between 2 els
@@ -84,7 +120,7 @@ declare namespace Cypress {
      * //user would see this as: "Selecting 11 bps from 10 to 20"
      */
     dragBetween(startEl, endEl): void;
-    
+
     /**
      * selectAlignmentRange
      * selects a 1 based range of the alignment
@@ -94,7 +130,7 @@ declare namespace Cypress {
      */
     selectAlignmentRange(start, end): void;
 
-    
+
     /**
      * scrollAlignmentToPercent
      * selects a 1 based range of the alignment
@@ -104,7 +140,7 @@ declare namespace Cypress {
      */
     scrollAlignmentToPercent(percent): void;
 
-    
+
 
     /**
      * tgToggle
@@ -116,7 +152,7 @@ declare namespace Cypress {
      */
     tgToggle(toggleId: string, toggleOnOrOff: boolean): void;
 
-    
+
     // /**
     //  * chainable waitForBackendCalls
     //  * waits for backend xhr requests to complete

@@ -41,6 +41,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
 
           {renderToggle({ that: this, type: "toggleSelection" })}
           {renderToggle({ that: this, type: "limitLengthTo50Bps" })}
+          {renderToggle({ that: this, type: "superLongSequence" })}
           {renderToggle({
             that: this,
             type: "noSequence",
@@ -51,8 +52,16 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
           {renderToggle({ that: this, type: "hideNameAndInfo" })}
           {/* {renderToggle({ that: this, type: "showCutsites" })} */}
           {renderToggle({ that: this, type: "circular" })}
+          {renderToggle({ that: this, type: "withAdditionalParts" })}
           {renderToggle({ that: this, type: "changeSize" })}
+          {renderToggle({
+            that: this,
+            type: "partOverlapsSelf",
+            description:
+              "You can pass an overlapsSelf=true flag to parts to allow them wrap around the whole sequence and then some"
+          })}
           {renderToggle({ that: this, type: "togglePartColor" })}
+          {renderToggle({ that: this, type: "isOligo" })}
           {renderToggle({
             that: this,
             type: "toggleNoRedux",
@@ -98,13 +107,24 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
               ...(this.state.noSequence
                 ? {
                     noSequence: true,
-                    size: this.state.limitLengthTo50Bps ? 50 : 164
+                    size: this.state.superLongSequence
+                      ? 1640
+                      : this.state.limitLengthTo50Bps
+                      ? 50
+                      : 164
                   }
                 : {
-                    sequence: this.state.limitLengthTo50Bps
+                    sequence: this.state.superLongSequence
+                      ? "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
+                      : this.state.limitLengthTo50Bps
                       ? "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAaga"
                       : "GGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacaccccccGGGAAAagagagtgagagagtagagagagaccacacccccc"
                   }),
+              ...(this.state.isOligo
+                ? {
+                    isOligo: true
+                  }
+                : {}),
               name: "Test Seq",
               circular: this.state.circular, //toggle to true to change this!
               features: [
@@ -124,13 +144,42 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                   end: 20,
                   ...(this.state.togglePartColor && { color: "override_red" })
                 },
+
+                ...(this.state.withAdditionalParts
+                  ? [
+                      {
+                        name: "Additional Part 1",
+                        id: "fakeId76",
+                        start: 25,
+                        end: 30,
+                        ...(this.state.togglePartColor && {
+                          color: "override_red"
+                        })
+                      }
+                    ]
+                  : []),
                 {
                   name: "Part 2",
                   id: "fakeId3",
+                  overlapsSelf: true,
                   start: 25,
                   end: 30,
-                  ...(this.state.togglePartColor && { color: "override_blue" })
-                }
+                  ...(this.state.togglePartColor && { color: "override_blue" }),
+                  ...(this.state.partOverlapsSelf && { overlapsSelf: true })
+                },
+                ...(this.state.withAdditionalParts
+                  ? [
+                      {
+                        name: "Additional Part 2",
+                        id: "fakeId1991",
+                        start: 10,
+                        end: 20,
+                        ...(this.state.togglePartColor && {
+                          color: "override_red"
+                        })
+                      }
+                    ]
+                  : [])
               ]
             }
           }}

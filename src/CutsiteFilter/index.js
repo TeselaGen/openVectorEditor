@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Icon } from "@blueprintjs/core";
-
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 
@@ -17,12 +17,19 @@ import {
   addCutsiteGroupClickHandler,
   CutsiteTag,
   getCutsiteWithNumCuts,
-  getUserGroupLabel,
-  withRestrictionEnzymes
+  getUserGroupLabel
 } from "./AdditionalCutsiteInfoDialog";
+import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
+import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
 
 const NoResults = withRestrictionEnzymes(
-  ({ cutsitesByName, allRestrictionEnzymes, queryString = "" }) => {
+  ({
+    cutsitesByName,
+    cutsitesByNameActive,
+    closeDropDown,
+    allRestrictionEnzymes,
+    queryString = ""
+  }) => {
     const enzymesByNameThatMatch = pickBy(
       allRestrictionEnzymes,
       function (v, k) {
@@ -42,12 +49,13 @@ const NoResults = withRestrictionEnzymes(
               if (i > 3) return [];
               return (
                 <CutsiteTag
+                  onWrapperClick={closeDropDown}
+                  allRestrictionEnzymes={allRestrictionEnzymes}
                   forceOpenCutsiteInfo
                   name={e.name}
+                  cutsitesByName={cutsitesByName}
                   cutsitesByNameActive={cutsitesByName}
                   key={i}
-                  numCuts={0}
-                  sites={[]}
                 ></CutsiteTag>
               );
             })}
@@ -55,6 +63,40 @@ const NoResults = withRestrictionEnzymes(
         </div>
       );
     }
+    const hiddenEnzymesByNameThatMatch = pickBy(
+      aliasedEnzymesByName,
+      function (v, k) {
+        if (cutsitesByName[k]) {
+          return false;
+        }
+        return includes(k.toLowerCase(), queryString.toLowerCase());
+      }
+    );
+    if (!isEmpty(hiddenEnzymesByNameThatMatch)) {
+      return (
+        <div>
+          These Hidden enzymes match, add them via the Manage Enzymes link
+          <br></br>
+          <div style={{ display: "flex" }}>
+            {flatMap(hiddenEnzymesByNameThatMatch, (e, i) => {
+              if (i > 3) return [];
+              return (
+                <CutsiteTag
+                  onWrapperClick={closeDropDown}
+                  allRestrictionEnzymes={allRestrictionEnzymes}
+                  forceOpenCutsiteInfo
+                  name={e.name}
+                  cutsitesByName={cutsitesByName}
+                  cutsitesByNameActive={cutsitesByNameActive}
+                  key={i}
+                ></CutsiteTag>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="noResultsTextPlusButton">
         No results... Add enzymes to your list via the Manage Enzymes link{" "}
@@ -81,10 +123,8 @@ export class CutsiteFilter extends React.Component {
     // if (value === "manageEnzymes") {
     //   return this.getManageEnzymesLink();
     // }
-    const {
-      filteredRestrictionEnzymes,
-      filteredRestrictionEnzymesUpdate
-    } = props;
+    const { filteredRestrictionEnzymes, filteredRestrictionEnzymesUpdate } =
+      props;
 
     return (
       <div
@@ -126,21 +166,40 @@ export class CutsiteFilter extends React.Component {
   };
 
   render() {
-    let {
+    const {
       onChangeHook,
       style = {},
       filteredRestrictionEnzymes,
-      filteredRestrictionEnzymesUpdate,
+      filteredRestrictionEnzymesUpdate: _filteredRestrictionEnzymesUpdate,
       allCutsites: { cutsitesByName },
+      allCutsites,
+      filteredCutsites,
       closeDropDown = () => {},
       enzymeManageOverride,
       enzymeGroupsOverride,
       editorName,
-      additionalEnzymes
+      additionalEnzymes,
+      sequenceData
     } = this.props;
+    const filteredRestrictionEnzymesUpdate = (enzymes) => {
+      _filteredRestrictionEnzymesUpdate(enzymes);
+      if (sequenceData?.id) {
+        try {
+          window.localStorage.setItem(
+            `tgInitialCutsiteFilter-${sequenceData.id}`,
+            JSON.stringify(
+              enzymes.map((e) => omit(e, "canBeHidden", "nameArray", "label"))
+            )
+          );
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(`err 872g4e setting enzymes for sequence:`, err);
+        }
+      }
+    };
     const userEnzymeGroups =
       enzymeGroupsOverride || window.getExistingEnzymeGroups();
-    let options = [
+    const options = [
       ...map(specialCutsiteFilterOptions, (opt) => opt),
       ...map(userEnzymeGroups, (nameArray, name) => {
         return {
@@ -161,22 +220,32 @@ export class CutsiteFilter extends React.Component {
           return {
             canBeHidden: true,
             label,
-            // hiddenEnzyme: false,
             value: key
           };
         })
     ].map((n) => addClickableLabel(n, { closeDropDown }));
-    // function openManageEnzymes() {
-    //   dispatch({
-    //     type: "CREATE_YOUR_OWN_ENZYME_RESET"
-    //   });
-    //   dispatch({
-    //     type: "CREATE_YOUR_OWN_ENZYME_RESET",
-    //     payload: {
-    //       inputSequenceToTestAgainst
-    //     }
-    //   });
-    // }
+
+    const value = filteredRestrictionEnzymes.map((filteredOpt) => {
+      let toRet;
+      if (filteredOpt.cutsThisManyTimes || filteredOpt.isSpecialGroup) {
+        toRet = filteredOpt;
+      } else if (filteredOpt.value.includes("__userCreatedGroup")) {
+        toRet = filteredOpt;
+      } else {
+        const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
+        const label = getCutsiteWithNumCuts({
+          numCuts,
+          name: numCuts
+            ? cutsitesByName[filteredOpt.value][0].name
+            : defaultEnzymesByName[filteredOpt.value]?.name || filteredOpt.value
+        });
+        toRet = {
+          ...filteredOpt,
+          label
+        };
+      }
+      return addClickableLabel(toRet, { closeDropDown });
+    });
     return (
       <div
         style={{
@@ -193,10 +262,12 @@ export class CutsiteFilter extends React.Component {
           noResultsText={
             <NoResults
               {...{
+                closeDropDown,
                 queryString: this.state.queryTracker,
                 additionalEnzymes,
                 enzymeGroupsOverride,
-                cutsitesByName,
+                cutsitesByNameActive: filteredCutsites.cutsitesByName,
+                cutsitesByName: allCutsites.cutsitesByName,
                 editorName
               }}
             ></NoResults>
@@ -204,23 +275,13 @@ export class CutsiteFilter extends React.Component {
           onInputChange={(queryTracker) => {
             this.setState({ queryTracker });
           }}
-          placeholder="Filter cutsites..."
+          placeholder="Filter cut sites..."
           options={options}
           filteredRestrictionEnzymes={filteredRestrictionEnzymes}
           filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
           optionRenderer={this.renderOptions}
           isSimpleSearch
           onChange={(filteredRestrictionEnzymes) => {
-            // if (
-            //   filteredRestrictionEnzymes &&
-            //   filteredRestrictionEnzymes.some(
-            //     enzyme =>
-            //       enzyme.value ===
-            //       specialCutsiteFilterOptions.manageEnzymes.value
-            //   )
-            // ) {
-            //   return;
-            // }
             onChangeHook && onChangeHook(filteredRestrictionEnzymes);
             filteredRestrictionEnzymesUpdate(
               map(filteredRestrictionEnzymes, (r) => {
@@ -228,43 +289,25 @@ export class CutsiteFilter extends React.Component {
               })
             );
           }}
-          value={filteredRestrictionEnzymes.map((filteredOpt) => {
-            let toRet;
-            if (filteredOpt.cutsThisManyTimes) {
-              toRet = filteredOpt;
-            } else if (filteredOpt.value.includes("__userCreatedGroup")) {
-              toRet = filteredOpt;
-            } else {
-              const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
-              const label = getCutsiteWithNumCuts({
-                numCuts,
-                name: numCuts
-                  ? cutsitesByName[filteredOpt.value][0].name
-                  : filteredOpt.value
-              });
-              toRet = {
-                ...filteredOpt,
-                label
-              };
-            }
-            return addClickableLabel(toRet, { closeDropDown });
-          })}
+          value={value}
         />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a
-          onClick={() => {
-            enzymeManageOverride
-              ? enzymeManageOverride(this.props)
-              : showDialog({
-                  dialogType: "EnzymesDialog"
-                  // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
-                });
-            closeDropDown();
-          }}
-          style={{ width: "fit-content", fontSize: 11 }}
-        >
-          Manage Enzymes...
-        </a>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <a
+            onClick={() => {
+              enzymeManageOverride
+                ? enzymeManageOverride(this.props)
+                : showDialog({
+                    dialogType: "EnzymesDialog"
+                    // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
+                  });
+              closeDropDown();
+            }}
+            style={{ width: "fit-content", fontSize: 11 }}
+          >
+            Manage Enzymes...
+          </a>
+        </div>
       </div>
     );
   }

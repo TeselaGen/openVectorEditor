@@ -26,9 +26,22 @@ const opts = [
 ];
 export class FindBar extends React.Component {
   componentDidMount() {
+    this.possiblyNormalizeMatchNumber();
     if (this.inputEl) {
       this.inputEl.select();
     }
+  }
+  possiblyNormalizeMatchNumber = () => {
+    const { findTool, updateMatchNumber } = this.props;
+    if (
+      findTool.matchNumber !== 0 &&
+      findTool.matchNumber >= findTool.matchesTotal
+    ) {
+      updateMatchNumber(0);
+    }
+  };
+  componentDidUpdate() {
+    this.possiblyNormalizeMatchNumber();
   }
   render() {
     const {
@@ -136,9 +149,7 @@ export class FindBar extends React.Component {
       >
         <Tooltip
           disabled={matchesTotal <= MAX_MATCHES_DISPLAYED}
-          content={
-            "Disabled because there are >{MAX_MATCHES_DISPLAYED} matches"
-          }
+          content="Disabled because there are >{MAX_MATCHES_DISPLAYED} matches"
         >
           Highlight All
         </Tooltip>
@@ -161,6 +172,7 @@ export class FindBar extends React.Component {
         {isInline && (
           <Popover
             autoFocus={false}
+            enforceFocus={false}
             position={Position.BOTTOM}
             target={
               <Button
@@ -192,6 +204,7 @@ export class FindBar extends React.Component {
         <Button
           data-test="veFindPreviousMatchButton"
           minimal
+          small
           disabled={matchesTotal <= 0}
           onClick={() => {
             updateMatchNumber(
@@ -203,6 +216,7 @@ export class FindBar extends React.Component {
         <Button
           data-test="veFindNextMatchButton"
           minimal
+          small
           disabled={matchesTotal <= 0}
           onClick={() => {
             updateMatchNumber(
@@ -211,6 +225,9 @@ export class FindBar extends React.Component {
           }}
           icon="caret-down"
         />
+        {isInline && (
+          <Button minimal small onClick={toggleFindTool} icon="small-cross" />
+        )}
       </span>
     );
 
@@ -220,7 +237,7 @@ export class FindBar extends React.Component {
           isInline
             ? {
                 display: "flex",
-                minWidth: 300 
+                minWidth: 300
               }
             : {
                 position: "fixed",
@@ -241,8 +258,9 @@ export class FindBar extends React.Component {
         }
         className="veFindBar"
       >
-        {isInline && <Button onClick={toggleFindTool} icon="cross" />}
         <Popover
+          autoFocus={false}
+          enforceFocus={false}
           target={
             <InputToUse
               autoFocus
@@ -250,6 +268,7 @@ export class FindBar extends React.Component {
                 resize: "vertical",
                 ...(!isInline && { width: 350, minHeight: 70 })
               }}
+              className="tg-find-tool-input"
               inputRef={(n) => {
                 if (n) this.inputEl = n;
               }}
@@ -257,7 +276,7 @@ export class FindBar extends React.Component {
                 e.persist();
                 if (e.metaKey && e.keyCode === 70) {
                   //cmd-f
-                  toggleFindTool();
+                  // toggleFindTool();
                   e.preventDefault();
                   e.stopPropagation();
                 } else if (e.keyCode === 13) {
@@ -339,7 +358,7 @@ function AnnotationSearchMatchComp({
   annotationVisibilityShow,
   toggleFindTool
 }) {
-  let toReturn = (
+  const toReturn = (
     <div className="veAnnotationFindMatches">
       {searchableTypes.map((type, i) => {
         const annotationsFound = annotationSearchMatches[i];

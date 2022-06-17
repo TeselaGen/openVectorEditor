@@ -1,4 +1,7 @@
-import { createLocalStorageStateHook } from "use-local-storage-state";
+import tgUseLocalStorageState from "tg-use-local-storage-state";
 
-const useMeltingTemp = createLocalStorageStateHook("showMeltingTemp");
+const useMeltingTemp = () => {
+  return tgUseLocalStorageState("showMeltingTemp");
+};
+
 export default useMeltingTemp;

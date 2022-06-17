@@ -2,6 +2,8 @@ import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
 import { /* createReducer, */ createAction } from "redux-act";
@@ -23,7 +25,7 @@ const alignmentAnnotationSettings = {
   primers: false
 };
 
-let defaultVisibilities = {
+const defaultVisibilities = {
   alignmentAnnotationVisibility: alignmentAnnotationSettings,
   pairwise_alignmentAnnotationVisibility: alignmentAnnotationSettings,
   alignmentAnnotationLabelVisibility: {
@@ -138,18 +140,21 @@ export default (state = {}, { payload = {}, type }) => {
   }
 
   if (type === "UPSERT_ALIGNMENT_RUN") {
-    let payloadToUse = {
+    const payloadToUse = {
+      ...payload,
       //assign default visibilities
       ...defaultVisibilityTypes.reduce((acc, type) => {
         if (
           (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
           (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
         ) {
-          acc[type.replace("pairwise_", "")] = defaultVisibilities[type];
+          acc[type.replace("pairwise_", "")] = {
+            ...defaultVisibilities[type],
+            ...payload[type.replace("pairwise_", "")]
+          };
         }
         return acc;
-      }, {}),
-      ...payload
+      }, {})
     };
     if (payloadToUse.pairwiseAlignments) {
       if (
@@ -210,7 +215,8 @@ export default (state = {}, { payload = {}, type }) => {
         };
         pairwiseOverviewAlignmentTracks.push(alignedSeqMinusInserts);
       });
-      payloadToUse.pairwiseOverviewAlignmentTracks = pairwiseOverviewAlignmentTracks;
+      payloadToUse.pairwiseOverviewAlignmentTracks =
+        pairwiseOverviewAlignmentTracks;
       payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
         addHighlightedDifferences
       );
@@ -287,7 +293,7 @@ function checkForIssues(alignmentTracks, alignmentType) {
     return;
   }
 
-  let alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
+  const alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
   let hasError;
   alignmentTracks.some((track) => {
     if (track.alignmentData.sequence.length !== alignmentTrackLength) {
@@ -303,6 +309,15 @@ function checkForIssues(alignmentTracks, alignmentType) {
       console.error("incorrect chromatogram length", alignmentTracks);
 
       return "incorrect chromatogram length";
+    }
+    if (track.chromatogramData && !track.chromatogramData.baseTraces) {
+      if (!track.chromatogramData.basePos) {
+        console.error("corrupted chromatogram data", alignmentTracks);
+        return "corrupted chromatogram data";
+      }
+      track.chromatogramData = convertBasePosTraceToPerBpTrace(
+        track.chromatogramData
+      );
     }
     if (
       alignmentType !== "Parallel Part Creation" &&

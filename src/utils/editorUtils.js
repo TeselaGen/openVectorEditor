@@ -4,10 +4,14 @@ import { divideBy3 } from "./proteinUtils";
 import {
   getInsertBetweenVals,
   calculatePercentGC,
-  getSequenceDataBetweenRange
+  getSequenceDataBetweenRange,
+  bioData,
+  aliasedEnzymesByName
 } from "ve-sequence-utils";
 import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
+import { normalizePositionByRangeLength } from "ve-range-utils";
+import { filter } from "lodash";
 
 export function getSelectionMessage({
   caretPosition = -1,
@@ -19,26 +23,28 @@ export function getSelectionMessage({
   GCDecimalDigits, //these are only passed in for the status bar
   isProtein
 }) {
-  let isSelecting = selectionLayer.start > -1;
+  let _selectionLayer = selectionLayer;
+  const isSelecting = selectionLayer.start > -1;
   if (isSelecting) {
-    let length = getRangeLength(selectionLayer, sequenceLength);
+    _selectionLayer = getSelFromWrappedAddon(selectionLayer, sequenceLength);
+    const length = getRangeLength(_selectionLayer, sequenceLength);
     const GCContent = (numDecimalDigits = 0) =>
       calculatePercentGC(
-        getSequenceDataBetweenRange(sequenceData, selectionLayer).sequence
+        getSequenceDataBetweenRange(sequenceData, _selectionLayer).sequence
       ).toFixed(numDecimalDigits);
     const seqLen = divideBy3(length, isProtein);
     return `${customTitle || "Selecting"} ${seqLen} ${
       (isProtein ? "AA" : "bp") + (seqLen === 1 ? "" : "s")
-    } from ${divideBy3(selectionLayer.start, isProtein) + 1} to ${divideBy3(
-      selectionLayer.end + 1,
+    } from ${divideBy3(_selectionLayer.start, isProtein) + 1} to ${divideBy3(
+      _selectionLayer.end + 1,
       isProtein
     )}${
       showGCContent && !isProtein ? ` (${GCContent(GCDecimalDigits)}% GC)` : ""
     }`;
   } else if (caretPosition > -1) {
-    let insertBetween = getInsertBetweenVals(
+    const insertBetween = getInsertBetweenVals(
       caretPosition,
-      selectionLayer,
+      _selectionLayer,
       sequenceLength
     );
     return (
@@ -110,7 +116,7 @@ export function pareDownAnnotations(annotations, max) {
   let paredDown = false;
   if (Object.keys(annotations).length > max) {
     paredDown = true;
-    let sortedAnnotations = sortBy(annotations, function (annotation) {
+    const sortedAnnotations = sortBy(annotations, function (annotation) {
       return -getRangeLength(annotation);
     });
     annotationsToPass = sortedAnnotations
@@ -126,7 +132,9 @@ export function getParedDownWarning({ nameUpper, maxToShow, isAdjustable }) {
   return (
     <VeWarning
       data-test={`ve-warning-max${nameUpper}ToDisplay`}
-      tooltip={`Warning: More than ${maxToShow} ${nameUpper}. Only displaying ${maxToShow} ${
+      tooltip={`Warning: More than ${maxToShow} ${
+        nameUpper === "Cutsites" ? "Cut Sites" : nameUpper
+      }. Only displaying ${maxToShow} ${
         isAdjustable ? "(Configure this under View > Limits)" : ""
       } `}
     />
@@ -139,3 +147,77 @@ export function getClientX(event) {
 export function getClientY(event) {
   return event.clientY || get(event, "touches[0].clientY");
 }
+
+export function hideAnnByLengthFilter(hideOpts, ann, seqLen) {
+  const featLength = getRangeLength(ann, seqLen);
+  return (
+    hideOpts.enabled && (featLength < hideOpts.min || featLength > hideOpts.max)
+  );
+}
+
+export function getSelFromWrappedAddon(selectionLayer, sequenceLength) {
+  const selToUse = {
+    ...selectionLayer
+  };
+  if (selectionLayer.isWrappedAddon) {
+    const oldEnd = selToUse.end;
+    selToUse.end = normalizePositionByRangeLength(
+      selToUse.start - 1,
+      sequenceLength
+    );
+    selToUse.start = normalizePositionByRangeLength(oldEnd + 1, sequenceLength);
+    delete selToUse.isWrappedAddon;
+  }
+  return selToUse;
+}
+
+export function getAcceptedChars({
+  isOligo,
+  isProtein,
+  isRna,
+  isMixedRnaAndDna
+} = {}) {
+  return isProtein
+    ? bioData.extended_protein_letters.toLowerCase()
+    : isOligo
+    ? bioData.ambiguous_rna_letters.toLowerCase() + "t"
+    : isRna
+    ? bioData.ambiguous_rna_letters.toLowerCase()
+    : isMixedRnaAndDna
+    ? bioData.ambiguous_rna_letters.toLowerCase() +
+      bioData.ambiguous_dna_letters.toLowerCase()
+    : //just plain old dna
+      bioData.ambiguous_dna_letters.toLowerCase();
+}
+export function getStripedPattern({ color }) {
+  return (
+    <pattern
+      id="diagonalHatch"
+      patternUnits="userSpaceOnUse"
+      width="4"
+      height="4"
+    >
+      <path
+        d="M-1,1 l2,-2
+           M0,4 l4,-4
+           M3,5 l2,-2"
+        style={{
+          stroke: color,
+          strokeWidth: 2,
+          fill: "blue",
+          opacity: 0.4
+        }}
+      />
+    </pattern>
+  );
+}
+export const getEnzymeAliases = (enzyme) => {
+  let lowerName = (enzyme.name && enzyme.name.toLowerCase()) || "";
+  if (typeof enzyme === "string") {
+    lowerName = enzyme.toLowerCase();
+  }
+  return filter(
+    (aliasedEnzymesByName[lowerName] || {}).aliases,
+    (n) => n.toLowerCase() !== lowerName //filter out current enzyme
+  );
+};

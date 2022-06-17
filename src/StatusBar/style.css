@@ -3,11 +3,13 @@
   align-items: center;
   font-size: 14px;
   max-height: 25px;
-  min-height: 25px;
-  /* background: #f3f3f3; */
+  min-height: 33px;
   overflow-x: auto;
-  border-top: lightgrey 0.1px solid;
-  border-bottom: lightgrey 0.1px solid;
+  background: #ebf1f5;
+}
+
+.bp3-dark .veStatusBar {
+  background: #202b33;
 }
 
 .veStatusBar::-webkit-scrollbar {
@@ -31,7 +33,7 @@
   margin-left: 3px;
   margin-right: 3px;
 }
-.veStatusBarSpacer:last-child{
+.veStatusBarSpacer:last-child {
   display: none;
 }
 

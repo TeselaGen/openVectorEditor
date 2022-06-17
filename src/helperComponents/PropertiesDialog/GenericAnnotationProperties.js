@@ -17,12 +17,15 @@ import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
 import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
+import { typeField } from "./typeField";
+import { getSequenceWithinRange } from "ve-range-utils";
+import { getReverseComplementSequenceString } from "ve-sequence-utils";
 
 const genericAnnotationProperties = ({
   annotationType,
-  noColor,
   noType,
-  withTags
+  withTags,
+  withBases
 }) => {
   const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
@@ -31,12 +34,33 @@ const genericAnnotationProperties = ({
       this.commands = commands(this);
       this.schema = {
         fields: [
-          ...(noColor
+          { path: "name", type: "string" },
+          ...(!withBases
             ? []
             : [
                 {
+                  path: "bases",
+                  type: "string",
+                  render: (bases, primer, row, props) => {
+                    let bps = bases;
+                    if (!bases) {
+                      bps = getSequenceWithinRange(primer, props.sequence);
+                      if (!primer.forward) {
+                        bps = getReverseComplementSequenceString(bps);
+                      }
+                    }
+                    return bps;
+                  }
+                }
+              ]),
+          ...(noType
+            ? []
+            : [
+                typeField,
+                {
                   path: "color",
                   type: "string",
+                  width: 50,
                   render: (color) => {
                     return (
                       <div
@@ -49,8 +73,6 @@ const genericAnnotationProperties = ({
                   }
                 }
               ]),
-          { path: "name", type: "string" },
-          ...(noType ? [] : [{ path: "type", type: "string" }]),
           sizeSchema,
           ...(withTags && this.props.allPartTags
             ? [
@@ -81,7 +103,7 @@ const genericAnnotationProperties = ({
                 }
               ]
             : []),
-          { path: "strand", type: "string" }
+          { path: "strand", type: "number" }
         ]
       };
     }
@@ -103,14 +125,15 @@ const genericAnnotationProperties = ({
         annotationVisibility,
         sequenceLength,
         selectionLayer,
+        sequence,
         isProtein,
         allPartTags,
-        annotationPropertiesSelectedEntities: _annotationPropertiesSelectedEntities,
+        annotationPropertiesSelectedEntities:
+          _annotationPropertiesSelectedEntities,
         selectedAnnotationId
       } = this.props;
-      const annotationPropertiesSelectedEntities = _annotationPropertiesSelectedEntities.filter(
-        (a) => annotations[a.id]
-      );
+      const annotationPropertiesSelectedEntities =
+        _annotationPropertiesSelectedEntities.filter((a) => annotations[a.id]);
 
       const deleteAnnotation = this.props[`delete${annotationTypeUpper}`];
 
@@ -133,11 +156,17 @@ const genericAnnotationProperties = ({
                 cmd={this.commands[`toggle${annotationTypeUpper + "s"}`]}
               />
             }
+            onDoubleClick={(annotation) => {
+              showAddOrEditAnnotationDialog({
+                type: annotationType,
+                annotation
+              });
+            }}
             annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            sequence={sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             noPadding
             noFullscreenButton
             onRowSelect={this.onRowSelect}
-            maxHeight={400}
             selectedIds={selectedAnnotationId}
             formName="annotationProperties"
             noRouter
@@ -212,6 +241,7 @@ const genericAnnotationProperties = ({
           annotationVisibility,
           selectionLayer,
           readOnly,
+          sequence: sequenceData.sequence,
           annotations: sequenceData[annotationType + "s"],
           [annotationType + "s"]: sequenceData[annotationType + "s"],
           sequenceLength: sequenceData.sequence.length

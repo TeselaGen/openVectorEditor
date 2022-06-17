@@ -15,7 +15,7 @@ describe("properties", function () {
       .contains("Save")
       .click();
     cy.get(`[data-tab-id="genbank"]`).click();
-    cy.contains("textarea", `primer complement(10..20)`);
+    cy.contains("textarea", `primer_bind complement(10..20)`);
     cy.contains("textarea", `/label="fakeprimer"`);
   });
   it(`should be able to delete a feature from the properties tab and not have the delete button still enabled; 
@@ -147,10 +147,10 @@ describe("properties", function () {
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.contains(".tg-select-option", "Van").click();
     cy.get(".veLabelText:contains(Van):first").rightclick();
-    cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
+    cy.contains(".bp3-menu-item", "View Cut Site Properties").click();
     cy.contains(".rt-tr-group.selected", "831");
     cy.get(".veLabelText:contains(Van):last").rightclick();
-    cy.contains(".bp3-menu-item", "View Cutsite Properties").click();
+    cy.contains(".bp3-menu-item", "View Cut Site Properties").click();
     cy.contains(".rt-tr-group.selected", "4730");
   });
 });

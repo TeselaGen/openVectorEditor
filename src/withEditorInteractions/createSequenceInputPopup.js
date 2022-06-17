@@ -76,7 +76,7 @@ class SequenceInputNoHotkeys extends React.Component {
       selectionLayer,
       sequenceLength,
       isProtein,
-
+      replaceChars,
       caretPosition,
       acceptedChars,
       maxInsertSize
@@ -85,7 +85,7 @@ class SequenceInputNoHotkeys extends React.Component {
 
     let message;
     if (isReplace) {
-      let betweenVals = getInsertBetweenVals(
+      const betweenVals = getInsertBetweenVals(
         -1,
         selectionLayer,
         sequenceLength
@@ -137,7 +137,13 @@ class SequenceInputNoHotkeys extends React.Component {
           onChange={(e) => {
             let sanitizedVal = "";
             e.target.value.split("").forEach((letter) => {
-              if (acceptedChars.includes(letter.toLowerCase())) {
+              const lowerLetter = letter.toLowerCase();
+              if (replaceChars && replaceChars[lowerLetter]) {
+                const isUpper = lowerLetter !== letter;
+                sanitizedVal += isUpper
+                  ? replaceChars[lowerLetter].toUpperCase()
+                  : replaceChars[lowerLetter];
+              } else if (acceptedChars.includes(lowerLetter)) {
                 sanitizedVal += letter;
               }
             });
@@ -260,10 +266,10 @@ const getActiveElement = function (document) {
     /* eslint-enable eqeqeq*/
   ) {
     // Get iframes
-    let iframes = document.getElementsByTagName("iframe");
+    const iframes = document.getElementsByTagName("iframe");
     for (let i = 0; i < iframes.length; i++) {
       // Recall
-      let focused = getActiveElement(iframes[i].contentWindow.document);
+      const focused = getActiveElement(iframes[i].contentWindow.document);
       if (focused !== false) {
         return focused; // The focused
       }

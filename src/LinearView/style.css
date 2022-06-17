@@ -2,4 +2,18 @@
   overflow: visible !important;
 }
 
+.veLinearView .veRowItemWrapper {
+  display: flex;
+  justify-content: center;
+}
+
 /*# sourceMappingURL=style.css.map */
+.veLinearView.isLinViewZoomed .veRowItemWrapper {
+  overflow-x: auto;
+}
+/* .tg-pinch-helper {
+  touch-action: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+} */

@@ -7,10 +7,12 @@ import React from "react";
 import { doesLabelFitInAnnotation } from "../utils";
 import { noop } from "lodash";
 import getAnnotationClassnames from "../../utils/getAnnotationClassnames";
+import { getStripedPattern } from "../../utils/editorUtils";
+import { ANNOTATION_LABEL_FONT_WIDTH } from "../constants";
 
 class PointedAnnotation extends React.PureComponent {
   render() {
-    let {
+    const {
       className,
       widthInBps,
       charWidth,
@@ -19,12 +21,18 @@ class PointedAnnotation extends React.PureComponent {
       forward,
       name = "",
       type,
+      isStriped,
       onMouseLeave,
       onMouseOver,
       isProtein,
       id,
+      extraHeight,
+      flipAnnotation,
+      insertPaths,
+      insertTicks,
       hideName,
-      pointiness = 8,
+      pointiness = 4,
+      arrowPointiness = 1,
       color = "orange",
       fill,
       stroke,
@@ -37,8 +45,10 @@ class PointedAnnotation extends React.PureComponent {
       gapsBefore,
       annotation,
       externalLabels,
+      truncateLabelsThatDoNotFit,
       onlyShowLabelsThatDoNotFit
     } = this.props;
+    const _rangeType = annotation.rangeTypeOverride || rangeType;
 
     const classNames = getAnnotationClassnames(annotation, {
       isProtein,
@@ -46,7 +56,7 @@ class PointedAnnotation extends React.PureComponent {
       viewName: "RowView"
     });
 
-    let width = (widthInBps + gapsInside) * charWidth;
+    const width = (widthInBps + gapsInside) * charWidth;
     let charWN = charWidth; //charWN is normalized
     if (charWidth < 15) {
       //allow the arrow width to adapt
@@ -56,60 +66,68 @@ class PointedAnnotation extends React.PureComponent {
         charWN = width;
       }
     }
-    let widthMinusOne = width - charWN;
+    charWN = arrowPointiness * charWN;
+
+    const widthMinusOne = width - charWN;
     let path;
     let hasAPoint = false;
-    const endLine = annotation.doesOverlapSelf
+    const endLine = annotation.overlapsSelf
       ? `L 0,${height / 2} 
     L -10,${height / 2} 
     L 0,${height / 2} `
       : "";
-    const arrowLine = annotation.doesOverlapSelf
+    const bottomLine = `${insertTicks || ""} L 0,${height}`;
+    const startLines = `M 0,0 
+    ${insertPaths || ""}`;
+    const arrowLine = annotation.overlapsSelf
       ? `L ${width + 10},${height / 2} 
     L ${width},${height / 2} `
       : "";
+
     // starting from the top left of the annotation
-    if (rangeType === "middle") {
+    if (_rangeType === "middle") {
       //draw a rectangle
       path = `
-          M 0,0 
+          ${startLines}
           L ${width - pointiness / 2},0
           Q ${width + pointiness / 2},${height / 2} ${
         width - pointiness / 2
       },${height}
-          L ${0},${height}
+          ${bottomLine}
           Q ${pointiness},${height / 2} ${0},${0}
           z`;
-    } else if (rangeType === "start") {
+    } else if (_rangeType === "start") {
       path = `
-          M 0,0 
+          ${startLines}
           L ${width - pointiness / 2},0 
+          
           Q ${width + pointiness / 2},${height / 2} ${
         width - pointiness / 2
       },${height}
-          L 0,${height} 
+      
+          ${bottomLine} 
           ${endLine}
           z`;
-    } else if (rangeType === "beginningAndEnd") {
+    } else if (_rangeType === "beginningAndEnd") {
       hasAPoint = true;
       path = `
-          M 0,0 
+          ${startLines}
           L ${widthMinusOne},0 
           L ${width},${height / 2} 
           ${arrowLine}
           L ${widthMinusOne},${height} 
-          L 0,${height} 
+          ${bottomLine} 
           ${endLine}
           z`;
     } else {
       hasAPoint = true;
       path = `
-        M 0,0 
+        ${startLines}
         L ${widthMinusOne},0 
         L ${width},${height / 2} 
         ${arrowLine}
         L ${widthMinusOne},${height} 
-        L 0,${height} 
+        ${bottomLine} 
         Q ${pointiness},${height / 2} ${0},${0}
         z`;
     }
@@ -124,8 +142,36 @@ class PointedAnnotation extends React.PureComponent {
         !onlyShowLabelsThatDoNotFit &&
         ["parts", "features"].includes(annotation.annotationTypePlural))
     ) {
-      textOffset = 0;
-      nameToDisplay = "";
+      if (truncateLabelsThatDoNotFit && !externalLabels) {
+        const fractionToDisplay =
+          width / (name.length * ANNOTATION_LABEL_FONT_WIDTH);
+        const numLetters = Math.floor(fractionToDisplay * name.length);
+        nameToDisplay = name.slice(0, numLetters);
+        if (nameToDisplay.length > 3) {
+          if (nameToDisplay.length !== name.length) {
+            nameToDisplay += "..";
+          }
+
+          textOffset =
+            width / 2 -
+            (nameToDisplay.length * 5) / 2 -
+            (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0);
+        } else {
+          textOffset = 0;
+          nameToDisplay = "";
+        }
+      } else {
+        textOffset = 0;
+        nameToDisplay = "";
+      }
+    }
+    let _textColor = textColor;
+    if (!textColor) {
+      try {
+        _textColor = Color(color).isDark() ? "white" : "black";
+      } catch (error) {
+        _textColor = "white";
+      }
     }
 
     return (
@@ -147,12 +193,21 @@ class PointedAnnotation extends React.PureComponent {
         <title>
           {getAnnotationNameAndStartStopString(annotation, { isProtein })}
         </title>
+        {isStriped && getStripedPattern({ color })}
         <path
           strokeWidth="1"
           stroke={stroke || "black"}
           opacity={opacity}
-          fill={fill || color}
-          transform={forward ? null : "translate(" + width + ",0) scale(-1,1) "}
+          fill={isStriped ? "url(#diagonalHatch)" : fill || color}
+          transform={
+            forward
+              ? null
+              : "translate(" +
+                width +
+                `,${flipAnnotation ? -extraHeight + 10 : 0}) scale(-1,${
+                  flipAnnotation ? "-" : ""
+                }1) `
+          }
           d={path}
         />
         {!hideName && nameToDisplay && (
@@ -163,7 +218,7 @@ class PointedAnnotation extends React.PureComponent {
             )}
             style={{
               fontSize: ".9em",
-              fill: textColor || (Color(color).isDark() ? "white" : "black")
+              fill: _textColor
             }}
             transform={`translate(${textOffset},${height - 2})`}
           >

@@ -12,19 +12,18 @@ import {
 } from "ve-sequence-utils";
 import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
-import { getContext, branch } from "recompose";
+import { branch } from "recompose";
 
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
 
 import Combokeys from "combokeys";
-import PropTypes from "prop-types";
 import {
   showContextMenu,
   showConfirmationDialog,
-  commandMenuEnhancer
+  commandMenuEnhancer,
+  withStore
 } from "teselagen-react-components";
-import { bioData } from "ve-sequence-utils";
 import { jsonToGenbank } from "bio-parsers";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
@@ -45,24 +44,16 @@ import {
   createNewAnnotationMenu
 } from "../MenuBar/defaultConfig";
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
-import { getNodeToRefocus } from "../utils/editorUtils";
+import {
+  getAcceptedChars,
+  getNodeToRefocus,
+  getSelFromWrappedAddon
+} from "../utils/editorUtils";
 
 import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
-
-function getAcceptedChars({ isProtein, isRna, isMixedRnaAndDna } = {}) {
-  return isProtein
-    ? bioData.extended_protein_letters.toLowerCase()
-    : isRna
-    ? bioData.ambiguous_rna_letters.toLowerCase()
-    : isMixedRnaAndDna
-    ? bioData.ambiguous_rna_letters.toLowerCase() +
-      bioData.ambiguous_dna_letters.toLowerCase()
-    : //just plain old dna
-      bioData.ambiguous_dna_letters.toLowerCase();
-}
 
 const annotationClickHandlers = [
   "orfClicked",
@@ -82,8 +73,8 @@ const annotationClickHandlers = [
 ];
 //tnr: because this menu is being rendered outside the main render tree (by blueprint)
 //we need to make sure it re-renders whenever the redux state changes (so things like tick-marks will toggle properly etc..)
-const ConnectedMenu = withEditorProps(({ children, ...rest }) => (
-  <Menu changingProps={rest}>{children}</Menu>
+const ConnectedMenu = withEditorProps(({ children }) => (
+  <Menu>{children.map(React.cloneElement)}</Menu>
 ));
 
 //withEditorInteractions is meant to give "interaction" props like "onDrag, onCopy, onKeydown" to the circular/row/linear views
@@ -105,13 +96,14 @@ function VectorInteractionHOC(Component /* options */) {
         };
       });
 
-      this.ConnectedMenu = (props) => (
-        <ConnectedMenu store={this.props.store} {...props} />
-      );
+      this.ConnectedMenu = (p) => {
+        return <ConnectedMenu {...props} {...p} />;
+      };
     }
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
+
     componentDidMount() {
       this.editorDragged = editorDragged.bind(this);
       this.editorClicked = editorClicked.bind(this);
@@ -128,7 +120,7 @@ function VectorInteractionHOC(Component /* options */) {
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
       // documentation: https://craig.is/killing/mice
       this.combokeys.bind(
-        getAcceptedChars(this.props.sequenceData).split(""),
+        "-.*ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""),
         (event) => {
           this.handleDnaInsert(event);
         }
@@ -257,7 +249,8 @@ function VectorInteractionHOC(Component /* options */) {
       seqDataToInsert = tidyUpSequenceData(seqDataToInsert, {
         provideNewIdsForAnnotations: true,
         annotationsAsObjects: true,
-        removeUnwantedChars: true
+        removeUnwantedChars: true,
+        noCdsTranslations: true
       });
       if (!seqDataToInsert.sequence.length)
         return window.toastr.warning("Sorry no valid base pairs to paste");
@@ -276,38 +269,55 @@ function VectorInteractionHOC(Component /* options */) {
         onCopy = () => {},
         sequenceData,
         selectionLayer,
-        copyOptions
+        copyOptions,
+        readOnly
       } = this.props;
       const onCut = this.props.onCut || this.props.onCopy || (() => {});
-
       const seqData = tidyUpSequenceData(
         this.sequenceDataToCopy ||
-          getSequenceDataBetweenRange(sequenceData, selectionLayer, {
-            excludePartial: {
-              features: !copyOptions.partialFeatures,
-              parts: !copyOptions.partialParts
-            },
-            exclude: {
-              features: !copyOptions.features,
-              parts: !copyOptions.parts
+          getSequenceDataBetweenRange(
+            sequenceData,
+            getSelFromWrappedAddon(
+              selectionLayer,
+              sequenceData.sequence.length
+            ),
+            {
+              excludePartial: {
+                features: !copyOptions.partialFeatures,
+                parts: !copyOptions.partialParts
+              },
+              exclude: {
+                features: !copyOptions.features,
+                parts: !copyOptions.parts
+              }
             }
-          }),
+          ),
         { annotationsAsObjects: true }
       );
-      if (!seqData.sequence.length)
+
+      if (
+        !(this.sequenceDataToCopy || {}).textToCopy &&
+        !seqData.sequence.length
+      )
         return window.toastr.warning(
-          `No Sequence Selected To ${isCut ? "Cut" : "Copy"}`
+          `No Sequence Selected To ${isCut && !readOnly ? "Cut" : "Copy"}`
         );
 
       const clipboardData = e.clipboardData;
-      clipboardData.setData(
-        "text/plain",
-        seqData.isProtein ? seqData.proteinSequence : seqData.sequence
-      );
+      const textToCopy =
+        (this.sequenceDataToCopy || {}).textToCopy !== undefined
+          ? this.sequenceDataToCopy.textToCopy
+          : seqData.isProtein
+          ? seqData.proteinSequence
+          : seqData.sequence;
+
+      seqData.textToCopy = textToCopy;
+
+      clipboardData.setData("text/plain", textToCopy);
       clipboardData.setData("application/json", JSON.stringify(seqData));
       e.preventDefault();
 
-      if (isCut) {
+      if (isCut && !readOnly) {
         this.handleDnaDelete(false);
         onCut(
           e,
@@ -319,7 +329,9 @@ function VectorInteractionHOC(Component /* options */) {
         onCopy(e, seqData, this.props);
         document.body.removeEventListener("copy", this.handleCopy);
       }
-      window.toastr.success(`Selection ${isCut ? "Cut" : "Copied"}`);
+      window.toastr.success(
+        `Selection ${isCut && !readOnly ? "Cut" : "Copied"}`
+      );
       this.sequenceDataToCopy = undefined;
     };
     handleCut = this.handleCutOrCopy(true);
@@ -344,10 +356,9 @@ function VectorInteractionHOC(Component /* options */) {
         createSequenceInputPopup({
           useEventPositioning,
           isReplace,
+          replaceChars: sequenceData.isRna ? { t: "u" } : undefined,
           acceptedChars: getAcceptedChars(sequenceData),
           isProtein: sequenceData.isProtein,
-          isRna: sequenceData.isRna,
-          isMixedRnaAndDna: sequenceData.isMixedRnaAndDna,
           selectionLayer,
           sequenceLength,
           caretPosition,
@@ -380,7 +391,11 @@ function VectorInteractionHOC(Component /* options */) {
       }
       if (sequenceLength > 0) {
         let rangeToDelete = selectionLayer;
+        let isCaretAtEndOfSeq;
         if (caretPosition > 0) {
+          if (caretPosition === sequenceLength) {
+            isCaretAtEndOfSeq = true;
+          }
           rangeToDelete = {
             start: normalizePositionByRangeLength(
               caretPosition - (sequenceData.isProtein ? 3 : 1),
@@ -391,6 +406,10 @@ function VectorInteractionHOC(Component /* options */) {
               sequenceLength
             )
           };
+        } else {
+          if (rangeToDelete.end === sequenceLength - 1) {
+            isCaretAtEndOfSeq = true;
+          }
         }
         const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
           {},
@@ -399,7 +418,9 @@ function VectorInteractionHOC(Component /* options */) {
         );
         updateSequenceData(newSeqData);
         caretPositionUpdate(
-          rangeToDelete.start > newSeqData.sequence.length
+          isCaretAtEndOfSeq
+            ? newSeqData.sequence.length
+            : rangeToDelete.start > newSeqData.sequence.length
             ? //we're deleting around the origin so set the cursor to the 0 position
               0
             : normalizePositionByRangeLength(
@@ -420,10 +441,8 @@ function VectorInteractionHOC(Component /* options */) {
       this.props.caretPositionUpdate(position);
     };
     selectionLayerUpdate = (newSelection) => {
-      const {
-        selectionLayer = { start: -1, end: -1 },
-        ignoreGapsOnHighlight
-      } = this.props;
+      const { selectionLayer = { start: -1, end: -1 }, ignoreGapsOnHighlight } =
+        this.props;
       if (!newSelection) return;
       const { start, end, forceUpdate } = newSelection;
       if (
@@ -473,7 +492,14 @@ function VectorInteractionHOC(Component /* options */) {
       event.preventDefault();
       event.stopPropagation();
       const { annotationSelect, annotationDeselectAll } = this.props;
-      this.updateSelectionOrCaret(event.shiftKey, annotation.topSnipPosition);
+      this.updateSelectionOrCaret(
+        event.shiftKey,
+        event.metaKey
+          ? annotation
+          : event.altKey
+          ? annotation.bottomSnipPosition
+          : annotation.topSnipPosition
+      );
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
@@ -503,18 +529,6 @@ function VectorInteractionHOC(Component /* options */) {
       annotationDeselectAll(undefined);
       annotationSelect(annotation);
     };
-
-    getCreateItems = () => {
-      const { readOnly, sequenceLength } = this.props;
-      return sequenceLength && readOnly
-        ? []
-        : [
-            {
-              text: "Create",
-              submenu: ["newFeature", "newPart", "newPrimer"]
-            }
-          ];
-    };
     insertHelper = {
       onClick: (e, ctxInfo) => {
         this.handleDnaInsert({
@@ -528,19 +542,22 @@ function VectorInteractionHOC(Component /* options */) {
 
     // eslint-disable-next-line no-unused-vars
     getCopyOptions = (annotation) => {
-      const { sequenceData, readOnly } = this.props;
+      const { sequenceData, readOnly, selectionLayer } = this.props;
       const { isProtein } = sequenceData;
       const makeTextCopyable = (transformFunc, className, action = "copy") => {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
             const { selectionLayer, editorName, store } = this.props;
-            const { sequenceData, copyOptions } = store.getState().VectorEditor[
-              editorName
-            ];
+            const { sequenceData, copyOptions } =
+              store.getState().VectorEditor[editorName];
+
             const selectedSeqData = getSequenceDataBetweenRange(
               sequenceData,
-              selectionLayer,
+              getSelFromWrappedAddon(
+                selectionLayer,
+                sequenceData.sequence.length
+              ),
               {
                 excludePartial: {
                   features: !copyOptions.partialFeatures,
@@ -556,7 +573,6 @@ function VectorInteractionHOC(Component /* options */) {
               selectedSeqData,
               sequenceData
             );
-
             this.sequenceDataToCopy = sequenceDataToCopy;
             if (action === "copy") {
               document.body.addEventListener("copy", this.handleCopy);
@@ -564,11 +580,30 @@ function VectorInteractionHOC(Component /* options */) {
               document.body.addEventListener("cut", this.handleCut);
             }
             if (window.Cypress) {
-              window.__tg_copiedSeqData = sequenceDataToCopy;
+              window.Cypress.textToCopy = sequenceDataToCopy.textToCopy;
+              window.Cypress.seqDataToCopy = sequenceDataToCopy;
             }
-            return sequenceDataToCopy.sequence;
+            return sequenceDataToCopy.textToCopy || sequenceDataToCopy.sequence;
           }
         });
+      };
+      const aaCopy = {
+        text: "Copy AA Sequence",
+        className: "openVeCopyAA",
+        willUnmount: () => {
+          this.openVeCopyAA && this.openVeCopyAA.destroy();
+        },
+        didMount: ({ className }) => {
+          this.openVeCopyAA = makeTextCopyable((selectedSeqData) => {
+            const textToCopy = isProtein
+              ? selectedSeqData.proteinSequence.toUpperCase()
+              : getAminoAcidStringFromSequenceString(selectedSeqData.sequence);
+            return {
+              ...selectedSeqData,
+              textToCopy
+            };
+          }, className);
+        }
       };
       // TODO: maybe stop using Clipboard.js and unify clipboard handling with
       // a more versatile approach
@@ -588,21 +623,35 @@ function VectorInteractionHOC(Component /* options */) {
                 },
                 didMount: ({ className }) => {
                   // TODO: Maybe use a cut action instead
-                  this.openVeCut = makeTextCopyable((i) => i, className, "cut");
+                  this.openVeCut = makeTextCopyable(
+                    (s) => ({
+                      ...s,
+                      textToCopy: isProtein ? s.proteinSequence : s.sequence
+                    }),
+                    className,
+                    "cut"
+                  );
                 }
               }
             ]),
         {
-          text: "Copy",
-          submenu: !isProtein && [
+          text:
+            annotation.overlapsSelf || selectionLayer.overlapsSelf
+              ? "Copy Wrapped Range"
+              : "Copy",
+          submenu: [
+            ...(isProtein ? [aaCopy] : []),
             {
-              text: "Copy",
+              text: isProtein ? "Copy DNA Bps" : "Copy",
               className: "openVeCopy2",
               willUnmount: () => {
                 this.openVeCopy2 && this.openVeCopy2.destroy();
               },
               didMount: ({ className }) => {
-                this.openVeCopy2 = makeTextCopyable((i) => i, className);
+                this.openVeCopy2 = makeTextCopyable(
+                  (s) => ({ ...s, textToCopy: s.sequence }),
+                  className
+                );
               }
             },
 
@@ -621,7 +670,9 @@ function VectorInteractionHOC(Component /* options */) {
               }
             },
             {
-              text: "Copy Reverse Complement",
+              text: isProtein
+                ? "Copy Reverse Complement DNA Bps"
+                : "Copy Reverse Complement",
               className: "openVeCopyReverse",
               willUnmount: () => {
                 this.openVeCopyReverse && this.openVeCopyReverse.destroy();
@@ -633,23 +684,7 @@ function VectorInteractionHOC(Component /* options */) {
                 );
               }
             },
-            {
-              text: "Copy AA Sequence",
-              className: "openVeCopyAA",
-              willUnmount: () => {
-                this.openVeCopyAA && this.openVeCopyAA.destroy();
-              },
-              didMount: ({ className }) => {
-                this.openVeCopyAA = makeTextCopyable(
-                  (selectedSeqData) => ({
-                    sequence: getAminoAcidStringFromSequenceString(
-                      selectedSeqData.sequence
-                    )
-                  }),
-                  className
-                );
-              }
-            },
+            ...(isProtein ? [] : [aaCopy]),
             {
               text: "Copy Reverse Complement AA Sequence",
               className: "openVeCopyAAReverse",
@@ -658,19 +693,27 @@ function VectorInteractionHOC(Component /* options */) {
               },
               didMount: ({ className }) => {
                 this.openVeCopyAAReverse = makeTextCopyable(
-                  (selectedSeqData) => ({
-                    sequence: getAminoAcidStringFromSequenceString(
+                  (selectedSeqData) => {
+                    const revSeqData =
                       getReverseComplementSequenceAndAnnotations(
                         selectedSeqData
-                      ).sequence
-                    )
-                  }),
+                      );
+                    const textToCopy = isProtein
+                      ? revSeqData.proteinSequence.toUpperCase()
+                      : getAminoAcidStringFromSequenceString(
+                          revSeqData.sequence
+                        );
+                    return {
+                      ...revSeqData,
+                      textToCopy
+                    };
+                  },
                   className
                 );
               }
             },
             {
-              text: "Copy Complement",
+              text: isProtein ? "Copy Complement DNA Bps" : "Copy Complement",
               className: "openVeCopyComplement",
               willUnmount: () => {
                 this.openVeCopyComplement &&
@@ -685,8 +728,7 @@ function VectorInteractionHOC(Component /* options */) {
             },
             copyOptionsMenu
           ]
-        },
-        isProtein && copyOptionsMenu
+        }
       ];
     };
 
@@ -754,6 +796,8 @@ function VectorInteractionHOC(Component /* options */) {
       ({ annotation }) => {
         return this.getSelectionMenuOptions({
           //manually only pluck off the start and end so that if the selection layer was generated from say a feature, those properties won't be carried into the create part/feature/primer dialogs
+          isWrappedAddon: annotation.isWrappedAddon,
+          overlapsSelf: annotation.overlapsSelf,
           start: annotation.start,
           end: annotation.end
         });
@@ -794,7 +838,7 @@ function VectorInteractionHOC(Component /* options */) {
                 }
               ]),
           "rotateToCaretPosition",
-          ...this.getCreateItems(),
+          "createMenuHolder",
           {
             ...fullSequenceTranslationMenu,
             text: "View Full Sequence Translations"
@@ -829,16 +873,15 @@ function VectorInteractionHOC(Component /* options */) {
     partRightClicked = this.enhanceRightClickAction(({ annotation }) => {
       this.props.selectionLayerUpdate({
         start: annotation.start,
-        end: annotation.end
+        end: annotation.end,
+        isWrappedAddon: annotation.isWrappedAddon,
+        overlapsSelf: annotation.overlapsSelf
       });
       return [
         "editPart",
         "deletePart",
         "--",
         ...this.getSelectionMenuOptions(annotation),
-        "--",
-        "newTranslation",
-        "newReverseTranslation",
         "--",
         "showRemoveDuplicatesDialogParts",
         "viewPartProperties"
@@ -864,7 +907,7 @@ function VectorInteractionHOC(Component /* options */) {
         "--",
         ...this.getSelectionMenuOptions(annotation)
       ];
-    }, "partRightClicked");
+    }, "warningRightClicked");
     featureRightClicked = this.enhanceRightClickAction(
       ({ annotation, event }) => {
         this.props.selectionLayerUpdate({
@@ -897,8 +940,7 @@ function VectorInteractionHOC(Component /* options */) {
                         })
                       ) {
                         const doAction = await showConfirmationDialog({
-                          text:
-                            "A part already exists that matches this feature's range. Do you want to make one anyways?",
+                          text: "A part already exists that matches this feature's range. Do you want to make one anyways?",
                           confirmButtonText: "Create Part",
                           canEscapeKeyCancel: true //this is false by default
                         });
@@ -932,9 +974,6 @@ function VectorInteractionHOC(Component /* options */) {
               ]),
           "toggleCdsFeatureTranslations",
           "--",
-          "newTranslation",
-          "newReverseTranslation",
-          "--",
           "viewFeatureProperties"
         ];
       },
@@ -954,8 +993,6 @@ function VectorInteractionHOC(Component /* options */) {
         "editPrimer",
         "deletePrimer",
         ...this.getSelectionMenuOptions(annotation),
-        "newTranslation",
-        "newReverseTranslation",
         "showRemoveDuplicatesDialogPrimers",
         "viewPrimerProperties"
       ];
@@ -983,7 +1020,7 @@ function VectorInteractionHOC(Component /* options */) {
         if (annotation.isOrf) {
           return [
             {
-              text: "Hide Orf Translations",
+              text: "Hide ORF Translations",
               onClick: () => {
                 annotationVisibilityToggle("orfTranslations");
               }
@@ -1114,18 +1151,12 @@ function VectorInteractionHOC(Component /* options */) {
   };
 }
 
-export default compose(
-  //tnr: get the store from the context somehow and pass it to the FrameTranslationMenuItems
-  // withContext({ store: PropTypes.object }, ({ store }) => {
-  //   return { store };
-  // }),
-  getContext({
-    store: PropTypes.object
-  }),
-  // connect(),
+const withEditorInteractions = compose(
+  withStore,
   withEditorProps,
   branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
 );
+export default withEditorInteractions;
 
 function getGenbankFromSelection(selectedSeqData, sequenceData) {
   const spansEntireSeq =
@@ -1134,7 +1165,8 @@ function getGenbankFromSelection(selectedSeqData, sequenceData) {
   const just1Feat = feats.length === 1;
 
   return {
-    sequence: jsonToGenbank({
+    ...selectedSeqData,
+    textToCopy: jsonToGenbank({
       ...selectedSeqData,
       name: spansEntireSeq
         ? selectedSeqData.name
@@ -1174,14 +1206,12 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   //   start: newSelectionLayerStart,
   //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
   // });
-  const [
-    newSeqData,
-    { maintainOriginSplit }
-  ] = wrappedInsertSequenceDataAtPositionOrRange(
-    seqDataToInsert,
-    sequenceData,
-    caretPosition > -1 ? caretPosition : selectionLayer
-  );
+  const [newSeqData, { maintainOriginSplit }] =
+    wrappedInsertSequenceDataAtPositionOrRange(
+      seqDataToInsert,
+      sequenceData,
+      caretPosition > -1 ? caretPosition : selectionLayer
+    );
   updateSequenceData(newSeqData);
   const seqDataInsertLength = seqDataToInsert.sequence
     ? seqDataToInsert.sequence.length

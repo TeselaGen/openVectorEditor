@@ -1,3 +1,4 @@
+import { featureColors } from "ve-sequence-utils";
 import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 
@@ -6,7 +7,7 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { some, map } from "lodash";
+import { some, map, keyBy } from "lodash";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
@@ -15,7 +16,14 @@ import {
   rotateSequenceDataToPosition
 } from "ve-sequence-utils";
 import { Intent } from "@blueprintjs/core";
-import { getRangeLength, invertRange, normalizeRange } from "ve-range-utils";
+import {
+  convertRangeTo0Based,
+  getRangeLength,
+  invertRange,
+  normalizeRange
+} from "ve-range-utils";
+import shortid from "shortid";
+
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";
 import { actions, editorReducer } from "../redux";
 import s from "../selectors";
@@ -29,6 +37,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
+// import { getStartEndFromBases } from "../utils/editorUtils";
 
 async function getSaveDialogEl() {
   return new Promise((resolve) => {
@@ -77,42 +86,44 @@ const generatePngFromPrintDialog = async (props) => {
   return result;
 };
 
-export const handleSave = (props) => async (opts = {}) => {
-  const {
-    onSave,
-    onSaveAs,
-    generatePng,
-    readOnly,
-    alwaysAllowSave,
-    sequenceData,
-    lastSavedIdUpdate
-  } = props;
-  const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
+export const handleSave =
+  (props) =>
+  async (opts = {}) => {
+    const {
+      onSave,
+      onSaveAs,
+      generatePng,
+      readOnly,
+      alwaysAllowSave,
+      sequenceData,
+      lastSavedIdUpdate
+    } = props;
+    const saveHandler = opts.isSaveAs ? onSaveAs || onSave : onSave;
 
-  const updateLastSavedIdToCurrent = () => {
-    lastSavedIdUpdate(sequenceData.stateTrackingId);
+    const updateLastSavedIdToCurrent = () => {
+      lastSavedIdUpdate(sequenceData.stateTrackingId);
+    };
+
+    // Optionally generate png
+    if (generatePng) {
+      opts.pngFile = await generatePngFromPrintDialog(props);
+    }
+
+    // TODO: pass additionalProps (blob or error) to the user
+    const promiseOrVal =
+      (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
+      saveHandler &&
+      saveHandler(
+        opts,
+        tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
+        props,
+        updateLastSavedIdToCurrent
+      );
+
+    if (promiseOrVal && promiseOrVal.then) {
+      return promiseOrVal.then(updateLastSavedIdToCurrent);
+    }
   };
-
-  // Optionally generate png
-  if (generatePng) {
-    opts.pngFile = await generatePngFromPrintDialog(props);
-  }
-
-  // TODO: pass additionalProps (blob or error) to the user
-  const promiseOrVal =
-    (!readOnly || alwaysAllowSave || opts.isSaveAs) &&
-    saveHandler &&
-    saveHandler(
-      opts,
-      tidyUpSequenceData(sequenceData, { annotationsAsObjects: true }),
-      props,
-      updateLastSavedIdToCurrent
-    );
-
-  if (promiseOrVal && promiseOrVal.then) {
-    return promiseOrVal.then(updateLastSavedIdToCurrent);
-  }
-};
 
 export const handleInverse = (props) => () => {
   const {
@@ -159,8 +170,7 @@ export const updateCircular = (props) => async (isCircular) => {
       intent: Intent.DANGER, //applied to the right most confirm button
       confirmButtonText: "Truncate Annotations",
       canEscapeKeyCancel: true, //this is false by default
-      text:
-        "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
+      text: "Careful! Origin spanning annotations will be truncated. Are you sure you want to make the sequence linear?"
     });
     if (!doAction) return; //stop early
     updateSequenceData(truncateOriginSpanningAnnotations(sequenceData), {
@@ -170,37 +180,51 @@ export const updateCircular = (props) => async (isCircular) => {
   _updateCircular(isCircular, { batchUndoEnd: true });
 };
 
-export const importSequenceFromFile = (props) => async (file, opts = {}) => {
-  const { updateSequenceData, onImport } = props;
-  const result = await anyToJson(file, { acceptParts: true, ...opts });
+export const importSequenceFromFile =
+  (props) =>
+  async (file, opts = {}) => {
+    const { updateSequenceData, onImport } = props;
+    const result = await anyToJson(file, { acceptParts: true, ...opts });
 
-  // TODO maybe handle import errors/warnings better
-  const failed = !result[0].success;
-  const messages = result[0].messages;
-  if (messages && messages.length) {
-    messages.forEach((msg) => {
-      const type = msg.substr(0, 20).toLowerCase().includes("error")
-        ? failed
-          ? "error"
-          : "warning"
-        : "info";
-      window.toastr[type](msg);
-    });
-  }
-  if (failed) {
-    window.toastr.error("Error importing sequence");
-  }
-  let seqData = result[0].parsedSequence;
+    // TODO maybe handle import errors/warnings better
+    const failed = !result[0].success;
+    const messages = result[0].messages;
+    if (messages && messages.length) {
+      messages.forEach((msg) => {
+        const type = msg.substr(0, 20).toLowerCase().includes("error")
+          ? failed
+            ? "error"
+            : "warning"
+          : "info";
+        window.toastr[type](msg);
+      });
+    }
+    if (failed) {
+      window.toastr.error("Error importing sequence");
+    }
+    if (result.length > 1) {
+      showDialog({
+        dialogType: "MultipleSeqsDetectedOnImportDialog",
+        props: {
+          finishDisplayingSeq,
+          results: result
+        }
+      });
+    } else {
+      finishDisplayingSeq(result[0].parsedSequence);
+    }
+    async function finishDisplayingSeq(seqData) {
+      if (onImport) {
+        seqData = await onImport(seqData);
+      }
 
-  if (onImport) {
-    seqData = await onImport(seqData);
-  }
-
-  if (seqData) {
-    updateSequenceData(seqData);
-    window.toastr.success("Sequence Imported");
-  }
-};
+      if (seqData) {
+        seqData.stateTrackingId = shortid();
+        updateSequenceData(seqData);
+        window.toastr.success("Sequence Imported");
+      }
+    }
+  };
 
 export const exportSequenceToFile = (props) => (format) => {
   const { sequenceData } = props;
@@ -324,8 +348,7 @@ export default compose(
             // intent: Intent.DANGER, //applied to the right most confirm button
             confirmButtonText: "Create Translation",
             canEscapeKeyCancel: true, //this is false by default
-            text:
-              "This region has already been translated. Are you sure you want to make another translation for it?"
+            text: "This region has already been translated. Are you sure you want to make another translation for it?"
           });
           if (!doAction) return; //stop early
         }
@@ -498,27 +521,31 @@ function mapStateToProps(state, ownProps) {
   );
   let annotationToAdd;
   [
-    "AddOrEditFeatureDialog",
-    "AddOrEditPrimerDialog",
-    "AddOrEditPartDialog"
-  ].forEach((n) => {
+    ["AddOrEditFeatureDialog", "filteredFeatures"],
+    ["AddOrEditPrimerDialog", "primers"],
+    ["AddOrEditPartDialog", "filteredParts"]
+  ].forEach(([n, type]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd = { ...vals, formName: n };
+      annotationToAdd = {
+        color: featureColors[vals.type || "primer_bind"], //we won't have the correct color yet so we set it here
+        ...vals,
+        formName: n,
+        type,
+        name: vals.name || "Untitled"
+      };
+      if (!vals.useLinkedOligo) {
+        delete annotationToAdd.bases;
+      }
     }
   });
 
   const toReturn = {
     ...editorState,
     meta,
-    annotationToAdd,
-    ...(annotationToAdd && {
-      selectionLayer: {
-        start: (annotationToAdd.start || 1) - 1,
-        end: (annotationToAdd.end || 1) - 1
-      }
-    })
+    annotationToAdd
   };
+
   if (sequenceDataFromProps && allowSeqDataOverride) {
     //return early here because we don't want to override the sequenceData being passed in
     //this is a little hacky but allows us to track selectionLayer/caretIndex using redux but on a sequence that isn't being stored alongside that info
@@ -532,9 +559,8 @@ function mapStateToProps(state, ownProps) {
     ownProps.enzymeGroupsOverride
   );
   const cutsites = filteredCutsites.cutsitesArray;
-  const filteredRestrictionEnzymes = s.filteredRestrictionEnzymesSelector(
-    editorState
-  );
+  const filteredRestrictionEnzymes =
+    s.filteredRestrictionEnzymesSelector(editorState);
   const orfs = s.orfsSelector(editorState);
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
@@ -577,12 +603,36 @@ function mapStateToProps(state, ownProps) {
       uppercaseSequenceMapFont,
       sequenceData.sequence
     ),
-    parts: filteredParts,
+    filteredParts,
     filteredFeatures,
     cutsites,
     orfs,
     translations
   };
+
+  if (annotationToAdd) {
+    const selectionLayer = convertRangeTo0Based(annotationToAdd);
+    const id = annotationToAdd.id || "tempId123";
+    const name = annotationToAdd.name || "";
+    const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
+    anns[id] = {
+      ...annotationToAdd,
+
+      id,
+      name,
+      ...selectionLayer,
+      ...(annotationToAdd.bases && {
+        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+        fullSeq: sequenceData.sequence
+      }),
+      locations: annotationToAdd.locations
+        ? annotationToAdd.locations.map(convertRangeTo0Based)
+        : undefined
+    };
+    sequenceDataToUse[annotationToAdd.type] = anns;
+    toReturn.selectionLayer = selectionLayer;
+  }
+
   return {
     ...toReturn,
     selectedCutsites,
@@ -597,6 +647,7 @@ function mapStateToProps(state, ownProps) {
       ...findTool,
       matchesTotal
     },
+    annotationsToSupport,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
     annotationLabelVisibility: visibilities.annotationLabelVisibilityToUse,

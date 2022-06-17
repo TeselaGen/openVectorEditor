@@ -1,4 +1,3 @@
-//./caretPosition.js
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
 import createAction from "./utils/createMetaAction";
 

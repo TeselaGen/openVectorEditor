@@ -1,7 +1,7 @@
 describe("proteinEditor", function () {
   beforeEach(() => {
-    cy.visit("");
-    cy.tgToggle("isProtein");
+    cy.visit("/#/Editor?moleculeType=Protein");
+    // cy.get(`[data-test="moleculeType"]`).select('Protein')
   });
   it(`annotations shouldn't have a strand field to edit and all annotations be 'forward'`, () => {
     cy.contains(".veRowViewPart", "Part 0").rightclick();
@@ -16,13 +16,13 @@ describe("proteinEditor", function () {
   });
   it(`should be able to toggle between protein and dna mode after firing some actions`, () => {
     cy.contains(".veLabelText", "Part 0").click();
-    cy.tgToggle("isProtein", false);
+    cy.get(`[data-test="moleculeType"]`).select("DNA");
     cy.contains("Length: 5299 bps").should("exist");
   });
   it(`feature/part add/edit should be AA indexed`, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.focused().type("NF");
     cy.get(`.tg-test-start input[value="1"]`);
     cy.get(`.tg-test-end [value="1"]`);
@@ -78,7 +78,9 @@ describe("proteinEditor", function () {
     cy.get(".veRowViewSelectionLayer.notCaret").trigger("contextmenu");
     cy.contains(".bp3-menu-item", "Replace").click();
 
-    cy.get(".sequenceInputBubble input").type(".*-masdzz,");
+    cy.get(".sequenceInputBubble input").type(".*-masdzz,", {
+      assertVal: ".*-masdzz"
+    });
     cy.contains("Press ENTER to replace 1 AAs between 1386 and 2");
     cy.get(".sequenceInputBubble input").type("{enter}");
     cy.contains("Selecting 9 AAs from 1 to 9");
@@ -116,8 +118,8 @@ describe("proteinEditor", function () {
   it("should be able to select a range (10 - 20) via Edit > Select and have the range correctly selected", function () {
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select").click();
-    cy.get(`[label="From:"]`).clear().type("10");
-    cy.get(`[label="To:"]`).clear().type("20");
+    cy.get(`[label="From:"]`).clear().type("10", { noPrevValue: true });
+    cy.get(`[label="To:"]`).clear().type("20", { noPrevValue: true });
     cy.get(".tg-min-width-dialog").contains("Select 11 AAs").click();
     cy.get(".veStatusBarItem")
       .contains("Selecting 11 AAs from 10 to 20")
@@ -253,12 +255,14 @@ describe("proteinEditor", function () {
     cy.get(".bp3-menu")
       .contains("Full Sequence Translation")
       .should("not.exist");
-    cy.get(".bp3-menu").contains("Sequence Case").should("not.exist");
-    cy.get(".bp3-menu").contains("Cutsites").should("not.exist");
-    cy.get(".bp3-menu").contains("Cutsite Labels").should("not.exist");
+
+    cy.get(".bp3-menu").contains("Cut Sites").should("not.exist");
+    cy.get(".bp3-menu").contains("Cut Site Labels").should("not.exist");
     cy.log("be able to hide/show the underlying dna sequence");
-    cy.get(`[cmd="toggleSequence"]`).click();
-    cy.get(".ve-row-item-sequence").should("exist");
+    cy.triggerFileCmd("DNA Sequence");
+    cy.get(".ve-row-item-sequence").first().click();
+    cy.triggerFileCmd("Case", { noEnter: true });
+    cy.get(".bp3-menu").contains("Case").should("not.exist");
   });
 });
 

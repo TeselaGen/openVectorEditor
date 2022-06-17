@@ -1,4 +1,5 @@
 const { isString } = require("lodash");
+const { insertSequenceDataAtPositionOrRange } = require("ve-sequence-utils");
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -23,8 +24,15 @@ const { isString } = require("lodash");
 // Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
 //
 //
+
 // -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+// Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
+//   return originalFn(url, options).then(() => {
+//     cy.window().then((win) => {
+//       win.sessionStorage.clear();
+//     });
+//   });
+// });
 
 function getCenter(el) {
   const b = el.getBoundingClientRect();
@@ -37,9 +45,9 @@ Cypress.Commands.add("dragBetween", (dragSelector, dropSelector) => {
   const getOrWrap = isString(dragSelector) ? cy.get : cy.wrap;
   cy.clock();
   getOrWrap(dragSelector).then((el) => {
-    let dragSelectDomEl = el.get(0);
+    const dragSelectDomEl = el.get(0);
     getOrWrap(dropSelector).then((el2) => {
-      let dropSelectDomEl = el2.get(0);
+      const dropSelectDomEl = el2.get(0);
       const [x, y] = getCenter(dragSelectDomEl);
       const [xCenterDrop, yCenterDrop] = getCenter(dropSelectDomEl);
       getOrWrap(dragSelector)
@@ -140,9 +148,9 @@ Cypress.Commands.add("tgToggle", (type, onOrOff = true) => {
  * @param {String} text - the file cmd to trigger
  */
 
-Cypress.Commands.add("triggerFileCmd", (text) => {
+Cypress.Commands.add("triggerFileCmd", (text, { noEnter } = {}) => {
   cy.get("body").type("{meta}/");
-  cy.focused().type(`${text}{enter}`, { delay: 1 });
+  cy.focused().type(`${text}${noEnter ? "" : "{enter}"}`, { delay: 1 });
 });
 
 /**
@@ -158,10 +166,14 @@ Cypress.Commands.add("triggerFileCmd", (text) => {
 Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
   return cy.fixture(fileUrl, "base64").then((input) => {
     const blob = Cypress.Blob.base64StringToBlob(input);
+
     const name = fileUrl.split("/").pop();
-    const testFile = new File([blob], name, { type });
-    const event = { dataTransfer: { files: [testFile] } };
-    return cy.get(selector).trigger("drop", event);
+    return cy.window().then((win) => {
+      // this is using the File constructor from the application window
+      const testFile = new win.File([blob], name, { type });
+      const event = { dataTransfer: { files: [testFile], types: ["Files"] } };
+      return cy.get(selector).trigger("drop", event);
+    });
   });
 });
 
@@ -171,6 +183,49 @@ Cypress.Commands.add("selectRange", (start, end) => {
       selectionLayer: {
         start: start - 1,
         end: end - 1
+      }
+    });
+  });
+});
+
+Cypress.Commands.add("deleteRange", (start, end) => {
+  cy.window().then((win) => {
+    const { sequenceData } = win.ove_getEditorState();
+    const newSeqData = insertSequenceDataAtPositionOrRange({}, sequenceData, {
+      start,
+      end
+    });
+
+    win.ove_updateEditor({
+      sequenceData: newSeqData
+    });
+  });
+});
+
+Cypress.Commands.add("removeFeatures", () => {
+  cy.window().then((win) => {
+    win.ove_updateEditor({
+      justPassingPartialSeqData: true,
+      sequenceData: {
+        features: []
+      }
+    });
+  });
+});
+Cypress.Commands.add("hideCutsites", () => {
+  cy.window().then((win) => {
+    win.ove_updateEditor({
+      annotationVisibility: {
+        cutsites: false
+      }
+    });
+  });
+});
+Cypress.Commands.add("hideParts", () => {
+  cy.window().then((win) => {
+    win.ove_updateEditor({
+      annotationVisibility: {
+        parts: false
       }
     });
   });
@@ -192,7 +247,9 @@ Cypress.Commands.add("replaceSelection", (sequenceString) => {
   cy.get(".sequenceInputBubble input").type(`${sequenceString}{enter}`);
 });
 Cypress.Commands.add("deleteSelection", () => {
-  cy.get(".veRowViewSelectionLayer.notCaret:not(.cutsiteLabelSelectionLayer)")
+  cy.get(
+    ".veRowViewSelectionLayer.notCaret:not(.cutsiteLabelSelectionLayer):not(.veSearchLayer)"
+  )
     .first()
     .trigger("contextmenu", { force: true });
   cy.contains(".bp3-menu-item", "Cut").click();
@@ -219,5 +276,69 @@ Cypress.Commands.add("hideMenu", () => {
 });
 
 Cypress.Commands.add("closeToasts", () => {
-  cy.get(".bp3-toast .bp3-icon-cross").click({ multiple: true });
+  cy.window().then((win) => {
+    win.__tgClearAllToasts();
+  });
 });
+
+Cypress.Commands.overwrite(
+  "type",
+  (originalFn, subject, text, options = {}) => {
+    if (text === "{selectall}{del}") {
+      return originalFn(subject, text, options); //pass thru .clear() calls
+    } else {
+      cy.wrap(subject, { log: false })
+        .invoke("val")
+        .then((prevValue) => {
+          if (
+            options.passThru ||
+            options.parseSpecialCharSequences === false ||
+            (text.includes && text.includes("{")) //if special chars are getting used just pass them thru
+          ) {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
+            cy.wait(0, { log: false }).then(
+              { timeout: options.timeout || 40000 },
+              () => originalFn(subject, text, options)
+            );
+          } else {
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
+            cy.wait(0, { log: false }).then(
+              { timeout: options.timeout || 40000 },
+              () => originalFn(subject, text, options)
+            );
+
+            const valToCheck =
+              options.assertVal ||
+              `${options.noPrevValue ? "" : prevValue}${text}`;
+            if (options.containsSelector) {
+              cy.contains(options.containsSelector, valToCheck);
+            } else {
+              // Adds guarding that asserts that the value is typed.
+              cy.wrap(subject, { log: false }).then(($el) => {
+                // $el is a wrapped jQuery element
+                if (!($el.val() === valToCheck)) {
+                  if (options.runCount > 5) {
+                    //if the type fails more than 5 times then throw an error
+                    console.error("Error! Tried re-typing 5 times to no avail");
+                    throw new Error(
+                      "Error! Tried re-typing 5 times to no avail"
+                    );
+                  } else {
+                    //if the type failed, retry it again up to 5 times
+                    cy.wrap(subject)
+                      .clear()
+                      .type(valToCheck, {
+                        ...options,
+                        runCount: (options.runCount || 0) + 1
+                      });
+                  }
+                } else {
+                  //continue on, the type completed successfully!
+                }
+              });
+            }
+          }
+        });
+    }
+  }
+);

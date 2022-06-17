@@ -3,6 +3,19 @@ describe("find tool", function () {
     cy.visit("");
   });
 
+  it(`the find tool shouldn't get stuck in a weird state where the match number is greater than the number of matches`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gatg"); //this should cause 1 region to be selected
+    cy.contains("1/2").should("not.exist");
+    cy.contains("1/49");
+    cy.get(`[data-test="veFindNextMatchButton"]`).click();
+    cy.get(`[data-test="veFindNextMatchButton"]`).click();
+    cy.contains("3/49");
+    cy.deleteRange(281, 5298);
+    cy.contains("3/3"); //the match number should stay at 3 if there are still at least 3 matches
+    cy.deleteRange(241, 281);
+    cy.contains("1/2"); //the match number should automatically return to 1 when the sequence changes and the number of matches change to be greater than the matchNumber
+  });
   it(`when there is only 1 search result, typing enter in the find tool should jump you back to the search layer`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("tgacaacttgacggcta"); //this should cause 1 region to be selected
@@ -67,7 +80,7 @@ describe("find tool", function () {
       .should("be.visible")
       .rightclick(); //click the search layer
     cy.contains(".bp3-menu-item", "Create").click();
-    cy.contains(".bp3-menu-item", "New Feature").click();
+    cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.contains(".bp3-radio", "Positive")
       .find("input")
       .should("not.be.checked");
@@ -75,13 +88,13 @@ describe("find tool", function () {
   });
   it(`clear search layers when closed and retain the previous search and be selected when re-opened`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
-    cy.focused().type("gattac"); //this should cause 1 region to be selected
+    cy.focused().type("gattac", { noPrevValue: true }); //this should cause 1 region to be selected
     cy.get(".veSearchLayerContainer").should("exist");
-    cy.get(".veFindBar .bp3-icon-cross").click();
+    cy.get(".veFindBar .bp3-icon-small-cross").click();
     cy.get(".veSearchLayerContainer").should("not.exist");
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.get(".veSearchLayerContainer").should("exist"); //test that the search didn't get cleared
-    cy.focused().type("gattac"); //this should override the existing search because the existing search should already be highlighted
+    cy.focused().type("gattac", { noPrevValue: true }); //this should override the existing search because the existing search should already be highlighted
     cy.get(".veSearchLayerContainer").should("exist"); //asserts that there is at least 1 valid search found
   });
 
@@ -114,6 +127,34 @@ describe("find tool", function () {
     cy.get(`[data-test="veFindNextMatchButton"]`).click();
     cy.get(".veRowViewSelectionLayer").first().click({ force: true });
     cy.contains("3999 to 4007");
+  });
+
+  //tnr: this doesn't work in cypress on linux rn
+  it.skip(`cmd+f should open find tool if it is closed 
+  cmd+f should refocus find tool if it is already open and unfocused
+  cmd+f should do nothing if find tool is already open and focused
+  esc should close the find tool if it is open and focused
+  esc should do nothing if the find tool is open and not focused`, () => {
+    cy.contains(`.veCircularViewMiddleOfVectorText`, "pj5_00001");
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    // cy.get(".veVectorInteractionWrapper:first").type(`{cmd}f`); //for some reason this isn't working in cypress..
+    cy.get(".tg-find-tool-input input").should("be.focused");
+    cy.focused().type("gg").type(`{cmd}f`);
+    cy.get(".tg-find-tool-input input").should("be.focused");
+    cy.get(`[data-tick-mark="10"]`).then((el) => {
+      cy.get(`[data-tick-mark="20"]`).then((el2) => {
+        cy.dragBetweenSimple(el, el2);
+      });
+    });
+    cy.get(".veVectorInteractionWrapper:first").type(`{cmd}f`);
+    cy.focused().type("gg"); //focus and typing should still work immediately after a drag
+    cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`).click();
+    cy.get(".veVectorInteractionWrapper:first").focus().type(`{esc}`);
+    cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`);
+    cy.get(".tg-find-tool-input input").type(`{esc}`);
+    cy.get(`.veSearchLayer[title="Selecting 4 bps from 75 to 78"]`).should(
+      "not.exist"
+    );
   });
 });
 

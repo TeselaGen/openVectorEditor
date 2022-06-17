@@ -9,7 +9,7 @@ import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";
 
 class GeneralProperties extends React.Component {
-  updateSeqDesc = val => {
+  updateSeqDesc = (val) => {
     return this.props.sequenceDescriptionUpdate(val);
   };
   render() {
@@ -29,6 +29,8 @@ class GeneralProperties extends React.Component {
     const {
       description,
       name,
+      isOligo,
+      isRna,
       sequence = "",
       proteinSequence = "",
       circular,
@@ -37,11 +39,11 @@ class GeneralProperties extends React.Component {
     return (
       <React.Fragment>
         <div className="ve-flex-row">
-          <div className="ve-column-left">Name:</div>{" "}
+          <div className="ve-column-left bp3-label">Name</div>{" "}
           <div className="ve-column-right">
             <InputField
               disabled={readOnly}
-              onFieldSubmit={val => {
+              onFieldSubmit={(val) => {
                 sequenceNameUpdate(val);
               }}
               name="name"
@@ -50,14 +52,14 @@ class GeneralProperties extends React.Component {
             />{" "}
           </div>
         </div>
-        {!isProtein && (
+        {!isProtein && !isOligo && !isRna && (
           <div className="ve-flex-row circularLinearSelect">
-            <div className="ve-column-left">Circular/Linear:</div>{" "}
+            <div className="ve-column-left bp3-label">Circular/Linear</div>{" "}
             <div className="ve-column-right">
               {" "}
               <BPSelect
                 disabled={readOnly}
-                onChange={val => {
+                onChange={(val) => {
                   updateCircular(val === "circular");
                 }}
                 value={circular ? "circular" : "linear"}
@@ -72,12 +74,14 @@ class GeneralProperties extends React.Component {
 
         {showAvailability && (
           <div className="ve-flex-row">
-            <div className="ve-column-left">Material Availability:</div>{" "}
+            <div className="ve-column-left bp3-label">
+              Material Availability
+            </div>{" "}
             <div className="ve-column-right">
               {" "}
               <BPSelect
                 disabled={readOnly}
-                onChange={val => {
+                onChange={(val) => {
                   updateAvailability(val === "available");
                 }}
                 value={materiallyAvailable ? "available" : "unavailable"}
@@ -90,7 +94,7 @@ class GeneralProperties extends React.Component {
           </div>
         )}
         <div className="ve-flex-row">
-          <div className="ve-column-left">Length:</div>{" "}
+          <div className="ve-column-left bp3-label">Length</div>{" "}
           <div className="ve-column-right">
             {" "}
             {isProtein ? proteinSequence.length : sequence.length}
@@ -98,12 +102,12 @@ class GeneralProperties extends React.Component {
         </div>
         {showReadOnly && (
           <div className="ve-flex-row">
-            <div className="ve-column-left">Is Editable:</div>{" "}
+            <div className="ve-column-left bp3-label">Is Editable</div>{" "}
             <div className="ve-column-right">
               {" "}
               <BPSelect
                 disabled={!onSave || disableSetReadOnly}
-                onChange={val => {
+                onChange={(val) => {
                   updateReadOnlyMode(val === "readOnly");
                 }}
                 value={readOnly ? "readOnly" : "editable"}
@@ -115,12 +119,13 @@ class GeneralProperties extends React.Component {
             </div>
           </div>
         )}
-        <div>Description:</div>
+        <div>Description</div>
         <TextareaField
           clickToEdit
           name="description"
           onFieldSubmit={this.updateSeqDesc}
           defaultValue={description}
+          disabled={readOnly}
         />
       </React.Fragment>
     );

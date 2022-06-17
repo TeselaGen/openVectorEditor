@@ -7,8 +7,8 @@ export function removeItem(array, index) {
 }
 
 export function getLowerCaseObj(obj = {}) {
-  let key,
-    keys = Object.keys(obj);
+  let key;
+  const keys = Object.keys(obj);
   let n = keys.length;
   const newobj = {};
   while (n--) {

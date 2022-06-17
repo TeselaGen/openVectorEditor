@@ -1,9 +1,9 @@
 export default {
-  // manageEnzymes: {
-  //   value: "manageEnzymes",
-  //   label: "Manage Enzymes",
-  //   closeOnSelect: true
-  // },
+  type2s: {
+    value: "type2s",
+    label: "Type IIS Enzymes",
+    isSpecialGroup: true
+  },
   single: {
     value: "single",
     label: "Single cutters",

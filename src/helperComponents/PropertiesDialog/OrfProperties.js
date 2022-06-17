@@ -34,7 +34,7 @@ class OrfProperties extends React.Component {
   };
   render() {
     const { orfs, sequenceLength, annotationVisibility } = this.props;
-    const orfsToUse = map(orfs, orf => {
+    const orfsToUse = map(orfs, (orf) => {
       return {
         ...orf,
         color: getOrfColor(orf),
@@ -43,21 +43,23 @@ class OrfProperties extends React.Component {
           strand: orf.forward ? 1 : -1
         }),
         size: getRangeLength(orf, sequenceLength),
-        sizeAa: Math.floor(getRangeLength(orf, sequenceLength) / 3)
+        sizeAa: Math.floor(getRangeLength(orf, sequenceLength) / 3 - 1)
       };
     });
     return (
       <React.Fragment>
         <DataTable
           topLeftItems={
-            <CmdCheckbox name="Show ORFs (Open Reading Frames)" cmd={this.commands.toggleOrfs} />
+            <CmdCheckbox
+              name="Show ORFs (Open Reading Frames)"
+              cmd={this.commands.toggleOrfs}
+            />
           }
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton
           onRowSelect={this.onRowSelect}
           withSearch={false}
-          maxHeight={400}
           formName="orfProperties"
           noRouter
           compact
@@ -67,7 +69,7 @@ class OrfProperties extends React.Component {
               {
                 path: "color",
                 type: "string",
-                render: color => {
+                render: (color) => {
                   return (
                     <div style={{ height: 20, width: 20, background: color }} />
                   );
@@ -76,7 +78,7 @@ class OrfProperties extends React.Component {
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
-                type: "string"
+                type: "number"
               },
               sizeSchema,
               { path: "frame", type: "number" },
@@ -95,17 +97,19 @@ class OrfProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor(editorState => {
+  connectToEditor((editorState) => {
     const {
       readOnly,
       annotationVisibility = {},
       sequenceData: { sequence = "" } = {},
       sequenceData,
-      minimumOrfSize
+      minimumOrfSize,
+      useAdditionalOrfStartCodons
     } = editorState;
     return {
       readOnly,
       annotationVisibility,
+      useAdditionalOrfStartCodons,
       orfs: selectors.orfsSelector(editorState),
       sequenceLength: sequence.length,
       sequenceData,

@@ -21,6 +21,7 @@ import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 import "./style.css";
 import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
 import isMobile from "is-mobile";
+import classnames from "classnames";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
@@ -50,11 +51,8 @@ export class RowView extends React.Component {
   };
 
   shouldClearCache = () => {
-    const {
-      annotationVisibility,
-      annotationLabelVisibility,
-      sequenceData
-    } = this.props;
+    const { annotationVisibility, annotationLabelVisibility, sequenceData } =
+      this.props;
 
     const toCompare = {
       bpsPerRow: getBpsPerRow(this.props),
@@ -70,10 +68,12 @@ export class RowView extends React.Component {
 
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
-    const { annotationVisibility, annotationLabelVisibility } = this.props;
+    const { annotationVisibility, annotationLabelVisibility, sequenceData } =
+      this.props;
     return estimateRowHeight({
       index,
       cache,
+      chromatogramData: sequenceData.chromatogramData,
       showJumpButtons: this.showJumpButtons,
       clearCache: this.clearCache,
       row: this.rowData[index],
@@ -83,9 +83,9 @@ export class RowView extends React.Component {
     });
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
-    let { charWidth = defaultCharWidth, sequenceLength } = this.props;
+    const { charWidth = defaultCharWidth, sequenceLength } = this.props;
     let rowNotFound = true;
-    let visibleRowsContainer =
+    const visibleRowsContainer =
       this.InfiniteScroller && this.InfiniteScroller.items;
     //loop through all the rendered rows to see if the click event lands in one of them
     let nearestCaretPos = 0;
@@ -97,20 +97,20 @@ export class RowView extends React.Component {
       draggableClassnames.selectionEnd
     );
     some(visibleRowsContainer.childNodes, function (rowDomNode) {
-      let boundingRowRect = rowDomNode.getBoundingClientRect();
+      const boundingRowRect = rowDomNode.getBoundingClientRect();
       if (
         getClientY(event) > boundingRowRect.top &&
         getClientY(event) < boundingRowRect.top + boundingRowRect.height
       ) {
         //then the click is falls within this row
         rowNotFound = false;
-        let row = rowData[Number(rowDomNode.getAttribute("data-row-number"))];
+        const row = rowData[Number(rowDomNode.getAttribute("data-row-number"))];
         if (getClientX(event) - boundingRowRect.left < 0) {
           nearestCaretPos = row.start;
         } else {
-          let clickXPositionRelativeToRowContainer =
+          const clickXPositionRelativeToRowContainer =
             getClientX(event) - boundingRowRect.left;
-          let numberOfBPsInFromRowStart = Math.floor(
+          const numberOfBPsInFromRowStart = Math.floor(
             (clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth
           );
           nearestCaretPos = numberOfBPsInFromRowStart + row.start;
@@ -122,10 +122,10 @@ export class RowView extends React.Component {
       }
     });
     if (rowNotFound) {
-      let { top, bottom } = visibleRowsContainer.getBoundingClientRect();
-      let numbers = [top, bottom];
-      let target = getClientY(event);
-      let topOrBottom = numbers
+      const { top, bottom } = visibleRowsContainer.getBoundingClientRect();
+      const numbers = [top, bottom];
+      const target = getClientY(event);
+      const topOrBottom = numbers
         .map(function (value, index) {
           return [Math.abs(value - target), index];
         })
@@ -143,7 +143,7 @@ export class RowView extends React.Component {
           ];
       }
       if (rowDomNode) {
-        let row = rowData[Number(rowDomNode.getAttribute("data-row-number"))];
+        const row = rowData[Number(rowDomNode.getAttribute("data-row-number"))];
         //return the last bp index in the rendered rows
         nearestCaretPos = row.end;
       } else {
@@ -179,16 +179,17 @@ export class RowView extends React.Component {
     if (this.dragging === true) {
       return;
     }
-    let {
+    const {
       caretPosition = -1,
       selectionLayer = {},
       matchedSearchLayer = {}
     } = newProps;
-    let {
+    const {
       caretPosition: caretPositionOld = -1,
       selectionLayer: selectionLayerOld = {},
       matchedSearchLayer: matchedSearchLayerOld = {}
     } = oldProps;
+    const bpsPerRow = getBpsPerRow(newProps);
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     // let previousBp;
     let scrollToBp = -1;
@@ -230,21 +231,20 @@ export class RowView extends React.Component {
       // previousBp = selectionLayerOld.end;
       scrollToBp = selectionLayer.end;
     }
-
-    let bpsPerRow = getBpsPerRow(newProps);
     if (
       scrollToBp > -1 &&
       this.InfiniteScroller &&
       this.InfiniteScroller.scrollTo
     ) {
       this.calledUpdateScrollOnce = true;
-      let rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
-      let [start, end] = this.InfiniteScroller.getVisibleRange();
+      const rowToScrollTo = Math.floor(scrollToBp / bpsPerRow);
+      const [start, end] = this.InfiniteScroller.getVisibleRange();
       // const jumpToBottomOfRow = scrollToBp > previousBp;
       if (rowToScrollTo < start || rowToScrollTo > end) {
         //wrap this in a set timeout to give onDoubleClick enough time to fire before jumping the rowview around
         setTimeout(() => {
-          this.InfiniteScroller.scrollTo(rowToScrollTo);
+          this.InfiniteScroller &&
+            this.InfiniteScroller.scrollTo(rowToScrollTo);
         }, 0);
         clearInterval(this.jumpIntervalId);
         //this will try to run the following logic at most 10 times with a 100ms pause between each
@@ -256,9 +256,16 @@ export class RowView extends React.Component {
             );
             if (!el) {
               //sometimes the el isn't on the page even after the jump because of drawing issues, so we'll try the scroll one more time
-              this.InfiniteScroller.scrollTo(rowToScrollTo);
+              this.InfiniteScroller &&
+                this.InfiniteScroller.scrollTo(rowToScrollTo);
               return;
             } else {
+              el.scrollIntoView &&
+                el.scrollIntoView({
+                  behavior: "auto",
+                  block: "center",
+                  inline: "center"
+                });
               clearInterval(this.jumpIntervalId);
             }
             //tnr: we can't use the following because it messes up the scroll of the Reflex panels
@@ -282,7 +289,8 @@ export class RowView extends React.Component {
       this.rowData = prepareRowData(
         {
           ...sequenceData,
-          features: sequenceData.filteredFeatures || sequenceData.features
+          features: sequenceData.filteredFeatures || sequenceData.features,
+          parts: sequenceData.filteredParts || sequenceData.parts
         },
         bpsPerRow
       );
@@ -294,7 +302,7 @@ export class RowView extends React.Component {
 
   renderItem = (index) => {
     if (this.cache[index]) return this.cache[index];
-    let {
+    const {
       //currently found in props
       sequenceData,
       // bpToJumpTo,
@@ -308,6 +316,7 @@ export class RowView extends React.Component {
       width,
       marginWidth,
       height,
+      truncateLabelsThatDoNotFit,
       RowItemProps,
       ...rest
     } = this.props;
@@ -323,6 +332,10 @@ export class RowView extends React.Component {
         rowTopComp = (
           <div style={rowJumpButtonStyle}>
             <Button
+              style={{ fontStyle: "italic" }}
+              intent="primary"
+              icon="arrow-down"
+              minimal
               data-test="jumpToEndButton"
               onClick={(e) => {
                 e.stopPropagation();
@@ -338,6 +351,10 @@ export class RowView extends React.Component {
         rowBottomComp = (
           <div style={rowJumpButtonStyle}>
             <Button
+              style={{ fontStyle: "italic" }}
+              intent="primary"
+              icon="arrow-up"
+              minimal
               data-test="jumpToStartButton"
               onClick={(e) => {
                 e.stopPropagation();
@@ -351,7 +368,7 @@ export class RowView extends React.Component {
       }
     }
     if (rowData[index]) {
-      let rowItem = (
+      const rowItem = (
         <div data-row-number={index} key={index}>
           <div className="veRowItemSpacer" />
 
@@ -359,9 +376,11 @@ export class RowView extends React.Component {
             {...{
               ...rest,
               rowTopComp,
+              truncateLabelsThatDoNotFit,
               rowBottomComp,
               isRowView: true,
               isProtein: sequenceData.isProtein,
+              chromatogramData: sequenceData.chromatogramData,
               sequenceLength: sequenceData.sequence.length,
               bpsPerRow,
               caretPosition,
@@ -371,6 +390,9 @@ export class RowView extends React.Component {
             }}
             row={rowData[index]}
           />
+          {index === rowData.length - 1 ? (
+            <div className="veRowItemSpacer" />
+          ) : null}
         </div>
       );
       this.cache[index] = rowItem;
@@ -442,17 +464,10 @@ export class RowView extends React.Component {
     let {
       //currently found in props
       sequenceData,
-      // bpToJumpTo,
-      // editorDragged,
-      // editorDragStarted,
-      // editorClicked,
-      // backgroundRightClicked,
-      // editorDragStopped,
-      // onScroll,
       width,
       marginWidth,
-      height
-      // RowItemProps,
+      height,
+      className
     } = this.props;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
@@ -461,29 +476,25 @@ export class RowView extends React.Component {
     if (marginWidth < defaultMarginWidth) {
       marginWidth = defaultMarginWidth;
     }
-    let containerWidthMinusMargin = width - marginWidth;
-    let bpsPerRow = getBpsPerRow(this.props);
+    const containerWidthMinusMargin = width - marginWidth;
+    const bpsPerRow = getBpsPerRow(this.props);
     this.bpsPerRow = bpsPerRow;
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
-    // let containerWidthMinusMarginMinusAnyExtraSpaceUpTo1Bp =
-    //  propsToUse.charWidth * bpsPerRow;
-    let rowData = this.getRowData(sequenceData, bpsPerRow);
+    const rowData = this.getRowData(sequenceData, bpsPerRow);
     this.rowData = rowData;
 
     const shouldClear = this.shouldClearCache();
     return (
       <Draggable
-        // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={bounds}
         onDrag={this.onDrag}
         onStart={this.onStart}
         onStop={this.onStop}
       >
         <div
-          // tabIndex="0"
           ref={this.getRef}
-          className="veRowView"
+          className={classnames("veRowView", className)}
           style={{
             overflowY: "auto",
             overflowX: "visible",
@@ -493,7 +504,6 @@ export class RowView extends React.Component {
             paddingRight: marginWidth / 2,
             ...(isMobile && { touchAction: "inherit" })
           }}
-          // onScroll={disablePointers} //tnr: this doesn't actually help much with scrolling performance
           onContextMenu={this.onContextMenu}
           onScroll={onScroll}
           onClick={this.onClick}
@@ -525,7 +535,7 @@ const endScroll = debounce(() => {
 
 function setIntervalX(callback, delay, repetitions) {
   let x = 0;
-  let intervalID = window.setInterval(function () {
+  const intervalID = window.setInterval(function () {
     callback();
 
     if (++x === repetitions) {

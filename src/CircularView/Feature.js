@@ -13,7 +13,7 @@ export default function Feature({
 }) {
   // const cleanedRest = cleanRest(rest);
   if (containsLocations) {
-    let path = drawDirectedPiePiece({
+    const path = drawDirectedPiePiece({
       radius: radius,
       annotationHeight: annotationHeight / 8,
       totalAngle,
@@ -31,7 +31,7 @@ export default function Feature({
       />
     );
   }
-  let path = drawDirectedPiePiece({
+  const path = drawDirectedPiePiece({
     radius,
     annotationHeight,
     totalAngle,

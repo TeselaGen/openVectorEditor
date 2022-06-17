@@ -4,9 +4,10 @@ import withHover from "../helperComponents/withHover";
 import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation";
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
-import { reduce, values, startCase, filter } from "lodash";
+import { reduce, values, startCase, filter, clamp } from "lodash";
 import { getRangeLength } from "ve-range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
+import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 
 const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line
 
@@ -20,12 +21,16 @@ function Labels(props) {
     annotationHeight,
     textWidth = 6,
     editorName,
-    labelLineIntensity
+    labelLineIntensity,
+    isProtein,
+    noRedux,
+    noLabelLine
   } = props;
+
   if (annotationRanges.length === 0) {
     return null;
   }
-  let warningMessage = null;
+  const warningMessage = null;
   // if (Object.keys(annotationRanges).length > 50) {
   //   warningMessage = (
   //     <span style={{ color: "red" }}>
@@ -36,12 +41,12 @@ function Labels(props) {
   //   );
   // }
 
-  let rowLength = bpsPerRow * charWidth;
+  const rowLength = bpsPerRow * charWidth;
   // let counter = 0;
   let maxAnnotationYOffset = 0;
-  let annotationsSVG = [];
-  let rowCenter = rowLength / 2;
-  let iTree = new IntervalTree(rowCenter);
+  const annotationsSVG = [];
+  const rowCenter = rowLength / 2;
+  const iTree = new IntervalTree(rowCenter);
 
   annotationRanges = values(
     reduce(
@@ -71,7 +76,10 @@ function Labels(props) {
     if (onlyShowLabelsThatDoNotFit) {
       //tnrtodo: more work needs to be done here to make this actually configurable
       //check if annotation name will fit
-      if (r.annotation.annotationTypePlural === "cutsites") {
+      if (
+        r.annotation.annotationTypePlural === "cutsites" ||
+        r.annotation.annotationTypePlural === "primers"
+      ) {
         //we don't want to filter out any cutsite labels
         return true;
       }
@@ -88,8 +96,12 @@ function Labels(props) {
     if (!annotation) {
       annotation = annotationRange;
     }
-    let annotationLength =
-      (annotation.name || annotation.restrictionEnzyme.name).length * textWidth;
+    const annotationLength =
+      (
+        annotation.name ||
+        (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name) ||
+        ""
+      ).length * textWidth;
     let { xStart, width } = getXStartAndWidthOfRowAnnotation(
       annotationRange,
       bpsPerRow,
@@ -102,7 +114,6 @@ function Labels(props) {
         : xStart + width / 2;
 
     const xStartOriginal = xStart;
-    // if (annotation.name.includes("CmR I'm")) debugger
     let xEnd = xStart + annotationLength;
 
     if (xEnd > rowLength) {
@@ -110,7 +121,7 @@ function Labels(props) {
       xEnd = rowLength;
     }
     xEnd += BUFFER_WIDTH;
-    let yOffset = getYOffset(iTree, xStart, xEnd);
+    const yOffset = getYOffset(iTree, xStart, xEnd);
     iTree.insert(xStart, xEnd, {
       ...annotationRange,
       yOffset
@@ -119,7 +130,7 @@ function Labels(props) {
     if (yOffset > maxAnnotationYOffset) {
       maxAnnotationYOffset = yOffset;
     }
-    let height = yOffset * annotationHeight;
+    const height = yOffset * annotationHeight;
     annotationsSVG.push(
       <DrawLabel
         id={annotation.id}
@@ -127,9 +138,11 @@ function Labels(props) {
         {...{
           editorName,
           annotation,
+          noLabelLine,
           className: `${annotationRange.annotation.labelClassName || ""} ${
             labelClassNames[pluralType]
           } veLabel `,
+          isProtein,
           xStartOriginal,
           onClick: annotationRange.onClick,
           onDoubleClick: annotationRange.onDoubleClick,
@@ -137,13 +150,15 @@ function Labels(props) {
           height,
           xStart,
           xEnd,
-          labelLineIntensity
+          textWidth,
+          labelLineIntensity,
+          noRedux
         }}
       />
     );
   });
   if (!annotationsSVG.length) return null;
-  let containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
+  const containerHeight = (maxAnnotationYOffset + 1) * annotationHeight;
   return (
     <div
       width="100%"
@@ -181,15 +196,18 @@ const DrawLabel = withHover(
         className,
         annotation,
         onClick,
+        noLabelLine,
         onDoubleClick,
         onRightClick,
         height,
         xStartOriginal,
         xStart,
         onMouseLeave,
+        isProtein,
         onMouseOver,
         editorName,
-        labelLineIntensity
+        labelLineIntensity,
+        textWidth
       } = this.props;
       let heightToUse = height;
       let bottom = 0;
@@ -222,11 +240,23 @@ const DrawLabel = withHover(
           window.veDebugLabels && console.error(`err computing label line:`, e);
         }
       }
+
+      const truncateLabelIfNeeded = (annotationText, xLeftCoord) => {
+        const numberOfCharsToChop =
+          xLeftCoord < 0 ? Math.ceil(Math.abs(xLeftCoord) / textWidth) + 2 : 0;
+        return numberOfCharsToChop > 0
+          ? annotationText.slice(0, -numberOfCharsToChop) + ".."
+          : annotationText;
+      };
+      const titleText = getAnnotationNameAndStartStopString(annotation, {
+        isProtein
+      });
+      const labelText = annotation.name || annotation.restrictionEnzyme.name;
       return (
         <div>
           <div
             {...{ onMouseLeave, onMouseOver }}
-            className={className + "veLabelText ve-monospace-font"}
+            className={className + " veLabelText ve-monospace-font"}
             onClick={function (event) {
               onClick({ event, annotation });
               event.stopPropagation();
@@ -241,6 +271,7 @@ const DrawLabel = withHover(
               onRightClick({ event, annotation });
               event.stopPropagation();
             }}
+            title={titleText}
             style={{
               cursor: "pointer",
               position: "absolute",
@@ -249,7 +280,7 @@ const DrawLabel = withHover(
               ...(annotation.annotationTypePlural !== "cutsites" && {
                 fontStyle: "normal"
               }),
-              left: xStart,
+              left: clamp(xStart, 0, Number.MAX_VALUE),
               color:
                 annotation.annotationTypePlural === "parts"
                   ? "purple"
@@ -257,25 +288,27 @@ const DrawLabel = withHover(
               zIndex: 10
             }}
           >
-            {annotation.name || annotation.restrictionEnzyme.name}
+            {truncateLabelIfNeeded(labelText, xStart)}
           </div>
 
-          <div
-            ref={(n) => {
-              if (n) this.n = n;
-            }}
-            className="veLabelLine"
-            style={{
-              zIndex: 50,
-              position: "absolute",
-              left: xStartOriginal,
-              bottom,
-              height: Math.max(heightToUse, 3),
-              width: hovered ? 2 : 1,
-              opacity: hovered ? 1 : labelLineIntensity
-              // background: "black"
-            }}
-          />
+          {!noLabelLine && (
+            <div
+              ref={(n) => {
+                if (n) this.n = n;
+              }}
+              className="veLabelLine"
+              style={{
+                zIndex: 50,
+                position: "absolute",
+                left: xStartOriginal,
+                bottom,
+                height: Math.max(heightToUse, 3),
+                width: hovered ? 2 : 1,
+                opacity: hovered ? 1 : labelLineIntensity
+                // background: "black"
+              }}
+            />
+          )}
         </div>
       );
     }

@@ -37,6 +37,9 @@ module.exports = {
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||
       //   path.resolve(__dirname, "../teselagen-react-components/src/"),
+      // "react-draggable":
+      //   console.log("comment me back out!") ||
+      //   path.resolve(__dirname, "../react-draggable"),
 
       //don't comment this out!
       react: path.join(__dirname, "node_modules/react"),
@@ -48,11 +51,18 @@ module.exports = {
         __dirname,
         "node_modules/@blueprintjs/core"
       ),
+      "@blueprintjs/datetime": path.join(
+        __dirname,
+        "node_modules/@blueprintjs/datetime"
+      ),
       // "@blueprintjs/core/lib": path.join(
       //   __dirname,
       //   "node_modules/@blueprintjs/core/lib"
       // ),
-      "react-dom": path.join(__dirname, "node_modules/react-dom")
+      "react-dom": path.join(__dirname, "node_modules/react-dom"),
+      "react-redux": path.join(__dirname, "node_modules/react-redux"),
+      "redux-form": path.join(__dirname, "node_modules/redux-form"),
+      redux: path.join(__dirname, "node_modules/redux")
     },
     extra: {
       devtool: "source-map"

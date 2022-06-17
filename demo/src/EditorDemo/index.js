@@ -15,6 +15,20 @@ import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
 import { connectToEditor } from "../../../src";
 import { showConfirmationDialog } from "teselagen-react-components";
+import {
+  autoAnnotateFeatures,
+  autoAnnotateParts,
+  autoAnnotatePrimers
+} from "../../../addons/AutoAnnotate/src";
+import { startCase } from "lodash";
+import pluralize from "pluralize";
+import { useEffect, useState } from "react";
+import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+// import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
+// import _chromData from "../../../scratch/B_reverse.json";
+// import example1Ab1 from "../../../scratch/example1.ab1.json";
+const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -41,6 +55,7 @@ const defaultState = {
   disableSetReadOnly: false,
   showReadOnly: true,
   showCircularity: true,
+  showMoleculeType: true,
   showGCContentByDefault: false,
   GCDecimalDigits: 1,
   onlyShowLabelsThatDoNotFit: true,
@@ -54,6 +69,7 @@ const defaultState = {
   showDemoOptions: !isMobile(),
   shouldAutosave: false,
   generatePng: false,
+  allowPanelTabDraggable: true,
   isFullscreen: false,
   isProtein: false,
   forceHeightMode: false,
@@ -74,6 +90,7 @@ const defaultState = {
   beforeSequenceInsertOrDelete: false,
   maintainOriginSplit: false,
   maxAnnotationsToDisplayAdjustment: false,
+  truncateLabelsThatDoNotFit: true,
   withPartTags: true,
   onCopy: true,
   onPaste: true
@@ -85,6 +102,9 @@ export default class EditorDemo extends React.Component {
     setupOptions({ that: this, defaultState, props });
     window.ove_updateEditor = (vals) => {
       updateEditor(store, "DemoEditor", vals);
+    };
+    window.ove_getEditorState = () => {
+      return store.getState().VectorEditor["DemoEditor"];
     };
     updateEditor(store, "DemoEditor", {
       readOnly: false,
@@ -159,6 +179,32 @@ export default class EditorDemo extends React.Component {
   overrideAddEditFeatureDialogExample = {
     AddOrEditFeatureDialogOverride: AddEditFeatureOverrideExample
   };
+  getCustomAutoAnnotateList = async ({ annotationType, sequenceData }) => {
+    // const dataToReturn = await fetch("/my/endpoint/here", { ...someParams });
+    await sleep(1000);
+    if (annotationType !== "feature") return false;
+    await sleep(1000);
+
+    return {
+      title: `My ${pluralize(startCase(annotationType))}`,
+      list: [
+        {
+          name: "I cover the full Seq",
+          sequence: sequenceData.sequence,
+          id: "1"
+        },
+        { name: "trypto", type: "cds", sequence: "agagagagagaga", id: "9" },
+        { name: "prom2", type: "promoter", sequence: "gcttctctctc", id: "10" },
+        {
+          name: "prom2",
+          type: "promoter",
+          sequence: "gctt.*ctctctc",
+          isRegex: true,
+          id: "10"
+        }
+      ]
+    };
+  };
   menuOverrideExample = {
     menuFilter:
       // Menu customization example
@@ -228,6 +274,9 @@ export default class EditorDemo extends React.Component {
   render() {
     const {
       forceHeightMode,
+      passAutoAnnotateHandlers,
+      withAutoAnnotateAddon,
+      withGetCustomAutoAnnotateList,
       adjustCircularLabelSpacing,
       withVersionHistory,
       shouldAutosave,
@@ -235,6 +284,9 @@ export default class EditorDemo extends React.Component {
       isFullscreen,
       withPreviewMode
     } = this.state;
+    const isNotDna =
+      this.state.moleculeType === "RNA" ||
+      this.state.moleculeType === "Protein";
 
     const editorHandlers = [
       renderToggle({
@@ -247,7 +299,8 @@ export default class EditorDemo extends React.Component {
       }),
       renderToggle({
         that: this,
-        type: "beforeAnnotationCreate"
+        type: "beforeAnnotationCreate",
+        info: "Pass a beforeAnnotationCreate to do additional actions before the annotation is created/edited. Return false to cancel the create/edit. It will be passed all the props the edit annotation dialog receives."
       }),
       renderToggle({
         that: this,
@@ -264,12 +317,15 @@ export default class EditorDemo extends React.Component {
       renderToggle({
         that: this,
         type: "generatePng",
-        info:
-          "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
+        info: "Passing generatePng=true will cause a .png image of the map to be output for optional download within the onSave handler (It will be returned as part of the first argument of the onSave handler under the key 'pngFile')."
       }),
       renderToggle({
         that: this,
         type: "onRename"
+      }),
+      renderToggle({
+        that: this,
+        type: "withGetAdditionalCreateOpts"
       }),
       renderToggle({
         that: this,
@@ -282,14 +338,12 @@ export default class EditorDemo extends React.Component {
       renderToggle({
         that: this,
         type: "onCreateNewFromSubsequence",
-        info:
-          "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
+        info: "Passing a onCreateNewFromSubsequence handler will add the option for the user to create a new sequence from a selection of the sequence. The handler implementer will need to handle the actual steps that follow this"
       }),
       renderToggle({
         that: this,
         type: "onDelete",
-        info:
-          "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
+        info: "This onDelete callback is for deletion of the *entire* sequence from the menu bar. OVE has no default handler for full sequence delete"
       }),
       renderToggle({
         that: this,
@@ -339,6 +393,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
     ].filter((i) => i);
     return (
       <React.Fragment>
+        {/* <AutoAnnotateModal editorName={"DemoEditor"}></AutoAnnotateModal> */}
         {/* <button onClick={() => {
           const dragSource = document.querySelector(".veTabLinearMap")
     const dropTarget = document.querySelector(".veTabProperties")
@@ -349,7 +404,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             that: this,
             alwaysShow: true,
             type: "showDemoOptions",
-            label: "Show Demo Options"
+            label: "Show Demo Options",
+            hotkey: `cmd+'`
           })}
         </div>
 
@@ -362,7 +418,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
             minHeight: 0
           }}
         >
-          {this.state.showDemoOptions && (
+          {
             <div
               data-test="optionContainer"
               style={{
@@ -379,7 +435,14 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 display: "flex",
                 flexDirection: "column",
                 paddingRight: "5px",
-                borderRight: "1px solid lightgrey"
+                borderRight: "1px solid lightgrey",
+                ...(!this.state.showDemoOptions && {
+                  display: "none",
+                  width: 0,
+                  height: 0,
+                  minWidth: 0,
+                  maxWidth: 0
+                })
               }}
             >
               <div style={{ paddingLeft: 10, paddingRight: 10 }}>
@@ -414,6 +477,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               </div>
 
               {renderToggle({
+                type: "randomizeSeqData",
                 info: `
 You can change the sequence in a given <Editor/> by calling: 
 \`\`\`js
@@ -434,11 +498,22 @@ updateEditor(store, "DemoEditor", {
                 that: this,
                 label: "Randomize Sequence Data"
               })}
+
               {renderToggle({
+                isSelect: true,
+                options: ["DNA", "RNA", "Protein", "mixedRnaAndDna", "Oligo"],
                 that: this,
-                type: "isProtein",
+                label: "Molecule Type:",
+                type: "moleculeType",
                 info: `
-The editor supports Amino Acid sequences as well as DNA sequences!
+The editor supports Amino Acid sequences and RNA sequences as well as DNA sequences and!
+
+Trigger the different modes with these flags: 
+isProtein
+isRna
+isOligo
+isMixedRnaAndDna
+
 Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
 \`\`\`
 updateEditor(store, "DemoEditor", {
@@ -487,77 +562,98 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
 
                 `,
-                hook: (isProtein) => {
-                  isProtein
-                    ? updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: tidyUpSequenceData(exampleProteinData, {
-                          convertAnnotationsFromAAIndices: true
-                        })
-                      })
-                    : updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: exampleSequenceData
-                      });
-                }
-              })}
-              {renderToggle({
-                that: this,
-                type: "isRna",
-                info: `pass sequenceData.isRna=true`,
-                hook: (isRna) => {
-                  if (isRna) {
+                hook: (val) => {
+                  if (val === "Protein") {
                     updateEditor(store, "DemoEditor", {
-                      annotationVisibility: {
-                        reverseSequence: false,
-                        cutsites: false
-                      },
+                      readOnly: false,
+                      sequenceData: tidyUpSequenceData(exampleProteinData, {
+                        convertAnnotationsFromAAIndices: true
+                      })
+                    });
+                  } else if (val === "RNA") {
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: { ...exampleSequenceData, isRna: true }
+                    });
+                  } else if (val === "Oligo") {
+                    updateEditor(store, "DemoEditor", {
+                      readOnly: false,
+                      sequenceData: {
+                        sequence:
+                          "cccccttttttttcacacactactatattagtgagagagacccaca",
+                        isOligo: true,
+                        circular: false
+                      }
+                    });
+                  } else if (val === "mixedRnaAndDna") {
+                    updateEditor(store, "DemoEditor", {
                       readOnly: false,
                       sequenceData: tidyUpSequenceData(
                         {
                           ...exampleSequenceData,
-                          circular: false,
-                          isRna: true
+                          sequence: "uuuu" + exampleSequenceData.sequence,
+                          isMixedRnaAndDna: true
                         },
                         {}
                       )
                     });
                   } else {
-                    updateEditor(store, "DemoEditor", {
-                      annotationVisibility: {
-                        reverseSequence: true,
-                        cutsites: true
-                      },
-                      readOnly: false,
-                      sequenceData: exampleSequenceData
-                    });
+                    if (
+                      this.state.sequenceLength !== 5299 ||
+                      !this.state.sequenceLength
+                    ) {
+                      updateEditor(store, "DemoEditor", {
+                        readOnly: false,
+                        sequenceData: exampleSequenceData
+                      });
+                    }
                   }
                 }
               })}
               {renderToggle({
+                isSelect: true,
+                type: "sequenceLength",
+                info: `
+                Select your desired sequence length for random generation
+              `,
                 that: this,
-                type: "isMixedRnaAndDna",
-                info: `pass sequenceData.isMixedRnaAndDna=true`,
-                hook: (isMixedRnaAndDna) => {
-                  isMixedRnaAndDna
-                    ? updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: tidyUpSequenceData(
-                          {
-                            ...exampleSequenceData,
-                            sequence: "uuuu" + exampleSequenceData.sequence,
-                            isMixedRnaAndDna: true
-                          },
-                          {}
-                        )
-                      })
-                    : updateEditor(store, "DemoEditor", {
-                        readOnly: false,
-                        sequenceData: exampleSequenceData
-                      });
+                label: "Sequence of Length",
+                options: [
+                  "5299",
+                  "10",
+                  "20",
+                  "50",
+                  "100",
+                  "1000",
+                  "10000",
+                  "25000",
+                  "45000"
+                ],
+                hidden:
+                  this.state.moleculeType !== "DNA" && this.state.moleculeType,
+                hook: (val) => {
+                  if (!val) return;
+                  updateEditor(store, "DemoEditor", {
+                    sequenceDataHistory: {},
+                    sequenceData:
+                      val === "5299"
+                        ? exampleSequenceData
+                        : generateSequenceData({
+                            isProtein: false,
+                            sequenceLength: parseInt(val)
+                          })
+                  });
                 }
               })}
 
+              {renderToggle({
+                that: this,
+                label:
+                  "Truncate Labels That Don't Fit (when externalLabels=false)",
+                type: "truncateLabelsThatDoNotFit",
+                info: `By default truncateLabelsThatDoNotFit=true 
+In the Row View Or Linear View this option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
+              })}
               {renderToggle({
                 that: this,
                 label: "Customize tool bar",
@@ -576,6 +672,94 @@ ToolBarProps: {
   }
 \`\`\`
                   `
+              })}
+              {renderToggle({
+                that: this,
+                label: "Focus Properties",
+                type: "focusProperties",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      propertiesTool: {
+                        tabId:
+                          new URL(
+                            `https://1.com?${
+                              window.location.href.split("?")[1]
+                            }`
+                          ).searchParams.get("propertyTab") || "General"
+                      },
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map",
+                            active: true
+                          },
+                          {
+                            id: "circular",
+                            name: "Circular Map"
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            name: "Sequence Map"
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties",
+                            active: true
+                          }
+                        ]
+                      ]
+                    });
+                },
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
+                
+                `
+              })}
+              {renderToggle({
+                that: this,
+                hotkey: "cmd+b",
+                label: "Focus Digest Tool",
+                type: "focusDigestTool",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map",
+                            active: true
+                          },
+                          {
+                            id: "circular",
+                            name: "Circular Map"
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            name: "Sequence Map"
+                          },
+                          {
+                            id: "digestTool",
+                            name: "New Digest",
+                            active: true,
+                            canClose: true
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
+                    });
+                },
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
+                
+                `
               })}
               {renderToggle({
                 that: this,
@@ -742,7 +926,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
                 type: "menuOverrideExample",
                 info: `The top menu bar can be customized as desired. 
                 Here is an example of how to do that:
-\`\`\`\
+\`\`\`
 menuFilter:
   menuDef => {
     menuDef.push({ text: "Custom", submenu: ["copy"] });
@@ -797,15 +981,13 @@ rightClickOverrides: {
                 that: this,
                 type: "forceHeightMode",
                 label: "Force Height 500px",
-                info:
-                  "You can force a height for the editor by passing `height:500` (same for width) "
+                info: "You can force a height for the editor by passing `height:500` (same for width) "
               })}
               {renderToggle({
                 that: this,
                 type: "adjustCircularLabelSpacing",
                 label: "Adjust circular label spacing",
-                info:
-                  "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
+                info: "You can adjust the spacing between labels in circular view as a function of the multiple of the font height by passing `fontHeightMultiplier: 2` (value is restricted to between 1.5 and 3.5; default is 2.4, 2.0 when toggle is true)"
               })}
               {renderToggle({
                 that: this,
@@ -849,7 +1031,7 @@ getVersionList: async () => {
                 that: this,
                 info: `
 You can set default visibilities like so: 
-\`\`\
+\`\`\`
 updateEditor(store, "DemoEditor", {
   annotationVisibility: {
     features: false,
@@ -912,8 +1094,8 @@ sequenceData: {
 `,
                 hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
+                    justPassingPartialSeqData: true,
                     sequenceData: {
-                      ...exampleSequenceData,
                       warnings: shouldUpdate
                         ? [
                             {
@@ -977,8 +1159,8 @@ sequenceData: {
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
                     updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
                       sequenceData: {
-                        ...exampleSequenceData,
                         lineageAnnotations: shouldUpdate
                           ? [
                               {
@@ -1040,8 +1222,8 @@ sequenceData: {
 
                 hook: (shouldUpdate) => {
                   updateEditor(store, "DemoEditor", {
+                    justPassingPartialSeqData: true,
                     sequenceData: {
-                      ...exampleSequenceData,
                       assemblyPieces: shouldUpdate
                         ? [
                             {
@@ -1077,6 +1259,23 @@ sequenceData: {
                 that: this,
                 type: "overrideManageEnzymes"
               })}
+              {renderToggle({
+                that: this,
+                type: "getAdditionalEditAnnotationComps"
+              })}
+              {renderToggle({
+                that: this,
+                type: "longSequenceName",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        name: `LALALALA I'm a really Long Sequence Name gahhahaghaghaghahg hagahghah lorem ipsum stacato lorem ipsum stacato`
+                      }
+                    });
+                }
+              })}
               {this.state.overrideManageEnzymes &&
                 renderToggle({
                   that: this,
@@ -1094,17 +1293,126 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "additionalEnzymes",
-                description: `additionalEnzymes`
+                description: `Additional enzymes, including ones that are hidden by default, can be shown by passing the following to the Editor 
+\`\`\`
+additionalEnzymes: {
+  specialEnzyme1: {
+    name: "specialEnzyme1",
+    site: "attttttaaatacccgcg",
+    forwardRegex: "attttttaaatacccgcg",
+    reverseRegex: "cgcgggtatttaaaaaat",
+    topSnipOffset: 9,
+    bottomSnipOffset: 10
+  },
+  Esp3I: {
+    name: "Esp3I",
+    isType2S: true,
+    site: "cgtctc",
+    forwardRegex: "cgtctc",
+    reverseRegex: "gagacg",
+    topSnipOffset: 7,
+    bottomSnipOffset: 11
+  },
+}
+\`\`\`
+                `
               })}
               {renderToggle({
                 that: this,
                 type: "allowPartsToOverlapSelf",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        parts: {
+                          101: {
+                            start: 10,
+                            end: 30,
+                            name: "Part 0",
+                            id: "101",
+                            tags: ["8"]
+                          },
+                          102: {
+                            start: 87,
+                            end: 93,
+                            forward: true,
+                            id: "102",
+                            overlapsSelf: true,
+                            name: "I wrap myself"
+                          }
+                        }
+                      }
+                    });
+                },
                 description: `If allowPartsToOverlapSelf=true is passed to <Editor/> 
                 then a new option will appear in the 
                 Edit/Create Part Dialog that a user can use to create a 
                 part that "wraps around the whole sequence and back over itself". 
-                This will cause part.doesOverlapSelf = true
+                This will cause part.overlapsSelf = true
                 `
+              })}
+              {renderToggle({
+                that: this,
+                type: "chromatogramExample",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      annotationVisibility: {
+                        chromatogram: true,
+                        features: true,
+                        primers: false,
+                        // parts: false,
+                        cutsites: false
+                        // orfTranslations: false
+                      },
+                      //JBEI sequence 'GFPvv50'
+
+                      sequenceData: {
+                        id: "1",
+                        // chromatogramData: example1Ab1,
+                        // sequence: example1Ab1.baseCalls.join(""),
+                        chromatogramData: chromData,
+                        sequence: chromData.baseCalls.join(""),
+                        features: [
+                          {
+                            id: "yay",
+                            name: "feat1",
+                            start: 30,
+                            end: 80
+                          }
+                        ],
+
+                        // chromatogramData: chromData,
+                        name: "GFPvv50"
+                        // sequence:
+                        //   "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
+                      },
+                      panelsShown: [
+                        [
+                          {
+                            id: "rail",
+                            name: "Linear Map"
+                          },
+                          {
+                            id: "sequence",
+                            name: "Sequence Map",
+                            active: true
+                          },
+                          {
+                            // fullScreen: true,
+                            id: "circular",
+                            name: "Circular Map"
+                          },
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
+                    });
+                },
+                description: `Show chromatogram data in the editor`
               })}
               {renderToggle({
                 that: this,
@@ -1125,9 +1433,16 @@ updateEditor(store, "DemoEditor", {
               {renderToggle({
                 that: this,
                 type: "linear",
+                disabled:
+                  this.state.moleculeType === "RNA" ||
+                  this.state.moleculeType === "Protein",
                 hook: (linear) => {
+                  if (isNotDna) {
+                    return;
+                  }
                   updateEditor(store, "DemoEditor", {
-                    sequenceData: { ...exampleSequenceData, circular: !linear }
+                    justPassingPartialSeqData: true,
+                    sequenceData: { circular: !linear }
                   });
                 },
                 label: "Toggle Linear",
@@ -1138,6 +1453,12 @@ updateEditor(store, "DemoEditor", {
 });
 \`\`\`
 `
+              })}
+              {renderToggle({
+                that: this,
+                type: "initialAnnotationToEdit",
+                label: "Pass an initial annotation to edit",
+                description: `Say for example if you want to pop open the edit-part dialog the first time the user navigates to the sequence editor, you can pass an initialAnnotationToEdit={"part-someidhere"} `
               })}
               {renderToggle({
                 info: `Any panel can be programatically focused from outside the editor. 
@@ -1156,10 +1477,12 @@ other options are:
 "properties"
 \`\`\`
               `,
-                onClick: this.setLinearPanelAsActive,
-                isButton: true,
                 that: this,
-                label: "Focus Linear View"
+                type: "focusLinearView",
+                label: "Focus Linear View",
+                hook: (show) => {
+                  show && this.setLinearPanelAsActive();
+                }
               })}
               {renderToggle({
                 info: `Triggers a menu toastr message`,
@@ -1173,6 +1496,7 @@ other options are:
                 },
                 isButton: true,
                 that: this,
+                type: "triggerMenuToastrMessage",
                 label: "Trigger menu toastr message"
               })}
               {renderToggle({
@@ -1184,6 +1508,7 @@ other options are:
                 isButton: true,
                 that: this,
                 label: "Set A Selection",
+                type: "setASelection",
                 info: `
 You can programatically update the editor like so:                 
 \`\`\`
@@ -1207,6 +1532,61 @@ passing withPreviewMode=true to <Editor> causes the editor to first show up as a
                 info: `
 passing shouldAutosave=true to <Editor> causes the editor to automatically 
 trigger the onSave() callback without first waiting for the user to hit "Save"
+`
+              })}
+              {renderToggle({
+                that: this,
+                type: "passAutoAnnotateHandlers",
+                info: `
+passing an autoAnnotateFeatures=()=>{} (or Primers/Parts) prop to the <Editor> will add a new menu item to the tools section which will trigger the passed callback
+`
+              })}
+              {renderToggle({
+                that: this,
+                label: "Enable autoAnnotateAddon",
+                type: "withAutoAnnotateAddon",
+                info: `Use this like so:
+\`\`\`                
+import {
+  autoAnnotateFeatures,
+  autoAnnotateParts,
+  autoAnnotatePrimers
+} from "ove-auto-annotate";
+
+<Editor
+  {...{ autoAnnotateFeatures, autoAnnotateParts, autoAnnotatePrimers, ...etc }}
+/>;
+ \`\`\` 
+ or if you're using umd: see usage example here: https://github.com/TeselaGen/openVectorEditor/blob/master/addons/README.md
+`
+              })}
+              {renderToggle({
+                that: this,
+                label: "getCustomAutoAnnotateList (requires autoAnnotateAddon)",
+                type: "withGetCustomAutoAnnotateList",
+                info: `
+The autoAnnotateAddon must be enabled for this to work
+\`\`\`
+getCustomAutoAnnotateList = async ({annotationType, sequenceData}) => {
+  const dataToReturn = await fetch("/my/endpoint/here", {...someParams})
+  
+  return {
+    title: 'My Annotations',
+    list: [
+  { name: "trypto", type: "cds", sequence: "agagagagagaga", id: "9" },
+  { name: "prom2", type: "promoter", sequence: "gcttctctctc", id: "10" },
+  {
+    name: "prom2",
+    type: "promoter",
+    sequence: "gctt.*ctctctc",
+    isRegex: true,
+    id: "10"
+  }
+]
+}
+}
+ \`\`\` 
+ or if you're using umd: see usage example here: https://github.com/TeselaGen/openVectorEditor/blob/master/addons/README.md
 `
               })}
               {renderToggle({
@@ -1260,15 +1640,17 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "showMoleculeType",
+                info: `pass showMoleculeType=false to the <Editor> to not display the molecule type status item`
+              })}
+              {renderToggle({
+                that: this,
                 type: "showAvailability",
                 info: `pass showAvailability=false to the <Editor> to not display the availability toggle`
               })}
               {renderToggle({
                 that: this,
-                hook: (show) => {
-                  show && window.localStorage.clear();
-                },
-                label: "Show GC Content by default (reload required)",
+                label: "Show GC Content by default",
                 type: "showGCContentByDefault",
                 info: `pass showGCContentByDefault=true to the <Editor/> to display the %GC content by default (note this will still allow the user to override that preference)`
               })}
@@ -1281,6 +1663,11 @@ clickOverrides: {
                 that: this,
                 type: "maxAnnotationsToDisplayAdjustment",
                 info: `pass maxAnnotationsToDisplay={{features: 5}} to the <Editor> to adjust the maximum number of features to display to 5 (for example). Primers, cutsites and parts can also be adjusted. Passing this option will disable the user from being able to manually adjust the annotation limits via the view > limits menu`
+              })}
+              {renderToggle({
+                that: this,
+                type: "onPreviewModeFullscreenClose",
+                info: `handle for when fullscreenMode is exited`
               })}
               {renderToggle({
                 that: this,
@@ -1328,16 +1715,72 @@ clickOverrides: {
                 type: "isFullscreen",
                 info: `pass isFullscreen=true to the <Editor> to force the editor to fill the window`
               })}
-
+              {renderToggle({
+                that: this,
+                type: "allowPanelTabDraggable",
+                description: `If allowPanelTabDraggable=true is passed to <Editor/> 
+                then the panel tabs will be draggable (except mobiles).
+                `
+              })}
+              {renderToggle({
+                that: this,
+                type: "allowPrimerBasesToBeEdited",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        primers: shouldUpdate
+                          ? [
+                              {
+                                name: "Example Primer 1",
+                                id: "2o03j32o",
+                                start: 59,
+                                end: 82,
+                                type: "primer_bind",
+                                forward: true,
+                                bases: "agggaaACTCGCTCGGGGTGGCCCCGGTGC",
+                                primerBindsOn: "3prime",
+                                useLinkedOligo: true,
+                                linkedOligoLink: "oli 1"
+                              }
+                            ]
+                          : []
+                      }
+                    });
+                },
+                description: `If allowPrimerBasesToBeEdited=true is passed to <Editor/> 
+                then the bases of primers can be edited. 
+                `
+              })}
               {editorHandlers.length ? (
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}
               {editorHandlers}
-
+              {/* { <AddOrEditPrimerDialog
+                {...{
+                  editorName: "DemoEditor" || console.log(`remove me!`),
+                  selectionLayer: {
+                    start: 1,
+                    end: 10
+                  },
+                  initialValues: {
+                    forward: false,
+                    start: 1,
+                    end: 10,
+                    name: "lol",
+                    readOnly: false
+                  },
+                  dialogProps: {
+                    title: "edit primer"
+                  },
+                  readOnly: false
+                }}
+              ></AddOrEditPrimerDialog>} */}
               <br />
               <br />
             </div>
-          )}
+          }
           {/* <div
             style={{
               display: "flex",
@@ -1357,7 +1800,15 @@ clickOverrides: {
               ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
             {...(this.state.readOnly && { readOnly: true })}
+            {...(!this.state.truncateLabelsThatDoNotFit && {
+              truncateLabelsThatDoNotFit: false
+            })}
             editorName="DemoEditor"
+            onPreviewModeFullscreenClose={() => {
+              window.toastr.success(
+                "onPreviewModeFullscreenClose hit -- Fullscreen Closed"
+              );
+            }}
             maxAnnotationsToDisplay={
               this.state.maxAnnotationsToDisplayAdjustment
                 ? { features: 5 }
@@ -1431,6 +1882,8 @@ clickOverrides: {
             hideSingleImport={this.state.hideSingleImport}
             displayMenuBarAboveTools={this.state.displayMenuBarAboveTools}
             allowPartsToOverlapSelf={this.state.allowPartsToOverlapSelf}
+            allowPrimerBasesToBeEdited={this.state.allowPrimerBasesToBeEdited}
+            allowPanelTabDraggable={this.state.allowPanelTabDraggable}
             {...(this.state.corruptedOverrideManageEnzymes && {
               enzymeGroupsOverride: {
                 someGroup: [
@@ -1519,6 +1972,15 @@ clickOverrides: {
                   reverseRegex: "tttttttccccccc",
                   topSnipOffset: 9,
                   bottomSnipOffset: 10
+                },
+                Esp3I: {
+                  name: "Esp3I",
+                  isType2S: true,
+                  site: "cgtctc",
+                  forwardRegex: "cgtctc",
+                  reverseRegex: "gagacg",
+                  topSnipOffset: 7,
+                  bottomSnipOffset: 11
                 }
               }
             })}
@@ -1533,6 +1995,11 @@ clickOverrides: {
             })}
             {...(this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
+            })}
+            {...(this.state.getAdditionalEditAnnotationComps && {
+              getAdditionalEditAnnotationComps: ({ annotationTypePlural }) => {
+                return <SlowComp {...{ annotationTypePlural }}></SlowComp>;
+              }
             })}
             {...(this.state.onImport && {
               onImport: (sequence) => {
@@ -1607,6 +2074,20 @@ clickOverrides: {
               onDuplicate: () =>
                 window.toastr.success("onDuplicate callback triggered")
             })}
+            {...(this.state.withGetAdditionalCreateOpts && {
+              getAdditionalCreateOpts: (props) => {
+                return [
+                  {
+                    text: "Additional Create Option",
+                    onClick: () => {
+                      window.toastr.success(
+                        `Selecting between ${props.selectionLayer.start} : ${props.selectionLayer.end}`
+                      );
+                    }
+                  }
+                ];
+              }
+            })}
             {...(this.state.onSelectionOrCaretChanged && {
               onSelectionOrCaretChanged: ({ caretPosition, selectionLayer }) =>
                 window.toastr.success(
@@ -1677,10 +2158,6 @@ clickOverrides: {
                 // //the copiedSequenceData is the subset of the sequence that has been copied in the teselagen sequence format
                 // const clipboardData = event.clipboardData;
                 // clipboardData.setData(
-                //   "text/plain",
-                //   copiedSequenceData.sequence
-                // );
-                // clipboardData.setData(
                 //   "application/json",
                 //   //for example here you could change teselagen parts into jbei parts
                 //   JSON.stringify(copiedSequenceData)
@@ -1716,6 +2193,29 @@ clickOverrides: {
             //   console.info("ya");
             // }} //don't pass this handler if you're also using previewMode
             shouldAutosave={shouldAutosave}
+            {...(passAutoAnnotateHandlers && {
+              autoAnnotateFeatures: () => {
+                window.toastr.success(
+                  "auto annotate features callback triggered"
+                );
+              },
+              autoAnnotateParts: () => {
+                window.toastr.success("auto annotate parts callback triggered");
+              },
+              autoAnnotatePrimers: () => {
+                window.toastr.success(
+                  "auto annotate primers callback triggered"
+                );
+              }
+            })}
+            {...(withAutoAnnotateAddon && {
+              autoAnnotateFeatures,
+              autoAnnotateParts,
+              autoAnnotatePrimers
+            })}
+            {...(withGetCustomAutoAnnotateList && {
+              getCustomAutoAnnotateList: this.getCustomAutoAnnotateList
+            })}
             generatePng={generatePng}
             {...(forceHeightMode && { height: 500 })}
             {...(adjustCircularLabelSpacing && { fontHeightMultiplier: 2 })}
@@ -1759,7 +2259,11 @@ clickOverrides: {
             disableSetReadOnly={this.state.disableSetReadOnly}
             withRotateCircularView={this.state.withRotateCircularView}
             showReadOnly={this.state.showReadOnly}
-            showCircularity={this.state.showCircularity}
+            initialAnnotationToEdit={
+              this.state.initialAnnotationToEdit ? "part-10" : undefined
+            }
+            showCircularity={!!this.state.showCircularity}
+            showMoleculeType={this.state.showMoleculeType}
             showGCContentByDefault={this.state.showGCContentByDefault}
             onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
@@ -1790,4 +2294,25 @@ clickOverrides: {
 
 function exampleConversion(seq) {
   return seq;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function SlowComp({ annotationTypePlural }) {
+  const [isOpen, setOpen] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setOpen(true);
+    }, 100);
+  }, []);
+  if (isOpen)
+    return (
+      <div>
+        I'm added via the getAdditionalEditAnnotationComps <br></br>{" "}
+        {annotationTypePlural} lalala <br></br> {annotationTypePlural} lalaa
+      </div>
+    );
+  return <div>yarp</div>;
 }

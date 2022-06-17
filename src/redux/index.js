@@ -27,10 +27,12 @@ import * as sequenceDataHistory from "./sequenceDataHistory";
 import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
+import * as charWidth from "./charWidth";
 import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
+import * as partLengthsToHide from "./partLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
 import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
@@ -62,11 +64,13 @@ const subReducers = {
   sequenceDataHistory,
   sequenceData,
   useAdditionalOrfStartCodons,
+  charWidth,
   uppercaseSequenceMapFont,
   showGCContent,
   externalLabels,
   labelLineIntensity,
   labelSize,
+  partLengthsToHide,
   featureLengthsToHide,
   selectedPartTags
 };
@@ -90,7 +94,7 @@ export const actions = {
 
 const mergeDeepKeys = [];
 //define the reducer
-let reducers = {
+const reducers = {
   ...Object.keys(subReducers).reduce((acc, k) => {
     if (
       subReducers[k].default &&
@@ -126,7 +130,7 @@ export default function reducerFactory(initialState = {}) {
   // }
   return function (state = initialState, action) {
     let editorNames;
-    let newState = {};
+    const newState = {};
     if (action.meta && action.meta.editorName) {
       editorNames = Array.isArray(action.meta.editorName)
         ? action.meta.editorName

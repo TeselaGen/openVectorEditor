@@ -1,0 +1,14 @@
+{
+  "name": "ove-auto-annotate",
+  "version": "0.0.5",
+  "scripts": {
+    "build": "nwb build-react-component --copy-files --no-demo",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "papaparse": "^5.3.1"
+  },
+  "devDependencies": {
+    "nwb": "^0.25.2"
+  }
+}

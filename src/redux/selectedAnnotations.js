@@ -16,11 +16,11 @@ export const annotationDeselectAll = createAction("VE_ANNOTATION_DESELECT_ALL");
 export function replacementLayerRightClicked({ event, annotation }, meta) {
   event.preventDefault();
   event.stopPropagation();
-  return function(dispatch /* getState */) {
-    let items = [
+  return function (dispatch /* getState */) {
+    const items = [
       {
         text: "Remove Edit",
-        onClick: function() {
+        onClick: function () {
           dispatch({
             type: "REPLACEMENT_LAYER_DELETE",
             meta,
@@ -45,7 +45,7 @@ export default createReducer(
   {
     [annotationSelect]: (state, payload) => {
       if (!payload.id) throw new Error("Annotation must have an id!");
-      let newState = {
+      const newState = {
         idMap: {
           ...state.idMap,
           [payload.id]: payload
@@ -55,18 +55,18 @@ export default createReducer(
       return newState;
     },
     [annotationDeselect]: (state, payload) => {
-      let id = payload.id || payload;
-      let idMap = { ...state.idMap };
+      const id = payload.id || payload;
+      const idMap = { ...state.idMap };
       delete idMap[id];
-      let idStack = without(state.idStack, id);
+      const idStack = without(state.idStack, id);
       return {
         idMap,
         idStack
       };
     },
     [updateSelectedAnnotation]: (state, payload) => {
-      let id = payload.id;
-      let idMap = { ...state.idMap };
+      const id = payload.id;
+      const idMap = { ...state.idMap };
       if (!idMap[id]) {
         return state;
       }
