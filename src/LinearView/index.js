@@ -362,11 +362,6 @@ function ZoomLinearView({
         initialValue={0}
         max={10}
         min={0}
-        // stepSize={0.05}
-        // clickStepSize={1}
-        // initialValue={charWidth}
-        // max={12}
-        // min={minCharWidth}
       ></UncontrolledSliderWithPlusMinusBtns>
     </div>
   );

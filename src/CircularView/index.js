@@ -119,7 +119,8 @@ export function CircularView(props) {
     labelLineIntensity,
     fontHeightMultiplier,
     hoveredId,
-    labelSize
+    labelSize,
+    nameFontSizeCircularView = 14
   } = props;
 
   const { sequence = "atgc", circular } = sequenceData;
@@ -528,7 +529,8 @@ export function CircularView(props) {
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       width: innerRadius * scale,
-                      maxHeight: innerRadius * scale - 15
+                      maxHeight: innerRadius * scale - 15,
+                      fontSize: nameFontSizeCircularView
                     }}
                   >
                     {sequenceName}

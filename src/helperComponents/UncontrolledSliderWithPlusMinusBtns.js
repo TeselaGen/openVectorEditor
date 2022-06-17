@@ -35,6 +35,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       ...rest
     } = this.props;
     const { min, max } = this.props;
+
     const stepSize = this.props.stepSize || (max - min) / 10;
     if (bindOutsideChangeHelper) {
       bindOutsideChangeHelper.triggerChange = (fn) => {
