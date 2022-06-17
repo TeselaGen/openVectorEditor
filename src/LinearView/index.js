@@ -19,10 +19,8 @@ import classNames from "classnames";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import PinchHelper from "./PinchHelper";
-import {
-  isElWithinAnotherEl,
-  isElWithinAnotherElWithDiff
-} from "../withEditorInteractions/isElementInViewport";
+
+import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 
 const defaultMarginWidth = 10;
 
@@ -125,50 +123,8 @@ class _LinearView extends React.Component {
     return this.rowData;
   };
   updateLabelsForInViewFeaturesDebounced = debounce(() => {
-    this.updateLabelsForInViewFeatures();
+    updateLabelsForInViewFeatures();
   }, 20);
-  updateLabelsForInViewFeatures = () => {
-    const feats = document.querySelectorAll(`.veLinearView .veRowViewFeature`);
-    const parts = document.querySelectorAll(`.veLinearView .veRowViewPart`);
-    const primers = document.querySelectorAll(`.veLinearView .veRowViewPrimer`);
-    const els = [...feats, ...parts, ...primers];
-    const boundingRect = document
-      .querySelector(`.veLinearView`)
-      .getBoundingClientRect();
-
-    els.forEach((el) => {
-      const elBounds = el.getBoundingClientRect();
-      const isElIn = isElWithinAnotherEl(elBounds, boundingRect);
-
-      if (isElIn) {
-        const label = el.querySelector(".veLabelText");
-        if (!label) return;
-        const labelBounds = label.getBoundingClientRect();
-        const [isLabelIn, diff] = isElWithinAnotherElWithDiff(labelBounds, {
-          left: Math.max(boundingRect.left, elBounds.left),
-          right: Math.min(boundingRect.right, elBounds.right)
-        });
-        if (!isLabelIn) {
-          const l = window.getComputedStyle(label, null),
-            t = l.getPropertyValue("transform");
-
-          // If t return other than "none"
-          // Split content into several value
-          // The fourth one is the translateX value
-
-          if (t !== "none") {
-            const v = t.split("(")[1],
-              // w = v.split(")")[0],
-              x = v.split(",");
-
-            const newX = Number(x[4]) + diff;
-            const newY = Number(x[5].replace(")", ""));
-            label.setAttribute("transform", `translate(${newX},${newY})`);
-          }
-        }
-      }
-    });
-  };
 
   render() {
     const {
@@ -272,7 +228,7 @@ class _LinearView extends React.Component {
                 });
               }}
               afterOnChange={() => {
-                this.updateLabelsForInViewFeatures();
+                updateLabelsForInViewFeatures();
               }}
             ></ZoomLinearView>
           )}
@@ -308,7 +264,7 @@ class _LinearView extends React.Component {
                   }
                 }
               );
-              this.updateLabelsForInViewFeatures();
+              updateLabelsForInViewFeatures();
             }}
             enabled={linearZoomEnabled}
           >
@@ -316,7 +272,7 @@ class _LinearView extends React.Component {
               {...{
                 ...rest,
                 onScroll: () => {
-                  this.updateLabelsForInViewFeatures();
+                  updateLabelsForInViewFeatures();
                   // this.updateLabelsForInViewFeaturesDebounced();
                 },
                 rowContainerStyle: isLinViewZoomed
@@ -387,13 +343,13 @@ function ZoomLinearView({
         onClick={() => {
           setTimeout(scrollToCaret, 0);
         }}
-        onChange={(zoomLvl) => {
+        onChange={async (zoomLvl) => {
           //zoomLvl is in the range of 0 to 10
           const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
           const newCharWidth = minCharWidth * Math.pow(scaleFactor, zoomLvl);
-          setCharWidth(newCharWidth);
-          scrollToCaret();
-          afterOnChange && afterOnChange();
+          await setCharWidth(newCharWidth);
+          await scrollToCaret();
+          (await afterOnChange) && afterOnChange();
         }}
         leftIcon="minus"
         rightIcon="plus"
