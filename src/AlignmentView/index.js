@@ -51,7 +51,7 @@ import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
-//import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
+import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -220,6 +220,7 @@ class AlignmentView extends React.Component {
       });
     };
     window.updateAlignmentSelection = updateAlignmentSelection;
+    window.addEventListener("load", this.handleLoad);
     if (window.Cypress)
       window.Cypress.updateAlignmentSelection = updateAlignmentSelection;
     this.editorDragged = editorDragged.bind(this);
@@ -229,6 +230,10 @@ class AlignmentView extends React.Component {
     setTimeout(() => {
       this.setVerticalScrollRange();
     }, 500);
+  }
+
+  handleLoad() {
+    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   }
 
   annotationClicked = ({
@@ -364,6 +369,7 @@ class AlignmentView extends React.Component {
     if (this.alignmentHolderTop) {
       this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
     }
+    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   };
   handleTopScroll = () => {
     this.alignmentHolder.scrollLeft = this.alignmentHolderTop.scrollLeft;
@@ -379,6 +385,7 @@ class AlignmentView extends React.Component {
       this.scrollAlignmentToPercent(newPercent);
       this.blockScroll = false;
     });
+    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   };
 
   setCharWidthInLinearView = ({ charWidthInLinearView }) => {
@@ -1242,7 +1249,7 @@ class AlignmentView extends React.Component {
                   //   //   this.scrollAlignmentToPercent(percentScrollage);
                   //   // });
                   // }}
-                  onChange={(zoomLvl) => {
+                  onChange={async (zoomLvl) => {
                     // if (!this.startSliderDrag) {
 
                     // }
@@ -1253,11 +1260,13 @@ class AlignmentView extends React.Component {
                     const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
                     const newCharWidth =
                       minCharWidth * Math.pow(scaleFactor, zoomLvl);
-                    this.setCharWidthInLinearView({
+                    await this.setCharWidthInLinearView({
                       charWidthInLinearView: newCharWidth
                     });
-                    this.scrollToCaret();
-                    //afterOnChange && afterOnChange(); this is where a version of label updating will happen
+                    await this.scrollToCaret();
+                    await updateLabelsForInViewFeatures({
+                      rectElement: ".alignmentHolder"
+                    });
                   }}
                   coerceInitialValue={coerceInitialValue}
                   title="Adjust Zoom Level"

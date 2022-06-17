@@ -38,7 +38,6 @@ export function updateLabelsForInViewFeatures({
           const v = t.split("(")[1],
             // w = v.split(")")[0],
             x = v.split(",");
-
           const newX = Number(x[4]) + diff;
           const newY = Number(x[5].replace(")", ""));
           label.setAttribute("transform", `translate(${newX},${newY})`);
