@@ -1233,26 +1233,7 @@ class AlignmentView extends React.Component {
                     setTimeout(this.scrollToCaret, 0);
                   }}
                   minCharWidth={this.getMinCharWidth()}
-                  // onRelease={(zoomLvl) => {
-
-                  // }}
-                  // onRelease={(val) => {
-                  //   this.setCharWidthInLinearView({
-                  //     charWidthInLinearView: val
-                  //   });
-                  //   // this.blockScroll = true; //we block the scroll to prevent jumpiness and then manually update to the desired scroll percentage
-                  //   // const percentScrollage = this.easyStore.percentScrolled;
-                  //   // setTimeout(() => {
-                  //   //   this.blockScroll = false;
-                  //   //   this.scrollAlignmentToPercent(percentScrollage);
-                  //   // });
-                  // }}
                   onChange={async (zoomLvl) => {
-                    // if (!this.startSliderDrag) {
-
-                    // }
-                    // this.startSliderDrag = true
-
                     // zoomLvl is in the range of 0 to 10
                     const minCharWidth = this.getMinCharWidth();
                     const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
