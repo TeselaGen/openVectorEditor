@@ -1,14 +1,16 @@
 import {
   Button,
-  Checkbox,
   Popover,
   Intent,
   Tooltip,
-  Tag
+  Tag,
+  Menu,
+  MenuItem
 } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
 import pureNoFunc from "../utils/pureNoFunc";
+// import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 
 export default pureNoFunc(function AlignmentVisibilityTool(props) {
   return (
@@ -48,37 +50,47 @@ function VisibilityOptions({
     annotationCountToUse = annotationsWithCounts[0];
   }
   return (
-    <div
+    <Menu
       style={{ padding: 10 }}
       className="alignmentAnnotationVisibilityToolInner"
     >
       {map(togglableAlignmentAnnotationSettings, (visible, annotationName) => {
         return (
-          <div key={annotationName}>
-            <Checkbox
-              onChange={() => {
-                if (annotationName === "axis") {
-                  alignmentAnnotationVisibilityToggle("axisNumbers", {
-                    useChecked: true,
-                    checked: !visible
-                  });
-                }
-                alignmentAnnotationVisibilityToggle(annotationName);
-              }}
-              checked={visible}
-              label={startCase(annotationName)}
-            >
-              {annotationName in annotationCountToUse ? (
-                <Tag round style={{ marginLeft: 7 }}>
-                  {annotationCountToUse[annotationName]}
-                </Tag>
-              ) : (
-                ""
-              )}
-            </Checkbox>
-          </div>
+          <MenuItem
+            icon={visible ? "tick" : ""}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (annotationName === "axis") {
+                alignmentAnnotationVisibilityToggle("axisNumbers", {
+                  useChecked: true,
+                  checked: !visible
+                });
+              }
+              alignmentAnnotationVisibilityToggle(annotationName);
+            }}
+            text={
+              <>
+                {startCase(annotationName)
+                  .replace("Cds", "CDS")
+                  .replace("Dna", "DNA")}
+                {annotationName in annotationCountToUse ? (
+                  <Tag round style={{ marginLeft: 7 }}>
+                    {annotationCountToUse[annotationName]}
+                  </Tag>
+                ) : (
+                  ""
+                )}
+              </>
+            }
+            key={annotationName}
+          ></MenuItem>
         );
       })}
-    </div>
+      {/* <MenuItem icon="" text={fullSequenceTranslationMenu.text}>
+        {fullSequenceTranslationMenu.submenu.map(({ text, cmd }) => {
+          return <MenuItem key={cmd} text={text}></MenuItem>;
+        })}
+      </MenuItem> */}
+    </Menu>
   );
 }
