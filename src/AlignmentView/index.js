@@ -382,8 +382,8 @@ class AlignmentView extends React.Component {
     setTimeout(() => {
       this.scrollAlignmentToPercent(newPercent);
       this.blockScroll = false;
+      updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
     });
-    updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
   };
 
   setCharWidthInLinearView = ({ charWidthInLinearView }) => {

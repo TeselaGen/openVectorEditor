@@ -3,7 +3,7 @@ describe("alignment", function () {
     cy.visit("#/Alignment");
     cy.get(".tg-alignment-visibility-toggle").click();
     cy.contains("cds feature").should("not.exist");
-    cy.get(".bp3-popover .bp3-control:contains(Features)").click();
+    cy.get(".bp3-popover .bp3-menu-item:contains(Features)").click();
     cy.contains("cds feature");
     cy.get(".tg-alignment-visibility-toggle").click();
     cy.contains("text", "long feat whose label should still appear").should(
@@ -103,7 +103,7 @@ describe("alignment", function () {
     cy.contains(".alignmentHolder .veRowViewAxis", 1);
     cy.get("button .bp3-icon-eye-open").click();
 
-    cy.contains(".bp3-checkbox", "Axis").click();
+    cy.contains(".bp3-menu-item", "Axis").click();
     cy.contains(".alignmentHolder .veRowViewAxis", 1).should("not.exist");
   });
 
