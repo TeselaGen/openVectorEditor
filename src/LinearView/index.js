@@ -170,6 +170,7 @@ class _LinearView extends React.Component {
     const linearZoomEnabled =
       bpsPerRow > 50 && bpsPerRow < 30000 && withZoomLinearView;
     const minCharWidth = initialCharWidth;
+    const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -244,7 +245,8 @@ class _LinearView extends React.Component {
             />
           )}
           <div className="veWarningContainer">{this.paredDownMessages}</div>
-          <PinchHelper
+
+          <PinchHelperToUse
             onPinch={({ delta: [d] }) => {
               this.bindOutsideChangeHelper.triggerChange(
                 ({ value, changeValue }) => {
@@ -266,7 +268,6 @@ class _LinearView extends React.Component {
               );
               updateLabelsForInViewFeatures();
             }}
-            enabled={linearZoomEnabled}
           >
             <RowItem
               {...{
@@ -311,7 +312,7 @@ class _LinearView extends React.Component {
               row={rowData[0]}
               isLinearView
             />
-          </PinchHelper>
+          </PinchHelperToUse>
         </div>
       </Draggable>
     );
