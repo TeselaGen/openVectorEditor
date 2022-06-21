@@ -222,6 +222,7 @@ export default class Minimap extends React.Component {
     const charWidth = this.getCharWidth();
     const scrollHandleWidth = this.getScrollHandleWidth();
     const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
+    const nameDivWidth = nameDivOffsetPercent * width;
     return (
       <div
         ref={(ref) => (this.minimap = ref)}
@@ -271,7 +272,7 @@ export default class Minimap extends React.Component {
               <div
                 style={{
                   marginTop: -3,
-                  paddingLeft: nameDivOffsetPercent * width
+                  paddingLeft: nameDivWidth
                 }}
                 ref={ref}
               >
@@ -294,6 +295,7 @@ export default class Minimap extends React.Component {
             annotationHeight: 15,
             sequenceLength: seqLength,
             style: {
+              paddingLeft: nameDivWidth,
               height: 17
             }
           }}
