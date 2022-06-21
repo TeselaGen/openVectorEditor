@@ -1,5 +1,5 @@
 import React from "react";
-import { flatMap, pick } from "lodash";
+import { flatMap, isString, pick } from "lodash";
 import versionHistoryTool from "./versionHistoryTool";
 // import {connectToEditor} from "../withEditorProps";
 import MenuBar from "../MenuBar";
@@ -21,7 +21,6 @@ import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 import undoTool from "./undoTool";
 import redoTool from "./redoTool";
-import { isString } from "util";
 import isMobile from "is-mobile";
 import { useMemo } from "react";
 

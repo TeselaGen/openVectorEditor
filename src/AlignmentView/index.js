@@ -17,7 +17,7 @@ import {
   withStore
 } from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
-import { throttle, cloneDeep, map, some, forEach } from "lodash";
+import { throttle, cloneDeep, map, some, forEach, isFunction } from "lodash";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
 
@@ -32,7 +32,6 @@ import withEditorProps from "../withEditorProps";
 import SelectionLayer from "../RowItem/SelectionLayer";
 
 import "./style.css";
-import { isFunction } from "util";
 import {
   editorDragged,
   editorClicked,
