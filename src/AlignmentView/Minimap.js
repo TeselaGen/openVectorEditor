@@ -72,8 +72,8 @@ export default class Minimap extends React.Component {
     return Math.max(getClientY(e) + this.minimapTracks.scrollTop - topStart, 0);
   };
 
-  scrollMinimapVertical = ({ e, force }) => {
-    const clientY = getClientY(e);
+  scrollMinimapVertical = ({ e, force, initialDragYOffsetFromCenter }) => {
+    const clientY = getClientY(e) - (initialDragYOffsetFromCenter || 0);
     try {
       if (
         !force &&
@@ -108,6 +108,20 @@ export default class Minimap extends React.Component {
       this.isDragging = false;
     }, 150);
   };
+  handleDragStart = (e) => {
+    const eventX = e.pageX;
+    const handleEl = window.document.querySelector(".verticalScrollDisplay");
+    if (!handleEl) return;
+    const { x, width } = handleEl.getBoundingClientRect();
+    const yellowScrollHandleXCenter = x + width / 2;
+    this.initialDragXOffsetFromCenter = eventX - yellowScrollHandleXCenter;
+    const eventY = e.pageY;
+
+    if (!handleEl) return;
+    const { y, height } = handleEl.getBoundingClientRect();
+    const yellowScrollHandleYCenter = y + height / 2;
+    this.initialDragYOffsetFromCenter = eventY - yellowScrollHandleYCenter;
+  };
   handleDrag = (e) => {
     const {
       onMinimapScrollX,
@@ -117,10 +131,15 @@ export default class Minimap extends React.Component {
 
     const scrollHandleWidth = this.getScrollHandleWidth();
     const percent =
-      (this.getXPositionOfClickInMinimap(e) - scrollHandleWidth / 2) /
+      (this.getXPositionOfClickInMinimap(e) -
+        (this.initialDragXOffsetFromCenter || 0) -
+        scrollHandleWidth / 2) /
       (width - scrollHandleWidth);
     onMinimapScrollX(percent);
-    this.scrollMinimapVertical({ e });
+    this.scrollMinimapVertical({
+      e,
+      initialDragYOffsetFromCenter: this.initialDragYOffsetFromCenter
+    });
   };
   itemSizeGetter = () => {
     return this.props.laneHeight;
