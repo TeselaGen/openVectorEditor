@@ -14,7 +14,7 @@ export default function Chromatogram(props) {
   const [hasDrawnOnce, setHasDrawnOnce] = useState(false);
 
   const canvasRef = useRef();
-
+  const gapsBeforeRow = getGaps(row.start).gapsBefore;
   useEffect(() => {
     if (
       !chromatogramData ||
@@ -32,6 +32,7 @@ export default function Chromatogram(props) {
       startBp: row.start,
       endBp: row.end,
       getGaps,
+      gapsBeforeRow,
       scalePct: scalePct
     });
     painter.paintCanvas();
@@ -43,11 +44,13 @@ export default function Chromatogram(props) {
     charWidth,
     row.start,
     row.end,
+    gapsBeforeRow,
     isRowView,
     scalePct,
     getGaps,
     canvasRef
   ]);
+  const marginLeft = gapsBeforeRow * charWidth;
 
   return (
     <div
@@ -179,7 +182,7 @@ export default function Chromatogram(props) {
           </div>
         )} */}
 
-        <canvas ref={canvasRef} height="100" />
+        <canvas style={{ marginLeft }} ref={canvasRef} height="100" />
       </div>
     </div>
   );
@@ -192,6 +195,7 @@ function drawTrace({
   peakCanvas,
   endBp,
   getGaps,
+  gapsBeforeRow,
   showChromQualScores,
   // isRowView,
   scalePct
@@ -208,10 +212,12 @@ function drawTrace({
   const bottomBuffer = 0;
   const maxHeight = peakCanvas.height;
 
-  const seqLengthWithGaps = endBp - startBp + 1 + getGaps(endBp).gapsBefore;
+  const seqLengthWithGaps =
+    endBp - startBp + 1 + getGaps(endBp).gapsBefore - gapsBeforeRow;
   const maxWidth = seqLengthWithGaps * charWidth;
 
   peakCanvas.width = maxWidth;
+
   const scaledHeight = maxHeight - bottomBuffer;
 
   this.drawPeaks = function (traceType, lineColor) {
@@ -225,7 +231,8 @@ function drawTrace({
       const traceForIndex = traceData.baseTraces[baseIndex][traceType];
       const gapsBefore = getGaps(baseIndex - 1).gapsBefore || 0;
       const gapsAt = getGaps(baseIndex).gapsBefore;
-      const startXPosition = (baseIndex + gapsAt - startBp) * charWidth;
+      const startXPosition =
+        (baseIndex + gapsAt - startBp - gapsBeforeRow) * charWidth;
       const hasGaps = gapsBefore !== gapsAt;
       const traceLength = traceForIndex.length;
       const tracePointSpacing = charWidth / traceLength;
