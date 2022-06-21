@@ -171,6 +171,27 @@ class _LinearView extends React.Component {
       bpsPerRow > 50 && bpsPerRow < 30000 && withZoomLinearView;
     const minCharWidth = initialCharWidth;
     const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
+    const pinchHandler = {
+      onPinch: ({ delta: [d] }) => {
+        this.bindOutsideChangeHelper.triggerChange(({ value, changeValue }) => {
+          // changeValue(d);
+          if (d > 0) {
+            if (value > 8) {
+              changeValue(value + 0.4);
+            } else {
+              changeValue(value + 0.2);
+            }
+          } else if (d < 0) {
+            if (value > 8) {
+              changeValue(value - 0.4);
+            } else {
+              changeValue(value - 0.2);
+            }
+          }
+        });
+        updateLabelsForInViewFeatures();
+      }
+    };
     return (
       <Draggable
         enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -246,29 +267,7 @@ class _LinearView extends React.Component {
           )}
           <div className="veWarningContainer">{this.paredDownMessages}</div>
 
-          <PinchHelperToUse
-            onPinch={({ delta: [d] }) => {
-              this.bindOutsideChangeHelper.triggerChange(
-                ({ value, changeValue }) => {
-                  // changeValue(d);
-                  if (d > 0) {
-                    if (value > 8) {
-                      changeValue(value + 0.4);
-                    } else {
-                      changeValue(value + 0.2);
-                    }
-                  } else if (d < 0) {
-                    if (value > 8) {
-                      changeValue(value - 0.4);
-                    } else {
-                      changeValue(value - 0.2);
-                    }
-                  }
-                }
-              );
-              updateLabelsForInViewFeatures();
-            }}
-          >
+          <PinchHelperToUse {...(linearZoomEnabled && pinchHandler)}>
             <RowItem
               {...{
                 ...rest,
