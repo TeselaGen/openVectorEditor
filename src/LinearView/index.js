@@ -18,7 +18,7 @@ import { SequenceName } from "./SequenceName";
 import classNames from "classnames";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
-import PinchHelper from "./PinchHelper";
+import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 

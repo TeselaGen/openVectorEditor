@@ -52,6 +52,8 @@ import { getClientX, getClientY } from "../utils/editorUtils";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 
+//import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
+
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
 try {
