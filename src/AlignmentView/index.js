@@ -521,11 +521,13 @@ class AlignmentView extends React.Component {
       }
     };
 
+    /**
+     * this function is used to calculate the number of spaces that come before or inside a range
+     */
     let getGaps = () => ({
       gapsBefore: 0,
       gapsInside: 0
     });
-    //this function is used to calculate the number of spaces that come before or inside a range
     getGaps = (rangeOrCaretPosition, sequence) => {
       const gapMap = getGapMap(sequence);
       if (typeof rangeOrCaretPosition !== "object") {
@@ -545,7 +547,9 @@ class AlignmentView extends React.Component {
       return toReturn;
     };
 
-    // for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
+    /**
+     * for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
+     **/
     let sequenceDataWithRefSeqCdsFeatures;
     if (this.props.alignmentType === "SANGER SEQUENCING") {
       if (i !== 0) {
