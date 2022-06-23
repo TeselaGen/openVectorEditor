@@ -6,9 +6,15 @@ import {
 export function updateLabelsForInViewFeatures({
   rectElement = ".veLinearView"
 } = {}) {
-  const feats = document.querySelectorAll(`.veLinearView .veRowViewFeature`);
-  const parts = document.querySelectorAll(`.veLinearView .veRowViewPart`);
-  const primers = document.querySelectorAll(`.veLinearView .veRowViewPrimer`);
+  const feats = Array.from(
+    document.querySelectorAll(`.veLinearView .veRowViewFeature`)
+  );
+  const parts = Array.from(
+    document.querySelectorAll(`.veLinearView .veRowViewPart`)
+  );
+  const primers = Array.from(
+    document.querySelectorAll(`.veLinearView .veRowViewPrimer`)
+  );
   const els = [...feats, ...parts, ...primers];
   const boundingRect = document
     .querySelector(rectElement)
