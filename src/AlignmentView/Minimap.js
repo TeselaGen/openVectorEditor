@@ -43,7 +43,10 @@ export default class Minimap extends React.Component {
     onMinimapScrollX(percent);
     this.scrollMinimapVertical({ e, force: true });
   };
-
+  /**
+   * @returns current nucleotide char
+   * width, nucelotide char width scales with zooming
+   */
   getCharWidth = () => {
     const {
       alignmentTracks = [],
@@ -54,6 +57,9 @@ export default class Minimap extends React.Component {
     const charWidth = Math.min(16, width / seqLength);
     return charWidth || 12;
   };
+  /**
+   * @returns the width of the highlighted region of the minimap
+   */
   getScrollHandleWidth = () => {
     const { numBpsShownInLinearView, dimensions } = this.props;
     const charWidth = this.getCharWidth();
@@ -326,6 +332,7 @@ export default class Minimap extends React.Component {
 /**
  * Yellow Scroll handle
  * Responsible for designating the current viewing area
+ * Also supports zoom/resizing using handles
  */
 const YellowScrollHandle = view(
   class YellowScrollHandleInner extends React.Component {
@@ -456,6 +463,7 @@ const YellowScrollHandle = view(
               onStop={(e, { x }) => {
                 const deltaX = this.x - x;
                 const newSliderSize = scrollHandleWidth - deltaX;
+                //on size adjust is passed from alignment view
                 onSizeAdjust(newSliderSize);
 
                 //user is resizing to the right so we need to update the scroll percentage so the slider does not jump

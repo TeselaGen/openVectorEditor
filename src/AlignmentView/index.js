@@ -373,6 +373,11 @@ class AlignmentView extends React.Component {
   handleTopScroll = () => {
     this.alignmentHolder.scrollLeft = this.alignmentHolderTop.scrollLeft;
   };
+  /**
+   * Responsible for handling resizing the highlighted region of the minimap
+   * @param {*} newSliderSize
+   * @param {*} newPercent
+   */
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
     const percentageOfSpace = newSliderSize / (this.state.width - nameDivWidth);
     const seqLength = this.getSequenceLength();
