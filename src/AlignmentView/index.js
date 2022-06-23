@@ -1143,8 +1143,8 @@ class AlignmentView extends React.Component {
     };
 
     return (
-      <ResizeSensor onResize={this.handleResize}>
-        <PinchHelper {...pinchHandler}>
+      <PinchHelper {...pinchHandler}>
+        <ResizeSensor onResize={this.handleResize}>
           <div
             style={{
               height: height || (isPairwise ? "auto" : viewportHeight * 0.88),
@@ -1409,8 +1409,8 @@ class AlignmentView extends React.Component {
               </div>
             )}
           </div>
-        </PinchHelper>
-      </ResizeSensor>
+        </ResizeSensor>
+      </PinchHelper>
     );
   }
 }
