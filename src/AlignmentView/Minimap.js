@@ -108,6 +108,11 @@ export default class Minimap extends React.Component {
       this.isDragging = false;
     }, 150);
   };
+  /**
+   * Handler for beginning to drag across the minimap
+   * Sets this.initialDragXOffsetFromCenter and Y for dragging
+   * @param {*} e - event
+   */
   handleDragStart = (e) => {
     const eventX = e.pageX;
     const handleEl = window.document.querySelector(".verticalScrollDisplay");
@@ -122,6 +127,10 @@ export default class Minimap extends React.Component {
     const yellowScrollHandleYCenter = y + height / 2;
     this.initialDragYOffsetFromCenter = eventY - yellowScrollHandleYCenter;
   };
+  /**
+   * Moves the highlighted region as we drag
+   * @param {*} e - event
+   */
   handleDrag = (e) => {
     const {
       onMinimapScrollX,
@@ -141,9 +150,16 @@ export default class Minimap extends React.Component {
       initialDragYOffsetFromCenter: this.initialDragYOffsetFromCenter
     });
   };
+  /**
+   * @returns this.props.laneheight
+   */
   itemSizeGetter = () => {
     return this.props.laneHeight;
   };
+  /**
+   * Renders a lane (one by one for each call)
+   * @param {*} i - lane info
+   */
   renderItem = (i) => {
     const {
       alignmentTracks = [],
@@ -203,7 +219,9 @@ export default class Minimap extends React.Component {
       </div>
     );
   };
-
+  /**
+   * @returns minimap compoent
+   */
   render() {
     const {
       alignmentTracks = [],
@@ -231,8 +249,8 @@ export default class Minimap extends React.Component {
           position: "relative",
           width,
           display: "flex",
-          flexDirection: "column"
-          // overflowX: "visible",
+          flexDirection: "column",
+          overflowX: "visible"
           // overflowY: "hidden"
         }}
         onClick={this.handleMinimapClick}
@@ -267,6 +285,7 @@ export default class Minimap extends React.Component {
             laneHeight={laneHeight}
             minimapTracksPartialHeight={minimapTracksPartialHeight}
           />
+
           <ReactList
             itemsRenderer={(items, ref) => (
               <div
@@ -304,6 +323,10 @@ export default class Minimap extends React.Component {
     );
   }
 }
+/**
+ * Yellow Scroll handle
+ * Responsible for designating the current viewing area
+ */
 const YellowScrollHandle = view(
   class YellowScrollHandleInner extends React.Component {
     render() {

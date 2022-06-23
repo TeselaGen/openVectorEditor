@@ -1126,15 +1126,15 @@ class AlignmentView extends React.Component {
           // changeValue(d);
           if (d > 0) {
             if (value > 8) {
-              changeValue(value + 0.4);
-            } else {
-              changeValue(value + 0.2);
-            }
-          } else if (d < 0) {
-            if (value > 8) {
               changeValue(value - 0.4);
             } else {
               changeValue(value - 0.2);
+            }
+          } else if (d < 0) {
+            if (value > 8) {
+              changeValue(value + 0.4);
+            } else {
+              changeValue(value + 0.2);
             }
           }
         });
