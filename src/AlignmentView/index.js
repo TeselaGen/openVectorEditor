@@ -365,6 +365,9 @@ class AlignmentView extends React.Component {
       this.alignmentHolder.scrollLeft /
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
+    if (!this.isZooming) {
+      this.easyStore.percentScrolledPreZoom = this.easyStore.percentScrolled;
+    }
     if (this.alignmentHolderTop) {
       this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
     }
@@ -379,7 +382,7 @@ class AlignmentView extends React.Component {
    * @param {*} newPercent
    */
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
-    const percentageOfSpace = newSliderSize / (this.state.width - nameDivWidth);
+    const percentageOfSpace = newSliderSize / this.state.width;
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
     const newCharWidth = (this.state.width - nameDivWidth) / numBpsInView;
@@ -404,14 +407,18 @@ class AlignmentView extends React.Component {
   };
 
   scrollToCaret = () => {
-    const el = window.document.querySelector(".veCaret"); //adding .veRowViewCaret breaks this for some reason
-    if (!el) return;
+    let el = window.document.querySelector(".veCaret:not(.zoomSelection)"); //adding .veRowViewCaret breaks this for some reason
+    if (!el) {
+      el = window.document.querySelector(".veCaret"); //adding .veRowViewCaret breaks this for some reason
+    }
+    if (!el) {
+      return;
+    }
     el.scrollIntoView({ inline: "center" });
   };
 
   scrollAlignmentToPercent = (scrollPercentage) => {
     const scrollPercentageToUse = Math.min(Math.max(scrollPercentage, 0), 1);
-
     this.easyStore.percentScrolled = scrollPercentageToUse;
     this.alignmentHolder.scrollLeft =
       scrollPercentageToUse *
@@ -1131,15 +1138,15 @@ class AlignmentView extends React.Component {
           // changeValue(d);
           if (d > 0) {
             if (value > 8) {
-              changeValue(value - 0.4);
-            } else {
-              changeValue(value - 0.2);
-            }
-          } else if (d < 0) {
-            if (value > 8) {
               changeValue(value + 0.4);
             } else {
               changeValue(value + 0.2);
+            }
+          } else if (d < 0) {
+            if (value > 8) {
+              changeValue(value - 0.4);
+            } else {
+              changeValue(value - 0.2);
             }
           }
         });
@@ -1275,6 +1282,10 @@ class AlignmentView extends React.Component {
                     }}
                     minCharWidth={this.getMinCharWidth()}
                     onChange={async (zoomLvl) => {
+                      this.isZooming = true;
+                      setTimeout(() => {
+                        this.isZooming = false;
+                      }, 10);
                       // zoomLvl is in the range of 0 to 10
                       const minCharWidth = this.getMinCharWidth();
                       const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
@@ -1695,9 +1706,29 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
 }
 
 const PerformantSelectionLayer = view(({ easyStore, ...rest }) => {
+  const seqLen = rest.sequenceLength - 1;
+
   return (
     <SelectionLayer
-      regions={[{ ...easyStore.selectionLayer, ignoreGaps: true }]}
+      regions={[
+        { ...easyStore.selectionLayer, ignoreGaps: true },
+        {
+          start: Math.floor(
+            (easyStore.percentScrolledPreZoom || easyStore.percentScrolled) *
+              seqLen
+          ),
+          end: Math.floor(
+            (easyStore.percentScrolledPreZoom || easyStore.percentScrolled) *
+              seqLen
+          ),
+          className: "zoomSelection",
+          ignoreGaps: true,
+          style: {
+            zIndex: -1,
+            opacity: 0
+          }
+        }
+      ]}
       {...rest}
     />
   );

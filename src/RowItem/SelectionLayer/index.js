@@ -14,7 +14,7 @@ import {
 } from "../../utils/editorUtils";
 
 function SelectionLayer(props) {
-  let {
+  const {
     charWidth,
     isDraggable,
     row,
@@ -44,7 +44,7 @@ function SelectionLayer(props) {
               });
             }
           : undefined;
-        let {
+        const {
           className = "",
           style = {},
           start,
@@ -73,9 +73,9 @@ function SelectionLayer(props) {
             });
         };
 
-        let classNameToPass = className + " " + globalClassname;
+        const classNameToPass = className + " " + globalClassname;
         if (start > -1) {
-          let overlaps = getOverlapsOfPotentiallyCircularRanges(
+          const overlaps = getOverlapsOfPotentiallyCircularRanges(
             selectionLayer,
             row,
             sequenceLength
@@ -92,7 +92,7 @@ function SelectionLayer(props) {
             if (overlap.end === selectionLayer.end) {
               isTrueEnd = true;
             }
-            let { xStart, width } = getXStartAndWidthOfRangeWrtRow({
+            const { xStart, width } = getXStartAndWidthOfRangeWrtRow({
               range: overlap,
               row,
               charWidth,
@@ -111,6 +111,7 @@ function SelectionLayer(props) {
                       onRightClick: onSelectionContextMenu,
                       charWidth,
                       row,
+                      style: selectionLayer.style,
                       getGaps,
                       isDraggable,
                       ignoreGaps,
@@ -134,6 +135,7 @@ function SelectionLayer(props) {
                       isDraggable,
                       row,
                       getGaps,
+                      style: selectionLayer.style,
                       ignoreGaps,
                       key: key + "caret2",
                       sequenceLength,

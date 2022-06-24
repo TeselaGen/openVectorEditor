@@ -8,7 +8,6 @@ import { some } from "lodash";
 import { isPositionWithinRange } from "ve-range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
-
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
@@ -47,14 +46,19 @@ export default class Minimap extends React.Component {
    * @returns current nucleotide char
    * width, nucelotide char width scales with zooming
    */
-  getCharWidth = () => {
+  getCharWidth = ({ noNameDiv } = {}) => {
     const {
       alignmentTracks = [],
-      dimensions: { width = 200 }
+      dimensions: { width = 200 },
+      nameDivOffsetPercent
     } = this.props;
     const [template] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
-    const charWidth = Math.min(16, width / seqLength);
+    const nameDivWidth = nameDivOffsetPercent * width;
+    const charWidth = Math.min(
+      16,
+      (width - (noNameDiv ? 0 : nameDivWidth)) / seqLength
+    );
     return charWidth || 12;
   };
   /**
@@ -62,7 +66,7 @@ export default class Minimap extends React.Component {
    */
   getScrollHandleWidth = () => {
     const { numBpsShownInLinearView, dimensions } = this.props;
-    const charWidth = this.getCharWidth();
+    const charWidth = this.getCharWidth({ noNameDiv: true });
     const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
       charWidth
@@ -247,6 +251,7 @@ export default class Minimap extends React.Component {
     const scrollHandleWidth = this.getScrollHandleWidth();
     const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
     const nameDivWidth = nameDivOffsetPercent * width;
+
     return (
       <div
         ref={(ref) => (this.minimap = ref)}
@@ -257,6 +262,7 @@ export default class Minimap extends React.Component {
           display: "flex",
           flexDirection: "column",
           overflowX: "visible"
+
           // overflowY: "hidden"
         }}
         onClick={this.handleMinimapClick}
@@ -350,9 +356,7 @@ const YellowScrollHandle = view(
         minimapTracksPartialHeight
       } = this.props;
       const { verticalVisibleRange, percentScrolled } = easyStore;
-
       const xScroll = percentScrolled * (width - scrollHandleWidth);
-
       return (
         <Draggable
           bounds="parent"
@@ -463,9 +467,6 @@ const YellowScrollHandle = view(
               onStop={(e, { x }) => {
                 const deltaX = this.x - x;
                 const newSliderSize = scrollHandleWidth - deltaX;
-                //on size adjust is passed from alignment view
-                onSizeAdjust(newSliderSize);
-
                 //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
                 const newScrollPercent = xScroll / (width - newSliderSize);
                 onSizeAdjust(newSliderSize, newScrollPercent);
