@@ -71,7 +71,7 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3500 bps from 10 to 3509"]`);
+    cy.get(`[title="Selecting 3499 bps from 11 to 3509"]`);
   });
   it("the alignment should show axis numbers correctly", function () {
     cy.visit("#/Alignment?alignmentDataId=39");
@@ -109,7 +109,8 @@ describe("alignment", function () {
 
   it("can drag the alignment", function () {
     cy.visit("#/Alignment");
-    cy.get(".veAlignmentSelectionLayer").should("not.exist");
+    //cy.get(".veAlignmentSelectionLayer").should("not.exist"); djr this class is used by other dom elements
+    cy.get(`[title="Selecting 1001 bps from 997 to 1997"]`).should("not.exist");
     cy.tgToggle("isFullyZoomedOut");
 
     cy.contains("text", "1000").then((el) => {
@@ -119,14 +120,19 @@ describe("alignment", function () {
           cy.dragBetweenSimple(el, el2);
         });
     });
-    cy.get(".veAlignmentSelectionLayer").first().should("be.visible");
+    cy.get(`[title="Selecting 1001 bps from 997 to 1997"]`).should(
+      "be.visible"
+    );
   });
-
+  /**
+   * This verifies that clicking is disabled by clicking on the screen after toggle
+   * and making sure a selection caret does not appear
+   */
   it("can disable clicking and dragging within the alignment", function () {
     cy.visit("#/Alignment");
     cy.tgToggle("noClickDragHandlers");
-    cy.get(".veAlignmentSelectionLayer").should("not.exist");
-
+    //cy.get(".veAlignmentSelectionLayer").should("not.exist"); this class is used by other elemnents in the dom
+    cy.get(".selectionLayerCaret").should("not.be.visible");
     cy.tgToggle("isFullyZoomedOut");
     cy.contains("text", "1000").then((el) => {
       cy.contains("text", "2000")
@@ -135,7 +141,7 @@ describe("alignment", function () {
           cy.dragBetweenSimple(el, el2);
         });
     });
-    cy.get(".veAlignmentSelectionLayer").should("not.exist");
+    cy.get(".selectionLayerCaret").should("not.be.visible");
   });
 });
 
