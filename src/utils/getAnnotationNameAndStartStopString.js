@@ -51,6 +51,9 @@ export default function getAnnotationNameAndStartStopString(
  click --> top cut position
  alt/option+click --> bottom cut position
  cmd/ctrl+click --> recognition range`
-      : ""
+      : `
+
+alt/option+click --> jump selection to start/end
+double click --> edit`
   }`;
 }
