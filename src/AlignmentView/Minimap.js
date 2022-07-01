@@ -8,7 +8,6 @@ import { some } from "lodash";
 import { isPositionWithinRange } from "ve-range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
-
 export default class Minimap extends React.Component {
   shouldComponentUpdate(newProps) {
     const { props } = this;
@@ -43,20 +42,31 @@ export default class Minimap extends React.Component {
     onMinimapScrollX(percent);
     this.scrollMinimapVertical({ e, force: true });
   };
-
-  getCharWidth = () => {
+  /**
+   * @returns current nucleotide char
+   * width, nucelotide char width scales with zooming
+   */
+  getCharWidth = ({ noNameDiv } = {}) => {
     const {
       alignmentTracks = [],
-      dimensions: { width = 200 }
+      dimensions: { width = 200 },
+      nameDivOffsetPercent
     } = this.props;
     const [template] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
-    const charWidth = Math.min(16, width / seqLength);
+    const nameDivWidth = nameDivOffsetPercent * width;
+    const charWidth = Math.min(
+      16,
+      (width - (noNameDiv ? 0 : nameDivWidth)) / seqLength
+    );
     return charWidth || 12;
   };
+  /**
+   * @returns the width of the highlighted region of the minimap
+   */
   getScrollHandleWidth = () => {
     const { numBpsShownInLinearView, dimensions } = this.props;
-    const charWidth = this.getCharWidth();
+    const charWidth = this.getCharWidth({ noNameDiv: true });
     const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
       charWidth
@@ -108,6 +118,11 @@ export default class Minimap extends React.Component {
       this.isDragging = false;
     }, 150);
   };
+  /**
+   * Handler for beginning to drag across the minimap
+   * Sets this.initialDragXOffsetFromCenter and Y for dragging
+   * @param {*} e - event
+   */
   handleDragStart = (e) => {
     const eventX = e.pageX;
     const handleEl = window.document.querySelector(".verticalScrollDisplay");
@@ -122,6 +137,10 @@ export default class Minimap extends React.Component {
     const yellowScrollHandleYCenter = y + height / 2;
     this.initialDragYOffsetFromCenter = eventY - yellowScrollHandleYCenter;
   };
+  /**
+   * Moves the highlighted region as we drag
+   * @param {*} e - event
+   */
   handleDrag = (e) => {
     const {
       onMinimapScrollX,
@@ -141,9 +160,16 @@ export default class Minimap extends React.Component {
       initialDragYOffsetFromCenter: this.initialDragYOffsetFromCenter
     });
   };
+  /**
+   * @returns this.props.laneheight
+   */
   itemSizeGetter = () => {
     return this.props.laneHeight;
   };
+  /**
+   * Renders a lane (one by one for each call)
+   * @param {*} i - lane info
+   */
   renderItem = (i) => {
     const {
       alignmentTracks = [],
@@ -203,7 +229,9 @@ export default class Minimap extends React.Component {
       </div>
     );
   };
-
+  /**
+   * @returns minimap compoent
+   */
   render() {
     const {
       alignmentTracks = [],
@@ -223,6 +251,7 @@ export default class Minimap extends React.Component {
     const scrollHandleWidth = this.getScrollHandleWidth();
     const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
     const nameDivWidth = nameDivOffsetPercent * width;
+
     return (
       <div
         ref={(ref) => (this.minimap = ref)}
@@ -231,8 +260,9 @@ export default class Minimap extends React.Component {
           position: "relative",
           width,
           display: "flex",
-          flexDirection: "column"
-          // overflowX: "visible",
+          flexDirection: "column",
+          overflowX: "visible"
+
           // overflowY: "hidden"
         }}
         onClick={this.handleMinimapClick}
@@ -267,6 +297,7 @@ export default class Minimap extends React.Component {
             laneHeight={laneHeight}
             minimapTracksPartialHeight={minimapTracksPartialHeight}
           />
+
           <ReactList
             itemsRenderer={(items, ref) => (
               <div
@@ -304,6 +335,11 @@ export default class Minimap extends React.Component {
     );
   }
 }
+/**
+ * Yellow Scroll handle
+ * Responsible for designating the current viewing area
+ * Also supports zoom/resizing using handles
+ */
 const YellowScrollHandle = view(
   class YellowScrollHandleInner extends React.Component {
     render() {
@@ -320,9 +356,7 @@ const YellowScrollHandle = view(
         minimapTracksPartialHeight
       } = this.props;
       const { verticalVisibleRange, percentScrolled } = easyStore;
-
       const xScroll = percentScrolled * (width - scrollHandleWidth);
-
       return (
         <Draggable
           bounds="parent"
@@ -433,8 +467,6 @@ const YellowScrollHandle = view(
               onStop={(e, { x }) => {
                 const deltaX = this.x - x;
                 const newSliderSize = scrollHandleWidth - deltaX;
-                onSizeAdjust(newSliderSize);
-
                 //user is resizing to the right so we need to update the scroll percentage so the slider does not jump
                 const newScrollPercent = xScroll / (width - newSliderSize);
                 onSizeAdjust(newSliderSize, newScrollPercent);
