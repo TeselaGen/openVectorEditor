@@ -45,8 +45,8 @@ describe("alignment", function () {
     cy.contains(`[data-alignment-track-index="1"] text`, 100).click();
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`[data-alignment-track-index="1"] text`, 110).click();
-    cy.get(`[title="Selecting 10 bps from 100 to 109"]`);
-    cy.get(`[title="Caret Between Bases 99 and 100"]`)
+    cy.get(`[title="Selecting 10 bps from 101 to 110"]`);
+    cy.get(`[title="Caret Between Bases 100 and 101"]`)
       .first()
       .then((el) => {
         cy.contains(`[data-alignment-track-index="1"] text`, 120)
@@ -55,15 +55,15 @@ describe("alignment", function () {
             cy.dragBetweenSimple(el, el2);
           });
       });
-    cy.get(`[title="Selecting 11 bps from 110 to 120"]`);
-    cy.get(`[title="Caret Between Bases 120 and 121"]`).then((el) => {
+    cy.get(`[title="Selecting 11 bps from 111 to 121"]`);
+    cy.get(`[title="Caret Between Bases 121 and 122"]`).then((el) => {
       cy.contains(`[data-alignment-track-index="1"] text`, 100)
         .first()
         .then((el2) => {
           cy.dragBetweenSimple(el, el2);
         });
     });
-    cy.get(`[title="Selecting 10 bps from 100 to 109"]`);
+    cy.get(`[title="Selecting 10 bps from 101 to 110"]`);
   });
   it("shift clicking in the alignment should only allow non-origin wrapping selections (no selection present)", function () {
     cy.visit("#/Alignment");
@@ -71,7 +71,7 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3499 bps from 11 to 3509"]`);
+    cy.get(`[title="Selecting 3500 bps from 11 to 3510"]`);
   });
   it("the alignment should show axis numbers correctly", function () {
     cy.visit("#/Alignment?alignmentDataId=39");
@@ -90,7 +90,7 @@ describe("alignment", function () {
     cy.get("body").type("{shift}", { release: false });
     cy.scrollAlignmentToPercent(0.99);
     cy.contains(`[data-alignment-track-index="1"] text`, 3510).click();
-    cy.get(`[title="Selecting 3454 bps from 56 to 3509"]`);
+    cy.get(`[title="Selecting 3455 bps from 56 to 3510"]`);
   });
   it("scrolls the yellow scroll handle correctly", function () {
     cy.visit("#/Alignment");
