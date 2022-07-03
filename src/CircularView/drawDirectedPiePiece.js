@@ -15,7 +15,8 @@ export default function drawDirectedPiePiece({
   radius,
   overlapsSelf,
   annotationHeight,
-  totalAngle
+  totalAngle,
+  returnTextPath
 }) {
   const tailHeight = annotationHeight * tailThickness;
 
@@ -83,6 +84,27 @@ export default function drawDirectedPiePiece({
       x: arcRightBottom.x,
       y: arcRightBottom.y
     });
+  let textPath;
+  if (returnTextPath) {
+    // textPath = Path().moveto(arcRightTop.x, arcRightTop.y).arc({
+    //   rx: tailOuterRadius,
+    //   ry: tailOuterRadius,
+    //   xrot: 0,
+    //   largeArcFlag,
+    //   sweepFlag: 0,
+    //   x: arcLeftTop.x,
+    //   y: arcLeftTop.y
+    // })
+    textPath = Path().moveto(arcLeftBottom.x, arcLeftBottom.y).arc({
+      rx: tailInnerRadius,
+      ry: tailInnerRadius,
+      xrot: 0,
+      largeArcFlag,
+      sweepFlag: 1,
+      x: arcRightBottom.x,
+      y: arcRightBottom.y
+    });
+  }
 
   if (overlapsSelf) {
     path = path
@@ -104,6 +126,9 @@ export default function drawDirectedPiePiece({
     })
     .lineto(arrowheadTop.x, arrowheadTop.y)
     .closepath();
-  path.print();
+  // path.print();
+  if (returnTextPath) {
+    return [path, textPath];
+  }
   return path;
 }

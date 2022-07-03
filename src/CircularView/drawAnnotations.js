@@ -195,8 +195,10 @@ function drawAnnotations({
           {...{
             isProtein,
             titleText,
+            name,
             noRedux,
             classNames,
+            centerAngle,
             editorName,
             annotationType,
             showLabels,
@@ -249,6 +251,7 @@ const DrawAnnotation = withHover(function ({
   onContextMenu,
   titleText,
   classNames,
+  centerAngle,
   locationAngles,
   annotation,
   reverseAnnotations,
@@ -259,6 +262,8 @@ const DrawAnnotation = withHover(function ({
   isProtein,
   annotationRadius,
   annotationHeight,
+  name,
+  annotationType,
   onMouseLeave,
   onMouseOver,
   annotationProps
@@ -288,6 +293,10 @@ const DrawAnnotation = withHover(function ({
           {...(locationAngles &&
             locationAngles.length && { containsLocations: true })}
           totalAngle={totalAngle}
+          name={name}
+          centerAngle={centerAngle}
+          annotationType={annotationType}
+          id={annotation.id}
           color={annotationColor}
           isProtein={isProtein}
           arrowheadLength={arrowheadLength}
