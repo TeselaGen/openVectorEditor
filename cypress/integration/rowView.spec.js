@@ -23,12 +23,18 @@ describe("rowView", function () {
     cy.get("[data-test=jumpToStartButton]").click();
     cy.get("[data-test=jumpToEndButton]").click();
   });
-  it("can click a feature multiple times and have the row view jump to the start and end of the feature", function () {
+  it("can click a feature multiple times (some while holding the alt key) and have the row view jump to the start and end of the feature", function () {
     cy.contains("text.veLabelText", "GFPuv").click();
+    cy.contains(".veRowViewFeature text", "GFPuv");
     cy.get(".veRowViewCaret.veSelectionLayerStart");
     cy.contains("text.veLabelText", "GFPuv").click();
+    cy.contains(".veRowViewFeature text", "GFPuv");
+    cy.get(".veRowViewCaret.veSelectionLayerEnd").should("not.exist"); //shouldn't jump yet
+    cy.contains("text.veLabelText", "GFPuv").click({ altKey: true });
+    cy.contains(".veRowViewFeature text", "GFPuv");
     cy.get(".veRowViewCaret.veSelectionLayerEnd");
-    cy.contains("text.veLabelText", "GFPuv").click();
+    cy.contains("text.veLabelText", "GFPuv").click({ altKey: true });
+    cy.contains(".veRowViewFeature text", "GFPuv");
     cy.get(".veRowViewCaret.veSelectionLayerStart");
   });
 });
