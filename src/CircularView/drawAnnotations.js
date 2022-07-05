@@ -16,6 +16,7 @@ function drawAnnotations({
   radius,
   isProtein,
   type,
+  rotationRadians,
   annotations,
   annotationHeight,
   spaceBetweenAnnotations,
@@ -163,7 +164,12 @@ function drawAnnotations({
       const name =
         annotation.name ||
         (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name);
-      if (showLabels) {
+      const annLength = Math.floor(
+        (totalAngle * Math.PI * annotationRadius) / 50
+      );
+      const ellipsizedName = (name || "").slice(0, annLength);
+
+      if (showLabels && !ellipsizedName) {
         //add labels to the exported label array (to be drawn by the label component)
         labels[annotation.id] = {
           annotationType,
@@ -200,6 +206,8 @@ function drawAnnotations({
             classNames,
             centerAngle,
             editorName,
+            ellipsizedName,
+            rotationRadians,
             annotationType,
             showLabels,
             Annotation,
@@ -264,6 +272,8 @@ const DrawAnnotation = withHover(function ({
   annotationHeight,
   name,
   annotationType,
+  ellipsizedName,
+  rotationRadians,
   onMouseLeave,
   onMouseOver,
   annotationProps
@@ -278,22 +288,25 @@ const DrawAnnotation = withHover(function ({
     onMouseOver
   };
   const title = <title>{titleText}</title>;
+  const { transform, revTransform } = PositionAnnotationOnCircle({
+    sAngle: startAngle,
+    eAngle: endAngle,
+    centerAngle,
+    forward: reverseAnnotations ? !annotation.forward : annotation.forward
+  });
   return (
     <React.Fragment>
-      <g
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          forward: reverseAnnotations ? !annotation.forward : annotation.forward
-        })}
-        {...sharedProps}
-      >
+      <g transform={transform} {...sharedProps}>
         {title}
         <Annotation
           {...(locationAngles &&
             locationAngles.length && { containsLocations: true })}
           totalAngle={totalAngle}
           name={name}
+          revTransform={revTransform}
+          ellipsizedName={ellipsizedName}
+          isForward={annotation.forward}
+          rotationRadians={rotationRadians}
           centerAngle={centerAngle}
           annotationType={annotationType}
           id={annotation.id}
@@ -308,21 +321,27 @@ const DrawAnnotation = withHover(function ({
       );
       {locationAngles &&
         locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
+          const { transform, revTransform } = PositionAnnotationOnCircle({
+            sAngle: startAngle,
+            eAngle: endAngle,
+            centerAngle,
+            forward: reverseAnnotations
+              ? !annotation.forward
+              : annotation.forward
+          });
           return (
             <g
               key={"location--" + annotation.id + "--" + i}
-              {...PositionAnnotationOnCircle({
-                sAngle: startAngle,
-                eAngle: endAngle,
-                forward: reverseAnnotations
-                  ? !annotation.forward
-                  : annotation.forward
-              })}
+              transform={transform}
               {...sharedProps}
             >
               {title}
               <Annotation
+                revTransform={revTransform}
+                rotationRadians={rotationRadians}
+                ellipsizedName={ellipsizedName}
                 totalAngle={totalAngle}
+                isForward={annotation.forward}
                 color={annotationColor}
                 radius={annotationRadius}
                 annotationHeight={annotationHeight}

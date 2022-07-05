@@ -328,6 +328,7 @@ export function CircularView(props) {
           hoveredId: hoveredId,
           annotationType: singularName,
           type: singularName,
+          rotationRadians,
           reverseAnnotations: true,
           showLabels: !(annotationLabelVisibility[layerName] === false),
           annotations,

@@ -1,3 +1,4 @@
+import Color from "color";
 import React from "react";
 
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
@@ -9,13 +10,18 @@ export default function Feature({
   arrowheadLength = 0.5,
   annotationHeight,
   className,
-  name,
+  ellipsizedName,
   annotationType,
   id,
+  rotationRadians,
+  revTransform,
+  centerAngle,
   isForward,
   totalAngle
 }) {
-  // const cleanedRest = cleanRest(rest);
+  const labelNeedsFlip =
+    centerAngle + rotationRadians > Math.PI / 2 &&
+    centerAngle + rotationRadians < (Math.PI * 3) / 2;
   if (containsLocations) {
     const path = drawDirectedPiePiece({
       radius,
@@ -37,16 +43,16 @@ export default function Feature({
   }
   const [path, textPath] = drawDirectedPiePiece({
     returnTextPath: true,
+    hasLabel: ellipsizedName,
     radius,
     annotationHeight,
     totalAngle,
     isForward,
+    labelNeedsFlip,
     arrowheadLength,
     tailThickness: 1 //feature specific
   });
   const pathId = `${annotationType}${id}`;
-  const annLength = Math.floor((totalAngle * Math.PI * radius) / 50);
-  const ellipsizedName = (name || "").slice(0, annLength);
   return (
     <>
       <path
@@ -56,16 +62,30 @@ export default function Feature({
         fill={color}
         d={path.print()}
       />
-      <path id={pathId} stroke="black" fill="none" d={textPath.print()}></path>
-      <text dy={-2}>
-        <textPath
-          text-anchor="middle"
-          startOffset="50%"
-          xlinkHref={`#${pathId}`}
-        >
-          {ellipsizedName}
-        </textPath>
-      </text>
+
+      {ellipsizedName && (
+        <>
+          <path
+            id={pathId}
+            stroke="black"
+            fill="none"
+            d={textPath.print()}
+          ></path>
+          <text
+            transform={revTransform}
+            fill={Color(color).isDark() ? "white" : "black"}
+            dy={-2}
+          >
+            <textPath
+              text-anchor="middle"
+              startOffset="50%"
+              xlinkHref={`#${pathId}`}
+            >
+              {ellipsizedName}
+            </textPath>
+          </text>
+        </>
+      )}
     </>
   );
 }

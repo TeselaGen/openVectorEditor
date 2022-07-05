@@ -16,6 +16,8 @@ export default function drawDirectedPiePiece({
   overlapsSelf,
   annotationHeight,
   totalAngle,
+  hasLabel,
+  labelNeedsFlip,
   returnTextPath
 }) {
   const tailHeight = annotationHeight * tailThickness;
@@ -85,7 +87,17 @@ export default function drawDirectedPiePiece({
       y: arcRightBottom.y
     });
   let textPath;
-  if (returnTextPath) {
+  if (returnTextPath && hasLabel) {
+    // textPath = Path().moveto(arcLeftBottom.x, arcLeftBottom.y).arc({
+    //     rx: tailInnerRadius,
+    //     ry: tailInnerRadius,
+    //     xrot: 0,
+    //     largeArcFlag,
+    //     sweepFlag: 1,
+    //     x: arcRightBottom.x,
+    //     y: arcRightBottom.y
+    //   });
+
     // textPath = Path().moveto(arcRightTop.x, arcRightTop.y).arc({
     //   rx: tailOuterRadius,
     //   ry: tailOuterRadius,
@@ -94,16 +106,28 @@ export default function drawDirectedPiePiece({
     //   sweepFlag: 0,
     //   x: arcLeftTop.x,
     //   y: arcLeftTop.y
-    // })
-    textPath = Path().moveto(arcLeftBottom.x, arcLeftBottom.y).arc({
-      rx: tailInnerRadius,
-      ry: tailInnerRadius,
-      xrot: 0,
-      largeArcFlag,
-      sweepFlag: 1,
-      x: arcRightBottom.x,
-      y: arcRightBottom.y
-    });
+    // });
+    if (labelNeedsFlip) {
+      textPath = Path().moveto(arcRightTop.x, arcRightTop.y).arc({
+        rx: tailOuterRadius,
+        ry: tailOuterRadius,
+        xrot: 0,
+        largeArcFlag,
+        sweepFlag: 0,
+        x: arcLeftTop.x,
+        y: arcLeftTop.y
+      });
+    } else {
+      textPath = Path().moveto(arcLeftBottom.x, arcLeftBottom.y).arc({
+        rx: tailInnerRadius,
+        ry: tailInnerRadius,
+        xrot: 0,
+        largeArcFlag,
+        sweepFlag: 1,
+        x: arcRightBottom.x,
+        y: arcRightBottom.y
+      });
+    }
   }
 
   if (overlapsSelf) {
@@ -126,7 +150,6 @@ export default function drawDirectedPiePiece({
     })
     .lineto(arrowheadTop.x, arrowheadTop.y)
     .closepath();
-  // path.print();
   if (returnTextPath) {
     return [path, textPath];
   }
