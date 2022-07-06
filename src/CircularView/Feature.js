@@ -16,7 +16,6 @@ export default function Feature({
   rotationRadians,
   revTransform,
   centerAngle,
-  isForward,
   totalAngle
 }) {
   const labelNeedsFlip =
@@ -44,11 +43,10 @@ export default function Feature({
   const [path, textPath] = drawDirectedPiePiece({
     returnTextPath: true,
     hasLabel: ellipsizedName,
+    labelNeedsFlip,
     radius,
     annotationHeight,
     totalAngle,
-    isForward,
-    labelNeedsFlip,
     arrowheadLength,
     tailThickness: 1 //feature specific
   });

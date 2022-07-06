@@ -201,11 +201,10 @@ function drawAnnotations({
           {...{
             isProtein,
             titleText,
-            name,
             noRedux,
             classNames,
-            centerAngle,
             editorName,
+            centerAngle,
             ellipsizedName,
             rotationRadians,
             annotationType,
@@ -305,7 +304,6 @@ const DrawAnnotation = withHover(function ({
           name={name}
           revTransform={revTransform}
           ellipsizedName={ellipsizedName}
-          isForward={annotation.forward}
           rotationRadians={rotationRadians}
           centerAngle={centerAngle}
           annotationType={annotationType}
@@ -341,7 +339,6 @@ const DrawAnnotation = withHover(function ({
                 rotationRadians={rotationRadians}
                 ellipsizedName={ellipsizedName}
                 totalAngle={totalAngle}
-                isForward={annotation.forward}
                 color={annotationColor}
                 radius={annotationRadius}
                 annotationHeight={annotationHeight}

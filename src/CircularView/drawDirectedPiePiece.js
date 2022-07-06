@@ -88,25 +88,6 @@ export default function drawDirectedPiePiece({
     });
   let textPath;
   if (returnTextPath && hasLabel) {
-    // textPath = Path().moveto(arcLeftBottom.x, arcLeftBottom.y).arc({
-    //     rx: tailInnerRadius,
-    //     ry: tailInnerRadius,
-    //     xrot: 0,
-    //     largeArcFlag,
-    //     sweepFlag: 1,
-    //     x: arcRightBottom.x,
-    //     y: arcRightBottom.y
-    //   });
-
-    // textPath = Path().moveto(arcRightTop.x, arcRightTop.y).arc({
-    //   rx: tailOuterRadius,
-    //   ry: tailOuterRadius,
-    //   xrot: 0,
-    //   largeArcFlag,
-    //   sweepFlag: 0,
-    //   x: arcLeftTop.x,
-    //   y: arcLeftTop.y
-    // });
     if (labelNeedsFlip) {
       textPath = Path().moveto(arcRightTop.x, arcRightTop.y).arc({
         rx: tailOuterRadius,
