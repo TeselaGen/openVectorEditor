@@ -17,12 +17,12 @@ function Axis({
   ringThickness = 4,
   isProtein
 }) {
-  let height =
+  const height =
     ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
   const radiusToUse = showAxisNumbers
     ? radius + textOffset + tickMarkHeight
     : radius;
-  let tickPositions = calculateTickMarkPositionsForGivenRange({
+  const tickPositions = calculateTickMarkPositionsForGivenRange({
     range: {
       start: 0,
       end: sequenceLength
@@ -31,9 +31,9 @@ function Axis({
     sequenceLength,
     isProtein
   });
-  let tickMarksAndLabels = showAxisNumbers
+  const tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function (tickPosition, index) {
-        let tickAngle = getAngleForPositionMidpoint(
+        const tickAngle = getAngleForPositionMidpoint(
           tickPosition,
           sequenceLength
         );
@@ -64,25 +64,28 @@ function Axis({
             >
               {divideBy3(tickPosition + 1, isProtein) + ""}
             </text>
-            <rect width={tickMarkWidth} height={tickMarkHeight} />
+            <rect
+              className="veAxisTick"
+              width={tickMarkWidth}
+              height={tickMarkHeight}
+            />
           </g>
         );
       })
     : null;
-  let component = (
+  const component = (
     <g key="veAxis" className="veAxis">
       <circle
-        className="veAxisFill"
-        id="circularViewAxis"
+        className="veAxisLine veAxisOuter"
         key="circleOuter"
         r={radiusToUse + ringThickness}
-        style={{ fill: "white", stroke: "black", strokeWidth: 0.5 }}
+        style={{ fill: "#ffffff00", stroke: "black", strokeWidth: 0.5 }}
       />
       <circle
-        id="circularViewAxis"
+        className="veAxisLine veAxisInner"
         key="circle"
         r={radiusToUse}
-        style={{ fill: "white", stroke: "black", strokeWidth: 0.5 }}
+        style={{ fill: "#ffffff00", stroke: "black", strokeWidth: 0.5 }}
       />
       {tickMarksAndLabels}
     </g>

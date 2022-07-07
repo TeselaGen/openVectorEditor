@@ -1,17 +1,23 @@
-.bp3-dark #circularViewAxis:not(.veAxisFill) {
-  fill: #293742 !important;
+.bp3-dark .veAxisLine {
   stroke: #f5f8fa !important;
+}
+.bp3-dark .veAxisTick,
+.bp3-dark .veCutsite {
+  fill: #f5f8fa;
 }
 
 .bp3-dark .veEditor {
   background: #293742 !important;
 }
 
-.bp3-dark .veCaret,
-.bp3-dark .veRowViewAxis path,
 .veLabelLine {
   stroke: black;
   background: black;
+}
+.bp3-dark .veCaret,
+.bp3-dark .veLabelLine {
+  stroke: white;
+  background: white;
 }
 .bp3-dark .veLabelLine {
   stroke: #f5f8fa !important;
@@ -39,10 +45,6 @@
   fill: #f5f8fa !important;
 }
 
-.bp3-dark .veAxis > g {
-  fill: #f5f8fa !important;
-}
-
 .bp3-dark .menu-bar {
   background: none !important;
 }
@@ -51,9 +53,9 @@
   fill: #f5f8fa !important;
 }
 
-.bp3-dark .veRowViewAxis text {
+/* .bp3-dark .veRowViewAxis text {
   stroke: #f5f8fa !important;
-}
+} */
 
 .bp3-dark .translationLayer text {
   fill: black !important;
