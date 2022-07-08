@@ -47,7 +47,7 @@ const BASE_RADIUS = 70;
 export function CircularView(props) {
   const [limits] = useAnnotationLimits();
   const [rotationRadians, setRotationRadians] = useState(0);
-  const [_zoomLevel, setZoomLevel] = useState(2);
+  const [_zoomLevel, setZoomLevel] = useState(1);
   let zoomLevel = _zoomLevel;
   let smallZoom = 1;
   if (_zoomLevel < 1) {

@@ -70,7 +70,7 @@ export default {
   //     end: 440
   //   },
   // ],
-  features2: [
+  features: [
     {
       notes: {},
       type: "CDS",
