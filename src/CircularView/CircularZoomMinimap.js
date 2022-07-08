@@ -9,9 +9,9 @@ export function CircularZoomMinimap({ percentOfCircle, rotationRadians }) {
         transform: `scale(-1,1) rotate(${
           (rotationRadians * 180) / Math.PI - percent * 1.8
         }deg)`,
-        position: "absolute",
-        top: 0,
-        right: 0,
+        // position: "absolute",
+        // top: 0,
+        // right: 0,
         "--p": percent
       }}
     ></div>

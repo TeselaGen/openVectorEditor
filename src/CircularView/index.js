@@ -49,6 +49,7 @@ export function CircularView(props) {
   const [rotationRadians, setRotationRadians] = useState(0);
   const [_zoomLevel, setZoomLevel] = useState(1);
   let zoomLevel = _zoomLevel;
+
   let smallZoom = 1;
   if (_zoomLevel < 1) {
     smallZoom = _zoomLevel;
@@ -421,15 +422,6 @@ export function CircularView(props) {
         const [trimmedAndParedAnns, paredDown] = maxToShow
           ? pareDownAnnotations(trimmedAnnotations, maxToShow)
           : [trimmedAnnotations];
-        // const [annotations, paredDown] = isAnnotation
-        //   ? pareDownAnnotations(
-        //       layer.annotations ||
-        //         sequenceData["filtered" + nameUpper] ||
-        //         sequenceData[layerName] ||
-        //         {},
-        //       maxToShow
-        //     )
-        //   : [];
 
         if (paredDown) {
           paredDownMessages.push(
@@ -637,7 +629,7 @@ export function CircularView(props) {
         ></RotateCircularView>
       )}
       <ZoomCircularViewSlider
-        // zoomLevel={zoomLevel}
+        zoomLevel={_zoomLevel}
         maxZoomLevel={maxZoomLevel}
         setZoomLevel={setZoomLevel}
       />
@@ -737,7 +729,7 @@ export function CircularView(props) {
               ) */}
             </g>
           </svg>
-          <div className="veWarningContainer">
+          <div className="veTopRightContainer">
             {!circular && !noWarnings && (
               <VeWarning
                 data-test="ve-warning-circular-to-linear"
@@ -748,13 +740,13 @@ export function CircularView(props) {
               />
             )}
             {!noWarnings && paredDownMessages}
+            {isZoomed && (
+              <CircularZoomMinimap
+                rotationRadians={rotationRadians}
+                percentOfCircle={percentOfCircle}
+              ></CircularZoomMinimap>
+            )}
           </div>
-          {isZoomed && (
-            <CircularZoomMinimap
-              rotationRadians={rotationRadians}
-              percentOfCircle={percentOfCircle}
-            ></CircularZoomMinimap>
-          )}
         </div>
       </Draggable>
     </div>

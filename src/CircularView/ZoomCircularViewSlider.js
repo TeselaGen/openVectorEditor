@@ -1,9 +1,22 @@
 import React from "react";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
-export function ZoomCircularViewSlider({ setZoomLevel, maxZoomLevel }) {
-  const clickStepSize = (maxZoomLevel - 1) / 140;
+export function ZoomCircularViewSlider({
+  zoomLevel,
+  setZoomLevel,
+  maxZoomLevel
+}) {
+  let clickStepSize = (maxZoomLevel - 1) / 140;
+  if (zoomLevel < 3) {
+    clickStepSize = clickStepSize / 4;
+  } else if (zoomLevel < 5) {
+    clickStepSize = clickStepSize / 4;
+  }
+  clickStepSize = Math.round(clickStepSize * 1000) / 1000;
   const stepSize = clickStepSize;
-  // const stepSize = clickStepSize / 10;
+  const min = 1 - clickStepSize * 3;
+  function setZoom(val) {
+    setZoomLevel(Math.round(val * 10000) / 10000);
+  }
   return (
     <div
       style={{
@@ -11,16 +24,11 @@ export function ZoomCircularViewSlider({ setZoomLevel, maxZoomLevel }) {
         left: 150,
         top: 0,
         zIndex: 900
-        // marginTop: zoomLevel !== 1 ? 200 : 0
       }}
     >
       <UncontrolledSliderWithPlusMinusBtns
-        onChange={(val) => {
-          setZoomLevel(val);
-        }}
-        onRelease={(val) => {
-          setZoomLevel(val);
-        }}
+        onChange={setZoom}
+        onRelease={setZoom}
         title="Adjust Zoom Level"
         style={{
           paddingTop: "4px",
@@ -33,7 +41,7 @@ export function ZoomCircularViewSlider({ setZoomLevel, maxZoomLevel }) {
         clickStepSize={clickStepSize}
         initialValue={1}
         max={maxZoomLevel || 14}
-        min={0.7}
+        min={min}
       />
     </div>
   );

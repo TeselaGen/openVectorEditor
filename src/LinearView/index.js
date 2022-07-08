@@ -265,7 +265,7 @@ class _LinearView extends React.Component {
               }}
             />
           )}
-          <div className="veWarningContainer">{this.paredDownMessages}</div>
+          <div className="veTopRightContainer">{this.paredDownMessages}</div>
 
           <PinchHelperToUse {...(linearZoomEnabled && pinchHandler)}>
             <RowItem
