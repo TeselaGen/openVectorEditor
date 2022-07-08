@@ -10,31 +10,31 @@ import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndSt
 import Feature from "./Feature";
 import getAnnotationClassnames from "../utils/getAnnotationClassnames";
 
-function drawAnnotations({
-  Annotation,
-  annotationType,
-  radius,
-  isProtein,
-  type,
-  annotations,
-  annotationHeight,
-  spaceBetweenAnnotations,
-  sequenceLength,
-  reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
-  editorName,
-  getColor,
-  useStartAngle, //use the startAngle instead of the centerAngle to position the labels
-  onClick = noop,
-  positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
-  allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cut Sites for example just get drawn all on the same level
-  onRightClicked = noop,
-  onDoubleClick = noop,
-  showLabels,
-  noRedux,
-  labelOptions,
-  annotationProps,
-  fontStyle
-}) {
+//annotations coming ine can be positioned either by caretPosition or range
+function drawAnnotations(props) {
+  const {
+    annotationType,
+    radius,
+    isProtein,
+    type,
+    annotations,
+    annotationHeight,
+    spaceBetweenAnnotations,
+    sequenceLength,
+    // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
+    // editorName,
+    getColor,
+    useStartAngle, //use the startAngle instead of the centerAngle to position the labels
+    onClick = noop,
+    positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
+    allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
+    onRightClicked = noop,
+    onDoubleClick = noop,
+    showLabels,
+    labelOptions,
+    annotationProps,
+    fontStyle
+  } = props;
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
   let maxYOffset = 0;
@@ -163,7 +163,25 @@ function drawAnnotations({
       const name =
         annotation.name ||
         (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name);
-      if (showLabels) {
+      let ellipsizedName;
+      if (name) {
+        const arcLength =
+          2 * Math.PI * (annotationRadius - annotationHeight) * totalAngle; //for arrowhead
+        const annLength = Math.max(0, Math.floor(arcLength / 55 - 2));
+
+        ellipsizedName = name.slice(0, annLength);
+        if (ellipsizedName && ellipsizedName !== name) {
+          if (ellipsizedName.length >= name.length - 2) {
+            ellipsizedName = name;
+          } else if (ellipsizedName.length > 3) {
+            ellipsizedName += "..";
+          } else {
+            ellipsizedName = undefined;
+          }
+        }
+      }
+
+      if (showLabels && !ellipsizedName) {
         //add labels to the exported label array (to be drawn by the label component)
         labels[annotation.id] = {
           annotationType,
@@ -184,7 +202,6 @@ function drawAnnotations({
           ...labelOptions
         };
       }
-
       const annotationColor = getColor
         ? getColor(annotation)
         : annotation.color || "purple";
@@ -193,30 +210,23 @@ function drawAnnotations({
       svgGroup.push(
         <DrawAnnotation
           {...{
+            ...props,
+            ...rest,
+            ...annotation,
+            ellipsizedName,
+            annotationHeight,
+            annotationRadius,
+            annotationType,
             isProtein,
             titleText,
-            noRedux,
             classNames,
-            editorName,
-            annotationType,
-            showLabels,
-            Annotation,
-            arrowheadLength:
-              annotation.rangeTypeOverride === "middle" ? 0 : undefined,
-            overlapsSelf: annotation.overlapsSelf,
-            labelCenter: centerAngle,
-            startAngle,
-            endAngle,
-            locationAngles,
-            reverseAnnotations,
             onClick: _onClick,
             onDoubleClick: _onDoubleClick,
             onContextMenu,
             annotation,
-            totalAngle,
             annotationColor,
-            annotationRadius,
-            annotationHeight,
+            totalAngle,
+            centerAngle,
             annotationProps: _annotationProps
           }}
           id={annotation.id}
@@ -254,14 +264,20 @@ const DrawAnnotation = withHover(function ({
   reverseAnnotations,
   Annotation = Feature,
   totalAngle,
-  arrowheadLength,
   annotationColor,
   isProtein,
   annotationRadius,
   annotationHeight,
   onMouseLeave,
   onMouseOver,
-  annotationProps
+  annotationType,
+  annotationProps,
+  addHeight,
+  centerAngle,
+  perAnnotationProps,
+  passAnnotation,
+  ellipsizedName,
+  rotationRadians
 }) {
   const sharedProps = {
     style: { cursor: "pointer" },
@@ -273,54 +289,57 @@ const DrawAnnotation = withHover(function ({
     onMouseOver
   };
   const title = <title>{titleText}</title>;
-  return (
-    <React.Fragment>
+  function getInner(
+    { startAngle, endAngle, totalAngle, isNotLocation, containsLocations },
+    i
+  ) {
+    const { transform, revTransform } = PositionAnnotationOnCircle({
+      sAngle: startAngle,
+      eAngle: endAngle,
+      height: addHeight ? annotationRadius : undefined,
+      forward: reverseAnnotations ? !annotation.forward : annotation.forward
+    });
+    return (
       <g
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          forward: reverseAnnotations ? !annotation.forward : annotation.forward
-        })}
+        transform={transform}
+        key={
+          isNotLocation
+            ? "notLocation"
+            : "location--" + annotation.id + "--" + i
+        }
         {...sharedProps}
       >
         {title}
         <Annotation
-          {...(locationAngles &&
-            locationAngles.length && { containsLocations: true })}
+          {...(passAnnotation && { annotation })}
+          annotationType={annotationType}
           totalAngle={totalAngle}
+          centerAngle={centerAngle}
+          revTransform={revTransform}
+          rotationRadians={rotationRadians}
+          ellipsizedName={ellipsizedName}
           color={annotationColor}
           isProtein={isProtein}
-          arrowheadLength={arrowheadLength}
+          containsLocations={containsLocations}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
           {...annotationProps}
+          {...(perAnnotationProps && perAnnotationProps(annotation))}
         />
       </g>
-      );
-      {locationAngles &&
-        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
-          return (
-            <g
-              key={"location--" + annotation.id + "--" + i}
-              {...PositionAnnotationOnCircle({
-                sAngle: startAngle,
-                eAngle: endAngle,
-                forward: reverseAnnotations
-                  ? !annotation.forward
-                  : annotation.forward
-              })}
-              {...sharedProps}
-            >
-              {title}
-              <Annotation
-                totalAngle={totalAngle}
-                color={annotationColor}
-                radius={annotationRadius}
-                annotationHeight={annotationHeight}
-              />
-            </g>
-          );
-        })}
+    );
+  }
+  return (
+    <React.Fragment>
+      {getInner({
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        containsLocations: !!locationAngles,
+        i: 0
+      })}
+      {locationAngles && locationAngles.map(getInner)}
     </React.Fragment>
   );
 });

@@ -8,21 +8,26 @@ import { divideBy3 } from "../utils/proteinUtils";
 function Axis({
   radius,
   sequenceLength,
-  rotationRadians,
+  rotation,
   showAxisNumbers,
   circularAndLinearTickSpacing,
   tickMarkHeight = 5,
   tickMarkWidth = 1,
   textOffset = 15,
   ringThickness = 4,
-  isProtein
+  isProtein,
+  zoomLevel
 }) {
-  let height =
-    ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0);
+  // const percentToShow = zoomLevel/
+  // sequenceLength
+
+  const height =
+    (ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0)) /
+    zoomLevel;
   const radiusToUse = showAxisNumbers
     ? radius + textOffset + tickMarkHeight
     : radius;
-  let tickPositions = calculateTickMarkPositionsForGivenRange({
+  const tickPositions = calculateTickMarkPositionsForGivenRange({
     range: {
       start: 0,
       end: sequenceLength
@@ -31,13 +36,14 @@ function Axis({
     sequenceLength,
     isProtein
   });
-  let tickMarksAndLabels = showAxisNumbers
+
+  const tickMarksAndLabels = showAxisNumbers
     ? tickPositions.map(function (tickPosition, index) {
-        let tickAngle = getAngleForPositionMidpoint(
+        const tickAngle = getAngleForPositionMidpoint(
           tickPosition,
           sequenceLength
         );
-        const tickAnglePlusRotation = tickAngle + rotationRadians;
+
         return (
           <g
             key={"axis" + index}
@@ -49,9 +55,9 @@ function Axis({
           >
             <text
               transform={
-                (shouldFlipText(tickAnglePlusRotation) ? "rotate(180)" : "") +
+                (shouldFlipText(tickAngle - rotation) ? "rotate(180)" : "") +
                 ` translate(0, ${
-                  shouldFlipText(tickAnglePlusRotation)
+                  shouldFlipText(tickAngle - rotation)
                     ? -textOffset
                     : textOffset
                 })`
@@ -69,7 +75,7 @@ function Axis({
         );
       })
     : null;
-  let component = (
+  const component = (
     <g key="veAxis" className="veAxis">
       <circle
         className="veAxisFill"

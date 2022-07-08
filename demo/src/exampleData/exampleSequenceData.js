@@ -40,13 +40,37 @@ export default {
   //   {
   //     notes: {},
   //     type: "promoter",
-  //     strand: -1,
-  //     name: "araE promoter",
-  //     start: 1035,
-  //     end: 1063
+  //     strand: 1,
+  //     name: "I'm a nice Long Sentence wahooo hahahahaha",
+  //     start: 4900,
+  //     end: 440
+  //   },
+  //   {
+  //     notes: {},
+  //     type: "promoter",
+  //     strand: 1,
+  //     name: "I'm a nice Long Sentence wahooo hahahahaha",
+  //     start: 4900,
+  //     end: 440
+  //   },
+  //   {
+  //     notes: {},
+  //     type: "promoter",
+  //     strand: 1,
+  //     name: "I'm a nice Long Sentence wahooo hahahahaha",
+  //     start: 4900,
+  //     end: 440
+  //   },
+  //   {
+  //     notes: {},
+  //     type: "promoter",
+  //     strand: 1,
+  //     name: "I'm a nice Long Sentence wahooo hahahahaha",
+  //     start: 4900,
+  //     end: 440
   //   },
   // ],
-  features: [
+  features2: [
     {
       notes: {},
       type: "CDS",

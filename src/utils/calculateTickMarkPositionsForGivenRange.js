@@ -14,21 +14,22 @@ export default function calculateTickMarkPositionsForGivenRange({
   if (isProtein) {
     tickSpacing = Math.floor((_tickSpacing / 2) * 3);
   }
-  let rangeLength = getRangeLength(range, sequenceLength);
+  const rangeLength = getRangeLength(range, sequenceLength);
 
-  let firstTickOffsetFromRangeStart;
-  if (range.start > range.end) {
-    // range spans origin, so make sure the 0 bp is included!
-    firstTickOffsetFromRangeStart =
-      ((sequenceLength - range.start) % tickSpacing) + 1;
-  } else {
-    firstTickOffsetFromRangeStart = tickSpacing - (range.start % tickSpacing);
-  }
-  let tickMarks = [];
+  // let firstTickOffsetFromRangeStart;
+  // if (range.start > range.end) {
+  //   // range spans origin, so make sure the 0 bp is included!
+  //   firstTickOffsetFromRangeStart =
+  //     ((sequenceLength - range.start) % tickSpacing) + 1;
+  // } else {
+  const firstTickOffsetFromRangeStart =
+    range.start + tickSpacing - (range.start % tickSpacing);
+  // }
+  const tickMarks = [];
   if (range.start === 0) tickMarks.push(isProtein ? 2 : 0);
   for (
     let tick = firstTickOffsetFromRangeStart - 1;
-    tick < rangeLength;
+    tick < range.start + rangeLength;
     tick += tickSpacing
   ) {
     tickMarks.push(norm(tick, sequenceLength));
