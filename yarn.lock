@@ -1433,6 +1433,11 @@
     native-url "^0.2.6"
     schema-utils "^2.6.5"
 
+"@popperjs/core@^2.9.0":
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
+  integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
+
 "@risingstack/react-easy-state@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@risingstack/react-easy-state/-/react-easy-state-6.3.0.tgz#3590031f7382c5c6c7866790ba7a72e557a12407"
@@ -2596,10 +2601,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^8.3.27:
-  version "8.3.27"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.27.tgz#d7b22fc488354a04934aa828412ad5d50d349141"
-  integrity sha512-mXXjO84VcqgqIa/g4IDykrXm3mKAAw6zLx+7T9mneO6IjBv9BEs19JgZ7r9gInzzXCPv6/WAoiCCadsZE9dhqg==
+bio-parsers@^8.3.28:
+  version "8.3.28"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.28.tgz#206ed474f9232717d22e3c3796e415c0471c53d0"
+  integrity sha512-Hm6cucV/wJZK0ej+K2wlUpRgSQHshL/QMflztuzT2QPEFQ4xpqJsasCy2jjRjR/wcZeDF1i6aUwi67uTagGMgQ==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -8353,6 +8358,11 @@ nanoid@^2.1.0:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-2.1.11.tgz#ec24b8a758d591561531b4176a01e3ab4f0f0280"
   integrity sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==
 
+nanoid@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-4.0.0.tgz#6e144dee117609232c3f415c34b0e550e64999a5"
+  integrity sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==
+
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -11678,10 +11688,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.7.24:
-  version "30.7.24"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.7.24.tgz#2d84d4041e67e8644633f068032165f01e914f9f"
-  integrity sha512-1NQsKDnxnJupaGCnR5dfToLz0ub6Ig3IhmauvAzxC5YTqHxFrOH3xpGJs8x/Lc+0Clfr2C7i4hIEEbAkN/kOlA==
+teselagen-react-components@30.9.1:
+  version "30.9.1"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.9.1.tgz#885fca190c00817813bdc0640445f49e842e2b5a"
+  integrity sha512-VByZGJEP17bdLeUoBzXiHjy+6W/+7VKQIk3N+kGU0oCEUpGLbdnRZCBF0NS0bFxWNbGrRKFn4DOe5Zs2bk7Dvw==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -11697,6 +11707,7 @@ teselagen-react-components@30.7.24:
     is-mobile "^3.0.0"
     lodash "^4.17.21"
     math-expression-evaluator "^1.3.7"
+    nanoid "^4.0.0"
     prop-types "^15.6.2"
     qs "^6.9.6"
     react-color "^2.19.3"
@@ -11708,8 +11719,8 @@ teselagen-react-components@30.7.24:
     react-transition-group "^2.4.0"
     recompose "npm:react-recompose@0.31.1"
     redux-form "^8.3.8"
-    shortid "^2.2.16"
-    tg-client-query-builder "^2.13.1"
+    tg-client-query-builder "^2.14.2"
+    tippy.js "^6.3.7"
     url-join "^4.0.1"
     use-deep-compare-effect "^1.6.1"
 
@@ -11734,10 +11745,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-tg-client-query-builder@^2.13.1:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/tg-client-query-builder/-/tg-client-query-builder-2.13.1.tgz#f5e2bf5238fcf49038b962f2ec2cad93853154a9"
-  integrity sha512-j7vEEj8DlhYn9+BMpwgQqrA4By3z8v71bnWT7gtStZkl3pN10FhNcgjRHhtCvsGA8ZUd3foUjl53LuejipXXAg==
+tg-client-query-builder@^2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/tg-client-query-builder/-/tg-client-query-builder-2.14.2.tgz#47c0cc7eaf67f68773b059228537e8c2f8f092ef"
+  integrity sha512-gYDXwZj1lc9T4qF5l04+zLVpOGsNEDQbttjbIEhyRMV0bPM4f7XdLMNod86XBZw/4fpbePpzrgYQbCycxA5vFw==
   dependencies:
     lodash "^4.17.4"
 
@@ -11812,6 +11823,13 @@ tinycolor2@^1.4.1:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
   integrity sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==
+
+tippy.js@^6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
+  integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
+  dependencies:
+    "@popperjs/core" "^2.9.0"
 
 tmatch@^2.0.1:
   version "2.0.1"
