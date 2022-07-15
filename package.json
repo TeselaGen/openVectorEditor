@@ -64,8 +64,8 @@
     "tg-use-local-storage-state": "^16.0.1",
     "use-debounce": "^8.0.1",
     "use-local-storage-state": "^13.0.0",
-    "ve-range-utils": "^2.6.5",
-    "ve-sequence-utils": "^5.1.22"
+    "ve-range-utils": "^2.6.6",
+    "ve-sequence-utils": "^5.1.23"
   },
   "peerDependencies": {
     "react": "^16.10.2",

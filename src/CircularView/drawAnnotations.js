@@ -9,8 +9,10 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import Feature from "./Feature";
 import getAnnotationClassnames from "../utils/getAnnotationClassnames";
+// import { normalizeAngleRange } from "./normalizeAngleRange";
+// import { normalizeAngle } from "./normalizeAngle";
 
-//annotations coming ine can be positioned either by caretPosition or range
+//annotations coming in can be positioned either by caretPosition or range
 function drawAnnotations(props) {
   const {
     annotationType,
@@ -31,9 +33,13 @@ function drawAnnotations(props) {
     onRightClicked = noop,
     onDoubleClick = noop,
     showLabels,
+    hideAnnotation,
+    // rotationRadians,
     labelOptions,
     annotationProps,
     fontStyle
+    // isZoomedIn,
+    // visibleAngleRange
   } = props;
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
@@ -51,7 +57,6 @@ function drawAnnotations(props) {
           positionBy ? positionBy(annotation) : annotation,
           sequenceLength
         );
-
       const spansOrigin = startAngle > endAngle;
       const annotationCopy = {
         ...annotation,
@@ -164,10 +169,18 @@ function drawAnnotations(props) {
         annotation.name ||
         (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name);
       let ellipsizedName;
+      // let spaceBeforeName = 0;
+      let angleAdjust;
       if (name) {
         const arcLength =
           2 * Math.PI * (annotationRadius - annotationHeight) * totalAngle; //for arrowhead
-        const annLength = Math.max(0, Math.floor(arcLength / 55 - 2));
+        // console.log(`arcLength:`, arcLength);
+        // console.log(`totalAngle:`, totalAngle);
+
+        const annLength = Math.max(0, Math.floor(arcLength / 55 - 3));
+
+        // const arcLength = (annLength + 3)  * 55
+        // const nameAngle = arcLength /( 2 * Math.PI * (annotationRadius - annotationHeight))
 
         ellipsizedName = name.slice(0, annLength);
         if (ellipsizedName && ellipsizedName !== name) {
@@ -179,6 +192,45 @@ function drawAnnotations(props) {
             ellipsizedName = undefined;
           }
         }
+
+        // //tnr: WIP to try to adjust the inline label in the circular view to always show up even when zoomed in
+        // if (ellipsizedName && isZoomedIn) {
+        //   const nameAngle =
+        //     ((ellipsizedName.length + 3) * 55) /
+        //     (2 * Math.PI * (annotationRadius - annotationHeight));
+        //   const maxAngleAdjust = (totalAngle - nameAngle) / 2;
+        //   const idealAngle = normalizeAngle(
+        //     -normalizeAngle(rotationRadians) - normalizeAngle(centerAngle)
+        //   );
+        //   console.log(`-----------:`);
+        //   console.log(`~ idealAngle`, idealAngle);
+        //   console.log(`maxAngleAdjust:`, maxAngleAdjust);
+        //   angleAdjust = idealAngle;
+        //   if (
+        //     Math.min(maxAngleAdjust, idealAngle) !== idealAngle
+        //     // &&
+        //     // Math.min(maxAngleAdjust, 2 * Math.PI - idealAngle) !==
+        //     //   2 * Math.PI - idealAngle
+        //   ) {
+        //     console.log(`maxed`);
+        //     angleAdjust = -maxAngleAdjust;
+        //     if (
+        //       normalizeAngle(
+        //         normalizeAngle(centerAngle) + normalizeAngle(rotationRadians)
+        //       ) > Math.PI
+        //     ) {
+        //       angleAdjust = -angleAdjust;
+        //     }
+        //     console.log(`~ angleAdjust`, angleAdjust);
+        //   }
+        //   // angleAdjust =idealAngle
+        //   // console.log(`~ maxAngleAdjust`, maxAngleAdjust)
+        //   angleAdjust = (angleAdjust / Math.PI) * 180;
+        //   // if (normalizeAngle(normalizeAngle(centerAngle) + normalizeAngle(rotationRadians)) > Math.PI) {
+        //   //   angleAdjust = -angleAdjust;
+        //   // }
+        //   console.log(`~ angleAdjust`, angleAdjust);
+        // }
       }
 
       if (showLabels && !ellipsizedName) {
@@ -202,37 +254,41 @@ function drawAnnotations(props) {
           ...labelOptions
         };
       }
-      const annotationColor = getColor
-        ? getColor(annotation)
-        : annotation.color || "purple";
+      if (!hideAnnotation) {
+        const annotationColor = getColor
+          ? getColor(annotation)
+          : annotation.color || "purple";
+        DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
 
-      DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
-      svgGroup.push(
-        <DrawAnnotation
-          {...{
-            ...props,
-            ...rest,
-            ...annotation,
-            ellipsizedName,
-            annotationHeight,
-            annotationRadius,
-            annotationType,
-            isProtein,
-            titleText,
-            classNames,
-            onClick: _onClick,
-            onDoubleClick: _onDoubleClick,
-            onContextMenu,
-            annotation,
-            annotationColor,
-            totalAngle,
-            centerAngle,
-            annotationProps: _annotationProps
-          }}
-          id={annotation.id}
-          key={"veAnnotation-" + annotationType + index}
-        />
-      );
+        svgGroup.push(
+          <DrawAnnotation
+            {...{
+              ...props,
+              ...rest,
+              ...annotation,
+              angleAdjust,
+              ellipsizedName,
+              name,
+              annotationHeight,
+              annotationRadius,
+              annotationType,
+              isProtein,
+              titleText,
+              classNames,
+              onClick: _onClick,
+              onDoubleClick: _onDoubleClick,
+              onContextMenu,
+              annotation,
+              annotationColor,
+              totalAngle,
+              centerAngle,
+              annotationProps: _annotationProps
+            }}
+            id={annotation.id}
+            key={"veAnnotation-" + annotationType + index}
+          />
+        );
+      }
     });
   return {
     component: (
@@ -273,10 +329,13 @@ const DrawAnnotation = withHover(function ({
   annotationType,
   annotationProps,
   addHeight,
+  useCenter,
   centerAngle,
   perAnnotationProps,
   passAnnotation,
   ellipsizedName,
+  name,
+  angleAdjust,
   rotationRadians
 }) {
   const sharedProps = {
@@ -294,8 +353,8 @@ const DrawAnnotation = withHover(function ({
     i
   ) {
     const { transform, revTransform } = PositionAnnotationOnCircle({
-      sAngle: startAngle,
-      eAngle: endAngle,
+      sAngle: useCenter ? centerAngle : startAngle,
+      eAngle: useCenter ? centerAngle : endAngle,
       height: addHeight ? annotationRadius : undefined,
       forward: reverseAnnotations ? !annotation.forward : annotation.forward
     });
@@ -307,6 +366,9 @@ const DrawAnnotation = withHover(function ({
             ? "notLocation"
             : "location--" + annotation.id + "--" + i
         }
+        {...(ellipsizedName && ellipsizedName !== name
+          ? { "data-tip": name }
+          : {})}
         {...sharedProps}
       >
         {title}
@@ -318,6 +380,7 @@ const DrawAnnotation = withHover(function ({
           revTransform={revTransform}
           rotationRadians={rotationRadians}
           ellipsizedName={ellipsizedName}
+          angleAdjust={angleAdjust}
           color={annotationColor}
           isProtein={isProtein}
           containsLocations={containsLocations}
@@ -343,3 +406,56 @@ const DrawAnnotation = withHover(function ({
     </React.Fragment>
   );
 });
+
+// const nameAngle =
+//   ((ellipsizedName.length + 3) * 55) /
+//   (2 * Math.PI * (annotationRadius - annotationHeight)) /
+//   2;
+//get how far label end is from angle range end
+
+// const spaceBeforeNameAngle = totalAngle - nameAngle / 2;
+// const spaceBeforeNameAngle =
+//   ((annLength - ellipsizedName.length + 3) * 55) /
+//   (2 * Math.PI * (annotationRadius - annotationHeight)) /
+//   2;
+// console.log(`centerAngle:`, centerAngle);
+// console.log(`nameAngle:`, nameAngle);
+// const nameAngleRange = normalizeAngleRange({
+//   start: centerAngle - nameAngle / 2,
+//   end: centerAngle + nameAngle / 2
+// });
+// console.log(`nameAngleRange:`, nameAngleRange);
+//           const isInRange = isRangeOrPositionWithinRange(
+//             nameAngleRange,
+//             visibleAngleRange,
+//             Math.PI * 2 + 1 //need to hack it for circular ranges
+//           );
+
+//           if (!isInRange) {
+//             const trimmed = trimRangeByAnotherRange(
+//               visibleAngleRange,
+//               normalizeAngleRange({ start: startAngle, end: endAngle }),
+//               Math.PI * 2 + 1 //need to hack it for circular ranges
+//             );
+// console.log(`trimmed:`,trimmed)
+//             if (
+//               trimmed &&
+//               isRangeOrPositionWithinRange(
+//                 trimmed.start,
+//                 visibleAngleRange,
+//                 Math.PI * 2 + 1 //need to hack it for circular ranges
+//               )
+//             ) {
+//               angleAdjust =
+//                 ((startAngle - nameAngleRange.start) / Math.PI) * 180;
+//             } else if (
+//               trimmed &&
+//               isRangeOrPositionWithinRange(
+//                 trimmed.end,
+//                 visibleAngleRange,
+//                 Math.PI * 2 + 1 //need to hack it for circular ranges
+//               )
+//             ) {
+//               angleAdjust = ((nameAngleRange.end - endAngle) / Math.PI) * 180;
+//             }
+//           }

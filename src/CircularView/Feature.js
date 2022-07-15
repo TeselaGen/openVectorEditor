@@ -3,6 +3,7 @@ import { startsWith } from "lodash";
 import React from "react";
 
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import shouldFlipText from "./shouldFlipText";
 
 export default function Feature({
   color = "orange",
@@ -14,6 +15,7 @@ export default function Feature({
   ellipsizedName,
   annotationType,
   id,
+  angleAdjust,
   overlapsSelf,
   rotationRadians,
   revTransform,
@@ -27,10 +29,7 @@ export default function Feature({
       ? color.replace("override_", "")
       : "purple";
   }
-
-  const labelNeedsFlip =
-    centerAngle + rotationRadians > Math.PI / 2 &&
-    centerAngle + rotationRadians < (Math.PI * 3) / 2;
+  const labelNeedsFlip = shouldFlipText(centerAngle + rotationRadians);
   if (containsLocations) {
     const path = drawDirectedPiePiece({
       radius: radius,
@@ -75,8 +74,12 @@ export default function Feature({
         <>
           <path id={pathId} fill="none" d={textPath.print()}></path>
           <text
-            className="ve-monospace-font"
-            transform={revTransform}
+            className="veLabelText ve-monospace-font"
+            // transform={revTransform}
+            transform={
+              (revTransform || "") +
+              (angleAdjust ? ` rotate(${angleAdjust})` : "")
+            }
             fill={
               isPart ? "purple" : Color(colorToUse).isDark() ? "white" : "black"
             }

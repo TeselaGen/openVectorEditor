@@ -3,13 +3,13 @@ import shouldFlipText from "./shouldFlipText";
 import { divideBy3 } from "../utils/proteinUtils";
 
 export function AxisNumbers({
-  rotation,
+  rotationRadians,
   textHeightOffset = -5,
   annotation,
   isProtein,
   hideNumbers
 }) {
-  const shouldFlip = shouldFlipText(annotation.startAngle - rotation);
+  const shouldFlip = shouldFlipText(annotation.startAngle + rotationRadians);
   return (
     <g>
       <rect y={-17} width={1} height={5} fill="black"></rect>

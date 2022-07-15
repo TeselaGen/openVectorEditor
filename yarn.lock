@@ -12422,17 +12422,17 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-ve-range-utils@^2.6.5:
-  version "2.6.5"
-  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.6.5.tgz#3b2a1194d1201faae05d07e4ab81df5c25dce85a"
-  integrity sha512-5p+Ga1NAQ4sURjbHRUEHary+xUcfeZONzsajDn67rLpwkfwn2LN5E+PPZTB4aMdr8u2sOE5ArM921zNefMJWVg==
+ve-range-utils@^2.6.6:
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/ve-range-utils/-/ve-range-utils-2.6.6.tgz#e562cac42b24b57217d9de74177549c150ddc62a"
+  integrity sha512-uN3E1xuvBnVOjgLjOAcTXcxeOje1owuBExH0vrwkV226UGEQ2elp0t6xzOVDr0XPEMQo4t2qdbBWTQvdcuxGdQ==
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.1.22:
-  version "5.1.22"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.22.tgz#91022e414d8ad67924c597c24a8879a4bc256a00"
-  integrity sha512-dewkxxIhVl/bR0AeVSlA2qO6lKRIEzjjNjfkfJOPmNdrwtKO+y6pbfN+L1RuLAq0sdn7yxdImFWvukzybQXT+Q==
+ve-sequence-utils@^5.1.23:
+  version "5.1.23"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.23.tgz#30bf68b5220db701662049efaa3517468c017912"
+  integrity sha512-LXHCxVWrMhUpVs49ZyVt3FiSTumovLs5U9g9GBRfle/RhBz/7f69ymPADsOUsMpPME0eEfm42Rmifkd4TifX3A==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

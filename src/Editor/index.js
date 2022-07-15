@@ -349,7 +349,7 @@ export class Editor extends React.Component {
       showMenuBar,
       annotationsToSupport,
       withRotateCircularView = true,
-      withZoomLinearView = true,
+      withZoomView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
       readOnly,
@@ -377,7 +377,6 @@ export class Editor extends React.Component {
       previewModeButtonMenu,
       allowPanelTabDraggable = true
     } = this.props;
-
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&
@@ -562,7 +561,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       const panel = Panel ? (
         <Panel
-          withZoomLinearView={withZoomLinearView}
+          withZoomView={withZoomView}
           withRotateCircularView={withRotateCircularView}
           {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}

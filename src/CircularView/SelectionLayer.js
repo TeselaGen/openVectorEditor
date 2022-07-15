@@ -23,7 +23,7 @@ function SelectionLayer({
   index,
   isProtein
 }) {
-  let {
+  const {
     color,
     start,
     end,
@@ -31,12 +31,12 @@ function SelectionLayer({
     style,
     className
   } = selectionLayer;
-  let { startAngle, endAngle, totalAngle } = getRangeAngles(
+  const { startAngle, endAngle, totalAngle } = getRangeAngles(
     selectionLayer,
     sequenceLength
   );
 
-  let section = sector({
+  const section = sector({
     center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
     r: innerRadius,
     R: radius,
@@ -58,7 +58,7 @@ function SelectionLayer({
   // });
   return (
     <g
-      onContextMenu={event => {
+      onContextMenu={(event) => {
         onRightClicked &&
           onRightClicked({
             annotation: selectionLayer,
@@ -67,7 +67,7 @@ function SelectionLayer({
       }}
       onClick={
         onClick
-          ? event => {
+          ? (event) => {
               onClick({
                 annotation: selectionLayer,
                 event
@@ -76,7 +76,7 @@ function SelectionLayer({
           : undefined
       }
       key={"veSelectionLayer" + index}
-      className={"veSelectionLayer " + className}
+      className={"veSelectionLayer " + (className || "")}
     >
       {!hideTitle && <title>{selectionMessage}</title>}
       <path

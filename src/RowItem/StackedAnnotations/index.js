@@ -23,7 +23,6 @@ function StackedAnnotations(props) {
     onClick,
     isProtein,
     onDoubleClick,
-    isRowView,
     disregardLocations,
     InnerComp,
     onRightClick,
@@ -85,7 +84,7 @@ function StackedAnnotations(props) {
       insertTicks,
       flipAnnotation
     } = getBasesToShow({
-      isRowView,
+      hidePrimerBases: charWidth < 8,
       sequenceLength,
       iTree,
       fullSeq,

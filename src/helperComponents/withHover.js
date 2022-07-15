@@ -59,13 +59,13 @@ export default compose(
     hoveredAnnotationActions)
   ),
   withHandlers({
-    onMouseOver: (props) => (e) => {
+    onMouseOver: (props) => () => {
       const { editorName, id, hoveredAnnotationUpdate } = props;
       const isIdHashmap = typeof id === "object";
       const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
       //because the calling onHover can slow things down, we disable it if dragging or scrolling
       if (window.__veDragging || window.__veScrolling) return;
-      e.stopPropagation();
+      // e.stopPropagation();
       hoveredAnnotationUpdate &&
         hoveredAnnotationUpdate(idToPass, { editorName });
     },

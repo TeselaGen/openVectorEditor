@@ -3,7 +3,8 @@ import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/Uncontrolle
 export function ZoomCircularViewSlider({
   zoomLevel,
   setZoomLevel,
-  maxZoomLevel
+  maxZoomLevel,
+  onZoom
 }) {
   let clickStepSize = (maxZoomLevel - 1) / 140;
   if (zoomLevel < 3) {
@@ -15,7 +16,9 @@ export function ZoomCircularViewSlider({
   const stepSize = clickStepSize;
   const min = 1 - clickStepSize * 3;
   function setZoom(val) {
-    setZoomLevel(Math.round(val * 10000) / 10000);
+    const newZoomLev = Math.round(val * 10000) / 10000;
+    setZoomLevel(newZoomLev);
+    onZoom(newZoomLev);
   }
   return (
     <div

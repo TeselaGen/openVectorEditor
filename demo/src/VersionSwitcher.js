@@ -47,7 +47,10 @@ export default function VersionSwitcher() {
 
   return options.length ? (
     <div>
-      <div style={{ height: "100%", marginTop: 5, display: "inline-block" }}>
+      <div
+        data-tip="hi"
+        style={{ height: "100%", marginTop: 5, display: "inline-block" }}
+      >
         Version:
       </div>{" "}
       <HTMLSelect

@@ -21,6 +21,7 @@ import { massageTickSpacing } from "../utils/massageTickSpacing";
 import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
+import { VeTopRightContainer } from "../CircularView/VeTopRightContainer";
 
 const defaultMarginWidth = 10;
 
@@ -145,7 +146,7 @@ class _LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
-      withZoomLinearView = false,
+      withZoomView = false,
       editorName,
       paddingBottom,
       linearViewCharWidth,
@@ -168,7 +169,7 @@ class _LinearView extends React.Component {
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
     const linearZoomEnabled =
-      bpsPerRow > 50 && bpsPerRow < 30000 && withZoomLinearView;
+      bpsPerRow > 50 && bpsPerRow < 30000 && withZoomView;
     const minCharWidth = initialCharWidth;
     const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
     const pinchHandler = {
@@ -265,12 +266,13 @@ class _LinearView extends React.Component {
               }}
             />
           )}
-          <div className="veTopRightContainer">{this.paredDownMessages}</div>
+          <VeTopRightContainer>{this.paredDownMessages}</VeTopRightContainer>
 
           <PinchHelperToUse {...(linearZoomEnabled && pinchHandler)}>
             <RowItem
               {...{
                 ...rest,
+                editorName,
                 onScroll: () => {
                   updateLabelsForInViewFeatures();
                   // this.updateLabelsForInViewFeaturesDebounced();
@@ -278,7 +280,6 @@ class _LinearView extends React.Component {
                 rowContainerStyle: isLinViewZoomed
                   ? { paddingBottom: 15 }
                   : undefined,
-
                 charWidth: this.charWidth,
                 scrollData,
                 caretPosition,

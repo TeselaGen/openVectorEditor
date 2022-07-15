@@ -6,7 +6,7 @@ import { getRangeLength } from "ve-range-utils";
 import { getStructuredBases } from "./getStructuredBases";
 
 export function getBasesToShow({
-  isRowView,
+  hidePrimerBases,
   annotation,
   annotationRange,
   charWidth,
@@ -15,7 +15,7 @@ export function getBasesToShow({
   iTree,
   sequenceLength
 }) {
-  if (!isRowView) return {};
+  if (hidePrimerBases) return {};
   const basesToShow = {};
   if (annotation && annotation.bases) {
     const fudge = charWidth - realCharWidth;

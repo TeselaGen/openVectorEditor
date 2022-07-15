@@ -1,9 +1,9 @@
 import React from "react";
 import { times, map } from "lodash";
-import { DNAComplementMap } from "ve-sequence-utils";
 import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";
+import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
@@ -166,21 +166,6 @@ class Sequence extends React.Component {
 }
 
 export default view(Sequence);
-
-const dnaToColor = {
-  a: "lightgreen",
-  c: "#658fff",
-  g: "yellow",
-  t: "#EE6262"
-};
-
-function getDnaColor(char, isReverse) {
-  return (
-    dnaToColor[
-      isReverse ? DNAComplementMap[char.toLowerCase()] : char.toLowerCase()
-    ] || "lightgrey"
-  );
-}
 
 class ColoredSequence extends React.Component {
   shouldComponentUpdate(newProps) {
