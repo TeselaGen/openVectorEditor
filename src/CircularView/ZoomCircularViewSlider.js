@@ -14,7 +14,8 @@ export function ZoomCircularViewSlider({
   }
   clickStepSize = Math.round(clickStepSize * 1000) / 1000;
   const stepSize = clickStepSize;
-  const min = 1 - clickStepSize * 3;
+  const min = 1;
+  // const min = 1 - clickStepSize * 3;
   function setZoom(val) {
     const newZoomLev = Math.round(val * 10000) / 10000;
     setZoomLevel(newZoomLev);

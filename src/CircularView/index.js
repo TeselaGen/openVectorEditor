@@ -56,7 +56,7 @@ export function CircularView(props) {
   const [rotationRadians, setRotationRadians] = useState(0);
   const [_zoomLevel, setZoomLevel] = useState(1);
   let zoomLevel = _zoomLevel;
-  const changeHelper = useRef({});
+  const rotateHelper = useRef({});
   let smallZoom = 1;
   if (_zoomLevel < 1) {
     smallZoom = _zoomLevel;
@@ -680,7 +680,7 @@ export function CircularView(props) {
       {withRotateCircularView && (
         <RotateCircularView
           editorName={editorName}
-          bindOutsideChangeHelper={changeHelper.current}
+          bindOutsideChangeHelper={rotateHelper.current}
           zoomLevel={zoomLevel}
           maxZoomLevel={maxZoomLevel}
           setRotationRadians={setRotationRadians}
@@ -696,7 +696,7 @@ export function CircularView(props) {
               : 0;
 
           const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
-          changeHelper.current.triggerChange(({ changeValue }) => {
+          rotateHelper.current.triggerChange(({ changeValue }) => {
             const isInView = isRangeOrPositionWithinRange(
               caret,
               rangeToShow,
@@ -752,17 +752,18 @@ export function CircularView(props) {
             style={{
               overflow: "visible",
               display: "block"
-              // marginTop: zoomLevel !== 1 ? -200 : 0
             }}
             className="circularViewSvg"
-            viewBox={`${-svgWidth / 2 / smallZoom},${
-              -svgHeight / 2 / smallZoom -
-              (!isZoomedIn ? 0 : initialRadius + BASE_RADIUS * 2 - 100)
-            },${svgWidth / smallZoom},${svgHeight / smallZoom}`}
+            viewBox={
+              isZoomedIn
+                ? `${-svgWidth / 2 / smallZoom},${
+                    -svgHeight / 2 / smallZoom -
+                    (!isZoomedIn ? 0 : initialRadius + BASE_RADIUS * 2 - 100)
+                  },${svgWidth / smallZoom},${svgHeight / smallZoom}`
+                : `-${radius} -${radius} ${radius * 2} ${radius * 2}`
+            }
             width={svgWidth}
-            // width={svgHeight}
             height={svgHeight}
-            // height={svgWidth}
           >
             <g>
               {/* {isZoomedIn && (

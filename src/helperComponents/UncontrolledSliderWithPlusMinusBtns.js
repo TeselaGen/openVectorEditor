@@ -48,6 +48,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             // console.log(`newnew:`, newnew);
             this.setState({ value: newnew });
             this.props.onChange && this.props.onChange(newnew);
+            this.props.onRelease && this.props.onRelease(newnew);
           }
         });
       };
