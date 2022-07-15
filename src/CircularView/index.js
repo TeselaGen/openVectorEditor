@@ -114,6 +114,7 @@ export function CircularView(props) {
     hideName = false,
     editorName,
     withRotateCircularView,
+    withZoomCircularView,
     selectionLayer = { start: -1, end: -1 },
     annotationHeight = 15,
     spaceBetweenAnnotations = 2,
@@ -686,32 +687,34 @@ export function CircularView(props) {
           setRotationRadians={setRotationRadians}
         ></RotateCircularView>
       )}
-      <ZoomCircularViewSlider
-        onZoom={() => {
-          const caret =
-            caretPosition > -1
-              ? caretPosition
-              : selectionLayer.start > -1
-              ? getMiddleOfRange(selectionLayer, sequenceLength)
-              : 0;
+      {withZoomCircularView && (
+        <ZoomCircularViewSlider
+          onZoom={() => {
+            const caret =
+              caretPosition > -1
+                ? caretPosition
+                : selectionLayer.start > -1
+                ? getMiddleOfRange(selectionLayer, sequenceLength)
+                : 0;
 
-          const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
-          rotateHelper.current.triggerChange(({ changeValue }) => {
-            const isInView = isRangeOrPositionWithinRange(
-              caret,
-              rangeToShow,
-              sequenceLength
-            );
-            if (!isInView) {
-              changeValue((radToRotateTo / Math.PI) * 180);
-            }
-          });
-          // updateLabelsForInViewFeaturesCircView({ radius });
-        }}
-        zoomLevel={_zoomLevel}
-        maxZoomLevel={maxZoomLevel}
-        setZoomLevel={setZoomLevel}
-      />
+            const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
+            rotateHelper.current.triggerChange(({ changeValue }) => {
+              const isInView = isRangeOrPositionWithinRange(
+                caret,
+                rangeToShow,
+                sequenceLength
+              );
+              if (!isInView) {
+                changeValue((radToRotateTo / Math.PI) * 180);
+              }
+            });
+            // updateLabelsForInViewFeaturesCircView({ radius });
+          }}
+          zoomLevel={_zoomLevel}
+          maxZoomLevel={maxZoomLevel}
+          setZoomLevel={setZoomLevel}
+        />
+      )}
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}

@@ -356,7 +356,7 @@ function ZoomLinearView({
         rightIcon="plus"
         title="Zoom"
         style={{ paddingTop: "4px", width: 120 }}
-        className="ove-slider"
+        className="veZoomLinearSlider ove-slider"
         labelRenderer={false}
         stepSize={0.05}
         clickStepSize={0.5}

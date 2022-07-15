@@ -77,6 +77,7 @@ const defaultState = {
   nameFontSizeCircularView: false,
   withVersionHistory: true,
   withRotateCircularView: true,
+  withZoomCircularView: true,
   setDefaultVisibilities: false,
   onNew: true,
   onImport: true,
@@ -1001,6 +1002,12 @@ rightClickOverrides: {
                 type: "withRotateCircularView",
                 label: "Show Rotate Circular View",
                 info: `withRotateCircularView={true /* default */}`
+              })}
+              {renderToggle({
+                that: this,
+                type: "withZoomCircularView",
+                label: "Show Zoom Circular View",
+                info: `withZoomCircularView={true /* default */}`
               })}
               {renderToggle({
                 that: this,
@@ -2265,6 +2272,7 @@ clickOverrides: {
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
             withRotateCircularView={this.state.withRotateCircularView}
+            withZoomCircularView={this.state.withZoomCircularView}
             showReadOnly={this.state.showReadOnly}
             initialAnnotationToEdit={
               this.state.initialAnnotationToEdit ? "part-10" : undefined

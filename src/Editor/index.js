@@ -349,6 +349,7 @@ export class Editor extends React.Component {
       showMenuBar,
       annotationsToSupport,
       withRotateCircularView = true,
+      withZoomCircularView = true,
       withZoomView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
@@ -563,6 +564,7 @@ export class Editor extends React.Component {
         <Panel
           withZoomView={withZoomView}
           withRotateCircularView={withRotateCircularView}
+          withZoomCircularView={withZoomCircularView}
           {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&

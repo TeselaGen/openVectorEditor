@@ -39,7 +39,7 @@ export function ZoomCircularViewSlider({
           width: 120
         }}
         noWraparound
-        className="ove-slider"
+        className="veZoomCircSlider ove-slider"
         labelRenderer={false}
         stepSize={stepSize}
         clickStepSize={clickStepSize}

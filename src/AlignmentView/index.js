@@ -1302,7 +1302,7 @@ class AlignmentView extends React.Component {
                     coerceInitialValue={coerceInitialValue}
                     title="Adjust Zoom Level"
                     style={{ paddingTop: "4px", width: 100 }}
-                    className="ove-slider"
+                    className="veZoomAlignmentSlider ove-slider"
                     labelRenderer={false}
                     initialValue={charWidthInLinearView}
                     stepSize={0.05} //was 0.01

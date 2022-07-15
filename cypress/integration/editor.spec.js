@@ -38,9 +38,14 @@ describe("editor", function () {
   });
 
   it(`should be able to hide the rotate circular view!`, () => {
-    cy.get(`.ove-slider`);
+    cy.get(`.veRotateCircSlider`);
     cy.tgToggle(`withRotateCircularView`, false);
-    cy.get(`.ove-slider`).should("not.exist");
+    cy.get(`.veRotateCircSlider`).should("not.exist");
+  });
+  it(`should be able to hide the zoom circular view!`, () => {
+    cy.get(`.veZoomCircSlider`);
+    cy.tgToggle(`withZoomCircularView`, false);
+    cy.get(`.veZoomCircSlider`).should("not.exist");
   });
   it(`should be able to hide the single import button if necessary!`, () => {
     cy.get(".tg-menu-bar").contains("File").click();

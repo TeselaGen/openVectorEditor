@@ -68,7 +68,7 @@ export function RotateCircularView({
         rightIcon="arrow-right"
         title="Rotate"
         style={{ paddingTop: "4px", width: 120 }}
-        className="ove-slider"
+        className="veRotateCircSlider ove-slider"
         labelRenderer={false}
         stepSize={stepSize}
         initialValue={0}
