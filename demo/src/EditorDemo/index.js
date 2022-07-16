@@ -650,11 +650,10 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
               {renderToggle({
                 that: this,
-                label:
-                  "Truncate Labels That Don't Fit (when externalLabels=false)",
+                label: "Truncate Internal Labels That Don't Fit",
                 type: "truncateLabelsThatDoNotFit",
                 info: `By default truncateLabelsThatDoNotFit=true 
-In the Row View Or Linear View this option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
+This option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
               })}
               {renderToggle({
                 that: this,
@@ -1670,7 +1669,7 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
-                info: `When enabled AND the user has selected View -> External Labels, only labels that can't fit in a pointed annotation will be external.`,
+                info: `When enabled only labels that can't fit inside their annotation will be external.`,
                 type: "onlyShowLabelsThatDoNotFit"
               })}
               {renderToggle({

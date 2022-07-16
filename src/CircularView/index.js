@@ -499,7 +499,7 @@ export function CircularView(props) {
           ...props[singularName + "Options"]
         });
       } else {
-        //we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
+        //we're drawing axis/selectionLayer/labels/caret/etc (something that doesn't live on the seqData)
         results = Annotation({
           rotationRadians: rotationRadians,
           ...(passLabels && { labels }),
@@ -511,7 +511,7 @@ export function CircularView(props) {
         radius += results.height || 0;
         //tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
         labels = [...map(labels), ...map(results.labels || {})];
-        comp = results.component || results;
+        comp = results.component === undefined ? results : results.component;
       }
       radius += spaceAfter;
       // console.warn('radius after draw:',JSON.stringify(radius,null,4))
@@ -601,6 +601,49 @@ export function CircularView(props) {
   const bpTitle = isProtein
     ? `${Math.floor(sequenceLength / 3)} AAs`
     : `${sequenceLength} bps`;
+  const nameEl = (
+    <div
+      className="veSequenceName"
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: isZoomedIn || smallZoom < 1 ? "end" : "center",
+        paddingLeft: isZoomedIn || smallZoom < 1 ? 20 : 0,
+        paddingRight: isZoomedIn || smallZoom < 1 ? 20 : 0,
+        textAlign: "center",
+
+        zIndex: 1
+      }}
+    >
+      <div style={{ marginBottom: isZoomedIn || smallZoom < 1 ? 80 : 0 }}>
+        <div
+          title={sequenceName}
+          className="veCircularViewTextWrapper"
+          style={{
+            textAlign: "center",
+            display: "-webkit-box",
+            WebkitLineClamp: "3",
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: isZoomedIn || smallZoom < 1 ? undefined : innerRadius,
+            maxHeight: innerRadius - 15,
+            fontSize: nameFontSizeCircularView
+          }}
+        >
+          {sequenceName}
+        </div>
+        <span title={bpTitle} style={{ fontSize: 10 }}>
+          {bpTitle}
+        </span>
+      </div>
+    </div>
+  );
+
   const target = React.useRef();
 
   usePinch(
@@ -635,48 +678,7 @@ export function CircularView(props) {
       }
       className={classNames("veCircularView", props.className)}
     >
-      {!hideName && (
-        <div
-          className="veSequenceName"
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: isZoomedIn || smallZoom < 1 ? "end" : "center",
-            paddingLeft: isZoomedIn || smallZoom < 1 ? 20 : 0,
-            paddingRight: isZoomedIn || smallZoom < 1 ? 20 : 0,
-            textAlign: "center",
-
-            zIndex: 1
-          }}
-        >
-          <div style={{ marginBottom: isZoomedIn || smallZoom < 1 ? 80 : 0 }}>
-            <div
-              title={sequenceName}
-              className="veCircularViewTextWrapper"
-              style={{
-                textAlign: "center",
-                display: "-webkit-box",
-                WebkitLineClamp: "3",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                width: isZoomedIn || smallZoom < 1 ? undefined : innerRadius,
-                maxHeight: innerRadius - 15,
-                fontSize: nameFontSizeCircularView
-              }}
-            >
-              {sequenceName}
-            </div>
-            <span title={bpTitle} style={{ fontSize: 10 }}>
-              {bpTitle}
-            </span>
-          </div>
-        </div>
-      )}
+      {!hideName && isZoomedIn && nameEl}
 
       {withRotateCircularView && (
         <RotateCircularView
@@ -779,22 +781,18 @@ export function CircularView(props) {
                 className="veHiddenAxis"
               ></circle>
               {annotationsSvgs}
-              {/* !hideName && (
+              {!hideName && !isZoomedIn && (
                 <foreignObject
-                  // x={-innerRadius / 2}
-                  // y={!isZoomedIn ? -innerRadius / 2 : -radius}
-                  width={innerRadius}
-                  height={innerRadius}
+                  x={-72.5 / 2}
+                  y={-72.5 / 2}
+                  width={72.5}
+                  height={72.5}
                   transform={`rotate(${(-rotationRadians * 180) / Math.PI})`}
                 >
                   <div
                     xmlns="http://www.w3.org/1999/xhtml"
                     key="circViewSvgCenterText"
                     className="veCircularViewMiddleOfVectorText"
-                    style={{
-                      height: isZoomedIn ? undefined : "100%",
-                      bottom: isZoomedIn ? 25 : undefined
-                    }}
                   >
                     <div
                       title={sequenceName}
@@ -805,8 +803,8 @@ export function CircularView(props) {
                         WebkitBoxOrient: "vertical",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        width: innerRadius,
-                        maxHeight: innerRadius - 15,
+                        width: 72.5,
+                        maxHeight: 72.5 - 15,
                         fontSize: nameFontSizeCircularView
                       }}
                     >
@@ -817,7 +815,7 @@ export function CircularView(props) {
                     </span>
                   </div>
                 </foreignObject>
-              ) */}
+              )}
             </g>
           </svg>
           <VeTopRightContainer {...{ fullScreen }}>

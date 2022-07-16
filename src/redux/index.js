@@ -28,7 +28,6 @@ import * as sequenceData from "./sequenceData";
 import * as useAdditionalOrfStartCodons from "./useAdditionalOrfStartCodons";
 import * as uppercaseSequenceMapFont from "./uppercaseSequenceMapFont";
 import * as charWidth from "./charWidth";
-import * as externalLabels from "./externalLabels";
 import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
@@ -67,7 +66,6 @@ const subReducers = {
   charWidth,
   uppercaseSequenceMapFont,
   showGCContent,
-  externalLabels,
   labelLineIntensity,
   labelSize,
   partLengthsToHide,
@@ -170,7 +168,6 @@ export default function reducerFactory(initialState = {}) {
         ["createYourOwnEnzyme", createYourOwnEnzyme],
         ["uppercaseSequenceMapFont", uppercaseSequenceMapFont],
         ["showGCContent", showGCContent],
-        ["externalLabels", externalLabels],
         ["labelLineIntensity", labelLineIntensity],
         ["labelSize", labelSize],
         ["alignments", alignments]

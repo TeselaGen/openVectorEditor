@@ -38,7 +38,6 @@ function StackedAnnotations(props) {
     truncateLabelsThatDoNotFit,
     getExtraInnerCompProps,
     onlyShowLabelsThatDoNotFit,
-    externalLabels,
     isStriped
   } = props;
 
@@ -107,7 +106,6 @@ function StackedAnnotations(props) {
       >
         <InnerCompToUse
           noRedux={noRedux}
-          externalLabels={externalLabels}
           key={index}
           className={annotation.className}
           editorName={editorName}

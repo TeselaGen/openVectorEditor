@@ -12,7 +12,6 @@ import Sequence from "./Sequence";
 import Axis from "./Axis";
 import Orfs from "./Orfs";
 import Translations from "./Translations";
-
 import Labels from "./Labels";
 import Cutsites from "./Cutsites";
 import Caret from "./Caret";
@@ -111,7 +110,6 @@ export default function RowItem(props) {
     minHeight = 22,
     bpsPerRow = sequenceLength,
     editorName,
-    externalLabels,
     rowContainerStyle,
     onScroll,
     scrollData,
@@ -251,7 +249,6 @@ export default function RowItem(props) {
     return (
       <CompToUse
         truncateLabelsThatDoNotFit={truncateLabelsThatDoNotFit}
-        externalLabels={externalLabels === "true"}
         onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
         type={type}
         // fullSeq={}
@@ -364,43 +361,11 @@ export default function RowItem(props) {
             selectionLayer
           })}
         />
-        {/* <Labels
-          {...annotationCommonProps}
-          annotationRanges={[
-            ...(showCutsiteLabels && showCutsites
-              ? map(cutsites, a =>
-                  assign(a, {
-                    onClick: cutsiteClicked,
-                    onRightClick: cutsiteRightClicked
-                  })
-                )
-              : []),
-            ...(showFeatureLabels && showFeatures && externalLabels
-              ? map(features, a =>
-                  assign(a, {
-                    onClick: featureClicked,
-                    onRightClick: featureRightClicked
-                  })
-                )
-              : []),
-            ...(showPartLabels && showParts && externalLabels
-              ? map(parts, a =>
-                  assign(a, {
-                    onClick: partClicked,
-                    onRightClick: partRightClicked
-                  })
-                )
-              : [])
-          ]}
-          annotationHeight={cutsiteLabelHeight}
-        /> */}
         {drawAnnotations("warning")}
         {drawAnnotations("assemblyPiece")}
         {drawAnnotations("lineageAnnotation")}
-        {drawLabels("part", externalLabels !== "true")}
+        {drawLabels("part")}
         {drawAnnotations("part", partProps)}
-        {/* {!externalLabels && drawAnnotations("part", partProps)} */}
-
         {drawAnnotations("orf", {
           CompOverride: Orfs
         })}
@@ -419,12 +384,10 @@ export default function RowItem(props) {
         )}
 
         {drawLabels("cutsite", !isRowView)}
-        {drawLabels(
-          "primer",
-          false,
-
-          { noLabelLine: true, filterOpts: { onlyForward: true } }
-        )}
+        {drawLabels("primer", false, {
+          noLabelLine: true,
+          filterOpts: { onlyForward: true }
+        })}
 
         {drawAnnotations("primer", {
           sequence: fullSequence,
@@ -507,14 +470,11 @@ export default function RowItem(props) {
           annotationHeight: primerHeight,
           onlyReverse: true
         })}
-        {drawLabels(
-          "primer",
-          externalLabels !== "true",
-
-          { noLabelLine: true, filterOpts: { onlyReverse: true } }
-        )}
-        {drawLabels("feature", externalLabels !== "true")}
-        {/* {externalLabels && drawAnnotations("part", partProps)} */}
+        {drawLabels("primer", false, {
+          noLabelLine: true,
+          filterOpts: { onlyReverse: true }
+        })}
+        {drawLabels("feature")}
         {drawAnnotations("feature")}
 
         {map(replacementLayers, function (replacementLayer) {

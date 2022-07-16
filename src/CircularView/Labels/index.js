@@ -29,7 +29,12 @@ function Labels({
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
-  if (!labels.length) return null;
+  if (!labels.length) {
+    return {
+      component: null,
+      height: 15
+    };
+  }
   outerRadius += 25;
   const radius = outerRadius;
   const outerPointRadius = outerRadius - 20;

@@ -44,7 +44,6 @@ class PointedAnnotation extends React.PureComponent {
       gapsInside,
       gapsBefore,
       annotation,
-      externalLabels,
       truncateLabelsThatDoNotFit,
       onlyShowLabelsThatDoNotFit
     } = this.props;
@@ -138,11 +137,10 @@ class PointedAnnotation extends React.PureComponent {
       (hasAPoint ? (pointiness / 2) * (forward ? 1 : -1) : 0);
     if (
       !doesLabelFitInAnnotation(name, { width }, charWidth) ||
-      (externalLabels &&
-        !onlyShowLabelsThatDoNotFit &&
+      (!onlyShowLabelsThatDoNotFit &&
         ["parts", "features"].includes(annotation.annotationTypePlural))
     ) {
-      if (truncateLabelsThatDoNotFit && !externalLabels) {
+      if (truncateLabelsThatDoNotFit) {
         const fractionToDisplay =
           width / (name.length * ANNOTATION_LABEL_FONT_WIDTH);
         const numLetters = Math.floor(fractionToDisplay * name.length);

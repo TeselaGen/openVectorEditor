@@ -45,6 +45,5 @@ export const userDefinedHandlersAndOpts = [
   "onCreateNewFromSubsequence",
   "onPreviewModeFullscreenClose",
   "onPaste",
-  "menuFilter",
-  "externalLabels"
+  "menuFilter"
 ];

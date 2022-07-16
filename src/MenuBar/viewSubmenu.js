@@ -344,17 +344,43 @@ export default [
   {
     text: "Labels",
     submenu: [
-      { cmd: "toggleFeatureLabels", shouldDismissPopover: false },
-      { cmd: "togglePartLabels", shouldDismissPopover: false },
-      { cmd: "toggleCutsiteLabels", shouldDismissPopover: false },
-      { cmd: "toggleAssemblyPieceLabels", shouldDismissPopover: false },
-      { cmd: "toggleLineageAnnotationLabels", shouldDismissPopover: false },
-      { cmd: "toggleWarningLabels", shouldDismissPopover: false },
-      { cmd: "togglePrimerLabels", shouldDismissPopover: false },
+      { divider: "External Labels:" },
+      { text: "Show All", cmd: "showAllLabels", shouldDismissPopover: false },
+      { text: "Hide All", cmd: "hideAllLabels", shouldDismissPopover: false },
+      {
+        text: "Features",
+        cmd: "toggleFeatureLabels",
+        shouldDismissPopover: false
+      },
+      { text: "Parts", cmd: "togglePartLabels", shouldDismissPopover: false },
+      {
+        text: "Cutsites",
+        cmd: "toggleCutsiteLabels",
+        shouldDismissPopover: false
+      },
+      {
+        text: "AssemblyPieces",
+        cmd: "toggleAssemblyPieceLabels",
+        shouldDismissPopover: false
+      },
+      {
+        text: "LineageAnnotations",
+        cmd: "toggleLineageAnnotationLabels",
+        shouldDismissPopover: false
+      },
+      {
+        text: "Warnings",
+        cmd: "toggleWarningLabels",
+        shouldDismissPopover: false
+      },
+      {
+        text: "Primers",
+        cmd: "togglePrimerLabels",
+        shouldDismissPopover: false
+      },
 
       { divider: "" },
 
-      { cmd: "toggleExternalLabels", shouldDismissPopover: false },
       { cmd: "adjustLabelLineIntensity", shouldDismissPopover: false },
       { cmd: "adjustLabelSize", shouldDismissPopover: false }
     ]
