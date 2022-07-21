@@ -169,7 +169,7 @@ class _LinearView extends React.Component {
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
     const linearZoomEnabled =
-      bpsPerRow > 50 && bpsPerRow < 30000 && withZoomView;
+      bpsPerRow >= 50 && bpsPerRow < 30000 && withZoomView;
     const minCharWidth = initialCharWidth;
     const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
     const pinchHandler = {

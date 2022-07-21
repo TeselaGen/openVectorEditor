@@ -3,11 +3,12 @@ import { useDebouncedCallback } from "use-debounce";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 
-export function RotateCircularView({
+export function RotateCircularViewSlider({
   setRotationRadians,
   editorName,
   zoomLevel,
   maxZoomLevel,
+  initialRotation,
   bindOutsideChangeHelper
 }) {
   const ref = useRef();
@@ -17,8 +18,10 @@ export function RotateCircularView({
       const el = document.querySelector(
         `.veEditor.${editorName} .circularViewSvg`
       );
-
-      el && el.classList.remove("veHideLabels");
+      if (el) el.classList.remove("veHideLabels");
+      else {
+        console.error(`whoops we shouldn't be here`);
+      }
     },
     // delay in ms
     100,
@@ -32,7 +35,10 @@ export function RotateCircularView({
     100,
     { leading: true }
   );
-  const stepSize = Math.min(3, (3 / zoomLevel) * (maxZoomLevel / zoomLevel));
+  const stepSize = Math.min(
+    3,
+    (3 / (zoomLevel / 2)) * (maxZoomLevel / (zoomLevel / 2))
+  );
   return (
     <div
       style={{
@@ -47,7 +53,7 @@ export function RotateCircularView({
           if (zoomLevel === 1) {
             debouncedSetRot(val);
           }
-          clearTimeout(ref.current);
+          !window.Cypress && clearTimeout(ref.current);
           showLabelsDebounced();
         }}
         onChange={(_val) => {
@@ -59,10 +65,13 @@ export function RotateCircularView({
             `.veEditor.${editorName} .circularViewSvg g`
           );
           innerEl.style.transform = `rotate(${val}deg)`;
-          el.classList.add("veHideLabels");
+
           if (zoomLevel > 1) {
             setRotationRadians((val * Math.PI) / 180);
+          } else {
+            el.classList.add("veHideLabels");
           }
+          showLabelsDebounced();
         }}
         leftIcon="arrow-left"
         rightIcon="arrow-right"
@@ -71,7 +80,8 @@ export function RotateCircularView({
         className="veRotateCircSlider ove-slider"
         labelRenderer={false}
         stepSize={stepSize}
-        initialValue={0}
+        justUpdateInitialValOnce
+        initialValue={initialRotation || 0}
         max={360}
         min={0}
       ></UncontrolledSliderWithPlusMinusBtns>

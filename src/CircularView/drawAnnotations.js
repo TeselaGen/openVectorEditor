@@ -21,8 +21,10 @@ function drawAnnotations(props) {
     type,
     annotations,
     annotationHeight,
+    noTitle,
     spaceBetweenAnnotations,
     sequenceLength,
+    showCicularViewInternalLabels,
     // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
     // editorName,
     getColor,
@@ -171,11 +173,9 @@ function drawAnnotations(props) {
       let ellipsizedName;
       // let spaceBeforeName = 0;
       let angleAdjust;
-      if (name) {
+      if (name && showCicularViewInternalLabels) {
         const arcLength =
           2 * Math.PI * (annotationRadius - annotationHeight) * totalAngle; //for arrowhead
-        // console.log(`arcLength:`, arcLength);
-        // console.log(`totalAngle:`, totalAngle);
 
         const annLength = Math.max(0, Math.floor(arcLength / 55 - 3));
 
@@ -202,9 +202,6 @@ function drawAnnotations(props) {
         //   const idealAngle = normalizeAngle(
         //     -normalizeAngle(rotationRadians) - normalizeAngle(centerAngle)
         //   );
-        //   console.log(`-----------:`);
-        //   console.log(`~ idealAngle`, idealAngle);
-        //   console.log(`maxAngleAdjust:`, maxAngleAdjust);
         //   angleAdjust = idealAngle;
         //   if (
         //     Math.min(maxAngleAdjust, idealAngle) !== idealAngle
@@ -212,7 +209,6 @@ function drawAnnotations(props) {
         //     // Math.min(maxAngleAdjust, 2 * Math.PI - idealAngle) !==
         //     //   2 * Math.PI - idealAngle
         //   ) {
-        //     console.log(`maxed`);
         //     angleAdjust = -maxAngleAdjust;
         //     if (
         //       normalizeAngle(
@@ -221,15 +217,12 @@ function drawAnnotations(props) {
         //     ) {
         //       angleAdjust = -angleAdjust;
         //     }
-        //     console.log(`~ angleAdjust`, angleAdjust);
         //   }
         //   // angleAdjust =idealAngle
-        //   // console.log(`~ maxAngleAdjust`, maxAngleAdjust)
         //   angleAdjust = (angleAdjust / Math.PI) * 180;
         //   // if (normalizeAngle(normalizeAngle(centerAngle) + normalizeAngle(rotationRadians)) > Math.PI) {
         //   //   angleAdjust = -angleAdjust;
         //   // }
-        //   console.log(`~ angleAdjust`, angleAdjust);
         // }
       }
 
@@ -273,6 +266,7 @@ function drawAnnotations(props) {
               annotationRadius,
               annotationType,
               isProtein,
+              noTitle,
               titleText,
               classNames,
               onClick: _onClick,
@@ -329,6 +323,7 @@ const DrawAnnotation = withHover(function ({
   annotationType,
   annotationProps,
   addHeight,
+  noTitle,
   useCenter,
   centerAngle,
   perAnnotationProps,
@@ -339,7 +334,7 @@ const DrawAnnotation = withHover(function ({
   rotationRadians
 }) {
   const sharedProps = {
-    style: { cursor: "pointer" },
+    style: noTitle ? undefined : { cursor: "pointer" },
     className: `${className} ${classNames}`,
     onContextMenu: onContextMenu,
     onClick: onClick,
@@ -371,7 +366,7 @@ const DrawAnnotation = withHover(function ({
           : {})}
         {...sharedProps}
       >
-        {title}
+        {noTitle ? null : title}
         <Annotation
           {...(passAnnotation && { annotation })}
           annotationType={annotationType}
@@ -418,13 +413,10 @@ const DrawAnnotation = withHover(function ({
 //   ((annLength - ellipsizedName.length + 3) * 55) /
 //   (2 * Math.PI * (annotationRadius - annotationHeight)) /
 //   2;
-// console.log(`centerAngle:`, centerAngle);
-// console.log(`nameAngle:`, nameAngle);
 // const nameAngleRange = normalizeAngleRange({
 //   start: centerAngle - nameAngle / 2,
 //   end: centerAngle + nameAngle / 2
 // });
-// console.log(`nameAngleRange:`, nameAngleRange);
 //           const isInRange = isRangeOrPositionWithinRange(
 //             nameAngleRange,
 //             visibleAngleRange,
@@ -437,7 +429,6 @@ const DrawAnnotation = withHover(function ({
 //               normalizeAngleRange({ start: startAngle, end: endAngle }),
 //               Math.PI * 2 + 1 //need to hack it for circular ranges
 //             );
-// console.log(`trimmed:`,trimmed)
 //             if (
 //               trimmed &&
 //               isRangeOrPositionWithinRange(

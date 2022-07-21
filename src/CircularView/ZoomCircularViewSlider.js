@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 export function ZoomCircularViewSlider({
   zoomLevel,
@@ -6,20 +6,25 @@ export function ZoomCircularViewSlider({
   maxZoomLevel,
   onZoom
 }) {
-  let clickStepSize = (maxZoomLevel - 1) / 140;
-  if (zoomLevel < 3) {
-    clickStepSize = clickStepSize / 4;
-  } else if (zoomLevel < 5) {
-    clickStepSize = clickStepSize / 4;
-  }
+  const zoomHelper = useRef({});
+  let clickStepSize = (maxZoomLevel - 1) / 440;
+  clickStepSize = clickStepSize * Math.max(1, Math.log(zoomLevel + 2));
   clickStepSize = Math.round(clickStepSize * 1000) / 1000;
   const stepSize = clickStepSize;
   const min = 1;
-  // const min = 1 - clickStepSize * 3;
   function setZoom(val) {
     const newZoomLev = Math.round(val * 10000) / 10000;
     setZoomLevel(newZoomLev);
     onZoom(newZoomLev);
+  }
+  if (zoomLevel > maxZoomLevel) {
+    setTimeout(() => {
+      if (zoomHelper.current && zoomHelper.current.triggerChange) {
+        zoomHelper.current.triggerChange(({ changeValue }) => {
+          changeValue(maxZoomLevel);
+        });
+      }
+    }, 0);
   }
   return (
     <div
@@ -31,6 +36,7 @@ export function ZoomCircularViewSlider({
       }}
     >
       <UncontrolledSliderWithPlusMinusBtns
+        bindOutsideChangeHelper={zoomHelper.current}
         onChange={setZoom}
         onRelease={setZoom}
         title="Adjust Zoom Level"
@@ -43,7 +49,8 @@ export function ZoomCircularViewSlider({
         labelRenderer={false}
         stepSize={stepSize}
         clickStepSize={clickStepSize}
-        initialValue={1}
+        initialValue={zoomLevel || 1}
+        justUpdateInitialValOnce
         max={maxZoomLevel || 14}
         min={min}
       />

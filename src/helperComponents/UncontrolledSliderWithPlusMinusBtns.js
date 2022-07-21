@@ -7,6 +7,12 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
   state = { value: 0 };
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.justUpdateInitialValOnce &&
+      prevState.oldInitialValue !== undefined
+    ) {
+      return;
+    }
     //potentially coerce the initial value coming in
     if (prevState.oldInitialValue !== nextProps.initialValue) {
       const val = nextProps.coerceInitialValue
@@ -32,6 +38,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       style,
       onClick,
       bindOutsideChangeHelper,
+      className,
       ...rest
     } = this.props;
     const { min, max } = this.props;
@@ -45,7 +52,6 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
           value: valToPass,
           changeValue: (newVal) => {
             const newnew = clamp(newVal, min, max);
-            // console.log(`newnew:`, newnew);
             this.setState({ value: newnew });
             this.props.onChange && this.props.onChange(newnew);
             this.props.onRelease && this.props.onRelease(newnew);
@@ -55,6 +61,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     }
     return (
       <div
+        className={className}
         onClick={(e) => {
           onClick && onClick(e);
           preventDefaultStopPropagation(e);

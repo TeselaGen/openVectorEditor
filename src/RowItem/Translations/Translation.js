@@ -19,7 +19,7 @@ class Translation extends React.Component {
     }, 5);
   }
   componentWillUnmount() {
-    clearTimeout(this.timeout);
+    !window.Cypress && clearTimeout(this.timeout);
   }
   render() {
     const {

@@ -17,6 +17,7 @@ export const userDefinedHandlersAndOpts = [
   "showCircularity",
   "showMoleculeType",
   "showAvailability",
+  "showCicularViewInternalLabels",
   "showGCContentByDefault",
   "GCDecimalDigits",
   "onlyShowLabelsThatDoNotFit",

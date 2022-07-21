@@ -56,6 +56,11 @@ function SelectionLayer({
   //   start: 0,
   //   end: Math.PI * 2 - totalAngle
   // });
+  const { transform } = PositionAnnotationOnCircle({
+    sAngle: startAngle,
+    eAngle: endAngle,
+    height: 0
+  });
   return (
     <g
       onContextMenu={(event) => {
@@ -80,11 +85,7 @@ function SelectionLayer({
     >
       {!hideTitle && <title>{selectionMessage}</title>}
       <path
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          height: 0
-        })}
+        transform={transform}
         className="selectionLayer"
         style={{ opacity: 0.3, ...style }}
         d={section.path.print()}

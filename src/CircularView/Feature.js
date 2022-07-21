@@ -86,7 +86,7 @@ export default function Feature({
             dy={-2}
           >
             <textPath
-              text-anchor="middle"
+              textAnchor="middle"
               startOffset="50%"
               xlinkHref={`#${pathId}`}
             >

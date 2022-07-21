@@ -109,6 +109,8 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
 
 export class Editor extends React.Component {
   state = {
+    rotationRadians: 0,
+    zoomLevel: 1,
     isHotkeyDialogOpen: false,
     tabDragging: false,
     previewModeFullscreen: false
@@ -572,6 +574,14 @@ export class Editor extends React.Component {
               acc = { ...acc, ...get(this.props, key) };
               return acc;
             }, {}))}
+          circ_rotationRadians={this.state.rotationRadians}
+          circ_setRotationRadians={(val) => {
+            this.setState({ rotationRadians: val });
+          }}
+          circ_zoomLevel={this.state.zoomLevel}
+          circ_setZoomLevel={(val) => {
+            this.setState({ zoomLevel: val });
+          }}
           maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
           fontHeightMultiplier={this.props.fontHeightMultiplier}
@@ -915,11 +925,6 @@ export class Editor extends React.Component {
               minHeight: 0,
               display: "flex"
             }}
-            // onMouseMove={(e) => {
-            // tnr: maybe add tooltip helper here..?
-            //   // console.log(`e:`,e)
-            //   console.log(`e.target:`,e.target)
-            // }}
             className="tg-editor-container"
             id="section-to-print"
           >

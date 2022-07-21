@@ -21,7 +21,6 @@
 //   const boundingRect = document
 //     .querySelector(rectElement)
 //     .getBoundingClientRect();
-//   console.log(`els:`, els);
 //   els.forEach((el) => {
 //     // const elBounds = el.getBoundingClientRect();
 //     // const isElIn = isElWithinAnotherEl(elBounds, boundingRect);
@@ -32,7 +31,6 @@
 //       left: Math.max(boundingRect.left, 0 /*  elBounds.left */),
 //       right: Math.min(boundingRect.right, 0 /*  elBounds.right */)
 //     });
-//     console.log(`isLabelIn:`, isLabelIn);
 //     if (!isLabelIn) {
 //       label.setAttribute("transform", `rotate(-40)`);
 //     }

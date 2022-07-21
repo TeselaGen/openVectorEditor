@@ -2,7 +2,7 @@ import { inRange } from "lodash";
 
 describe("editor", function () {
   beforeEach(() => {
-    cy.visit("");
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
   });
 
   it(`annotation limits should persist across reloads and be configurable from the menu`, () => {
@@ -371,9 +371,6 @@ describe("editor", function () {
   it(`should handle very long external labels in RowView`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".tg-menu-bar-popover").contains("Labels").click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("External Labels")
-      .click({ force: true });
     cy.contains(".veLabelText", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Edit Part").click();
     const longName =

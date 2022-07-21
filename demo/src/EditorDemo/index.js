@@ -66,6 +66,7 @@ const defaultState = {
   overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
   showAvailability: true,
+  showCicularViewInternalLabels: true,
   showDemoOptions: !isMobile(),
   shouldAutosave: false,
   generatePng: false,
@@ -1663,6 +1664,11 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "showCicularViewInternalLabels",
+                info: `pass showCicularViewInternalLabels=false to the <Editor> to not allow labels to be rendered inside the annotations on the circular view`
+              })}
+              {renderToggle({
+                that: this,
                 label: "Show GC Content by default",
                 type: "showGCContentByDefault",
                 info: `pass showGCContentByDefault=true to the <Editor/> to display the %GC content by default (note this will still allow the user to override that preference)`
@@ -1770,46 +1776,16 @@ clickOverrides: {
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}
               {editorHandlers}
-              {/* { <AddOrEditPrimerDialog
-                {...{
-                  editorName: "DemoEditor" || console.log(`remove me!`),
-                  selectionLayer: {
-                    start: 1,
-                    end: 10
-                  },
-                  initialValues: {
-                    forward: false,
-                    start: 1,
-                    end: 10,
-                    name: "lol",
-                    readOnly: false
-                  },
-                  dialogProps: {
-                    title: "edit primer"
-                  },
-                  readOnly: false
-                }}
-              ></AddOrEditPrimerDialog>} */}
               <br />
               <br />
             </div>
           }
-          {/* <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              ...(this.state.showDemoOptions && { paddingLeft: 250 })
-            }}
-          > */}
+
           <Editor
             panelMap={{
               myCustomTab: MyCustomTab
             }}
             style={{
-              // display: "flex",
-              // flexDirection: "column",
-              // flexGrow: 1,
               ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
             {...(this.state.readOnly && { readOnly: true })}
@@ -2284,6 +2260,9 @@ clickOverrides: {
             showGCContentByDefault={this.state.showGCContentByDefault}
             onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
+            showCicularViewInternalLabels={
+              this.state.showCicularViewInternalLabels
+            }
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={
               this.state.beforeSequenceInsertOrDelete

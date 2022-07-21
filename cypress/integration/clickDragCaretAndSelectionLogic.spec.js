@@ -1,10 +1,6 @@
 describe("clickDragCaretAndSelectionLogic", function () {
   beforeEach(() => {
-    cy.visit("");
-  });
-
-  beforeEach(() => {
-    cy.visit("");
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
   });
   // it("can drag the editor", function() {
   //   cy.contains("No Selection");

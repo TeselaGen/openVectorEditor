@@ -1,7 +1,6 @@
 import React from "react";
 import { getStripedPattern } from "../utils/editorUtils";
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
-import { cleanRest } from "./utils/cleanRest";
 
 export default function CircularPrimer({
   color = "orange",
@@ -9,7 +8,7 @@ export default function CircularPrimer({
   arrowheadLength = 0.5,
   annotationHeight,
   totalAngle,
-  ...rest
+  id
 }) {
   const path = drawDirectedPiePiece({
     radius,
@@ -22,8 +21,8 @@ export default function CircularPrimer({
     <React.Fragment>
       {getStripedPattern({ color })}
       <path
-        {...cleanRest(rest)}
         className="vePrimer veCircularViewPrimer"
+        id={id}
         strokeWidth=".5"
         stroke="black"
         fill="url(#diagonalHatch)"

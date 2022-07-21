@@ -115,7 +115,7 @@ const Axis = function (props) {
         <text
           data-tick-mark={textInner}
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
-          stroke="black"
+          fill="black"
           x={x}
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
