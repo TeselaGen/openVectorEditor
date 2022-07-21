@@ -1220,13 +1220,14 @@ class AlignmentView extends React.Component {
                     placeholder="Untitled Alignment"
                   />
                 ) : (
-                  <div>
-                    <span
+                  <div style={{ display: "flex" }}>
+                    <div
+                      className="veAlignmentName"
                       style={{
                         paddingTop: "3px",
                         fontWeight: "bold",
                         fontSize: "14px",
-                        maxWidth: "150px",
+                        maxWidth: "300px",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap"
@@ -1234,9 +1235,10 @@ class AlignmentView extends React.Component {
                       title={this.props.alignmentName || "Untitled Alignment"}
                     >
                       {this.props.alignmentName || "Untitled Alignment"}
-                    </span>
+                    </div>
                     &nbsp;&nbsp;&nbsp;
-                    <span
+                    <div
+                      className="veAlignmentType"
                       style={{
                         paddingTop: "3px",
                         fontSize: "14px",
@@ -1251,7 +1253,7 @@ class AlignmentView extends React.Component {
                       }
                     >
                       {this.props.alignmentType || "Unknown Alignment Type"}
-                    </span>
+                    </div>
                   </div>
                 )}
                 {this.props.handleAlignmentRename && (
