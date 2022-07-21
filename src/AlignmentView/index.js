@@ -324,23 +324,23 @@ class AlignmentView extends React.Component {
     return toReturn || 0;
   };
   setVerticalScrollRange = throttle(() => {
-    // if (
-    //   this &&
-    //   this.InfiniteScroller &&
-    //   this.InfiniteScroller.getFractionalVisibleRange &&
-    //   this.easyStore
-    // ) {
-    //   let [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
-    //   if (this.props.hasTemplate) {
-    //     end = end + 1;
-    //   }
-    //   if (
-    //     this.easyStore.verticalVisibleRange.start !== start ||
-    //     this.easyStore.verticalVisibleRange.end !== end
-    //   )
-    //     this.easyStore.verticalVisibleRange = { start, end };
-    // }
-  }, 10);
+    if (
+      this &&
+      this.InfiniteScroller &&
+      this.InfiniteScroller.getFractionalVisibleRange &&
+      this.easyStore
+    ) {
+      let [start, end] = this.InfiniteScroller.getFractionalVisibleRange();
+      if (this.props.hasTemplate) {
+        end = end + 1;
+      }
+      if (
+        this.easyStore.verticalVisibleRange.start !== start ||
+        this.easyStore.verticalVisibleRange.end !== end
+      )
+        this.easyStore.verticalVisibleRange = { start, end };
+    }
+  }, 100);
   handleScroll = () => {
     // tnr: maybe add this in at some point
     // this.updateMinimapHighlightForScroll(
@@ -1096,7 +1096,7 @@ class AlignmentView extends React.Component {
 
                 {isTemplate ? (
                   this.renderItem(0, 0, isTemplate)
-                ) : alignmentTracks.length > 20 ? (
+                ) : (
                   <ReactList
                     ref={(c) => {
                       this.InfiniteScroller = c;
@@ -1106,16 +1106,6 @@ class AlignmentView extends React.Component {
                     itemRenderer={this.renderItem}
                     length={alignmentTracks.length}
                   />
-                ) : (
-                  <div
-                    ref={(c) => {
-                      this.InfiniteScroller = c;
-                    }}
-                  >
-                    {alignmentTracks.map((t, i) =>
-                      this.renderItem(i, i, false)
-                    )}
-                  </div>
                 )}
               </div>
               {/* </div> */}
