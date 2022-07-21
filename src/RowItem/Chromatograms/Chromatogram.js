@@ -259,7 +259,8 @@ function drawTrace({
 
     for (let baseIndex = startBp; baseIndex <= endBp; baseIndex++) {
       const gapsAt = getGaps(baseIndex).gapsBefore;
-      const startXPosition = (baseIndex + gapsAt - startBp) * charWidth;
+      const startXPosition =
+        (baseIndex + gapsAt - startBp - gapsBeforeRow) * charWidth;
 
       ctx.rect(
         startXPosition,
