@@ -1096,7 +1096,7 @@ class AlignmentView extends React.Component {
 
                 {isTemplate ? (
                   this.renderItem(0, 0, isTemplate)
-                ) : alignmentTracks.length > 10 ? (
+                ) : alignmentTracks.length > 20 ? (
                   <ReactList
                     ref={(c) => {
                       this.InfiniteScroller = c;
