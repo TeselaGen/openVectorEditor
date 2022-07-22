@@ -744,7 +744,8 @@ export class Editor extends React.Component {
                                       <Button
                                         minimal
                                         icon="minimize"
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                          e.stopPropagation();
                                           togglePanelFullScreen(activePanelId);
                                         }}
                                       />

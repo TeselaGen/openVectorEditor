@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
@@ -8,10 +8,8 @@ export function RotateCircularViewSlider({
   editorName,
   zoomLevel,
   maxZoomLevel,
-  initialRotation,
   bindOutsideChangeHelper
 }) {
-  const ref = useRef();
   const showLabelsDebounced = useDebouncedCallback(
     // function
     () => {
@@ -24,17 +22,10 @@ export function RotateCircularViewSlider({
       }
     },
     // delay in ms
-    100,
+    300,
     { leading: true }
   );
-  const debouncedSetRot = useDebouncedCallback(
-    (val) => {
-      setRotationRadians((val * Math.PI) / 180);
-    },
-    // delay in ms
-    100,
-    { leading: true }
-  );
+
   const stepSize = Math.min(
     3,
     (3 / (zoomLevel / 2)) * (maxZoomLevel / (zoomLevel / 2))
@@ -48,14 +39,6 @@ export function RotateCircularViewSlider({
     >
       <UncontrolledSliderWithPlusMinusBtns
         bindOutsideChangeHelper={bindOutsideChangeHelper}
-        onRelease={(_val) => {
-          const val = 360 - _val;
-          if (zoomLevel === 1) {
-            debouncedSetRot(val);
-          }
-          !window.Cypress && clearTimeout(ref.current);
-          showLabelsDebounced();
-        }}
         onChange={(_val) => {
           const val = 360 - _val;
           const el = document.querySelector(
@@ -66,13 +49,13 @@ export function RotateCircularViewSlider({
           );
           innerEl.style.transform = `rotate(${val}deg)`;
 
-          if (zoomLevel > 1) {
-            setRotationRadians((val * Math.PI) / 180);
-          } else {
+          setRotationRadians((val * Math.PI) / 180);
+          if (zoomLevel <= 1) {
             el.classList.add("veHideLabels");
           }
           showLabelsDebounced();
         }}
+        showTrackFill={false}
         leftIcon="arrow-left"
         rightIcon="arrow-right"
         title="Rotate"
@@ -81,7 +64,7 @@ export function RotateCircularViewSlider({
         labelRenderer={false}
         stepSize={stepSize}
         justUpdateInitialValOnce
-        initialValue={initialRotation || 0}
+        // initialValue={initialRotation || 0}
         max={360}
         min={0}
       ></UncontrolledSliderWithPlusMinusBtns>

@@ -1,12 +1,12 @@
-import React, { useRef } from "react";
+import React from "react";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 export function ZoomCircularViewSlider({
+  zoomHelper,
   zoomLevel,
   setZoomLevel,
   maxZoomLevel,
   onZoom
 }) {
-  const zoomHelper = useRef({});
   let clickStepSize = (maxZoomLevel - 1) / 440;
   clickStepSize = clickStepSize * Math.max(1, Math.log(zoomLevel + 2));
   clickStepSize = Math.round(clickStepSize * 1000) / 1000;

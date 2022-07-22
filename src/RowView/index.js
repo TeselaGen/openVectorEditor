@@ -246,7 +246,7 @@ export class RowView extends React.Component {
           this.InfiniteScroller &&
             this.InfiniteScroller.scrollTo(rowToScrollTo);
         }, 0);
-        !window.Cypress && clearInterval(this.jumpIntervalId); //tnr this was triggering a nasty error in cypress related to sinon -
+        clearInterval(this.jumpIntervalId); //tnr this was triggering a nasty error in cypress related to sinon -
         //this will try to run the following logic at most 10 times with a 100ms pause between each
         this.jumpIntervalId = setIntervalX(
           () => {
@@ -266,7 +266,7 @@ export class RowView extends React.Component {
                   block: "center",
                   inline: "center"
                 });
-              !window.Cypress && clearInterval(this.jumpIntervalId);
+              clearInterval(this.jumpIntervalId);
             }
             //tnr: we can't use the following because it messes up the scroll of the Reflex panels
             //causing the tabs to not be shown
@@ -539,7 +539,7 @@ function setIntervalX(callback, delay, repetitions) {
     callback();
 
     if (++x === repetitions) {
-      !window.Cypress && window.clearInterval(intervalID);
+      window.clearInterval(intervalID);
     }
   }, delay);
   return intervalID;

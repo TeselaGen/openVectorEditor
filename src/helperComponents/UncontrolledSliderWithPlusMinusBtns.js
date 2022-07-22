@@ -11,7 +11,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       nextProps.justUpdateInitialValOnce &&
       prevState.oldInitialValue !== undefined
     ) {
-      return;
+      return null;
     }
     //potentially coerce the initial value coming in
     if (prevState.oldInitialValue !== nextProps.initialValue) {

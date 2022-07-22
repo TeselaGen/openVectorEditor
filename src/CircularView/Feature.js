@@ -1,27 +1,25 @@
-import Color from "color";
 import { startsWith } from "lodash";
 import React from "react";
 
 import drawDirectedPiePiece from "./drawDirectedPiePiece";
+import { getInternalLabel } from "./getInternalLabel";
 import shouldFlipText from "./shouldFlipText";
 
-export default function Feature({
-  color = "orange",
-  radius,
-  containsLocations,
-  arrowheadLength = 0.5,
-  annotationHeight,
-  className,
-  ellipsizedName,
-  annotationType,
-  id,
-  angleAdjust,
-  overlapsSelf,
-  rotationRadians,
-  revTransform,
-  centerAngle,
-  totalAngle
-}) {
+export default function Feature(props) {
+  const {
+    color = "orange",
+    radius,
+    containsLocations,
+    arrowheadLength = 0.5,
+    annotationHeight,
+    className,
+    ellipsizedName,
+    annotationType,
+    overlapsSelf,
+    rotationRadians,
+    centerAngle,
+    totalAngle
+  } = props;
   const isPart = annotationType === "part";
   let colorToUse = color;
   if (isPart) {
@@ -60,7 +58,7 @@ export default function Feature({
     arrowheadLength,
     tailThickness: 1 //feature specific
   });
-  const pathId = `${annotationType}${id}`;
+
   return (
     <>
       <path
@@ -70,31 +68,7 @@ export default function Feature({
         fill={isPart ? undefined : colorToUse}
         d={path.print()}
       />
-      {ellipsizedName && (
-        <>
-          <path id={pathId} fill="none" d={textPath.print()}></path>
-          <text
-            className="veLabelText ve-monospace-font"
-            // transform={revTransform}
-            transform={
-              (revTransform || "") +
-              (angleAdjust ? ` rotate(${angleAdjust})` : "")
-            }
-            fill={
-              isPart ? "purple" : Color(colorToUse).isDark() ? "white" : "black"
-            }
-            dy={-2}
-          >
-            <textPath
-              textAnchor="middle"
-              startOffset="50%"
-              xlinkHref={`#${pathId}`}
-            >
-              {ellipsizedName}
-            </textPath>
-          </text>
-        </>
-      )}
+      {getInternalLabel({ ...props, colorToUse, textPath, isPart })}
     </>
   );
 }

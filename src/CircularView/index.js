@@ -16,9 +16,10 @@ import {
   getOverlapsOfPotentiallyCircularRanges,
   isRangeOrPositionWithinRange,
   getMiddleOfRange,
-  getSequenceWithinRange
+  getSequenceWithinRange,
+  trimRangeByAnotherRange
 } from "ve-range-utils";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";
 import drawAnnotations from "./drawAnnotations";
@@ -46,6 +47,7 @@ import { CircularZoomMinimap } from "./CircularZoomMinimap";
 import { normalizeAngleRange } from "./normalizeAngleRange";
 import { CircularDnaSequence } from "./CircularDnaSequence";
 import { VeTopRightContainer } from "./VeTopRightContainer";
+import { normalizeAngle } from "./normalizeAngle";
 // import { updateLabelsForInViewFeaturesCircView } from "../utils/updateLabelsForInViewFeaturesCircView";
 
 function noop() {}
@@ -56,21 +58,39 @@ export function CircularView(props) {
   let [rotationRadians, setRotationRadians] = useState(0);
   let [_zoomLevel, setZoomLevel] = useState(1);
 
-  if (props.circ_zoomLevel) {
+  if (props.circ_zoomLevel !== undefined) {
     //override from the editor to not lose the state when the Circular View component isn't rendered
     rotationRadians = props.circ_rotationRadians;
     setRotationRadians = props.circ_setRotationRadians;
     _zoomLevel = props.circ_zoomLevel;
     setZoomLevel = props.circ_setZoomLevel;
   }
-  let zoomLevel = _zoomLevel;
+  const { sequenceData = {} } = props;
+  const { sequence = "atgc", circular } = sequenceData;
+  const sequenceLength = sequence.length;
+
+  const hasZoomableLength = sequenceLength >= 50;
+  const hasRotateableLength = sequenceLength >= 10;
+  if (!hasZoomableLength) _zoomLevel = 1;
+  if (!hasRotateableLength) rotationRadians = 0;
+  const circRef = useRef();
   const rotateHelper = useRef({});
+  const zoomHelper = useRef({});
+  useEffect(() => {
+    rotateHelper.current.triggerChange(({ changeValue }) => {
+      changeValue(
+        (normalizeAngle(Math.PI * 2 - rotationRadians) / Math.PI) * 180
+      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  let zoomLevel = _zoomLevel;
+
   let smallZoom = 1;
   if (_zoomLevel < 1) {
     smallZoom = _zoomLevel;
     zoomLevel = 1;
   }
-  const circRef = useRef();
   function getNearestCursorPositionToMouseEvent(
     event,
     sequenceLength,
@@ -118,7 +138,7 @@ export function CircularView(props) {
     width = 400,
     height = 400,
     noRedux,
-    sequenceData = {},
+
     hideName = false,
     editorName,
     showCicularViewInternalLabels,
@@ -151,10 +171,7 @@ export function CircularView(props) {
     nameFontSizeCircularView = 14,
     fullScreen
   } = props;
-  const { sequence = "atgc", circular } = sequenceData;
-  const sequenceLength = sequence.length;
-  const hasZoomableLength = sequenceLength >= 50;
-  const hasRotateableLength = sequenceLength >= 10;
+
   const sequenceName = hideName ? "" : sequenceData.name || "";
   let annotationsSvgs = [];
   let labels = {};
@@ -162,9 +179,9 @@ export function CircularView(props) {
   const { isProtein } = sequenceData;
   const maxZoomLevel = Math.max(5, Math.floor(sequenceLength / 100));
 
-  const percentOfCircle = 1 / zoomLevel;
   const svgWidth = Math.max(Number(width) || 300);
   const svgHeight = Math.max(Number(height) || 300);
+  const percentOfCircle = ((1 / zoomLevel) * Math.min(svgWidth, 800)) / 800;
   const isZoomedIn = zoomLevel !== 1;
   let radius = BASE_RADIUS;
   const rotation = 2 * Math.PI - rotationRadians; //get radians
@@ -225,12 +242,13 @@ export function CircularView(props) {
             isAnnotation: true,
             noTitle: true,
             annotations: calculateTickMarkPositionsForGivenRange({
+              increaseOffset: true,
               range: rangeToShow,
               tickSpacing:
                 rangeToShowLength < 10
-                  ? 1
+                  ? 2
                   : rangeToShowLength < 50
-                  ? Math.ceil(rangeToShowLength / 5)
+                  ? Math.ceil(rangeToShowLength / 25) * 5
                   : Math.ceil(rangeToShowLength / 100) * 10,
               sequenceLength,
               isProtein
@@ -661,13 +679,9 @@ export function CircularView(props) {
   usePinch(
     ({ delta: [d], event }) => {
       event.stopPropagation();
-      const el = window.document.querySelector(
-        `.veEditor.${editorName} .veCircularView .bp3-icon-${
-          d > 0 ? "plus" : "minus"
-        }`
-      );
-      if (!el) return;
-      el.click();
+      zoomHelper.current.triggerChange(({ changeValue, value }) => {
+        changeValue(value + (d * Math.min(sequenceLength, 5000)) / 5000);
+      });
     },
     {
       target
@@ -680,19 +694,21 @@ export function CircularView(props) {
         height: heightToUse
       }}
       onWheel={
-        withZoomView
+        withZoomView && hasRotateableLength
           ? (e) => {
-              let selector = e.deltaY < 0 ? "left" : "right";
+              let delta = e.deltaY;
               if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
-                selector = e.deltaX < 0 ? "left" : "right";
+                delta = e.deltaX;
               }
-              const el = window.document.querySelector(
-                `.veEditor.${editorName} .veCircularView .bp3-icon-arrow-${selector}`
-              );
-              if (!el) return;
-              e.stopPropagation();
+              rotateHelper.current.triggerChange(({ changeValue, value }) => {
+                changeValue(
+                  (normalizeAngle(((value + delta / 4) * Math.PI) / 180) /
+                    Math.PI) *
+                    180
+                );
+              });
 
-              el.click();
+              e.stopPropagation();
             }
           : undefined
       }
@@ -705,13 +721,13 @@ export function CircularView(props) {
           editorName={editorName}
           bindOutsideChangeHelper={rotateHelper.current}
           zoomLevel={zoomLevel}
-          initialRotation={(rotationRadians / Math.PI) * 180}
           maxZoomLevel={maxZoomLevel}
           setRotationRadians={setRotationRadians}
         ></RotateCircularViewSlider>
       )}
       {withZoomCircularView && hasZoomableLength && (
         <ZoomCircularViewSlider
+          zoomHelper={zoomHelper}
           onZoom={() => {
             const caret =
               caretPosition > -1
@@ -728,6 +744,18 @@ export function CircularView(props) {
                   sequenceLength
                 );
                 if (!isInView) {
+                  if (selectionLayer.start > -1) {
+                    const trimmed = trimRangeByAnotherRange(
+                      selectionLayer,
+                      rangeToShow,
+                      sequenceLength
+                    );
+                    if (
+                      trimmed.start !== selectionLayer.start ||
+                      trimmed.end !== selectionLayer.end
+                    )
+                      return;
+                  }
                   changeValue((radToRotateTo / Math.PI) * 180);
                 }
               });
@@ -758,7 +786,7 @@ export function CircularView(props) {
         }}
         onStop={editorDragStopped}
       >
-        <div ref={withZoomView ? target : undefined}>
+        <div ref={withZoomView && hasZoomableLength ? target : undefined}>
           <svg
             key="circViewSvg"
             onClick={(event) => {
