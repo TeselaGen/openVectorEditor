@@ -680,7 +680,7 @@ export function CircularView(props) {
     ({ delta: [d], event }) => {
       event.stopPropagation();
       zoomHelper.current.triggerChange(({ changeValue, value }) => {
-        changeValue(value + (d * Math.min(sequenceLength, 5000)) / 5000);
+        changeValue(value + (d * Math.min(sequenceLength, 5000)) / 100000);
       });
     },
     {
