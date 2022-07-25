@@ -74,6 +74,7 @@ describe("zoomCircularView.spec", function () {
 
   it(`zoom level and rotation should be preserved even when the circular view is hidden and re-shown`, () => {
     //zoom all the way in
+    cy.visit("");
     cy.dragBetween(
       ".veZoomCircSlider .bp3-slider-handle",
       ".veZoomCircSlider .bp3-icon-plus"
@@ -82,16 +83,16 @@ describe("zoomCircularView.spec", function () {
     cy.get(".veTabLinearMap").click();
     cy.get(".veCircularViewDnaSequence").should("not.exist");
     cy.get(".veTabCircularMap").click();
-    cy.get(".veCircularViewDnaSequence").should("not.exist");
+    cy.get(".veCircularViewDnaSequence").should("exist");
   });
 
   it("zoom should be disabled for bps < 50", function () {
     cy.visit("#/Editor?sequenceLength=10");
-    cy.get(`.tg-zoom-bar`).should("not.exist");
+    cy.get(`.veZoomCircSlider`).should("not.exist");
     cy.contains("GFPuv").should("not.exist");
     cy.get(`[data-test="sequenceLength"]`).select("5299");
     cy.contains("GFPuv").should("exist");
-    cy.get(`.tg-zoom-bar`).should("exist");
+    cy.get(`.veZoomCircSlider`).should("exist");
   });
   // tnr: maybe enable this some day
   // it("scroll wheel should zoom in/out", function () {
