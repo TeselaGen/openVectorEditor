@@ -742,28 +742,29 @@ export function CircularView(props) {
                 : undefined;
             if (caret !== undefined) {
               const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
-              rotateHelper.current.triggerChange(({ changeValue }) => {
-                const isInView = isRangeOrPositionWithinRange(
-                  caret,
-                  rangeToShow,
-                  sequenceLength
-                );
-                if (!isInView) {
-                  if (selectionLayer.start > -1) {
-                    const trimmed = trimRangeByAnotherRange(
-                      selectionLayer,
-                      rangeToShow,
-                      sequenceLength
-                    );
-                    if (
-                      trimmed.start !== selectionLayer.start ||
-                      trimmed.end !== selectionLayer.end
-                    )
-                      return;
+              rotateHelper.current.triggerChange &&
+                rotateHelper.current.triggerChange(({ changeValue }) => {
+                  const isInView = isRangeOrPositionWithinRange(
+                    caret,
+                    rangeToShow,
+                    sequenceLength
+                  );
+                  if (!isInView) {
+                    if (selectionLayer.start > -1) {
+                      const trimmed = trimRangeByAnotherRange(
+                        selectionLayer,
+                        rangeToShow,
+                        sequenceLength
+                      );
+                      if (
+                        trimmed.start !== selectionLayer.start ||
+                        trimmed.end !== selectionLayer.end
+                      )
+                        return;
+                    }
+                    changeValue((radToRotateTo / Math.PI) * 180);
                   }
-                  changeValue((radToRotateTo / Math.PI) * 180);
-                }
-              });
+                });
             }
             // updateLabelsForInViewFeaturesCircView({ radius });
           }}
