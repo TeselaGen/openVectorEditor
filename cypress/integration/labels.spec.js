@@ -1,4 +1,14 @@
 describe("label tests", () => {
+  it(`label groups should function properly`, () => {
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
+    cy.get(`.veLabelText:contains(+4,Uba1122I)`).trigger("mouseover");
+    cy.get(`.veLabelText.veAnnotationHovered:contains(Uba1122I)`);
+
+    cy.get(`.veLabelText:contains(Aor51HI)`).trigger("mouseover");
+    cy.get(`.veLabelText.veAnnotationHovered:contains(Aor51HI)`);
+    cy.get(`.veLabelText:contains(+4,SbaI)`).trigger("mouseover");
+    cy.get(`.veLabelText.veAnnotationHovered:contains(SbaI)`);
+  });
   it(`the truncateLabelsThatDoNotFit should function correctly`, () => {
     cy.visit("/#/Editor?focusLinearView=true");
     cy.contains(".veLabelText", "pS8c-vector..");
