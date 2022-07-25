@@ -877,6 +877,7 @@ export function CircularView(props) {
           <VeTopRightContainer {...{ fullScreen }}>
             {!circular && !noWarnings && (
               <VeWarning
+                key="ve-warning-circular-to-linear"
                 data-test="ve-warning-circular-to-linear"
                 intent="warning"
                 tooltip={
