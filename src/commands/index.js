@@ -1258,6 +1258,24 @@ const additionalAnnotationCommandsDefs = {
       });
     }
   },
+  showAllLabels: {
+    handler: (props) => {
+      annotationTypes.forEach((type) => {
+        // if (props.isProtein) {
+        //   if (type === "translations" || type === "cutsites")
+        //     return props.annotationVisibilityHide(type);
+        // }
+        props.annotationLabelVisibilityShow(type);
+      });
+    }
+  },
+  hideAllLabels: {
+    handler: (props) => {
+      annotationTypes.forEach((type) => {
+        props.annotationLabelVisibilityHide(type);
+      });
+    }
+  },
   toggleAminoAcidNumbers_dna: {
     ...annotationToggleCommandDefs.toggleAminoAcidNumbers,
     isHidden: (props) => isProtein(props)
@@ -1328,17 +1346,6 @@ const labelSizes = {
   "200%": 16
 };
 const labelCommandDefs = {
-  toggleExternalLabels: {
-    name: "External Labels",
-    isActive: (props) => props.externalLabels === "true",
-    handler: (props) => {
-      if (props.externalLabels === "true") {
-        props.toggleExternalLabels("false");
-      } else {
-        props.toggleExternalLabels("true");
-      }
-    }
-  },
   adjustLabelLineIntensity: {
     name: "Label Line Intensity",
     submenu: (props) =>

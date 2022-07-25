@@ -131,6 +131,7 @@ export function pareDownAnnotations(annotations, max) {
 export function getParedDownWarning({ nameUpper, maxToShow, isAdjustable }) {
   return (
     <VeWarning
+      key={`ve-warning-max${nameUpper}ToDisplay`}
       data-test={`ve-warning-max${nameUpper}ToDisplay`}
       tooltip={`Warning: More than ${maxToShow} ${
         nameUpper === "Cutsites" ? "Cut Sites" : nameUpper

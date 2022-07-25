@@ -78,7 +78,7 @@
   background: #293742;
 }
 
-.bp3-dark .vePart path {
+.bp3-dark .vePart path:first-of-type {
   stroke-width: 1;
   stroke: #df7ff1 !important;
 }

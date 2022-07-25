@@ -1,3 +1,4 @@
+import { ZoomCircularViewSlider } from "./ZoomCircularViewSlider";
 import VeWarning from "../helperComponents/VeWarning";
 import Labels from "./Labels";
 import SelectionLayer from "./SelectionLayer";
@@ -10,20 +11,24 @@ import Cutsite from "./Cutsite";
 import sortBy from "lodash/sortBy";
 import {
   normalizePositionByRangeLength,
-  getPositionFromAngle
+  getPositionFromAngle,
+  getRangeLength,
+  getOverlapsOfPotentiallyCircularRanges,
+  isRangeOrPositionWithinRange,
+  getMiddleOfRange,
+  getSequenceWithinRange,
+  trimRangeByAnotherRange
 } from "ve-range-utils";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";
-import Part from "./Part";
 import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getOrfColor } from "../constants/orfFrameToColorMap";
 import { getSingular } from "../utils/annotationTypes";
-import { upperFirst, map } from "lodash";
+import { upperFirst, map, flatMap } from "lodash";
 
-import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import useAnnotationLimits from "../utils/useAnnotationLimits";
 import {
   getClientX,
@@ -33,17 +38,60 @@ import {
 } from "../utils/editorUtils";
 import { getAllSelectionLayers } from "../utils/selectionLayer";
 import classNames from "classnames";
+import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
+import { RotateCircularViewSlider } from "./RotateCircularViewSlider";
+import { AxisNumbers } from "./AxisNumbers";
+import { positionCutsites } from "./positionCutsites";
+import { usePinch } from "@use-gesture/react";
+import { CircularZoomMinimap } from "./CircularZoomMinimap";
+import { normalizeAngleRange } from "./normalizeAngleRange";
+import { CircularDnaSequence } from "./CircularDnaSequence";
+import { VeTopRightContainer } from "./VeTopRightContainer";
+import { normalizeAngle } from "./normalizeAngle";
+// import { updateLabelsForInViewFeaturesCircView } from "../utils/updateLabelsForInViewFeaturesCircView";
 
 function noop() {}
-
-// function toDegrees(radians) {
-//     return radians / 2 / Math.PI * 360
-// }
+const BASE_RADIUS = 70;
 
 export function CircularView(props) {
   const [limits] = useAnnotationLimits();
-  const [rotationRadians, setRotationRadians] = useState(0);
+  let [rotationRadians, setRotationRadians] = useState(0);
+  let [_zoomLevel, setZoomLevel] = useState(1);
+
+  if (props.circ_zoomLevel !== undefined) {
+    //override from the editor to not lose the state when the Circular View component isn't rendered
+    rotationRadians = props.circ_rotationRadians;
+    setRotationRadians = props.circ_setRotationRadians;
+    _zoomLevel = props.circ_zoomLevel;
+    setZoomLevel = props.circ_setZoomLevel;
+  }
+  const { sequenceData = {} } = props;
+  const { sequence = "atgc", circular } = sequenceData;
+  const sequenceLength = sequence.length;
+
+  const hasZoomableLength = sequenceLength >= 50;
+  const hasRotateableLength = sequenceLength >= 10;
+  if (!hasZoomableLength) _zoomLevel = 1;
+  if (!hasRotateableLength) rotationRadians = 0;
   const circRef = useRef();
+  const rotateHelper = useRef({});
+  const zoomHelper = useRef({});
+  useEffect(() => {
+    rotateHelper.current.triggerChange &&
+      rotateHelper.current.triggerChange(({ changeValue }) => {
+        changeValue(
+          (normalizeAngle(Math.PI * 2 - rotationRadians) / Math.PI) * 180
+        );
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  let zoomLevel = _zoomLevel;
+
+  let smallZoom = 1;
+  if (_zoomLevel < 1) {
+    smallZoom = _zoomLevel;
+    zoomLevel = 1;
+  }
   function getNearestCursorPositionToMouseEvent(
     event,
     sequenceLength,
@@ -86,28 +134,29 @@ export function CircularView(props) {
       )
     });
   }
-  let {
+  const {
     //set defaults for all of these vars
     width = 400,
     height = 400,
-    scale = 1,
     noRedux,
-    sequenceData = {},
+
     hideName = false,
     editorName,
+    showCicularViewInternalLabels,
     withRotateCircularView,
+    withZoomCircularView,
     selectionLayer = { start: -1, end: -1 },
     annotationHeight = 15,
     spaceBetweenAnnotations = 2,
     annotationVisibility = {},
     annotationLabelVisibility = {},
     caretPosition = -1,
-    circularAndLinearTickSpacing,
     editorDragged = noop,
     editorDragStarted = noop,
     editorClicked = noop,
     backgroundRightClicked = noop,
     searchLayers = [],
+    withZoomView,
     editorDragStopped = noop,
     additionalSelectionLayers = [],
     maxAnnotationsToDisplay,
@@ -120,27 +169,55 @@ export function CircularView(props) {
     fontHeightMultiplier,
     hoveredId,
     labelSize,
-    nameFontSizeCircularView = 14
+    nameFontSizeCircularView = 14,
+    fullScreen
   } = props;
 
-  const { sequence = "atgc", circular } = sequenceData;
-  const sequenceLength = sequence.length;
   const sequenceName = hideName ? "" : sequenceData.name || "";
-  circularAndLinearTickSpacing =
-    circularAndLinearTickSpacing ||
-    (sequenceLength < 10
-      ? 1
-      : sequenceLength < 50
-      ? Math.ceil(sequenceLength / 5)
-      : Math.ceil(sequenceLength / 100) * 10);
-
-  const baseRadius = 80;
-  const innerRadius = baseRadius - annotationHeight / 2; //tnr: -annotationHeight/2 because features are drawn from the center
-  let radius = baseRadius;
   let annotationsSvgs = [];
   let labels = {};
 
   const { isProtein } = sequenceData;
+  const maxZoomLevel = Math.max(5, Math.floor(sequenceLength / 100));
+
+  const svgWidth = Math.max(Number(width) || 300);
+  const svgHeight = Math.max(Number(height) || 300);
+  const percentOfCircle = ((1 / zoomLevel) * Math.min(svgWidth, 800)) / 800;
+  const isZoomedIn = zoomLevel !== 1;
+  let radius = BASE_RADIUS;
+  const rotation = 2 * Math.PI - rotationRadians; //get radians
+
+  let rangeToShowLength = sequenceLength;
+  let rangeToShow = { start: 0, end: Math.max(sequenceLength - 1, 0) };
+  let visibleAngleRange;
+  if (isZoomedIn) {
+    const visibleAngle = Math.PI * percentOfCircle;
+    radius = Math.max(BASE_RADIUS, svgWidth / Math.sin(visibleAngle / 2) / 2);
+
+    visibleAngleRange = normalizeAngleRange({
+      start: rotation - visibleAngle / 2,
+      end: rotation + visibleAngle / 2
+    });
+    const rangeToShowStart = getPositionFromAngle(
+      visibleAngleRange.start,
+      sequenceLength
+    );
+    const rangeToShowEnd = getPositionFromAngle(
+      visibleAngleRange.end,
+      sequenceLength
+    );
+    rangeToShow = {
+      start: normalizePositionByRangeLength(rangeToShowStart, sequenceLength),
+      end: normalizePositionByRangeLength(rangeToShowEnd, sequenceLength)
+    };
+
+    rangeToShowLength = getRangeLength(rangeToShow, sequenceLength);
+  }
+  const innerRadius = radius - 10;
+  const initialRadius = radius;
+  const showSeq = isZoomedIn && rangeToShowLength < 140;
+  const showSeqText = rangeToShowLength < 80;
+
   //RENDERING CONCEPTS:
   //-"Circular" annotations get a radius, and a curvature based on their radius:
   //<CircularFeature>
@@ -156,23 +233,124 @@ export function CircularView(props) {
       // spaceBefore: 10,
       spaceAfter: 5
     },
-    {
-      zIndex: 0,
-      layerName: "axis",
-      Comp: Axis,
-      showAxisNumbers: !(annotationVisibility.axisNumbers === false),
-      circularAndLinearTickSpacing,
-      spaceBefore: 0,
-      spaceAfter: 0
-    },
 
-    { zIndex: 15, alwaysShow: true, layerName: "caret", Comp: drawCaret },
+    ...(annotationVisibility.axis
+      ? [
+          {
+            layerName: "axisNumbers",
+            annotationType: "axisNumbers",
+            Annotation: AxisNumbers,
+            isAnnotation: true,
+            noTitle: true,
+            annotations: calculateTickMarkPositionsForGivenRange({
+              increaseOffset: true,
+              range: rangeToShow,
+              tickSpacing:
+                rangeToShowLength < 10
+                  ? 2
+                  : rangeToShowLength < 50
+                  ? Math.ceil(rangeToShowLength / 25) * 5
+                  : Math.ceil(rangeToShowLength / 100) * 10,
+              sequenceLength,
+              isProtein
+            }).map((pos) => {
+              return {
+                name: "Tick Mark",
+                tickPosition: pos,
+                start: pos,
+                end: pos
+              };
+            }),
+            annotationProps: {
+              hideTicks: !annotationVisibility.axis,
+              hideNumbers: !annotationVisibility.axisNumbers
+            },
+            useCenter: true,
+
+            passAnnotation: true,
+            allOnSameLevel: true,
+            addHeight: true,
+            alwaysShow: true,
+            showLabels: false,
+            spaceBefore: 0,
+            spaceAfter: 0
+          },
+          {
+            zIndex: 0,
+            layerName: "axis",
+            Annotation: Axis,
+            spaceBefore: 10,
+            spaceAfter: 5
+          }
+        ]
+      : []),
+    {
+      zIndex: 10,
+      layerName: "cutsites",
+      fontStyle: "italic",
+      Annotation: Cutsite,
+      hideAnnotation: showSeqText,
+      useStartAngle: true,
+      allOnSameLevel: true,
+      positionBy: positionCutsites,
+      isAnnotation: true
+    },
+    ...(showSeq && annotationVisibility.sequence
+      ? [
+          {
+            layerName: "dnaSequences",
+            annotationType: "dnaSequences",
+            noTitle: true,
+            Annotation: CircularDnaSequence,
+            isAnnotation: true,
+            annotationProps: {
+              showReverseSequence: annotationVisibility.reverseSequence,
+              showDnaColors: annotationVisibility.dnaColors,
+              showSeqText
+            },
+            annotations: getSequenceWithinRange(rangeToShow, sequence)
+              .split("")
+              .map((letter, i) => {
+                const pos = rangeToShow.start + i;
+                return {
+                  className: `ve-dna-letter-${pos}`,
+                  start: pos,
+                  end: pos,
+                  letter
+                };
+              }),
+            useCenter: true,
+            passAnnotation: true,
+            allOnSameLevel: true,
+            addHeight: true,
+            alwaysShow: true,
+            showLabels: false,
+            spaceBefore: 5,
+            spaceAfter: annotationVisibility.reverseSequence ? 20 : 5
+          }
+        ]
+      : []),
+    {
+      zIndex: 15,
+      alwaysShow: true,
+      layerName: "caret",
+      Annotation: drawCaret,
+      drawProps: ({ radius }) => ({
+        radius: initialRadius - annotationHeight / 2,
+        annotationHeight: radius - initialRadius
+      })
+    },
 
     {
       zIndex: 10,
       alwaysShow: true,
       layerName: "selectionLayer",
-      Comp: drawSelectionLayer
+      Annotation: drawSelectionLayer,
+      drawProps: ({ radius }) => ({
+        radius:
+          initialRadius + (radius - initialRadius) / 2 - annotationHeight / 2,
+        annotationHeight: radius - initialRadius
+      })
     },
     {
       zIndex: 20,
@@ -186,20 +364,10 @@ export function CircularView(props) {
       isAnnotation: true,
       spaceAfter: 20
     },
-    {
-      zIndex: 10,
-      layerName: "cutsites",
-      fontStyle: "italic",
-      Comp: Cutsite,
-      useStartAngle: true,
-      allOnSameLevel: true,
-      positionBy: positionCutsites,
-      isAnnotation: true
-    },
 
     {
       zIndex: 20,
-      Comp: Orf,
+      Annotation: Orf,
       showLabels: false,
       getColor: getOrfColor,
       layerName: "orfs",
@@ -210,13 +378,12 @@ export function CircularView(props) {
       spaceBefore: 10,
       spaceAfter: 5,
       zIndex: 20,
-      Comp: Primer,
+      Annotation: Primer,
       isAnnotation: true,
       layerName: "primers"
     },
     {
       zIndex: 20,
-      Comp: Part,
       layerName: "parts",
       isAnnotation: true,
       spaceBefore: 15
@@ -246,7 +413,7 @@ export function CircularView(props) {
       zIndex: 30,
       alwaysShow: true,
       layerName: "labels",
-      Comp: Labels,
+      Annotation: Labels,
       circularViewWidthVsHeightRatio: width / height,
       passLabels: true,
       labelLineIntensity: labelLineIntensity,
@@ -256,13 +423,13 @@ export function CircularView(props) {
     }
   ];
   const paredDownMessages = [];
-
   const output = layersToDraw
-    .map((opts) => {
+    .map((layer) => {
       const {
         layerName,
         maxToDisplay,
         Comp,
+        Annotation,
         fontStyle,
         alwaysShow,
         isAnnotation,
@@ -270,8 +437,10 @@ export function CircularView(props) {
         spaceAfter = 0,
         zIndex,
         passLabels,
+        drawProps,
+        noTitle,
         ...rest
-      } = opts;
+      } = layer;
       if (!(alwaysShow || annotationVisibility[layerName])) {
         return null;
       }
@@ -282,8 +451,11 @@ export function CircularView(props) {
       const singularName = getSingular(layerName);
       const nameUpper = upperFirst(layerName);
       radius += spaceBefore;
+
       const sharedProps = {
         radius,
+        innerRadius: BASE_RADIUS,
+        outerRadius: radius,
         noRedux,
         isProtein,
         onClick: props[singularName + "Clicked"],
@@ -291,27 +463,43 @@ export function CircularView(props) {
         onRightClicked: props[singularName + "RightClicked"],
         sequenceLength,
         editorName,
+        showCicularViewInternalLabels,
+        ...(drawProps && drawProps({ radius })),
         ...rest
       };
       if (isAnnotation) {
         //we're drawing features/cutsites/primers/orfs/etc (something that lives on the seqData)
-        if (!map(sequenceData[layerName]).length) {
+        if (!map(sequenceData[layerName]).length && !alwaysShow) {
           radius -= spaceBefore;
           return null;
         }
 
+        const trimmedAnnotations = flatMap(
+          layer.annotations ||
+            sequenceData["filtered" + nameUpper] ||
+            sequenceData[layerName] ||
+            [],
+          (range) => {
+            const trimmedRange = getOverlapsOfPotentiallyCircularRanges(
+              range,
+              rangeToShow,
+              sequenceLength,
+              true
+            );
+            if (!trimmedRange || !trimmedRange.length) return [];
+            return { ...range };
+          }
+        );
+
         const maxToShow =
-          (maxAnnotationsToDisplay
+          !isZoomedIn &&
+          ((maxAnnotationsToDisplay
             ? maxAnnotationsToDisplay[layerName]
-            : limits[layerName]) || 50;
-        const [annotations, paredDown] = isAnnotation
-          ? pareDownAnnotations(
-              sequenceData["filtered" + nameUpper] ||
-                sequenceData[layerName] ||
-                {},
-              maxToShow
-            )
-          : [];
+            : limits[layerName]) ||
+            50);
+        const [trimmedAndParedAnns, paredDown] = maxToShow
+          ? pareDownAnnotations(trimmedAnnotations, maxToShow)
+          : [trimmedAnnotations];
 
         if (paredDown) {
           paredDownMessages.push(
@@ -322,23 +510,28 @@ export function CircularView(props) {
             })
           );
         }
+
         results = drawAnnotations({
-          Annotation: Comp || Feature,
+          noTitle,
+          rotationRadians,
+          visibleAngleRange,
+          isZoomedIn,
+          Annotation: Annotation || Comp || Feature,
           fontStyle: fontStyle,
           hoveredId: hoveredId,
           annotationType: singularName,
           type: singularName,
           reverseAnnotations: true,
           showLabels: !(annotationLabelVisibility[layerName] === false),
-          annotations,
+          annotations: trimmedAndParedAnns,
           annotationHeight,
           spaceBetweenAnnotations,
           ...sharedProps,
           ...props[singularName + "Options"]
         });
       } else {
-        //we're drawing axis/selectionLayer/caret/etc (something that doesn't live on the seqData)
-        results = Comp({
+        //we're drawing axis/selectionLayer/labels/caret/etc (something that doesn't live on the seqData)
+        results = Annotation({
           rotationRadians: rotationRadians,
           ...(passLabels && { labels }),
           ...sharedProps
@@ -349,7 +542,7 @@ export function CircularView(props) {
         radius += results.height || 0;
         //tnr: we had been storing labels as a keyed-by-id object but that caused parts and features with the same id to override eachother
         labels = [...map(labels), ...map(results.labels || {})];
-        comp = results.component || results;
+        comp = results.component === undefined ? results : results.component;
       }
       radius += spaceAfter;
       // console.warn('radius after draw:',JSON.stringify(radius,null,4))
@@ -365,11 +558,6 @@ export function CircularView(props) {
   annotationsSvgs = sortBy(output, "zIndex").reduce(function (arr, { result }) {
     return arr.concat(result);
   }, []);
-
-  //debug hash marks
-  // annotationsSvgs = annotationsSvgs.concat([0,50,100,150,190].map(function (pos) {
-  //     return <text key={pos} transform={`translate(0,${-pos})`}>{pos}</text>
-  // }))
 
   function drawSelectionLayer() {
     //DRAW SELECTION LAYER
@@ -399,7 +587,7 @@ export function CircularView(props) {
                   ? searchLayerClicked
                   : undefined,
                 sequenceLength,
-                baseRadius,
+                baseRadius: BASE_RADIUS,
                 radius,
                 innerRadius
               }}
@@ -444,20 +632,146 @@ export function CircularView(props) {
   const bpTitle = isProtein
     ? `${Math.floor(sequenceLength / 3)} AAs`
     : `${sequenceLength} bps`;
+  const nameEl = (
+    <div
+      className="veSequenceName"
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: isZoomedIn || smallZoom < 1 ? "end" : "center",
+        paddingLeft: isZoomedIn || smallZoom < 1 ? 20 : 0,
+        paddingRight: isZoomedIn || smallZoom < 1 ? 20 : 0,
+        textAlign: "center",
+
+        zIndex: 1
+      }}
+    >
+      <div style={{ marginBottom: isZoomedIn || smallZoom < 1 ? 80 : 0 }}>
+        <div
+          title={sequenceName}
+          className="veCircularViewTextWrapper"
+          style={{
+            textAlign: "center",
+            display: "-webkit-box",
+            WebkitLineClamp: "3",
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: isZoomedIn || smallZoom < 1 ? undefined : innerRadius,
+            maxHeight: innerRadius - 15,
+            fontSize: nameFontSizeCircularView
+          }}
+        >
+          {sequenceName}
+        </div>
+        <span title={bpTitle} style={{ fontSize: 10 }}>
+          {bpTitle}
+        </span>
+      </div>
+    </div>
+  );
+
+  const target = React.useRef();
+
+  usePinch(
+    ({ delta: [d], event }) => {
+      if (d === 0) return;
+      event.stopPropagation();
+      zoomHelper.current.triggerChange &&
+        zoomHelper.current.triggerChange(({ changeValue, value }) => {
+          changeValue(value + d * 5);
+        });
+    },
+    {
+      target,
+      from: [zoomLevel]
+    }
+  );
   return (
     <div
       style={{
         width: widthToUse,
         height: heightToUse
       }}
-      // tabIndex="0"
+      onWheel={
+        withZoomView && hasRotateableLength
+          ? (e) => {
+              let delta = e.deltaY;
+              if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
+                delta = e.deltaX;
+              }
+              rotateHelper.current.triggerChange &&
+                rotateHelper.current.triggerChange(({ changeValue, value }) => {
+                  changeValue(
+                    (normalizeAngle(((value + delta / 4) * Math.PI) / 180) /
+                      Math.PI) *
+                      180
+                  );
+                });
+
+              e.stopPropagation();
+            }
+          : undefined
+      }
       className={classNames("veCircularView", props.className)}
     >
-      {withRotateCircularView && (
-        <RotateCircularView
+      {!hideName && isZoomedIn && nameEl}
+
+      {withRotateCircularView && hasRotateableLength && (
+        <RotateCircularViewSlider
           editorName={editorName}
+          bindOutsideChangeHelper={rotateHelper.current}
+          zoomLevel={zoomLevel}
+          maxZoomLevel={maxZoomLevel}
           setRotationRadians={setRotationRadians}
-        ></RotateCircularView>
+        ></RotateCircularViewSlider>
+      )}
+      {withZoomCircularView && hasZoomableLength && (
+        <ZoomCircularViewSlider
+          zoomHelper={zoomHelper}
+          onZoom={() => {
+            const caret =
+              caretPosition > -1
+                ? caretPosition
+                : selectionLayer.start > -1
+                ? getMiddleOfRange(selectionLayer, sequenceLength)
+                : undefined;
+            if (caret !== undefined) {
+              const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
+              rotateHelper.current.triggerChange &&
+                rotateHelper.current.triggerChange(({ changeValue }) => {
+                  const isInView = isRangeOrPositionWithinRange(
+                    caret,
+                    rangeToShow,
+                    sequenceLength
+                  );
+                  if (!isInView) {
+                    if (selectionLayer.start > -1) {
+                      const trimmed = trimRangeByAnotherRange(
+                        selectionLayer,
+                        rangeToShow,
+                        sequenceLength
+                      );
+                      if (
+                        trimmed.start !== selectionLayer.start ||
+                        trimmed.end !== selectionLayer.end
+                      )
+                        return;
+                    }
+                    changeValue((radToRotateTo / Math.PI) * 180);
+                  }
+                });
+            }
+            // updateLabelsForInViewFeaturesCircView({ radius });
+          }}
+          zoomLevel={_zoomLevel}
+          maxZoomLevel={maxZoomLevel}
+          setZoomLevel={setZoomLevel}
+        />
       )}
       <Draggable
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
@@ -478,7 +792,7 @@ export function CircularView(props) {
         }}
         onStop={editorDragStopped}
       >
-        <div>
+        <div ref={withZoomView && hasZoomableLength ? target : undefined}>
           <svg
             key="circViewSvg"
             onClick={(event) => {
@@ -496,56 +810,74 @@ export function CircularView(props) {
                 backgroundRightClicked
               );
             }}
-            style={{ overflow: "visible", display: "block" }}
-            width={widthToUse}
-            height={heightToUse}
-            ref={circRef}
+            style={{
+              overflow: "visible",
+              display: "block"
+            }}
             className="circularViewSvg"
-            viewBox={`-${radius * scale} -${radius * scale} ${
-              radius * 2 * scale
-            } ${radius * 2 * scale}`}
+            viewBox={
+              isZoomedIn
+                ? `${-svgWidth / 2 / smallZoom},${
+                    -svgHeight / 2 / smallZoom -
+                    (!isZoomedIn ? 0 : initialRadius + BASE_RADIUS * 2 - 100)
+                  },${svgWidth / smallZoom},${svgHeight / smallZoom}`
+                : `-${radius} -${radius} ${radius * 2} ${radius * 2}`
+            }
+            width={svgWidth}
+            height={svgHeight}
           >
-            {annotationsSvgs}
-            {!hideName && (
-              <foreignObject
-                x={(-innerRadius * scale) / 2}
-                y={(-innerRadius * scale) / 2}
-                width={innerRadius * scale}
-                height={innerRadius * scale}
-                transform={`rotate(-${(rotationRadians * 180) / Math.PI})`}
-              >
-                <div
-                  xmlns="http://www.w3.org/1999/xhtml"
-                  key="circViewSvgCenterText"
-                  className="veCircularViewMiddleOfVectorText"
+            <g>
+              {/* {isZoomedIn && (
+                
+              )} */}
+              <circle
+                ref={circRef}
+                r={radius}
+                style={{ opacity: 0, zIndex: -1 }}
+                className="veHiddenAxis"
+              ></circle>
+              {annotationsSvgs}
+              {!hideName && !isZoomedIn && (
+                <foreignObject
+                  x={-72.5 / 2}
+                  y={-72.5 / 2}
+                  width={72.5}
+                  height={72.5}
+                  transform={`rotate(${(-rotationRadians * 180) / Math.PI})`}
                 >
                   <div
-                    title={sequenceName}
-                    className="veCircularViewTextWrapper"
-                    style={{
-                      display: "-webkit-box",
-                      WebkitLineClamp: "3",
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      width: innerRadius * scale,
-                      maxHeight: innerRadius * scale - 15,
-                      fontSize: nameFontSizeCircularView
-                    }}
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    key="circViewSvgCenterText"
+                    className="veCircularViewMiddleOfVectorText"
                   >
-                    {sequenceName}
-                    {/* <span>{}</span> */}
+                    <div
+                      title={sequenceName}
+                      className="veCircularViewTextWrapper"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: "3",
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        width: 72.5,
+                        maxHeight: 72.5 - 15,
+                        fontSize: nameFontSizeCircularView
+                      }}
+                    >
+                      {sequenceName}
+                    </div>
+                    <span title={bpTitle} style={{ fontSize: 10 }}>
+                      {bpTitle}
+                    </span>
                   </div>
-                  <span title={bpTitle} style={{ fontSize: 10 }}>
-                    {bpTitle}
-                  </span>
-                </div>
-              </foreignObject>
-            )}
+                </foreignObject>
+              )}
+            </g>
           </svg>
-          <div className="veWarningContainer">
+          <VeTopRightContainer {...{ fullScreen }}>
             {!circular && !noWarnings && (
               <VeWarning
+                key="ve-warning-circular-to-linear"
                 data-test="ve-warning-circular-to-linear"
                 intent="warning"
                 tooltip={
@@ -554,7 +886,13 @@ export function CircularView(props) {
               />
             )}
             {!noWarnings && paredDownMessages}
-          </div>
+            {isZoomedIn && (
+              <CircularZoomMinimap
+                rotationRadians={rotationRadians}
+                percentOfCircle={percentOfCircle}
+              ></CircularZoomMinimap>
+            )}
+          </VeTopRightContainer>
         </div>
       </Draggable>
     </div>
@@ -562,75 +900,3 @@ export function CircularView(props) {
 }
 
 export default withEditorInteractions(CircularView);
-
-function positionCutsites(annotation) {
-  return {
-    start: annotation.topSnipPosition,
-    end: annotation.topSnipPosition
-  };
-}
-
-// function drawSequenceChars() {
-//   //DRAW CHARS (only if there are fewer than 85 of them)
-//   if (
-//     sequenceLength < 85 &&
-//     sequenceData.sequence &&
-//     !sequenceData.noSequence
-//   ) {
-//     radius += 25;
-//     sequenceData.sequence.split("").forEach(function(bp, index) {
-//       let tickAngle = getAngleForPositionMidpoint(index, sequenceLength);
-//       return (
-//         <text
-//           {...PositionAnnotationOnCircle({
-//             sAngle: tickAngle,
-//             eAngle: tickAngle,
-//             height: radius
-//           })}
-//           key={index}
-//           transform="rotate(180)"
-//           style={{
-//             textAnchor: "middle",
-//             dominantBaseline: "central",
-//             fontSize: "small"
-//           }}
-//         >
-//           {bp}
-//         </text>
-//       );
-//     });
-//   }
-// }
-
-function RotateCircularView({ setRotationRadians, editorName }) {
-  return (
-    <div style={{ zIndex: 900, position: "absolute" }}>
-      <UncontrolledSliderWithPlusMinusBtns
-        onChange={(val) => {
-          const el = document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg`
-          );
-          el.style.transform = `rotate(${val}deg)`;
-          el.classList.add("veHideLabels");
-        }}
-        onRelease={(val) => {
-          setRotationRadians((val * Math.PI) / 180);
-          const el = document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg`
-          );
-          el.classList.remove("veHideLabels");
-        }}
-        leftIcon="arrow-left"
-        rightIcon="arrow-right"
-        title="Rotate"
-        style={{ paddingTop: "4px", width: 120 }}
-        className="ove-slider"
-        labelRenderer={false}
-        stepSize={3}
-        initialValue={0}
-        max={360}
-        min={0}
-      ></UncontrolledSliderWithPlusMinusBtns>
-    </div>
-  );
-}

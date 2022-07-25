@@ -22,6 +22,8 @@ describe("import", function () {
       "Multiple sequences were detected in the input file. Please choose one to continue"
     );
     cy.contains("109 bps");
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(200);
     cy.contains("sequence2").click();
     cy.contains("RFP cassette");
     cy.contains(`.bp3-dialog button`, "Select").click();

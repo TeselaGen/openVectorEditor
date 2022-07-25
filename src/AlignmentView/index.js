@@ -777,14 +777,6 @@ class AlignmentView extends React.Component {
     this.setState({ width: e.contentRect.width });
   }, 200);
 
-  // updateMinimapHighlightForScroll = (oldScroll, newScroll) => {
-  //   if (!this.latestMouseY) this.latestMouseY = 0;
-  //   console.log(`oldScroll:`,oldScroll)
-  //   console.log(`newScroll:`,newScroll)
-  //   this.latestMouseY += newScroll - oldScroll;
-  //   console.log(`this.latestMouseY:`,this.latestMouseY)
-  //   this.updateMinimapHighlight();
-  // };
   removeMinimapHighlightForMouseLeave = () => {
     const minimapLaneEl = document.querySelector(`.minimapLane.lane-hovered`);
     if (!minimapLaneEl) return;
@@ -1304,7 +1296,7 @@ class AlignmentView extends React.Component {
                     coerceInitialValue={coerceInitialValue}
                     title="Adjust Zoom Level"
                     style={{ paddingTop: "4px", width: 100 }}
-                    className="ove-slider"
+                    className="veZoomAlignmentSlider ove-slider"
                     labelRenderer={false}
                     initialValue={charWidthInLinearView}
                     stepSize={0.05} //was 0.01

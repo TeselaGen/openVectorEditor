@@ -33,10 +33,11 @@
   font-weight: 900;
   text-decoration: underline;
 }
-.vePartLabel.partWithSelectedTag {
-  font-size: large !important;
+.veCircularView .partWithSelectedTag.vePart .veLabelText {
+  /* stroke: purple; */
+  font-size: 15px !important;
 }
-.veLabelText.partWithSelectedTag {
+.vePartLabel.partWithSelectedTag {
   font-size: large !important;
 }
 

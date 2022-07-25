@@ -2,7 +2,7 @@ import { inRange } from "lodash";
 
 describe("editor", function () {
   beforeEach(() => {
-    cy.visit("");
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
   });
 
   it(`annotation limits should persist across reloads and be configurable from the menu`, () => {
@@ -38,9 +38,14 @@ describe("editor", function () {
   });
 
   it(`should be able to hide the rotate circular view!`, () => {
-    cy.get(`.ove-slider`);
+    cy.get(`.veRotateCircSlider`);
     cy.tgToggle(`withRotateCircularView`, false);
-    cy.get(`.ove-slider`).should("not.exist");
+    cy.get(`.veRotateCircSlider`).should("not.exist");
+  });
+  it(`should be able to hide the zoom circular view!`, () => {
+    cy.get(`.veZoomCircSlider`);
+    cy.tgToggle(`withZoomCircularView`, false);
+    cy.get(`.veZoomCircSlider`).should("not.exist");
   });
   it(`should be able to hide the single import button if necessary!`, () => {
     cy.get(".tg-menu-bar").contains("File").click();
@@ -366,9 +371,6 @@ describe("editor", function () {
   it(`should handle very long external labels in RowView`, () => {
     cy.get(".tg-menu-bar").contains("View").click();
     cy.get(".tg-menu-bar-popover").contains("Labels").click();
-    cy.get(".tg-menu-bar-popover")
-      .contains("External Labels")
-      .click({ force: true });
     cy.contains(".veLabelText", "Part 0").rightclick();
     cy.contains(".bp3-menu-item", "Edit Part").click();
     const longName =

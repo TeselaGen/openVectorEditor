@@ -18,6 +18,12 @@ const visibilityInitialValues = {
 export const annotationLabelVisibilityToggle = createAction(
   "annotationLabelVisibilityToggle"
 );
+export const annotationLabelVisibilityShow = createAction(
+  "annotationLabelVisibilityShow"
+);
+export const annotationLabelVisibilityHide = createAction(
+  "annotationLabelVisibilityHide"
+);
 
 // ------------------------------------
 // Reducer
@@ -28,6 +34,18 @@ export default createMergedDefaultStateReducer(
       return {
         ...state,
         [payload]: !state[payload]
+      };
+    },
+    [annotationLabelVisibilityShow]: (state, payload) => {
+      return {
+        ...state,
+        [payload]: true
+      };
+    },
+    [annotationLabelVisibilityHide]: (state, payload) => {
+      return {
+        ...state,
+        [payload]: false
       };
     }
   },

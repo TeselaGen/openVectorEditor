@@ -1,10 +1,6 @@
 describe("clickDragCaretAndSelectionLogic", function () {
   beforeEach(() => {
-    cy.visit("");
-  });
-
-  beforeEach(() => {
-    cy.visit("");
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
   });
   // it("can drag the editor", function() {
   //   cy.contains("No Selection");
@@ -61,18 +57,18 @@ describe("clickDragCaretAndSelectionLogic", function () {
           cy.dragBetweenSimple(el, el2);
         });
       });
-    cy.get(`[title="Selecting 4619 bps from 151 to 4769"]`);
+    cy.get(`[title="Selecting 4621 bps from 151 to 4771"]`);
   });
   it(`should not allow origin spanning click if linear (circular view click with previous selection present)`, () => {
     cy.tgToggle("linear");
     cy.selectRange(13, 15);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "4770").click();
-    cy.get(`[title="Selecting 4756 bps from 13 to 4768"]`);
+    cy.get(`[title="Selecting 4761 bps from 13 to 4773"]`);
     cy.selectRange(4000, 4010);
     cy.get("body").type("{shift}", { release: false });
     cy.contains(`text`, "530").click();
-    cy.get(`[title="Selecting 3486 bps from 525 to 4010"]`);
+    cy.get(`[title="Selecting 3491 bps from 520 to 4010"]`);
   });
 
   it(`should handle dragging correctly`, () => {

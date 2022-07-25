@@ -21,11 +21,9 @@ export const doesLabelFitInAnnotation = (
 //     (range ? getWidth(range, charWidth, 0) : width) - charWidth;
 //   const doesFit = widthMinusOne > textLength;
 //   if (returnTextThatFits) {
-//     console.log(`doesFit:`,doesFit)
 //     if (doesFit) {
 //       return text;
 //     } else {
-//       console.log(`widthMinusOne:`,widthMinusOne)
 //       return text.slice(0, widthMinusOne);
 //     }
 //   } else {

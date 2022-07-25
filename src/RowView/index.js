@@ -246,7 +246,7 @@ export class RowView extends React.Component {
           this.InfiniteScroller &&
             this.InfiniteScroller.scrollTo(rowToScrollTo);
         }, 0);
-        clearInterval(this.jumpIntervalId);
+        clearInterval(this.jumpIntervalId); //tnr this was triggering a nasty error in cypress related to sinon -
         //this will try to run the following logic at most 10 times with a 100ms pause between each
         this.jumpIntervalId = setIntervalX(
           () => {

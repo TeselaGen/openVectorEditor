@@ -5,7 +5,8 @@ export default function calculateTickMarkPositionsForGivenRange({
   tickSpacing: _tickSpacing = 10,
   range,
   sequenceLength,
-  isProtein
+  isProtein,
+  increaseOffset
 }) {
   if (sequenceLength === 0) {
     return [];
@@ -14,24 +15,33 @@ export default function calculateTickMarkPositionsForGivenRange({
   if (isProtein) {
     tickSpacing = Math.floor((_tickSpacing / 2) * 3);
   }
-  let rangeLength = getRangeLength(range, sequenceLength);
 
-  let firstTickOffsetFromRangeStart;
-  if (range.start > range.end) {
-    // range spans origin, so make sure the 0 bp is included!
-    firstTickOffsetFromRangeStart =
-      ((sequenceLength - range.start) % tickSpacing) + 1;
-  } else {
-    firstTickOffsetFromRangeStart = tickSpacing - (range.start % tickSpacing);
+  const rangeLength = getRangeLength(range, sequenceLength);
+
+  let spacer = 0;
+  if (increaseOffset) {
+    spacer = range.start;
   }
-  let tickMarks = [];
+  const firstTickOffsetFromRangeStart =
+    spacer + tickSpacing - (range.start % tickSpacing);
+
+  const tickMarks = [];
   if (range.start === 0) tickMarks.push(isProtein ? 2 : 0);
+  let hasCrossedOrigin;
   for (
     let tick = firstTickOffsetFromRangeStart - 1;
-    tick < rangeLength;
+    tick < spacer + rangeLength;
     tick += tickSpacing
   ) {
-    tickMarks.push(norm(tick, sequenceLength));
+    let normed = norm(tick, sequenceLength);
+    if (!hasCrossedOrigin && normed < tick) {
+      if (!(normed % 10) && normed !== 0) {
+        tick = tick - 1;
+        normed = normed - 1;
+      }
+      if (normed !== 0) hasCrossedOrigin = true;
+    }
+    tickMarks.push(normed);
   }
   return tickMarks;
 }

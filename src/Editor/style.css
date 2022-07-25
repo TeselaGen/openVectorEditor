@@ -201,7 +201,7 @@ text.vePart,
 tspan.vePart {
   fill-opacity: 1;
 }
-.veWarningContainer {
+.veTopRightContainer {
   position: absolute;
   top: 5px;
   right: 5px;

@@ -1,8 +1,6 @@
 describe("miscAnnotations", function () {
-  beforeEach(() => {
-    cy.visit("");
-  });
   it("can display lineageAnnotations and assemblyPieces and click them", function () {
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.tgToggle("showLineageAnnotations");
     cy.contains("Lineage Annotation 1");
     cy.contains(".veLabelText", "Lineage Annotation 2").click();

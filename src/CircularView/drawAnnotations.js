@@ -9,32 +9,40 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import Feature from "./Feature";
 import getAnnotationClassnames from "../utils/getAnnotationClassnames";
+// import { normalizeAngleRange } from "./normalizeAngleRange";
+// import { normalizeAngle } from "./normalizeAngle";
 
-function drawAnnotations({
-  Annotation,
-  annotationType,
-  radius,
-  isProtein,
-  type,
-  annotations,
-  annotationHeight,
-  spaceBetweenAnnotations,
-  sequenceLength,
-  reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
-  editorName,
-  getColor,
-  useStartAngle, //use the startAngle instead of the centerAngle to position the labels
-  onClick = noop,
-  positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
-  allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cut Sites for example just get drawn all on the same level
-  onRightClicked = noop,
-  onDoubleClick = noop,
-  showLabels,
-  noRedux,
-  labelOptions,
-  annotationProps,
-  fontStyle
-}) {
+//annotations coming in can be positioned either by caretPosition or range
+function drawAnnotations(props) {
+  const {
+    annotationType,
+    radius,
+    isProtein,
+    type,
+    annotations,
+    annotationHeight,
+    noTitle,
+    spaceBetweenAnnotations,
+    sequenceLength,
+    showCicularViewInternalLabels,
+    // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
+    // editorName,
+    getColor,
+    useStartAngle, //use the startAngle instead of the centerAngle to position the labels
+    onClick = noop,
+    positionBy, //by default the annotation.start and annotation.end are used to position the annotation on the circle, but passing a function here gives an option to override that
+    allOnSameLevel, //by default overlapping annotations are given different yOffsets. Setting this to true prevents that and positions all annotations on the same level (no y-offsets given). Cutsites for example just get drawn all on the same level
+    onRightClicked = noop,
+    onDoubleClick = noop,
+    showLabels,
+    hideAnnotation,
+    // rotationRadians,
+    labelOptions,
+    annotationProps,
+    fontStyle
+    // isZoomedIn,
+    // visibleAngleRange
+  } = props;
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
   let maxYOffset = 0;
@@ -51,7 +59,6 @@ function drawAnnotations({
           positionBy ? positionBy(annotation) : annotation,
           sequenceLength
         );
-
       const spansOrigin = startAngle > endAngle;
       const annotationCopy = {
         ...annotation,
@@ -163,7 +170,63 @@ function drawAnnotations({
       const name =
         annotation.name ||
         (annotation.restrictionEnzyme && annotation.restrictionEnzyme.name);
-      if (showLabels) {
+      let ellipsizedName;
+      // let spaceBeforeName = 0;
+      let angleAdjust;
+      if (name && showCicularViewInternalLabels) {
+        const arcLength =
+          2 * Math.PI * (annotationRadius - annotationHeight) * totalAngle; //for arrowhead
+
+        const annLength = Math.max(0, Math.floor(arcLength / 55 - 3));
+
+        // const arcLength = (annLength + 3)  * 55
+        // const nameAngle = arcLength /( 2 * Math.PI * (annotationRadius - annotationHeight))
+
+        ellipsizedName = name.slice(0, annLength);
+        if (ellipsizedName && ellipsizedName !== name) {
+          if (ellipsizedName.length >= name.length - 2) {
+            ellipsizedName = name;
+          } else if (ellipsizedName.length > 3) {
+            ellipsizedName += "..";
+          } else {
+            ellipsizedName = undefined;
+          }
+        }
+
+        // //tnr: WIP to try to adjust the inline label in the circular view to always show up even when zoomed in
+        // if (ellipsizedName && isZoomedIn) {
+        //   const nameAngle =
+        //     ((ellipsizedName.length + 3) * 55) /
+        //     (2 * Math.PI * (annotationRadius - annotationHeight));
+        //   const maxAngleAdjust = (totalAngle - nameAngle) / 2;
+        //   const idealAngle = normalizeAngle(
+        //     -normalizeAngle(rotationRadians) - normalizeAngle(centerAngle)
+        //   );
+        //   angleAdjust = idealAngle;
+        //   if (
+        //     Math.min(maxAngleAdjust, idealAngle) !== idealAngle
+        //     // &&
+        //     // Math.min(maxAngleAdjust, 2 * Math.PI - idealAngle) !==
+        //     //   2 * Math.PI - idealAngle
+        //   ) {
+        //     angleAdjust = -maxAngleAdjust;
+        //     if (
+        //       normalizeAngle(
+        //         normalizeAngle(centerAngle) + normalizeAngle(rotationRadians)
+        //       ) > Math.PI
+        //     ) {
+        //       angleAdjust = -angleAdjust;
+        //     }
+        //   }
+        //   // angleAdjust =idealAngle
+        //   angleAdjust = (angleAdjust / Math.PI) * 180;
+        //   // if (normalizeAngle(normalizeAngle(centerAngle) + normalizeAngle(rotationRadians)) > Math.PI) {
+        //   //   angleAdjust = -angleAdjust;
+        //   // }
+        // }
+      }
+
+      if (showLabels && !ellipsizedName) {
         //add labels to the exported label array (to be drawn by the label component)
         labels[annotation.id] = {
           annotationType,
@@ -184,45 +247,42 @@ function drawAnnotations({
           ...labelOptions
         };
       }
+      if (!hideAnnotation) {
+        const annotationColor = getColor
+          ? getColor(annotation)
+          : annotation.color || "purple";
+        DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
 
-      const annotationColor = getColor
-        ? getColor(annotation)
-        : annotation.color || "purple";
-
-      DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
-      svgGroup.push(
-        <DrawAnnotation
-          {...{
-            isProtein,
-            titleText,
-            noRedux,
-            classNames,
-            editorName,
-            annotationType,
-            showLabels,
-            Annotation,
-            arrowheadLength:
-              annotation.rangeTypeOverride === "middle" ? 0 : undefined,
-            overlapsSelf: annotation.overlapsSelf,
-            labelCenter: centerAngle,
-            startAngle,
-            endAngle,
-            locationAngles,
-            reverseAnnotations,
-            onClick: _onClick,
-            onDoubleClick: _onDoubleClick,
-            onContextMenu,
-            annotation,
-            totalAngle,
-            annotationColor,
-            annotationRadius,
-            annotationHeight,
-            annotationProps: _annotationProps
-          }}
-          id={annotation.id}
-          key={"veAnnotation-" + annotationType + index}
-        />
-      );
+        svgGroup.push(
+          <DrawAnnotation
+            {...{
+              ...props,
+              ...rest,
+              ...annotation,
+              angleAdjust,
+              ellipsizedName,
+              name,
+              annotationHeight,
+              annotationRadius,
+              annotationType,
+              isProtein,
+              noTitle,
+              titleText,
+              classNames,
+              onClick: _onClick,
+              onDoubleClick: _onDoubleClick,
+              onContextMenu,
+              annotation,
+              annotationColor,
+              totalAngle,
+              centerAngle,
+              annotationProps: _annotationProps
+            }}
+            id={annotation.id}
+            key={"veAnnotation-" + annotationType + index}
+          />
+        );
+      }
     });
   return {
     component: (
@@ -254,17 +314,26 @@ const DrawAnnotation = withHover(function ({
   reverseAnnotations,
   Annotation = Feature,
   totalAngle,
-  arrowheadLength,
   annotationColor,
   isProtein,
   annotationRadius,
   annotationHeight,
   onMouseLeave,
   onMouseOver,
-  annotationProps
+  annotationType,
+  annotationProps,
+  addHeight,
+  noTitle,
+  useCenter,
+  centerAngle,
+  perAnnotationProps,
+  passAnnotation,
+  ellipsizedName,
+  angleAdjust,
+  rotationRadians
 }) {
   const sharedProps = {
-    style: { cursor: "pointer" },
+    style: noTitle ? undefined : { cursor: "pointer" },
     className: `${className} ${classNames}`,
     onContextMenu: onContextMenu,
     onClick: onClick,
@@ -273,54 +342,110 @@ const DrawAnnotation = withHover(function ({
     onMouseOver
   };
   const title = <title>{titleText}</title>;
-  return (
-    <React.Fragment>
+  function getInner(
+    { startAngle, endAngle, totalAngle, isNotLocation, containsLocations },
+    i
+  ) {
+    const { transform, revTransform } = PositionAnnotationOnCircle({
+      sAngle: useCenter ? centerAngle : startAngle,
+      eAngle: useCenter ? centerAngle : endAngle,
+      height: addHeight ? annotationRadius : undefined,
+      forward: reverseAnnotations ? !annotation.forward : annotation.forward
+    });
+    return (
       <g
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: endAngle,
-          forward: reverseAnnotations ? !annotation.forward : annotation.forward
-        })}
+        transform={transform}
+        key={
+          isNotLocation
+            ? "notLocation"
+            : "location--" + annotation.id + "--" + i
+        }
+        // {...(ellipsizedName && ellipsizedName !== name
+        //   ? { "data-tip": name }
+        //   : {})}
         {...sharedProps}
       >
-        {title}
+        {noTitle ? null : title}
         <Annotation
-          {...(locationAngles &&
-            locationAngles.length && { containsLocations: true })}
+          {...(passAnnotation && { annotation })}
+          annotationType={annotationType}
           totalAngle={totalAngle}
+          centerAngle={centerAngle}
+          revTransform={revTransform}
+          rotationRadians={rotationRadians}
+          ellipsizedName={ellipsizedName}
+          angleAdjust={angleAdjust}
           color={annotationColor}
           isProtein={isProtein}
-          arrowheadLength={arrowheadLength}
+          containsLocations={containsLocations}
           radius={annotationRadius}
           annotationHeight={annotationHeight}
           {...annotationProps}
+          {...(perAnnotationProps && perAnnotationProps(annotation))}
         />
       </g>
-      );
-      {locationAngles &&
-        locationAngles.map(({ startAngle, endAngle, totalAngle }, i) => {
-          return (
-            <g
-              key={"location--" + annotation.id + "--" + i}
-              {...PositionAnnotationOnCircle({
-                sAngle: startAngle,
-                eAngle: endAngle,
-                forward: reverseAnnotations
-                  ? !annotation.forward
-                  : annotation.forward
-              })}
-              {...sharedProps}
-            >
-              {title}
-              <Annotation
-                totalAngle={totalAngle}
-                color={annotationColor}
-                radius={annotationRadius}
-                annotationHeight={annotationHeight}
-              />
-            </g>
-          );
-        })}
+    );
+  }
+  return (
+    <React.Fragment>
+      {getInner({
+        startAngle,
+        endAngle,
+        totalAngle,
+        centerAngle,
+        containsLocations: !!locationAngles,
+        i: 0
+      })}
+      {locationAngles && locationAngles.map(getInner)}
     </React.Fragment>
   );
 });
+
+// const nameAngle =
+//   ((ellipsizedName.length + 3) * 55) /
+//   (2 * Math.PI * (annotationRadius - annotationHeight)) /
+//   2;
+//get how far label end is from angle range end
+
+// const spaceBeforeNameAngle = totalAngle - nameAngle / 2;
+// const spaceBeforeNameAngle =
+//   ((annLength - ellipsizedName.length + 3) * 55) /
+//   (2 * Math.PI * (annotationRadius - annotationHeight)) /
+//   2;
+// const nameAngleRange = normalizeAngleRange({
+//   start: centerAngle - nameAngle / 2,
+//   end: centerAngle + nameAngle / 2
+// });
+//           const isInRange = isRangeOrPositionWithinRange(
+//             nameAngleRange,
+//             visibleAngleRange,
+//             Math.PI * 2 + 1 //need to hack it for circular ranges
+//           );
+
+//           if (!isInRange) {
+//             const trimmed = trimRangeByAnotherRange(
+//               visibleAngleRange,
+//               normalizeAngleRange({ start: startAngle, end: endAngle }),
+//               Math.PI * 2 + 1 //need to hack it for circular ranges
+//             );
+//             if (
+//               trimmed &&
+//               isRangeOrPositionWithinRange(
+//                 trimmed.start,
+//                 visibleAngleRange,
+//                 Math.PI * 2 + 1 //need to hack it for circular ranges
+//               )
+//             ) {
+//               angleAdjust =
+//                 ((startAngle - nameAngleRange.start) / Math.PI) * 180;
+//             } else if (
+//               trimmed &&
+//               isRangeOrPositionWithinRange(
+//                 trimmed.end,
+//                 visibleAngleRange,
+//                 Math.PI * 2 + 1 //need to hack it for circular ranges
+//               )
+//             ) {
+//               angleAdjust = ((nameAngleRange.end - endAngle) / Math.PI) * 180;
+//             }
+//           }

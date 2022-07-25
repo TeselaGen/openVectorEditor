@@ -1,8 +1,6 @@
 describe("partTags", function () {
-  beforeEach(() => {
-    cy.visit("");
-  });
   it(`Should highlight part labels based on selected tags in the part options tool`, () => {
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.get(`[data-test="partToolDropdown"]`).click();
     cy.contains("Search Parts By Tag:");
     cy.get(".example-editTagsLink").should("exist");
@@ -18,6 +16,7 @@ describe("partTags", function () {
   });
 
   it(`the part tag search dropdown should only show existing tags on parts as options to search`, () => {
+    cy.visit("");
     cy.get(`[data-test="partToolDropdown"]`).click();
     cy.focused().click();
     cy.contains(".bp3-tag", "zoink");
@@ -27,12 +26,14 @@ describe("partTags", function () {
     cy.contains(".bp3-tag", "something else").should("not.exist");
   });
   it(`if allPartTags isn't passed in, no search for part tags should show up from the part tool dropdown`, () => {
+    cy.visit("");
     cy.get(`[data-test="partToolDropdown"]`).should("exist");
     cy.tgToggle("withPartTags", false);
     cy.get(`[data-test="partToolDropdown"]`).should("not.exist");
   });
 
   it(`should be able to see and search for part tags in the properties window`, () => {
+    cy.visit("");
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="parts"]`).click();
     cy.contains(".rt-tr .bp3-tag", "status: ready").should("exist");
@@ -42,6 +43,7 @@ describe("partTags", function () {
   });
 
   it(`should be able to add/edit tags on parts`, () => {
+    cy.visit("");
     cy.get(".veRowViewSelectionLayer").trigger("contextmenu", { force: true });
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Part").click({ force: true });

@@ -23,7 +23,6 @@ function StackedAnnotations(props) {
     onClick,
     isProtein,
     onDoubleClick,
-    isRowView,
     disregardLocations,
     InnerComp,
     onRightClick,
@@ -39,7 +38,6 @@ function StackedAnnotations(props) {
     truncateLabelsThatDoNotFit,
     getExtraInnerCompProps,
     onlyShowLabelsThatDoNotFit,
-    externalLabels,
     isStriped
   } = props;
 
@@ -85,7 +83,7 @@ function StackedAnnotations(props) {
       insertTicks,
       flipAnnotation
     } = getBasesToShow({
-      isRowView,
+      hidePrimerBases: charWidth < 8,
       sequenceLength,
       iTree,
       fullSeq,
@@ -108,7 +106,6 @@ function StackedAnnotations(props) {
       >
         <InnerCompToUse
           noRedux={noRedux}
-          externalLabels={externalLabels}
           key={index}
           className={annotation.className}
           editorName={editorName}

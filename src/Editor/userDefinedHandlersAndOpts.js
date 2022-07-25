@@ -17,6 +17,7 @@ export const userDefinedHandlersAndOpts = [
   "showCircularity",
   "showMoleculeType",
   "showAvailability",
+  "showCicularViewInternalLabels",
   "showGCContentByDefault",
   "GCDecimalDigits",
   "onlyShowLabelsThatDoNotFit",
@@ -45,6 +46,5 @@ export const userDefinedHandlersAndOpts = [
   "onCreateNewFromSubsequence",
   "onPreviewModeFullscreenClose",
   "onPaste",
-  "menuFilter",
-  "externalLabels"
+  "menuFilter"
 ];
