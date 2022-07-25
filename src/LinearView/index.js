@@ -174,6 +174,7 @@ class _LinearView extends React.Component {
     const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
     const pinchHandler = {
       onPinch: ({ delta: [d] }) => {
+        if (d === 0) return;
         this.bindOutsideChangeHelper.triggerChange(({ value, changeValue }) => {
           // changeValue(d);
           if (d > 0) {

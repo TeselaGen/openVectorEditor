@@ -678,13 +678,16 @@ export function CircularView(props) {
 
   usePinch(
     ({ delta: [d], event }) => {
+      if (d === 0) return;
       event.stopPropagation();
-      zoomHelper.current.triggerChange(({ changeValue, value }) => {
-        changeValue(value + (d * Math.min(sequenceLength, 5000)) / 100000);
-      });
+      zoomHelper.current.triggerChange &&
+        zoomHelper.current.triggerChange(({ changeValue, value }) => {
+          changeValue(value + d * 5);
+        });
     },
     {
-      target
+      target,
+      from: [zoomLevel]
     }
   );
   return (
@@ -700,13 +703,14 @@ export function CircularView(props) {
               if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
                 delta = e.deltaX;
               }
-              rotateHelper.current.triggerChange(({ changeValue, value }) => {
-                changeValue(
-                  (normalizeAngle(((value + delta / 4) * Math.PI) / 180) /
-                    Math.PI) *
-                    180
-                );
-              });
+              rotateHelper.current.triggerChange &&
+                rotateHelper.current.triggerChange(({ changeValue, value }) => {
+                  changeValue(
+                    (normalizeAngle(((value + delta / 4) * Math.PI) / 180) /
+                      Math.PI) *
+                      180
+                  );
+                });
 
               e.stopPropagation();
             }
