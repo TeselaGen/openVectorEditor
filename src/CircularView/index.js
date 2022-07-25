@@ -77,11 +77,12 @@ export function CircularView(props) {
   const rotateHelper = useRef({});
   const zoomHelper = useRef({});
   useEffect(() => {
-    rotateHelper.current.triggerChange(({ changeValue }) => {
-      changeValue(
-        (normalizeAngle(Math.PI * 2 - rotationRadians) / Math.PI) * 180
-      );
-    });
+    rotateHelper.current.triggerChange &&
+      rotateHelper.current.triggerChange(({ changeValue }) => {
+        changeValue(
+          (normalizeAngle(Math.PI * 2 - rotationRadians) / Math.PI) * 180
+        );
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   let zoomLevel = _zoomLevel;

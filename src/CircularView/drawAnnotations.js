@@ -329,7 +329,6 @@ const DrawAnnotation = withHover(function ({
   perAnnotationProps,
   passAnnotation,
   ellipsizedName,
-  name,
   angleAdjust,
   rotationRadians
 }) {
@@ -361,9 +360,9 @@ const DrawAnnotation = withHover(function ({
             ? "notLocation"
             : "location--" + annotation.id + "--" + i
         }
-        {...(ellipsizedName && ellipsizedName !== name
-          ? { "data-tip": name }
-          : {})}
+        // {...(ellipsizedName && ellipsizedName !== name
+        //   ? { "data-tip": name }
+        //   : {})}
         {...sharedProps}
       >
         {noTitle ? null : title}

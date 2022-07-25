@@ -17,25 +17,25 @@ describe("label tests", () => {
     cy.contains("veLabelText", "pS8c-vector..").should("not.exist");
   });
   it(`should show/hide a checkmark when toggling feature label visibility`, function () {
-    cy.visit("");
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.contains(".veCircularViewLabelText", "araC");
     cy.get("body").type("{meta}/");
     cy.focused().type(`Feature Labels`);
-    cy.contains(".bp3-menu-item", "Feature Labels")
+    cy.contains(".bp3-menu-item", "Feature")
       .find(".bp3-icon-small-tick")
       .should("exist");
     cy.focused().type(`{enter}`);
-    cy.contains(".bp3-menu-item", "Feature Labels")
+    cy.contains(".bp3-menu-item", "Feature")
       .find(".bp3-icon-small-tick")
       .should("not.exist");
     cy.contains(".veCircularViewLabelText", "araC").should("not.exist");
   });
 
   it(`should not initially show the option to toggle assembly piece labels`, function () {
-    cy.visit("");
+    cy.visit("#/Editor?showCicularViewInternalLabels=false");
     cy.get("body").type("{meta}/");
     cy.focused().type(`Assembly Piece Labels`);
-    cy.contains(".bp3-menu-item", "Feature Labels").should("not.exist");
+    cy.contains(".bp3-menu-item", "Features").should("not.exist");
     cy.contains(".veCircularViewLabelText", "Assembly Piece 2").should(
       "not.exist"
     );
@@ -43,11 +43,11 @@ describe("label tests", () => {
     cy.contains(".veCircularViewLabelText", "Assembly Piece 2");
     cy.get("body").type("{meta}/");
     cy.focused().type(`Assembly Piece Labels`);
-    cy.contains(".bp3-menu-item", "Assembly Piece Labels")
+    cy.contains(".bp3-menu-item", "Assembly Pieces")
       .find(".bp3-icon-small-tick")
       .should("exist");
     cy.focused().type(`{enter}`);
-    cy.contains(".bp3-menu-item", "Assembly Piece Labels")
+    cy.contains(".bp3-menu-item", "Assembly Pieces")
       .find(".bp3-icon-small-tick")
       .should("not.exist");
     cy.contains(".veCircularViewLabelText", "Assembly Piece 2").should(

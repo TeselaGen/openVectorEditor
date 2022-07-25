@@ -345,36 +345,57 @@ export default [
     text: "Labels",
     submenu: [
       { divider: "External Labels:" },
-      { text: "Show All", cmd: "showAllLabels", shouldDismissPopover: false },
-      { text: "Hide All", cmd: "hideAllLabels", shouldDismissPopover: false },
+      {
+        text: "Show All",
+        hiddenButSearchableText: "labels",
+        cmd: "showAllLabels",
+        shouldDismissPopover: false
+      },
+      {
+        text: "Hide All",
+        hiddenButSearchableText: "labels",
+        cmd: "hideAllLabels",
+        shouldDismissPopover: false
+      },
       {
         text: "Features",
+        hiddenButSearchableText: "labels",
         cmd: "toggleFeatureLabels",
         shouldDismissPopover: false
       },
-      { text: "Parts", cmd: "togglePartLabels", shouldDismissPopover: false },
+      {
+        text: "Parts",
+        hiddenButSearchableText: "labels",
+        cmd: "togglePartLabels",
+        shouldDismissPopover: false
+      },
       {
         text: "Cutsites",
+        hiddenButSearchableText: "labels",
         cmd: "toggleCutsiteLabels",
         shouldDismissPopover: false
       },
       {
-        text: "AssemblyPieces",
+        text: "Assembly Pieces",
+        hiddenButSearchableText: "labels",
         cmd: "toggleAssemblyPieceLabels",
         shouldDismissPopover: false
       },
       {
         text: "LineageAnnotations",
+        hiddenButSearchableText: "labels",
         cmd: "toggleLineageAnnotationLabels",
         shouldDismissPopover: false
       },
       {
         text: "Warnings",
+        hiddenButSearchableText: "labels",
         cmd: "toggleWarningLabels",
         shouldDismissPopover: false
       },
       {
         text: "Primers",
+        hiddenButSearchableText: "labels",
         cmd: "togglePrimerLabels",
         shouldDismissPopover: false
       },
