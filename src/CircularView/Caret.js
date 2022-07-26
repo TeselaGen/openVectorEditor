@@ -17,21 +17,22 @@ function Caret({
   isProtein,
   selectionMessage
 }) {
-  let { startAngle, endAngle } = getRangeAngles(
+  const { startAngle, endAngle } = getRangeAngles(
     { start: caretPosition, end: caretPosition },
     sequenceLength || 1
   );
   if (!isNumber(startAngle)) {
     console.error("we've got a problem!");
   }
+  const { transform } = PositionAnnotationOnCircle({
+    sAngle: startAngle,
+    eAngle: endAngle,
+    height: 0
+  });
   return (
     <g
-      {...PositionAnnotationOnCircle({
-        sAngle: startAngle,
-        eAngle: endAngle,
-        height: 0
-      })}
       onClick={onClick}
+      transform={transform}
       className={className + " veCaret " + draggableClassnames.caret}
     >
       <title>
@@ -50,8 +51,9 @@ function Caret({
         <polygon
           className="vePolygonCaretHandle"
           fill="black"
-          points={`0,${-outerRadius + 2} 5,${-outerRadius -
-            10} -5,${-outerRadius - 10}`}
+          points={`0,${-outerRadius + 2} 5,${-outerRadius - 10} -5,${
+            -outerRadius - 10
+          }`}
         />
       ) : null}
     </g>

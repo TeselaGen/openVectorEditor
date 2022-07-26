@@ -171,12 +171,18 @@
   top: -7px;
   left: -4px;
 }
+.bp3-dark .veEditor :not(.veSearchLayer).selectionLayerCaret::after {
+  border-top: 10px solid white;
+}
 .vePolygonCaretHandle,
 .veEditor .veSearchLayer .vePolygonCaretHandle {
   display: none;
 }
 .veEditor .vePolygonCaretHandle {
   display: inherit;
+}
+.bp3-dark .veEditor .vePolygonCaretHandle {
+  fill: white;
 }
 .bp3-dark .veTabActive {
   color: #48aff0 !important;
@@ -195,7 +201,7 @@ text.vePart,
 tspan.vePart {
   fill-opacity: 1;
 }
-.veWarningContainer {
+.veTopRightContainer {
   position: absolute;
   top: 5px;
   right: 5px;

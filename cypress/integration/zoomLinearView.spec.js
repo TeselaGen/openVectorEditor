@@ -54,6 +54,7 @@ describe("zoomLinearView.spec", function () {
     cy.get(".tg-zoom-bar .bp3-icon-minus").click();
     cy.get(".veRowViewFeature:contains(dbl term):first").should("be.visible");
   });
+  it(`zoom level should be preserved even when the linear view is hidden and re-shown`, () => {});
 });
 
 function pressZoom(times) {

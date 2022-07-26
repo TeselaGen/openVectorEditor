@@ -52,6 +52,8 @@ import { getClientX, getClientY } from "../utils/editorUtils";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 
+import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
+
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
 try {
@@ -363,6 +365,9 @@ class AlignmentView extends React.Component {
       this.alignmentHolder.scrollLeft /
       (this.alignmentHolder.scrollWidth - this.alignmentHolder.clientWidth);
     this.easyStore.percentScrolled = scrollPercentage || 0;
+    if (!this.isZooming) {
+      this.easyStore.percentScrolledPreZoom = this.easyStore.percentScrolled;
+    }
     if (this.alignmentHolderTop) {
       this.alignmentHolderTop.scrollLeft = this.alignmentHolder.scrollLeft;
     }
@@ -371,8 +376,13 @@ class AlignmentView extends React.Component {
   handleTopScroll = () => {
     this.alignmentHolder.scrollLeft = this.alignmentHolderTop.scrollLeft;
   };
+  /**
+   * Responsible for handling resizing the highlighted region of the minimap
+   * @param {*} newSliderSize
+   * @param {*} newPercent
+   */
   onMinimapSizeAdjust = (newSliderSize, newPercent) => {
-    const percentageOfSpace = newSliderSize / (this.state.width - nameDivWidth);
+    const percentageOfSpace = newSliderSize / this.state.width;
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
     const newCharWidth = (this.state.width - nameDivWidth) / numBpsInView;
@@ -397,14 +407,18 @@ class AlignmentView extends React.Component {
   };
 
   scrollToCaret = () => {
-    const el = window.document.querySelector(".veCaret"); //adding .veRowViewCaret breaks this for some reason
-    if (!el) return;
+    let el = window.document.querySelector(".veCaret:not(.zoomSelection)"); //adding .veRowViewCaret breaks this for some reason
+    if (!el) {
+      el = window.document.querySelector(".veCaret"); //adding .veRowViewCaret breaks this for some reason
+    }
+    if (!el) {
+      return;
+    }
     el.scrollIntoView({ inline: "center" });
   };
 
   scrollAlignmentToPercent = (scrollPercentage) => {
     const scrollPercentageToUse = Math.min(Math.max(scrollPercentage, 0), 1);
-
     this.easyStore.percentScrolled = scrollPercentageToUse;
     this.alignmentHolder.scrollLeft =
       scrollPercentageToUse *
@@ -494,11 +508,13 @@ class AlignmentView extends React.Component {
       return gapMap;
     }
 
+    /**
+     * this function is used to calculate the number of spaces that come before or inside a range
+     */
     let getGaps = () => ({
       gapsBefore: 0,
       gapsInside: 0
     });
-    //this function is used to calculate the number of spaces that come before or inside a range
     getGaps = (rangeOrCaretPosition, sequence) => {
       const gapMap = getGapMap(sequence);
       if (typeof rangeOrCaretPosition !== "object") {
@@ -518,7 +534,9 @@ class AlignmentView extends React.Component {
       return toReturn;
     };
 
-    // for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
+    /**
+     * for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
+     **/
     let sequenceDataWithRefSeqCdsFeatures;
     if (this.props.alignmentType === "SANGER SEQUENCING") {
       if (i !== 0) {
@@ -759,14 +777,6 @@ class AlignmentView extends React.Component {
     this.setState({ width: e.contentRect.width });
   }, 200);
 
-  // updateMinimapHighlightForScroll = (oldScroll, newScroll) => {
-  //   if (!this.latestMouseY) this.latestMouseY = 0;
-  //   console.log(`oldScroll:`,oldScroll)
-  //   console.log(`newScroll:`,newScroll)
-  //   this.latestMouseY += newScroll - oldScroll;
-  //   console.log(`this.latestMouseY:`,this.latestMouseY)
-  //   this.updateMinimapHighlight();
-  // };
   removeMinimapHighlightForMouseLeave = () => {
     const minimapLaneEl = document.querySelector(`.minimapLane.lane-hovered`);
     if (!minimapLaneEl) return;
@@ -1108,267 +1118,309 @@ class AlignmentView extends React.Component {
       document.documentElement.clientHeight,
       window.innerHeight || 0
     );
+
+    /**
+     * Parameters to be passed to our Pinch Handler component
+     * OnPinch is the method to be executed when the pinch gesture is registered
+     * Pinch Handler for minimap
+     */
+    const pinchHandler = {
+      onPinch: ({ delta: [d] }) => {
+        this.bindOutsideChangeHelper.triggerChange(({ value, changeValue }) => {
+          // changeValue(d);
+          if (d > 0) {
+            if (value > 8) {
+              changeValue(value + 0.4);
+            } else {
+              changeValue(value + 0.2);
+            }
+          } else if (d < 0) {
+            if (value > 8) {
+              changeValue(value - 0.4);
+            } else {
+              changeValue(value - 0.2);
+            }
+          }
+        });
+        updateLabelsForInViewFeatures();
+      }
+    };
+
     return (
-      <ResizeSensor onResize={this.handleResize}>
-        <div
-          style={{
-            height: height || (isPairwise ? "auto" : viewportHeight * 0.88),
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            position: "relative",
-            overflowY: "auto",
-            ...this.props.style
-            // borderTop: "1px solid black"
-          }}
-          className="alignmentView"
-        >
+      <PinchHelper {...pinchHandler}>
+        <ResizeSensor onResize={this.handleResize}>
           <div
             style={{
+              height: height || (isPairwise ? "auto" : viewportHeight * 0.88),
               display: "flex",
               flexDirection: "column",
+              justifyContent: "space-between",
               position: "relative",
-              overflowY: "auto"
+              overflowY: "auto",
+              ...this.props.style
+              // borderTop: "1px solid black"
             }}
-            className="alignmentView-top-container"
+            className="alignmentView"
           >
             <div
               style={{
-                paddingTop: "3px",
-                paddingBottom: "5px",
-                borderBottom: "1px solid",
                 display: "flex",
-                minHeight: "32px",
-                width: "100%",
-                flexWrap: "nowrap",
-                flexDirection: "row",
-                flex: "0 0 auto"
+                flexDirection: "column",
+                position: "relative",
+                overflowY: "auto"
               }}
-              className="ve-alignment-top-bar"
+              className="alignmentView-top-container"
             >
-              {handleBackButtonClicked && (
-                <Tooltip content="Back to Pairwise Alignment Overview">
-                  <Button
-                    icon="arrow-left"
-                    onClick={() => {
-                      // this.setState({
-                      //   charWidthInLinearView: charWidthInLinearViewDefault
-                      // });
-                      handleBackButtonClicked();
-                      this.caretPositionUpdate(-1);
-                    }}
-                    small
-                    intent={Intent.PRIMARY}
-                    minimal
-                    style={{ marginRight: 10 }}
-                    className="alignmentViewBackButton"
-                  />
-                </Tooltip>
-              )}
-              {this.props.handleAlignmentRename ? (
-                <InputGroup
-                  minimal
-                  small
-                  value={this.props.alignmentName}
-                  placeholder="Untitled Alignment"
-                />
-              ) : (
-                <div>
-                  <span
-                    style={{
-                      paddingTop: "3px",
-                      fontWeight: "bold",
-                      fontSize: "14px",
-                      maxWidth: "150px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap"
-                    }}
-                    title={this.props.alignmentName || "Untitled Alignment"}
-                  >
-                    {this.props.alignmentName || "Untitled Alignment"}
-                  </span>
-                  &nbsp;&nbsp;&nbsp;
-                  <span
-                    style={{
-                      paddingTop: "3px",
-                      fontSize: "14px",
-                      color: "grey",
-                      maxWidth: "300px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap"
-                    }}
-                    title={this.props.alignmentType || "Unknown Alignment Type"}
-                  >
-                    {this.props.alignmentType || "Unknown Alignment Type"}
-                  </span>
-                </div>
-              )}
-              {this.props.handleAlignmentRename && (
-                <Button small>Rename</Button>
-              )}
-              {this.props.unmappedSeqs && (
-                <InfoHelper
-                  size={20}
-                  content={
-                    <div>
-                      This alignment had sequences that did not map to the
-                      template sequence:
-                      {this.props.unmappedSeqs.map(({ sequenceData }, i) => (
-                        <div key={i}>{sequenceData.name}</div>
-                      ))}
-                    </div>
-                  }
-                  intent="warning"
-                  icon="warning-sign"
-                ></InfoHelper>
-              )}
-              {!isInPairwiseOverviewView && (
-                <UncontrolledSliderWithPlusMinusBtns
-                  noWraparound
-                  bindOutsideChangeHelper={this.bindOutsideChangeHelper}
-                  onClick={() => {
-                    setTimeout(this.scrollToCaret, 0);
-                  }}
-                  minCharWidth={this.getMinCharWidth()}
-                  onChange={async (zoomLvl) => {
-                    // zoomLvl is in the range of 0 to 10
-                    const minCharWidth = this.getMinCharWidth();
-                    const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
-                    const newCharWidth =
-                      minCharWidth * Math.pow(scaleFactor, zoomLvl);
-                    await this.setCharWidthInLinearView({
-                      charWidthInLinearView: newCharWidth
-                    });
-                    await this.scrollToCaret();
-                    await updateLabelsForInViewFeatures({
-                      rectElement: ".alignmentHolder"
-                    });
-                  }}
-                  coerceInitialValue={coerceInitialValue}
-                  title="Adjust Zoom Level"
-                  style={{ paddingTop: "4px", width: 100 }}
-                  className="ove-slider"
-                  labelRenderer={false}
-                  initialValue={charWidthInLinearView}
-                  stepSize={0.05} //was 0.01
-                  max={10}
-                  min={0}
-                  clickStepSize={0.5}
-                />
-              )}
-              {!noVisibilityOptions && !isInPairwiseOverviewView && (
-                <AlignmentVisibilityTool
-                  currentPairwiseAlignmentIndex={currentPairwiseAlignmentIndex}
-                  {...alignmentVisibilityToolOptions}
-                />
-              )}
-              {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
-                <Popover
-                  minimal
-                  content={
-                    <Menu>
-                      <MenuItem
-                        active={true || alignmentSortOrder}
-                        onClick={() => {
-                          updateAlignmentSortOrder("Position");
-                        }}
-                        text="Position"
-                      />
-                      <MenuItem
-                        active={false || alignmentSortOrder}
-                        onClick={() => {
-                          updateAlignmentSortOrder("Alphabetical");
-                        }}
-                        text="Alphabetical"
-                      />
-                    </Menu>
-                  }
-                  target={
+              <div
+                style={{
+                  paddingTop: "3px",
+                  paddingBottom: "5px",
+                  borderBottom: "1px solid",
+                  display: "flex",
+                  minHeight: "32px",
+                  width: "100%",
+                  flexWrap: "nowrap",
+                  flexDirection: "row",
+                  flex: "0 0 auto"
+                }}
+                className="ve-alignment-top-bar"
+              >
+                {handleBackButtonClicked && (
+                  <Tooltip content="Back to Pairwise Alignment Overview">
                     <Button
+                      icon="arrow-left"
+                      onClick={() => {
+                        // this.setState({
+                        //   charWidthInLinearView: charWidthInLinearViewDefault
+                        // });
+                        handleBackButtonClicked();
+                        this.caretPositionUpdate(-1);
+                      }}
                       small
-                      text="Sort Order"
-                      rightIcon="caret-down"
-                      icon="sort"
+                      intent={Intent.PRIMARY}
+                      minimal
+                      style={{ marginRight: 10 }}
+                      className="alignmentViewBackButton"
                     />
-                  }
-                />
+                  </Tooltip>
+                )}
+                {this.props.handleAlignmentRename ? (
+                  <InputGroup
+                    minimal
+                    small
+                    value={this.props.alignmentName}
+                    placeholder="Untitled Alignment"
+                  />
+                ) : (
+                  <div style={{ display: "flex" }}>
+                    <div
+                      className="veAlignmentName"
+                      style={{
+                        paddingTop: "3px",
+                        fontWeight: "bold",
+                        fontSize: "14px",
+                        maxWidth: "300px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      title={this.props.alignmentName || "Untitled Alignment"}
+                    >
+                      {this.props.alignmentName || "Untitled Alignment"}
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div
+                      className="veAlignmentType"
+                      style={{
+                        paddingTop: "3px",
+                        fontSize: "14px",
+                        color: "grey",
+                        maxWidth: "300px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      title={
+                        this.props.alignmentType || "Unknown Alignment Type"
+                      }
+                    >
+                      {this.props.alignmentType || "Unknown Alignment Type"}
+                    </div>
+                  </div>
+                )}
+                {this.props.handleAlignmentRename && (
+                  <Button small>Rename</Button>
+                )}
+                {this.props.unmappedSeqs && (
+                  <InfoHelper
+                    size={20}
+                    content={
+                      <div>
+                        This alignment had sequences that did not map to the
+                        template sequence:
+                        {this.props.unmappedSeqs.map(({ sequenceData }, i) => (
+                          <div key={i}>{sequenceData.name}</div>
+                        ))}
+                      </div>
+                    }
+                    intent="warning"
+                    icon="warning-sign"
+                  ></InfoHelper>
+                )}
+                {!isInPairwiseOverviewView && (
+                  <UncontrolledSliderWithPlusMinusBtns
+                    noWraparound
+                    bindOutsideChangeHelper={this.bindOutsideChangeHelper}
+                    onClick={() => {
+                      setTimeout(this.scrollToCaret, 0);
+                    }}
+                    minCharWidth={this.getMinCharWidth()}
+                    onChange={async (zoomLvl) => {
+                      this.isZooming = true;
+                      setTimeout(() => {
+                        this.isZooming = false;
+                      }, 10);
+                      // zoomLvl is in the range of 0 to 10
+                      const minCharWidth = this.getMinCharWidth();
+                      const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+                      const newCharWidth =
+                        minCharWidth * Math.pow(scaleFactor, zoomLvl);
+                      await this.setCharWidthInLinearView({
+                        charWidthInLinearView: newCharWidth
+                      });
+                      await this.scrollToCaret();
+                      await updateLabelsForInViewFeatures({
+                        rectElement: ".alignmentHolder"
+                      });
+                    }}
+                    coerceInitialValue={coerceInitialValue}
+                    title="Adjust Zoom Level"
+                    style={{ paddingTop: "4px", width: 100 }}
+                    className="veZoomAlignmentSlider ove-slider"
+                    labelRenderer={false}
+                    initialValue={charWidthInLinearView}
+                    stepSize={0.05} //was 0.01
+                    max={10}
+                    min={0}
+                    clickStepSize={0.5}
+                  />
+                )}
+                {!noVisibilityOptions && !isInPairwiseOverviewView && (
+                  <AlignmentVisibilityTool
+                    currentPairwiseAlignmentIndex={
+                      currentPairwiseAlignmentIndex
+                    }
+                    {...alignmentVisibilityToolOptions}
+                  />
+                )}
+                {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
+                  <Popover
+                    minimal
+                    content={
+                      <Menu>
+                        <MenuItem
+                          active={true || alignmentSortOrder}
+                          onClick={() => {
+                            updateAlignmentSortOrder("Position");
+                          }}
+                          text="Position"
+                        />
+                        <MenuItem
+                          active={false || alignmentSortOrder}
+                          onClick={() => {
+                            updateAlignmentSortOrder("Alphabetical");
+                          }}
+                          text="Alphabetical"
+                        />
+                      </Menu>
+                    }
+                    target={
+                      <Button
+                        small
+                        text="Sort Order"
+                        rightIcon="caret-down"
+                        icon="sort"
+                      />
+                    }
+                  />
+                )}
+                {additionalTopEl}
+              </div>
+              {hasTemplate ? (
+                <React.Fragment>
+                  <div className="alignmentTrackFixedToTop">
+                    {getTrackVis([firstTrack], true)}
+                  </div>
+                  {getTrackVis(otherTracks)}
+                </React.Fragment>
+              ) : (
+                getTrackVis(alignmentTracks)
               )}
-              {additionalTopEl}
             </div>
-            {hasTemplate ? (
-              <React.Fragment>
-                <div className="alignmentTrackFixedToTop">
-                  {getTrackVis([firstTrack], true)}
-                </div>
-                {getTrackVis(otherTracks)}
-              </React.Fragment>
-            ) : (
-              getTrackVis(alignmentTracks)
+            {!isInPairwiseOverviewView && (
+              <div
+                className="alignmentViewBottomBar"
+                style={{
+                  // flexGrow: 1,
+                  // minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
+                  maxHeight: 210,
+                  marginTop: 4,
+                  paddingTop: 4,
+                  borderTop: "1px solid lightgrey",
+                  display: "flex"
+                }}
+              >
+                <Minimap
+                  {...{
+                    selectionLayerComp: (
+                      <React.Fragment>
+                        <PerformantSelectionLayer
+                          is
+                          hideCarets
+                          className="veAlignmentSelectionLayer veMinimapSelectionLayer"
+                          easyStore={this.easyStore}
+                          sequenceLength={sequenceLength}
+                          charWidth={this.getMinCharWidth(true)}
+                          row={{ start: 0, end: sequenceLength - 1 }}
+                        ></PerformantSelectionLayer>
+                        <PerformantCaret
+                          style={{
+                            opacity: 0.2
+                          }}
+                          className="veAlignmentSelectionLayer veMinimapSelectionLayer"
+                          sequenceLength={sequenceLength}
+                          charWidth={this.getMinCharWidth(true)}
+                          row={{ start: 0, end: sequenceLength - 1 }}
+                          easyStore={this.easyStore}
+                        />
+                      </React.Fragment>
+                    ),
+                    alignmentTracks,
+                    dimensions: {
+                      width: Math.max(this.state.width, 10) || 10
+                    },
+                    nameDivOffsetPercent:
+                      nameDivWidth / this.getMaxLinearViewWidth(),
+                    scrollYToTrack: this.scrollYToTrack,
+                    onSizeAdjust: this.onMinimapSizeAdjust,
+                    minSliderSize,
+                    laneHeight:
+                      minimapLaneHeight ||
+                      (alignmentTracks.length > 5 ? 10 : 17),
+                    laneSpacing:
+                      minimapLaneSpacing ||
+                      (alignmentTracks.length > 5 ? 2 : 1),
+                    easyStore: this.easyStore,
+                    numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
+                    scrollAlignmentView: this.state.scrollAlignmentView
+                  }}
+                  onMinimapScrollX={this.scrollAlignmentToPercent}
+                />
+              </div>
             )}
           </div>
-          {!isInPairwiseOverviewView && (
-            <div
-              className="alignmentViewBottomBar"
-              style={{
-                // flexGrow: 1,
-                // minHeight: "-webkit-min-content", //https://stackoverflow.com/questions/28029736/how-to-prevent-a-flex-item-from-shrinking-smaller-than-its-content
-                maxHeight: 210,
-                marginTop: 4,
-                paddingTop: 4,
-                borderTop: "1px solid lightgrey",
-                display: "flex"
-              }}
-            >
-              <Minimap
-                {...{
-                  selectionLayerComp: (
-                    <React.Fragment>
-                      <PerformantSelectionLayer
-                        is
-                        hideCarets
-                        className="veAlignmentSelectionLayer veMinimapSelectionLayer"
-                        easyStore={this.easyStore}
-                        sequenceLength={sequenceLength}
-                        charWidth={this.getMinCharWidth(true)}
-                        row={{ start: 0, end: sequenceLength - 1 }}
-                      ></PerformantSelectionLayer>
-                      <PerformantCaret
-                        style={{
-                          opacity: 0.2
-                        }}
-                        className="veAlignmentSelectionLayer veMinimapSelectionLayer"
-                        sequenceLength={sequenceLength}
-                        charWidth={this.getMinCharWidth(true)}
-                        row={{ start: 0, end: sequenceLength - 1 }}
-                        easyStore={this.easyStore}
-                      />
-                    </React.Fragment>
-                  ),
-                  alignmentTracks,
-                  dimensions: {
-                    width: Math.max(this.state.width, 10) || 10
-                  },
-                  nameDivOffsetPercent:
-                    nameDivWidth / this.getMaxLinearViewWidth(),
-                  scrollYToTrack: this.scrollYToTrack,
-                  onSizeAdjust: this.onMinimapSizeAdjust,
-                  minSliderSize,
-                  laneHeight:
-                    minimapLaneHeight || (alignmentTracks.length > 5 ? 10 : 17),
-                  laneSpacing:
-                    minimapLaneSpacing || (alignmentTracks.length > 5 ? 2 : 1),
-                  easyStore: this.easyStore,
-                  numBpsShownInLinearView: this.getNumBpsShownInLinearView(),
-                  scrollAlignmentView: this.state.scrollAlignmentView
-                }}
-                onMinimapScrollX={this.scrollAlignmentToPercent}
-              />
-            </div>
-          )}
-        </div>
-      </ResizeSensor>
+        </ResizeSensor>
+      </PinchHelper>
     );
   }
 }
@@ -1648,9 +1700,29 @@ function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
 }
 
 const PerformantSelectionLayer = view(({ easyStore, ...rest }) => {
+  const seqLen = rest.sequenceLength - 1;
+
   return (
     <SelectionLayer
-      regions={[{ ...easyStore.selectionLayer, ignoreGaps: true }]}
+      regions={[
+        { ...easyStore.selectionLayer, ignoreGaps: true },
+        {
+          start: Math.floor(
+            (easyStore.percentScrolledPreZoom || easyStore.percentScrolled) *
+              seqLen
+          ),
+          end: Math.floor(
+            (easyStore.percentScrolledPreZoom || easyStore.percentScrolled) *
+              seqLen
+          ),
+          className: "zoomSelection",
+          ignoreGaps: true,
+          style: {
+            zIndex: -1,
+            opacity: 0
+          }
+        }
+      ]}
       {...rest}
     />
   );

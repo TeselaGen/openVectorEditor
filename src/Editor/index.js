@@ -109,6 +109,8 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
 
 export class Editor extends React.Component {
   state = {
+    rotationRadians: 0,
+    zoomLevel: 1,
     isHotkeyDialogOpen: false,
     tabDragging: false,
     previewModeFullscreen: false
@@ -349,7 +351,8 @@ export class Editor extends React.Component {
       showMenuBar,
       annotationsToSupport,
       withRotateCircularView = true,
-      withZoomLinearView = true,
+      withZoomCircularView = true,
+      withZoomView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
       readOnly,
@@ -377,7 +380,6 @@ export class Editor extends React.Component {
       previewModeButtonMenu,
       allowPanelTabDraggable = true
     } = this.props;
-
     if (
       !this.props.noVersionHistory &&
       this.props.versionHistory &&
@@ -562,8 +564,9 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       const panel = Panel ? (
         <Panel
-          withZoomLinearView={withZoomLinearView}
+          withZoomView={withZoomView}
           withRotateCircularView={withRotateCircularView}
+          withZoomCircularView={withZoomCircularView}
           {...pickedUserDefinedHandlersAndOpts}
           {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
           {...(panelSpecificPropsToSpread &&
@@ -571,6 +574,14 @@ export class Editor extends React.Component {
               acc = { ...acc, ...get(this.props, key) };
               return acc;
             }, {}))}
+          circ_rotationRadians={this.state.rotationRadians}
+          circ_setRotationRadians={(val) => {
+            this.setState({ rotationRadians: val });
+          }}
+          circ_zoomLevel={this.state.zoomLevel}
+          circ_setZoomLevel={(val) => {
+            this.setState({ zoomLevel: val });
+          }}
           maxAnnotationsToDisplay={maxAnnotationsToDisplay}
           key={activePanelId}
           fontHeightMultiplier={this.props.fontHeightMultiplier}
@@ -733,7 +744,8 @@ export class Editor extends React.Component {
                                       <Button
                                         minimal
                                         icon="minimize"
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                          e.stopPropagation();
                                           togglePanelFullScreen(activePanelId);
                                         }}
                                       />
@@ -914,11 +926,6 @@ export class Editor extends React.Component {
               minHeight: 0,
               display: "flex"
             }}
-            // onMouseMove={(e) => {
-            // tnr: maybe add tooltip helper here..?
-            //   // console.log(`e:`,e)
-            //   console.log(`e.target:`,e.target)
-            // }}
             className="tg-editor-container"
             id="section-to-print"
           >

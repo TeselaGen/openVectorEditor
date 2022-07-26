@@ -65,7 +65,7 @@ export default compose(
       const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
       //because the calling onHover can slow things down, we disable it if dragging or scrolling
       if (window.__veDragging || window.__veScrolling) return;
-      e.stopPropagation();
+      e.stopPropagation(); //this is important otherwise hovering labels inside circular view label groups won't work
       hoveredAnnotationUpdate &&
         hoveredAnnotationUpdate(idToPass, { editorName });
     },

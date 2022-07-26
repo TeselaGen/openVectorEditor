@@ -77,7 +77,7 @@ const Axis = function (props) {
   }
 
   const yStart = 0;
-  const yEnd = annotationHeight / 3;
+  // const yEnd = annotationHeight / 3;
 
   const tickMarkSVG = [];
 
@@ -86,10 +86,12 @@ const Axis = function (props) {
 
     if (scrollData && !(xCenter < visibleEnd && xCenter > visibleStart)) return;
     tickMarkSVG.push(
-      <path
+      <rect
+        className="veAxisTick"
         key={"axisTickMarkPath " + i + " " + tickMarkPosition}
-        d={"M" + xCenter + "," + yStart + " L" + xCenter + "," + yEnd}
-        stroke="black"
+        x={xCenter}
+        width={1}
+        height={5}
       />
     );
     if (showAxisNumbers) {
@@ -115,7 +117,7 @@ const Axis = function (props) {
         <text
           data-tick-mark={textInner}
           key={"axisTickMarkText " + i + " " + tickMarkPosition}
-          stroke="black"
+          fill="black"
           x={x}
           y={annotationHeight}
           style={{ textAnchor: "middle", fontSize: 10, fontFamily: "Verdana" }}
@@ -135,6 +137,7 @@ const Axis = function (props) {
     >
       {tickMarkSVG}
       <path
+        className="veAxisLine"
         d={"M" + xStart + "," + yStart + " L" + xEnd + "," + yStart}
         stroke="black"
       />

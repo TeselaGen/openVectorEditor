@@ -21,3 +21,23 @@
 .veHideLabels .veCircularViewMiddleOfVectorText {
   display: none;
 }
+
+.circularViewMinimap {
+  margin: 4px;
+  --v: calc(((18 / 5) * var(--p) - 90) * 1deg);
+  --bg: #fff;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  border-radius: 50%;
+  padding: 5px;
+  background: linear-gradient(var(--bg), var(--bg)) content-box,
+    linear-gradient(var(--v), #ccc 50%, transparent 0) 0 /
+      min(100%, (50 - var(--p)) * 100%),
+    linear-gradient(var(--v), transparent 50%, #4ac5ed 0) 0 /
+      min(100%, (var(--p) - 50) * 100%),
+    linear-gradient(to right, #ccc 50%, #4ac5ed 0);
+}
+.bp3-dark .circularViewMinimap {
+  --bg: #293742;
+}

@@ -48,6 +48,7 @@ class GenbankView extends React.Component {
         <textarea
           data-test="ve-genbank-text"
           readOnly
+          onclick="this.select()"
           style={{
             whiteSpace: "pre",
             overflowWrap: "normal",

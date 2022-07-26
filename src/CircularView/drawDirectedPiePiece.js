@@ -11,11 +11,14 @@ const stickOutThisMuch = 0.03;
 // draws a directed piece of the pie with an arrowhead, starts at 0 angle, only draws in one direction (use transforms to move it around the )
 export default function drawDirectedPiePiece({
   tailThickness = 0.6,
-  arrowheadLength = 1,
+  // arrowheadLength = 1,
   radius,
   overlapsSelf,
   annotationHeight,
-  totalAngle
+  totalAngle,
+  hasLabel,
+  labelNeedsFlip,
+  returnTextPath
 }) {
   const tailHeight = annotationHeight * tailThickness;
 
@@ -25,7 +28,7 @@ export default function drawDirectedPiePiece({
   const tailInnerRadius = radius - tailHeight / 2;
 
   // var arrowheadAngle = totalAngle / 2
-  let arrowheadAngle = arrowheadLength / (Math.PI * 2);
+  let arrowheadAngle = 80 / radius / (Math.PI * 2);
 
   if (totalAngle < arrowheadAngle) {
     //set arrowhead length to the angle in radians length
@@ -90,7 +93,32 @@ export default function drawDirectedPiePiece({
       .lineto(arcRightMiddleOuter.x, arcRightMiddleOuter.y)
       .lineto(arcRightMiddle.x, arcRightMiddle.y);
   }
-
+  let textPath;
+  if (returnTextPath && hasLabel) {
+    if (labelNeedsFlip) {
+      const arcLeftTop = polarToSpecialCartesian(tailOuterRadius, 0);
+      textPath = Path().moveto(arcRightTop.x, arcRightTop.y).arc({
+        rx: tailOuterRadius,
+        ry: tailOuterRadius,
+        xrot: 0,
+        largeArcFlag,
+        sweepFlag: 0,
+        x: arcLeftTop.x,
+        y: arcLeftTop.y
+      });
+    } else {
+      const arcLeftBottom = polarToSpecialCartesian(tailInnerRadius, 0);
+      textPath = Path().moveto(arcLeftBottom.x, arcLeftBottom.y).arc({
+        rx: tailInnerRadius,
+        ry: tailInnerRadius,
+        xrot: 0,
+        largeArcFlag,
+        sweepFlag: 1,
+        x: arcRightBottom.x,
+        y: arcRightBottom.y
+      });
+    }
+  }
   path = path
     .lineto(arcRightTop.x, arcRightTop.y)
     .arc({
@@ -104,6 +132,8 @@ export default function drawDirectedPiePiece({
     })
     .lineto(arrowheadTop.x, arrowheadTop.y)
     .closepath();
-  path.print();
+  if (returnTextPath) {
+    return [path, textPath];
+  }
   return path;
 }

@@ -193,7 +193,7 @@ export class CutsiteFilter extends React.Component {
           );
         } catch (err) {
           // eslint-disable-next-line no-console
-          console.log(`err 872g4e setting enzymes for sequence:`, err);
+          console.warn(`err 872g4e setting enzymes for sequence:`, err);
         }
       }
     };

@@ -2,7 +2,7 @@ describe("simpleCircularOrLinearView", function () {
   beforeEach(() => {
     cy.visit("/#/SimpleCircularOrLinearView");
   });
-  it(`should be able to view the SimpleCircularOrLinearViewNoRedux route and have everything work outside of a redux context if noRedux=true is passed`, () => {
+  it(`should be able to view the SimpleCircularOrLinearViewNoRedux route and have oligos outside of a redux context if noRedux=true is passed`, () => {
     cy.tgToggle("isOligo");
     cy.get(".tg-simple-oligo-viewer");
     cy.contains(

@@ -20,8 +20,8 @@ function Cutsites({
   sequenceLength
 }) {
   radius += annotationHeight;
-  let svgGroup = [];
-  let labels = {};
+  const svgGroup = [];
+  const labels = {};
   let index = 0;
   if (!Object.keys(cutsites).length) return null;
   each(cutsites, function (annotation /* key */) {
@@ -30,7 +30,7 @@ function Cutsites({
     if (!(annotation.topSnipPosition > -1)) {
       //we need this to be present
     }
-    let { startAngle } = getRangeAngles(
+    const { startAngle } = getRangeAngles(
       { start: annotation.topSnipPosition, end: annotation.topSnipPosition },
       sequenceLength
     );
@@ -95,15 +95,16 @@ const DrawCutsite = pureNoFunc(
     onMouseLeave,
     onMouseOver
   }) {
+    const { transform } = PositionAnnotationOnCircle({
+      sAngle: startAngle,
+      eAngle: startAngle,
+      height: radius
+    });
     return (
       <rect
-        {...PositionAnnotationOnCircle({
-          sAngle: startAngle,
-          eAngle: startAngle,
-          height: radius
-        })}
         {...{ onMouseLeave, onMouseOver }}
         className={className}
+        transform={transform}
         width={cutsiteWidth}
         height={annotationHeight}
       />

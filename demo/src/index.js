@@ -135,6 +135,16 @@ const Demo = () => {
             >
               This is a developer demo. Get the App?
             </a>{" "}
+            <div style={{ paddingTop: 3 }}>
+              <iframe
+                src="https://ghbtns.com/github-btn.html?user=teselagen&repo=openvectoreditor&type=star&count=true"
+                frameBorder="0"
+                scrolling="0"
+                width="150"
+                height="20"
+                title="GitHub"
+              ></iframe>
+            </div>
             <Tooltip
               content={isDarkMode ? "Light Theme" : "Dark Theme"}
               key="theme"
@@ -297,10 +307,7 @@ const Demo = () => {
             render={() => {
               return (
                 <WrapSimpleDemo>
-                  <LinearView
-                    withZoomLinearView={true}
-                    editorName="DemoEditor"
-                  />
+                  <LinearView withZoomView={true} editorName="DemoEditor" />
                 </WrapSimpleDemo>
               );
             }}

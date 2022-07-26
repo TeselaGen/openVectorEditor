@@ -66,6 +66,7 @@ const defaultState = {
   overrideAddEditFeatureDialog: false,
   clickOverridesExample: false,
   showAvailability: true,
+  showCicularViewInternalLabels: true,
   showDemoOptions: !isMobile(),
   shouldAutosave: false,
   generatePng: false,
@@ -77,6 +78,7 @@ const defaultState = {
   nameFontSizeCircularView: false,
   withVersionHistory: true,
   withRotateCircularView: true,
+  withZoomCircularView: true,
   setDefaultVisibilities: false,
   onNew: true,
   onImport: true,
@@ -649,11 +651,10 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
               {renderToggle({
                 that: this,
-                label:
-                  "Truncate Labels That Don't Fit (when externalLabels=false)",
+                label: "Truncate Internal Labels That Don't Fit",
                 type: "truncateLabelsThatDoNotFit",
                 info: `By default truncateLabelsThatDoNotFit=true 
-In the Row View Or Linear View this option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
+This option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
               })}
               {renderToggle({
                 that: this,
@@ -1001,6 +1002,12 @@ rightClickOverrides: {
                 type: "withRotateCircularView",
                 label: "Show Rotate Circular View",
                 info: `withRotateCircularView={true /* default */}`
+              })}
+              {renderToggle({
+                that: this,
+                type: "withZoomCircularView",
+                label: "Show Zoom Circular View",
+                info: `withZoomCircularView={true /* default */}`
               })}
               {renderToggle({
                 that: this,
@@ -1657,13 +1664,18 @@ clickOverrides: {
               })}
               {renderToggle({
                 that: this,
+                type: "showCicularViewInternalLabels",
+                info: `pass showCicularViewInternalLabels=false to the <Editor> to not allow labels to be rendered inside the annotations on the circular view`
+              })}
+              {renderToggle({
+                that: this,
                 label: "Show GC Content by default",
                 type: "showGCContentByDefault",
                 info: `pass showGCContentByDefault=true to the <Editor/> to display the %GC content by default (note this will still allow the user to override that preference)`
               })}
               {renderToggle({
                 that: this,
-                info: `When enabled AND the user has selected View -> External Labels, only labels that can't fit in a pointed annotation will be external.`,
+                info: `When enabled only labels that can't fit inside their annotation will be external.`,
                 type: "onlyShowLabelsThatDoNotFit"
               })}
               {renderToggle({
@@ -1764,46 +1776,16 @@ clickOverrides: {
                 <strong style={{ paddingTop: 5 }}>Editor Handlers: </strong>
               ) : null}
               {editorHandlers}
-              {/* { <AddOrEditPrimerDialog
-                {...{
-                  editorName: "DemoEditor" || console.log(`remove me!`),
-                  selectionLayer: {
-                    start: 1,
-                    end: 10
-                  },
-                  initialValues: {
-                    forward: false,
-                    start: 1,
-                    end: 10,
-                    name: "lol",
-                    readOnly: false
-                  },
-                  dialogProps: {
-                    title: "edit primer"
-                  },
-                  readOnly: false
-                }}
-              ></AddOrEditPrimerDialog>} */}
               <br />
               <br />
             </div>
           }
-          {/* <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              ...(this.state.showDemoOptions && { paddingLeft: 250 })
-            }}
-          > */}
+
           <Editor
             panelMap={{
               myCustomTab: MyCustomTab
             }}
             style={{
-              // display: "flex",
-              // flexDirection: "column",
-              // flexGrow: 1,
               ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
             {...(this.state.readOnly && { readOnly: true })}
@@ -2265,6 +2247,7 @@ clickOverrides: {
             withPreviewMode={withPreviewMode}
             disableSetReadOnly={this.state.disableSetReadOnly}
             withRotateCircularView={this.state.withRotateCircularView}
+            withZoomCircularView={this.state.withZoomCircularView}
             showReadOnly={this.state.showReadOnly}
             initialAnnotationToEdit={
               this.state.initialAnnotationToEdit ? "part-10" : undefined
@@ -2277,6 +2260,9 @@ clickOverrides: {
             showGCContentByDefault={this.state.showGCContentByDefault}
             onlyShowLabelsThatDoNotFit={this.state.onlyShowLabelsThatDoNotFit}
             GCDecimalDigits={this.state.GCDecimalDigits}
+            showCicularViewInternalLabels={
+              this.state.showCicularViewInternalLabels
+            }
             showAvailability={this.state.showAvailability}
             maintainOriginSplit={
               this.state.beforeSequenceInsertOrDelete

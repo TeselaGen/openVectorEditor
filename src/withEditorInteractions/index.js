@@ -474,7 +474,8 @@ function VectorInteractionHOC(Component /* options */) {
       if (
         annotation.start > -1 &&
         selectionLayer.start === annotation.start &&
-        selectionLayer.end === annotation.end
+        selectionLayer.end === annotation.end &&
+        event.altKey
       ) {
         forceUpdate = selectionLayer.forceUpdate === "end" ? "start" : "end";
       }
