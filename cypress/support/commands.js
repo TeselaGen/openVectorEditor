@@ -1,4 +1,5 @@
 const { isString } = require("lodash");
+const toRegexRange = require("to-regex-range");
 const { insertSequenceDataAtPositionOrRange } = require("ve-sequence-utils");
 
 // ***********************************************
@@ -176,6 +177,48 @@ Cypress.Commands.add("uploadFile", (selector, fileUrl, type = "") => {
     });
   });
 });
+
+/**
+ * Used to find our sequence selection within a range given a tolerance
+ * @param {*} min - minimum value for range
+ * @param {*} max - maxmimum value for range
+ * @param {*} tolerance - tolerance allowed for our start point and interval for selected sequence
+ */
+Cypress.Commands.add(
+  "assertSelectionWithinRange",
+  ({ min, max, tolerance }) => {
+    const minRange = toRegexRange(min - tolerance, min + tolerance);
+    const maxRange = toRegexRange(max - tolerance, max + tolerance);
+    const intervalRange = toRegexRange(
+      max - min - tolerance,
+      max - min + tolerance
+    );
+    cy.window().then(() => {
+      const checkString = new RegExp(
+        "Selecting " +
+          intervalRange +
+          " bps from " +
+          minRange +
+          " to " +
+          maxRange
+      );
+      cy.contains(checkString);
+    });
+  }
+);
+
+/**
+ * Used to find caret within a range with a given tolerance
+ * @param {*} min - minimum value for caret search range
+ * @param {*} max - maxmimum value for caret search range
+ * @param {*} tolerance - tolerance for min and max
+ */
+// Cypress.Commands.add("getCaretWithinRange", ({min,max,tolerance}) => {
+//   const minRange = toRegexRange(min-tolerance,min+tolerance)
+//   const maxRange = toRegexRange(max-tolerance,max+tolerance)
+//   const checkString = new RegExp(`[title="Caret Between Bases ` + minRange + ` and ` + maxRange + `"]`)
+//   cy.get(checkString)
+//   });
 
 Cypress.Commands.add("selectRange", (start, end) => {
   cy.window().then((win) => {
