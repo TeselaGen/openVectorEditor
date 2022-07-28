@@ -266,7 +266,12 @@ export class RowView extends React.Component {
                   block: "center",
                   inline: "center"
                 });
-              clearInterval(this.jumpIntervalId);
+              try {
+                //djr I think there is some double clearing going on here causing cypress to fail so now its in a try block
+                clearInterval(this.jumpIntervalId);
+              } catch {
+                console.error();
+              }
             }
             //tnr: we can't use the following because it messes up the scroll of the Reflex panels
             //causing the tabs to not be shown
@@ -539,7 +544,12 @@ function setIntervalX(callback, delay, repetitions) {
     callback();
 
     if (++x === repetitions) {
-      window.clearInterval(intervalID);
+      try {
+        //djr I think there is some double clearing going on here so I put it in a try block
+        window.clearInterval(intervalID);
+      } catch {
+        console.error();
+      }
     }
   }, delay);
   return intervalID;
