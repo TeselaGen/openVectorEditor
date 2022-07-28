@@ -48,6 +48,15 @@ class TranslationProperties extends React.Component {
             : Math.floor(getRangeLength(translation, sequenceLength) / 3),
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
+        }),
+        //formula is lenght of amino acid * 0.11 kDa
+        weight:
+          translation.translationType === "ORF"
+            ? Math.floor(getRangeLength(translation, sequenceLength) / 3) * 0.11
+            : Math.floor(getRangeLength(translation, sequenceLength) / 3) *
+              0.11,
+        ...(translation.strand === undefined && {
+          strand: translation.forward ? 1 : -1
         })
       };
     });
@@ -82,6 +91,11 @@ class TranslationProperties extends React.Component {
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
+                type: "number"
+              },
+              {
+                path: "weight",
+                displayName: "Molecular Mass (kDa)",
                 type: "number"
               },
               { path: "strand", type: "number" }
