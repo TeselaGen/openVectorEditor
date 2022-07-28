@@ -11,6 +11,7 @@ import { getRangeLength } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
+import { proteinAlphabet } from "ve-sequence-utils";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -28,6 +29,10 @@ class TranslationProperties extends React.Component {
       }
     });
   };
+  /**
+   * @param {*} aminoAcids an array of amino acid chars
+   * @returns the sum of all amino acid masses added together
+   */
   render() {
     const {
       readOnly,
@@ -39,6 +44,12 @@ class TranslationProperties extends React.Component {
       annotationVisibility
     } = this.props;
     const translationsToUse = map(translations, (translation) => {
+      let translationMass = 0;
+      for (let i = 0; i < translation.aminoAcids.length; i++) {
+        translationMass +=
+          proteinAlphabet[translation.aminoAcids[i].aminoAcid.value].mass;
+      }
+      translationMass /= 3; //this is because each amino acid is by nucleotide so it appear three times
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceLength),
@@ -49,18 +60,9 @@ class TranslationProperties extends React.Component {
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
         }),
-        //formula is lenght of amino acid * 0.11 kDa
-        weight:
-          translation.translationType === "ORF"
-            ? Math.floor(getRangeLength(translation, sequenceLength) / 3) * 0.11
-            : Math.floor(getRangeLength(translation, sequenceLength) / 3) *
-              0.11,
-        ...(translation.strand === undefined && {
-          strand: translation.forward ? 1 : -1
-        })
+        mass: translationMass
       };
     });
-
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
@@ -94,8 +96,8 @@ class TranslationProperties extends React.Component {
                 type: "number"
               },
               {
-                path: "weight",
-                displayName: "Molecular Mass (kDa)",
+                path: "mass",
+                displayName: "Mass (g/mol)",
                 type: "number"
               },
               { path: "strand", type: "number" }
