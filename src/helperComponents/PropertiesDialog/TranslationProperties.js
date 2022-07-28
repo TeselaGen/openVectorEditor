@@ -29,10 +29,6 @@ class TranslationProperties extends React.Component {
       }
     });
   };
-  /**
-   * @param {*} aminoAcids an array of amino acid chars
-   * @returns the sum of all amino acid masses added together
-   */
   render() {
     const {
       readOnly,
