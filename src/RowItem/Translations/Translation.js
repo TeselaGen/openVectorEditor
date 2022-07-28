@@ -131,7 +131,7 @@ class Translation extends React.Component {
           title={`${aminoAcid.name} -- Index: ${
             aminoAcidSliver.aminoAcidIndex + 1
           } -- Hydrophobicity: ${aminoAcid.hydrophobicity} -- Mass: ${
-            aminoAcid.masss
+            aminoAcid.mass
           }`}
           showAminoAcidNumbers={showAminoAcidNumbers}
           aminoAcidIndex={aminoAcidSliver.aminoAcidIndex}
