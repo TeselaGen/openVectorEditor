@@ -65,7 +65,7 @@
     "use-debounce": "^8.0.1",
     "use-local-storage-state": "^13.0.0",
     "ve-range-utils": "^2.6.6",
-    "ve-sequence-utils": "^5.1.23"
+    "ve-sequence-utils": "^5.1.25"
   },
   "peerDependencies": {
     "react": "^16.10.2",
