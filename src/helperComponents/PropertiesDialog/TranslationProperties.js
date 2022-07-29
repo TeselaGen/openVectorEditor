@@ -11,7 +11,7 @@ import { getRangeLength } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
-import { proteinAlphabet } from "ve-sequence-utils";
+import { getMassOfAaString } from "ve-sequence-utils";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -40,12 +40,10 @@ class TranslationProperties extends React.Component {
       annotationVisibility
     } = this.props;
     const translationsToUse = map(translations, (translation) => {
-      let translationMass = 0;
+      let aaString = "";
       for (let i = 0; i < translation.aminoAcids.length; i++) {
-        translationMass +=
-          proteinAlphabet[translation.aminoAcids[i].aminoAcid.value].mass;
+        aaString += translation.aminoAcids[i].aminoAcid.value;
       }
-      translationMass /= 3; //this is because each amino acid is by nucleotide so it appear three times
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceLength),
@@ -56,7 +54,7 @@ class TranslationProperties extends React.Component {
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
         }),
-        mass: translationMass
+        mass: getMassOfAaString(aaString, 2, true)
       };
     });
     return (
