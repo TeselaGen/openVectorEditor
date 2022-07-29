@@ -152,6 +152,7 @@ class _LinearView extends React.Component {
       linearViewCharWidth,
       annotationVisibilityOverrides,
       isProtein,
+      noWarnings,
       ...rest
     } = this.props;
 
@@ -267,7 +268,9 @@ class _LinearView extends React.Component {
               }}
             />
           )}
-          <VeTopRightContainer>{this.paredDownMessages}</VeTopRightContainer>
+          {!noWarnings && (
+            <VeTopRightContainer>{this.paredDownMessages}</VeTopRightContainer>
+          )}
 
           <PinchHelperToUse {...(linearZoomEnabled && pinchHandler)}>
             <RowItem

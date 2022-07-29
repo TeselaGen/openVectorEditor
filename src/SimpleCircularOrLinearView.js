@@ -12,7 +12,8 @@ import { cloneDeep } from "lodash";
 export default (props) => {
   const {
     sequenceData: _sequenceData,
-    annotationVisibility: _annotationVisibility = {}
+    annotationVisibility: _annotationVisibility = {},
+    noWarnings = true
   } = props;
   const Component = _sequenceData.circular
     ? CircularView
@@ -63,6 +64,7 @@ export default (props) => {
           className: "tg-simple-dna-view",
           width: 300,
           height: 300,
+          noWarnings,
           ...props,
           tickSpacing,
           hoveredId: props.hoveredId,
