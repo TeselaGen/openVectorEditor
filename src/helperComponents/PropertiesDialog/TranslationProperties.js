@@ -11,6 +11,7 @@ import { getRangeLength } from "ve-range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
+import { getMassOfAaString } from "ve-sequence-utils";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -39,6 +40,10 @@ class TranslationProperties extends React.Component {
       annotationVisibility
     } = this.props;
     const translationsToUse = map(translations, (translation) => {
+      let aaString = "";
+      for (let i = 0; i < translation.aminoAcids.length; i++) {
+        aaString += translation.aminoAcids[i].aminoAcid.value;
+      }
       return {
         ...translation,
         sizeBps: getRangeLength(translation, sequenceLength),
@@ -48,10 +53,10 @@ class TranslationProperties extends React.Component {
             : Math.floor(getRangeLength(translation, sequenceLength) / 3),
         ...(translation.strand === undefined && {
           strand: translation.forward ? 1 : -1
-        })
+        }),
+        mass: getMassOfAaString(aaString, 2, true)
       };
     });
-
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
@@ -82,6 +87,11 @@ class TranslationProperties extends React.Component {
               {
                 path: "sizeAa",
                 displayName: "Size (aa)",
+                type: "number"
+              },
+              {
+                path: "mass",
+                displayName: "Mass (g/mol)",
                 type: "number"
               },
               { path: "strand", type: "number" }
