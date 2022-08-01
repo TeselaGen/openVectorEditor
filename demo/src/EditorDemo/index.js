@@ -377,6 +377,11 @@ options
       }),
       renderToggle({
         that: this,
+        type: "defaultLinkedOligoMessage",
+        info: "Pass an overriding oligo message here if you'd like"
+      }),
+      renderToggle({
+        that: this,
         disabled: !this.state.beforeSequenceInsertOrDelete,
         type: "maintainOriginSplit",
         label: "maintainOriginSplit (when pasting text)",
@@ -1984,6 +1989,9 @@ clickOverrides: {
             })}
             {...(this.state.onNew && {
               onNew: () => window.toastr.success("onNew callback triggered")
+            })}
+            {...(this.state.defaultLinkedOligoMessage && {
+              defaultLinkedOligoMessage: "Custom Linked Oligo Message Here"
             })}
             {...(this.state.getAdditionalEditAnnotationComps && {
               getAdditionalEditAnnotationComps: ({ annotationTypePlural }) => {

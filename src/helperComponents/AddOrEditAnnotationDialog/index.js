@@ -177,6 +177,7 @@ class AddOrEditAnnotationDialog extends React.Component {
   };
   render() {
     const {
+      defaultLinkedOligoMessage,
       hideModal,
       sequenceData = { sequence: "" },
       handleSubmit,
@@ -383,6 +384,7 @@ class AddOrEditAnnotationDialog extends React.Component {
             {...{
               // ...this.props,
               bases,
+              defaultLinkedOligoMessage,
               getLinkedOligoLink,
               readOnly: this.props.readOnly,
               sequenceData,

@@ -150,6 +150,7 @@ const RenderBases = (props) => {
     primerBindsOn,
     bases,
     forward,
+    defaultLinkedOligoMessage,
     change
   } = props;
   let defaultValue;
@@ -205,7 +206,9 @@ const RenderBases = (props) => {
           >
             {(getLinkedOligoLink && getLinkedOligoLink(props)) ||
               linkedOligo ||
-              "Will Be Created On Save"}
+              (defaultLinkedOligoMessage !== undefined
+                ? defaultLinkedOligoMessage
+                : "Will Be Created On Save")}
           </div>
         )}
       </div>

@@ -5,6 +5,16 @@ describe("primers.spec", () => {
     cy.contains("Linked Oligo");
     cy.contains(`.veLabel`, "Untitled");
   });
+  it(`setting a default linked oligo message should work `, function () {
+    cy.visit(
+      "/#/Editor?defaultLinkedOligoMessage=true&allowPrimerBasesToBeEdited=true"
+    );
+    cy.contains("Custom Linked Oligo Message Here").should("not.exist");
+    cy.contains(".veRowViewPrimer", "Example Primer 1").dblclick({
+      force: true
+    });
+    cy.contains("Custom Linked Oligo Message Here");
+  });
   it(`primers should have their custom bases or underlying bases displayed in the properties panel`, function () {
     cy.visit(
       "/#/Editor?allowPrimerBasesToBeEdited=true&focusProperties=true&propertyTab=primers"
