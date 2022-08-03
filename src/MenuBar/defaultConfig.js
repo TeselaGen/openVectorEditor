@@ -114,6 +114,7 @@ export default [
       "restrictionEnzymesManager",
       "openCreateCustomEnzyme",
       "simulateDigestion",
+      "simulatePCR",
       {
         text: "Remove Duplicates",
         submenu: [

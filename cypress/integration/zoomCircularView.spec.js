@@ -22,8 +22,8 @@ describe("zoomCircularView.spec", function () {
       `.veLabels .veLabelText:contains(CmR I'm a real long label)`
     ).click();
     cy.dragBetween(
-      ".veZoomCircSlider .bp3-slider-handle",
-      ".veZoomCircSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp3-slider-handle",
+      ".veZoomCircularSlider .bp3-icon-plus"
     );
     cy.get(`.veLabels .veLabelText:contains(CmR I'm a real long label)`).should(
       "not.exist"
@@ -40,8 +40,8 @@ describe("zoomCircularView.spec", function () {
     );
     //rotate to the end of the sequence
     cy.dragBetween(
-      ".veRotateCircSlider .bp3-slider-handle",
-      ".veRotateCircSlider .bp3-icon-arrow-right"
+      ".veRotateCircularSlider .bp3-slider-handle",
+      ".veRotateCircularSlider .bp3-icon-arrow-right"
     );
     //new stuff should come in/out of view
     cy.get(".veCircularViewDnaSequence").should("exist");
@@ -57,13 +57,13 @@ describe("zoomCircularView.spec", function () {
   it(`rotating and then zooming should maintain your current rotation if nothing has been selected yet`, () => {
     cy.visit("");
     cy.dragBetween(
-      ".veRotateCircSlider .bp3-slider-handle",
+      ".veRotateCircularSlider .bp3-slider-handle",
       ".ve-tool-container-downloadTool"
     );
     cy.get(`.circularViewSvg g[style="transform: rotate(147deg);"]`);
     cy.dragBetween(
-      ".veZoomCircSlider .bp3-slider-handle",
-      ".veZoomCircSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp3-slider-handle",
+      ".veZoomCircularSlider .bp3-icon-plus"
     );
     //after zoom in make sure we're not rotated back to the start of the sequence
     cy.get(`.veCircularViewFeature:contains(pSC101**)`).should("exist");
@@ -76,8 +76,8 @@ describe("zoomCircularView.spec", function () {
     //zoom all the way in
     cy.visit("");
     cy.dragBetween(
-      ".veZoomCircSlider .bp3-slider-handle",
-      ".veZoomCircSlider .bp3-icon-plus"
+      ".veZoomCircularSlider .bp3-slider-handle",
+      ".veZoomCircularSlider .bp3-icon-plus"
     );
     cy.get(".veCircularViewDnaSequence").should("exist");
     cy.get(".veTabLinearMap").click();
@@ -88,11 +88,11 @@ describe("zoomCircularView.spec", function () {
 
   it("zoom should be disabled for bps < 50", function () {
     cy.visit("#/Editor?sequenceLength=10");
-    cy.get(`.veZoomCircSlider`).should("not.exist");
+    cy.get(`.veZoomCircularSlider`).should("not.exist");
     cy.contains("GFPuv").should("not.exist");
     cy.get(`[data-test="sequenceLength"]`).select("5299");
     cy.contains("GFPuv").should("exist");
-    cy.get(`.veZoomCircSlider`).should("exist");
+    cy.get(`.veZoomCircularSlider`).should("exist");
   });
   // tnr: maybe enable this some day
   // it("scroll wheel should zoom in/out", function () {

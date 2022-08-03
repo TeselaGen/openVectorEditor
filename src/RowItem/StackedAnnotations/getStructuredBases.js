@@ -9,7 +9,7 @@ export function getStructuredBases({
   bases = "",
   start,
   end,
-  fullSeq,
+  fullSequence,
   primerBindsOn,
   sequenceLength
 }) {
@@ -64,7 +64,7 @@ export function getStructuredBases({
   );
   r.basesNoInsertsWithMetaData = basesForRange.split("").map((b, i) => {
     const indexOfBase = i + annotationRange.start;
-    let seqForBase = (fullSeq && fullSeq[indexOfBase]) || "";
+    let seqForBase = (fullSequence && fullSequence[indexOfBase]) || "";
     if (!forward) {
       seqForBase = getComplementSequenceString(seqForBase);
     }

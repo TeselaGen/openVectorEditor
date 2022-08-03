@@ -7,7 +7,10 @@ describe("zoomLinearView.spec", function () {
     cy.get(".S").should("not.exist");
     cy.get(".cutsiteLabelSelectionLayer").should("not.exist");
 
-    cy.dragBetween(".bp3-slider-handle", ".bp3-icon-plus");
+    cy.dragBetween(
+      ".veZoomLinearSlider .bp3-slider-handle",
+      ".veZoomLinearSlider .bp3-icon-plus"
+    );
     cy.get(".ve-monospace-font").contains("gatgc").should("exist");
     cy.get(".S").should("exist");
     cy.get(".cutsiteLabelSelectionLayer").should("exist");
@@ -18,14 +21,14 @@ describe("zoomLinearView.spec", function () {
   });
   it("zoom should be disabled for bps < 50 and bps > 30K", function () {
     cy.visit("#/Editor?focusLinearView=true&sequenceLength=45000");
-    cy.get(`.tg-zoom-bar`).should("not.exist");
+    cy.get(`.veZoomLinearSlider`).should("not.exist");
     cy.contains("GFPuv").should("not.exist");
     cy.get(`[data-test="sequenceLength"]`).select("5299");
     cy.contains("GFPuv").should("exist");
-    cy.get(`.tg-zoom-bar`).should("exist");
+    cy.get(`.veZoomLinearSlider`).should("exist");
     cy.get(`[data-test="sequenceLength"]`).select("10");
     cy.contains("GFPuv").should("not.exist");
-    cy.get(`.tg-zoom-bar`).should("not.exist");
+    cy.get(`.veZoomLinearSlider`).should("not.exist");
   });
   // tnr: maybe enable this some day
   // it("scroll wheel should zoom in/out", function () {
@@ -51,7 +54,7 @@ describe("zoomLinearView.spec", function () {
       "not.be.visible"
     );
 
-    cy.get(".tg-zoom-bar .bp3-icon-minus").click();
+    cy.get(".veZoomLinearSlider .bp3-icon-minus").click();
     cy.get(".veRowViewFeature:contains(dbl term):first").should("be.visible");
   });
   it(`zoom level should be preserved even when the linear view is hidden and re-shown`, () => {});
@@ -59,6 +62,6 @@ describe("zoomLinearView.spec", function () {
 
 function pressZoom(times) {
   for (let i = 0; i < times; i++) {
-    cy.get(".tg-zoom-bar .bp3-icon-plus").click();
+    cy.get(".veZoomLinearSlider .bp3-icon-plus").click();
   }
 }

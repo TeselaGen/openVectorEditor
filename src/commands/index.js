@@ -1293,6 +1293,12 @@ const toolCommandDefs = {
     hotkeyProps: { preventDefault: true },
     isHidden: (props) => isProtein(props)
   },
+  simulatePCR: {
+    handler: (props) => props.createNewPCR(),
+    hotkey: "mod+shift+p",
+    hotkeyProps: { preventDefault: true },
+    isHidden: (props) => isProtein(props)
+  },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
     name: "Manage Enzymes",
@@ -1366,7 +1372,7 @@ const labelCommandDefs = {
   }
 };
 
-const commandDefs = {
+export const commandDefs = {
   showChromQualScoresMenu: {
     isHidden: (props) =>
       !props.sequenceData.chromatogramData ||

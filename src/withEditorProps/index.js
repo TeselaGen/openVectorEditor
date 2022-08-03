@@ -621,10 +621,11 @@ function mapStateToProps(state, ownProps) {
       id,
       name,
       ...selectionLayer,
-      ...(annotationToAdd.bases && {
-        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
-        fullSeq: sequenceData.sequence
-      }),
+      ...(annotationToAdd.bases &&
+        {
+          // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+          // fullSequence: sequenceData.sequence
+        }),
       locations: annotationToAdd.locations
         ? annotationToAdd.locations.map(convertRangeTo0Based)
         : undefined

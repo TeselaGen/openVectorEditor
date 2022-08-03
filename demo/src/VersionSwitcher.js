@@ -9,6 +9,7 @@ export default function VersionSwitcher() {
   useEffect(() => {
     (async function fetchData() {
       try {
+        if (window.Cypress) return;
         let res = await (
           await window.fetch(
             "https://api.github.com/repos/teselagen/openVectorEditor/git/trees/gh-pages"

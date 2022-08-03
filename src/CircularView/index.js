@@ -65,7 +65,7 @@ export function CircularView(props) {
     _zoomLevel = props.circ_zoomLevel;
     setZoomLevel = props.circ_setZoomLevel;
   }
-  const { sequenceData = {} } = props;
+  const { sequenceData = {}, smallSlider } = props;
   const { sequence = "atgc", circular } = sequenceData;
   const sequenceLength = sequence.length;
 
@@ -143,7 +143,7 @@ export function CircularView(props) {
     hideName = false,
     editorName,
     showCicularViewInternalLabels,
-    withRotateCircularView,
+    withRotateCircularView: _withRotateCircularView,
     withZoomCircularView,
     selectionLayer = { start: -1, end: -1 },
     annotationHeight = 15,
@@ -156,7 +156,6 @@ export function CircularView(props) {
     editorClicked = noop,
     backgroundRightClicked = noop,
     searchLayers = [],
-    withZoomView,
     editorDragStopped = noop,
     additionalSelectionLayers = [],
     maxAnnotationsToDisplay,
@@ -172,6 +171,8 @@ export function CircularView(props) {
     nameFontSizeCircularView = 14,
     fullScreen
   } = props;
+  const withRotateCircularView =
+    _withRotateCircularView || withZoomCircularView; //if we're showing zoom then we MUST show rotation as well
 
   const sequenceName = hideName ? "" : sequenceData.name || "";
   let annotationsSvgs = [];
@@ -242,6 +243,7 @@ export function CircularView(props) {
             Annotation: AxisNumbers,
             isAnnotation: true,
             noTitle: true,
+            noHover: true,
             annotations: calculateTickMarkPositionsForGivenRange({
               increaseOffset: true,
               range: rangeToShow,
@@ -308,6 +310,7 @@ export function CircularView(props) {
               showDnaColors: annotationVisibility.dnaColors,
               showSeqText
             },
+            noHover: true,
             annotations: getSequenceWithinRange(rangeToShow, sequence)
               .split("")
               .map((letter, i) => {
@@ -695,10 +698,12 @@ export function CircularView(props) {
     <div
       style={{
         width: widthToUse,
-        height: heightToUse
+        height: heightToUse,
+        position: "relative",
+        overflow: "hidden"
       }}
       onWheel={
-        withZoomView && hasRotateableLength
+        withZoomCircularView && hasRotateableLength
           ? (e) => {
               let delta = e.deltaY;
               if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
@@ -723,9 +728,9 @@ export function CircularView(props) {
 
       {withRotateCircularView && hasRotateableLength && (
         <RotateCircularViewSlider
-          editorName={editorName}
           bindOutsideChangeHelper={rotateHelper.current}
           zoomLevel={zoomLevel}
+          smallSlider={smallSlider}
           maxZoomLevel={maxZoomLevel}
           setRotationRadians={setRotationRadians}
         ></RotateCircularViewSlider>
@@ -733,6 +738,7 @@ export function CircularView(props) {
       {withZoomCircularView && hasZoomableLength && (
         <ZoomCircularViewSlider
           zoomHelper={zoomHelper}
+          smallSlider={smallSlider}
           onZoom={() => {
             const caret =
               caretPosition > -1
@@ -792,7 +798,9 @@ export function CircularView(props) {
         }}
         onStop={editorDragStopped}
       >
-        <div ref={withZoomView && hasZoomableLength ? target : undefined}>
+        <div
+          ref={withZoomCircularView && hasZoomableLength ? target : undefined}
+        >
           <svg
             key="circViewSvg"
             onClick={(event) => {

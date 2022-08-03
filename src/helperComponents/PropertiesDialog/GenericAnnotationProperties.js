@@ -25,7 +25,8 @@ const genericAnnotationProperties = ({
   annotationType,
   noType,
   withTags,
-  withBases
+  withBases,
+  additionalFooterEls
 }) => {
   const annotationTypeUpper = upperFirst(annotationType);
   class AnnotationProperties extends React.Component {
@@ -222,6 +223,7 @@ const genericAnnotationProperties = ({
                   style={{ marginRight: 15 }}
                 />
               )}
+              {additionalFooterEls && additionalFooterEls(this.props)}
             </div>
           )}
         </React.Fragment>

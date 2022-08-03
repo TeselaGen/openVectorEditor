@@ -169,6 +169,7 @@ function Labels({
     //http://stackoverflow.com/questions/24078524/svg-click-events-not-firing-bubbling-when-using-use-element
 
     height: 120
+    // height: 20
   };
 }
 export default Labels;

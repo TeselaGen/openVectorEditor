@@ -837,8 +837,6 @@ class MoveToInner extends React.Component {
                 window.toastr.success(
                   `${selectedCount} enzyme(s) moved to ${enzymeGroupToMoveTo}`
                 );
-                // this.set
-                // debugger;
               }}
               intent="success"
               icon="tick"

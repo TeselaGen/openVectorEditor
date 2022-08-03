@@ -69,7 +69,9 @@ class Sequence extends React.Component {
               style={{
                 left: startOffset * charWidth,
                 height,
-                position: "absolute"
+                width,
+                position: "absolute",
+                overflow: "visible"
               }}
               ref="rowViewTextContainer"
               className="rowViewTextContainer"
@@ -135,6 +137,7 @@ class Sequence extends React.Component {
               style={{
                 left: startOffset * charWidth,
                 height,
+                width,
                 position: "absolute"
               }}
               ref="rowViewTextContainer"

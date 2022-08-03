@@ -118,7 +118,7 @@ export class PropertiesDialog extends React.Component {
         />
       );
     });
-
+    const heightToUse = Math.max(0, Number((heightFromDim || height) - 30));
     return (
       <div
         style={{
@@ -131,7 +131,7 @@ export class PropertiesDialog extends React.Component {
           style={{
             display: "flex",
             width,
-            height: Math.max(0, Number((heightFromDim || height) - 30)),
+            height: heightToUse || 300,
             zIndex: 10,
             padding: 10
             // paddingBottom: '31px',

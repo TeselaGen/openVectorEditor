@@ -1,32 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  showContextMenu,
+  commandMenuEnhancer
+} from "teselagen-react-components";
+
 import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";
+import { RowView } from "./RowView";
 
 import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
 import { cloneDeep } from "lodash";
+import { Button, ButtonGroup, Tooltip } from "@blueprintjs/core";
+import getCommands from "./commands";
+import { withHandlers } from "recompose";
+import { exportSequenceToFile } from "./withEditorProps";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default (props) => {
   const {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {},
-    noWarnings = true
+    noWarnings = true,
+    withDownload,
+    withChoosePreviewType,
+    withCaretEnabled,
+    smallSlider
   } = props;
-  const Component = _sequenceData.circular
+  const [previewType, setPreviewType] = useState(
+    _sequenceData.circular ? "circular" : "linear"
+  );
+  const [caretPosition, setCaret] = useState(withCaretEnabled ? -1 : undefined);
+  let tickSpacing = undefined;
+  let Component = (
+    withChoosePreviewType ? previewType === "circular" : _sequenceData.circular
+  )
     ? CircularView
     : _sequenceData.isOligo && _sequenceData.sequence
     ? SimpleOligoPreview
     : LinearView;
-  const tickSpacing = _sequenceData.circular
-    ? undefined
-    : Math.floor(
-        (_sequenceData.noSequence
-          ? _sequenceData.size
-          : _sequenceData.sequence.length) / 5
-      );
+  if (withChoosePreviewType && previewType === "row") {
+    Component = RowView;
+    tickSpacing = undefined;
+  }
+
   let sequenceData = cloneDeep(_sequenceData);
   const annotationVisibility = {
     ...visibilityDefaultValues,
@@ -56,23 +75,103 @@ export default (props) => {
     sequenceData.parts,
     sequenceData.sequence.length
   );
-
   return (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
-      <Component
-        {...{
-          className: "tg-simple-dna-view",
-          width: 300,
-          height: 300,
-          noWarnings,
-          ...props,
-          tickSpacing,
-          hoveredId: props.hoveredId,
-          annotationVisibility,
-          sequenceData,
-          showTitle: true
-        }}
-      />
+      <div style={{ width: "fit-content" }}>
+        {(withDownload || withChoosePreviewType) && (
+          <div
+            style={{
+              marginLeft: 10,
+              marginBottom: 5,
+              display: "flex",
+              justifyContent: "end"
+            }}
+          >
+            {withDownload && <DownloadBtn {...props}></DownloadBtn>}
+            {withChoosePreviewType && (
+              <ButtonGroup>
+                <Tooltip content="Circular">
+                  <Button
+                    className="tgPreviewTypeCircular"
+                    active={previewType === "circular"}
+                    intent="primary"
+                    onClick={() => setPreviewType("circular")}
+                    icon="circle"
+                  ></Button>
+                </Tooltip>
+                <Tooltip content="Linear">
+                  <Button
+                    className="tgPreviewTypeLinear"
+                    active={previewType === "linear"}
+                    intent="primary"
+                    onClick={() => setPreviewType("linear")}
+                    icon="layout-linear"
+                  ></Button>
+                </Tooltip>
+                <Tooltip content="Row">
+                  <Button
+                    className="tgPreviewTypeRow"
+                    active={previewType === "row"}
+                    intent="primary"
+                    onClick={() => setPreviewType("row")}
+                    icon="menu"
+                  ></Button>
+                </Tooltip>
+              </ButtonGroup>
+            )}
+          </div>
+        )}
+        <Component
+          {...{
+            className: "tg-simple-dna-view",
+            width: 300,
+            height: 300,
+            noWarnings,
+            ...props,
+            caretPosition,
+            smallSlider,
+            editorClicked: ({ nearestCaretPos } = {}) => {
+              withCaretEnabled && setCaret(nearestCaretPos);
+            },
+            instantiated: true,
+            tickSpacing,
+            hoveredId: props.hoveredId,
+            annotationVisibility,
+            sequenceData,
+            showTitle: true
+          }}
+        />
+      </div>
     </HoveredIdContext.Provider>
   );
 };
+
+const DownloadBtn = withHandlers({ exportSequenceToFile })((props) => {
+  return (
+    <Tooltip content="Download">
+      <Button
+        className="veDownloadButton"
+        style={{ marginRight: 10 }}
+        onClick={(event) =>
+          showContextMenu(
+            [
+              "exportSequenceAsGenbank",
+              "exportSequenceAsFasta",
+              "exportSequenceAsTeselagenJson"
+            ],
+            [
+              commandMenuEnhancer(getCommands({ props }), {
+                useTicks: true,
+                omitIcons: true
+              })
+            ],
+            event
+          )
+        }
+        minimal
+        intent="primary"
+        icon="download"
+      ></Button>
+    </Tooltip>
+  );
+});

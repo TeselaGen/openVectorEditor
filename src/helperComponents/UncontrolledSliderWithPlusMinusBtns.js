@@ -2,6 +2,7 @@ import React from "react";
 import { Icon, Slider, Intent } from "@blueprintjs/core";
 import { preventDefaultStopPropagation } from "../utils/editorUtils";
 import { clamp, isNumber } from "lodash";
+import "./UncontrolledSliderWithPlusMinusBtns.css";
 
 export default class UncontrolledSliderWithPlusMinusBtns extends React.Component {
   state = { value: 0 };
@@ -34,9 +35,11 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
       title,
       initialValue,
       label,
+      passedRef,
       clickStepSize,
       style,
       onClick,
+      smallSlider,
       bindOutsideChangeHelper,
       className,
       ...rest
@@ -61,11 +64,12 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
     }
     return (
       <div
-        className={className}
+        className={`${className} ${smallSlider ? "small-slider" : ""}`}
         onClick={(e) => {
           onClick && onClick(e);
           preventDefaultStopPropagation(e);
         }}
+        ref={passedRef}
         onDrag={preventDefaultStopPropagation}
         onDragStart={preventDefaultStopPropagation}
         onDragEnd={preventDefaultStopPropagation}
@@ -90,7 +94,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             this.props.onChange(newVal);
             this.props.onRelease && this.props.onRelease(newVal);
           }}
-          style={{ cursor: "pointer", marginRight: 10 }}
+          style={{ cursor: "pointer", marginRight: 8 }}
           intent={Intent.PRIMARY}
           icon={this.props.leftIcon || "minus"}
         />
@@ -120,7 +124,7 @@ export default class UncontrolledSliderWithPlusMinusBtns extends React.Component
             this.props.onChange(newVal);
             this.props.onRelease && this.props.onRelease(newVal);
           }}
-          style={{ cursor: "pointer", marginLeft: 10 }}
+          style={{ cursor: "pointer", marginLeft: 8 }}
           intent={Intent.PRIMARY}
           icon={this.props.rightIcon || "plus"}
         />

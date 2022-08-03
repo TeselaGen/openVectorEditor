@@ -307,7 +307,10 @@ const Demo = () => {
             render={() => {
               return (
                 <WrapSimpleDemo>
-                  <LinearView withZoomView={true} editorName="DemoEditor" />
+                  <LinearView
+                    withZoomLinearView={true}
+                    editorName="DemoEditor"
+                  />
                 </WrapSimpleDemo>
               );
             }}

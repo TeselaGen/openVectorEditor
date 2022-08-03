@@ -1,11 +1,13 @@
 import React from "react";
+import { SLIDER_NORM_WIDTH, SLIDER_SMALL_WIDTH } from "../constants/constants";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 export function ZoomCircularViewSlider({
   zoomHelper,
   zoomLevel,
   setZoomLevel,
   maxZoomLevel,
-  onZoom
+  onZoom,
+  smallSlider
 }) {
   let clickStepSize = (maxZoomLevel - 1) / 440;
   clickStepSize = clickStepSize * Math.max(1, Math.log(zoomLevel + 2));
@@ -30,7 +32,7 @@ export function ZoomCircularViewSlider({
     <div
       style={{
         position: "absolute",
-        left: 150,
+        left: smallSlider ? 100 : 150,
         top: 0,
         zIndex: 900
       }}
@@ -42,10 +44,11 @@ export function ZoomCircularViewSlider({
         title="Adjust Zoom Level"
         style={{
           paddingTop: "4px",
-          width: 120
+          width: smallSlider ? SLIDER_SMALL_WIDTH : SLIDER_NORM_WIDTH
         }}
+        smallSlider
         noWraparound
-        className="veZoomCircSlider ove-slider"
+        className="veZoomCircularSlider ove-slider"
         labelRenderer={false}
         stepSize={stepSize}
         clickStepSize={clickStepSize}

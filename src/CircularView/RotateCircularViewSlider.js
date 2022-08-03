@@ -1,24 +1,29 @@
 import React from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { SLIDER_NORM_WIDTH, SLIDER_SMALL_WIDTH } from "../constants/constants";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 
 export function RotateCircularViewSlider({
   setRotationRadians,
-  editorName,
   zoomLevel,
   maxZoomLevel,
-  bindOutsideChangeHelper
+  bindOutsideChangeHelper,
+  smallSlider
 }) {
+  const target = React.useRef();
   const showLabelsDebounced = useDebouncedCallback(
-    // function
     () => {
-      const el = document.querySelector(
-        `.veEditor.${editorName} .circularViewSvg`
-      );
-      if (el) el.classList.remove("veHideLabels");
-      else {
-        console.error(`whoops we shouldn't be here`);
+      try {
+        const el = target.current
+          .closest(`.veCircularView`)
+          .querySelector(`.circularViewSvg`);
+        if (el) el.classList.remove("veHideLabels");
+        else {
+          console.error(`whoops we shouldn't be here`);
+        }
+      } catch (e) {
+        console.error(`error 92hf290fasd:`, e);
       }
     },
     // delay in ms
@@ -41,26 +46,30 @@ export function RotateCircularViewSlider({
         bindOutsideChangeHelper={bindOutsideChangeHelper}
         onChange={(_val) => {
           const val = 360 - _val;
-          const el = document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg`
-          );
-          const innerEl = document.querySelector(
-            `.veEditor.${editorName} .circularViewSvg g`
-          );
+          const el = target.current
+            .closest(`.veCircularView`)
+            .querySelector(`.circularViewSvg`);
+          const innerEl = target.current
+            .closest(`.veCircularView`)
+            .querySelector(`.circularViewSvg g`);
           innerEl.style.transform = `rotate(${val}deg)`;
-
           setRotationRadians((val * Math.PI) / 180);
           if (zoomLevel <= 1) {
             el.classList.add("veHideLabels");
           }
           showLabelsDebounced();
         }}
+        smallSlider
+        passedRef={target}
         showTrackFill={false}
         leftIcon="arrow-left"
         rightIcon="arrow-right"
         title="Rotate"
-        style={{ paddingTop: "4px", width: 120 }}
-        className="veRotateCircSlider ove-slider"
+        style={{
+          paddingTop: "4px",
+          width: smallSlider ? SLIDER_SMALL_WIDTH : SLIDER_NORM_WIDTH
+        }}
+        className="veRotateCircularSlider ove-slider"
         labelRenderer={false}
         stepSize={stepSize}
         justUpdateInitialValOnce

@@ -52,6 +52,7 @@ import { userDefinedHandlersAndOpts } from "./userDefinedHandlersAndOpts";
 import { GlobalDialog } from "../GlobalDialog";
 import isMobile from "is-mobile";
 import { getClientX, getClientY } from "../utils/editorUtils";
+import PCRTool from "../PCRTool/PCRTool";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -65,6 +66,7 @@ const _panelMap = {
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
+  pcrTool: PCRTool,
   properties: {
     comp: Properties,
     panelSpecificPropsToSpread: ["PropertiesProps"]
@@ -352,7 +354,7 @@ export class Editor extends React.Component {
       annotationsToSupport,
       withRotateCircularView = true,
       withZoomCircularView = true,
-      withZoomView = true,
+      withZoomLinearView = true,
       displayMenuBarAboveTools = true,
       updateSequenceData,
       readOnly,
@@ -564,7 +566,7 @@ export class Editor extends React.Component {
         panelMap[activePanelType].panelSpecificPropsToSpread;
       const panel = Panel ? (
         <Panel
-          withZoomView={withZoomView}
+          withZoomLinearView={withZoomLinearView}
           withRotateCircularView={withRotateCircularView}
           withZoomCircularView={withZoomCircularView}
           {...pickedUserDefinedHandlersAndOpts}

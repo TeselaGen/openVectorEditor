@@ -727,7 +727,6 @@ ToolBarProps: {
               })}
               {renderToggle({
                 that: this,
-                hotkey: "cmd+b",
                 label: "Focus Digest Tool",
                 type: "focusDigestTool",
                 hook: (shouldUpdate) => {
@@ -764,9 +763,48 @@ ToolBarProps: {
                       ]
                     });
                 },
-                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
-                
-                `
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)`
+              })}
+              {renderToggle({
+                that: this,
+                label: "Focus PCR Tool",
+                type: "focusPCRTool",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      panelsShown: [
+                        [
+                          {
+                            id: "pcrTool",
+                            name: "New PCR",
+                            active: true,
+                            canClose: true
+                          },
+                          {
+                            id: "rail",
+                            name: "Linear Map"
+                          },
+                          {
+                            id: "circular",
+                            name: "Circular Map"
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            active: true,
+                            name: "Sequence Map"
+                          },
+
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
+                    });
+                },
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)`
               })}
               {renderToggle({
                 that: this,
@@ -1765,8 +1803,30 @@ clickOverrides: {
                                 forward: true,
                                 bases: "agggaaACTCGCTCGGGGTGGCCCCGGTGC",
                                 primerBindsOn: "3prime",
-                                useLinkedOligo: true,
-                                linkedOligoLink: "oli 1"
+                                useLinkedOligo: true
+                              },
+                              {
+                                name: "Example Primer 2",
+                                id: "98hf0",
+                                start: 781,
+                                end: 823,
+                                type: "primer_bind",
+                                forward: false,
+                                bases:
+                                  "agagagagaggcgggtttaacgccgattgaggccaacggttatctcgatttttt",
+                                primerBindsOn: "3prime",
+                                useLinkedOligo: true
+                              },
+                              {
+                                name: "Example Primer 3",
+                                id: "10021jos",
+                                start: 1004,
+                                end: 1029,
+                                type: "primer_bind",
+                                forward: true,
+                                bases: "aaagcattctgtaacaaagcgggacc",
+                                primerBindsOn: "3prime",
+                                useLinkedOligo: true
                               }
                             ]
                           : []

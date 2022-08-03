@@ -251,7 +251,7 @@ export default function RowItem(props) {
         truncateLabelsThatDoNotFit={truncateLabelsThatDoNotFit}
         onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
         type={type}
-        // fullSeq={}
+        fullSequence={fullSequence}
         containerClassName={camelCase("veRowView-" + pluralType + "Container")}
         alignmentType={alignmentType}
         {...annotationCommonProps}

@@ -414,7 +414,7 @@ class AlignmentView extends React.Component {
     if (!el) {
       return;
     }
-    el.scrollIntoView({ inline: "center" });
+    el.scrollIntoView({ inline: "center", block: "nearest" });
   };
 
   scrollAlignmentToPercent = (scrollPercentage) => {

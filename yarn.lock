@@ -2601,10 +2601,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^8.3.28:
-  version "8.3.28"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.28.tgz#206ed474f9232717d22e3c3796e415c0471c53d0"
-  integrity sha512-Hm6cucV/wJZK0ej+K2wlUpRgSQHshL/QMflztuzT2QPEFQ4xpqJsasCy2jjRjR/wcZeDF1i6aUwi67uTagGMgQ==
+bio-parsers@^8.3.29:
+  version "8.3.29"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.29.tgz#00c3d0e3853b1060bd450a21a5e5b9f218ee0910"
+  integrity sha512-a5z2reTaemCOiIXm5JGkA2WKTdHpLrX3am8zQQOZXOu8d6yqsAqPwx34nOjAE04MHzQv6vU4+0IM0TDg3su8LA==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -11688,10 +11688,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.9.2:
-  version "30.9.2"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.9.2.tgz#8fb2021c574a322b835af5a45abe84afb9fa2c68"
-  integrity sha512-ZvauOi8qWb8TgjT7yDuHZt6b7Bw1FSxNA3735iz/H+C4z7Gs4byFqBjNwB+5iParMdQ8OyFLtFJgpn/6GZNc0g==
+teselagen-react-components@30.10.2:
+  version "30.10.2"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.10.2.tgz#d3fa7cac74ddeee80941b1458753ec649bddc63d"
+  integrity sha512-uIs7E8+nzvKGJ9/Ay0qfZ7uzg7FL38AV9eQkctqJHIWDD2D4mlxvqeP7mf9uuen59iD9g+NHk3trcnOVWRDogQ==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -12447,10 +12447,10 @@ ve-range-utils@^2.6.6:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.1.27:
-  version "5.1.27"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.27.tgz#f8dba294d35bcdfa719b80a3cb207981fede6aba"
-  integrity sha512-RooWUEFCB1mfb2sYR+UoJUVlRQXx8XRdGo6CqWgL9nEzQjC5g//+Sk/g2jKgAMWvv2D03LfycDLDZe7tgBoYOA==
+ve-sequence-utils@^5.1.29:
+  version "5.1.29"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.29.tgz#75e8064a17ce04821b7e92bb4fdb4634367cc93e"
+  integrity sha512-2jrjUAANonfgnWTdha5vsf7fDusdjO3L3VTx/lEYyX8MlWMGYpsybWiDB59wvL5cZ3ec9uDP57PBKxBUMhvcSg==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

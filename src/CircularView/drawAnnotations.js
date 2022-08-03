@@ -17,6 +17,7 @@ function drawAnnotations(props) {
   const {
     annotationType,
     radius,
+    noHover,
     isProtein,
     type,
     annotations,
@@ -252,9 +253,9 @@ function drawAnnotations(props) {
           ? getColor(annotation)
           : annotation.color || "purple";
         DrawAnnotation.displayName = annotationType + "--- DrawAnnotation";
-
+        const CompToUse = noHover ? DrawAnnotationInner : DrawAnnotation;
         svgGroup.push(
-          <DrawAnnotation
+          <CompToUse
             {...{
               ...props,
               ...rest,
@@ -300,7 +301,7 @@ function drawAnnotations(props) {
 
 export default drawAnnotations;
 
-const DrawAnnotation = withHover(function ({
+function DrawAnnotationInner({
   className,
   startAngle,
   endAngle,
@@ -399,7 +400,9 @@ const DrawAnnotation = withHover(function ({
       {locationAngles && locationAngles.map(getInner)}
     </React.Fragment>
   );
-});
+}
+
+const DrawAnnotation = withHover(DrawAnnotationInner);
 
 // const nameAngle =
 //   ((ellipsizedName.length + 3) * 55) /

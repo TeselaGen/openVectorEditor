@@ -12,7 +12,7 @@ function VeWarning(props) {
         popoverClassName="bp3-popover-content-sizing"
         content={tooltip}
       >
-        <Icon intent="warning" icon="warning-sign" />
+        <Icon size={20} intent="warning" icon="warning-sign" />
       </Tooltip>
       {message}
     </div>

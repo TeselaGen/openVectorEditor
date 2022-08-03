@@ -11,7 +11,7 @@ export function getBasesToShow({
   annotationRange,
   charWidth,
   bpsPerRow,
-  fullSeq,
+  fullSequence,
   iTree,
   sequenceLength
 }) {
@@ -23,7 +23,7 @@ export function getBasesToShow({
 
     const { basesNoInsertsWithMetaData, inserts, aRange } = getStructuredBases({
       ...annotation,
-      fullSeq,
+      fullSequence,
       annotationRange,
       sequenceLength
     });

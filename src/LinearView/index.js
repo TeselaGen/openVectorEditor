@@ -16,12 +16,12 @@ import {
 import useAnnotationLimits from "../utils/useAnnotationLimits";
 import { SequenceName } from "./SequenceName";
 import classNames from "classnames";
-import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 import { VeTopRightContainer } from "../CircularView/VeTopRightContainer";
+import { ZoomLinearView } from "./ZoomLinearView";
 
 const defaultMarginWidth = 10;
 
@@ -146,8 +146,9 @@ class _LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
-      withZoomView = false,
+      withZoomLinearView = false,
       editorName,
+      smallSlider,
       paddingBottom,
       linearViewCharWidth,
       annotationVisibilityOverrides,
@@ -170,7 +171,7 @@ class _LinearView extends React.Component {
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
     const linearZoomEnabled =
-      bpsPerRow >= 50 && bpsPerRow < 30000 && withZoomView;
+      bpsPerRow >= 50 && bpsPerRow < 30000 && withZoomLinearView;
     const minCharWidth = initialCharWidth;
     const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
     const pinchHandler = {
@@ -246,6 +247,7 @@ class _LinearView extends React.Component {
               charWidth={this.charWidth}
               bindOutsideChangeHelper={this.bindOutsideChangeHelper}
               minCharWidth={minCharWidth}
+              smallSlider={smallSlider}
               editorName={editorName}
               setCharWidth={(v) => {
                 this.setState({
@@ -279,7 +281,6 @@ class _LinearView extends React.Component {
                 editorName,
                 onScroll: () => {
                   updateLabelsForInViewFeatures();
-                  // this.updateLabelsForInViewFeaturesDebounced();
                 },
                 rowContainerStyle: isLinViewZoomed
                   ? { paddingBottom: 15 }
@@ -292,6 +293,7 @@ class _LinearView extends React.Component {
                 sequenceLength: this.getMaxLength(),
                 width: innerWidth,
                 bpsPerRow,
+                fullSequence: sequenceData.sequence,
                 emptyText: getEmptyText({ sequenceData, caretPosition }),
                 tickSpacing:
                   tickSpacing || isLinViewZoomed
@@ -301,7 +303,6 @@ class _LinearView extends React.Component {
                       ),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
-                  // yellowAxis: true,
                   ...((!isLinViewZoomed || this.charWidth < 5) && {
                     translations: false,
                     primaryProteinSequence: false,
@@ -334,45 +335,8 @@ export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(LinearView);
 
 export default withEditorInteractions(LinearView);
 
-function ZoomLinearView({
-  setCharWidth,
-  minCharWidth,
-  bindOutsideChangeHelper,
-  afterOnChange
-}) {
-  return (
-    <div className="tg-zoom-bar" style={{ zIndex: 900, position: "absolute" }}>
-      <UncontrolledSliderWithPlusMinusBtns
-        noWraparound
-        bindOutsideChangeHelper={bindOutsideChangeHelper}
-        onClick={() => {
-          setTimeout(scrollToCaret, 0);
-        }}
-        onChange={(zoomLvl) => {
-          //zoomLvl is in the range of 0 to 10
-          const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
-          const newCharWidth = minCharWidth * Math.pow(scaleFactor, zoomLvl);
-          setCharWidth(newCharWidth);
-          scrollToCaret();
-          afterOnChange && afterOnChange();
-        }}
-        leftIcon="minus"
-        rightIcon="plus"
-        title="Zoom"
-        style={{ paddingTop: "4px", width: 120 }}
-        className="veZoomLinearSlider ove-slider"
-        labelRenderer={false}
-        stepSize={0.05}
-        clickStepSize={0.5}
-        initialValue={0}
-        max={10}
-        min={0}
-      ></UncontrolledSliderWithPlusMinusBtns>
-    </div>
-  );
-}
-const scrollToCaret = () => {
+export const scrollToCaret = () => {
   const el = window.document.querySelector(".veLinearView .veRowViewCaret");
   if (!el) return;
-  el.scrollIntoView({ inline: "center" });
+  el.scrollIntoView({ inline: "center", block: "nearest" });
 };

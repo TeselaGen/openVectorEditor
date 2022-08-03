@@ -75,7 +75,7 @@ const CustomContentEditable = generateField(function CustomContentEditable({
     bases: basesToUse,
     start: start - 1,
     end: end - 1,
-    fullSeq: sequenceData.sequence,
+    fullSequence: sequenceData.sequence,
     primerBindsOn,
     sequenceLength
   });
