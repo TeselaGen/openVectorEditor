@@ -11,6 +11,7 @@
     "umd"
   ],
   "scripts": {
+    "dev": "vite",
     "build": "nwb build-react-component --copy-files --no-demo",
     "buildWithDemo": "nwb build-react-component --copy-files",
     "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
@@ -28,6 +29,7 @@
     "@fontsource/ubuntu-mono": "^4.5.0",
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "^0.8.18",
+    "@teselagen/react-table": "^6.10.9",
     "@use-gesture/react": "^10.2.15",
     "bio-parsers": "^8.3.29",
     "classnames": "^2.3.1",
@@ -74,6 +76,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.11",
     "@types/lodash": "npm:@types/lodash-es",
+    "@vitejs/plugin-react": "^2.0.0",
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.0.0",
     "copy-to-clipboard": "^3.3.1",
@@ -87,11 +90,12 @@
     "nwb": "0.25.2",
     "papaparse": "^5.3.2",
     "prettier": "2.7.1",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-addons-perf": "^15.4.2",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.2.0",
     "react-markdown": "^4.3.1",
-    "to-regex-range": "^5.0.1"
+    "to-regex-range": "^5.0.1",
+    "vite": "^3.0.0"
   },
   "resolutions": {
     "listr": "0.14.3"

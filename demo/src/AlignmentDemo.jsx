@@ -5,7 +5,7 @@ import msaAlignment from "./exampleData/msaAlignment.json";
 import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import sangerAlignment from "./exampleData/sangerAlignment.json";
 import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
-import { addAlignment, AlignmentView /* updateEditor */ } from "../../src/";
+import { addAlignment, AlignmentView /* updateEditor */ } from "../../src";
 // import { selectionLayerUpdate } from "../../src/redux/selectionLayer";
 // import { caretPositionUpdate } from "../../src/redux/caretPosition";
 import renderToggle from "./utils/renderToggle";
