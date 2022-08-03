@@ -109,7 +109,7 @@ describe("simpleCircularOrLinearView", function () {
     cy.get(`path[stroke="red"]`).should("exist");
   });
   it(`can toggle a part hover`, function () {
-    cy.visit("/#/SimpleCircularOrLinearView/circular=true");
+    cy.visit("/#/SimpleCircularOrLinearView?circular=true");
     cy.get(".veCircularViewLabelText.veAnnotationHovered").should("not.exist");
     cy.tgToggle("hoverPart");
     cy.get(".veCircularViewLabelText.veAnnotationHovered").should("exist");

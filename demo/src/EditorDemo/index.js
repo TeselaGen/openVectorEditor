@@ -1044,7 +1044,7 @@ rightClickOverrides: {
                 that: this,
                 type: "withRotateCircularView",
                 label: "Show Rotate Circular View",
-                info: `withRotateCircularView={true /* default */}`
+                info: `withRotateCircularView={true /* default */} note that withZoomCircularView must also be set to false as well for this to work`
               })}
               {renderToggle({
                 that: this,
