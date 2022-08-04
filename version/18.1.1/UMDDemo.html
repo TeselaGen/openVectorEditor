@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/open-vector-editor/umd/main.css"
+    />
+  </head>
+  <body style="display: flex">
+    <a id="backButton"> Back </a> &nbsp;
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/open-vector-editor/umd/open-vector-editor.js"
+    ></script>
+    <script type="text/javascript">
+      const hrefToUse = window.location.href.includes("localhost")
+        ? `${window.location.origin}/#/Editor`
+        : "http://teselagen.github.io/openVectorEditor/#/Editor";
+        
+      document.getElementById("backButton").setAttribute("href", hrefToUse);
+      const editor = window.createVectorEditor("createDomNodeForMe", {
+        withPreviewMode: true,
+        editorName: "FirstSequence",
+        showMenuBar: true
+      });
+      /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
+      editor.updateEditor({
+        sequenceData: {
+          circular: true,
+          sequence:
+            "gtagagagagagtgagcccgacccccgtagagagagagtgagcccgacccccgtagagagagagtgagcccgacccccgtagagagagagtgagcccgaccccc",
+          features: [
+            {
+              id: "2oi452",
+              name: "I'm a feature :)",
+              start: 10,
+              end: 20
+            }
+          ]
+        }
+      });
+      const editor2 = window.createVectorEditor("createDomNodeForMe", {
+        withPreviewMode: true,
+        showMenuBar: true,
+        editorName: "AnotherSequence"
+      });
+      /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
+      editor2.updateEditor({
+        sequenceData: {
+          name: "Another Sequence",
+          circular: false,
+          sequence: "gtaacccccc",
+          features: [
+            {
+              id: "agog98",
+              name: "2nd Feature",
+              type: "CDS",
+              start: 1,
+              end: 5
+            }
+          ]
+        }
+      });
+      const editor3 = window.createVectorEditor("createDomNodeForMe", {
+        withPreviewMode: true,
+        showMenuBar: true,
+        editorName: "YetAnotherSequence"
+      });
+      /* createDomNodeForMe will make a dom node for you and append it to the document.body*/
+      editor3.updateEditor({
+        sequenceData: {
+          name: "Wait for Me!",
+          circular: true,
+          sequence:
+            "gtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaaccccccgtaacccccc",
+          features: [
+            {
+              id: "19f0fjj",
+              name: "abcd",
+              type: "RBS",
+              start: 1,
+              end: 5
+            },
+
+            {
+              id: "24t2t",
+              name: "pj1",
+              type: "CDS",
+              start: 10,
+              end: 50
+            },
+            {
+              id: "82020000",
+              name: "pj3",
+              type: "CDS",
+              start: 10,
+              end: 50
+            }
+          ]
+        }
+      });
+    </script>
+  </body>
+</html>
