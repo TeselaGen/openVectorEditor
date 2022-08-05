@@ -72,7 +72,7 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.11",
+    "@cypress/code-coverage": "^3.10.0",
     "@types/lodash": "npm:@types/lodash-es",
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.0.0",
