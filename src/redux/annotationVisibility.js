@@ -20,6 +20,7 @@ export const visibilityDefaultValues = {
   cdsFeatureTranslations: true,
   axis: true,
   cutsites: true,
+  // cutsites: true,
   cutsitesInSequence: true,
   primers: true,
   dnaColors: false,

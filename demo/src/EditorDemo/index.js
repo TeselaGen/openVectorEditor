@@ -307,6 +307,12 @@ export default class EditorDemo extends React.Component {
       }),
       renderToggle({
         that: this,
+        type: "allowMultipleFeatureDirections",
+        label: "allowMultipleFeatureDirections (multiple arrowheadTypes)",
+        info: "Pass allowMultipleFeatureDirections=true to the Editor to allow for bidirectional and non-directional features as well as the standard forward and reverse orientations"
+      }),
+      renderToggle({
+        that: this,
         type: "onSave"
       }),
       renderToggle({
@@ -1133,7 +1139,7 @@ sequenceData: {
       end: 400,
       labelColor: "red",
       color: "red",
-      noDirectionality: true
+      arrowheadType: "NONE"
     },
     {
       id: "error2",
@@ -1143,7 +1149,7 @@ sequenceData: {
       end: 950,
       labelColor: "gold",
       color: "yellow",
-      noDirectionality: true
+      arrowheadType: "NONE"
     }
   ]
 }
@@ -1163,7 +1169,7 @@ sequenceData: {
                               end: 400,
                               labelColor: "red",
                               color: "red",
-                              noDirectionality: true
+                              arrowheadType: "NONE"
                             },
                             {
                               id: "error2",
@@ -1173,7 +1179,7 @@ sequenceData: {
                               end: 950,
                               labelColor: "gold",
                               color: "yellow",
-                              noDirectionality: true
+                              arrowheadType: "NONE"
                             }
                           ]
                         : []
@@ -1198,7 +1204,7 @@ sequenceData: {
       end: 400,
       labelColor: "green",
       color: "green",
-      noDirectionality: true
+      arrowheadType: "NONE"
     },
     {
       id: "18711jja1",
@@ -1235,7 +1241,7 @@ sequenceData: {
                                 end: 899,
                                 labelColor: "blue",
                                 color: "blue",
-                                noDirectionality: true
+                                arrowheadType: "NONE"
                               }
                             ]
                           : []
@@ -1261,7 +1267,7 @@ sequenceData: {
       end: 400,
       labelColor: "green",
       color: "green",
-      noDirectionality: true,
+      arrowheadType: "NONE",
     },
     {
       id: "18711jja1",
@@ -1270,7 +1276,7 @@ sequenceData: {
       end: 899,
       labelColor: "blue",
       color: "blue",
-      noDirectionality: true,
+      arrowheadType: "NONE",
     }
   ]
 }
@@ -1290,7 +1296,7 @@ sequenceData: {
                               end: 400,
                               labelColor: "darkorange",
                               color: "darkorange",
-                              noDirectionality: true
+                              arrowheadType: "NONE"
                             },
                             {
                               id: "18711jja1",
@@ -1299,7 +1305,7 @@ sequenceData: {
                               end: 899,
                               labelColor: "darkblue",
                               color: "darkblue",
-                              noDirectionality: true
+                              arrowheadType: "NONE"
                             }
                           ]
                         : []
@@ -2065,6 +2071,9 @@ clickOverrides: {
                 );
                 return sequence;
               }
+            })}
+            {...(this.state.allowMultipleFeatureDirections && {
+              allowMultipleFeatureDirections: true
             })}
             {...(this.state.beforeAnnotationCreate && {
               beforeAnnotationCreate: ({

@@ -15,6 +15,7 @@ export default function Feature(props) {
     className,
     ellipsizedName,
     annotationType,
+    arrowheadType,
     overlapsSelf,
     rotationRadians,
     centerAngle,
@@ -50,6 +51,7 @@ export default function Feature(props) {
   const [path, textPath] = drawDirectedPiePiece({
     returnTextPath: true,
     overlapsSelf,
+    arrowheadType,
     hasLabel: ellipsizedName,
     labelNeedsFlip,
     radius,

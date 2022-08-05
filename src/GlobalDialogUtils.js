@@ -65,6 +65,10 @@ export function showAddOrEditAnnotationDialog({
         ...(annotation
           ? {
               ...convertRangeTo1Based(annotation),
+              arrowheadType:
+                annotation.arrowheadType ||
+                (annotation.strand === -1 ? "BOTTOM" : "TOP"),
+              strand: annotation.strand,
               ...(annotation.locations && {
                 locations: annotation.locations.map(convertRangeTo1Based)
               })
