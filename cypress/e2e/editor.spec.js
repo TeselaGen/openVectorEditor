@@ -40,8 +40,9 @@ describe("editor", function () {
   it(`should be able to hide the rotate circular view!`, () => {
     cy.get(`.veRotateCircularSlider`);
     cy.tgToggle(`withRotateCircularView`, false);
-    cy.get(`.veRotateCircularSlider`).should("not.exist");
     cy.tgToggle(`withZoomCircularView`, false);
+    cy.get(`.veRotateCircularSlider`).should("not.exist");
+    cy.tgToggle(`withZoomCircularView`, true);
     cy.get(`.veRotateCircularSlider`).should("exist");
   });
   it(`should be able to hide the zoom circular view!`, () => {
