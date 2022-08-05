@@ -569,7 +569,12 @@ export default ({ formName, getProps, dialogProps }) => {
 const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
-      <FormGroup inline label="Notes" labelInfo="(Key -- Value)"></FormGroup>
+      <FormGroup
+        style={{ marginBottom: 0 }}
+        inline
+        label="Notes"
+        labelInfo="(Key -- Value)"
+      ></FormGroup>
 
       {map(notes, (note, i) => {
         const { value, key } = note || {};
