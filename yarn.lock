@@ -4749,10 +4749,10 @@ eslint-config-react-app@^6.0.0:
   dependencies:
     confusing-browser-globals "^1.0.10"
 
-eslint-config-teselagen@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-6.0.3.tgz#395862216015585fea12a823b60e888de1cda0af"
-  integrity sha512-LefZ1ddhWB5lQl18FuPbeo6GFRZCEBwTBM7pMP7zKqi5l/vJViPB9skGJjgxYd5zd5+7oL6PWPn1Kjjaes1BBw==
+eslint-config-teselagen@^6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-6.0.6.tgz#3dc95e54a184c2f3f290ba314bd5ac72561028d8"
+  integrity sha512-e8bEUzZscMsWlCTyKyvtn4r3gI+U0i8ktI4t/5sVJaxOrBkqgH+87WhC1plKdnuQ/ZbFRAnk4LHlza0YcLG2jQ==
   dependencies:
     "@rushstack/eslint-patch" "^1.1.0"
     "@typescript-eslint/eslint-plugin" "^4.0.0"
@@ -4764,7 +4764,7 @@ eslint-config-teselagen@^6.0.3:
     eslint-plugin-flowtype "^5.2.0"
     eslint-plugin-import "^2.22.0"
     eslint-plugin-jsx-a11y "^6.3.1"
-    eslint-plugin-no-only-tests "^2.6.0"
+    eslint-plugin-no-only-tests "^3.0.0"
     eslint-plugin-react "^7.20.3"
     eslint-plugin-react-app "^6.2.2"
     eslint-plugin-react-hooks "^4.0.8"
@@ -4890,10 +4890,10 @@ eslint-plugin-jsx-a11y@^6.3.1:
     minimatch "^3.1.2"
     semver "^6.3.0"
 
-eslint-plugin-no-only-tests@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-no-only-tests/-/eslint-plugin-no-only-tests-2.6.0.tgz#19f6c9620bda02b9b9221b436c5f070e42628d76"
-  integrity sha512-T9SmE/g6UV1uZo1oHAqOvL86XWl7Pl2EpRpnLI8g/bkJu+h7XBCB+1LnubRZ2CUQXj805vh4/CYZdnqtVaEo2Q==
+eslint-plugin-no-only-tests@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-no-only-tests/-/eslint-plugin-no-only-tests-3.0.0.tgz#026cbc8cb069c8da6b7e19d03654be7ad49893f6"
+  integrity sha512-I0PeXMs1vu21ap45hey4HQCJRqpcoIvGcNTPJe+UhUm8TwjQ6//mCrDqF8q0WS6LgmRDwQ4ovQej0AQsAHb5yg==
 
 eslint-plugin-react-app@^6.2.2:
   version "6.2.2"
