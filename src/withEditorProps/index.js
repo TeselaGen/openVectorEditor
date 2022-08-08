@@ -496,7 +496,8 @@ function mapStateToProps(state, ownProps) {
   const {
     editorName,
     sequenceData: sequenceDataFromProps,
-    allowSeqDataOverride
+    allowSeqDataOverride,
+    allowMultipleFeatureDirections
   } = ownProps;
   const meta = { editorName };
   const { VectorEditor } = state;
@@ -616,7 +617,11 @@ function mapStateToProps(state, ownProps) {
     const name = annotationToAdd.name || "";
     const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
     let toSpread = {};
-    if (annotationToAdd.arrowheadType !== undefined) {
+    if (
+      annotationToAdd.annotationTypePlural === "features" &&
+      allowMultipleFeatureDirections &&
+      annotationToAdd.arrowheadType !== undefined
+    ) {
       toSpread = {
         forward: annotationToAdd.arrowheadType !== "BOTTOM",
         arrowheadType: annotationToAdd.arrowheadType

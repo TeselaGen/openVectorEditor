@@ -32,7 +32,6 @@ class PointedAnnotation extends React.PureComponent {
       insertPaths,
       insertTicks,
       hideName,
-
       color = "orange",
       fill,
       stroke,
@@ -181,7 +180,9 @@ class PointedAnnotation extends React.PureComponent {
     return (
       <g
         {...{ onMouseLeave, onMouseOver }}
-        className={` clickable ${className} ${classNames}`}
+        className={` clickable ${className} ${classNames} ${
+          forward ? "ann-forward" : `ann-reverse`
+        }`}
         data-id={id}
         onClick={function (event) {
           onClick({ annotation, event, gapsBefore, gapsInside });

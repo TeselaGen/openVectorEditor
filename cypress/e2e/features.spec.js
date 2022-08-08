@@ -1,5 +1,14 @@
 describe("features", () => {
-  it(`features should be able to have a strand of NONE - keywords: arrowheadType directionality`, () => {
+  it(`when allowMultipleFeatureDirections=false, editing the feature strand should show up correctly in the preview`, () => {
+    cy.visit("");
+    cy.contains(".veLabelText", "araD").dblclick({ force: true });
+    cy.get(`.ann-reverse:contains(araD)`);
+    cy.get(`.ann-forward:contains(araD)`).should("not.exist");
+    cy.contains("Positive").click();
+    cy.get(`.ann-reverse:contains(araD)`).should("not.exist");
+    cy.get(`.ann-forward:contains(araD)`);
+  });
+  it(`when allowMultipleFeatureDirections=true, features should be able to have a strand of NONE - keywords: arrowheadType directionality`, () => {
     cy.visit(
       "#Editor?allowMultipleFeatureDirections=true&focusProperties=true&propertyTab=genbank"
     );
