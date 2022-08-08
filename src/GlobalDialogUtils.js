@@ -53,6 +53,12 @@ export function showAddOrEditAnnotationDialog({
     annotation.start = _annotation.end + 1;
     annotation.end = _annotation.start - 1;
   }
+  const forward =
+    annotation.strand === -1
+      ? false
+      : annotation.forward !== undefined
+      ? !!annotation.forward
+      : true;
   showDialog({
     overrideName: `AddOrEdit${nameUpper}DialogOverride`,
     dialogType,
@@ -65,10 +71,9 @@ export function showAddOrEditAnnotationDialog({
         ...(annotation
           ? {
               ...convertRangeTo1Based(annotation),
+              forward,
               arrowheadType:
-                annotation.arrowheadType ||
-                (annotation.strand === -1 ? "BOTTOM" : "TOP"),
-              strand: annotation.strand,
+                annotation.arrowheadType || (!forward ? "BOTTOM" : "TOP"),
               ...(annotation.locations && {
                 locations: annotation.locations.map(convertRangeTo1Based)
               })

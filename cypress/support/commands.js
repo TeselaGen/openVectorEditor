@@ -221,6 +221,7 @@ Cypress.Commands.add(
 //   });
 
 Cypress.Commands.add("selectRange", (start, end) => {
+  cy.log(`selectRange ${start} - ${end}`);
   cy.window().then((win) => {
     win.ove_updateEditor({
       selectionLayer: {

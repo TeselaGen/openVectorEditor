@@ -337,7 +337,6 @@ class AddOrEditAnnotationDialog extends React.Component {
               inlineLabel
               inline
               tooltipError
-              defaultValue="TOP"
             ></StrandField>
           ) : (
             <RadioGroupField
@@ -353,7 +352,6 @@ class AddOrEditAnnotationDialog extends React.Component {
               format={(value) => (value ? "true" : "false")}
               name="forward"
               label="Strand"
-              defaultValue={true}
             />
           ))}
 
