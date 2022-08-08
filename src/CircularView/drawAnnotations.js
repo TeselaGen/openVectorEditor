@@ -146,13 +146,11 @@ function drawAnnotations(props) {
         totalAngle,
         centerAngle,
         locationAngles,
-        noDirectionality,
         ...rest
       } = annotation;
 
       const _annotationProps = {
         ...annotationProps,
-        ...(noDirectionality && { arrowheadLength: 0 }),
         ...rest
       };
 
@@ -370,6 +368,7 @@ function DrawAnnotationInner({
         <Annotation
           {...(passAnnotation && { annotation })}
           annotationType={annotationType}
+          arrowheadType={annotation.arrowheadType}
           totalAngle={totalAngle}
           centerAngle={centerAngle}
           revTransform={revTransform}

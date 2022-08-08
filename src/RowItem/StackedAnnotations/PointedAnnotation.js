@@ -19,6 +19,7 @@ class PointedAnnotation extends React.PureComponent {
       height,
       rangeType,
       forward,
+      arrowheadType,
       name = "",
       type,
       isStriped,
@@ -31,8 +32,7 @@ class PointedAnnotation extends React.PureComponent {
       insertPaths,
       insertTicks,
       hideName,
-      pointiness = 4,
-      arrowPointiness = 1,
+
       color = "orange",
       fill,
       stroke,
@@ -47,6 +47,12 @@ class PointedAnnotation extends React.PureComponent {
       truncateLabelsThatDoNotFit,
       onlyShowLabelsThatDoNotFit
     } = this.props;
+    let pointiness = this.props.pointiness || 4;
+    let arrowPointiness = this.props.arrowPointiness || 1;
+    if (arrowheadType === "NONE") {
+      pointiness = 0;
+      arrowPointiness = 0;
+    }
     const _rangeType = annotation.rangeTypeOverride || rangeType;
 
     const classNames = getAnnotationClassnames(annotation, {

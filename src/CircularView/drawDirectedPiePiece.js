@@ -13,6 +13,7 @@ export default function drawDirectedPiePiece({
   tailThickness = 0.6,
   // arrowheadLength = 1,
   radius,
+  arrowheadType,
   overlapsSelf,
   annotationHeight,
   totalAngle,
@@ -34,15 +35,12 @@ export default function drawDirectedPiePiece({
     //set arrowhead length to the angle in radians length
     arrowheadAngle = totalAngle;
   }
+
+  if (arrowheadType === "NONE") arrowheadAngle = 0;
   const arcAngle = totalAngle - arrowheadAngle;
 
   //the main points we need to draw the arrow and in the order we draw them in:
   const arrowheadPoint = polarToSpecialCartesian(radius, 0);
-
-  const arrowheadPointInner = polarToSpecialCartesian(
-    radius,
-    -stickOutThisMuch
-  );
 
   const arrowheadBottom = polarToSpecialCartesian(
     arrowheadInnerRadius,
@@ -69,6 +67,10 @@ export default function drawDirectedPiePiece({
   let path = Path().moveto(arrowheadPoint.x, arrowheadPoint.y);
 
   if (overlapsSelf) {
+    const arrowheadPointInner = polarToSpecialCartesian(
+      radius,
+      -stickOutThisMuch
+    );
     path = path
       .lineto(arrowheadPointInner.x, arrowheadPointInner.y)
       .lineto(arrowheadPoint.x, arrowheadPoint.y);
@@ -120,6 +122,7 @@ export default function drawDirectedPiePiece({
     }
   }
   path = path
+
     .lineto(arcRightTop.x, arcRightTop.y)
     .arc({
       rx: tailOuterRadius,

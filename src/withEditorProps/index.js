@@ -615,17 +615,23 @@ function mapStateToProps(state, ownProps) {
     const id = annotationToAdd.id || "tempId123";
     const name = annotationToAdd.name || "";
     const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
+    let toSpread = {};
+    if (annotationToAdd.arrowheadType !== undefined) {
+      toSpread = {
+        forward: annotationToAdd.arrowheadType !== "BOTTOM",
+        arrowheadType: annotationToAdd.arrowheadType
+      };
+    }
     anns[id] = {
       ...annotationToAdd,
-
       id,
       name,
       ...selectionLayer,
-      ...(annotationToAdd.bases &&
-        {
-          // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
-          // fullSequence: sequenceData.sequence
-        }),
+      ...(annotationToAdd.bases && {
+        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+        fullSeq: sequenceData.sequence
+      }),
+      ...toSpread,
       locations: annotationToAdd.locations
         ? annotationToAdd.locations.map(convertRangeTo0Based)
         : undefined

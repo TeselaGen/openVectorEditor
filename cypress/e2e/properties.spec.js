@@ -9,11 +9,14 @@ describe("properties", function () {
     cy.contains(".vePropertiesFooter button", "New").click();
     cy.get(`input[value="10"]`); //by default we should be selecting from 10 to 20
     cy.get(`input[value="20"]`);
-    cy.focused()
-      .type("fakeprimer")
-      .closest(".bp3-dialog")
-      .contains("Save")
-      .click();
+    cy.focused().type("fakeprimer");
+
+    //should default to forward strand,
+    cy.get(`[name="forward"]:first[value="true"]`);
+    cy.get(`[name="forward"]:last[value="true"]`).should("not.exist");
+    //flip it to the reverse strand
+    cy.get(`[name="forward"]:last[value="false"]`).click({ force: true });
+    cy.get(".bp3-dialog").contains("Save").click();
     cy.get(`[data-tab-id="genbank"]`).click();
     cy.contains("textarea", `primer_bind complement(10..20)`);
     cy.contains("textarea", `/label="fakeprimer"`);
