@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "nwb build-react-component --copy-files --no-demo",
+    "build": "vite build",
+    "preview": "vite preview",
+    "old_build": "nwb build-react-component --copy-files --no-demo",
     "buildWithDemo": "nwb build-react-component --copy-files",
     "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
     "clean": "nwb clean-module && npm clean-demo",

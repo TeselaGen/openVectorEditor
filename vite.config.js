@@ -8,6 +8,13 @@ export default defineConfig({
   define: {
     global: "window"
   },
+  build: {
+    target: "esnext"
+    // rollupOptions: {
+
+    //   // https://rollupjs.org/guide/en/#big-list-of-options
+    // }
+  },
   resolve: {
     alias: [
       {
