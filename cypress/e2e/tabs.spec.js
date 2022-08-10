@@ -5,7 +5,6 @@ describe("tabs", function () {
   it(`a custom tab should be able to be added`, () => {
     cy.tgToggle("customizeTabs");
     cy.get(".veTabMyCustomTab").click();
-    // cy.get(`[data-tab-id="Custom"]`).click()
     cy.contains(".tg-editor-container", "Hello World, I am a Custom Tab");
     cy.contains(".tg-editor-container", "sequenceLength: 5299");
   });

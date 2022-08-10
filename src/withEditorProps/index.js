@@ -522,10 +522,10 @@ function mapStateToProps(state, ownProps) {
   );
   let annotationToAdd;
   [
-    ["AddOrEditFeatureDialog", "filteredFeatures"],
-    ["AddOrEditPrimerDialog", "primers"],
-    ["AddOrEditPartDialog", "filteredParts"]
-  ].forEach(([n, type]) => {
+    ["AddOrEditFeatureDialog", "filteredFeatures", "features"],
+    ["AddOrEditPrimerDialog", "primers", "primers"],
+    ["AddOrEditPartDialog", "filteredParts", "parts"]
+  ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
       annotationToAdd = {
@@ -533,6 +533,7 @@ function mapStateToProps(state, ownProps) {
         ...vals,
         formName: n,
         type,
+        annotationTypePlural,
         name: vals.name || "Untitled"
       };
       if (!vals.useLinkedOligo) {
