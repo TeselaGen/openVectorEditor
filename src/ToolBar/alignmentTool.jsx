@@ -8,7 +8,7 @@ import {
   wrapDialog
 } from "teselagen-react-components";
 import { reduxForm, FieldArray } from "redux-form";
-// import { anyToJson } from "bio-parsers";
+import { anyToJson } from "bio-parsers";
 import { flatMap } from "lodash";
 import uniqid from "shortid";
 import { cloneDeep } from "lodash";
@@ -248,17 +248,17 @@ class AlignmentTool extends React.Component {
   handleFileUpload = (files, onChange) => {
     const { array } = this.props;
     flatMap(files, async (file) => {
-      // // const results = await anyToJson(file.originalFileObj, {
-      // //   fileName: file.name,
-      // //   acceptParts: true
-      // // });
-      // return results.forEach((result) => {
-      //   if (result.success) {
-      //     array.push("addedSequences", result.parsedSequence);
-      //   } else {
-      //     return window.toastr.warning("Error parsing file: ", file.name);
-      //   }
-      // });
+      const results = await anyToJson(file.originalFileObj, {
+        fileName: file.name,
+        acceptParts: true
+      });
+      return results.forEach((result) => {
+        if (result.success) {
+          array.push("addedSequences", result.parsedSequence);
+        } else {
+          return window.toastr.warning("Error parsing file: ", file.name);
+        }
+      });
     });
     onChange([]);
   };

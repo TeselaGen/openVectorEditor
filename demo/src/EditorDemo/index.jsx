@@ -24,11 +24,11 @@ import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
-// import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
-// const chromData = convertBasePosTraceToPerBpTrace(_chromData);
+const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
   //you can optionally grab additional editor data using the exported connectToEditor function
@@ -1429,8 +1429,8 @@ additionalEnzymes: {
                         id: "1",
                         // chromatogramData: example1Ab1,
                         // sequence: example1Ab1.baseCalls.join(""),
-                        // chromatogramData: chromData,
-                        // sequence: chromData.baseCalls.join(""),
+                        chromatogramData: chromData,
+                        sequence: chromData.baseCalls.join(""),
                         features: [
                           {
                             id: "yay",

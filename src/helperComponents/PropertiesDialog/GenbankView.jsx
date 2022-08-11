@@ -1,10 +1,10 @@
 import React from "react";
 // import { Button } from "@blueprintjs/core";
-// import {
-//   jsonToGenbank,
-//   jsonToFasta,
-//   cleanUpTeselagenJsonForExport
-// } from "bio-parsers";
+import {
+  jsonToGenbank,
+  jsonToFasta,
+  cleanUpTeselagenJsonForExport
+} from "bio-parsers";
 import { HTMLSelect } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";

@@ -1,5 +1,5 @@
 import { featureColors } from "ve-sequence-utils";
-// import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
+import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
 import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
@@ -230,22 +230,22 @@ export const exportSequenceToFile = (props) => (format) => {
   const { sequenceData } = props;
   let convert, fileExt;
 
-  // if (format === "genbank") {
-  //   convert = jsonToGenbank;
-  //   fileExt = "gb";
-  // } else if (format === "genpept") {
-  //   convert = jsonToGenbank;
-  //   fileExt = "gp";
-  // } else if (format === "teselagenJson") {
-  //   convert = JSON.stringify;
-  //   fileExt = "json";
-  // } else if (format === "fasta") {
-  //   convert = jsonToFasta;
-  //   fileExt = "fasta";
-  // } else {
-  //   console.error(`Invalid export format: '${format}'`); // dev error
-  //   return;
-  // }
+  if (format === "genbank") {
+    convert = jsonToGenbank;
+    fileExt = "gb";
+  } else if (format === "genpept") {
+    convert = jsonToGenbank;
+    fileExt = "gp";
+  } else if (format === "teselagenJson") {
+    convert = JSON.stringify;
+    fileExt = "json";
+  } else if (format === "fasta") {
+    convert = jsonToFasta;
+    fileExt = "fasta";
+  } else {
+    console.error(`Invalid export format: '${format}'`); // dev error
+    return;
+  }
   const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
   const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
   FileSaver.saveAs(blob, filename);

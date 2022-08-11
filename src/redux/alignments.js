@@ -2,7 +2,7 @@ import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
-// import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
 
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
@@ -315,9 +315,9 @@ function checkForIssues(alignmentTracks, alignmentType) {
         console.error("corrupted chromatogram data", alignmentTracks);
         return "corrupted chromatogram data";
       }
-      // track.chromatogramData = convertBasePosTraceToPerBpTrace(
-      //   track.chromatogramData
-      // );
+      track.chromatogramData = convertBasePosTraceToPerBpTrace(
+        track.chromatogramData
+      );
     }
     if (
       alignmentType !== "Parallel Part Creation" &&

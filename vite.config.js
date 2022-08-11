@@ -6,7 +6,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   define: {
-    global: "window"
+    global: "window",
+    // module: undefined, //tried all of the following:
+    // module: "window",
+    // module: {},
   },
   build: {
     target: "esnext"
@@ -18,10 +21,13 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        // this is required for the SCSS modules
-        find: /^~(.*)$/,
-        replacement: "$1"
-      }
+        stream: 'rollup-plugin-node-polyfills/polyfills/stream',
+      },
+      // {
+      //   // this is required for the SCSS modules
+      //   find: /^~(.*)$/,
+      //   replacement: "$1"
+      // }
     ]
   }
 });

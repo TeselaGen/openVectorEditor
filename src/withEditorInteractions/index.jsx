@@ -24,7 +24,7 @@ import {
   commandMenuEnhancer,
   withStore
 } from "teselagen-react-components";
-// import { jsonToGenbank } from "bio-parsers";
+import { jsonToGenbank } from "bio-parsers";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
@@ -1167,15 +1167,15 @@ function getGenbankFromSelection(selectedSeqData, sequenceData) {
 
   return {
     ...selectedSeqData,
-    // textToCopy: jsonToGenbank({
-    //   ...selectedSeqData,
-    //   name: spansEntireSeq
-    //     ? selectedSeqData.name
-    //     : just1Feat
-    //     ? feats[0].name
-    //     : selectedSeqData.name + "_partial",
-    //   circular: spansEntireSeq ? selectedSeqData.circular : false
-    // })
+    textToCopy: jsonToGenbank({
+      ...selectedSeqData,
+      name: spansEntireSeq
+        ? selectedSeqData.name
+        : just1Feat
+        ? feats[0].name
+        : selectedSeqData.name + "_partial",
+      circular: spansEntireSeq ? selectedSeqData.circular : false
+    })
   };
 }
 
