@@ -1,5 +1,5 @@
 name: Cypress tests
-on: [push, pull_request] //<<<---tnr change this back 
+on: [push, pull_request]
 # on:
 #   push:
 #     branches:
