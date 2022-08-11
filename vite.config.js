@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   define: {
     global: "window",
+    module: undefined
     // module: undefined, //tried all of the following:
     // module: "window",
     // module: {},

@@ -1,16 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 // yarn add --dev @esbuild-plugins/node-globals-polyfill
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 // yarn add --dev @esbuild-plugins/node-modules-polyfill
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
+import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 // import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   define: {
-    global: "window"
+    global: "window",
+    module: "undefined"
   },
   build: {
     target: "esnext"
@@ -21,20 +22,21 @@ export default defineConfig({
   },
   optimizeDeps: {
     esbuildOptions: {
-        // Node.js global to browser globalThis
-        define: {
-            global: 'globalThis'
-        },
-        // Enable esbuild polyfill plugins
-        plugins: [
-            NodeGlobalsPolyfillPlugin({
-                process: true,
-                buffer: true
-            }),
-            NodeModulesPolyfillPlugin()
-        ]
+      // Node.js global to browser globalThis
+      define: {
+        global: "globalThis",
+        module: "undefined"
+      },
+      // Enable esbuild polyfill plugins
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          buffer: true
+        }),
+        NodeModulesPolyfillPlugin()
+      ]
     }
-},
+  },
   resolve: {
     alias: [
       {
