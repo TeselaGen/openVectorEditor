@@ -722,7 +722,7 @@ cd openVectorEditor
 yarn
 (cd addons/AutoAnnotate; yarn);
 yarn start
-navigate to http://localhost:3344/ once the demo app has built
+navigate to http://127.0.0.1:5173/ once the demo app has built
 modify the openVectorEditor code base to fix/build whatever it is you're trying to do
 set up a demo for your fix/feature if applicable in demo/src/EditorDemo/index.js
 set up a cypress test for your fix/feature if applicable

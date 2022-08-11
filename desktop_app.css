@@ -1,0 +1,23 @@
+#notification {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 200px;
+  z-index: 100000;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.hidden {
+  display: none;
+}
+.darkModeBtn {
+  z-index: 100000;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.bp3-toast-container {
+  z-index: 100000000;
+}

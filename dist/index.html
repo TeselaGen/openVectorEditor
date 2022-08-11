@@ -1,16 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-    <script type="module" crossorigin src="/assets/index.163f9810.js"></script>
-    <link rel="stylesheet" href="/assets/index.c11b55c4.css">
+    <title>Open Vector Editor</title>
+    <script type="module" crossorigin src="/assets/index.af1011ad.js"></script>
+    <link rel="stylesheet" href="/assets/index.74bbe67d.css">
   </head>
   <body>
-    <div id="demo"></div>
-    <div id="root"></div>
+    <!-- You can also require other files to run in this process -->
+
     
+
+    <div id="notification" class="hidden">
+      <p id="message"></p>
+      <button id="close-button" onClick="closeNotification()">Close</button>
+      <button id="restart-button" onClick="restartApp()" class="hidden">
+        Restart
+      </button>
+    </div>
+
+    <a
+      class="bp3-button bp3-minimal darkModeBtn"
+      title="Dark Mode"
+      onclick="toggleDarkMode(); return false"
+      ><span class="bp3-icon-standard bp3-icon-moon"></span
+    ></a>
+    
+    <!-- <script
+      type="text/javascript"
+      src="src/ove-auto-annotate/umd/ove-auto-annotate.js"
+    ></script>
+    <script src="./src/renderer.js"></script> -->
+    <!-- <script src="./src/renderer_utils/autoUpdate.js"></script> -->
   </body>
 </html>

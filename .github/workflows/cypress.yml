@@ -1,9 +1,9 @@
 name: Cypress tests
-# on: [push, pull_request] //<<<---tnr change this back 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request] //<<<---tnr change this back 
+# on:
+#   push:
+#     branches:
+#       - master
 jobs:
   cypress-run:
     name: Cypress run
@@ -26,7 +26,7 @@ jobs:
           record: true
           parallel: true
           start: yarn start
-          wait-on: http://localhost:3344
+          wait-on: http://127.0.0.1:5173
         env:
           WITH_COVERAGE: true
           # pass the Dashboard record key as an environment variable

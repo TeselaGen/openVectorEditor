@@ -39,7 +39,7 @@ export default compose(
         );
       }
       const editorState = state.VectorEditor[editorName] || {};
-      const hoveredId = editorState.hoveredAnnotation || hoveredIdFromContext; //we can pass a hoveredId from context in order to still use the hover functionality without being connected to redux! see http://localhost:3344/#/SimpleCircularOrLinearView for an example
+      const hoveredId = editorState.hoveredAnnotation || hoveredIdFromContext; //we can pass a hoveredId from context in order to still use the hover functionality without being connected to redux! see http://127.0.0.1:5173/#/SimpleCircularOrLinearView for an example
       const isIdHashmap = typeof id === "object";
 
       const hovered = !!(isIdHashmap ? id[hoveredId] : hoveredId === id);

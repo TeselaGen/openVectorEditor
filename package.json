@@ -11,19 +11,17 @@
     "umd"
   ],
   "scripts": {
-    "dev": "vite",
+    "start": "vite serve demo",
+    "desktop_start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "old_build": "nwb build-react-component --copy-files --no-demo",
-    "buildWithDemo": "nwb build-react-component --copy-files",
+    "buildWithDemo": "vite build demo --outDir demoDist",
     "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
-    "clean": "nwb clean-module && npm clean-demo",
-    "start": "nwb serve-react-demo --port 3344",
     "localj5": "AMQP=localhost:5672 REMOTE_J5=http://localhost:10000 nwb serve-react-demo --port 3344",
     "c": "yarn cypress open",
     "test-e2e": "yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9",
-    "changelog": "auto-changelog -p && git add CHANGELOG.md"
-    ,"tauri": "tauri"
+    "changelog": "auto-changelog -p && git add CHANGELOG.md",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@blueprintjs/core": "3.52.0",
@@ -94,7 +92,6 @@
     "gh-pages": "^3.2.3",
     "husky": "^4.3.8",
     "lint-staged": "10.5.4",
-    "nwb": "0.25.2",
     "papaparse": "^5.3.2",
     "prettier": "2.7.1",
     "react": "^18.2.0",
@@ -113,7 +110,7 @@
     }
   },
   "lint-staged": {
-    "addons/**/*.js|src/**/*.js|demo/**/*.js|cypress/**/*.js|nwb.config.js": [
+    "addons/**/*.js|src/**/*.js|demo/**/*.js|cypress/**/*.js|src-tauri": [
       "eslint --rule 'no-ignore: 0' --rule 'react/jsx-curly-brace-presence: 1' --fix --max-warnings=0",
       "prettier --write"
     ],

@@ -78,8 +78,6 @@
   transform: scale(0.8);
 }
 
-@import url(darkmode.css);
-
 .veSearchLayer {
   cursor: pointer;
 

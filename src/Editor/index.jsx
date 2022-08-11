@@ -15,6 +15,7 @@ import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
 import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
 import { showAddOrEditAnnotationDialog } from "../GlobalDialogUtils";
+import "./darkmode.css";
 
 import "../Reflex/reflex-styles.css";
 
