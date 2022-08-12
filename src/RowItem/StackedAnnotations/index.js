@@ -109,6 +109,7 @@ function StackedAnnotations(props) {
           noRedux={noRedux}
           key={index}
           className={annotation.className}
+          arrowheadType={annotation.arrowheadType}
           editorName={editorName}
           id={annotation.id}
           onClick={onClick}
@@ -132,17 +133,12 @@ function StackedAnnotations(props) {
           charWidth={charWidth}
           forward={annotation.forward}
           onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
-          rangeType={
-            annotation.noDirectionality
-              ? "middle"
-              : getAnnotationRangeType(
-                  annotationRange,
-                  annotation,
-                  annotation.forward
-                )
-          }
+          rangeType={getAnnotationRangeType(
+            annotationRange,
+            annotation,
+            annotation.forward
+          )}
           {...(annotation.bases && { pointiness: 3, arrowPointiness: 0.2 })}
-          {...(annotation.noDirectionality && { pointiness: 0 })}
           height={
             annotationRange.containsLocations && !disregardLocations
               ? anotationHeightNoSpace / 8

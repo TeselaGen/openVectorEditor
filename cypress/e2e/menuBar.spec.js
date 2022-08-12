@@ -176,7 +176,7 @@ describe("menuBar", function () {
     cy.get("body").type("{meta}/");
     cy.focused().type("hotkeys{enter}");
     cy.contains(".bp3-dialog", "Editor Hotkeys");
-    cy.focused().type("{esc}");
+    cy.focused().type("{esc}", { force: true });
     cy.contains(".bp3-dialog", "Editor Hotkeys").should("not.exist");
   });
   it(`should be able to remove duplicate features`, () => {

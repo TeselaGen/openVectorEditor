@@ -52,6 +52,7 @@ export default {
         preferred5PrimeOverhangs: [""],
         preferred3PrimeOverhangs: [""]
       },
+      arrowheadType: "NONE",
       type: "misc_feature",
       strand: 1,
       name: "CmR I'm a real long label",

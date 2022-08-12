@@ -219,6 +219,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           tooltipError
           name="notes"
           label="Notes"
+          noMarginBottom
           format={(v) => {
             let toReturn = v;
             if (typeof v !== "string" && v) {

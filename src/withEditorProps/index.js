@@ -496,7 +496,8 @@ function mapStateToProps(state, ownProps) {
   const {
     editorName,
     sequenceData: sequenceDataFromProps,
-    allowSeqDataOverride
+    allowSeqDataOverride,
+    allowMultipleFeatureDirections
   } = ownProps;
   const meta = { editorName };
   const { VectorEditor } = state;
@@ -521,10 +522,10 @@ function mapStateToProps(state, ownProps) {
   );
   let annotationToAdd;
   [
-    ["AddOrEditFeatureDialog", "filteredFeatures"],
-    ["AddOrEditPrimerDialog", "primers"],
-    ["AddOrEditPartDialog", "filteredParts"]
-  ].forEach(([n, type]) => {
+    ["AddOrEditFeatureDialog", "filteredFeatures", "features"],
+    ["AddOrEditPrimerDialog", "primers", "primers"],
+    ["AddOrEditPartDialog", "filteredParts", "parts"]
+  ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
       annotationToAdd = {
@@ -532,6 +533,7 @@ function mapStateToProps(state, ownProps) {
         ...vals,
         formName: n,
         type,
+        annotationTypePlural,
         name: vals.name || "Untitled"
       };
       if (!vals.useLinkedOligo) {
@@ -615,17 +617,27 @@ function mapStateToProps(state, ownProps) {
     const id = annotationToAdd.id || "tempId123";
     const name = annotationToAdd.name || "";
     const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
+    let toSpread = {};
+    if (
+      annotationToAdd.annotationTypePlural === "features" &&
+      allowMultipleFeatureDirections &&
+      annotationToAdd.arrowheadType !== undefined
+    ) {
+      toSpread = {
+        forward: annotationToAdd.arrowheadType !== "BOTTOM",
+        arrowheadType: annotationToAdd.arrowheadType
+      };
+    }
     anns[id] = {
       ...annotationToAdd,
-
       id,
       name,
       ...selectionLayer,
-      ...(annotationToAdd.bases &&
-        {
-          // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
-          // fullSequence: sequenceData.sequence
-        }),
+      ...(annotationToAdd.bases && {
+        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+        fullSeq: sequenceData.sequence
+      }),
+      ...toSpread,
       locations: annotationToAdd.locations
         ? annotationToAdd.locations.map(convertRangeTo0Based)
         : undefined

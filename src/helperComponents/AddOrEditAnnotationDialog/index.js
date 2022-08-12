@@ -7,7 +7,11 @@ import {
   RadioGroupField,
   NumericInputField,
   wrapDialog,
-  AdvancedOptions
+  AdvancedOptions,
+  generateField,
+  reverseFeatureIcon,
+  bluntFeatureIcon,
+  featureIcon
 } from "teselagen-react-components";
 import { compose } from "redux";
 import {
@@ -185,6 +189,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       renderTypes,
       renderTags,
       RenderBases,
+      allowMultipleFeatureDirections,
       getLinkedOligoLink,
       allowPrimerBasesToBeEdited,
       bases,
@@ -222,9 +227,21 @@ class AddOrEditAnnotationDialog extends React.Component {
       <form
         onSubmit={handleSubmit(async (data) => {
           let updatedData;
-          if (data.forward === true && data.strand !== 1) {
+          const forward =
+            data.forward !== undefined
+              ? data.forward
+              : data.arrowheadType !== "BOTTOM";
+          // if (data.arrowheadType === "BOTH") {
+          //   data.arrowheadType = "BOTH";
+          // }
+          // if (data.arrowheadType === "NONE") {
+          //   data.arrowheadType = "NONE";
+          // }
+          // delete data.arrowheadType;
+
+          if (forward === true && data.strand !== 1) {
             updatedData = { ...data, strand: 1 };
-          } else if (data.forward === false && data.strand !== -1) {
+          } else if (forward === false && data.strand !== -1) {
             updatedData = { ...data, strand: -1 };
           } else {
             updatedData = data;
@@ -310,23 +327,34 @@ class AddOrEditAnnotationDialog extends React.Component {
           name="name"
           label="Name"
         />
-        {!isProtein && (
-          <RadioGroupField
-            disabled={this.props.readOnly}
-            inlineLabel
-            inline
-            tooltipError
-            options={[
-              { label: "Positive", value: "true" },
-              { label: "Negative", value: "false" }
-            ]}
-            normalize={(value) => value === "true" || false}
-            format={(value) => (value ? "true" : "false")}
-            name="forward"
-            label="Strand" 
-            defaultValue={true}
-          />
-        )}
+        {!isProtein &&
+          (annotationTypePlural === "features" &&
+          allowMultipleFeatureDirections ? (
+            <StrandField
+              name="arrowheadType"
+              label="Strand"
+              disabled={this.props.readOnly}
+              inlineLabel
+              inline
+              tooltipError
+            ></StrandField>
+          ) : (
+            <RadioGroupField
+              disabled={this.props.readOnly}
+              inlineLabel
+              inline
+              tooltipError
+              options={[
+                { label: "Positive", value: "true" },
+                { label: "Negative", value: "false" }
+              ]}
+              normalize={(value) => value === "true" || false}
+              format={(value) => (value ? "true" : "false")}
+              name="forward"
+              label="Strand"
+            />
+          ))}
+
         {renderTypes || null}
         {renderTags || null}
 
@@ -539,7 +567,12 @@ export default ({ formName, getProps, dialogProps }) => {
 const Notes = view(({ readOnly, notes }) => {
   return (
     <div>
-      <FormGroup inline label="Notes" labelInfo="(Key -- Value)"></FormGroup>
+      <FormGroup
+        style={{ marginBottom: 0 }}
+        inline
+        label="Notes"
+        labelInfo="(Key -- Value)"
+      ></FormGroup>
 
       {map(notes, (note, i) => {
         const { value, key } = note || {};
@@ -617,5 +650,46 @@ const Notes = view(({ readOnly, notes }) => {
         Add Note
       </Button>
     </div>
+  );
+});
+
+const StrandField = generateField(({ input }) => {
+  return (
+    <>
+      <Button
+        title="Bottom"
+        className="tg-arrowheadType-BOTTOM"
+        active={input.value === "BOTTOM"}
+        minimal
+        style={{ marginRight: 20 }}
+        onClick={() => input.onChange("BOTTOM")}
+        icon={reverseFeatureIcon}
+      ></Button>
+      {/* <Button
+        title="Bi-Directional"
+        className={'tg-arrowheadType-BOTH-'}
+        onClick={() => input.onChange("BOTH")}
+        minimal
+        active={input.value === "BOTH"}
+        icon="arrows-horizontal"
+      ></Button> */}
+      <Button
+        title="No Direction"
+        className="tg-arrowheadType-NONE"
+        active={input.value === "NONE"}
+        minimal
+        style={{ marginRight: 20 }}
+        onClick={() => input.onChange("NONE")}
+        icon={bluntFeatureIcon}
+      ></Button>
+      <Button
+        title="Top"
+        className="tg-arrowheadType-TOP"
+        onClick={() => input.onChange("TOP")}
+        minimal
+        active={input.value === "TOP"}
+        icon={featureIcon}
+      ></Button>
+    </>
   );
 });
