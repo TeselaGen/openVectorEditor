@@ -1,6 +1,4 @@
 import React from "react";
-import { map } from "lodash";
-import { Button } from "@blueprintjs/core";
 
 export default class ColorPicker extends React.Component {
   render() {

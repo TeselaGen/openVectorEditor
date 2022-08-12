@@ -1,4 +1,6 @@
 import { useState } from "react";
+import React from "react";
+
 import SimpleCircularOrLinearView from "../src/SimpleCircularOrLinearView";
 
 import reactLogo from "./assets/react.svg";

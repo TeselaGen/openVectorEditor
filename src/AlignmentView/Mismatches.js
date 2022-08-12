@@ -31,9 +31,8 @@ class Mismatches extends React.Component {
     // let mismatchListAll = [];
     // skip first sequence/ref seq, since there will be no mismatches
     // for (let trackI = 1; trackI < alignments[alignmentId].alignmentTracks.length; trackI++) {
-    let mismatchList = [];
-    let trackName = alignmentData.name;
-    let editedTrackName = trackName.slice(trackName.indexOf("_") + 1);
+    const mismatchList = [];
+    // const trackName = alignmentData.name;
 
     let getGaps = () => ({
       gapsBefore: 0,
