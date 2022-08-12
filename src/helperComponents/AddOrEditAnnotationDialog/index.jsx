@@ -323,7 +323,7 @@ class AddOrEditAnnotationDialog extends React.Component {
             normalize={(value) => value === "true" || false}
             format={(value) => (value ? "true" : "false")}
             name="forward"
-            label="Strand"
+            label="Strand" 
             defaultValue={true}
           />
         )}

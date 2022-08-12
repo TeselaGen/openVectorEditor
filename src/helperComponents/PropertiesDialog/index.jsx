@@ -6,7 +6,7 @@ import FeatureProperties from "./FeatureProperties";
 import GeneralProperties from "./GeneralProperties";
 import CutsiteProperties from "./CutsiteProperties";
 import OrfProperties from "./OrfProperties";
-// import GenbankView from "./GenbankView";
+import GenbankView from "./GenbankView";
 import TranslationProperties from "./TranslationProperties";
 import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
@@ -33,7 +33,7 @@ const allTabs = {
   translations: PropertiesContainer(TranslationProperties),
   cutsites: PropertiesContainer(CutsiteProperties),
   orfs: PropertiesContainer(OrfProperties),
-  // genbank: PropertiesContainer(GenbankView)
+  genbank: PropertiesContainer(GenbankView)
 };
 export class PropertiesDialog extends React.Component {
   render() {
