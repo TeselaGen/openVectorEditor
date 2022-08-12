@@ -30,6 +30,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@fontsource/ubuntu-mono": "^4.5.0",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@risingstack/react-easy-state": "^6.3.0",
     "@tauri-apps/api": "^1.0.2",
     "@teselagen/react-list": "^0.8.18",
@@ -58,7 +59,7 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^4.3.1",
     "react-sizeme": "^2.5.2",
-    "recompose": "npm:react-recompose@0.31.1",
+    "recompose": "npm:react-recompose@0.31.2",
     "redux": "^4.2.0",
     "redux-act": "^1.8.0",
     "redux-form": "^8.3.8",
@@ -79,8 +80,8 @@
     "react-dom": "^16.9.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.0.5",
     "@cypress/code-coverage": "^3.10.0",
+    "@tauri-apps/cli": "^1.0.5",
     "@types/lodash": "npm:@types/lodash-es",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",

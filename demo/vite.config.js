@@ -5,6 +5,7 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 // yarn add --dev @esbuild-plugins/node-modules-polyfill
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 // import path from "path";
+// import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,7 +15,10 @@ export default defineConfig({
     module: "undefined"
   },
   build: {
-    target: "esnext"
+    target: "esnext",
+    commonjsOptions: {
+      include: [/node_modules/]
+    }
     // rollupOptions: {
 
     //   // https://rollupjs.org/guide/en/#big-list-of-options
@@ -24,8 +28,8 @@ export default defineConfig({
     esbuildOptions: {
       // Node.js global to browser globalThis
       define: {
-        global: "globalThis",
-        module: "undefined"
+        global: "window",
+        module: undefined
       },
       // Enable esbuild polyfill plugins
       plugins: [
@@ -34,6 +38,7 @@ export default defineConfig({
           buffer: true
         }),
         NodeModulesPolyfillPlugin()
+        // esbuildCommonjs(['hoist-non-react-statics']),
       ]
     }
   },
