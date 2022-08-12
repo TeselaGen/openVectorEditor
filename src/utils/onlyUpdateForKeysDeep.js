@@ -1,5 +1,5 @@
 import { pick } from "lodash";
-import { shouldUpdate } from "recompose";
+import { shouldUpdate } from "react-recompose";
 import _ from "lodash";
 
 // import deepEqual from "deep-equal";

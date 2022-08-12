@@ -4,6 +4,8 @@ import react from "@vitejs/plugin-react";
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 // yarn add --dev @esbuild-plugins/node-modules-polyfill
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
+// import commonjs from "@rollup/plugin-commonjs";
+
 // import path from "path";
 // import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
@@ -15,14 +17,17 @@ export default defineConfig({
     module: "undefined"
   },
   build: {
+    // commonjsOptions: { include: [] },
+    // commonjsOptions: { exclude: ['hoist-non-react-statics', 'react'], include: [] }, // <----
     target: "esnext",
-    commonjsOptions: {
-      include: [/node_modules/]
+    rollupOptions: {
+      // plugins: [
+      //   commonjs({
+      //     include: /node_modules/
+      //   })
+      // ]
+      // https://rollupjs.org/guide/en/#big-list-of-options
     }
-    // rollupOptions: {
-
-    //   // https://rollupjs.org/guide/en/#big-list-of-options
-    // }
   },
   optimizeDeps: {
     esbuildOptions: {

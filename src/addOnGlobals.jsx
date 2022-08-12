@@ -1,7 +1,7 @@
 import { startCase } from "lodash";
 import pluralize from "pluralize";
 import React, { useEffect, useState } from "react";
-import { compose } from "recompose";
+import { compose } from "react-recompose";
 import {
   DataTable,
   DialogFooter,

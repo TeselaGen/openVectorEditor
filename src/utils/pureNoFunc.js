@@ -3,7 +3,7 @@ import {
   // shallowEqual,
   // setDisplayName,
   // wrapDisplayName
-} from "recompose";
+} from "react-recompose";
 import _ from "lodash";
 
 const isEq = (o1, o2) => {

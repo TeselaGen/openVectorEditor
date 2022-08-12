@@ -4,7 +4,7 @@ import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { compose, withHandlers, withProps } from "recompose";
+import { compose, withHandlers, withProps } from "react-recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
 import { some, map, keyBy } from "lodash";
