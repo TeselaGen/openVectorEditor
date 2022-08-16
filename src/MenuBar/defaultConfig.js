@@ -131,6 +131,11 @@ export default [
           "autoAnnotateParts",
           "autoAnnotatePrimers"
         ]
+      },
+      // {divider: 'Cloning'},
+      "--",
+      {
+        text: "Restriction Cloning"
       }
     ]
   },

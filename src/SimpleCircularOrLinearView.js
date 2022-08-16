@@ -27,6 +27,8 @@ export default (props) => {
     withDownload,
     withChoosePreviewType,
     withCaretEnabled,
+    additionalTopEl,
+    additionalTopLeftEl,
     smallSlider
   } = props;
   const [previewType, setPreviewType] = useState(
@@ -78,49 +80,53 @@ export default (props) => {
   return (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
       <div style={{ width: "fit-content" }}>
-        {(withDownload || withChoosePreviewType) && (
-          <div
-            style={{
-              marginLeft: 10,
-              marginBottom: 5,
-              display: "flex",
-              justifyContent: "end"
-            }}
-          >
-            {withDownload && <DownloadBtn {...props}></DownloadBtn>}
-            {withChoosePreviewType && (
-              <ButtonGroup>
-                <Tooltip content="Circular">
-                  <Button
-                    className="tgPreviewTypeCircular"
-                    active={previewType === "circular"}
-                    intent="primary"
-                    onClick={() => setPreviewType("circular")}
-                    icon="circle"
-                  ></Button>
-                </Tooltip>
-                <Tooltip content="Linear">
-                  <Button
-                    className="tgPreviewTypeLinear"
-                    active={previewType === "linear"}
-                    intent="primary"
-                    onClick={() => setPreviewType("linear")}
-                    icon="layout-linear"
-                  ></Button>
-                </Tooltip>
-                <Tooltip content="Row">
-                  <Button
-                    className="tgPreviewTypeRow"
-                    active={previewType === "row"}
-                    intent="primary"
-                    onClick={() => setPreviewType("row")}
-                    icon="menu"
-                  ></Button>
-                </Tooltip>
-              </ButtonGroup>
-            )}
-          </div>
-        )}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {additionalTopLeftEl}
+          {(withDownload || withChoosePreviewType || additionalTopEl) && (
+            <div
+              style={{
+                marginLeft: 10,
+                marginBottom: 5,
+                display: "flex",
+                justifyContent: "end"
+              }}
+            >
+              {withDownload && <DownloadBtn {...props}></DownloadBtn>}
+              {withChoosePreviewType && (
+                <ButtonGroup>
+                  <Tooltip content="Circular">
+                    <Button
+                      className="tgPreviewTypeCircular"
+                      active={previewType === "circular"}
+                      intent="primary"
+                      onClick={() => setPreviewType("circular")}
+                      icon="circle"
+                    ></Button>
+                  </Tooltip>
+                  <Tooltip content="Linear">
+                    <Button
+                      className="tgPreviewTypeLinear"
+                      active={previewType === "linear"}
+                      intent="primary"
+                      onClick={() => setPreviewType("linear")}
+                      icon="layout-linear"
+                    ></Button>
+                  </Tooltip>
+                  <Tooltip content="Row">
+                    <Button
+                      className="tgPreviewTypeRow"
+                      active={previewType === "row"}
+                      intent="primary"
+                      onClick={() => setPreviewType("row")}
+                      icon="menu"
+                    ></Button>
+                  </Tooltip>
+                </ButtonGroup>
+              )}
+              {additionalTopEl}
+            </div>
+          )}
+        </div>
         <Component
           {...{
             className: "tg-simple-dna-view",

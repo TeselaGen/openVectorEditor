@@ -814,6 +814,48 @@ ToolBarProps: {
               })}
               {renderToggle({
                 that: this,
+                label: "Focus Digest Cloning Tool",
+                type: "focusCloningTool",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      panelsShown: [
+                        [
+                          {
+                            id: "cloningTool",
+                            name: "Digest Cloning",
+                            active: true,
+                            canClose: true,
+                            fullScreen: true
+                          },
+                          {
+                            id: "rail",
+                            name: "Linear Map"
+                          },
+                          {
+                            id: "circular",
+                            name: "Circular Map"
+                          }
+                        ],
+                        [
+                          {
+                            id: "sequence",
+                            active: true,
+                            name: "Sequence Map"
+                          },
+
+                          {
+                            id: "properties",
+                            name: "Properties"
+                          }
+                        ]
+                      ]
+                    });
+                },
+                info: `//Focus the properties tab and focus on a particular sub tab (parts by default)`
+              })}
+              {renderToggle({
+                that: this,
                 label: "Customize tabs",
                 type: "customizeTabs",
                 hook: (shouldUpdate) => {

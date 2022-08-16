@@ -1,0 +1,16 @@
+.cloningTool-step-header {
+  font-size: 18px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.cloningTool-addedSeq {
+  margin-bottom: 4px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  background: rgb(245, 246, 252);
+  border-radius: 10px;
+  padding: 9px;
+  font-family: Inter;
+}

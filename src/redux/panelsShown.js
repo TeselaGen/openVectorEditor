@@ -53,6 +53,22 @@ export const createNewPCR = (unused, meta) => {
     dispatch(setPanelAsActive("pcrTool", meta));
   };
 };
+export const createNewCloningReaction = (type, meta) => {
+  return (dispatch) => {
+    dispatch(
+      addPanelIfItDoesntAlreadyExist(
+        {
+          id: "cloningTool",
+          name: `${type} Cloning`,
+          active: true,
+          canClose: true
+        },
+        meta
+      )
+    );
+    dispatch(setPanelAsActive("cloningTool", meta));
+  };
+};
 
 export const createNewAlignment = (payload, meta) => {
   return (dispatch) => {

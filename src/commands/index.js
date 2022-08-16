@@ -1299,6 +1299,11 @@ const toolCommandDefs = {
     hotkeyProps: { preventDefault: true },
     isHidden: (props) => isProtein(props)
   },
+  triggerCloningTool: {
+    handler: (props) => props.triggerCloningTool(),
+    hotkeyProps: { preventDefault: true },
+    isHidden: (props) => isProtein(props)
+  },
   // TODO: enzyme manager (?)
   restrictionEnzymesManager: {
     name: "Manage Enzymes",

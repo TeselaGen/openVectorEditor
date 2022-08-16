@@ -53,6 +53,7 @@ import { GlobalDialog } from "../GlobalDialog";
 import isMobile from "is-mobile";
 import { getClientX, getClientY } from "../utils/editorUtils";
 import PCRTool from "../PCRTool/PCRTool";
+import CloningTool from "../CloningTool/CloningTool";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -67,6 +68,7 @@ const _panelMap = {
   alignment: AlignmentView,
   digestTool: DigestTool,
   pcrTool: PCRTool,
+  cloningTool: CloningTool,
   properties: {
     comp: Properties,
     panelSpecificPropsToSpread: ["PropertiesProps"]
