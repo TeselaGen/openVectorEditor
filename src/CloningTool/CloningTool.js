@@ -8,12 +8,13 @@ import {
   tgFormValues
 } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
-import { Button, Icon, Tab, Tabs, Tooltip } from "@blueprintjs/core";
+import { Button, Icon, Tab, Tabs, Tag, Tooltip } from "@blueprintjs/core";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import simpleSequenceData from "../../demo/src/exampleData/simpleSequenceData";
 
 import "./style.css";
 import { removeItem } from "../utils/arrayUtils";
+import EnzymeViewer from "../EnzymeViewer";
 
 function CloningTool(props) {
   const {
@@ -173,15 +174,45 @@ function CloningTool(props) {
       </div>
 
       <br></br>
-      <div className="cloningTool-step-header">2. Select Enzymes</div>
-      <div className="cloningTool-step-explainer">
-        (Enzyme(#Backbone sites, #Insert sites))
+      <div className="cloningTool-step-header">
+        2. Select Compatible Overhangs{" "}
       </div>
-      {/* {sequencesToDigest.length > 1 && (
-        <DigestionCutsiteFilter
-          editorName={editorName}
-        ></DigestionCutsiteFilter>
-      )} */}
+      <div className="cloningTool-step-explainer">
+        {/* Cutsite -- Enzymes that cut here -- */}
+        {/* (Enzyme(#Backbone sites, #Insert sites)) */}
+      </div>
+
+      {sequencesToDigest.length > 1 &&
+        [1, 2, 3].map((n, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                padding: 5,
+                border: "1px solid lightgray",
+                borderRadius: 8,
+                marginBottom: 5
+              }}
+            >
+              <div style={{ marginRight: 10 }}>
+                <Tag intent="primary">BamHI</Tag>
+              </div>
+              <EnzymeViewer
+                {...{
+                  // startOffset: 500,
+                  sequence: "agtgagcca",
+                  reverseSnipPosition: 4,
+                  forwardSnipPosition: 10,
+                  paddingEnd: "tggacaa",
+                  paddingStart: "gcgggc",
+                  annotationVisibility: { axis: true },
+                  tickSpacing: 5
+                }}
+              />
+            </div>
+          );
+        })}
       <div className="cloningTool-step-header">3. Digestion Products:</div>
       <div className="cloningTool-step-explainer">
         (The Digest Reaction will result in the following sequences)
@@ -205,93 +236,6 @@ export default compose(
   reduxForm({ form: "CloningTool" }),
   tgFormValues("name", "bps", "sequencesToDigest", "isAdding")
 )(CloningTool);
-
-// const DigestionCutsiteFilter = compose()(({ bps, name, handleSubmit }) => {
-//   return (
-//     <TgSelect
-//       multi
-//       allowCreate
-//       wrapperStyle={{ zIndex: 11 }}
-//       // noResultsText={
-//       //   <NoResults
-//       //     {...{
-//       //       closeDropDown,
-//       //       queryString: this.state.queryTracker,
-//       //       additionalEnzymes,
-//       //       enzymeGroupsOverride,
-//       //       cutsitesByNameActive: filteredCutsites.cutsitesByName,
-//       //       cutsitesByName: allCutsites.cutsitesByName,
-//       //       editorName
-//       //     }}
-//       //   ></NoResults>
-//       // }
-//       onInputChange={(queryTracker) => {
-//         this.setState({ queryTracker });
-//       }}
-//       placeholder="Filter cut sites..."
-//       options={options}
-//       // filteredRestrictionEnzymes={filteredRestrictionEnzymes}
-//       // filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
-//       optionRenderer={renderOptions}
-//       isSimpleSearch
-//       onChange={(filteredRestrictionEnzymes) => {
-//         onChangeHook && onChangeHook(filteredRestrictionEnzymes);
-//         filteredRestrictionEnzymesUpdate(
-//           map(filteredRestrictionEnzymes, (r) => {
-//             return omit(r, ["label"]);
-//           })
-//         );
-//       }}
-//       value={value}
-//     />
-//   );
-// });
-
-// const renderOptions = ({ label, value, canBeHidden }, props) => {
-//   // if (value === "manageEnzymes") {
-//   //   return this.getManageEnzymesLink();
-//   // }
-//   const { filteredRestrictionEnzymes, filteredRestrictionEnzymesUpdate } =
-//     props;
-
-//   return (
-//     <div
-//       style={{
-//         display: "flex",
-//         justifyContent: "space-between",
-//         width: "100%"
-//       }}
-//     >
-//       {label}{" "}
-//       {canBeHidden && (
-//         <Icon
-//           onClick={(e) => {
-//             e.stopPropagation();
-
-//             filteredRestrictionEnzymesUpdate(
-//               flatMap(filteredRestrictionEnzymes, (e) => {
-//                 if (e.value === value) return [];
-//                 return e;
-//               }).concat({
-//                 label,
-//                 className: "veHiddenEnzyme",
-//                 value,
-//                 // hiddenEnzyme: true,
-//                 isHidden: true,
-//                 canBeHidden
-//               })
-//             );
-//           }}
-//           htmlTitle="Hide this enzyme"
-//           className="veHideEnzymeBtn"
-//           style={{ paddingTop: 5 }}
-//           iconSize={14}
-//           icon="eye-off"
-//         ></Icon>
-//       )}
-//     </div>
-//   );
-// };
 
 const RemoveBtn = ({ onClick }) => (
   <Tooltip content="Remove">

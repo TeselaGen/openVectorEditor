@@ -12,7 +12,10 @@ export default ({
   paddingStart = "-------",
   reverseSnipPosition,
   forwardSnipPosition,
-  charWidth = 13
+  charWidth = 13,
+  startOffset = 0,
+  annotationVisibility,
+  ...rest
 }) => {
   const seqPlusPadding = paddingStart + sequence + paddingEnd;
 
@@ -39,7 +42,8 @@ export default ({
             cutsiteLabels: false,
             axis: false,
             reverseSequence: true,
-            sequence: true
+            sequence: true,
+            ...annotationVisibility
           },
           annotationLabelVisibility: {
             cutsites: false
@@ -48,8 +52,8 @@ export default ({
           bpsPerRow: seqPlusPadding.length,
           row: {
             sequence: seqPlusPadding,
-            start: 0,
-            end: seqPlusPadding.length - 1,
+            start: 0 + startOffset,
+            end: seqPlusPadding.length - 1 + startOffset,
             cutsites: {
               fake1: {
                 annotation: {
@@ -66,7 +70,8 @@ export default ({
                 }
               }
             }
-          }
+          },
+          ...rest
         }}
       />
     </div>
