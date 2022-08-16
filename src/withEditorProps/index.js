@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { some, map, keyBy } from "lodash";
+import { some, map, keyBy, omit } from "lodash";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
@@ -237,7 +237,7 @@ export const exportSequenceToFile = (props) => (format) => {
     convert = jsonToGenbank;
     fileExt = "gp";
   } else if (format === "teselagenJson") {
-    convert = JSON.stringify;
+    convert = jsonToJson;
     fileExt = "json";
   } else if (format === "fasta") {
     convert = jsonToFasta;
@@ -888,12 +888,6 @@ export const withEditorPropsNoRedux = withProps((props) => {
     }
   };
   return toReturn;
-  // return {
-  //   sequenceData: {
-  //     ...sequenceData,
-  //     translations
-  //   }
-  // };
 });
 
 const getUpperOrLowerSeq = defaultMemoize(
@@ -913,4 +907,17 @@ export function getShowGCContent(state, ownProps) {
       ? ownProps.showGCContentByDefault //user hasn't yet set this option
       : showGCContent;
   return toRet;
+}
+
+function jsonToJson(incomingJson) {
+  return JSON.stringify(
+    omit(incomingJson, [
+      "sequenceFragments",
+      "sequenceFeatures",
+      "cutsites",
+      "orfs",
+      "filteredParts",
+      "filteredFeatures"
+    ])
+  );
 }
