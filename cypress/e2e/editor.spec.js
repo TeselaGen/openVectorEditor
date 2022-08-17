@@ -105,6 +105,15 @@ describe("editor", function () {
     cy.contains(".bp3-menu-item", "View Part Details").click();
     cy.contains(".bp3-dialog button", "Save").should("be.disabled");
   });
+  it(`you should not be able to change editability of a sequence when disableSetReadOnly=true`, () => {
+    cy.get(`.bp3-button:contains(File)`).click();
+    cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`).should("not.exist");
+    cy.get(`.ve-tool-container-editTool.disabled`).should("not.exist");
+    cy.tgToggle("disableSetReadOnly");
+    cy.get(`.ve-tool-container-editTool.disabled`);
+    cy.get(`.bp3-button:contains(File)`).click();
+    cy.get(`[cmd="toggleReadOnlyMode"].bp3-disabled`);
+  });
 
   it(`should allow you to view, but not edit the description when in read only mode`, () => {
     cy.contains("Properties").click();
