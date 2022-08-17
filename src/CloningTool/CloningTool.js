@@ -15,6 +15,8 @@ import simpleSequenceData from "../../demo/src/exampleData/simpleSequenceData";
 import "./style.css";
 import { removeItem } from "../utils/arrayUtils";
 import EnzymeViewer from "../EnzymeViewer";
+// import { withRestrictionEnzymes } from "../CutsiteFilter/withRestrictionEnzymes";
+import { map } from "lodash";
 
 function CloningTool(props) {
   const {
@@ -25,9 +27,27 @@ function CloningTool(props) {
     sequencesToDigest = [],
     bps,
     name,
+    allCutsites: { cutsitesByName },
+    // allRestrictionEnzymes,
     // editorName,
+
     isAdding
   } = props;
+  const overhangsToCutsites = {};
+  const overhangsToEnzymes = {};
+  map(cutsitesByName, (cutsites) => {
+    if (cutsites.length < 3) {
+      const [{ overhangBps }] = cutsites;
+      overhangsToCutsites[overhangBps] = [
+        ...(overhangsToCutsites[overhangBps] || []),
+        ...cutsites
+      ];
+      overhangsToEnzymes[overhangBps] = [
+        ...(overhangsToEnzymes[overhangBps] || []),
+        cutsites[0].restrictionEnzyme
+      ];
+    }
+  });
 
   return (
     <div
@@ -183,7 +203,7 @@ function CloningTool(props) {
       </div>
 
       {sequencesToDigest.length > 1 &&
-        [1, 2, 3].map((n, index) => {
+        map(overhangsToEnzymes, (enzymes, overhang, index) => {
           return (
             <div
               key={index}
@@ -196,8 +216,13 @@ function CloningTool(props) {
               }}
             >
               <div style={{ marginRight: 10 }}>
-                <Tag intent="primary">BamHI</Tag>
+                {enzymes.map(({ name }, i) => (
+                  <Tag key={i} intent="primary">
+                    {name}
+                  </Tag>
+                ))}
               </div>
+              {overhang}
               <EnzymeViewer
                 {...{
                   // startOffset: 500,
@@ -233,6 +258,7 @@ export default compose(
       }
     };
   }),
+  // withRestrictionEnzymes,
   reduxForm({ form: "CloningTool" }),
   tgFormValues("name", "bps", "sequencesToDigest", "isAdding")
 )(CloningTool);
