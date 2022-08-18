@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.1.5",
+  "version": "18.1.6",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -90,7 +90,7 @@
     "react": "^17.0.2",
     "react-addons-perf": "^15.4.2",
     "react-dom": "^17.0.2",
-    "react-markdown": "^4.3.1",
+    "react-markdown": "4.1.0",
     "to-regex-range": "^5.0.1"
   },
   "resolutions": {
