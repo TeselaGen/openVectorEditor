@@ -2614,10 +2614,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^8.3.30:
-  version "8.3.30"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.30.tgz#c318509f238b0e49be7125edcd8e80954380989c"
-  integrity sha512-cVh5d+rRyhAFcYUXUlct4ZiERahWsesn6HnuaexsXLBWzsicng5zNhYmA02xPLp4RNTrasv2HFRwf0zCymXrJQ==
+bio-parsers@^8.3.31:
+  version "8.3.31"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.31.tgz#909eadb4f34bf17d8c9710c6df3898410c282d4e"
+  integrity sha512-qCDQcSIXU5e4OaPqSIET6cmtH1PaNJ0P3OElwDoaz+/rLw2dTHSaTMKMa3z1uY87OVuc4RmbzaQ+jzhxjFcfkQ==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -10065,7 +10065,7 @@ react-dropzone@^11.4.2:
     file-selector "^0.2.2"
     prop-types "^15.7.2"
 
-react-is@^16.13.1, react-is@^16.4.2, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
+react-is@^16.13.1, react-is@^16.4.2, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -10088,20 +10088,6 @@ react-markdown@4.1.0:
     html-to-react "^1.3.4"
     mdast-add-list-metadata "1.0.1"
     prop-types "^15.7.2"
-    remark-parse "^5.0.0"
-    unified "^6.1.5"
-    unist-util-visit "^1.3.0"
-    xtend "^4.0.1"
-
-react-markdown@^4.0.8:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-4.3.1.tgz#39f0633b94a027445b86c9811142d05381300f2f"
-  integrity sha512-HQlWFTbDxTtNY6bjgp3C3uv1h2xcjCSi1zAEzfBW9OwJJvENSYiLXWNXN5hHLsoqai7RnZiiHzcnWdXk2Splzw==
-  dependencies:
-    html-to-react "^1.3.4"
-    mdast-add-list-metadata "1.0.1"
-    prop-types "^15.7.2"
-    react-is "^16.8.6"
     remark-parse "^5.0.0"
     unified "^6.1.5"
     unist-util-visit "^1.3.0"
@@ -11727,10 +11713,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.10.2:
-  version "30.10.2"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.10.2.tgz#d3fa7cac74ddeee80941b1458753ec649bddc63d"
-  integrity sha512-uIs7E8+nzvKGJ9/Ay0qfZ7uzg7FL38AV9eQkctqJHIWDD2D4mlxvqeP7mf9uuen59iD9g+NHk3trcnOVWRDogQ==
+teselagen-react-components@30.10.3:
+  version "30.10.3"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.10.3.tgz#7118513bc8a332f7a741a336429396246525d275"
+  integrity sha512-17y465KUZ7EYNB1t5Uw2sxVVNO3iIKQgLTVidn9GTML3xKbd7CV7BHiZ2L3WDRZ7mRs/pVXQTNTpilxF40mfmg==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -11751,7 +11737,7 @@ teselagen-react-components@30.10.2:
     qs "^6.9.6"
     react-color "^2.19.3"
     react-dropzone "^11.4.2"
-    react-markdown "^4.0.8"
+    react-markdown "4.1.0"
     react-rnd "^10.2.4"
     react-router-dom "^4.3.1"
     react-sortable-hoc "^0.6.8"
@@ -12469,10 +12455,10 @@ ve-range-utils@^2.6.6:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.1.33:
-  version "5.1.33"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.33.tgz#53b44621f3dc055843d3f83f7faf90af3472d144"
-  integrity sha512-FhifJksLMsQhrV2yZHGQQYPhswuciu5Abqt7Cj65HC2ftmoo/JWaAzM9xy/cOxG/jg3fNYhmKQ7GT8xqe8wQ5A==
+ve-sequence-utils@^5.1.34:
+  version "5.1.34"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.34.tgz#a3c3a36c9fc2b7bf131e4a573c8180f63d70f314"
+  integrity sha512-yKeuSy1lGO+fHwHgqt4dJ6buOkaml/iA0KOLDX9Bkd5pgB4QKnS9R25HjbSFBKfoBdNS1ZopA7D3gqyv3EGBIw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
