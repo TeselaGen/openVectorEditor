@@ -44,6 +44,9 @@
 .bp3-dark .veLinearView text {
   fill: #f5f8fa !important;
 }
+.bp3-dark .veCircularViewAxisNumber rect {
+  fill: #f5f8fa !important;
+}
 
 .bp3-dark .menu-bar {
   background: none !important;

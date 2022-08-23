@@ -123,7 +123,7 @@ export default (props) => {
         )}
         <Component
           {...{
-            className: "tg-simple-dna-view",
+            className: "tg-simple-dna-view veEditor",
             width: 300,
             height: 300,
             noWarnings,
