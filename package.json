@@ -71,14 +71,15 @@
     "react": "^16.10.2",
     "react-dom": "^16.9.0"
   },
+  "optionalDependencies": {
+    "cypress": "^10.6.0"
+  },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@types/lodash": "npm:@types/lodash-es",
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.0.0",
     "copy-to-clipboard": "^3.3.1",
-    "cypress": "10.4.0",
-    "drag-mock": "^1.4.0",
     "eslint": "^8.21.0",
     "eslint-config-teselagen": "^6.0.6",
     "gh-pages": "^4.0.0",
