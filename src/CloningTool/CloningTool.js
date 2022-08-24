@@ -5,7 +5,8 @@ import withEditorInteractions from "../withEditorInteractions";
 import {
   InputField,
   TextareaField,
-  tgFormValues
+  tgFormValues,
+  TgSelect
 } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
 import { Button, Icon, Tab, Tabs, Tag, Tooltip } from "@blueprintjs/core";
@@ -15,8 +16,9 @@ import simpleSequenceData from "../../demo/src/exampleData/simpleSequenceData";
 import "./style.css";
 import { removeItem } from "../utils/arrayUtils";
 import EnzymeViewer from "../EnzymeViewer";
-// import { withRestrictionEnzymes } from "../CutsiteFilter/withRestrictionEnzymes";
-import { map } from "lodash";
+import { withRestrictionEnzymes } from "../CutsiteFilter/withRestrictionEnzymes";
+import { forEach, map } from "lodash";
+import { getCutsitesFromSequence } from "ve-sequence-utils";
 
 function CloningTool(props) {
   const {
@@ -27,28 +29,61 @@ function CloningTool(props) {
     sequencesToDigest = [],
     bps,
     name,
-    allCutsites: { cutsitesByName },
-    // allRestrictionEnzymes,
+    selectedOverhangs = {},
+    // allCutsites: { cutsitesByName },
+    allRestrictionEnzymes,
     // editorName,
 
     isAdding
   } = props;
-  const overhangsToCutsites = {};
-  const overhangsToEnzymes = {};
-  map(cutsitesByName, (cutsites) => {
-    if (cutsites.length < 3) {
-      const [{ overhangBps }] = cutsites;
-      overhangsToCutsites[overhangBps] = [
-        ...(overhangsToCutsites[overhangBps] || []),
-        ...cutsites
-      ];
-      overhangsToEnzymes[overhangBps] = [
-        ...(overhangsToEnzymes[overhangBps] || []),
-        cutsites[0].restrictionEnzyme
-      ];
-    }
-  });
 
+  const cutsitesPerSeq = [];
+  const overhangMatchCounter = {};
+
+  if (sequencesToDigest.length > 1) {
+    sequencesToDigest.forEach((s, i) => {
+      const h = {};
+      h.seq = s;
+      const cutsitesByName = getCutsitesFromSequence(
+        s.sequence,
+        s.circular,
+        map(allRestrictionEnzymes)
+      );
+      h.overhangsToEnzymes = {};
+      h.overhangsToCutsites = {};
+      map(cutsitesByName, (cutsites) => {
+        if (cutsites.length < 3) {
+          const [{ overhangBps }] = cutsites;
+          if (!overhangBps) return;
+          overhangMatchCounter[overhangBps] =
+            overhangMatchCounter[overhangBps] || [];
+          const val =
+            overhangMatchCounter[overhangBps][
+              overhangMatchCounter[overhangBps].length - 1
+            ];
+          if (val !== i) overhangMatchCounter[overhangBps].push(i);
+          h.overhangsToCutsites[overhangBps] = [
+            ...(h.overhangsToCutsites[overhangBps] || []),
+            ...cutsites
+          ];
+          h.overhangsToEnzymes[overhangBps] = [
+            ...(h.overhangsToEnzymes[overhangBps] || []),
+            cutsites[0].restrictionEnzyme
+          ];
+        }
+      });
+      cutsitesPerSeq.push(h);
+    });
+    forEach(overhangMatchCounter, (matchArr, overhangBps) => {
+      if (matchArr.length < 2) {
+        cutsitesPerSeq.forEach(({ overhangsToEnzymes }) => {
+          delete overhangsToEnzymes[overhangBps];
+        });
+        delete overhangMatchCounter[overhangBps];
+      }
+    });
+  }
+  // const overhangsToEnzymes = {};
   return (
     <div
       className="cloningTool"
@@ -201,43 +236,94 @@ function CloningTool(props) {
         {/* Cutsite -- Enzymes that cut here -- */}
         {/* (Enzyme(#Backbone sites, #Insert sites)) */}
       </div>
+      <div style={{ maxWidth: 250, marginBottom: 10 }}>
+        <TgSelect
+          className="tg-ladder-selector"
+          // value={selectedLadder}
+          multi
+          placeholder="Filter by Enzyme"
+          // onChange={(val) => {}}
+          options={["BsmbI"]}
+        ></TgSelect>
+      </div>
 
-      {sequencesToDigest.length > 1 &&
-        map(overhangsToEnzymes, (enzymes, overhang, index) => {
-          return (
-            <div
-              key={index}
-              style={{
-                display: "flex",
-                padding: 5,
-                border: "1px solid lightgray",
-                borderRadius: 8,
-                marginBottom: 5
-              }}
-            >
-              <div style={{ marginRight: 10 }}>
-                {enzymes.map(({ name }, i) => (
-                  <Tag key={i} intent="primary">
-                    {name}
-                  </Tag>
-                ))}
-              </div>
-              {overhang}
-              <EnzymeViewer
-                {...{
-                  // startOffset: 500,
-                  sequence: "agtgagcca",
-                  reverseSnipPosition: 4,
-                  forwardSnipPosition: 10,
-                  paddingEnd: "tggacaa",
-                  paddingStart: "gcgggc",
-                  annotationVisibility: { axis: true },
-                  tickSpacing: 5
+      <div style={{ maxHeight: 500, maxWidth: 600, overflowY: "auto" }}>
+        {sequencesToDigest.length > 1 &&
+          map(overhangMatchCounter, (indices, overhang, index) => {
+            return (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  padding: 5,
+                  border: "1px solid lightgray",
+                  borderRadius: 8,
+                  marginBottom: 5
                 }}
-              />
-            </div>
-          );
-        })}
+              >
+                <Button
+                  onClick={() => {
+                    change("selectedOverhangs", {
+                      ...selectedOverhangs,
+                      [overhang]: !selectedOverhangs[overhang]
+                    });
+                  }}
+                  style={{ height: 50, width: 50, marginTop: 30 }}
+                  minimal
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center"
+                    }}
+                  >
+                    {/* <div style={{ fontSize: 17 }}>Add Sequence</div> */}
+                    <Icon
+                      color={
+                        selectedOverhangs[overhang] ? "lightgreen" : undefined
+                      }
+                      icon="tick"
+                      size={40}
+                    ></Icon>
+                  </div>
+                </Button>
+
+                <div style={{ margin: 10 }}>{overhang}</div>
+                <div style={{ marginRight: 10 }}>
+                  {indices.map((i, j) => {
+                    const { seq, overhangsToEnzymes } = cutsitesPerSeq[i];
+                    return (
+                      <div style={{ margin: 10 }} key={j}>
+                        <div>{seq.name}</div>
+
+                        {map(overhangsToEnzymes[overhang], ({ name }, i) => (
+                          <Tag key={i} intent="primary">
+                            {name}
+                          </Tag>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <EnzymeViewer
+                  {...{
+                    // startOffset: 500,
+                    sequence: "agtgagcca",
+                    reverseSnipPosition: 4,
+                    forwardSnipPosition: 10,
+                    paddingEnd: "tggacaa",
+                    paddingStart: "gcgggc",
+                    annotationVisibility: { axis: true },
+                    tickSpacing: 5
+                  }}
+                />
+              </div>
+            );
+          })}
+      </div>
+
       <div className="cloningTool-step-header">3. Digestion Products:</div>
       <div className="cloningTool-step-explainer">
         (The Digest Reaction will result in the following sequences)
@@ -253,14 +339,21 @@ export default compose(
       initialValues: {
         sequencesToDigest: props.initialValues?.sequencesToDigest || [
           props.sequenceData,
+          // props.sequenceData
           simpleSequenceData
         ]
       }
     };
   }),
-  // withRestrictionEnzymes,
+  withRestrictionEnzymes,
   reduxForm({ form: "CloningTool" }),
-  tgFormValues("name", "bps", "sequencesToDigest", "isAdding")
+  tgFormValues(
+    "name",
+    "bps",
+    "sequencesToDigest",
+    "isAdding",
+    "selectedOverhangs"
+  )
 )(CloningTool);
 
 const RemoveBtn = ({ onClick }) => (
