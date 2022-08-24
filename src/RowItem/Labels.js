@@ -281,6 +281,7 @@ const DrawLabel = withHover(
                 fontStyle: "normal"
               }),
               left: clamp(xStart, 0, Number.MAX_VALUE),
+              whiteSpace: "nowrap",
               color:
                 annotation.annotationTypePlural === "parts"
                   ? "purple"

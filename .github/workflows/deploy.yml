@@ -24,6 +24,8 @@ jobs:
 
       - uses: bahmutov/npm-install@v1
         if: steps.check.outputs.changed == 'true'
+        with: 
+          install-command: yarn --ignore-optional
       - uses: bahmutov/npm-install@v1
         if: steps.check.outputs.changed == 'true'
         with:

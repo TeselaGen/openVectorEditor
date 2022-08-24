@@ -492,7 +492,7 @@ export class Editor extends React.Component {
     const { tabDragging } = this.state;
     let xOffset = 0;
     let yOffset = 0;
-    if (fullScreenOffsets) {
+    if (fullScreenOffsets && previewModeFullscreen) {
       xOffset = fullScreenOffsets.xOffset || 0;
       yOffset = fullScreenOffsets.yOffset || 0;
     }
@@ -505,7 +505,6 @@ export class Editor extends React.Component {
     const windowDimensions = {
       width: x - xOffset,
       height: Math.max(y, minHeight) - yOffset
-      //  document.body.getBoundingClientRect().height
     };
     const reflexElementProps = {
       propagateDimensions: true,

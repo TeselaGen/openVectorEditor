@@ -238,13 +238,23 @@ class AddOrEditAnnotationDialog extends React.Component {
           //   data.arrowheadType = "NONE";
           // }
           // delete data.arrowheadType;
-
-          if (forward === true && data.strand !== 1) {
-            updatedData = { ...data, strand: 1 };
-          } else if (forward === false && data.strand !== -1) {
-            updatedData = { ...data, strand: -1 };
+          if (
+            annotationTypePlural === "features" &&
+            allowMultipleFeatureDirections
+          ) {
+            updatedData = {
+              ...data,
+              strand: data.arrowheadType === "BOTTOM" ? -1 : 1
+            };
+            delete updatedData.forward;
           } else {
-            updatedData = data;
+            if (forward === true && data.strand !== 1) {
+              updatedData = { ...data, strand: 1 };
+            } else if (forward === false && data.strand !== -1) {
+              updatedData = { ...data, strand: -1 };
+            } else {
+              updatedData = data;
+            }
           }
           updatedData.notes = {};
           this.notes.forEach(({ key, value }) => {

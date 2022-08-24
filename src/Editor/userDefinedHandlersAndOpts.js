@@ -4,6 +4,7 @@ export const userDefinedHandlersAndOpts = [
   "getAdditionalEditAnnotationComps",
   "getAdditionalCreateOpts",
   "getLinkedOligoLink",
+  "additionalTopRightToolbarButtons",
   "getCustomAutoAnnotateList",
   "allowPartsToOverlapSelf",
   "allowPrimerBasesToBeEdited",

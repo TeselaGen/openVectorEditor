@@ -86,6 +86,18 @@ describe("find tool", function () {
       .should("not.be.checked");
     cy.contains(".bp3-radio", "Negative").find("input").should("be.checked");
   });
+  it(`reverse strand matches should cause annotations created from click and then subsequent create to be in reverse direction`, () => {
+    cy.get(`[data-test="ve-find-tool-toggle"]`).click();
+    cy.focused().type("gagaga"); //this should cause 1 region to be selected
+    cy.get(".veSearchLayer.veRowViewSelectionLayer")
+      .should("be.visible")
+      .click(); //click the search layer
+    cy.triggerFileCmd("New Primer");
+    cy.contains(".bp3-radio", "Positive")
+      .find("input")
+      .should("not.be.checked");
+    cy.contains(".bp3-radio", "Negative").find("input").should("be.checked");
+  });
   it(`clear search layers when closed and retain the previous search and be selected when re-opened`, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click();
     cy.focused().type("gattac", { noPrevValue: true }); //this should cause 1 region to be selected

@@ -436,6 +436,7 @@ export function updateSelectionOrCaret({
     newRange = {
       start: newRangeOrCaret.start,
       end: newRangeOrCaret.end,
+      forward: newRangeOrCaret.forward,
       forceUpdate: newRangeOrCaret.forceUpdate,
       overlapsSelf: newRangeOrCaret.overlapsSelf,
       isWrappedAddon: newRangeOrCaret.isWrappedAddon
@@ -524,6 +525,7 @@ export function updateSelectionOrCaret({
             : selectionLayerUpdate(range2);
         } else {
           selectionLayerUpdate({
+            forward: newRange.forward,
             start: selectionLayer.start,
             end: newRange.end
           });

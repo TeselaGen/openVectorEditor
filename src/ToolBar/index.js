@@ -57,6 +57,7 @@ export function ToolBar(props) {
     annotationsToSupport,
     handleFullscreenClose,
     closeFullscreen,
+    additionalTopRightToolbarButtons,
     toolList = defaultToolList,
     ...rest
   } = props;
@@ -188,6 +189,7 @@ export function ToolBar(props) {
           items
         )}
       </div>
+      {additionalTopRightToolbarButtons}
       {closeFullscreen && (
         <CloseFullscreenButton onClick={handleFullscreenClose} />
       )}
