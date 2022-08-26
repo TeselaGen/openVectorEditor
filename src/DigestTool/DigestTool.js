@@ -1,7 +1,6 @@
 // import uniqid from "shortid";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
-import { normalizePositionByRangeLength, getRangeLength } from "ve-range-utils";
 // import selectionLayer from "../redux/selectionLayer";
 import React from "react";
 import { DataTable } from "teselagen-react-components";
@@ -20,9 +19,10 @@ import {
 import withEditorInteractions from "../withEditorInteractions";
 import { userDefinedHandlersAndOpts } from "../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
+import { computeDigestFragments } from "./computeDigestFragments";
 
-const MAX_DIGEST_CUTSITES = 50;
-const MAX_PARTIAL_DIGEST_CUTSITES = 10;
+export const MAX_DIGEST_CUTSITES = 50;
+export const MAX_PARTIAL_DIGEST_CUTSITES = 10;
 export class DigestTool extends React.Component {
   state = { selectedTab: "virtualDigest" };
   render() {
@@ -188,77 +188,21 @@ export default compose(
       updateSelectedFragment,
       digestTool: { computePartialDigest }
     } = props;
-    const fragments = [];
-    const overlappingEnzymes = [];
-    const pairs = [];
+    const cutsites = sequenceData.cutsites;
     const computePartialDigestDisabled =
-      sequenceData.cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
-    const computeDigestDisabled =
-      sequenceData.cutsites.length > MAX_DIGEST_CUTSITES;
-    const sortedCutsites = sequenceData.cutsites.sort((a, b) => {
-      return a.topSnipPosition - b.topSnipPosition;
+      cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
+    const computeDigestDisabled = cutsites.length > MAX_DIGEST_CUTSITES;
+
+    const { fragments, overlappingEnzymes } = computeDigestFragments({
+      computePartialDigest,
+      computeDigestDisabled,
+      sequenceLength,
+      computePartialDigestDisabled,
+      cutsites,
+      selectionLayerUpdate,
+      updateSelectedFragment
     });
 
-    sortedCutsites.forEach((cutsite1, index) => {
-      if (computePartialDigest && !computePartialDigestDisabled) {
-        sortedCutsites.forEach((cs, index2) => {
-          if (index2 === index + 1 || index2 === 0) {
-            return;
-          }
-          pairs.push([cutsite1, sortedCutsites[index2]]);
-        });
-      }
-      if (!computeDigestDisabled) {
-        pairs.push([
-          cutsite1,
-          sortedCutsites[index + 1]
-            ? sortedCutsites[index + 1]
-            : sortedCutsites[0]
-        ]);
-      }
-    });
-
-    pairs.forEach(([cut1, cut2]) => {
-      const start = normalizePositionByRangeLength(
-        cut1.topSnipPosition,
-        sequenceLength
-      );
-      const end = normalizePositionByRangeLength(
-        cut2.topSnipPosition - 1,
-        sequenceLength
-      );
-      const size = getRangeLength({ start, end }, sequenceLength);
-
-      // const id = uniqid()
-      const id = start + "-" + end + "-" + size + "-";
-      const name = `${cut1.restrictionEnzyme.name} -- ${cut2.restrictionEnzyme.name} ${size} bps`;
-      getRangeLength({ start, end }, sequenceLength);
-      fragments.push({
-        cut1,
-        cut2,
-        start,
-        end,
-        size,
-        id,
-        name,
-        onFragmentSelect: () => {
-          selectionLayerUpdate({
-            start,
-            end,
-            name
-          });
-          updateSelectedFragment(id);
-        }
-      });
-    });
-
-    fragments.filter((fragment) => {
-      if (!fragment.size) {
-        overlappingEnzymes.push(fragment);
-        return false;
-      }
-      return true;
-    });
     return {
       computePartialDigestDisabled,
       computeDigestDisabled,

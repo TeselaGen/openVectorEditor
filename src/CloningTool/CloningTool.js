@@ -11,14 +11,15 @@ import {
 import { reduxForm } from "redux-form";
 import { Button, Icon, Tab, Tabs, Tag, Tooltip } from "@blueprintjs/core";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
-import simpleSequenceData from "../../demo/src/exampleData/simpleSequenceData";
+// import simpleSequenceData from "../../demo/src/exampleData/simpleSequenceData";
 
 import "./style.css";
 import { removeItem } from "../utils/arrayUtils";
 import EnzymeViewer from "../EnzymeViewer";
 import { withRestrictionEnzymes } from "../CutsiteFilter/withRestrictionEnzymes";
-import { forEach, map } from "lodash";
+import { forEach, map /* flatMap */ } from "lodash";
 import { getCutsitesFromSequence } from "ve-sequence-utils";
+// import { computeDigestFragments } from "../DigestTool/computeDigestFragments";
 
 function CloningTool(props) {
   const {
@@ -30,6 +31,7 @@ function CloningTool(props) {
     bps,
     name,
     selectedOverhangs = {},
+    selectedEnzymes = {},
     // allCutsites: { cutsitesByName },
     allRestrictionEnzymes,
     // editorName,
@@ -51,6 +53,17 @@ function CloningTool(props) {
       );
       h.overhangsToEnzymes = {};
       h.overhangsToCutsites = {};
+      if (cutsitesByName) {
+        // const cutsites = flatMap(cutsitesByName, (c) => {
+        //   if (c.length > 2) return [];
+        //   return c;
+        // });
+        // const { fragments } = computeDigestFragments({
+        //   cutsites,
+        //   sequenceLength: s.sequence.length
+        // });
+      }
+
       map(cutsitesByName, (cutsites) => {
         if (cutsites.length < 3) {
           const [{ overhangBps }] = cutsites;
@@ -230,7 +243,7 @@ function CloningTool(props) {
 
       <br></br>
       <div className="cloningTool-step-header">
-        2. Select Compatible Overhangs{" "}
+        2. Select Compatible Overhangs + Enzymes{" "}
       </div>
       <div className="cloningTool-step-explainer">
         {/* Cutsite -- Enzymes that cut here -- */}
@@ -250,6 +263,32 @@ function CloningTool(props) {
       <div style={{ maxHeight: 500, maxWidth: 600, overflowY: "auto" }}>
         {sequencesToDigest.length > 1 &&
           map(overhangMatchCounter, (indices, overhang, index) => {
+            const isSelected = selectedOverhangs[overhang];
+            const enzymesThatAreUniqueToOverhang = {};
+            const enzymeCuts = indices.map((i, j) => {
+              const { seq, overhangsToEnzymes } = cutsitesPerSeq[i];
+              return (
+                <div style={{ margin: 10 }} key={j}>
+                  <div>{seq.name}</div>
+
+                  {map(overhangsToEnzymes[overhang], ({ name }, i) => {
+                    // isSelected
+                    const isEnzymeSelected = selectedEnzymes[name];
+                    if (map(overhangsToEnzymes[overhang]).length === 1) {
+                      enzymesThatAreUniqueToOverhang[name] = true;
+                    }
+                    return (
+                      <Tag
+                        key={i}
+                        intent={isEnzymeSelected ? "success" : "primary"}
+                      >
+                        {name} {isEnzymeSelected && <Icon icon="tick"></Icon>}
+                      </Tag>
+                    );
+                  })}
+                </div>
+              );
+            });
             return (
               <div
                 key={index}
@@ -267,6 +306,12 @@ function CloningTool(props) {
                       ...selectedOverhangs,
                       [overhang]: !selectedOverhangs[overhang]
                     });
+                    forEach(enzymesThatAreUniqueToOverhang, (a, name) => {
+                      change("selectedEnzymes", {
+                        ...selectedEnzymes,
+                        [name]: !selectedOverhangs[overhang]
+                      });
+                    });
                   }}
                   style={{ height: 50, width: 50, marginTop: 30 }}
                   minimal
@@ -280,9 +325,7 @@ function CloningTool(props) {
                   >
                     {/* <div style={{ fontSize: 17 }}>Add Sequence</div> */}
                     <Icon
-                      color={
-                        selectedOverhangs[overhang] ? "lightgreen" : undefined
-                      }
+                      color={isSelected ? "lightgreen" : undefined}
                       icon="tick"
                       size={40}
                     ></Icon>
@@ -290,22 +333,7 @@ function CloningTool(props) {
                 </Button>
 
                 <div style={{ margin: 10 }}>{overhang}</div>
-                <div style={{ marginRight: 10 }}>
-                  {indices.map((i, j) => {
-                    const { seq, overhangsToEnzymes } = cutsitesPerSeq[i];
-                    return (
-                      <div style={{ margin: 10 }} key={j}>
-                        <div>{seq.name}</div>
-
-                        {map(overhangsToEnzymes[overhang], ({ name }, i) => (
-                          <Tag key={i} intent="primary">
-                            {name}
-                          </Tag>
-                        ))}
-                      </div>
-                    );
-                  })}
-                </div>
+                <div style={{ marginRight: 10 }}>{enzymeCuts}</div>
 
                 <EnzymeViewer
                   {...{
@@ -338,9 +366,19 @@ export default compose(
     return {
       initialValues: {
         sequencesToDigest: props.initialValues?.sequencesToDigest || [
-          props.sequenceData,
-          // props.sequenceData
-          simpleSequenceData
+          {
+            sequence:
+              "ggggggggggggggggggggggatccgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggatccggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+            circular: false
+          },
+          {
+            sequence:
+              "ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggatccggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggatccggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+            circular: false
+          }
+          // props.sequenceData,
+          // // props.sequenceData,
+          // simpleSequenceData
         ]
       }
     };
@@ -352,7 +390,8 @@ export default compose(
     "bps",
     "sequencesToDigest",
     "isAdding",
-    "selectedOverhangs"
+    "selectedOverhangs",
+    "selectedEnzymes"
   )
 )(CloningTool);
 
