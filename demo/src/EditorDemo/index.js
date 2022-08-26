@@ -155,11 +155,11 @@ export default class EditorDemo extends React.Component {
   };
   rightClickOverridesExample = {
     rightClickOverrides: {
-      partRightClicked: (items) => {
+      partRightClicked: (items, { annotation }, { sequenceData }) => {
         return [
           ...items,
           {
-            text: "My Part Override",
+            text: `My Part Override - ${annotation.name} - ${sequenceData.sequence.length}`,
             onClick: () => window.toastr.success("Part Override Hit!")
           }
         ];
