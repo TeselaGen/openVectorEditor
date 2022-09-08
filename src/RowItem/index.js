@@ -93,6 +93,7 @@ export default function RowItem(props) {
       end: 0,
       rowNumber: 0
     },
+    readOnly,
     isRowView,
     emptyText,
     alignmentType,
@@ -190,6 +191,7 @@ export default function RowItem(props) {
     bpsPerRow,
     getGaps,
     isProtein,
+    readOnly,
     sequenceLength,
     isRowView,
     row: { start: row.start, end: row.end }

@@ -182,7 +182,7 @@ function ShowInfo({ description, info, type }) {
         </div>
       </Dialog>
 
-      {(description || info) && (
+      {description || info ? (
         <div key={type + "info"}>
           <Button
             onClick={() => {
@@ -192,6 +192,8 @@ function ShowInfo({ description, info, type }) {
             icon="info-sign"
           ></Button>
         </div>
+      ) : (
+        <div style={{ minWidth: 30, width: 30, height: 30 }}></div>
       )}
     </React.Fragment>
   );

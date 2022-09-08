@@ -15,6 +15,7 @@ import getAnnotationClassnames from "../utils/getAnnotationClassnames";
 //annotations coming in can be positioned either by caretPosition or range
 function drawAnnotations(props) {
   const {
+    readOnly,
     annotationType,
     radius,
     noHover,
@@ -122,10 +123,8 @@ function drawAnnotations(props) {
     .forEach(function (annotation, index) {
       annotation.yOffset = maxYOffset - annotation.yOffset;
       function _onClick(event) {
-        onClick({ event, annotation });
-        if (annotation.onClick) {
-          annotation.onClick({ event, annotation });
-        }
+        onClick && onClick({ event, annotation });
+        annotation.onClick && annotation.onClick({ event, annotation });
       }
       function onContextMenu(event) {
         onRightClicked({ event, annotation });
@@ -155,13 +154,15 @@ function drawAnnotations(props) {
       };
 
       const titleText = getAnnotationNameAndStartStopString(annotation, {
-        isProtein
+        isProtein,
+        readOnly
       });
 
       const classNames = getAnnotationClassnames(annotation, {
         viewName: "CircularView",
         type,
-        isProtein
+        isProtein,
+        readOnly
       });
 
       const annotationRadius =

@@ -24,6 +24,7 @@ function Labels(props) {
     labelLineIntensity,
     isProtein,
     noRedux,
+    readOnly,
     noLabelLine
   } = props;
 
@@ -136,6 +137,7 @@ function Labels(props) {
         id={annotation.id}
         key={"cutsiteLabel" + index}
         {...{
+          readOnly,
           editorName,
           annotation,
           noLabelLine,
@@ -207,7 +209,8 @@ const DrawLabel = withHover(
         onMouseOver,
         editorName,
         labelLineIntensity,
-        textWidth
+        textWidth,
+        readOnly
       } = this.props;
       let heightToUse = height;
       let bottom = 0;
@@ -249,7 +252,8 @@ const DrawLabel = withHover(
           : annotationText;
       };
       const titleText = getAnnotationNameAndStartStopString(annotation, {
-        isProtein
+        isProtein,
+        readOnly
       });
       const labelText = annotation.name || annotation.restrictionEnzyme.name;
       return (
@@ -258,7 +262,7 @@ const DrawLabel = withHover(
             {...{ onMouseLeave, onMouseOver }}
             className={className + " veLabelText ve-monospace-font"}
             onClick={function (event) {
-              onClick({ event, annotation });
+              onClick && onClick({ event, annotation });
               event.stopPropagation();
             }}
             onDoubleClick={function (event) {

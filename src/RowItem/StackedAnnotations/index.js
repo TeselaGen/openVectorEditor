@@ -28,6 +28,7 @@ function StackedAnnotations(props) {
     onRightClick,
     editorName,
     type,
+    readOnly,
     noRedux,
     alignmentType,
     getGaps,
@@ -118,6 +119,7 @@ function StackedAnnotations(props) {
           insertTicks={insertTicks}
           onDoubleClick={onDoubleClick}
           type={type}
+          readOnly={readOnly}
           flipAnnotation={flipAnnotation}
           extraHeight={extraHeight}
           onRightClick={onRightClick}

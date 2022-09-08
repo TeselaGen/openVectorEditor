@@ -4,6 +4,7 @@ import copyToClipboard from "copy-to-clipboard";
 
 import RowItem from "../RowItem";
 import "./style.css";
+import classNames from "classnames";
 
 export default ({
   extraClasses = "",
@@ -12,18 +13,23 @@ export default ({
   paddingStart = "-------",
   reverseSnipPosition,
   forwardSnipPosition,
-  charWidth = 13
+  charWidth = 13,
+  noCopy
 }) => {
   const seqPlusPadding = paddingStart + sequence + paddingEnd;
 
   return (
     <div
-      style={{ cursor: "pointer", position: "relative" }}
-      onClick={() => {
-        copyToClipboard(sequence);
-        window.toastr.success("Recognition Site Copied");
-      }}
-      className={"enzyme-rowitem " + extraClasses}
+      style={{ cursor: noCopy ? "" : "pointer", position: "relative" }}
+      onClick={
+        noCopy
+          ? () => {}
+          : () => {
+              copyToClipboard(sequence);
+              window.toastr.success("Recognition Site Copied");
+            }
+      }
+      className={classNames("enzyme-rowitem", extraClasses, { noCopy })}
     >
       <Icon
         className="tg-icon-duplicate-inner"

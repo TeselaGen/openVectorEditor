@@ -22,6 +22,7 @@ class PointedAnnotation extends React.PureComponent {
       arrowheadType,
       name = "",
       type,
+      readOnly,
       isStriped,
       onMouseLeave,
       onMouseOver,
@@ -196,7 +197,10 @@ class PointedAnnotation extends React.PureComponent {
         }}
       >
         <title>
-          {getAnnotationNameAndStartStopString(annotation, { isProtein })}
+          {getAnnotationNameAndStartStopString(annotation, {
+            isProtein,
+            readOnly
+          })}
         </title>
         {isStriped && getStripedPattern({ color })}
         <path

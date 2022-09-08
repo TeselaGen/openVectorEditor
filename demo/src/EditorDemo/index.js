@@ -462,6 +462,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               <div style={{ paddingLeft: 10, paddingRight: 10 }}>
                 <Button
                   icon="refresh"
+                  minimal
                   style={{ marginLeft: 10, marginRight: 10, marginBottom: 5 }}
                   onClick={this.resetDefaultState}
                 >

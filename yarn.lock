@@ -10088,19 +10088,6 @@ react-markdown@4.0.6:
     unist-util-visit "^1.3.0"
     xtend "^4.0.1"
 
-react-markdown@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-markdown/-/react-markdown-4.1.0.tgz#7fdf840ecbabc803f28156f7411c726b58f25a73"
-  integrity sha512-EOHsEAN+aoP8UVz7vTHx6Z63GJfhrO9KItKlfsiBtVVS9tmSWtUaBTw73+2SObrWiOiE2Cs9qUBL7ORsvVhOrA==
-  dependencies:
-    html-to-react "^1.3.4"
-    mdast-add-list-metadata "1.0.1"
-    prop-types "^15.7.2"
-    remark-parse "^5.0.0"
-    unified "^6.1.5"
-    unist-util-visit "^1.3.0"
-    xtend "^4.0.1"
-
 react-measure@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/react-measure/-/react-measure-2.5.2.tgz#4ffc410e8b9cb836d9455a9ff18fc1f0fca67f89"
@@ -11721,10 +11708,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.10.4:
-  version "30.10.4"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.10.4.tgz#6a8ccec4b9031a84ab3bbca17ad0fbf441fc6e2d"
-  integrity sha512-s2xqyZjhvf+EIZhwR5JjAW2MKRF1qlS9iDbYk0ggCn2dIfzDJ7dn+fMhZ0x0SOauwQyei03/ES1LAhI65/XAVQ==
+teselagen-react-components@30.10.12:
+  version "30.10.12"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.10.12.tgz#57a1a71f24277b8f4ab7ba79bf2792806f5f6e17"
+  integrity sha512-TtPPgMH8X0ZY9PyRtaTDOwbjPdbEhIOx5MaQqthD0RML2iCgGjsCfAz/yH988Od5Wz/qfNvvCd1aOUT92nKHuw==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -11745,7 +11732,7 @@ teselagen-react-components@30.10.4:
     qs "^6.9.6"
     react-color "^2.19.3"
     react-dropzone "^11.4.2"
-    react-markdown "4.1.0"
+    react-markdown "4.0.6"
     react-rnd "^10.2.4"
     react-router-dom "^4.3.1"
     react-sortable-hoc "^0.6.8"
@@ -12463,10 +12450,10 @@ ve-range-utils@^2.6.6:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.1.34:
-  version "5.1.34"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.34.tgz#a3c3a36c9fc2b7bf131e4a573c8180f63d70f314"
-  integrity sha512-yKeuSy1lGO+fHwHgqt4dJ6buOkaml/iA0KOLDX9Bkd5pgB4QKnS9R25HjbSFBKfoBdNS1ZopA7D3gqyv3EGBIw==
+ve-sequence-utils@^5.1.35:
+  version "5.1.35"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.35.tgz#d14b0bd24d42315dd2a14838f86b0046ff157803"
+  integrity sha512-ohCkUU5a8vkWC9YNnvam3EflbjpXL0ETNmeBjtsoYDm/DnoLQ8QNKYukIRR8XkXTVpaI5twyZUeiUrF6hSOeOQ==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

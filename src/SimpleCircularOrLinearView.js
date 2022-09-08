@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {
   showContextMenu,
-  commandMenuEnhancer
+  commandMenuEnhancer,
+  FillWindow
 } from "teselagen-react-components";
 
 import { CircularView } from "./CircularView";
@@ -12,8 +13,15 @@ import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
-import { cloneDeep } from "lodash";
-import { Button, ButtonGroup, Tooltip } from "@blueprintjs/core";
+import { cloneDeep, flatMap, map, startCase } from "lodash";
+import {
+  Button,
+  ButtonGroup,
+  Menu,
+  MenuItem,
+  Popover,
+  Tooltip
+} from "@blueprintjs/core";
 import getCommands from "./commands";
 import { withHandlers } from "recompose";
 import { exportSequenceToFile } from "./withEditorProps";
@@ -27,12 +35,20 @@ export default (props) => {
     withDownload,
     withChoosePreviewType,
     withCaretEnabled,
-    smallSlider
+    smallSlider,
+    withVisibilityOptions,
+    minimalPreviewTypeBtns,
+    withFullscreen
   } = props;
   const [previewType, setPreviewType] = useState(
     _sequenceData.circular ? "circular" : "linear"
   );
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+  const [isFullscreen, setFullscreen] = useState(false);
+  const [visibilityOptions, setVisibilityOptions] = useState({});
+
   const [caretPosition, setCaret] = useState(withCaretEnabled ? -1 : undefined);
+
   let tickSpacing = undefined;
   let Component = (
     withChoosePreviewType ? previewType === "circular" : _sequenceData.circular
@@ -49,7 +65,8 @@ export default (props) => {
   let sequenceData = cloneDeep(_sequenceData);
   const annotationVisibility = {
     ...visibilityDefaultValues,
-    ..._annotationVisibility
+    ..._annotationVisibility,
+    ...visibilityOptions
   };
 
   //here we're making it possible to not pass a sequenceData.sequence
@@ -75,23 +92,44 @@ export default (props) => {
     sequenceData.parts,
     sequenceData.sequence.length
   );
-  return (
+  const inner = ({ width, height }) => (
     <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
       <div style={{ width: "fit-content" }}>
-        {(withDownload || withChoosePreviewType) && (
+        {(withDownload ||
+          withChoosePreviewType ||
+          withFullscreen ||
+          VisibilityOptions) && (
           <div
             style={{
               marginLeft: 10,
               marginBottom: 5,
+              ...(isFullscreen && {
+                marginRight: 10,
+                paddingTop: 10
+              }),
               display: "flex",
               justifyContent: "end"
             }}
           >
             {withDownload && <DownloadBtn {...props}></DownloadBtn>}
+            {withVisibilityOptions && (
+              <VisibilityOptions
+                {...{
+                  ...props,
+                  sequenceData,
+                  annotationVisibility,
+                  setVisibilityOptions,
+                  isPopoverOpen,
+                  setPopoverOpen
+                }}
+              ></VisibilityOptions>
+            )}
+
             {withChoosePreviewType && (
               <ButtonGroup>
                 <Tooltip content="Circular">
                   <Button
+                    minimal={minimalPreviewTypeBtns}
                     className="tgPreviewTypeCircular"
                     active={previewType === "circular"}
                     intent="primary"
@@ -101,6 +139,7 @@ export default (props) => {
                 </Tooltip>
                 <Tooltip content="Linear">
                   <Button
+                    minimal={minimalPreviewTypeBtns}
                     className="tgPreviewTypeLinear"
                     active={previewType === "linear"}
                     intent="primary"
@@ -110,6 +149,7 @@ export default (props) => {
                 </Tooltip>
                 <Tooltip content="Row">
                   <Button
+                    minimal={minimalPreviewTypeBtns}
                     className="tgPreviewTypeRow"
                     active={previewType === "row"}
                     intent="primary"
@@ -118,6 +158,11 @@ export default (props) => {
                   ></Button>
                 </Tooltip>
               </ButtonGroup>
+            )}
+            {withFullscreen && (
+              <FullscreenBtn
+                {...{ setFullscreen, isFullscreen }}
+              ></FullscreenBtn>
             )}
           </div>
         )}
@@ -128,8 +173,13 @@ export default (props) => {
             height: 300,
             noWarnings,
             ...props,
+            ...(isFullscreen && {
+              width: width - 10,
+              height: height - 10
+            }),
             caretPosition,
             smallSlider,
+            readOnly: true,
             editorClicked: ({ nearestCaretPos } = {}) => {
               withCaretEnabled && setCaret(nearestCaretPos);
             },
@@ -144,6 +194,14 @@ export default (props) => {
       </div>
     </HoveredIdContext.Provider>
   );
+  if (isFullscreen) {
+    return (
+      <FillWindow asPortal className="tgSimpleViewFullscreen">
+        {inner}
+      </FillWindow>
+    );
+  }
+  return inner({});
 };
 
 const DownloadBtn = withHandlers({ exportSequenceToFile })((props) => {
@@ -175,3 +233,70 @@ const DownloadBtn = withHandlers({ exportSequenceToFile })((props) => {
     </Tooltip>
   );
 });
+const FullscreenBtn = ({ setFullscreen, isFullscreen }) => {
+  return (
+    <Tooltip content={`${isFullscreen ? "Close " : ""}Fullscreen`}>
+      <Button
+        className="veFullscreenButton"
+        style={{ marginLeft: 10, marginRight: 10 }}
+        onClick={() => {
+          setFullscreen(!isFullscreen);
+        }}
+        minimal
+        intent="primary"
+        icon={!isFullscreen ? "maximize" : "minimize"}
+      ></Button>
+    </Tooltip>
+  );
+};
+const VisibilityOptions = ({
+  annotationVisibility,
+  sequenceData,
+  setVisibilityOptions,
+  isPopoverOpen,
+  setPopoverOpen
+}) => {
+  return (
+    <Tooltip disabled={isPopoverOpen} content="Visibility Options">
+      <Popover
+        minimal
+        onInteraction={(isOpen) => {
+          setPopoverOpen(isOpen);
+        }}
+        isOpen={isPopoverOpen}
+        content={
+          <Menu>
+            {flatMap(
+              ["features", "parts", "primers", "translations", "cutsites"],
+              (name) => {
+                if (!map(sequenceData[name]).length) return [];
+                return (
+                  <MenuItem
+                    onClick={(e) => {
+                      setVisibilityOptions({
+                        ...annotationVisibility,
+                        [name]: !annotationVisibility[name]
+                      });
+                      e.stopPropagation();
+                    }}
+                    icon={annotationVisibility[name] ? "tick" : "blank"}
+                    key={name}
+                    text={startCase(name)}
+                  ></MenuItem>
+                );
+              }
+            )}
+          </Menu>
+        }
+      >
+        <Button
+          className="veSimpleVisibilityBtn"
+          style={{ marginLeft: 10, marginRight: 10 }}
+          minimal
+          intent="primary"
+          icon="eye-open"
+        ></Button>
+      </Popover>
+    </Tooltip>
+  );
+};

@@ -3,7 +3,7 @@ import React from "react";
 import orfFrameToColorMap from "../constants/orfFrameToColorMap";
 
 function Orf(props) {
-  let {
+  const {
     height,
     rangeType,
     normalizedInternalStartCodonIndices = [],
@@ -15,14 +15,15 @@ function Orf(props) {
     isProtein,
     onRightClick,
     charWidth,
+    readOnly,
     gapsInside,
     gapsBefore
   } = props;
-  let heightToUse = height / 1.5;
-  let color = orfFrameToColorMap[frame];
+  const heightToUse = height / 1.5;
+  const color = orfFrameToColorMap[frame];
   let arrow = null;
   let endCircle = null;
-  let circle = (
+  const circle = (
     <circle
       key="circle"
       r={heightToUse / 2}
@@ -47,7 +48,7 @@ function Orf(props) {
   if (rangeType === "start" || rangeType === "beginningAndEnd") {
     endCircle = circle;
   }
-  let internalStartCodonCircles = normalizedInternalStartCodonIndices.map(
+  const internalStartCodonCircles = normalizedInternalStartCodonIndices.map(
     function (internalStartCodon, index) {
       return React.cloneElement(circle, {
         key: index,
@@ -88,7 +89,8 @@ function Orf(props) {
         {" "}
         {getAnnotationNameAndStartStopString(annotation, {
           startText: "Open Reading Frame:",
-          isProtein
+          isProtein,
+          readOnly
         })}{" "}
       </title>
     </g>

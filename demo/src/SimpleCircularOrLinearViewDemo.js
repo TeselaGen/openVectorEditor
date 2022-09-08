@@ -63,10 +63,17 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             {renderToggle({ that: this, type: "withAdditionalParts" })}
             {renderToggle({ that: this, type: "withCaretEnabled" })}
             {renderToggle({ that: this, type: "withChoosePreviewType" })}
+            {renderToggle({ that: this, type: "minimalPreviewTypeBtns" })}
+            {renderToggle({ that: this, type: "withFullscreen" })}
+            {renderToggle({ that: this, type: "withVisibilityOptions" })}
             {renderToggle({ that: this, type: "withZoomLinearView" })}
             {renderToggle({ that: this, type: "withZoomCircularView" })}
+            {renderToggle({
+              that: this,
+              type: "smallSlider",
+              info: "Requires withZoomLinearView or withZoomCircularView to be enabled to see this one"
+            })}
             {renderToggle({ that: this, type: "withDownload" })}
-            {renderToggle({ that: this, type: "smallSlider" })}
             {renderToggle({ that: this, type: "changeSize" })}
             {renderToggle({
               that: this,
@@ -87,28 +94,11 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
           </div>
           <SimpleCircularOrLinearView
             {...{
+              ...this.state,
               ...(this.state.toggleNoRedux && { noRedux: true }),
-              ...(this.state.withCaretEnabled && {
-                withCaretEnabled: true
-              }),
-              ...(this.state.withChoosePreviewType && {
-                withChoosePreviewType: true
-              }),
-              ...(this.state.withDownload && { withDownload: true }),
-              ...(this.state.smallSlider && { smallSlider: true }),
-              ...(this.state.withZoomLinearView && {
-                withZoomLinearView: true
-              }),
-              ...(this.state.withZoomCircularView && {
-                withZoomCircularView: true
-              }),
               ...(this.state.hideNameAndInfo && { hideName: true }),
               ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
               ...(this.state.changeSize && { height: 500, width: 500 }),
-              // annotationVisibility: {
-              //   cutsites: this.state.showCutsites
-              // }
-
               ...(this.state.toggleSelection && {
                 selectionLayer: { start: 2, end: 30 }
               }),

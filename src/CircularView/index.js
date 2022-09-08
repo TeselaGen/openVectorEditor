@@ -139,7 +139,7 @@ export function CircularView(props) {
     width = 400,
     height = 400,
     noRedux,
-
+    readOnly,
     hideName = false,
     editorName,
     showCicularViewInternalLabels,
@@ -515,6 +515,7 @@ export function CircularView(props) {
         }
 
         results = drawAnnotations({
+          readOnly,
           noTitle,
           rotationRadians,
           visibleAngleRange,

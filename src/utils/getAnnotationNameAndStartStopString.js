@@ -12,7 +12,7 @@ export default function getAnnotationNameAndStartStopString(
     overlapsSelf,
     isWrappedAddon
   },
-  { startText, isProtein } = {}
+  { startText, isProtein, readOnly } = {}
 ) {
   const typeToUse = (() => {
     if (annotationTypePlural) {
@@ -45,7 +45,9 @@ export default function getAnnotationNameAndStartStopString(
   } - Start: ${isProtein ? (start + 3) / 3 : start + 1} End: ${
     isProtein ? (end + 1) / 3 : end + 1
   } ${overlapsSelf ? "(Overlaps Self) " : ""}${message ? "\n" + message : ""} ${
-    annotationTypePlural === "cutsites"
+    readOnly
+      ? ""
+      : annotationTypePlural === "cutsites"
       ? `
 
  click --> top cut position
