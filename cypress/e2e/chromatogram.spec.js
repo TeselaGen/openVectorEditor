@@ -8,7 +8,7 @@ describe("chromatogram", function () {
     cy.get(".chromatogram.noQualityScores").should("not.exist");
     cy.triggerFileCmd("Chromatogram", { noEnter: true });
     cy.contains("Chromatogram").click();
-    cy.contains("Show Quality Scores").click();
+    cy.contains("Show Quality Scores").click({ force: true });
     cy.get(".chromatogram.noQualityScores").should("exist");
   });
 
@@ -40,7 +40,7 @@ describe("chromatogram", function () {
     cy.visit("#/Editor?chromatogramExample=true");
     cy.get(".chromatogram").first().rightclick();
     cy.get(".chromatogram.noQualityScores").should("not.exist");
-    cy.contains("Show Quality Scores").click();
+    cy.contains("Show Quality Scores").click({ force: true });
     cy.get(".chromatogram.noQualityScores").should("exist");
   });
 });
