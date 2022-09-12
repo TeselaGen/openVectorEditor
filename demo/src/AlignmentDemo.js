@@ -149,6 +149,14 @@ export default class AlignmentDemo extends React.Component {
               })}
               {renderToggle({
                 that: this,
+                type: "allowTrackNameEdit"
+              })}
+              {renderToggle({
+                that: this,
+                type: "allowTrackRearrange"
+              })}
+              {renderToggle({
+                that: this,
                 type: "hasTemplate",
                 label: "Specify Alignment with Template",
                 description:
@@ -220,6 +228,8 @@ export default class AlignmentDemo extends React.Component {
               ? "Ref Seq Name"
               : "Alignment Name Placeholder",
             noClickDragHandlers: this.state.noClickDragHandlers,
+            allowTrackNameEdit: this.state.allowTrackNameEdit,
+            allowTrackRearrange: this.state.allowTrackRearrange,
             hasTemplate: this.state.hasTemplate,
             noVisibilityOptions: this.state.noVisibilityOptions,
             linearViewOptions: {

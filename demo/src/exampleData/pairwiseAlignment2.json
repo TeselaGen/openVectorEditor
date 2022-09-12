@@ -15,7 +15,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "B0015 PBS",
-              "notes": "#f58a5e",
               "annotationType": "misc_feature"
             },
             {
@@ -25,7 +24,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "B0015 Double Terminator",
-              "notes": "#c6c9d1",
               "annotationType": "misc_feature"
             },
             {
@@ -35,7 +33,6 @@
               "forward": true,
               "type": "gene",
               "name": "ecoli_DH1_intA_locus",
-              "notes": "ecoli_DH1_intA_locus",
               "annotationType": "gene"
             },
             {
@@ -45,7 +42,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "J23101 sp",
-              "notes": "J23101 sp",
               "annotationType": "misc_feature"
             },
             {
@@ -55,7 +51,6 @@
               "forward": true,
               "type": "terminator",
               "name": "dbl term",
-              "notes": "dbl term",
               "annotationType": "terminator"
             },
             {
@@ -65,7 +60,6 @@
               "forward": false,
               "type": "primer_bind",
               "name": "DVA05764_dsDVA00566_reverse",
-              "notes": "DVA05764_dsDVA00566_reverse",
               "annotationType": "primer_bind"
             },
             {
@@ -75,7 +69,6 @@
               "forward": true,
               "type": "primer_bind",
               "name": "DVA05763_dsDVA00566_forward",
-              "notes": "DVA05763_dsDVA00566_forward",
               "annotationType": "primer_bind"
             },
             {
@@ -85,7 +78,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "rrnB Terminator",
-              "notes": "#f58a5e",
               "annotationType": "misc_feature"
             },
             {
@@ -95,7 +87,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "ipsA Start 2",
-              "notes": "#faac61",
               "annotationType": "misc_feature"
             },
             {
@@ -105,7 +96,6 @@
               "forward": false,
               "type": "CDS",
               "name": "MIOX",
-              "notes": "#d6b295",
               "annotationType": "CDS"
             },
             {
@@ -115,7 +105,6 @@
               "forward": true,
               "type": "CDS",
               "name": "IpsA",
-              "notes": "#f58a5e",
               "annotationType": "CDS"
             },
             {
@@ -125,7 +114,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "AG_002",
-              "notes": "#ffef86",
               "annotationType": "misc_feature"
             },
             {
@@ -135,7 +123,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "ipsA Start PBS",
-              "notes": "#9eafd2",
               "annotationType": "misc_feature"
             },
             {
@@ -145,7 +132,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "pHH rrnB PBS",
-              "notes": "#ffef86",
               "annotationType": "misc_feature"
             },
             {
@@ -155,7 +141,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "pHH backbone PBS 2",
-              "notes": "pHH backbone PBS 2",
               "annotationType": "misc_feature"
             },
             {
@@ -165,7 +150,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "cg0044",
-              "notes": "cg0044",
               "annotationType": "misc_feature"
             },
             {
@@ -175,7 +159,6 @@
               "forward": true,
               "type": "primer_bind",
               "name": "DVA05761_(R6Kori_intA_CmR)_forward",
-              "notes": "DVA05761_(R6Kori_intA_CmR)_forward",
               "annotationType": "primer_bind"
             },
             {
@@ -185,7 +168,6 @@
               "forward": false,
               "type": "primer_bind",
               "name": "DVA05762_(R6Kori_intA_CmR)_reverse",
-              "notes": "DVA05762_(R6Kori_intA_CmR)_reverse",
               "annotationType": "primer_bind"
             },
             {
@@ -195,7 +177,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "Term Start PBS",
-              "notes": "#f58a5e",
               "annotationType": "misc_feature"
             },
             {
@@ -205,7 +186,6 @@
               "forward": false,
               "type": "misc_marker",
               "name": "CmR",
-              "notes": "CmR",
               "annotationType": "misc_marker"
             },
             {
@@ -215,7 +195,6 @@
               "forward": true,
               "type": "rep_origin",
               "name": "R6k ori",
-              "notes": "R6k ori",
               "annotationType": "rep_origin"
             },
             {
@@ -225,7 +204,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "J23111",
-              "notes": "#d59687",
               "annotationType": "misc_feature"
             }
           ]
@@ -266,7 +244,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "B0015 PBS",
-              "notes": "#f58a5e",
               "annotationType": "misc_feature"
             },
             {
@@ -276,7 +253,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "B0015 Double Terminator",
-              "notes": "#c6c9d1",
               "annotationType": "misc_feature"
             },
             {
@@ -286,7 +262,6 @@
               "forward": true,
               "type": "gene",
               "name": "ecoli_DH1_intA_locus",
-              "notes": "ecoli_DH1_intA_locus",
               "annotationType": "gene"
             },
             {
@@ -296,7 +271,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "J23101 sp",
-              "notes": "J23101 sp",
               "annotationType": "misc_feature"
             },
             {
@@ -306,7 +280,6 @@
               "forward": true,
               "type": "terminator",
               "name": "dbl term",
-              "notes": "dbl term",
               "annotationType": "terminator"
             },
             {
@@ -316,7 +289,6 @@
               "forward": false,
               "type": "primer_bind",
               "name": "DVA05764_dsDVA00566_reverse",
-              "notes": "DVA05764_dsDVA00566_reverse",
               "annotationType": "primer_bind"
             },
             {
@@ -326,7 +298,6 @@
               "forward": true,
               "type": "primer_bind",
               "name": "DVA05763_dsDVA00566_forward",
-              "notes": "DVA05763_dsDVA00566_forward",
               "annotationType": "primer_bind"
             },
             {
@@ -336,7 +307,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "rrnB Terminator",
-              "notes": "#f58a5e",
               "annotationType": "misc_feature"
             },
             {
@@ -346,7 +316,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "ipsA Start 2",
-              "notes": "#faac61",
               "annotationType": "misc_feature"
             },
             {
@@ -356,7 +325,6 @@
               "forward": false,
               "type": "CDS",
               "name": "MIOX",
-              "notes": "#d6b295",
               "annotationType": "CDS"
             },
             {
@@ -366,7 +334,6 @@
               "forward": true,
               "type": "CDS",
               "name": "IpsA",
-              "notes": "#f58a5e",
               "annotationType": "CDS"
             },
             {
@@ -376,7 +343,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "AG_002",
-              "notes": "#ffef86",
               "annotationType": "misc_feature"
             },
             {
@@ -386,7 +352,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "ipsA Start PBS",
-              "notes": "#9eafd2",
               "annotationType": "misc_feature"
             },
             {
@@ -396,7 +361,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "pHH rrnB PBS",
-              "notes": "#ffef86",
               "annotationType": "misc_feature"
             },
             {
@@ -406,7 +370,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "pHH backbone PBS 2",
-              "notes": "pHH backbone PBS 2",
               "annotationType": "misc_feature"
             },
             {
@@ -416,7 +379,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "cg0044",
-              "notes": "cg0044",
               "annotationType": "misc_feature"
             },
             {
@@ -426,7 +388,6 @@
               "forward": true,
               "type": "primer_bind",
               "name": "DVA05761_(R6Kori_intA_CmR)_forward",
-              "notes": "DVA05761_(R6Kori_intA_CmR)_forward",
               "annotationType": "primer_bind"
             },
             {
@@ -436,7 +397,6 @@
               "forward": false,
               "type": "primer_bind",
               "name": "DVA05762_(R6Kori_intA_CmR)_reverse",
-              "notes": "DVA05762_(R6Kori_intA_CmR)_reverse",
               "annotationType": "primer_bind"
             },
             {
@@ -446,7 +406,6 @@
               "forward": false,
               "type": "misc_feature",
               "name": "Term Start PBS",
-              "notes": "#f58a5e",
               "annotationType": "misc_feature"
             },
             {
@@ -456,7 +415,6 @@
               "forward": false,
               "type": "misc_marker",
               "name": "CmR",
-              "notes": "CmR",
               "annotationType": "misc_marker"
             },
             {
@@ -466,7 +424,6 @@
               "forward": true,
               "type": "rep_origin",
               "name": "R6k ori",
-              "notes": "R6k ori",
               "annotationType": "rep_origin"
             },
             {
@@ -476,7 +433,6 @@
               "forward": true,
               "type": "misc_feature",
               "name": "J23111",
-              "notes": "#d59687",
               "annotationType": "misc_feature"
             }
           ]

@@ -22,7 +22,8 @@ const alignmentAnnotationSettings = {
   orfTranslations: false,
   cdsFeatureTranslations: false,
   cutsites: false,
-  primers: false
+  primers: false,
+  compactNames: false
 };
 
 const defaultVisibilities = {

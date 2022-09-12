@@ -1,3 +1,8 @@
+import {
+  DragDropContext,
+  Droppable,
+  Draggable as DndDraggable
+} from "react-beautiful-dnd";
 import Clipboard from "clipboard";
 import React from "react";
 import { connect } from "react-redux";
@@ -8,16 +13,28 @@ import {
   InputGroup,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
+  Icon
 } from "@blueprintjs/core";
 import {
+  DialogFooter,
   InfoHelper,
+  InputField,
   Loading,
   showContextMenu,
-  withStore
+  withStore,
+  wrapDialog
 } from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
-import { throttle, cloneDeep, map, some, forEach, isFunction } from "lodash";
+import {
+  throttle,
+  cloneDeep,
+  map,
+  some,
+  forEach,
+  isFunction,
+  unset
+} from "lodash";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
 
@@ -53,6 +70,13 @@ import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/Uncontrolle
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 
 import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
+import { showDialog } from "../GlobalDialogUtils";
+import { reduxForm } from "redux-form";
+import { GlobalDialog } from "../GlobalDialog";
+import { array_move } from "../ToolBar/array_move";
+// import { isElWithinAnotherEl } from "../withEditorInteractions/isElementInViewport";
+import classNames from "classnames";
+import { insertItem, removeItem } from "../utils/arrayUtils";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -179,6 +203,7 @@ class AlignmentView extends React.Component {
     return seqDataOfAllTracksToCopy.join("");
   };
   state = {
+    isTrackDragging: false,
     charWidthInLinearView: charWidthInLinearViewDefault,
     scrollAlignmentView: false,
     width: 0
@@ -462,17 +487,21 @@ class AlignmentView extends React.Component {
 
   renderItem = (_i, key, isTemplate) => {
     const charWidthInLinearView = this.getCharWidthInLinearView();
-
     const {
       alignmentTracks = [],
+      alignmentRunUpdate,
+      alignmentId,
       noClickDragHandlers,
       handleSelectTrack,
+      allowTrackRearrange,
+      isPairwise,
       linearViewOptions,
       alignmentVisibilityToolOptions,
       hasTemplate,
+      allowTrackNameEdit,
       ...rest
     } = this.props;
-
+    const isDragDisabled = !allowTrackRearrange || isPairwise;
     let i;
     if (isTemplate) {
       i = _i;
@@ -491,6 +520,7 @@ class AlignmentView extends React.Component {
       chromatogramData
       // mismatches
     } = track;
+
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
@@ -644,37 +674,49 @@ class AlignmentView extends React.Component {
       Math.ceil(120 / charWidthInLinearView)
     );
 
-    return (
+    const { compactNames } =
+      alignmentVisibilityToolOptions.alignmentAnnotationVisibility;
+    const inner = (provided = {}, snapshot) => (
       <div
-        className="alignmentViewTrackContainer"
+        ref={provided?.innerRef}
+        {...provided?.draggableProps}
+        className={classNames("alignmentViewTrackContainer", {
+          isDragDisabled
+        })}
         data-alignment-track-index={i}
         style={{
           boxShadow: isTemplate
             ? "red 0px -1px 0px 0px inset, red 0px 1px 0px 0px inset"
             : "0px -1px 0px 0px inset",
           display: "flex",
-          position: "relative"
+          ...provided?.draggableProps?.style,
+          ...(snapshot?.isDragging && { left: unset })
         }}
         key={i}
       >
         <div
           className="alignmentTrackName"
+          {...provided?.dragHandleProps}
           style={{
             position: "sticky",
-            // left: 130,
             left: 0,
             zIndex: 10,
-            // boxShadow: isTemplate
-            //   ? "0px 0px 0px 1px red inset"
-            //   : `0px -3px 0px -2px inset, 3px -3px 0px -2px inset, -3px -3px 0px -2px inset`,
-            width: nameDivWidth,
+            cursor:
+              !isPairwise && allowTrackRearrange && !isTemplate ? "move" : "",
+            borderBottom: `1px solid ${isTemplate ? "red" : "lightgray"}`,
+            borderRight: `1px solid ${isTemplate ? "red" : "lightgray"}`,
+            width: nameDivWidth - 3,
             padding: 2,
+            marginRight: 3,
             paddingBottom: 0,
-            minWidth: nameDivWidth,
-            // textOverflow: "ellipsis",
+            minWidth: nameDivWidth - 3,
             overflowY: "auto",
-            // overflowX: "visible",
-            whiteSpace: "nowrap"
+            scrollbarWidth: "none",
+            whiteSpace: "nowrap",
+            ...(compactNames && {
+              display: "flex",
+              alignItems: "flex-start"
+            })
           }}
           title={name}
           key={i}
@@ -682,14 +724,63 @@ class AlignmentView extends React.Component {
           <div
             className="alignmentTrackNameDiv"
             style={{
-              background: "blue",
+              background: "#3FA6DA",
               display: "inline-block",
               color: "white",
               borderRadius: 5,
-              opacity: 0.7
+              paddingRight: 5,
+              ...(compactNames && {
+                marginRight: 5
+              })
             }}
           >
+            {allowTrackNameEdit && (
+              <Button
+                onClick={() => {
+                  showDialog({
+                    ModalComponent: EditTrackNameDialog,
+                    props: {
+                      initialValues: {
+                        name
+                      },
+                      updateName: ({ newName }) => {
+                        alignmentRunUpdate({
+                          alignmentId,
+                          alignmentTracks: insertItem(
+                            removeItem(alignmentTracks, i),
+                            {
+                              ...alignmentTracks[i],
+                              alignmentData: {
+                                ...alignmentTracks[i].alignmentData,
+                                name: newName
+                              },
+                              sequenceData: {
+                                ...alignmentTracks[i].sequenceData,
+                                name: newName
+                              }
+                            },
+                            i
+                          )
+                        });
+                      }
+                    }
+                  });
+                }}
+                small
+                className="edit-track-name-btn"
+                icon={<Icon size={12} color="lightgrey" icon="edit"></Icon>}
+                minimal
+              ></Button>
+            )}
             {name}
+          </div>
+          <div style={{ fontSize: 10 }}>
+            <Icon
+              color="darkgrey"
+              style={{ marginRight: 10 }}
+              icon="arrow-right"
+            ></Icon>
+            {sequenceData.sequence.length} bps
           </div>
         </div>
         {handleSelectTrack && !isTemplate && (
@@ -769,7 +860,20 @@ class AlignmentView extends React.Component {
             scrollData: this.easyStore
           }}
         />
+        {provided?.placeholder}
       </div>
+    );
+    if (isTemplate) return inner();
+    const idToUse = alignmentData.id || sequenceData.id || i + "_index_id";
+    return (
+      <DndDraggable
+        key={idToUse.toString()}
+        index={i}
+        isDragDisabled={isDragDisabled}
+        draggableId={idToUse.toString()}
+      >
+        {inner}
+      </DndDraggable>
     );
   };
   handleResize = throttle(([e]) => {
@@ -816,6 +920,35 @@ class AlignmentView extends React.Component {
       }
     });
   };
+  onTrackDragStart = () => {
+    this.setState({ isTrackDragging: true });
+  };
+  onTrackDragEnd = ({ destination, source }) => {
+    // const { panelsShownUpdate, panlsShown } = this.props;
+    // dropped outside the list
+    this.setState({ isTrackDragging: false });
+
+    if (!destination) {
+      return;
+    }
+
+    const { alignmentRunUpdate, alignmentId, alignmentTracks } = this.props;
+
+    alignmentRunUpdate({
+      alignmentId,
+      alignmentTracks: array_move(
+        alignmentTracks,
+        source.index,
+        destination.index
+      )
+    });
+
+    // destination.index
+
+    // if (result.destination.droppableId !== result.source.droppableId) {
+
+    // } else {}
+  };
 
   render() {
     const charWidthInLinearView = this.getCharWidthInLinearView();
@@ -850,265 +983,311 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       const rowData = {};
-      return (
-        <div
-          className="alignmentTracks "
-          style={{ overflowY: "auto", display: "flex", zIndex: 10 }}
-        >
+      const inner = (drop_provided) => {
+        return (
           <div
+            {...drop_provided?.droppableProps}
+            ref={drop_provided?.innerRef}
+            className="alignmentTracks "
             style={{
-              overflowX: "auto",
-              width: this.state.width
+              overflowY: "auto",
+              display: "flex",
+              zIndex: 10
             }}
-            ref={(ref) => {
-              this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] = ref;
-            }}
-            onMouseLeave={this.removeMinimapHighlightForMouseLeave}
-            onMouseMove={this.updateMinimapHighlightForMouseMove}
-            dataname="scrollGroup"
-            className="alignmentHolder"
-            onScroll={isTemplate ? this.handleTopScroll : this.handleScroll}
           >
-            <Draggable
-              bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
-              onDrag={
-                noClickDragHandlers
-                  ? noop
-                  : (event) => {
-                      this.getNearestCursorPositionToMouseEvent(
-                        rowData,
-                        event,
-                        this.editorDragged
-                      );
-                    }
-              }
-              onStart={
-                noClickDragHandlers
-                  ? noop
-                  : (event) => {
-                      this.getNearestCursorPositionToMouseEvent(
-                        rowData,
-                        event,
-                        this.editorDragStarted
-                      );
-                    }
-              }
-              onStop={noClickDragHandlers ? noop : this.editorDragStopped}
+            <div
+              style={{
+                overflowX: "auto",
+                height: "fit-content",
+                width: this.state.width
+              }}
+              ref={(ref) => {
+                this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] =
+                  ref;
+              }}
+              onMouseLeave={this.removeMinimapHighlightForMouseLeave}
+              onMouseMove={this.updateMinimapHighlightForMouseMove}
+              dataname="scrollGroup"
+              className="alignmentHolder"
+              onScroll={isTemplate ? this.handleTopScroll : this.handleScroll}
             >
-              <div
-                ref={(ref) => (this.veTracksAndAlignmentHolder = ref)}
-                className="veTracksAndAlignmentHolder"
-                // onContextMenu={
-                //tnrtodo add copy single track/all tracks logic here
-                // (event) => {
-                // this.getNearestCursorPositionToMouseEvent(
-                //   rowData,
-                //   event,
-                //   () => {
-                //   }
-                // );
-                // }
-                // }
-                onClick={
+              <Draggable
+                disabled={this.state.isTrackDragging}
+                bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
+                onDrag={
                   noClickDragHandlers
                     ? noop
                     : (event) => {
+                        if (this.state.isTrackDragging) return;
                         this.getNearestCursorPositionToMouseEvent(
                           rowData,
                           event,
-                          this.editorClicked
+                          this.editorDragged
                         );
                       }
                 }
-              >
-                <PerformantSelectionLayer
-                  leftMargin={140}
-                  className="veAlignmentSelectionLayer"
-                  isDraggable
-                  selectionLayerRightClicked={
-                    selectionLayerRightClicked
-                      ? (...args) => {
-                          selectionLayerRightClicked(...args, this.props);
+                onStart={
+                  noClickDragHandlers
+                    ? noop
+                    : (event) => {
+                        if (isTargetWithinEl(event, ".alignmentTrackName")) {
+                          return this.setState({ isTrackDragging: true });
                         }
-                      : (...args) => {
-                          const { event } = args[0];
-                          const trackContainers = document.querySelectorAll(
-                            ".alignmentViewTrackContainer"
-                          );
-                          let track;
-                          trackContainers.forEach((t) => {
-                            const mouseX =
-                              getClientX(event) + document.body.scrollLeft;
-                            const mouseY =
-                              getClientY(event) + document.body.scrollTop;
-                            if (
-                              mouseX >= t.getBoundingClientRect().left &&
-                              mouseX <=
-                                t.getBoundingClientRect().left +
-                                  t.getBoundingClientRect().width &&
-                              mouseY >= t.getBoundingClientRect().top &&
-                              mouseY <=
-                                t.getBoundingClientRect().top +
-                                  t.getBoundingClientRect().height
-                            ) {
-                              const index = t.getAttribute(
-                                "data-alignment-track-index"
-                              );
-                              track = alignmentTracks[index];
-                              return true;
-                            }
-                          });
-
-                          const alignmentData = track.alignmentData;
-                          const { name } = alignmentData;
-                          showContextMenu(
-                            [
-                              ...(additionalSelectionLayerRightClickedOptions
-                                ? additionalSelectionLayerRightClickedOptions(
-                                    ...args,
-                                    this.props
-                                  )
-                                : []),
-                              {
-                                text: "Copy Selection of All Alignments as Fasta",
-                                className:
-                                  "copyAllAlignmentsFastaClipboardHelper",
-                                hotkey: "cmd+c",
-                                willUnmount: () => {
-                                  this.copyAllAlignmentsFastaClipboardHelper &&
-                                    this.copyAllAlignmentsFastaClipboardHelper.destroy();
-                                },
-                                didMount: () => {
-                                  this.copyAllAlignmentsFastaClipboardHelper =
-                                    new Clipboard(
-                                      `.copyAllAlignmentsFastaClipboardHelper`,
-                                      {
-                                        action: "copyAllAlignmentsFasta",
-                                        text: () => {
-                                          return this.getAllAlignmentsFastaText();
-                                        }
-                                      }
-                                    );
-                                },
-                                onClick: () => {
-                                  window.toastr.success("Selection Copied");
-                                }
-                              },
-                              {
-                                text: `Copy Selection of ${name} as Fasta`,
-                                className:
-                                  "copySpecificAlignmentFastaClipboardHelper",
-                                willUnmount: () => {
-                                  this
-                                    .copySpecificAlignmentFastaClipboardHelper &&
-                                    this.copySpecificAlignmentFastaClipboardHelper.destroy();
-                                },
-                                didMount: () => {
-                                  this.copySpecificAlignmentFastaClipboardHelper =
-                                    new Clipboard(
-                                      `.copySpecificAlignmentFastaClipboardHelper`,
-                                      {
-                                        action: "copySpecificAlignmentFasta",
-                                        text: () => {
-                                          const { selectionLayer } =
-                                            this.props.store.getState()
-                                              .VectorEditor.__allEditorsOptions
-                                              .alignments[this.props.id] || {};
-                                          const seqDataToCopy =
-                                            getSequenceDataBetweenRange(
-                                              alignmentData,
-                                              selectionLayer
-                                            ).sequence;
-                                          const seqDataToCopyAsFasta = `>${name}\r\n${seqDataToCopy}\r\n`;
-                                          return seqDataToCopyAsFasta;
-                                        }
-                                      }
-                                    );
-                                },
-                                onClick: () => {
-                                  window.toastr.success(
-                                    "Selection Copied As Fasta"
-                                  );
-                                }
-                              },
-                              {
-                                text: `Copy Selection of ${name}`,
-                                className:
-                                  "copySpecificAlignmentAsPlainClipboardHelper",
-                                willUnmount: () => {
-                                  this
-                                    .copySpecificAlignmentAsPlainClipboardHelper &&
-                                    this.copySpecificAlignmentAsPlainClipboardHelper.destroy();
-                                },
-                                didMount: () => {
-                                  this.copySpecificAlignmentAsPlainClipboardHelper =
-                                    new Clipboard(
-                                      `.copySpecificAlignmentAsPlainClipboardHelper`,
-                                      {
-                                        action: "copySpecificAlignmentFasta",
-                                        text: () => {
-                                          const { selectionLayer } =
-                                            this.props.store.getState()
-                                              .VectorEditor.__allEditorsOptions
-                                              .alignments[this.props.id] || {};
-                                          const seqDataToCopy =
-                                            getSequenceDataBetweenRange(
-                                              alignmentData,
-                                              selectionLayer
-                                            ).sequence;
-                                          return seqDataToCopy;
-                                        }
-                                      }
-                                    );
-                                },
-                                onClick: () => {
-                                  window.toastr.success("Selection Copied");
-                                }
-                              }
-                            ],
-                            undefined,
-                            event
+                        if (this.state.isTrackDragging) return;
+                        this.getNearestCursorPositionToMouseEvent(
+                          rowData,
+                          event,
+                          this.editorDragStarted
+                        );
+                      }
+                }
+                onStop={
+                  noClickDragHandlers
+                    ? noop
+                    : (...args) => {
+                        setTimeout(() => {
+                          this.setState({ isTrackDragging: false });
+                        }, 0);
+                        this.editorDragStopped(...args);
+                      }
+                }
+              >
+                <div
+                  ref={(ref) => (this.veTracksAndAlignmentHolder = ref)}
+                  className={classNames("veTracksAndAlignmentHolder", {
+                    isTrackDragging: this.state.isTrackDragging
+                  })}
+                  // onContextMenu={
+                  //tnrtodo add copy single track/all tracks logic here
+                  // (event) => {
+                  // this.getNearestCursorPositionToMouseEvent(
+                  //   rowData,
+                  //   event,
+                  //   () => {
+                  //   }
+                  // );
+                  // }
+                  // }
+                  onClick={
+                    noClickDragHandlers
+                      ? noop
+                      : (event) => {
+                          if (this.state.isTrackDragging) return;
+                          if (isTargetWithinEl(event, ".alignmentTrackName")) {
+                            return;
+                          }
+                          this.getNearestCursorPositionToMouseEvent(
+                            rowData,
+                            event,
+                            this.editorClicked
                           );
                         }
                   }
-                  easyStore={this.easyStore}
-                  sequenceLength={sequenceLength}
-                  charWidth={this.getCharWidthInLinearView()}
-                  row={{ start: 0, end: sequenceLength - 1 }}
-                ></PerformantSelectionLayer>
-                <PerformantCaret
-                  leftMargin={140}
-                  className="veAlignmentSelectionLayer"
-                  isDraggable
-                  sequenceLength={sequenceLength}
-                  charWidth={this.getCharWidthInLinearView()}
-                  row={{ start: 0, end: sequenceLength - 1 }}
-                  easyStore={this.easyStore}
-                />
+                >
+                  <PerformantSelectionLayer
+                    leftMargin={140}
+                    className="veAlignmentSelectionLayer"
+                    isDraggable
+                    selectionLayerRightClicked={
+                      selectionLayerRightClicked
+                        ? (...args) => {
+                            selectionLayerRightClicked(...args, this.props);
+                          }
+                        : (...args) => {
+                            const { event } = args[0];
+                            const trackContainers = document.querySelectorAll(
+                              ".alignmentViewTrackContainer"
+                            );
+                            let track;
+                            trackContainers.forEach((t) => {
+                              const mouseX =
+                                getClientX(event) + document.body.scrollLeft;
+                              const mouseY =
+                                getClientY(event) + document.body.scrollTop;
+                              if (
+                                mouseX >= t.getBoundingClientRect().left &&
+                                mouseX <=
+                                  t.getBoundingClientRect().left +
+                                    t.getBoundingClientRect().width &&
+                                mouseY >= t.getBoundingClientRect().top &&
+                                mouseY <=
+                                  t.getBoundingClientRect().top +
+                                    t.getBoundingClientRect().height
+                              ) {
+                                const index = t.getAttribute(
+                                  "data-alignment-track-index"
+                                );
+                                track = alignmentTracks[index];
+                                return true;
+                              }
+                            });
 
-                {isTemplate ? (
-                  this.renderItem(0, 0, isTemplate)
-                ) : (
-                  <ReactList
-                    ref={(c) => {
-                      this.InfiniteScroller = c;
-                    }}
-                    type="variable"
-                    itemSizeEstimator={this.estimateRowHeight}
-                    itemRenderer={this.renderItem}
-                    length={alignmentTracks.length}
+                            const alignmentData = track.alignmentData;
+                            const { name } = alignmentData;
+                            showContextMenu(
+                              [
+                                ...(additionalSelectionLayerRightClickedOptions
+                                  ? additionalSelectionLayerRightClickedOptions(
+                                      ...args,
+                                      this.props
+                                    )
+                                  : []),
+                                {
+                                  text: "Copy Selection of All Alignments as Fasta",
+                                  className:
+                                    "copyAllAlignmentsFastaClipboardHelper",
+                                  hotkey: "cmd+c",
+                                  willUnmount: () => {
+                                    this
+                                      .copyAllAlignmentsFastaClipboardHelper &&
+                                      this.copyAllAlignmentsFastaClipboardHelper.destroy();
+                                  },
+                                  didMount: () => {
+                                    this.copyAllAlignmentsFastaClipboardHelper =
+                                      new Clipboard(
+                                        `.copyAllAlignmentsFastaClipboardHelper`,
+                                        {
+                                          action: "copyAllAlignmentsFasta",
+                                          text: () => {
+                                            return this.getAllAlignmentsFastaText();
+                                          }
+                                        }
+                                      );
+                                  },
+                                  onClick: () => {
+                                    window.toastr.success("Selection Copied");
+                                  }
+                                },
+                                {
+                                  text: `Copy Selection of ${name} as Fasta`,
+                                  className:
+                                    "copySpecificAlignmentFastaClipboardHelper",
+                                  willUnmount: () => {
+                                    this
+                                      .copySpecificAlignmentFastaClipboardHelper &&
+                                      this.copySpecificAlignmentFastaClipboardHelper.destroy();
+                                  },
+                                  didMount: () => {
+                                    this.copySpecificAlignmentFastaClipboardHelper =
+                                      new Clipboard(
+                                        `.copySpecificAlignmentFastaClipboardHelper`,
+                                        {
+                                          action: "copySpecificAlignmentFasta",
+                                          text: () => {
+                                            const { selectionLayer } =
+                                              this.props.store.getState()
+                                                .VectorEditor
+                                                .__allEditorsOptions.alignments[
+                                                this.props.id
+                                              ] || {};
+                                            const seqDataToCopy =
+                                              getSequenceDataBetweenRange(
+                                                alignmentData,
+                                                selectionLayer
+                                              ).sequence;
+                                            const seqDataToCopyAsFasta = `>${name}\r\n${seqDataToCopy}\r\n`;
+                                            return seqDataToCopyAsFasta;
+                                          }
+                                        }
+                                      );
+                                  },
+                                  onClick: () => {
+                                    window.toastr.success(
+                                      "Selection Copied As Fasta"
+                                    );
+                                  }
+                                },
+                                {
+                                  text: `Copy Selection of ${name}`,
+                                  className:
+                                    "copySpecificAlignmentAsPlainClipboardHelper",
+                                  willUnmount: () => {
+                                    this
+                                      .copySpecificAlignmentAsPlainClipboardHelper &&
+                                      this.copySpecificAlignmentAsPlainClipboardHelper.destroy();
+                                  },
+                                  didMount: () => {
+                                    this.copySpecificAlignmentAsPlainClipboardHelper =
+                                      new Clipboard(
+                                        `.copySpecificAlignmentAsPlainClipboardHelper`,
+                                        {
+                                          action: "copySpecificAlignmentFasta",
+                                          text: () => {
+                                            const { selectionLayer } =
+                                              this.props.store.getState()
+                                                .VectorEditor
+                                                .__allEditorsOptions.alignments[
+                                                this.props.id
+                                              ] || {};
+                                            const seqDataToCopy =
+                                              getSequenceDataBetweenRange(
+                                                alignmentData,
+                                                selectionLayer
+                                              ).sequence;
+                                            return seqDataToCopy;
+                                          }
+                                        }
+                                      );
+                                  },
+                                  onClick: () => {
+                                    window.toastr.success("Selection Copied");
+                                  }
+                                }
+                              ],
+                              undefined,
+                              event
+                            );
+                          }
+                    }
+                    easyStore={this.easyStore}
+                    sequenceLength={sequenceLength}
+                    charWidth={this.getCharWidthInLinearView()}
+                    row={{ start: 0, end: sequenceLength - 1 }}
+                  ></PerformantSelectionLayer>
+                  <PerformantCaret
+                    leftMargin={140}
+                    className="veAlignmentSelectionLayer"
+                    isDraggable
+                    sequenceLength={sequenceLength}
+                    charWidth={this.getCharWidthInLinearView()}
+                    row={{ start: 0, end: sequenceLength - 1 }}
+                    easyStore={this.easyStore}
                   />
-                )}
-              </div>
-              {/* </div> */}
-            </Draggable>
+
+                  {isTemplate ? (
+                    this.renderItem(0, 0, isTemplate)
+                  ) : (
+                    <ReactList
+                      ref={(c) => {
+                        this.InfiniteScroller = c;
+                      }}
+                      type="variable"
+                      itemSizeEstimator={this.estimateRowHeight}
+                      itemRenderer={this.renderItem}
+                      length={alignmentTracks.length}
+                    />
+                  )}
+                </div>
+                {/* </div> */}
+              </Draggable>
+            </div>
           </div>
-        </div>
-      );
+        );
+      };
+      if (isTemplate) return inner();
+      else
+        return (
+          <Droppable
+            direction="vertical"
+            droppableId={"droppable" + isTemplate ? "_no_drop" : ""}
+          >
+            {inner}
+          </Droppable>
+        );
     };
 
     const [firstTrack, ...otherTracks] = alignmentTracks;
-    const totalWidthOfMinimap = this.state.width - nameDivWidth;
+    const totalWidthOfMinimap = this.state.width;
     const totalWidthInAlignmentView = 14 * this.getSequenceLength();
     const minSliderSize = Math.min(
       totalWidthOfMinimap * (totalWidthOfMinimap / totalWidthInAlignmentView),
@@ -1162,201 +1341,208 @@ class AlignmentView extends React.Component {
             }}
             className="alignmentView"
           >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                position: "relative",
-                overflowY: "auto"
-              }}
-              className="alignmentView-top-container"
+            <DragDropContext
+              onDragStart={this.onTrackDragStart}
+              onDragEnd={this.onTrackDragEnd}
             >
               <div
                 style={{
-                  paddingTop: "3px",
-                  paddingBottom: "5px",
-                  borderBottom: "1px solid",
                   display: "flex",
-                  minHeight: "32px",
-                  width: "100%",
-                  flexWrap: "nowrap",
-                  flexDirection: "row",
-                  flex: "0 0 auto"
+                  flexDirection: "column",
+                  position: "relative",
+                  overflowY: "auto"
                 }}
-                className="ve-alignment-top-bar"
+                className="alignmentView-top-container"
               >
-                {handleBackButtonClicked && (
-                  <Tooltip content="Back to Pairwise Alignment Overview">
-                    <Button
-                      icon="arrow-left"
-                      onClick={() => {
-                        // this.setState({
-                        //   charWidthInLinearView: charWidthInLinearViewDefault
-                        // });
-                        handleBackButtonClicked();
-                        this.caretPositionUpdate(-1);
-                      }}
-                      small
-                      intent={Intent.PRIMARY}
-                      minimal
-                      style={{ marginRight: 10 }}
-                      className="alignmentViewBackButton"
-                    />
-                  </Tooltip>
-                )}
-                {this.props.handleAlignmentRename ? (
-                  <InputGroup
-                    minimal
-                    small
-                    value={this.props.alignmentName}
-                    placeholder="Untitled Alignment"
-                  />
-                ) : (
-                  <div style={{ display: "flex" }}>
-                    <div
-                      className="veAlignmentName"
-                      style={{
-                        paddingTop: "3px",
-                        fontWeight: "bold",
-                        fontSize: "14px",
-                        maxWidth: "300px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap"
-                      }}
-                      title={this.props.alignmentName || "Untitled Alignment"}
-                    >
-                      {this.props.alignmentName || "Untitled Alignment"}
-                    </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div
-                      className="veAlignmentType"
-                      style={{
-                        paddingTop: "3px",
-                        fontSize: "14px",
-                        color: "grey",
-                        maxWidth: "300px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap"
-                      }}
-                      title={
-                        this.props.alignmentType || "Unknown Alignment Type"
-                      }
-                    >
-                      {this.props.alignmentType || "Unknown Alignment Type"}
-                    </div>
-                  </div>
-                )}
-                {this.props.handleAlignmentRename && (
-                  <Button small>Rename</Button>
-                )}
-                {this.props.unmappedSeqs && (
-                  <InfoHelper
-                    size={20}
-                    content={
-                      <div>
-                        This alignment had sequences that did not map to the
-                        template sequence:
-                        {this.props.unmappedSeqs.map(({ sequenceData }, i) => (
-                          <div key={i}>{sequenceData.name}</div>
-                        ))}
-                      </div>
-                    }
-                    intent="warning"
-                    icon="warning-sign"
-                  ></InfoHelper>
-                )}
-                {!isInPairwiseOverviewView && (
-                  <UncontrolledSliderWithPlusMinusBtns
-                    noWraparound
-                    bindOutsideChangeHelper={this.bindOutsideChangeHelper}
-                    onClick={() => {
-                      setTimeout(this.scrollToCaret, 0);
-                    }}
-                    minCharWidth={this.getMinCharWidth()}
-                    onChange={async (zoomLvl) => {
-                      this.isZooming = true;
-                      setTimeout(() => {
-                        this.isZooming = false;
-                      }, 10);
-                      // zoomLvl is in the range of 0 to 10
-                      const minCharWidth = this.getMinCharWidth();
-                      const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
-                      const newCharWidth =
-                        minCharWidth * Math.pow(scaleFactor, zoomLvl);
-                      await this.setCharWidthInLinearView({
-                        charWidthInLinearView: newCharWidth
-                      });
-                      await this.scrollToCaret();
-                      await updateLabelsForInViewFeatures({
-                        rectElement: ".alignmentHolder"
-                      });
-                    }}
-                    coerceInitialValue={coerceInitialValue}
-                    title="Adjust Zoom Level"
-                    style={{ paddingTop: "4px", width: 100 }}
-                    className="veZoomAlignmentSlider ove-slider"
-                    labelRenderer={false}
-                    initialValue={charWidthInLinearView}
-                    stepSize={0.05} //was 0.01
-                    max={10}
-                    min={0}
-                    clickStepSize={0.5}
-                  />
-                )}
-                {!noVisibilityOptions && !isInPairwiseOverviewView && (
-                  <AlignmentVisibilityTool
-                    currentPairwiseAlignmentIndex={
-                      currentPairwiseAlignmentIndex
-                    }
-                    {...alignmentVisibilityToolOptions}
-                  />
-                )}
-                {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
-                  <Popover
-                    minimal
-                    content={
-                      <Menu>
-                        <MenuItem
-                          active={true || alignmentSortOrder}
-                          onClick={() => {
-                            updateAlignmentSortOrder("Position");
-                          }}
-                          text="Position"
-                        />
-                        <MenuItem
-                          active={false || alignmentSortOrder}
-                          onClick={() => {
-                            updateAlignmentSortOrder("Alphabetical");
-                          }}
-                          text="Alphabetical"
-                        />
-                      </Menu>
-                    }
-                    target={
+                <div
+                  style={{
+                    paddingTop: "3px",
+                    paddingBottom: "5px",
+                    borderBottom: "1px solid",
+                    display: "flex",
+                    minHeight: "32px",
+                    width: "100%",
+                    flexWrap: "nowrap",
+                    flexDirection: "row",
+                    flex: "0 0 auto"
+                  }}
+                  className="ve-alignment-top-bar"
+                >
+                  {handleBackButtonClicked && (
+                    <Tooltip content="Back to Pairwise Alignment Overview">
                       <Button
+                        icon="arrow-left"
+                        onClick={() => {
+                          // this.setState({
+                          //   charWidthInLinearView: charWidthInLinearViewDefault
+                          // });
+                          handleBackButtonClicked();
+                          this.caretPositionUpdate(-1);
+                        }}
                         small
-                        text="Sort Order"
-                        rightIcon="caret-down"
-                        icon="sort"
+                        intent={Intent.PRIMARY}
+                        minimal
+                        style={{ marginRight: 10 }}
+                        className="alignmentViewBackButton"
                       />
-                    }
-                  />
+                    </Tooltip>
+                  )}
+                  {this.props.handleAlignmentRename ? (
+                    <InputGroup
+                      minimal
+                      small
+                      value={this.props.alignmentName}
+                      placeholder="Untitled Alignment"
+                    />
+                  ) : (
+                    <div style={{ display: "flex" }}>
+                      <div
+                        className="veAlignmentName"
+                        style={{
+                          paddingTop: "3px",
+                          fontWeight: "bold",
+                          fontSize: "14px",
+                          maxWidth: "300px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap"
+                        }}
+                        title={this.props.alignmentName || "Untitled Alignment"}
+                      >
+                        {this.props.alignmentName || "Untitled Alignment"}
+                      </div>
+                      &nbsp;&nbsp;&nbsp;
+                      <div
+                        className="veAlignmentType"
+                        style={{
+                          paddingTop: "3px",
+                          fontSize: "14px",
+                          color: "grey",
+                          maxWidth: "300px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap"
+                        }}
+                        title={
+                          this.props.alignmentType || "Unknown Alignment Type"
+                        }
+                      >
+                        {this.props.alignmentType || "Unknown Alignment Type"}
+                      </div>
+                    </div>
+                  )}
+                  {this.props.handleAlignmentRename && (
+                    <Button small>Rename</Button>
+                  )}
+                  {this.props.unmappedSeqs && (
+                    <InfoHelper
+                      size={20}
+                      content={
+                        <div>
+                          This alignment had sequences that did not map to the
+                          template sequence:
+                          {this.props.unmappedSeqs.map(
+                            ({ sequenceData }, i) => (
+                              <div key={i}>{sequenceData.name}</div>
+                            )
+                          )}
+                        </div>
+                      }
+                      intent="warning"
+                      icon="warning-sign"
+                    ></InfoHelper>
+                  )}
+                  {!isInPairwiseOverviewView && (
+                    <UncontrolledSliderWithPlusMinusBtns
+                      noWraparound
+                      bindOutsideChangeHelper={this.bindOutsideChangeHelper}
+                      onClick={() => {
+                        setTimeout(this.scrollToCaret, 0);
+                      }}
+                      minCharWidth={this.getMinCharWidth()}
+                      onChange={async (zoomLvl) => {
+                        this.isZooming = true;
+                        setTimeout(() => {
+                          this.isZooming = false;
+                        }, 10);
+                        // zoomLvl is in the range of 0 to 10
+                        const minCharWidth = this.getMinCharWidth();
+                        const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
+                        const newCharWidth =
+                          minCharWidth * Math.pow(scaleFactor, zoomLvl);
+                        await this.setCharWidthInLinearView({
+                          charWidthInLinearView: newCharWidth
+                        });
+                        await this.scrollToCaret();
+                        await updateLabelsForInViewFeatures({
+                          rectElement: ".alignmentHolder"
+                        });
+                      }}
+                      coerceInitialValue={coerceInitialValue}
+                      title="Adjust Zoom Level"
+                      style={{ paddingTop: "4px", width: 100 }}
+                      className="veZoomAlignmentSlider ove-slider"
+                      labelRenderer={false}
+                      initialValue={charWidthInLinearView}
+                      stepSize={0.05} //was 0.01
+                      max={10}
+                      min={0}
+                      clickStepSize={0.5}
+                    />
+                  )}
+                  {!noVisibilityOptions && !isInPairwiseOverviewView && (
+                    <AlignmentVisibilityTool
+                      currentPairwiseAlignmentIndex={
+                        currentPairwiseAlignmentIndex
+                      }
+                      {...alignmentVisibilityToolOptions}
+                    />
+                  )}
+                  {updateAlignmentSortOrder && !isInPairwiseOverviewView && (
+                    <Popover
+                      minimal
+                      content={
+                        <Menu>
+                          <MenuItem
+                            active={true || alignmentSortOrder}
+                            onClick={() => {
+                              updateAlignmentSortOrder("Position");
+                            }}
+                            text="Position"
+                          />
+                          <MenuItem
+                            active={false || alignmentSortOrder}
+                            onClick={() => {
+                              updateAlignmentSortOrder("Alphabetical");
+                            }}
+                            text="Alphabetical"
+                          />
+                        </Menu>
+                      }
+                      target={
+                        <Button
+                          small
+                          text="Sort Order"
+                          rightIcon="caret-down"
+                          icon="sort"
+                        />
+                      }
+                    />
+                  )}
+                  {additionalTopEl}
+                </div>
+                {hasTemplate ? (
+                  <React.Fragment>
+                    <div className="alignmentTrackFixedToTop">
+                      {getTrackVis([firstTrack], true)}
+                    </div>
+                    {getTrackVis(otherTracks)}
+                  </React.Fragment>
+                ) : (
+                  getTrackVis(alignmentTracks)
                 )}
-                {additionalTopEl}
               </div>
-              {hasTemplate ? (
-                <React.Fragment>
-                  <div className="alignmentTrackFixedToTop">
-                    {getTrackVis([firstTrack], true)}
-                  </div>
-                  {getTrackVis(otherTracks)}
-                </React.Fragment>
-              ) : (
-                getTrackVis(alignmentTracks)
-              )}
-            </div>
+            </DragDropContext>
             {!isInPairwiseOverviewView && (
               <div
                 className="alignmentViewBottomBar"
@@ -1399,8 +1585,8 @@ class AlignmentView extends React.Component {
                     dimensions: {
                       width: Math.max(this.state.width, 10) || 10
                     },
-                    nameDivOffsetPercent:
-                      nameDivWidth / this.getMaxLinearViewWidth(),
+                    nameDivOffsetPercent: 0,
+                    // nameDivWidth / this.getMaxLinearViewWidth(),
                     scrollYToTrack: this.scrollYToTrack,
                     onSizeAdjust: this.onMinimapSizeAdjust,
                     minSliderSize,
@@ -1418,6 +1604,14 @@ class AlignmentView extends React.Component {
                 />
               </div>
             )}
+            <GlobalDialog
+            // {...pickedUserDefinedHandlersAndOpts}
+            // dialogOverrides={pick(this.props, [
+            //   "AddOrEditFeatureDialogOverride",
+            //   "AddOrEditPartDialogOverride",
+            //   "AddOrEditPrimerDialogOverride"
+            // ])}
+            />
           </div>
         </ResizeSensor>
       </PinchHelper>
@@ -1473,7 +1667,8 @@ export default compose(
         "translations",
         "cdsFeatureTranslations",
         "chromatogram",
-        "dnaColors"
+        "dnaColors",
+        "compactNames"
       ];
       const togglableAlignmentAnnotationSettings = {};
       map(alignmentAnnotationsToToggle, (annotation) => {
@@ -1750,4 +1945,38 @@ function coerceInitialValue({ initialValue, minCharWidth }) {
   const zoomLvl = Math.log(initialValue / minCharWidth) / Math.log(scaleFactor);
 
   return zoomLvl;
+}
+
+const EditTrackNameDialog = compose(
+  wrapDialog({
+    title: "Edit Track Name"
+  }),
+  reduxForm({ form: "EditTrackNameDialog" })
+)(function ({ handleSubmit, updateName, hideModal }) {
+  return (
+    <div>
+      <div className="bp3-dialog-body">
+        <InputField
+          autoFocus
+          label="New Name"
+          isRequired
+          name="name"
+        ></InputField>
+      </div>
+      <DialogFooter
+        onClick={handleSubmit(async ({ name }) => {
+          await updateName({ newName: name });
+          hideModal();
+        })}
+      ></DialogFooter>
+    </div>
+  );
+});
+
+// function Ident({ children }) {
+//   return children;
+// }
+
+function isTargetWithinEl(event, selector) {
+  return event.target.closest(selector);
 }

@@ -46,19 +46,14 @@ export default class Minimap extends React.Component {
    * @returns current nucleotide char
    * width, nucelotide char width scales with zooming
    */
-  getCharWidth = ({ noNameDiv } = {}) => {
+  getCharWidth = () => {
     const {
       alignmentTracks = [],
-      dimensions: { width = 200 },
-      nameDivOffsetPercent
+      dimensions: { width = 200 }
     } = this.props;
     const [template] = alignmentTracks;
     const seqLength = template.alignmentData.sequence.length;
-    const nameDivWidth = nameDivOffsetPercent * width;
-    const charWidth = Math.min(
-      16,
-      (width - (noNameDiv ? 0 : nameDivWidth)) / seqLength
-    );
+    const charWidth = Math.min(16, width / seqLength);
     return charWidth || 12;
   };
   /**
@@ -66,7 +61,7 @@ export default class Minimap extends React.Component {
    */
   getScrollHandleWidth = () => {
     const { numBpsShownInLinearView, dimensions } = this.props;
-    const charWidth = this.getCharWidth({ noNameDiv: true });
+    const charWidth = this.getCharWidth();
     const { width } = getXStartAndWidthFromNonCircularRange(
       { start: 0, end: Math.max(numBpsShownInLinearView - 1, 0) },
       charWidth
@@ -241,7 +236,6 @@ export default class Minimap extends React.Component {
       minSliderSize,
       onMinimapScrollX,
       easyStore,
-      nameDivOffsetPercent,
       selectionLayerComp
     } = this.props;
 
@@ -250,7 +244,6 @@ export default class Minimap extends React.Component {
     const charWidth = this.getCharWidth();
     const scrollHandleWidth = this.getScrollHandleWidth();
     const minimapTracksPartialHeight = laneHeight * alignmentTracks.length;
-    const nameDivWidth = nameDivOffsetPercent * width;
 
     return (
       <div
@@ -302,8 +295,8 @@ export default class Minimap extends React.Component {
             itemsRenderer={(items, ref) => (
               <div
                 style={{
-                  marginTop: -3,
-                  paddingLeft: nameDivWidth
+                  marginTop: -3
+                  // paddingLeft: nameDivWidth
                 }}
                 ref={ref}
               >
@@ -326,7 +319,7 @@ export default class Minimap extends React.Component {
             annotationHeight: 15,
             sequenceLength: seqLength,
             style: {
-              paddingLeft: nameDivWidth,
+              // paddingLeft: nameDivWidth,
               height: 17
             }
           }}

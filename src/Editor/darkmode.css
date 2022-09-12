@@ -52,6 +52,12 @@
   background: none !important;
 }
 
+.alignmentViewTrackContainer {
+  background: white;
+}
+.bp3-dark .alignmentViewTrackContainer {
+  background: #293742;
+}
 .bp3-dark .alignmentViewTrackContainer text {
   fill: #f5f8fa !important;
 }

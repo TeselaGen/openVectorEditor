@@ -14,6 +14,22 @@ describe("alignment", function () {
     cy.visit("#/Alignment");
     cy.get(".bp3-icon-warning-sign");
   });
+  it("allowTrackRearrange should work properly", function () {
+    cy.visit("#/Alignment");
+    cy.get(".isDragDisabled").should("exist");
+    cy.tgToggle("allowTrackRearrange");
+    cy.get(".isDragDisabled").should("not.exist");
+  });
+  it("allowTrackNameEdit should work properly", function () {
+    cy.visit("#/Alignment");
+    cy.contains("F05206 lallasdfasldfalsdflasdf");
+    cy.get(".edit-track-name-btn").should("not.exist");
+    cy.tgToggle("allowTrackNameEdit");
+    cy.get(".edit-track-name-btn:first").click();
+    cy.focused().type("{selectall}asdfasdf{enter}");
+    cy.contains("F05206 lallasdfasldfalsdflasdf").should("not.exist");
+    cy.contains(".alignmentTrackNameDiv", "asdfasdf");
+  });
   it("adding selection right click options should work", function () {
     cy.visit("#/Alignment");
     cy.tgToggle("addSelectionRightClickOptions");

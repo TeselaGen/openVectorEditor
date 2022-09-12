@@ -19,6 +19,7 @@ import { connectToEditor } from "../withEditorProps";
 import withEditorProps from "../withEditorProps";
 import { showDialog } from "../GlobalDialogUtils";
 import { compose } from "recompose";
+import { array_move } from "./array_move";
 
 export default connectToEditor(({ readOnly, toolBar = {} }) => {
   return {
@@ -457,17 +458,6 @@ const AddYourOwnSeqForm = reduxForm({
     </form>
   );
 });
-
-function array_move(arr, old_index, new_index) {
-  if (new_index >= arr.length) {
-    let k = new_index - arr.length + 1;
-    while (k--) {
-      arr.push(undefined);
-    }
-  }
-  arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-  return arr; // for testing
-}
 
 function mottTrim(qualNums) {
   if (!qualNums) return;

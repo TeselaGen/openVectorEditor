@@ -16,12 +16,37 @@
   display: block;
 }
 
-.alignmentTracks .alignmentHolder::-webkit-scrollbar {
+.alignmentHolder::-webkit-scrollbar {
   display: none;
 }
-.alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
-  opacity: 1 !important;
+.alignmentHolder {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }
+
+.alignmentTrackName {
+  background: white;
+}
+.alignmentTrackName {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.alignmentTrackName::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.alignmentMinimapTracks {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+.alignmentMinimapTracks::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.bp3-dark .alignmentTrackName {
+  background: #30404d;
+}
+/* .alignmentViewTrackContainer:hover .alignmentTrackNameDiv {
+  opacity: 1 !important;
+} */
 .ve-alignment-top-bar > * {
   overflow-wrap: normal;
   flex: 0 0 auto;
@@ -43,6 +68,12 @@
   position: relative;
   width: fit-content;
   height: fit-content;
+}
+/* .isTrackDragging.veTracksAndAlignmentHolder {
+  transform: none !important;
+} */
+.veTracksAndAlignmentHolder {
+  transform: none !important;
 }
 .alignmentMinimapTracks {
   background: #8a9ba8;

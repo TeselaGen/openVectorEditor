@@ -1,3 +1,4 @@
+import { getListStyle } from "./../utils/getListStyle";
 import { debounce, find, get, some, isArray } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
@@ -84,13 +85,6 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 const tabHeight = 34;
-
-const getListStyle = (isDraggingOver /* isDragging */) => {
-  return {
-    // ...(isDragging && { opacity: 0.7, zIndex: 10000, background: "lightgrey" }),
-    ...(isDraggingOver && { background: "#e5f3ff" })
-  };
-};
 
 const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
   return {
@@ -656,15 +650,17 @@ export class Editor extends React.Component {
               direction="horizontal"
               droppableId={"droppable-id-" + index.toString()}
             >
-              {(provided, snapshot) => (
+              {(drop_provided, drop_snapshot) => (
                 <div
                   className="ve-draggable-tabs"
                   data-test={"ve-draggable-tabs" + index}
-                  ref={provided.innerRef}
+                  ref={drop_provided.innerRef}
                   style={{
                     height: tabHeight,
                     paddingLeft: 3,
-                    ...getListStyle(snapshot.isDraggingOver /* , tabDragging */)
+                    ...getListStyle(
+                      drop_snapshot.isDraggingOver /* , tabDragging */
+                    )
                   }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
@@ -766,13 +762,12 @@ export class Editor extends React.Component {
                                 )}
                               </div>
                             </div>
-                            {provided.placeholder}
                           </div>
                         )}
                       </Draggable>
                     );
                   })}
-                  {provided.placeholder}
+                  {drop_provided.placeholder}
                 </div>
               )}
             </Droppable>,
@@ -783,11 +778,11 @@ export class Editor extends React.Component {
                     direction="horizontal"
                     droppableId={"droppable-id-" + (index + 1).toString()}
                   >
-                    {(provided, snapshot) => (
+                    {(drop_provided, drop_snapshot) => (
                       <div
-                        ref={provided.innerRef}
+                        ref={drop_provided.innerRef}
                         style={getSplitScreenListStyle(
-                          snapshot.isDraggingOver,
+                          drop_snapshot.isDraggingOver,
                           tabDragging
                         )}
                       >
@@ -802,7 +797,7 @@ export class Editor extends React.Component {
                           {" "}
                           + Add Tab
                         </div>
-                        {provided.placeholder}
+                        {drop_provided.placeholder}
                       </div>
                     )}
                   </Droppable>
