@@ -37,6 +37,7 @@ import {
 } from "lodash";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
+import ReactDOM from "react-dom";
 
 import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap from "./Minimap";
@@ -57,7 +58,7 @@ import {
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
 import { ResizeSensor } from "@blueprintjs/core";
-import Draggable from "react-draggable";
+import ReactDraggable from "react-draggable";
 import draggableClassnames from "../constants/draggableClassnames";
 import Caret from "../RowItem/Caret";
 import { debounce } from "lodash";
@@ -461,7 +462,9 @@ class AlignmentView extends React.Component {
 
   estimateRowHeight = (index, cache) => {
     const { alignmentVisibilityToolOptions, alignmentTracks } = this.props;
-    const { sequenceData } = alignmentTracks[index];
+    const track = alignmentTracks[index];
+    if (!track) return 100;
+    const { sequenceData } = track;
     this.rowData = prepareRowData(sequenceData, sequenceData.sequence.length);
     return estimateRowHeight({
       index,
@@ -485,7 +488,7 @@ class AlignmentView extends React.Component {
     return maxWidth * charWidthInLinearView;
   };
 
-  renderItem = (_i, key, isTemplate) => {
+  renderItem = (_i, key, isTemplate, cloneProps) => {
     const charWidthInLinearView = this.getCharWidthInLinearView();
     const {
       alignmentTracks = [],
@@ -512,7 +515,7 @@ class AlignmentView extends React.Component {
     }
 
     const track = alignmentTracks[i];
-
+    if (!track) return null;
     const {
       sequenceData,
       alignmentData,
@@ -860,10 +863,10 @@ class AlignmentView extends React.Component {
             scrollData: this.easyStore
           }}
         />
-        {provided?.placeholder}
       </div>
     );
     if (isTemplate) return inner();
+    if (cloneProps) return inner(cloneProps.provided, cloneProps.snapshot);
     const idToUse = alignmentData.id || sequenceData.id || i + "_index_id";
     return (
       <DndDraggable
@@ -983,11 +986,9 @@ class AlignmentView extends React.Component {
 
     const getTrackVis = (alignmentTracks, isTemplate) => {
       const rowData = {};
-      const inner = (drop_provided) => {
+      const inner = (drop_provided, drop_snapshot) => {
         return (
           <div
-            {...drop_provided?.droppableProps}
-            ref={drop_provided?.innerRef}
             className="alignmentTracks "
             style={{
               overflowY: "auto",
@@ -998,7 +999,6 @@ class AlignmentView extends React.Component {
             <div
               style={{
                 overflowX: "auto",
-                height: "fit-content",
                 width: this.state.width
               }}
               ref={(ref) => {
@@ -1011,7 +1011,7 @@ class AlignmentView extends React.Component {
               className="alignmentHolder"
               onScroll={isTemplate ? this.handleTopScroll : this.handleScroll}
             >
-              <Draggable
+              <ReactDraggable
                 disabled={this.state.isTrackDragging}
                 bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
                 onDrag={
@@ -1260,16 +1260,22 @@ class AlignmentView extends React.Component {
                     <ReactList
                       ref={(c) => {
                         this.InfiniteScroller = c;
+                        const domNode = ReactDOM.findDOMNode(c);
+                        if (domNode instanceof HTMLElement) {
+                          drop_provided.innerRef(domNode);
+                        }
                       }}
                       type="variable"
                       itemSizeEstimator={this.estimateRowHeight}
                       itemRenderer={this.renderItem}
-                      length={alignmentTracks.length}
+                      length={
+                        alignmentTracks.length +
+                        (drop_snapshot.isUsingPlaceholder ? 1 : 0)
+                      }
                     />
                   )}
                 </div>
-                {/* </div> */}
-              </Draggable>
+              </ReactDraggable>
             </div>
           </div>
         );
@@ -1278,6 +1284,13 @@ class AlignmentView extends React.Component {
       else
         return (
           <Droppable
+            mode="virtual"
+            renderClone={(provided, snapshot, { source: { index } }) => {
+              return this.renderItem(index, index, false, {
+                provided,
+                snapshot
+              });
+            }}
             direction="vertical"
             droppableId={"droppable" + isTemplate ? "_no_drop" : ""}
           >
