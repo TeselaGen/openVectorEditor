@@ -14,6 +14,16 @@ describe("alignment", function () {
     cy.visit("#/Alignment");
     cy.get(".bp3-icon-warning-sign");
   });
+  it("allowTrimming should work properly", function () {
+    cy.visit("#/Alignment");
+    cy.get(`[data-tick-mark="20"]:first`).rightclick();
+    cy.get(".tg-trimmed-region").should("not.exist");
+    cy.contains("Ignore Before").should("not.exist");
+    cy.tgToggle("allowTrimming");
+    cy.get(`[data-tick-mark="20"]:first`).rightclick();
+    cy.contains("Ignore Before").click();
+    cy.get(".tg-trimmed-region").should("exist");
+  });
   it("allowTrackRearrange should work properly", function () {
     cy.visit("#/Alignment");
     cy.get(".isDragDisabled").should("exist");

@@ -2,7 +2,7 @@ import {
   DragDropContext,
   Droppable,
   Draggable as DndDraggable
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
 import Clipboard from "clipboard";
 import React from "react";
 import { connect } from "react-redux";
@@ -47,7 +47,6 @@ import * as alignmentActions from "../redux/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
 import withEditorProps from "../withEditorProps";
-import SelectionLayer from "../RowItem/SelectionLayer";
 
 import "./style.css";
 import {
@@ -78,6 +77,13 @@ import { array_move } from "../ToolBar/array_move";
 // import { isElWithinAnotherEl } from "../withEditorInteractions/isElementInViewport";
 import classNames from "classnames";
 import { insertItem, removeItem } from "../utils/arrayUtils";
+import { getTrackFromEvent } from "./getTrackFromEvent";
+import { PerformantSelectionLayer } from "./PerformantSelectionLayer";
+import { PairwiseAlignmentView } from "./PairwiseAlignmentView";
+import {
+  invertRange,
+  splitRangeIntoTwoPartsIfItIsCircular
+} from "ve-range-utils";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -93,7 +99,7 @@ try {
   );
 }
 
-class AlignmentView extends React.Component {
+export class AlignmentView extends React.Component {
   bindOutsideChangeHelper = {};
   constructor(props) {
     super(props);
@@ -524,48 +530,18 @@ class AlignmentView extends React.Component {
       // mismatches
     } = track;
 
+    let trimmedRangesToDisplay = [];
+    const seqLen = this.getMaxLength();
+    if (alignmentData?.trimmedRange) {
+      const inverted = invertRange(alignmentData?.trimmedRange, seqLen);
+      trimmedRangesToDisplay = splitRangeIntoTwoPartsIfItIsCircular(
+        inverted,
+        seqLen
+      );
+    }
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
-
-    function getGapMap(sequence) {
-      const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-      sequence.split("").forEach((char) => {
-        if (char === "-") {
-          gapMap[Math.max(0, gapMap.length - 1)] =
-            (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
-        } else {
-          gapMap.push(gapMap[gapMap.length - 1] || 0);
-        }
-      });
-      return gapMap;
-    }
-
-    /**
-     * this function is used to calculate the number of spaces that come before or inside a range
-     */
-    let getGaps = () => ({
-      gapsBefore: 0,
-      gapsInside: 0
-    });
-    getGaps = (rangeOrCaretPosition, sequence) => {
-      const gapMap = getGapMap(sequence);
-      if (typeof rangeOrCaretPosition !== "object") {
-        return {
-          gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
-        };
-      }
-      //otherwise it is a range!
-      const { start, end } = rangeOrCaretPosition;
-      const toReturn = {
-        gapsBefore: gapMap[start],
-        gapsInside:
-          gapMap[Math.min(end, gapMap.length - 1)] -
-          gapMap[Math.min(start, gapMap.length - 1)]
-      };
-
-      return toReturn;
-    };
 
     /**
      * for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
@@ -679,6 +655,18 @@ class AlignmentView extends React.Component {
 
     const { compactNames } =
       alignmentVisibilityToolOptions.alignmentAnnotationVisibility;
+    const selectionLayer = [
+      this.state[`tempTrimBefore${i}`] || trimmedRangesToDisplay[0],
+      this.state[`tempTrimAfter${i}`] || trimmedRangesToDisplay[1]
+    ]
+      .filter((i) => i)
+      .map((i) => ({
+        ...i,
+        hideCarets: true,
+        ignoreGaps: true,
+        className: "tg-trimmed-region",
+        color: "gray"
+      }));
     const inner = (provided = {}, snapshot) => (
       <div
         ref={provided?.innerRef}
@@ -747,23 +735,12 @@ class AlignmentView extends React.Component {
                         name
                       },
                       updateName: ({ newName }) => {
-                        alignmentRunUpdate({
+                        updateTrackHelper({
+                          alignmentRunUpdate,
                           alignmentId,
-                          alignmentTracks: insertItem(
-                            removeItem(alignmentTracks, i),
-                            {
-                              ...alignmentTracks[i],
-                              alignmentData: {
-                                ...alignmentTracks[i].alignmentData,
-                                name: newName
-                              },
-                              sequenceData: {
-                                ...alignmentTracks[i].sequenceData,
-                                name: newName
-                              }
-                            },
-                            i
-                          )
+                          alignmentTracks,
+                          alignmentTrackIndex: i,
+                          update: { name: newName }
                         });
                       }
                     }
@@ -811,8 +788,9 @@ class AlignmentView extends React.Component {
         <NonReduxEnhancedLinearView
           {...{
             ...rest,
-            caretPosition: -1,
-            selectionLayer: { start: -1, end: -1 },
+            caretPosition: this.state[`tempTrimmingCaret${i}`] || -1,
+            selectionLayer,
+            // : { start: -1, end: -1 },
             annotationVisibilityOverrides:
               alignmentVisibilityToolOptions.alignmentAnnotationVisibility,
             linearViewAnnotationLabelVisibilityOverrides:
@@ -927,16 +905,11 @@ class AlignmentView extends React.Component {
     this.setState({ isTrackDragging: true });
   };
   onTrackDragEnd = ({ destination, source }) => {
-    // const { panelsShownUpdate, panlsShown } = this.props;
-    // dropped outside the list
     this.setState({ isTrackDragging: false });
-
     if (!destination) {
       return;
     }
-
     const { alignmentRunUpdate, alignmentId, alignmentTracks } = this.props;
-
     alignmentRunUpdate({
       alignmentId,
       alignmentTracks: array_move(
@@ -945,12 +918,6 @@ class AlignmentView extends React.Component {
         destination.index
       )
     });
-
-    // destination.index
-
-    // if (result.destination.droppableId !== result.source.droppableId) {
-
-    // } else {}
   };
 
   render() {
@@ -969,6 +936,9 @@ class AlignmentView extends React.Component {
       alignmentSortOrder,
       handleBackButtonClicked,
       noClickDragHandlers,
+      alignmentRunUpdate,
+      alignmentId,
+      allowTrimming,
       additionalSelectionLayerRightClickedOptions,
       selectionLayerRightClicked,
       additionalTopEl,
@@ -1004,6 +974,21 @@ class AlignmentView extends React.Component {
               ref={(ref) => {
                 this[isTemplate ? "alignmentHolderTop" : "alignmentHolder"] =
                   ref;
+              }}
+              onContextMenu={(e) => {
+                if (
+                  !allowTrimming ||
+                  isTargetWithinEl(e, ".alignmentTrackName")
+                ) {
+                  return;
+                }
+
+                this.getTrackTrimmingOptions({
+                  e,
+                  alignmentTracks,
+                  alignmentRunUpdate,
+                  alignmentId
+                });
               }}
               onMouseLeave={this.removeMinimapHighlightForMouseLeave}
               onMouseMove={this.updateMinimapHighlightForMouseMove}
@@ -1095,32 +1080,10 @@ class AlignmentView extends React.Component {
                           }
                         : (...args) => {
                             const { event } = args[0];
-                            const trackContainers = document.querySelectorAll(
-                              ".alignmentViewTrackContainer"
+                            const track = getTrackFromEvent(
+                              event,
+                              alignmentTracks
                             );
-                            let track;
-                            trackContainers.forEach((t) => {
-                              const mouseX =
-                                getClientX(event) + document.body.scrollLeft;
-                              const mouseY =
-                                getClientY(event) + document.body.scrollTop;
-                              if (
-                                mouseX >= t.getBoundingClientRect().left &&
-                                mouseX <=
-                                  t.getBoundingClientRect().left +
-                                    t.getBoundingClientRect().width &&
-                                mouseY >= t.getBoundingClientRect().top &&
-                                mouseY <=
-                                  t.getBoundingClientRect().top +
-                                    t.getBoundingClientRect().height
-                              ) {
-                                const index = t.getAttribute(
-                                  "data-alignment-track-index"
-                                );
-                                track = alignmentTracks[index];
-                                return true;
-                              }
-                            });
 
                             const alignmentData = track.alignmentData;
                             const { name } = alignmentData;
@@ -1253,7 +1216,6 @@ class AlignmentView extends React.Component {
                     row={{ start: 0, end: sequenceLength - 1 }}
                     easyStore={this.easyStore}
                   />
-
                   {isTemplate ? (
                     this.renderItem(0, 0, isTemplate)
                   ) : (
@@ -1630,6 +1592,118 @@ class AlignmentView extends React.Component {
       </PinchHelper>
     );
   }
+
+  getTrackTrimmingOptions({
+    e,
+    alignmentTracks,
+    alignmentRunUpdate,
+    alignmentId
+  }) {
+    const track = getTrackFromEvent(e, alignmentTracks);
+    this.getNearestCursorPositionToMouseEvent(
+      this.rowData,
+      e,
+      ({ nearestCaretPos }) => {
+        this.setState({
+          [`tempTrimmingCaret${track.index}`]: nearestCaretPos
+        });
+        const afterDisabled =
+          nearestCaretPos <= track.alignmentData.trimmedRange?.start;
+        const beforeDisabled =
+          nearestCaretPos > track.alignmentData.trimmedRange?.end;
+        showContextMenu(
+          [
+            {
+              divider: (
+                <div
+                  style={{
+                    color: "#137cbd",
+                    fontSize: 13,
+                    fontWeight: "bold"
+                  }}
+                >{`Trim ${
+                  track.sequenceData.name || track.sequenceData.id
+                }...`}</div>
+              )
+            },
+            {
+              text: "Ignore Before",
+              disabled: beforeDisabled,
+              icon: "drawer-left-filled",
+              onMouseOver: () =>
+                !beforeDisabled &&
+                this.setState({
+                  [`tempTrimBefore${track.index}`]: {
+                    start: 0,
+                    end: nearestCaretPos - 1
+                  }
+                }),
+              onMouseLeave: () =>
+                this.setState({
+                  [`tempTrimBefore${track.index}`]: undefined
+                }),
+              onClick: () => {
+                updateTrackHelper({
+                  alignmentRunUpdate,
+                  alignmentId,
+                  alignmentTracks,
+                  alignmentTrackIndex: track.index,
+                  update: {
+                    trimmedRange: {
+                      start: nearestCaretPos,
+                      end:
+                        track.alignmentData.trimmedRange?.end ||
+                        this.getMaxLength() - 1
+                    }
+                  }
+                });
+              }
+            },
+            {
+              text: "Ignore After",
+              disabled: afterDisabled,
+              icon: "drawer-right-filled",
+              onMouseOver: () =>
+                !afterDisabled &&
+                this.setState({
+                  [`tempTrimAfter${track.index}`]: {
+                    start: nearestCaretPos,
+                    end: this.getMaxLength() - 1
+                  }
+                }),
+              onMouseLeave: () =>
+                this.setState({
+                  [`tempTrimAfter${track.index}`]: undefined
+                }),
+              onClick: () => {
+                updateTrackHelper({
+                  alignmentRunUpdate,
+                  alignmentId,
+                  alignmentTracks,
+                  alignmentTrackIndex: track.index,
+                  update: {
+                    trimmedRange: {
+                      start: track.alignmentData.trimmedRange?.start || 0,
+                      end: nearestCaretPos - 1
+                    }
+                  }
+                });
+              }
+            }
+          ],
+          undefined,
+          e,
+          () => {
+            this.setState({
+              [`tempTrimmingCaret${track.index}`]: undefined
+            });
+          }
+        );
+      }
+    );
+    e.preventDefault();
+    e.stopPropagation();
+  }
 }
 
 export default compose(
@@ -1806,153 +1880,11 @@ export default compose(
   )
 )(AlignmentView);
 
-//this view is shown if we detect pairwise alignments
-class PairwiseAlignmentView extends React.Component {
-  state = {
-    currentPairwiseAlignmentIndex: undefined
-  };
-  render() {
-    const { pairwiseAlignments, pairwiseOverviewAlignmentTracks } = this.props;
-    const { currentPairwiseAlignmentIndex } = this.state;
-    if (currentPairwiseAlignmentIndex > -1) {
-      //we can render the AlignmentView directly
-      //get the alignmentTracks based on currentPairwiseAlignmentIndex
-      const alignmentTracks = pairwiseAlignments[currentPairwiseAlignmentIndex];
-
-      const templateLength = alignmentTracks[0].alignmentData.sequence.length;
-      return (
-        <AlignmentView
-          {...{
-            ...this.props,
-            sequenceData: {
-              //pass fake seq data in so editor interactions work
-              sequence: Array.from(templateLength)
-                .map(() => "a")
-                .join("")
-            },
-            alignmentTracks,
-            hasTemplate: true,
-            isPairwise: true,
-            currentPairwiseAlignmentIndex,
-            handleBackButtonClicked: () => {
-              this.setState({
-                currentPairwiseAlignmentIndex: undefined
-              });
-            }
-          }}
-        />
-      );
-    } else {
-      //we haven't yet selected an alignment to view
-      // render the AlignmentView zoomed out for each track in pairwiseOverviewAlignmentTracks
-      // when the view eye icon is hit (maybe next to the name?)
-      return (
-        <AlignmentView
-          {...{
-            ...this.props,
-            alignmentTracks: pairwiseOverviewAlignmentTracks,
-            hasTemplate: true,
-            isPairwise: true,
-            isInPairwiseOverviewView: true,
-            isFullyZoomedOut: true,
-            noClickDragHandlers: true,
-            linearViewOptions: getPairwiseOverviewLinearViewOptions,
-            handleSelectTrack: (trackIndex) => {
-              //set currentPairwiseAlignmentIndex
-              this.setState({ currentPairwiseAlignmentIndex: trackIndex - 1 });
-            }
-          }}
-        />
-      );
-    }
-  }
-}
-
-function getPairwiseOverviewLinearViewOptions({ isTemplate }) {
-  if (!isTemplate) {
-    return {
-      annotationVisibilityOverrides: {
-        features: false,
-        translations: false,
-        parts: false,
-        orfs: false,
-        orfTranslations: false,
-        cdsFeatureTranslations: false,
-        axis: false,
-        cutsites: false,
-        primers: false,
-        chromatogram: false,
-        sequence: false,
-        dnaColors: false,
-        reverseSequence: false,
-        axisNumbers: false
-      }
-    };
-  } else {
-    return {
-      // annotationVisibilityOverrides: {
-      //   features: false,
-      //   yellowAxis: false,
-      //   translations: false,
-      //   parts: false,
-      //   orfs: false,
-      //   orfTranslations: false,
-      //   axis: true,
-      //   cutsites: false,
-      //   primers: false,
-      //   reverseSequence: false,
-      //   axisNumbers: false
-      // }
-    };
-  }
-}
-
-const PerformantSelectionLayer = view(({ easyStore, ...rest }) => {
-  const seqLen = rest.sequenceLength - 1;
-
-  return (
-    <SelectionLayer
-      regions={[
-        { ...easyStore.selectionLayer, ignoreGaps: true },
-        {
-          start: Math.floor(
-            (easyStore.percentScrolledPreZoom || easyStore.percentScrolled) *
-              seqLen
-          ),
-          end: Math.floor(
-            (easyStore.percentScrolledPreZoom || easyStore.percentScrolled) *
-              seqLen
-          ),
-          className: "zoomSelection",
-          ignoreGaps: true,
-          style: {
-            zIndex: -1,
-            opacity: 0
-          }
-        }
-      ]}
-      {...rest}
-    />
-  );
-});
-
 const PerformantCaret = view(({ easyStore, ...rest }) => {
   return <Caret caretPosition={easyStore.caretPosition} {...rest} />;
 });
 
 function coerceInitialValue({ initialValue, minCharWidth }) {
-  //char width 12 = 10
-  //zoomLvl = 0 -> charWidth = minCharWidth
-  //zoomLvl = 10 -> charWidth = 12
-
-  // const scaleFactor = Math.pow(12 / initialCharWidth, 1 / 10);
-  // newCharWidth = initialCharWidth * Math.pow(scaleFactor, zoomLvl)
-  // 12 = initialCharWidth * Math.pow(scaleFactor, 10)
-  // 12/initialCharWidth = Math.pow(scaleFactor, 10)
-  // Math.pow(12/minCharWidth, 1/10) = scaleFactor
-
-  // newCharWidth/minCharWidth =  * Math.pow(scaleFactor, zoomLvl)
-
   const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
 
   const zoomLvl = Math.log(initialValue / minCharWidth) / Math.log(scaleFactor);
@@ -1992,4 +1924,72 @@ const EditTrackNameDialog = compose(
 
 function isTargetWithinEl(event, selector) {
   return event.target.closest(selector);
+}
+
+function getGapMap(sequence) {
+  const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
+  sequence.split("").forEach((char) => {
+    if (char === "-") {
+      gapMap[Math.max(0, gapMap.length - 1)] =
+        (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
+    } else {
+      gapMap.push(gapMap[gapMap.length - 1] || 0);
+    }
+  });
+  return gapMap;
+}
+
+/**
+ * this function is used to calculate the number of spaces that come before or inside a range
+ */
+let getGaps = () => ({
+  gapsBefore: 0,
+  gapsInside: 0
+});
+getGaps = (rangeOrCaretPosition, sequence) => {
+  const gapMap = getGapMap(sequence);
+  if (typeof rangeOrCaretPosition !== "object") {
+    return {
+      gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
+    };
+  }
+  //otherwise it is a range!
+  const { start, end } = rangeOrCaretPosition;
+  const toReturn = {
+    gapsBefore: gapMap[start],
+    gapsInside:
+      gapMap[Math.min(end, gapMap.length - 1)] -
+      gapMap[Math.min(start, gapMap.length - 1)]
+  };
+
+  return toReturn;
+};
+
+function updateTrackHelper({
+  alignmentRunUpdate,
+  alignmentId,
+  alignmentTracks,
+  alignmentTrackIndex,
+  update
+}) {
+  const removed = removeItem(alignmentTracks, alignmentTrackIndex);
+  const newAlignmentTracks = insertItem(
+    removed,
+    {
+      ...alignmentTracks[alignmentTrackIndex],
+      alignmentData: {
+        ...alignmentTracks[alignmentTrackIndex].alignmentData,
+        ...update
+      },
+      sequenceData: {
+        ...alignmentTracks[alignmentTrackIndex].sequenceData,
+        ...update
+      }
+    },
+    alignmentTrackIndex
+  );
+  alignmentRunUpdate({
+    alignmentId,
+    alignmentTracks: newAlignmentTracks
+  });
 }

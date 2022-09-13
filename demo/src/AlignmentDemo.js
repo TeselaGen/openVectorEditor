@@ -153,6 +153,10 @@ export default class AlignmentDemo extends React.Component {
               })}
               {renderToggle({
                 that: this,
+                type: "allowTrimming"
+              })}
+              {renderToggle({
+                that: this,
                 type: "allowTrackRearrange"
               })}
               {renderToggle({
@@ -229,6 +233,7 @@ export default class AlignmentDemo extends React.Component {
               : "Alignment Name Placeholder",
             noClickDragHandlers: this.state.noClickDragHandlers,
             allowTrackNameEdit: this.state.allowTrackNameEdit,
+            allowTrimming: this.state.allowTrimming,
             allowTrackRearrange: this.state.allowTrackRearrange,
             hasTemplate: this.state.hasTemplate,
             noVisibilityOptions: this.state.noVisibilityOptions,

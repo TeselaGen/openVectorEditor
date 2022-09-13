@@ -44,7 +44,7 @@ import StatusBar from "../StatusBar";
 import DropHandler from "./DropHandler";
 import Properties from "../helperComponents/PropertiesDialog";
 import "./style.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import DigestTool from "../DigestTool/DigestTool";
 import { insertItem, removeItem } from "../utils/arrayUtils";
 import Mismatches from "../AlignmentView/Mismatches";
