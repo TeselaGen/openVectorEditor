@@ -153,6 +153,10 @@ export default class AlignmentDemo extends React.Component {
               })}
               {renderToggle({
                 that: this,
+                type: "shouldAutosave"
+              })}
+              {renderToggle({
+                that: this,
                 type: "allowTrimming"
               })}
               {renderToggle({
@@ -234,6 +238,12 @@ export default class AlignmentDemo extends React.Component {
             noClickDragHandlers: this.state.noClickDragHandlers,
             allowTrackNameEdit: this.state.allowTrackNameEdit,
             allowTrimming: this.state.allowTrimming,
+            shouldAutosave: this.state.shouldAutosave,
+            handleAlignmentSave: this.state.shouldAutosave
+              ? () => {
+                  window.toastr.success("Autosave Triggered");
+                }
+              : undefined,
             allowTrackRearrange: this.state.allowTrackRearrange,
             hasTemplate: this.state.hasTemplate,
             noVisibilityOptions: this.state.noVisibilityOptions,

@@ -17,13 +17,10 @@ import {
   Icon
 } from "@blueprintjs/core";
 import {
-  DialogFooter,
   InfoHelper,
-  InputField,
   Loading,
   showContextMenu,
-  withStore,
-  wrapDialog
+  withStore
 } from "teselagen-react-components";
 import { store } from "@risingstack/react-easy-state";
 import {
@@ -71,12 +68,10 @@ import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFea
 
 import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 import { showDialog } from "../GlobalDialogUtils";
-import { reduxForm } from "redux-form";
 import { GlobalDialog } from "../GlobalDialog";
 import { array_move } from "../ToolBar/array_move";
 // import { isElWithinAnotherEl } from "../withEditorInteractions/isElementInViewport";
 import classNames from "classnames";
-import { insertItem, removeItem } from "../utils/arrayUtils";
 import { getTrackFromEvent } from "./getTrackFromEvent";
 import { PerformantSelectionLayer } from "./PerformantSelectionLayer";
 import { PairwiseAlignmentView } from "./PairwiseAlignmentView";
@@ -84,6 +79,11 @@ import {
   invertRange,
   splitRangeIntoTwoPartsIfItIsCircular
 } from "ve-range-utils";
+import { updateTrackHelper } from "./updateTrackHelper";
+import { getGaps } from "./getGaps";
+import { isTargetWithinEl } from "./isTargetWithinEl";
+import { EditTrackNameDialog } from "./EditTrackNameDialog";
+import { coerceInitialValue } from "./coerceInitialValue";
 
 const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
@@ -244,6 +244,15 @@ export class AlignmentView extends React.Component {
       this.props.scrollPercentageToJumpTo !== undefined
     ) {
       this.scrollAlignmentToPercent(this.props.scrollPercentageToJumpTo);
+    }
+    //autosave if necessary!
+    if (
+      this.props.shouldAutosave &&
+      prevProps &&
+      prevProps.stateTrackingId &&
+      this.props.stateTrackingId !== prevProps.stateTrackingId
+    ) {
+      this.props.handleAlignmentSave(this.props);
     }
   }
   componentDidMount() {
@@ -498,7 +507,7 @@ export class AlignmentView extends React.Component {
     const charWidthInLinearView = this.getCharWidthInLinearView();
     const {
       alignmentTracks = [],
-      alignmentRunUpdate,
+      upsertAlignmentRun,
       alignmentId,
       noClickDragHandlers,
       handleSelectTrack,
@@ -736,7 +745,7 @@ export class AlignmentView extends React.Component {
                       },
                       updateName: ({ newName }) => {
                         updateTrackHelper({
-                          alignmentRunUpdate,
+                          upsertAlignmentRun,
                           alignmentId,
                           alignmentTracks,
                           alignmentTrackIndex: i,
@@ -909,9 +918,9 @@ export class AlignmentView extends React.Component {
     if (!destination) {
       return;
     }
-    const { alignmentRunUpdate, alignmentId, alignmentTracks } = this.props;
-    alignmentRunUpdate({
-      alignmentId,
+    const { upsertAlignmentRun, alignmentId, alignmentTracks } = this.props;
+    upsertAlignmentRun({
+      id: alignmentId,
       alignmentTracks: array_move(
         alignmentTracks,
         source.index,
@@ -936,7 +945,7 @@ export class AlignmentView extends React.Component {
       alignmentSortOrder,
       handleBackButtonClicked,
       noClickDragHandlers,
-      alignmentRunUpdate,
+      upsertAlignmentRun,
       alignmentId,
       allowTrimming,
       additionalSelectionLayerRightClickedOptions,
@@ -986,7 +995,7 @@ export class AlignmentView extends React.Component {
                 this.getTrackTrimmingOptions({
                   e,
                   alignmentTracks,
-                  alignmentRunUpdate,
+                  upsertAlignmentRun,
                   alignmentId
                 });
               }}
@@ -1596,7 +1605,7 @@ export class AlignmentView extends React.Component {
   getTrackTrimmingOptions({
     e,
     alignmentTracks,
-    alignmentRunUpdate,
+    upsertAlignmentRun,
     alignmentId
   }) {
     const track = getTrackFromEvent(e, alignmentTracks);
@@ -1644,7 +1653,7 @@ export class AlignmentView extends React.Component {
                 }),
               onClick: () => {
                 updateTrackHelper({
-                  alignmentRunUpdate,
+                  upsertAlignmentRun,
                   alignmentId,
                   alignmentTracks,
                   alignmentTrackIndex: track.index,
@@ -1677,7 +1686,7 @@ export class AlignmentView extends React.Component {
                 }),
               onClick: () => {
                 updateTrackHelper({
-                  alignmentRunUpdate,
+                  upsertAlignmentRun,
                   alignmentId,
                   alignmentTracks,
                   alignmentTrackIndex: track.index,
@@ -1720,6 +1729,7 @@ export default compose(
       const { id: alignmentId, updateAlignmentViewVisibility } = ownProps;
       const alignment = { ...alignments[alignmentId], id: alignmentId };
       const {
+        stateTrackingId,
         unmappedSeqs,
         alignmentTracks,
         pairwiseAlignments,
@@ -1806,6 +1816,7 @@ export default compose(
         unmappedSeqs,
         caretPosition,
         alignmentId,
+        stateTrackingId,
         sequenceData: {
           //pass fake seq data in so editor interactions work
           sequence: Array.from(templateLength)
@@ -1883,113 +1894,3 @@ export default compose(
 const PerformantCaret = view(({ easyStore, ...rest }) => {
   return <Caret caretPosition={easyStore.caretPosition} {...rest} />;
 });
-
-function coerceInitialValue({ initialValue, minCharWidth }) {
-  const scaleFactor = Math.pow(12 / minCharWidth, 1 / 10);
-
-  const zoomLvl = Math.log(initialValue / minCharWidth) / Math.log(scaleFactor);
-
-  return zoomLvl;
-}
-
-const EditTrackNameDialog = compose(
-  wrapDialog({
-    title: "Edit Track Name"
-  }),
-  reduxForm({ form: "EditTrackNameDialog" })
-)(function ({ handleSubmit, updateName, hideModal }) {
-  return (
-    <div>
-      <div className="bp3-dialog-body">
-        <InputField
-          autoFocus
-          label="New Name"
-          isRequired
-          name="name"
-        ></InputField>
-      </div>
-      <DialogFooter
-        onClick={handleSubmit(async ({ name }) => {
-          await updateName({ newName: name });
-          hideModal();
-        })}
-      ></DialogFooter>
-    </div>
-  );
-});
-
-// function Ident({ children }) {
-//   return children;
-// }
-
-function isTargetWithinEl(event, selector) {
-  return event.target.closest(selector);
-}
-
-function getGapMap(sequence) {
-  const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
-  sequence.split("").forEach((char) => {
-    if (char === "-") {
-      gapMap[Math.max(0, gapMap.length - 1)] =
-        (gapMap[Math.max(0, gapMap.length - 1)] || 0) + 1;
-    } else {
-      gapMap.push(gapMap[gapMap.length - 1] || 0);
-    }
-  });
-  return gapMap;
-}
-
-/**
- * this function is used to calculate the number of spaces that come before or inside a range
- */
-let getGaps = () => ({
-  gapsBefore: 0,
-  gapsInside: 0
-});
-getGaps = (rangeOrCaretPosition, sequence) => {
-  const gapMap = getGapMap(sequence);
-  if (typeof rangeOrCaretPosition !== "object") {
-    return {
-      gapsBefore: gapMap[Math.min(rangeOrCaretPosition, gapMap.length - 1)]
-    };
-  }
-  //otherwise it is a range!
-  const { start, end } = rangeOrCaretPosition;
-  const toReturn = {
-    gapsBefore: gapMap[start],
-    gapsInside:
-      gapMap[Math.min(end, gapMap.length - 1)] -
-      gapMap[Math.min(start, gapMap.length - 1)]
-  };
-
-  return toReturn;
-};
-
-function updateTrackHelper({
-  alignmentRunUpdate,
-  alignmentId,
-  alignmentTracks,
-  alignmentTrackIndex,
-  update
-}) {
-  const removed = removeItem(alignmentTracks, alignmentTrackIndex);
-  const newAlignmentTracks = insertItem(
-    removed,
-    {
-      ...alignmentTracks[alignmentTrackIndex],
-      alignmentData: {
-        ...alignmentTracks[alignmentTrackIndex].alignmentData,
-        ...update
-      },
-      sequenceData: {
-        ...alignmentTracks[alignmentTrackIndex].sequenceData,
-        ...update
-      }
-    },
-    alignmentTrackIndex
-  );
-  alignmentRunUpdate({
-    alignmentId,
-    alignmentTracks: newAlignmentTracks
-  });
-}

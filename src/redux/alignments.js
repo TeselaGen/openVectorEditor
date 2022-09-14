@@ -3,6 +3,7 @@ import {
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
 import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+import shortid from "shortid";
 
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
@@ -141,7 +142,9 @@ export default (state = {}, { payload = {}, type }) => {
   }
 
   if (type === "UPSERT_ALIGNMENT_RUN") {
+    const { id } = payload;
     const payloadToUse = {
+      stateTrackingId: state[id]?.stateTrackingId ? shortid() : "initialLoadId",
       ...payload,
       //assign default visibilities
       ...defaultVisibilityTypes.reduce((acc, type) => {

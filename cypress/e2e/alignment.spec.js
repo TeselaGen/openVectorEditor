@@ -14,6 +14,7 @@ describe("alignment", function () {
     cy.visit("#/Alignment");
     cy.get(".bp3-icon-warning-sign");
   });
+
   it("allowTrimming should work properly", function () {
     cy.visit("#/Alignment");
     cy.get(`[data-tick-mark="20"]:first`).rightclick();
@@ -30,15 +31,17 @@ describe("alignment", function () {
     cy.tgToggle("allowTrackRearrange");
     cy.get(".isDragDisabled").should("not.exist");
   });
-  it("allowTrackNameEdit should work properly", function () {
+  it("allowTrackNameEdit should work properly and shouldAutosave should work properly for alignments", function () {
     cy.visit("#/Alignment");
     cy.contains("F05206 lallasdfasldfalsdflasdf");
     cy.get(".edit-track-name-btn").should("not.exist");
+    cy.tgToggle("shouldAutosave");
     cy.tgToggle("allowTrackNameEdit");
     cy.get(".edit-track-name-btn:first").click();
     cy.focused().type("{selectall}asdfasdf{enter}");
     cy.contains("F05206 lallasdfasldfalsdflasdf").should("not.exist");
     cy.contains(".alignmentTrackNameDiv", "asdfasdf");
+    cy.contains("Autosave Triggered");
   });
   it("adding selection right click options should work", function () {
     cy.visit("#/Alignment");
