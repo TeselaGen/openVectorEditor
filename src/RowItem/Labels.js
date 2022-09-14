@@ -79,7 +79,7 @@ function Labels(props) {
       //check if annotation name will fit
       if (
         r.annotation.annotationTypePlural === "cutsites" ||
-        r.annotation.annotationTypePlural === "primers"
+        (r.annotation.annotationTypePlural === "primers" && r.annotation.bases)
       ) {
         //we don't want to filter out any cutsite labels
         return true;

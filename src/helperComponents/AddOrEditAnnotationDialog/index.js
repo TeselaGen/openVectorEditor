@@ -256,6 +256,9 @@ class AddOrEditAnnotationDialog extends React.Component {
               updatedData = data;
             }
           }
+          if (!data.useLinkedOligo) {
+            delete updatedData.bases;
+          }
           updatedData.notes = {};
           this.notes.forEach(({ key, value }) => {
             if (!updatedData.notes[key]) updatedData.notes[key] = [];

@@ -147,7 +147,7 @@ function StackedAnnotations(props) {
               : anotationHeightNoSpace
           }
           hideName={
-            type === "primer" ||
+            (type === "primer" && annotation.bases) ||
             (annotationRange.containsLocations && !disregardLocations)
           }
           name={annotation.name}

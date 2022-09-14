@@ -387,7 +387,6 @@ export default function RowItem(props) {
 
         {drawLabels("cutsite", !isRowView)}
         {drawLabels("primer", false, {
-          noLabelLine: true,
           filterOpts: { onlyForward: true }
         })}
 
@@ -473,7 +472,6 @@ export default function RowItem(props) {
           onlyReverse: true
         })}
         {drawLabels("primer", false, {
-          noLabelLine: true,
           filterOpts: { onlyReverse: true }
         })}
         {drawLabels("feature")}
