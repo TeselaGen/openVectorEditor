@@ -1190,6 +1190,33 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "allowPartOverhangs",
+                hook: (shouldUpdate) => {
+                  updateEditor(store, "DemoEditor", {
+                    justPassingPartialSeqData: true,
+                    sequenceData: {
+                      parts: shouldUpdate
+                        ? [
+                            {
+                              start: 585,
+                              end: 973,
+                              fivePrimeOverhang: "cgcg",
+                              fivePrimeUnderhang: undefined,
+                              fivePrimeDigestingEnzyme: "BssHII",
+                              threePrimeOverhang: undefined,
+                              threePrimeUnderhang: "gcg",
+                              threePrimeDigestingEnzyme: "SapI",
+                              name: "Digest Part",
+                              id: "0"
+                            }
+                          ]
+                        : []
+                    }
+                  });
+                }
+              })}
+              {renderToggle({
+                that: this,
                 type: "showLineageAnnotations",
                 label: "Show Lineage Annotations in Editor",
                 description: `

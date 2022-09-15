@@ -434,6 +434,7 @@ export function updateSelectionOrCaret({
     newCaret = newRangeOrCaret;
   } else {
     newRange = {
+      isFromRowView: newRangeOrCaret.isFromRowView,
       start: newRangeOrCaret.start,
       end: newRangeOrCaret.end,
       forward: newRangeOrCaret.forward,

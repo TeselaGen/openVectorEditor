@@ -113,6 +113,12 @@ function StackedAnnotations(props) {
           arrowheadType={annotation.arrowheadType}
           editorName={editorName}
           id={annotation.id}
+          fivePrimeOverhang={annotation.fivePrimeOverhang}
+          fivePrimeUnderhang={annotation.fivePrimeUnderhang}
+          fivePrimeDigestingEnzyme={annotation.fivePrimeDigestingEnzyme}
+          threePrimeOverhang={annotation.threePrimeOverhang}
+          threePrimeUnderhang={annotation.threePrimeUnderhang}
+          threePrimeDigestingEnzyme={annotation.threePrimeDigestingEnzyme}
           onClick={onClick}
           truncateLabelsThatDoNotFit={truncateLabelsThatDoNotFit}
           insertPaths={insertPaths}

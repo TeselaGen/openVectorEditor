@@ -54,6 +54,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
+import { hoveredAnnEasyStore } from "../helperComponents/withHover";
 
 const annotationClickHandlers = [
   "orfClicked",
@@ -110,11 +111,8 @@ function VectorInteractionHOC(Component /* options */) {
       this.editorDragStarted = editorDragStarted.bind(this);
       this.editorDragStopped = editorDragStopped.bind(this);
 
-      // combokeys.stop();
-      // combokeys.watch(this.node)
       if (!this.node) return;
       this.combokeys = new Combokeys(this.node);
-      // bindGlobalPlugin(this.combokeys);
 
       // bind a bunch of this.combokeys shortcuts we're interested in catching
       // we're using the "combokeys" library which extends mousetrap (available thru npm: https://www.npmjs.com/package/br-mousetrap)
@@ -464,6 +462,13 @@ function VectorInteractionHOC(Component /* options */) {
     annotationClicked = ({ event, annotation }) => {
       event.preventDefault && event.preventDefault();
       event.stopPropagation && event.stopPropagation();
+      if (hoveredAnnEasyStore.selectedAnn?.id === annotation?.id) {
+        hoveredAnnEasyStore.selectedAnn = undefined;
+        hoveredAnnEasyStore.hoveredAnn = undefined;
+      } else {
+        hoveredAnnEasyStore.selectedAnn = annotation;
+      }
+
       const {
         annotationSelect,
         selectionLayer,
@@ -473,14 +478,15 @@ function VectorInteractionHOC(Component /* options */) {
       let forceUpdate;
       if (
         annotation.start > -1 &&
-        selectionLayer.start === annotation.start &&
-        selectionLayer.end === annotation.end &&
+        // selectionLayer.start === annotation.start &&
+        // selectionLayer.end === annotation.end &&
         event.altKey
       ) {
         forceUpdate = selectionLayer.forceUpdate === "end" ? "start" : "end";
       }
       this.updateSelectionOrCaret(event.shiftKey || event.metaKey, {
         ...annotation,
+        isFromRowView: !!event?.target?.closest(".veRowView"),
         ...(forceUpdate && { forceUpdate })
       });
       !event.shiftKey && annotationDeselectAll(undefined);
@@ -871,8 +877,9 @@ function VectorInteractionHOC(Component /* options */) {
       "deletionLayerRightClicked"
     );
 
-    partRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+    partRightClicked = this.enhanceRightClickAction(({ annotation, event }) => {
       this.props.selectionLayerUpdate({
+        isFromRowView: !!event?.target?.closest(".veRowView"),
         start: annotation.start,
         end: annotation.end,
         isWrappedAddon: annotation.isWrappedAddon,
@@ -888,30 +895,35 @@ function VectorInteractionHOC(Component /* options */) {
         "viewPartProperties"
       ];
     }, "partRightClicked");
-    warningRightClicked = this.enhanceRightClickAction(({ annotation }) => {
-      this.props.selectionLayerUpdate({
-        start: annotation.start,
-        end: annotation.end
-      });
-      return [
-        {
-          text: "View Warning Details",
-          onClick: (event) => {
-            this.warningDoubleClicked({
-              event,
-              annotation,
-              doNotStopPropagation: true
-            });
-          }
-        },
+    warningRightClicked = this.enhanceRightClickAction(
+      ({ annotation, event }) => {
+        this.props.selectionLayerUpdate({
+          isFromRowView: !!event?.target?.closest(".veRowView"),
+          start: annotation.start,
+          end: annotation.end
+        });
+        return [
+          {
+            text: "View Warning Details",
+            onClick: (event) => {
+              this.warningDoubleClicked({
+                event,
+                annotation,
+                doNotStopPropagation: true
+              });
+            }
+          },
 
-        "--",
-        ...this.getSelectionMenuOptions(annotation)
-      ];
-    }, "warningRightClicked");
+          "--",
+          ...this.getSelectionMenuOptions(annotation)
+        ];
+      },
+      "warningRightClicked"
+    );
     featureRightClicked = this.enhanceRightClickAction(
       ({ annotation, event }) => {
         this.props.selectionLayerUpdate({
+          isFromRowView: !!event?.target?.closest(".veRowView"),
           start: annotation.start,
           end: annotation.end
         });
@@ -985,21 +997,26 @@ function VectorInteractionHOC(Component /* options */) {
       () => ["viewCutsiteProperties"],
       "cutsiteRightClicked"
     );
-    primerRightClicked = this.enhanceRightClickAction(({ annotation }) => {
+    primerRightClicked = this.enhanceRightClickAction(
+      ({ annotation, event }) => {
+        this.props.selectionLayerUpdate({
+          isFromRowView: !!event?.target?.closest(".veRowView"),
+          start: annotation.start,
+          end: annotation.end
+        });
+        return [
+          "editPrimer",
+          "deletePrimer",
+          ...this.getSelectionMenuOptions(annotation),
+          "showRemoveDuplicatesDialogPrimers",
+          "viewPrimerProperties"
+        ];
+      },
+      "primerRightClicked"
+    );
+    orfRightClicked = this.enhanceRightClickAction(({ annotation, event }) => {
       this.props.selectionLayerUpdate({
-        start: annotation.start,
-        end: annotation.end
-      });
-      return [
-        "editPrimer",
-        "deletePrimer",
-        ...this.getSelectionMenuOptions(annotation),
-        "showRemoveDuplicatesDialogPrimers",
-        "viewPrimerProperties"
-      ];
-    }, "primerRightClicked");
-    orfRightClicked = this.enhanceRightClickAction(({ annotation }) => {
-      this.props.selectionLayerUpdate({
+        isFromRowView: !!event?.target?.closest(".veRowView"),
         start: annotation.start,
         end: annotation.end
       });
@@ -1015,6 +1032,7 @@ function VectorInteractionHOC(Component /* options */) {
         event.stopPropagation();
         const { selectionLayerUpdate, annotationVisibilityToggle } = this.props;
         this.props.selectionLayerUpdate({
+          isFromRowView: !!event?.target?.closest(".veRowView"),
           start: annotation.start,
           end: annotation.end
         });

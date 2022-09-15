@@ -55,7 +55,7 @@ export default function getAnnotationNameAndStartStopString(
  cmd/ctrl+click --> recognition range`
       : `
 
-alt/option+click --> jump selection to start/end
+alt/option+click --> jump row view to start/end
 double click --> edit`
   }`;
 }

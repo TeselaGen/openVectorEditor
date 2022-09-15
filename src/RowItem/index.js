@@ -402,12 +402,15 @@ export default function RowItem(props) {
         >
           {showSequence && (
             <Sequence
+              sequenceLength={sequenceLength}
               cutsites={cutsites} //pass this in order to get children cutsites to re-render
               showDnaColors={showDnaColors}
               fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               scrollData={scrollData}
               hideBps={charWidth < 7}
               sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
+              rowStart={row.start}
+              rowEnd={row.end}
               height={sequenceHeight}
               showCutsites={showCutsites}
               charWidth={charWidth}
@@ -429,6 +432,7 @@ export default function RowItem(props) {
 
           {showReverseSequence && (
             <Sequence
+              sequenceLength={sequenceLength}
               fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               isReverse
               cutsites={cutsites} //pass this in order to get children cutsites to re-render
@@ -436,6 +440,8 @@ export default function RowItem(props) {
               hideBps={charWidth < 7}
               length={reverseSequence.length}
               showCutsites={showCutsites}
+              rowStart={row.start}
+              rowEnd={row.end}
               sequence={reverseSequence}
               height={sequenceHeight}
               charWidth={charWidth}
@@ -517,6 +523,8 @@ export default function RowItem(props) {
             const arrowHeight = isStart ? 8 : 0;
             return (
               <Sequence
+                sequenceLength={sequenceLength}
+                isReplacementLayer
                 showDnaColors={showDnaColors}
                 key={index}
                 sequence={seqInRow}

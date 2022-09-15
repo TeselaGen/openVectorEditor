@@ -189,6 +189,7 @@ export class RowView extends React.Component {
       selectionLayer: selectionLayerOld = {},
       matchedSearchLayer: matchedSearchLayerOld = {}
     } = oldProps;
+
     const bpsPerRow = getBpsPerRow(newProps);
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     // let previousBp;
@@ -217,7 +218,8 @@ export class RowView extends React.Component {
       ((selectionLayer.forceUpdate &&
         selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate &&
         selectionLayer.forceUpdate !== "end") ||
-        selectionLayer.start !== selectionLayerOld.start)
+        (selectionLayer.start !== selectionLayerOld.start &&
+          !selectionLayer.isFromRowView))
     ) {
       // previousBp = selectionLayerOld.start;
       scrollToBp = selectionLayer.start;
@@ -226,7 +228,8 @@ export class RowView extends React.Component {
       ((selectionLayer.forceUpdate &&
         selectionLayer.forceUpdate !== selectionLayerOld.forceUpdate &&
         selectionLayer.forceUpdate !== "start") ||
-        selectionLayer.end !== selectionLayerOld.end)
+        (selectionLayer.end !== selectionLayerOld.end &&
+          !selectionLayer.isFromRowView))
     ) {
       // previousBp = selectionLayerOld.end;
       scrollToBp = selectionLayer.end;
