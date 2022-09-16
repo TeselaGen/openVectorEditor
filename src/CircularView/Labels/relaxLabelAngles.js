@@ -15,7 +15,7 @@ function normalizeAngle(angle) {
 //this pure function allows the labels to spread out around the circle
 //and groups overlapping labels together if necessary
 function relaxLabelAngles(_labelPoints, spacing, maxradius) {
-  let maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
+  const maxLabelsPerQuadrant = Math.floor(maxradius / spacing) + 4;
   let labels = cloneDeep(_labelPoints);
   if (labels.length > maxLabelsPerQuadrant * 4) {
     //group overlapping labels together
@@ -24,7 +24,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
   // labels = labels.sort(sortLabelsByAngle)
 
   // Sort labels into four quadrants of the screen.
-  let totalLength = Math.PI * 2;
+  const totalLength = Math.PI * 2;
 
   let rightTopLabels = [];
   let rightBottomLabels = [];
@@ -35,7 +35,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
   for (let i = 0; i < labels.length; i++) {
     label = labels[i];
     label.angle = normalizeAngle(label.angle);
-    let labelCenter = label.angle;
+    const labelCenter = label.angle;
     if (labelCenter <= totalLength / 4) {
       rightTopLabels.push(label);
     } else if (
@@ -54,7 +54,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
   }
 
   function repositionAndGroupLabels(labels /* logtrue */) {
-    let extraSpaces = Math.max(maxLabelsPerQuadrant - labels.length, 0);
+    const extraSpaces = Math.max(maxLabelsPerQuadrant - labels.length, 0);
     let lastLabelYPosition = 0 - spacing / 2; // spacing to count label height
     let lastlabel;
     return labels
@@ -66,7 +66,7 @@ function relaxLabelAngles(_labelPoints, spacing, maxradius) {
         }
         lastlabel = label;
         if (label.y < lastLabelYPosition) {
-          let naturalSlot = Math.floor(Math.abs(label.y / spacing));
+          const naturalSlot = Math.floor(Math.abs(label.y / spacing));
           if (naturalSlot > extraSpaces) {
             if (idx < naturalSlot && extraSpaces > 0) {
               lastLabelYPosition = label.y;
@@ -136,11 +136,11 @@ function sortLabelsByAngleReverse(b, a) {
 
 //function that groups labels that fall within the same angle together
 function combineLabels(labels, numberOfBuckets) {
-  let buckets = {};
+  const buckets = {};
   Object.keys(labels).forEach(function (key) {
-    let label = labels[key];
+    const label = labels[key];
 
-    let bucket = Math.floor(
+    const bucket = Math.floor(
       (label.annotationCenterAngle / 6.29) * numberOfBuckets
     );
     if (!buckets[bucket]) {
@@ -150,7 +150,7 @@ function combineLabels(labels, numberOfBuckets) {
       buckets[bucket].labelIds[label.id] = true;
     }
   });
-  let combinedLabels = Object.keys(buckets).map(function (key) {
+  const combinedLabels = Object.keys(buckets).map(function (key) {
     return buckets[key];
   });
   return combinedLabels;

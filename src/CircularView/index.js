@@ -461,6 +461,7 @@ export function CircularView(props) {
         outerRadius: radius,
         noRedux,
         isProtein,
+        extraSideSpace: Math.max(0, width - height),
         onClick: props[singularName + "Clicked"],
         onDoubleClick: props[singularName + "DoubleClicked"],
         onRightClicked: props[singularName + "RightClicked"],

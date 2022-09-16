@@ -148,7 +148,7 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
                     id: "fakeId2",
                     color: "green",
                     start: 1,
-                    end: 20
+                    end: 70
                   }
                 ],
                 parts: [

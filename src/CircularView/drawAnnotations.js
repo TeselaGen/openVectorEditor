@@ -225,7 +225,6 @@ function drawAnnotations(props) {
         //   // }
         // }
       }
-
       if (showLabels && !ellipsizedName) {
         //add labels to the exported label array (to be drawn by the label component)
         labels[annotation.id] = {

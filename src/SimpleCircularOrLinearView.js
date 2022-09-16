@@ -168,6 +168,7 @@ export default (props) => {
         )}
         <Component
           {...{
+            showCicularViewInternalLabels: true,
             className: "tg-simple-dna-view veEditor",
             width: 300,
             height: 300,
