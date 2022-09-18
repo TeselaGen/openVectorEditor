@@ -670,6 +670,11 @@ This option allows for labels that are too big to usually fit into an annotation
               })}
               {renderToggle({
                 that: this,
+                type: "smartCircViewLabelRender",
+                info: `Only take as much space as necessary when drawing circular view labels`
+              })}
+              {renderToggle({
+                that: this,
                 label: "Customize tool bar",
                 type: "overrideToolbarOptions",
                 info: `//This is an example of how to pass custom tool overrides:
@@ -1886,6 +1891,7 @@ clickOverrides: {
             style={{
               ...(this.state.showDemoOptions && { paddingLeft: 250 })
             }}
+            {...this.state}
             {...(this.state.readOnly && { readOnly: true })}
             {...(!this.state.truncateLabelsThatDoNotFit && {
               truncateLabelsThatDoNotFit: false

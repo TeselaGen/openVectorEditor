@@ -232,6 +232,23 @@ Cypress.Commands.add("selectRange", (start, end) => {
   });
 });
 
+/**
+ * Update the editor
+ */
+// Cypress.Commands.add("updateEditor", ({min,max,tolerance}) => {
+//   const minRange = toRegexRange(min-tolerance,min+tolerance)
+//   const maxRange = toRegexRange(max-tolerance,max+tolerance)
+//   const checkString = new RegExp(`[title="Caret Between Bases ` + minRange + ` and ` + maxRange + `"]`)
+//   cy.get(checkString)
+//   });
+
+Cypress.Commands.add("updateEditor", (props) => {
+  cy.log(`updateEditor`);
+  cy.window().then((win) => {
+    win.ove_updateEditor(props);
+  });
+});
+
 Cypress.Commands.add("deleteRange", (start, end) => {
   cy.window().then((win) => {
     const { sequenceData } = win.ove_getEditorState();

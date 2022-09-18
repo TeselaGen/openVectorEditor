@@ -1,6 +1,23 @@
 describe("miscAnnotations", function () {
   it("can display lineageAnnotations and assemblyPieces and click them", function () {
-    cy.visit("#/Editor?showCicularViewInternalLabels=false");
+    cy.visit(
+      "#/Editor?showCicularViewInternalLabels=false&setDefaultVisibilities=true"
+    );
+    cy.updateEditor({
+      panelsShown: [
+        [
+          {
+            id: "rail",
+            name: "Linear Map"
+          },
+          {
+            id: "circular",
+            name: "Circular Map",
+            active: true
+          }
+        ]
+      ]
+    });
     cy.tgToggle("showLineageAnnotations");
     cy.contains("Lineage Annotation 1");
     cy.contains(".veLabelText", "Lineage Annotation 2").click();

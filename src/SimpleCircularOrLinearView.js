@@ -178,6 +178,7 @@ export default (props) => {
               width: width - 10,
               height: height - 10
             }),
+            smartCircViewLabelRender: true,
             caretPosition,
             smallSlider,
             readOnly: true,

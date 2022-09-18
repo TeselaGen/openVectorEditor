@@ -9,6 +9,7 @@ export const userDefinedHandlersAndOpts = [
   "allowPartsToOverlapSelf",
   "allowPrimerBasesToBeEdited",
   "truncateLabelsThatDoNotFit",
+  "smartCircViewLabelRender",
   "allPartTags",
   "editTagsLink",
   "readOnly",

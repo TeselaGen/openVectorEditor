@@ -19,6 +19,7 @@ const getTextLength = (text) => {
 function Labels({
   labels = [],
   extraSideSpace,
+  smartCircViewLabelRender,
   radius: outerRadius,
   editorName,
   noRedux,
@@ -37,7 +38,7 @@ function Labels({
     };
   }
   const originalOuterRadius = outerRadius;
-  outerRadius += 10;
+  outerRadius += smartCircViewLabelRender ? 10 : 25;
   const radius = outerRadius;
   const outerPointRadius = outerRadius - 20;
   //we don't want the labels to grow too large on large screen devices,
@@ -94,15 +95,17 @@ function Labels({
   const groupedLabels = relaxLabelAngles(labelPoints, fontHeight, outerRadius)
     .filter((l) => !!l)
     .map((originalLabel) => {
-      const newR = Math.sqrt(
-        Math.pow(
-          Math.abs(originalLabel.x) +
-            Math.max(0, originalLabel.text.length * 11 - extraSideSpace / 2),
-          2
-        ) + Math.pow(Math.abs(originalLabel.y), 2)
-      );
+      if (smartCircViewLabelRender) {
+        const newR = Math.sqrt(
+          Math.pow(
+            Math.abs(originalLabel.x) +
+              Math.max(0, originalLabel.text.length * 11 - extraSideSpace / 2),
+            2
+          ) + Math.pow(Math.abs(originalLabel.y), 2)
+        );
 
-      if (newR > maxRadius) maxRadius = newR;
+        if (newR > maxRadius) maxRadius = newR;
+      }
       //we need to search the labelGroup to see if any of the sub labels are highPriorityLabels
       //if they are, they should take precedence as the main group identifier
       if (originalLabel.highPriorityLabel) {
@@ -181,7 +184,9 @@ function Labels({
     //we use the <use> tag to position the hovered label group at the top of the stack
     //point events: none is to fix a click bug..
     //http://stackoverflow.com/questions/24078524/svg-click-events-not-firing-bubbling-when-using-use-element
-    height: Math.min(105, maxRadius - originalOuterRadius)
+    height: smartCircViewLabelRender
+      ? Math.min(105, maxRadius - originalOuterRadius)
+      : 120
   };
 }
 export default Labels;

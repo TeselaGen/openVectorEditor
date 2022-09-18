@@ -98,6 +98,13 @@ declare namespace Cypress {
      */
     deleteRange(start, end): void;
     /**
+     * updateEditor
+     * update the editor
+     * @example
+     * cy.updateEditor({panelsShown: []}) 
+     */
+    updateEditor(start, end): void;
+    /**
      * deleteSelection
      * deletes the selected range
      * @example
