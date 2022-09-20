@@ -14,7 +14,8 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Icon
+  Icon,
+  Spinner
 } from "@blueprintjs/core";
 import {
   InfoHelper,
@@ -237,7 +238,7 @@ export class AlignmentView extends React.Component {
     const { alignmentTracks: [template] = [] } = this.props;
     return template.alignmentData.sequence.length || 1;
   };
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     if (
       prevProps.scrollPercentageToJumpTo !==
         this.props.scrollPercentageToJumpTo &&
@@ -252,7 +253,15 @@ export class AlignmentView extends React.Component {
       prevProps.stateTrackingId &&
       this.props.stateTrackingId !== prevProps.stateTrackingId
     ) {
-      this.props.handleAlignmentSave(this.props);
+      this.setState({ saveMessage: "Sequence Saving.." });
+      this.setState({ saveMessageLoading: true });
+      await this.props.handleAlignmentSave(this.props);
+      this.setState({ saveMessage: "Sequence Saved" });
+      this.setState({ saveMessageLoading: false });
+      setTimeout(() => {
+        this.setState({ saveMessage: undefined });
+        this.setState({ saveMessageLoading: false });
+      }, 5000);
     }
   }
   componentDidMount() {
@@ -1514,6 +1523,27 @@ export class AlignmentView extends React.Component {
                     />
                   )}
                   {additionalTopEl}
+                  {this.state.saveMessage && (
+                    <div
+                      className="ove-menu-toast"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: "auto",
+                        marginRight: 10
+                      }}
+                    >
+                      {this.state.saveMessageLoading ? (
+                        <div>
+                          <Spinner size={15}></Spinner>
+                        </div>
+                      ) : (
+                        <Icon icon="tick-circle" intent="success"></Icon>
+                      )}{" "}
+                      &nbsp;
+                      {this.state.saveMessage}
+                    </div>
+                  )}
                 </div>
                 {hasTemplate ? (
                   <React.Fragment>
