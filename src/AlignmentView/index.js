@@ -85,8 +85,8 @@ import { getGaps } from "./getGaps";
 import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
+import Draggable from "react-draggable";
 
-const nameDivWidth = 140;
 let charWidthInLinearViewDefault = 12;
 try {
   const newVal = JSON.parse(
@@ -127,11 +127,14 @@ export class AlignmentView extends React.Component {
     const rowDomNode = this.veTracksAndAlignmentHolder;
     const boundingRowRect = rowDomNode.getBoundingClientRect();
     const maxEnd = this.getMaxLength();
-    if (getClientX(event) - boundingRowRect.left - 140 < 0) {
+    if (
+      getClientX(event) - boundingRowRect.left - this.state.nameDivWidth <
+      0
+    ) {
       nearestCaretPos = 0;
     } else {
       const clickXPositionRelativeToRowContainer =
-        getClientX(event) - boundingRowRect.left - 140;
+        getClientX(event) - boundingRowRect.left - this.state.nameDivWidth;
       const numberOfBPsInFromRowStart = Math.floor(
         (clickXPositionRelativeToRowContainer + this.charWidth / 2) /
           this.charWidth
@@ -214,7 +217,8 @@ export class AlignmentView extends React.Component {
     isTrackDragging: false,
     charWidthInLinearView: charWidthInLinearViewDefault,
     scrollAlignmentView: false,
-    width: 0
+    width: 0,
+    nameDivWidth: 140
   };
   easyStore = store({
     selectionLayer: { start: -1, end: -1 },
@@ -226,8 +230,10 @@ export class AlignmentView extends React.Component {
 
   getMinCharWidth = (noNameDiv) => {
     const toReturn = Math.min(
-      Math.max(this.state.width - (noNameDiv ? 0 : nameDivWidth) - 5, 1) /
-        this.getSequenceLength(),
+      Math.max(
+        this.state.width - (noNameDiv ? 0 : this.state.nameDivWidth) - 5,
+        1
+      ) / this.getSequenceLength(),
       10
     );
     if (isNaN(toReturn)) return 10;
@@ -370,7 +376,8 @@ export class AlignmentView extends React.Component {
   };
   getNumBpsShownInLinearView = () => {
     const toReturn =
-      (this.state.width - nameDivWidth) / this.getCharWidthInLinearView();
+      (this.state.width - this.state.nameDivWidth) /
+      this.getCharWidthInLinearView();
     return toReturn || 0;
   };
   setVerticalScrollRange = throttle(() => {
@@ -435,7 +442,8 @@ export class AlignmentView extends React.Component {
     const percentageOfSpace = newSliderSize / this.state.width;
     const seqLength = this.getSequenceLength();
     const numBpsInView = seqLength * percentageOfSpace;
-    const newCharWidth = (this.state.width - nameDivWidth) / numBpsInView;
+    const newCharWidth =
+      (this.state.width - this.state.nameDivWidth) / numBpsInView;
     this.blockScroll = true;
     this.setCharWidthInLinearView({ charWidthInLinearView: newCharWidth });
     setTimeout(() => {
@@ -705,82 +713,135 @@ export class AlignmentView extends React.Component {
       >
         <div
           className="alignmentTrackName"
-          {...provided?.dragHandleProps}
           style={{
             position: "sticky",
             left: 0,
             zIndex: 10,
-            cursor:
-              !isPairwise && allowTrackRearrange && !isTemplate ? "move" : "",
             borderBottom: `1px solid ${isTemplate ? "red" : "lightgray"}`,
             borderRight: `1px solid ${isTemplate ? "red" : "lightgray"}`,
-            width: nameDivWidth - 3,
+            width: this.state.nameDivWidth - 3,
             padding: 2,
             marginRight: 3,
             paddingBottom: 0,
-            minWidth: nameDivWidth - 3,
-            overflowY: "auto",
+            minWidth: this.state.nameDivWidth - 3,
+            overflow: "hidden",
             scrollbarWidth: "none",
-            whiteSpace: "nowrap",
-            ...(compactNames && {
-              display: "flex",
-              alignItems: "flex-start"
-            })
+            whiteSpace: "nowrap"
           }}
           title={name}
           key={i}
         >
           <div
-            className="alignmentTrackNameDiv"
+            {...provided?.dragHandleProps}
             style={{
-              background: "#3FA6DA",
-              display: "inline-block",
-              color: "white",
-              borderRadius: 5,
-              paddingRight: 5,
               ...(compactNames && {
-                marginRight: 5
-              })
+                display: "flex",
+                alignItems: "flex-start"
+              }),
+              cursor:
+                !isPairwise && allowTrackRearrange && !isTemplate ? "move" : ""
             }}
           >
-            {allowTrackNameEdit && (
-              <Button
-                onClick={() => {
-                  showDialog({
-                    ModalComponent: EditTrackNameDialog,
-                    props: {
-                      initialValues: {
-                        name
-                      },
-                      updateName: ({ newName }) => {
-                        updateTrackHelper({
-                          upsertAlignmentRun,
-                          alignmentId,
-                          alignmentTracks,
-                          alignmentTrackIndex: i,
-                          update: { name: newName }
-                        });
+            <div
+              className="alignmentTrackNameDiv"
+              style={{
+                background: "#3FA6DA",
+                display: "inline-block",
+                color: "white",
+                borderRadius: 5,
+                paddingRight: 5,
+                ...(compactNames && {
+                  marginRight: 5
+                })
+              }}
+            >
+              {allowTrackNameEdit && (
+                <Button
+                  onClick={() => {
+                    showDialog({
+                      ModalComponent: EditTrackNameDialog,
+                      props: {
+                        initialValues: {
+                          name
+                        },
+                        updateName: ({ newName }) => {
+                          updateTrackHelper({
+                            upsertAlignmentRun,
+                            alignmentId,
+                            alignmentTracks,
+                            alignmentTrackIndex: i,
+                            update: { name: newName }
+                          });
+                        }
                       }
-                    }
-                  });
-                }}
-                small
-                className="edit-track-name-btn"
-                icon={<Icon size={12} color="lightgrey" icon="edit"></Icon>}
-                minimal
-              ></Button>
-            )}
-            {name}
+                    });
+                  }}
+                  small
+                  className="edit-track-name-btn"
+                  icon={<Icon size={12} color="lightgrey" icon="edit"></Icon>}
+                  minimal
+                ></Button>
+              )}
+              {name}
+            </div>
+            <div style={{ fontSize: 10 }}>
+              <Icon
+                color="darkgrey"
+                style={{ marginRight: 10 }}
+                icon="arrow-right"
+              ></Icon>
+              {sequenceData.sequence.length} bps
+            </div>
           </div>
-          <div style={{ fontSize: 10 }}>
-            <Icon
-              color="darkgrey"
-              style={{ marginRight: 10 }}
-              icon="arrow-right"
-            ></Icon>
-            {sequenceData.sequence.length} bps
-          </div>
+          <Draggable
+            axis="x"
+            position={{ x: 0, y: 0 }}
+            defaultPosition={{ x: 0, y: 0 }}
+            onStart={(e, { x }) => {
+              this.xStart = x;
+              this.nameDivStart = this.state.nameDivWidth;
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onStop={() => {}}
+            onDrag={(e, { x }) => {
+              e.stopPropagation();
+              e.preventDefault();
+              this.setState({ nameDivWidth: this.nameDivStart + x });
+            }}
+          >
+            <div
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onMouseMove={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onDrag={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              style={{
+                position: "absolute",
+                top: 0,
+                right: -1,
+                zIndex: 1000,
+                height: "100%",
+                cursor: "ew-resize",
+                width: 3,
+                opacity: 0,
+                background: "blue"
+              }}
+            ></div>
+          </Draggable>
         </div>
+
         {handleSelectTrack && !isTemplate && (
           <div
             onClick={() => {
@@ -790,7 +851,7 @@ export class AlignmentView extends React.Component {
               position: "absolute",
               opacity: 0,
               height: "100%",
-              left: nameDivWidth,
+              left: this.state.nameDivWidth,
               width: linearViewWidth,
               fontWeight: "bolder",
               cursor: "pointer",
@@ -876,7 +937,8 @@ export class AlignmentView extends React.Component {
     );
   };
   handleResize = throttle(([e]) => {
-    this.easyStore.viewportWidth = e.contentRect.width - nameDivWidth || 400;
+    this.easyStore.viewportWidth =
+      e.contentRect.width - this.state.nameDivWidth || 400;
     this.setState({ width: e.contentRect.width });
   }, 200);
 
@@ -1088,7 +1150,7 @@ export class AlignmentView extends React.Component {
                   }
                 >
                   <PerformantSelectionLayer
-                    leftMargin={140}
+                    leftMargin={this.state.nameDivWidth}
                     className="veAlignmentSelectionLayer"
                     isDraggable
                     selectionLayerRightClicked={
@@ -1226,7 +1288,7 @@ export class AlignmentView extends React.Component {
                     row={{ start: 0, end: sequenceLength - 1 }}
                   ></PerformantSelectionLayer>
                   <PerformantCaret
-                    leftMargin={140}
+                    leftMargin={this.state.nameDivWidth}
                     className="veAlignmentSelectionLayer"
                     isDraggable
                     sequenceLength={sequenceLength}
@@ -1600,7 +1662,7 @@ export class AlignmentView extends React.Component {
                       width: Math.max(this.state.width, 10) || 10
                     },
                     nameDivOffsetPercent: 0,
-                    // nameDivWidth / this.getMaxLinearViewWidth(),
+                    // this.state.nameDivWidth / this.getMaxLinearViewWidth(),
                     scrollYToTrack: this.scrollYToTrack,
                     onSizeAdjust: this.onMinimapSizeAdjust,
                     minSliderSize,
