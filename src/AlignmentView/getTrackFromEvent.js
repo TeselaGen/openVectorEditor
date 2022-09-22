@@ -1,6 +1,6 @@
 import { getClientX, getClientY } from "../utils/editorUtils";
 
-export function getTrackFromEvent(event, alignmentTracks) {
+export function getTrackFromEvent(event, allTracks) {
   const trackContainers = document.querySelectorAll(
     ".alignmentViewTrackContainer"
   );
@@ -16,7 +16,7 @@ export function getTrackFromEvent(event, alignmentTracks) {
       mouseY <= t.getBoundingClientRect().top + t.getBoundingClientRect().height
     ) {
       const index = t.getAttribute("data-alignment-track-index");
-      track = alignmentTracks[index];
+      track = allTracks[index];
       track.index = index;
       return true;
     }

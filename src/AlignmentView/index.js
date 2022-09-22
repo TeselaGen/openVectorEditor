@@ -31,7 +31,8 @@ import {
   some,
   forEach,
   isFunction,
-  unset
+  unset,
+  omit
 } from "lodash";
 import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
@@ -261,7 +262,15 @@ export class AlignmentView extends React.Component {
     ) {
       this.setState({ saveMessage: "Sequence Saving.." });
       this.setState({ saveMessageLoading: true });
-      await this.props.handleAlignmentSave(this.props);
+
+      let cleanedTracks;
+      if (this.props.pairwiseAlignments) {
+        cleanedTracks = this.props.pairwiseAlignments.map(cleanTracks);
+      } else {
+        cleanedTracks = cleanTracks(this.props.alignmentTracks);
+      }
+
+      await this.props.handleAlignmentSave(cleanedTracks, this.props);
       this.setState({ saveMessage: "Sequence Saved" });
       this.setState({ saveMessageLoading: false });
       setTimeout(() => {
@@ -523,6 +532,10 @@ export class AlignmentView extends React.Component {
   renderItem = (_i, key, isTemplate, cloneProps) => {
     const charWidthInLinearView = this.getCharWidthInLinearView();
     const {
+      alignmentTrackIndex,
+      pairwiseAlignments,
+      currentPairwiseAlignmentIndex,
+      pairwiseOverviewAlignmentTracks,
       alignmentTracks = [],
       upsertAlignmentRun,
       alignmentId,
@@ -693,7 +706,7 @@ export class AlignmentView extends React.Component {
         className: "tg-trimmed-region",
         color: "gray"
       }));
-    const inner = (provided = {}, snapshot) => (
+    const innerRenderItem = (provided = {}, snapshot) => (
       <div
         ref={provided?.innerRef}
         {...provided?.draggableProps}
@@ -766,6 +779,8 @@ export class AlignmentView extends React.Component {
                         },
                         updateName: ({ newName }) => {
                           updateTrackHelper({
+                            currentPairwiseAlignmentIndex,
+                            pairwiseAlignments,
                             upsertAlignmentRun,
                             alignmentId,
                             alignmentTracks,
@@ -922,8 +937,9 @@ export class AlignmentView extends React.Component {
         />
       </div>
     );
-    if (isTemplate) return inner();
-    if (cloneProps) return inner(cloneProps.provided, cloneProps.snapshot);
+    if (isTemplate) return innerRenderItem();
+    if (cloneProps)
+      return innerRenderItem(cloneProps.provided, cloneProps.snapshot);
     const idToUse = alignmentData.id || sequenceData.id || i + "_index_id";
     return (
       <DndDraggable
@@ -932,7 +948,7 @@ export class AlignmentView extends React.Component {
         isDragDisabled={isDragDisabled}
         draggableId={idToUse.toString()}
       >
-        {inner}
+        {innerRenderItem}
       </DndDraggable>
     );
   };
@@ -1034,9 +1050,9 @@ export class AlignmentView extends React.Component {
       return "corrupted data!";
     }
 
-    const getTrackVis = (alignmentTracks, isTemplate) => {
+    const getTrackVis = (alignmentTracks, isTemplate, allTracks) => {
       const rowData = {};
-      const inner = (drop_provided, drop_snapshot) => {
+      const innerTrackVis = (drop_provided, drop_snapshot) => {
         return (
           <div
             className="alignmentTracks "
@@ -1065,9 +1081,10 @@ export class AlignmentView extends React.Component {
 
                 this.getTrackTrimmingOptions({
                   e,
-                  alignmentTracks,
+                  allTracks,
                   upsertAlignmentRun,
-                  alignmentId
+                  alignmentId,
+                  currentPairwiseAlignmentIndex
                 });
               }}
               onMouseLeave={this.removeMinimapHighlightForMouseLeave}
@@ -1160,10 +1177,7 @@ export class AlignmentView extends React.Component {
                           }
                         : (...args) => {
                             const { event } = args[0];
-                            const track = getTrackFromEvent(
-                              event,
-                              alignmentTracks
-                            );
+                            const track = getTrackFromEvent(event, allTracks);
 
                             const alignmentData = track.alignmentData;
                             const { name } = alignmentData;
@@ -1322,7 +1336,7 @@ export class AlignmentView extends React.Component {
           </div>
         );
       };
-      if (isTemplate) return inner();
+      if (isTemplate) return innerTrackVis();
       else
         return (
           <Droppable
@@ -1336,7 +1350,7 @@ export class AlignmentView extends React.Component {
             direction="vertical"
             droppableId={"droppable" + isTemplate ? "_no_drop" : ""}
           >
-            {inner}
+            {innerTrackVis}
           </Droppable>
         );
     };
@@ -1610,12 +1624,12 @@ export class AlignmentView extends React.Component {
                 {hasTemplate ? (
                   <React.Fragment>
                     <div className="alignmentTrackFixedToTop">
-                      {getTrackVis([firstTrack], true)}
+                      {getTrackVis([firstTrack], true, alignmentTracks)}
                     </div>
-                    {getTrackVis(otherTracks)}
+                    {getTrackVis(otherTracks, false, alignmentTracks)}
                   </React.Fragment>
                 ) : (
-                  getTrackVis(alignmentTracks)
+                  getTrackVis(alignmentTracks, false, alignmentTracks)
                 )}
               </div>
             </DragDropContext>
@@ -1696,11 +1710,12 @@ export class AlignmentView extends React.Component {
 
   getTrackTrimmingOptions({
     e,
-    alignmentTracks,
+    allTracks,
     upsertAlignmentRun,
+    currentPairwiseAlignmentIndex,
     alignmentId
   }) {
-    const track = getTrackFromEvent(e, alignmentTracks);
+    const track = getTrackFromEvent(e, allTracks);
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       e,
@@ -1745,9 +1760,10 @@ export class AlignmentView extends React.Component {
                 }),
               onClick: () => {
                 updateTrackHelper({
+                  currentPairwiseAlignmentIndex,
                   upsertAlignmentRun,
                   alignmentId,
-                  alignmentTracks,
+                  alignmentTracks: allTracks,
                   alignmentTrackIndex: track.index,
                   update: {
                     trimmedRange: {
@@ -1778,9 +1794,10 @@ export class AlignmentView extends React.Component {
                 }),
               onClick: () => {
                 updateTrackHelper({
+                  currentPairwiseAlignmentIndex,
                   upsertAlignmentRun,
                   alignmentId,
-                  alignmentTracks,
+                  alignmentTracks: allTracks,
                   alignmentTrackIndex: track.index,
                   update: {
                     trimmedRange: {
@@ -1986,3 +2003,13 @@ export default compose(
 const PerformantCaret = view(({ easyStore, ...rest }) => {
   return <Caret caretPosition={easyStore.caretPosition} {...rest} />;
 });
+
+function cleanTracks(alignmentTracks) {
+  return alignmentTracks.map((t) => {
+    return omit(t, [
+      "matchHighlightRanges",
+      "additionalSelectionLayers",
+      "mismatches"
+    ]);
+  });
+}

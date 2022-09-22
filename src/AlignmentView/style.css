@@ -5,6 +5,9 @@
 .alignmentViewTrackContainer:hover .alignmentViewSelectTrackPopover {
   opacity: 0.9 !important;
 }
+.alignmentViewTrackContainer {
+  position: relative;
+}
 .alignmentViewTrackContainer,
 .alignmentViewTrackContainer .veVectorInteractionWrapper,
 .alignmentViewTrackContainer .veVectorInteractionWrapper > div {

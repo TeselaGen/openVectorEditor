@@ -26,6 +26,7 @@ export class PairwiseAlignmentView extends React.Component {
                 .map(() => "a")
                 .join("")
             },
+            allowTrackRearrange: false,
             alignmentTracks,
             hasTemplate: true,
             isPairwise: true,
@@ -47,6 +48,8 @@ export class PairwiseAlignmentView extends React.Component {
           {...{
             ...this.props,
             alignmentTracks: pairwiseOverviewAlignmentTracks,
+            allowTrackRearrange: false,
+            allowTrimming: false,
             hasTemplate: true,
             isPairwise: true,
             isInPairwiseOverviewView: true,

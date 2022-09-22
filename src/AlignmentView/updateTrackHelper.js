@@ -1,30 +1,56 @@
 import { insertItem, removeItem } from "../utils/arrayUtils";
 
 export function updateTrackHelper({
+  currentPairwiseAlignmentIndex,
+  pairwiseAlignments,
   upsertAlignmentRun,
   alignmentId,
   alignmentTracks,
   alignmentTrackIndex,
   update
 }) {
-  const removed = removeItem(alignmentTracks, alignmentTrackIndex);
-  const newAlignmentTracks = insertItem(
-    removed,
-    {
-      ...alignmentTracks[alignmentTrackIndex],
-      alignmentData: {
-        ...alignmentTracks[alignmentTrackIndex].alignmentData,
-        ...update
+  const updateATs = (atsToUse, alignmentTrackIndex) => {
+    const removed = removeItem(atsToUse, alignmentTrackIndex);
+    return insertItem(
+      removed,
+      {
+        ...atsToUse[alignmentTrackIndex],
+        alignmentData: {
+          ...atsToUse[alignmentTrackIndex].alignmentData,
+          ...update
+        },
+        sequenceData: {
+          ...atsToUse[alignmentTrackIndex].sequenceData,
+          ...update
+        }
       },
-      sequenceData: {
-        ...alignmentTracks[alignmentTrackIndex].sequenceData,
-        ...update
-      }
-    },
-    alignmentTrackIndex
-  );
+      alignmentTrackIndex
+    );
+  };
+
   upsertAlignmentRun({
     id: alignmentId,
-    alignmentTracks: newAlignmentTracks
+    ...(pairwiseAlignments
+      ? {
+          pairwiseAlignments: pairwiseAlignments.map((ats, i) => {
+            if (alignmentTrackIndex === 0) {
+              return updateATs(ats, 0);
+            }
+            if (
+              currentPairwiseAlignmentIndex !== undefined
+                ? currentPairwiseAlignmentIndex === i
+                : alignmentTrackIndex - 1 === i
+            ) {
+              return updateATs(ats, 1);
+            }
+            return ats;
+          })
+        }
+      : {
+          alignmentTracks: updateATs(
+            alignmentTracks,
+            Number(alignmentTrackIndex)
+          )
+        })
   });
 }
