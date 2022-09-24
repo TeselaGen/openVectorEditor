@@ -260,7 +260,7 @@ export class AlignmentView extends React.Component {
       prevProps.stateTrackingId &&
       this.props.stateTrackingId !== prevProps.stateTrackingId
     ) {
-      this.setState({ saveMessage: "Sequence Saving.." });
+      this.setState({ saveMessage: "Alignment Saving.." });
       this.setState({ saveMessageLoading: true });
 
       let cleanedTracks;
@@ -271,7 +271,7 @@ export class AlignmentView extends React.Component {
       }
 
       await this.props.handleAlignmentSave(cleanedTracks, this.props);
-      this.setState({ saveMessage: "Sequence Saved" });
+      this.setState({ saveMessage: "Alignment Saved" });
       this.setState({ saveMessageLoading: false });
       setTimeout(() => {
         this.setState({ saveMessage: undefined });
