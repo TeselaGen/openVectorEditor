@@ -800,11 +800,11 @@ export class AlignmentView extends React.Component {
               {name}
             </div>
             <div style={{ fontSize: 10 }}>
-              <Icon
+              {/* <Icon
                 color="darkgrey"
                 style={{ marginRight: 10 }}
                 icon="arrow-right"
-              ></Icon>
+              ></Icon> */}
               {sequenceData.sequence.length} bps
             </div>
           </div>
