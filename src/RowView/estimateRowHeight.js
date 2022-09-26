@@ -1,6 +1,6 @@
 import { forEach } from "lodash";
 
-const debug = 0;
+const debug = 1;
 
 export const rowHeights = {
   rowJumpButtons: { height: 30 },
@@ -115,7 +115,6 @@ export default (props) => {
     (
       { height: _height, alwaysVisible, getHeight, hasYOffset, typeOverride },
       key
-      // i
     ) => {
       const shouldShow =
         alwaysVisible || annotationVisibility[typeOverride || key];
@@ -150,6 +149,9 @@ export default (props) => {
   );
   if (debug) {
     console.info(`totalHeight:`, totalHeight);
+  }
+  if (annotationVisibility.compactNames) {
+    totalHeight = Math.max(totalHeight, 31);
   }
   cache[index] = totalHeight;
   return totalHeight;

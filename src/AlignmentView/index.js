@@ -818,15 +818,17 @@ export class AlignmentView extends React.Component {
               e.preventDefault();
               e.stopPropagation();
             }}
-            onMouseDown={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
             onStop={() => {}}
             onDrag={(e, { x }) => {
               e.stopPropagation();
               e.preventDefault();
-              this.setState({ nameDivWidth: this.nameDivStart + x });
+
+              this.setState({
+                nameDivWidth: Math.min(
+                  this.nameDivStart + x,
+                  this.state.width - 20
+                )
+              });
             }}
           >
             <div
