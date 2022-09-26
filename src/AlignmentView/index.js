@@ -1,3 +1,4 @@
+import { HorizontalPanelDragHandle } from "./HorizontalPanelDragHandle";
 import {
   DragDropContext,
   Droppable,
@@ -72,7 +73,6 @@ import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 import { showDialog } from "../GlobalDialogUtils";
 import { GlobalDialog } from "../GlobalDialog";
 import { array_move } from "../ToolBar/array_move";
-// import { isElWithinAnotherEl } from "../withEditorInteractions/isElementInViewport";
 import classNames from "classnames";
 import { getTrackFromEvent } from "./getTrackFromEvent";
 import { PerformantSelectionLayer } from "./PerformantSelectionLayer";
@@ -86,7 +86,6 @@ import { getGaps } from "./getGaps";
 import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
-import Draggable from "react-draggable";
 
 let charWidthInLinearViewDefault = 12;
 try {
@@ -800,7 +799,7 @@ export class AlignmentView extends React.Component {
               {name}
             </div>
             <div style={{ fontSize: 10 }}>
-              {/* <Icon
+              {/* <Icon //tnr: add this once we support forward/reverse for each track
                 color="darkgrey"
                 style={{ marginRight: 10 }}
                 icon="arrow-right"
@@ -808,55 +807,16 @@ export class AlignmentView extends React.Component {
               {sequenceData.sequence.length} bps
             </div>
           </div>
-          <Draggable
-            axis="x"
-            position={{ x: 0, y: 0 }}
-            defaultPosition={{ x: 0, y: 0 }}
-            onStart={(e, { x }) => {
-              this.xStart = x;
-              this.nameDivStart = this.state.nameDivWidth;
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            onStop={() => {}}
-            onDrag={(e, { x }) => {
-              e.stopPropagation();
-              e.preventDefault();
-
+          <HorizontalPanelDragHandle
+            onDrag={({ dx }) => {
               this.setState({
                 nameDivWidth: Math.min(
-                  this.nameDivStart + x,
+                  this.state.nameDivWidth - dx,
                   this.state.width - 20
                 )
               });
             }}
-          >
-            <div
-              onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onMouseMove={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onDrag={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              style={{
-                position: "absolute",
-                top: 0,
-                right: -1,
-                zIndex: 1000,
-                height: "100%",
-                cursor: "ew-resize",
-                width: 3,
-                opacity: 0,
-                background: "blue"
-              }}
-            ></div>
-          </Draggable>
+          />
         </div>
 
         {handleSelectTrack && !isTemplate && (
