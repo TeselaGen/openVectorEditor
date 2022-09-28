@@ -145,6 +145,7 @@ export default (state = {}, { payload = {}, type }) => {
     const { id } = payload;
     const payloadToUse = {
       stateTrackingId: state[id]?.stateTrackingId ? shortid() : "initialLoadId",
+      alignmentType: state[id]?.alignmentType,
       ...payload,
       //assign default visibilities
       ...defaultVisibilityTypes.reduce((acc, type) => {
@@ -243,7 +244,10 @@ export default (state = {}, { payload = {}, type }) => {
     });
     return {
       ...state,
-      [payload.id]: { ...payloadToUse, hasError }
+      [payload.id]: {
+        ...payloadToUse,
+        hasError
+      }
     };
   }
   return state;

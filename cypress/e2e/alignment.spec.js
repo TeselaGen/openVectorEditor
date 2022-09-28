@@ -34,6 +34,7 @@ describe("alignment", function () {
   it("allowTrackNameEdit should work properly and shouldAutosave should work properly for alignments", function () {
     cy.visit("#/Alignment");
     cy.contains("F05206 lallasdfasldfalsdflasdf");
+    cy.get(`.veAlignmentType:contains(Multiple Sequence Alignment)`);
     cy.get(".edit-track-name-btn").should("not.exist");
     cy.tgToggle("shouldAutosave");
     cy.tgToggle("allowTrackNameEdit");
@@ -41,6 +42,7 @@ describe("alignment", function () {
     cy.focused().type("{selectall}asdfasdf{enter}");
     cy.contains("F05206 lallasdfasldfalsdflasdf").should("not.exist");
     cy.contains(".alignmentTrackNameDiv", "asdfasdf");
+    cy.get(`.veAlignmentType:contains(Multiple Sequence Alignment)`);
     cy.contains("Autosave Triggered");
   });
   it("adding selection right click options should work", function () {
