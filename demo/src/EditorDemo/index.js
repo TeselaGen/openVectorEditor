@@ -1203,16 +1203,28 @@ sequenceData: {
                       sequenceData: {
                         parts: [
                           {
-                            start: 585,
-                            end: 973,
+                            start: 1,
+                            end: 584,
+                            fivePrimeOverhang: undefined,
+                            fivePrimeUnderhang: "tgca",
+                            fivePrimeDigestingEnzyme: "BssHII",
+                            threePrimeOverhang: undefined,
+                            threePrimeUnderhang: "gcgc",
+                            threePrimeDigestingEnzyme: "SapI",
+                            name: "Digest Part 1",
+                            id: "2asdfgag"
+                          },
+                          {
+                            start: 581,
+                            end: 976,
                             fivePrimeOverhang: "cgcg",
                             fivePrimeUnderhang: undefined,
                             fivePrimeDigestingEnzyme: "BssHII",
                             threePrimeOverhang: undefined,
                             threePrimeUnderhang: "gcg",
                             threePrimeDigestingEnzyme: "SapI",
-                            name: "Digest Part",
-                            id: "0"
+                            name: "Digest Part 2",
+                            id: "0wgawawg"
                           }
                         ]
                       }

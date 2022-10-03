@@ -54,7 +54,6 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
-import { hoveredAnnEasyStore } from "../helperComponents/withHover";
 
 const annotationClickHandlers = [
   "orfClicked",
@@ -462,12 +461,12 @@ function VectorInteractionHOC(Component /* options */) {
     annotationClicked = ({ event, annotation }) => {
       event.preventDefault && event.preventDefault();
       event.stopPropagation && event.stopPropagation();
-      if (hoveredAnnEasyStore.selectedAnn?.id === annotation?.id) {
-        hoveredAnnEasyStore.selectedAnn = undefined;
-        hoveredAnnEasyStore.hoveredAnn = undefined;
-      } else {
-        hoveredAnnEasyStore.selectedAnn = annotation;
-      }
+      // if (hoveredAnnEasyStore.selectedAnn?.id === annotation?.id) {
+      //   hoveredAnnEasyStore.selectedAnn = undefined;
+      //   hoveredAnnEasyStore.hoveredAnn = undefined;
+      // } else {
+      //   hoveredAnnEasyStore.selectedAnn = annotation;
+      // }
 
       const {
         annotationSelect,

@@ -95,3 +95,9 @@
 .tg-left-prime-direction {
   left: -10px;
 }
+.isBoldSeq {
+  stroke: black;
+}
+.bp3-dark .isBoldSeq {
+  stroke: white;
+}

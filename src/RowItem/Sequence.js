@@ -5,12 +5,9 @@ import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";
 import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
 import { hoveredAnnEasyStore } from "../helperComponents/withHover";
-import {
-  getOverlapsOfPotentiallyCircularRanges,
-  getRangeLength,
-  normalizeRange
-} from "ve-range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import { partOverhangs } from "./partOverhangs";
+import { isPositionWithinRange } from "ve-range-utils";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
@@ -35,8 +32,7 @@ class Sequence extends React.Component {
       alignmentData,
       sequenceLength,
       rowStart,
-      rowEnd,
-      getGaps
+      rowEnd
     } = this.props;
 
     // the fudge factor is used to position the sequence in the middle of the <text> element
@@ -45,56 +41,42 @@ class Sequence extends React.Component {
     const seqReadWidth = 0;
 
     const rowSeqLen = sequence.length;
-    let overhangsToDraw;
+    let overlapToBold;
+    let isDigestPart;
+    [hoveredAnnEasyStore.hoveredAnn].forEach((ann) => {
+      if (ann && !isReplacementLayer) {
+        let start = ann.start;
+        let end = ann.end - 1;
 
-    [hoveredAnnEasyStore.hoveredAnn, hoveredAnnEasyStore.selectedAnn].forEach(
-      (ann, i) => {
-        const isHovered = i === 0;
-        if (ann && !isReplacementLayer) {
-          partOverhangs.forEach((h) => {
-            if (ann[h]) {
-              if (h.includes("Underhang") && !isReverse) {
-                return;
-              } else if (h.includes("Overhang") && isReverse) {
-                return;
-              }
-              let overhangRange;
-              const overhangBps = ann[h];
-              if (h.includes("fivePrime")) {
-                overhangRange = {
-                  start: ann.start - overhangBps.length,
-                  end: ann.start - 1
-                };
-              } else {
-                overhangRange = {
-                  start: ann.end + 1,
-                  end: ann.end + overhangBps.length
-                };
-              }
-              const overlaps = getOverlapsOfPotentiallyCircularRanges(
-                normalizeRange(overhangRange, sequenceLength),
-                {
-                  start: rowStart,
-                  end: rowEnd
-                }
-              );
-              if (!overlaps) return;
-              overhangsToDraw = overhangsToDraw || [];
-              overlaps.forEach((overlap) => {
-                const rangeLength = getRangeLength(overlap, sequenceLength);
-                overhangsToDraw.push({
-                  isHovered,
-                  start: overlap.start - rowStart,
-                  end: overlap.end - rowStart,
-                  overhangBps,
-                  rangeLength
-                });
-              });
+        partOverhangs.forEach((h) => {
+          if (ann[h]) {
+            isDigestPart = true;
+            if (h.includes("Underhang") && isReverse) {
+              return;
+            } else if (h.includes("Overhang") && !isReverse) {
+              return;
             }
-          });
-        }
+            const overhangBps = ann[h];
+            if (h.includes("fivePrime")) {
+              start = start + overhangBps.length;
+            } else {
+              end = end - overhangBps.length;
+            }
+          }
+        });
+
+        overlapToBold = isDigestPart
+          ? getOverlapsOfPotentiallyCircularRanges(
+              { start, end },
+              {
+                start: rowStart,
+                end: rowEnd
+              },
+              sequenceLength
+            )
+          : undefined;
       }
-    );
+    });
 
     const style = {
       position: "relative",
@@ -147,11 +129,10 @@ class Sequence extends React.Component {
             textLength: (alignmentData ? seqReadWidth : width) - fudge - fudge2
           }}
         >
-          {sequence}
+          {getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength })}
         </text>
       );
     }
-    const gapsBefore = getGaps ? getGaps({ start: 0, end: 0 }).gapsBefore : 0;
     return (
       <div
         style={style}
@@ -196,19 +177,6 @@ class Sequence extends React.Component {
                 }}
               />
             )}
-            {overhangsToDraw &&
-              overhangsToDraw.map((overhangRange, i) => (
-                <Overhang
-                  key={i}
-                  {...{
-                    ...this.props,
-                    ...overhangRange,
-                    gapsBefore,
-                    fudge,
-                    totalWidth: width
-                  }}
-                />
-              ))}
             {inner}
           </svg>
         )}
@@ -283,31 +251,19 @@ class ColoredSequence extends React.Component {
   }
 }
 
-function Overhang({
-  height,
-  charWidth,
-  gapsBefore,
-  rangeLength,
-  isHovered,
-  overhangBps,
-  start,
-  fudge
-}) {
-  const i = start;
-  const width = Number(charWidth) * rangeLength - fudge;
-  const x = (i + gapsBefore) * charWidth;
-  const y = 0;
-  const d = `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
-    y + height
-  },Z`;
-  return (
-    <path
-      data-partoverhang={overhangBps}
-      style={{ zIndex: 100000000 }}
-      d={d}
-      stroke="purple"
-      strokeWidth={isHovered ? 4 : 3}
-      fill="none"
-    ></path>
-  );
+function getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength }) {
+  const toRet = [];
+  const [a, b] = overlapToBold || [];
+  for (let index = rowStart; index < sequence.length + rowStart; index++) {
+    const element = sequence[index - rowStart];
+    if (
+      (a && isPositionWithinRange(index, a, sequenceLength, true, true)) ||
+      (b && isPositionWithinRange(index, b, sequenceLength, true, true))
+    ) {
+      toRet.push(<tspan className="isBoldSeq">{element}</tspan>);
+    } else {
+      toRet.push(element);
+    }
+  }
+  return toRet;
 }
