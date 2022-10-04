@@ -6,7 +6,7 @@
   fill: #f5f8fa;
 }
 
-.bp3-dark .veEditor {
+.bp3-dark .veEditor:not(.tg-simple-dna-view) {
   background: #293742 !important;
 }
 
