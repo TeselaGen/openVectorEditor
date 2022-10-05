@@ -127,7 +127,7 @@ export default (props) => {
 
             {withChoosePreviewType && (
               <ButtonGroup>
-                <Tooltip content="Circular">
+                <Tooltip content="Circular View">
                   <Button
                     minimal={minimalPreviewTypeBtns}
                     className="tgPreviewTypeCircular"
@@ -137,7 +137,7 @@ export default (props) => {
                     icon="circle"
                   ></Button>
                 </Tooltip>
-                <Tooltip content="Linear">
+                <Tooltip content="Linear View">
                   <Button
                     minimal={minimalPreviewTypeBtns}
                     className="tgPreviewTypeLinear"
@@ -147,7 +147,7 @@ export default (props) => {
                     icon="layout-linear"
                   ></Button>
                 </Tooltip>
-                <Tooltip content="Row">
+                <Tooltip content="Sequence View">
                   <Button
                     minimal={minimalPreviewTypeBtns}
                     className="tgPreviewTypeRow"
