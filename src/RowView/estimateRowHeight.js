@@ -1,6 +1,7 @@
 import { forEach } from "lodash";
 
-const debug = 1;
+const debug = 0;
+// const debug = console.log("comment me back out!") || 1;
 
 export const rowHeights = {
   rowJumpButtons: { height: 30 },

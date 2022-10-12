@@ -17,7 +17,17 @@ export default class DropHandler extends React.Component {
         disabled={disabled}
         onClick={(evt) => evt.preventDefault()}
         multiple={false}
-        accept={[".gb", ".gbk", ".fasta", ".fa", ".gp", ".txt", ".dna", ".ab1"]}
+        accept={[
+          ".gb",
+          ".gbk",
+          ".fasta",
+          ".fa",
+          ".gp",
+          ".txt",
+          ".dna",
+          ".ab1",
+          ".json"
+        ]}
         onDropRejected={() => {
           window.toastr.error("Error: Incorrect File Type");
         }}

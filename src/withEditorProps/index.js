@@ -916,13 +916,18 @@ export function getShowGCContent(state, ownProps) {
 
 function jsonToJson(incomingJson) {
   return JSON.stringify(
-    omit(cleanUpTeselagenJsonForExport(incomingJson), [
-      "sequenceFragments",
-      "sequenceFeatures",
-      "cutsites",
-      "orfs",
-      "filteredParts",
-      "filteredFeatures"
-    ])
+    omit(
+      cleanUpTeselagenJsonForExport(
+        tidyUpSequenceData(incomingJson, { annotationsAsObjects: false })
+      ),
+      [
+        "sequenceFragments",
+        "sequenceFeatures",
+        "cutsites",
+        "orfs",
+        "filteredParts",
+        "filteredFeatures"
+      ]
+    )
   );
 }
