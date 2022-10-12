@@ -1,5 +1,10 @@
 import { featureColors } from "ve-sequence-utils";
-import { anyToJson, jsonToGenbank, jsonToFasta } from "bio-parsers";
+import {
+  anyToJson,
+  jsonToGenbank,
+  jsonToFasta,
+  cleanUpTeselagenJsonForExport
+} from "bio-parsers";
 import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
@@ -911,7 +916,7 @@ export function getShowGCContent(state, ownProps) {
 
 function jsonToJson(incomingJson) {
   return JSON.stringify(
-    omit(incomingJson, [
+    omit(cleanUpTeselagenJsonForExport(incomingJson), [
       "sequenceFragments",
       "sequenceFeatures",
       "cutsites",
