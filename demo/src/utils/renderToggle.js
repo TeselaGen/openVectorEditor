@@ -198,3 +198,46 @@ function ShowInfo({ description, info, type }) {
     </React.Fragment>
   );
 }
+
+export function useToggle({
+  type,
+  isButton,
+  label,
+  onClick,
+  info,
+  description,
+  hook,
+  defaultValue,
+  options,
+  disabled,
+  isSelect,
+  hidden,
+  alwaysShow,
+  hotkey,
+  ...rest
+}) {
+  const [val, setVal] = useState(defaultValue || false);
+  const comp = renderToggle({
+    type,
+    that: {
+      setState: (v) => {
+        setVal(v[type]);
+      },
+      [type]: val
+    },
+    isButton,
+    label,
+    onClick,
+    info,
+    description,
+    hook,
+    options,
+    disabled,
+    isSelect,
+    hidden,
+    alwaysShow,
+    hotkey,
+    ...rest
+  });
+  return [val, comp];
+}

@@ -68,6 +68,7 @@ export function autoAnnotatePrimers() {
 
 export const AutoAnnotateModal = compose(
   wrapDialog((p) => ({
+    canEscapeKeyClose: false,
     title: `Auto Annotate ${startCase(pluralize(p.annotationType))}`
   })),
   withEditorProps,
@@ -120,7 +121,55 @@ export const AutoAnnotateModal = compose(
           panel={
             <div>
               <div>
-                Select a CSV file with the following columns -<br></br>
+                Select a CSV file (
+                <a
+                  onClick={() => {
+                    const rows = [
+                      {
+                        name: `Example ${startCase(annotationType)} 1`,
+                        description: "I'm a description",
+                        sequence: `gatNNtacaggttt`,
+                        ...(annotationType === "feature" && {
+                          type: `cds`
+                        }),
+                        isRegex: false,
+                        matchType: "dna"
+                      },
+                      {
+                        name: `Example Protein ${startCase(annotationType)}`,
+                        description: "I'm a description",
+                        sequence: `APGSGTGGGSGSAPG`,
+                        ...(annotationType === "feature" && {
+                          type: `cds`
+                        }),
+                        isRegex: false,
+                        matchType: "protein"
+                      },
+                      {
+                        name: `Example ${startCase(annotationType)} 2`,
+                        description: "I'm another description",
+                        sequence: `gat.*tacccc.*aggttt`,
+                        ...(annotationType === "feature" && {
+                          type: `cds`
+                        }),
+                        isRegex: true,
+                        matchType: "dna"
+                      }
+                    ];
+                    const csv = unparse(rows);
+                    // const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
+                    // const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
+                    // FileSaver.saveAs(blob, filename);
+                    downloadjs(
+                      csv,
+                      `Example CSV Annotation Upload File.csv`,
+                      "text/plain"
+                    );
+                  }}
+                >
+                  download example
+                </a>
+                ) with the following columns:<br></br>
                 <br></br>
                 <div style={{ display: "flex" }}>
                   name,description,sequence,type,
@@ -154,44 +203,9 @@ export const AutoAnnotateModal = compose(
                     <br></br>
                   </React.Fragment>
                 )}
-                <br></br>
-                <a
-                  onClick={() => {
-                    const rows = [
-                      {
-                        name: `Example ${startCase(annotationType)} 1`,
-                        description: "I'm a description",
-                        sequence: `gatNNtacaggttt`,
-                        ...(annotationType === "feature" && {
-                          type: `cds`
-                        }),
-                        isRegex: false
-                      },
-                      {
-                        name: `Example ${startCase(annotationType)} 2`,
-                        description: "I'm another description",
-                        sequence: `gat.*tacccc.*aggttt`,
-                        ...(annotationType === "feature" && {
-                          type: `cds`
-                        }),
-                        isRegex: true
-                      }
-                    ];
-                    const csv = unparse(rows);
-                    // const blob = new Blob([convert(sequenceData)], { type: "text/plain" });
-                    // const filename = `${sequenceData.name || "Untitled_Sequence"}.${fileExt}`;
-                    // FileSaver.saveAs(blob, filename);
-                    downloadjs(
-                      csv,
-                      `Example CSV Annotation Upload File.csv`,
-                      "text/plain"
-                    );
-                  }}
-                >
-                  download example
-                </a>
               </div>
               <FileUploadField
+                validateAgainstSchema={validateAgainstSchema}
                 name="csvFile"
                 fileLimit={1}
                 isRequired
@@ -446,3 +460,38 @@ window._ove_addons.autoAnnotatePrimers = autoAnnotatePrimers;
 
 const customAnnsSchema = ["name", "sequence", typeField, "isRegex"];
 const customAnnsSchemaNoType = ["name", "sequence", typeField, "isRegex"];
+
+const validateAgainstSchema = {
+  fields: [
+    {
+      path: "name",
+      type: "string",
+      isRequired: true
+    },
+    {
+      path: "description",
+      type: "string"
+    },
+    {
+      path: "sequence",
+      type: "string",
+      isRequired: true
+    },
+    {
+      path: "type",
+      type: "dropdown",
+      values: FeatureTypes,
+      defaultValue: "misc_feature"
+    },
+    {
+      path: "isRegex",
+      type: "boolean"
+    },
+    {
+      path: "matchType",
+      type: "dropdown",
+      defaultValue: "dna",
+      values: ["dna", "protein"]
+    }
+  ]
+};
