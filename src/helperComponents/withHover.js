@@ -5,7 +5,7 @@ import React from "react";
 import { store } from "@risingstack/react-easy-state";
 import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
 import { withHandlers, branch } from "recompose";
-import { annotationTypes } from "ve-sequence-utils/lib";
+import { annotationTypes } from "ve-sequence-utils";
 
 export const HoveredIdContext = React.createContext({
   hoveredId: "" // default value
