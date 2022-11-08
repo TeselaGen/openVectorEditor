@@ -42,7 +42,8 @@ class CutsiteProperties extends React.Component {
   schema = {
     fields: [
       { path: "name", type: "string" },
-      { path: "numberOfCuts", type: "number" }
+      { path: "numberOfCuts", type: "number" },
+      { path: "groups", type: "string" }
     ]
   };
 
@@ -58,15 +59,23 @@ class CutsiteProperties extends React.Component {
     } = this.props;
 
     const { cutsitesByName, cutsitesById } = allCutsites;
-
     const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
       const name = cutsiteGroup[0].restrictionEnzyme.name;
+      let groups = "";
+      const exisitingEnzymeGroups = window.getExistingEnzymeGroups();
+
+      Object.keys(exisitingEnzymeGroups).forEach((key) => {
+        if (exisitingEnzymeGroups[key].includes(name)) groups += key;
+        groups += " ";
+      });
+
       return {
         cutsiteGroup,
         id: name,
         name,
         numberOfCuts: cutsiteGroup.length,
-        enzyme: cutsiteGroup[0].restrictionEnzyme
+        enzyme: cutsiteGroup[0].restrictionEnzyme,
+        groups
         // size: getRangeLength(cutsiteGroup, sequenceData.sequence.length)
       };
     });
