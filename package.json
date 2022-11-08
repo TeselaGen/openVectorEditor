@@ -60,7 +60,7 @@
     "redux-thunk": "2.4.1",
     "reselect": "^4.0.0",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "30.10.15",
+    "teselagen-react-components": "30.13.1",
     "tg-use-local-storage-state": "^16.0.1",
     "use-debounce": "^8.0.4",
     "use-local-storage-state": "^13.0.0",
