@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.1.41",
+  "version": "18.1.42",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -72,7 +72,7 @@
     "react-dom": "^16.9.0"
   },
   "optionalDependencies": {
-    "cypress": "^10.6.0"
+    "cypress": "^11.0.0"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",

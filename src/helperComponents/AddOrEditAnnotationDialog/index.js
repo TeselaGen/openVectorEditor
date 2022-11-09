@@ -28,7 +28,7 @@ import {
   checkIfPotentiallyCircularRangesOverlap,
   getRangeLength
 } from "ve-range-utils";
-import { tidyUpAnnotation, featureColors } from "ve-sequence-utils";
+import { tidyUpAnnotation, getFeatureToColorMap } from "ve-sequence-utils";
 import classNames from "classnames";
 import { store, view } from "@risingstack/react-easy-state";
 
@@ -265,7 +265,7 @@ class AddOrEditAnnotationDialog extends React.Component {
             updatedData.notes[key].push(value || "");
           });
           if (annotationTypePlural === "features") {
-            updatedData.color = featureColors[updatedData.type];
+            updatedData.color = getFeatureToColorMap[updatedData.type];
           }
           const hasJoinedLocations =
             updatedData.locations && updatedData.locations.length > 1;
