@@ -1,5 +1,5 @@
 import React from "react";
-import { featureColors, FeatureTypes as featureTypes } from "ve-sequence-utils";
+import { getFeatureToColorMap, getFeatureTypes } from "ve-sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { ReactSelectField } from "teselagen-react-components";
@@ -10,7 +10,7 @@ const renderTypes = ({ readOnly }) => (
     tooltipError
     disabled={readOnly}
     defaultValue="misc_feature"
-    options={featureTypes.map((type) => {
+    options={getFeatureTypes().map((type) => {
       return {
         label: (
           <div
@@ -22,7 +22,7 @@ const renderTypes = ({ readOnly }) => (
           >
             <div
               style={{
-                background: featureColors[type],
+                background: getFeatureToColorMap({ includeHidden: true })[type],
                 height: 15,
                 width: 15,
                 marginRight: 5

@@ -18,8 +18,8 @@ import {
   checkIfPotentiallyCircularRangesOverlap
 } from "ve-range-utils";
 import {
-  featureColors,
-  FeatureTypes as featureTypes,
+  getFeatureToColorMap,
+  getFeatureTypes,
   tidyUpAnnotation
 } from "ve-sequence-utils";
 import classNames from "classnames";
@@ -164,7 +164,7 @@ export class AddOrEditFeatureDialog extends React.Component {
           inlineLabel
           tooltipError
           defaultValue="misc_feature"
-          options={featureTypes.map((type) => {
+          options={getFeatureTypes().map((type) => {
             return {
               label: (
                 <div
@@ -176,7 +176,9 @@ export class AddOrEditFeatureDialog extends React.Component {
                 >
                   <div
                     style={{
-                      background: featureColors[type],
+                      background: getFeatureToColorMap({ includeHidden: true })[
+                        type
+                      ],
                       height: 15,
                       width: 15,
                       marginRight: 5

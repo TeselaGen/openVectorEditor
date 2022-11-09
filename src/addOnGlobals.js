@@ -23,8 +23,8 @@ import withEditorProps from "./withEditorProps";
 import { Colors, Tab, Tabs } from "@blueprintjs/core";
 import { reduxForm, SubmissionError } from "redux-form";
 import {
-  featureColors,
-  FeatureTypes,
+  getFeatureToColorMap,
+  getFeatureTypes,
   convertApELikeRegexToRegex,
   autoAnnotate,
   tidyUpAnnotation
@@ -44,8 +44,8 @@ window.addOnGlobals = {
   convertApELikeRegexToRegex,
   autoAnnotate,
   SubmissionError,
-  featureColors,
-  FeatureTypes,
+  getFeatureToColorMap,
+  getFeatureTypes,
   InfoHelper,
   showConfirmationDialog,
   showDialog,

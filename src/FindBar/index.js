@@ -16,7 +16,7 @@ import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
-import { featureColors } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "ve-sequence-utils";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
 import isMobile from "is-mobile";
 
@@ -388,7 +388,10 @@ function AnnotationSearchMatchComp({
                           background:
                             type === "parts"
                               ? "purple"
-                              : ann.color || featureColors[ann.type],
+                              : ann.color ||
+                                getFeatureToColorMap({ includeHidden: true })[
+                                  ann.type
+                                ],
                           height: 15,
                           width: 15,
                           marginRight: 3

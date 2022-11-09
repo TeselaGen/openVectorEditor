@@ -21,8 +21,8 @@ const {
   pluralize,
   reduxForm,
   SubmissionError,
-  featureColors,
-  FeatureTypes,
+  getFeatureToColorMap,
+  getFeatureTypes,
   InfoHelper,
   showConfirmationDialog,
   wrapDialog,
@@ -299,7 +299,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               let regexConvertedSeq;
 
               if (annotationType === "feature") {
-                const cleanedType = FeatureTypes.find(
+                const cleanedType = getFeatureTypes().find(
                   (t) => t.toLowerCase() === type.toLowerCase()
                 );
                 if (!cleanedType) {
@@ -427,7 +427,8 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                     forward: a.strand !== -1,
                     id: shortid()
                   };
-                  toRet.color = toRet.color || featureColors[toRet.type];
+                  toRet.color =
+                    toRet.color || getFeatureToColorMap()[toRet.type];
                   return toRet;
                 })
               );
@@ -480,7 +481,7 @@ const validateAgainstSchema = {
     {
       path: "type",
       type: "dropdown",
-      values: FeatureTypes,
+      values: getFeatureTypes,
       defaultValue: "misc_feature"
     },
     {
