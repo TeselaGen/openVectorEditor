@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Icon } from "@blueprintjs/core";
+import { Icon, Tag } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 
@@ -117,7 +117,7 @@ export class CutsiteFilter extends React.Component {
     }
   };
   //the queryTracker is just used for tracking purposes
-  state = { queryTracker: "" };
+  state = { queryTracker: "", logic: "and" };
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
     // if (value === "manageEnzymes") {
@@ -246,6 +246,8 @@ export class CutsiteFilter extends React.Component {
       }
       return addClickableLabel(toRet, { closeDropDown });
     });
+    let andColor = this.state.logic === "or" ? "unset" : "purple";
+    let orColor = this.state.logic === "or" ? "purple" : "unset";
     return (
       <div
         style={{
@@ -256,6 +258,30 @@ export class CutsiteFilter extends React.Component {
         }}
       >
         <TgSelect
+          additionalRightEl={
+            <Tag
+              minimal
+              interactive
+              onClick={async () => {
+                if (this.state.logic === "and") {
+                  await this.setState({ logic: "or" });
+                  andColor = "unset";
+                  orColor = "purple";
+                } else {
+                  await this.setState({ logic: "and" });
+                  andColor = "purple";
+                  orColor = "unset";
+                }
+              }}
+            >
+              {" "}
+              <p>
+                {" "}
+                <span style={{ color: andColor }}>AND</span>/
+                <span style={{ color: orColor }}>OR</span>
+              </p>
+            </Tag>
+          }
           multi
           allowCreate
           wrapperStyle={{ zIndex: 11 }}
