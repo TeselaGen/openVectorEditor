@@ -213,6 +213,12 @@ const genericAnnotationProperties = ({
               >
                 Delete
               </Button>
+              {["feature"].includes(annotationType) && (
+                <CmdButton
+                  cmd={this.commands.onConfigureFeatureTypesClick}
+                  style={{ marginRight: 15 }}
+                />
+              )}
               {["part", "primer", "feature"].includes(annotationType) && (
                 <CmdButton
                   cmd={
@@ -223,6 +229,7 @@ const genericAnnotationProperties = ({
                   style={{ marginRight: 15 }}
                 />
               )}
+
               {additionalFooterEls && additionalFooterEls(this.props)}
             </div>
           )}

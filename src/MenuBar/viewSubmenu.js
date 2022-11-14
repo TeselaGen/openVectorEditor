@@ -78,6 +78,7 @@ export default [
         cmd: "toggleFeatures",
         shouldDismissPopover: false
       },
+      "onConfigureFeatureTypesClick",
       {
         cmd: "featureTypesCmd",
         shouldDismissPopover: false

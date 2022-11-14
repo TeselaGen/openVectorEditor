@@ -338,6 +338,10 @@ export default class EditorDemo extends React.Component {
       }),
       renderToggle({
         that: this,
+        type: "onConfigureFeatureTypesClick"
+      }),
+      renderToggle({
+        that: this,
         type: "onDuplicate"
       }),
       renderToggle({
@@ -2184,6 +2188,11 @@ clickOverrides: {
             {...(this.state.onDuplicate && {
               onDuplicate: () =>
                 window.toastr.success("onDuplicate callback triggered")
+            })}
+            {...(this.state.onConfigureFeatureTypesClick && {
+              onConfigureFeatureTypesClick: () => {
+                window.toastr.success("onConfigureFeatureTypesClick clicked");
+              }
             })}
             {...(this.state.withGetAdditionalCreateOpts && {
               getAdditionalCreateOpts: (props) => {

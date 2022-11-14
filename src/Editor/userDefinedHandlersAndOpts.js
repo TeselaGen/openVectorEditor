@@ -10,6 +10,7 @@ export const userDefinedHandlersAndOpts = [
   "allowPrimerBasesToBeEdited",
   "truncateLabelsThatDoNotFit",
   "smartCircViewLabelRender",
+  "onConfigureFeatureTypesClick",
   "allPartTags",
   "editTagsLink",
   "readOnly",
