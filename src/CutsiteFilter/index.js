@@ -21,6 +21,7 @@ import {
 } from "./AdditionalCutsiteInfoDialog";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
+import { Tooltip } from "@blueprintjs/core";
 
 const NoResults = withRestrictionEnzymes(
   ({
@@ -284,22 +285,36 @@ export class CutsiteFilter extends React.Component {
       >
         <TgSelect
           additionalRightEl={
-            <Tag
-              minimal
-              interactive
-              onClick={async () => {
-                await this.switchEnzymeFilterMode();
-                andColor = this.state.logic === "or" ? "unset" : "purple";
-                orColor = this.state.logic === "or" ? "purple" : "unset";
-              }}
+            <Tooltip
+              content={
+                this.state.logic === "or"
+                  ? "See Enzymes that are in Both/All Groups"
+                  : "See Enzymes That Are In Either/Any Group?"
+              }
             >
-              {" "}
-              <p>
-                {" "}
-                <span style={{ color: andColor }}>AND</span>/
-                <span style={{ color: orColor }}>OR</span>
-              </p>
-            </Tag>
+              <Tag
+                minimal
+                interactive
+                onClick={async () => {
+                  await this.switchEnzymeFilterMode();
+                  andColor = this.state.logic === "or" ? "unset" : "purple";
+                  orColor = this.state.logic === "or" ? "purple" : "unset";
+
+                  onChangeHook(filteredRestrictionEnzymes);
+                  filteredRestrictionEnzymesUpdate(
+                    map(filteredRestrictionEnzymes, (r) => {
+                      return omit(r, ["label"]);
+                    })
+                  );
+                }}
+              >
+                <p>
+                  {" "}
+                  <span style={{ color: andColor }}>AND</span>/
+                  <span style={{ color: orColor }}>OR</span>
+                </p>
+              </Tag>
+            </Tooltip>
           }
           multi
           allowCreate
