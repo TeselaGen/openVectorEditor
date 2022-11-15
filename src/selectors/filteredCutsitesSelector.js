@@ -15,7 +15,10 @@ export default createSelector(
     filteredRestrictionEnzymes,
     enzymeGroupsOverride
   ) {
-    const returnVal = {
+    const andReturnVal = {
+      cutsitesByName: {}
+    };
+    let returnVal = {
       cutsitesByName: {}
     };
     // const cutsitesByName = getLowerCaseObj(cutsitesByName);
@@ -41,6 +44,9 @@ export default createSelector(
         filteredEnzymes.push(e);
       }
     });
+    let type2sCutsites = [];
+    let cutThisManyTimesCutsites = [];
+    let normaleEnzymeCutsites = [];
     if (!filteredEnzymes || (filteredEnzymes.length === 0 && !hasUserGroup)) {
       returnVal.cutsitesByName = cutsitesByName;
     } else {
@@ -61,6 +67,7 @@ export default createSelector(
               cutsitesByName[key].length &&
               cutsitesByName[key][0]?.restrictionEnzyme?.isType2S
             ) {
+              type2sCutsites.push(key);
               returnVal.cutsitesByName[key] = cutsitesByName[key];
             }
           });
@@ -69,17 +76,41 @@ export default createSelector(
           Object.keys(cutsitesByName).forEach(function (key) {
             if (hiddenEnzymesByName[key]) return; //don't show that cutsite
             if (cutsitesByName[key].length === cutsThisManyTimes) {
+              cutThisManyTimesCutsites.push(key);
               returnVal.cutsitesByName[key] = cutsitesByName[key];
             }
           });
         } else {
           if (hiddenEnzymesByName[lowerValue]) return; //don't show that cutsite
           //normal enzyme ('BamHI')
-
           if (!cutsitesByName[lowerValue]) return;
+          normaleEnzymeCutsites.push(lowerValue);
           returnVal.cutsitesByName[lowerValue] = cutsitesByName[lowerValue];
         }
       });
+    }
+    if (window.localStorage.getItem("enzymeFilterMode") === "and") {
+      if (type2sCutsites.length === 0) {
+        type2sCutsites = Object.keys(cutsitesByName);
+      }
+      if (cutThisManyTimesCutsites.length === 0) {
+        cutThisManyTimesCutsites = Object.keys(cutsitesByName);
+      }
+      if (normaleEnzymeCutsites.length === 0) {
+        normaleEnzymeCutsites = Object.keys(cutsitesByName);
+      }
+      // find the intersect of all groups
+      const intersect1 = type2sCutsites.filter((value) =>
+        cutThisManyTimesCutsites.includes(value)
+      );
+      const interesect2 = intersect1.filter((value) =>
+        normaleEnzymeCutsites.includes(value)
+      );
+
+      interesect2.forEach((key) => {
+        andReturnVal.cutsitesByName[key] = cutsitesByName[key];
+      });
+      returnVal = andReturnVal;
     }
     returnVal.cutsitesArray = flatmap(
       returnVal.cutsitesByName,
@@ -95,7 +126,6 @@ export default createSelector(
       return obj;
     },
     {});
-
     return returnVal;
   }
 );

@@ -116,8 +116,33 @@ export class CutsiteFilter extends React.Component {
       sequence: ""
     }
   };
+
+  getEnzymeFilterMode = () => {
+    const mode = window.localStorage.getItem("enzymeFilterMode");
+    if (mode) {
+      return mode;
+    } else {
+      window.localStorage.setItem("enzymeFilterMode", "and");
+      return "and";
+    }
+  };
+
+  switchEnzymeFilterMode = (newMode = null) => {
+    if (newMode) {
+      window.localStorage.setItem("enzymeFilterMode", newMode);
+      this.setState({ logic: newMode });
+    } else {
+      if (this.getEnzymeFilterMode() === "and") {
+        window.localStorage.setItem("enzymeFilterMode", "or");
+        this.setState({ logic: "or" });
+      } else {
+        window.localStorage.setItem("enzymeFilterMode", "and");
+        this.setState({ logic: "and" });
+      }
+    }
+  };
   //the queryTracker is just used for tracking purposes
-  state = { queryTracker: "", logic: "and" };
+  state = { queryTracker: "", logic: this.getEnzymeFilterMode() };
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
     // if (value === "manageEnzymes") {
@@ -263,15 +288,9 @@ export class CutsiteFilter extends React.Component {
               minimal
               interactive
               onClick={async () => {
-                if (this.state.logic === "and") {
-                  await this.setState({ logic: "or" });
-                  andColor = "unset";
-                  orColor = "purple";
-                } else {
-                  await this.setState({ logic: "and" });
-                  andColor = "purple";
-                  orColor = "unset";
-                }
+                await this.switchEnzymeFilterMode();
+                andColor = this.state.logic === "or" ? "unset" : "purple";
+                orColor = this.state.logic === "or" ? "purple" : "unset";
               }}
             >
               {" "}
