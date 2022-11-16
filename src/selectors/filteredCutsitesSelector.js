@@ -3,22 +3,21 @@ import { createSelector } from "reselect";
 import cutsitesSelector from "./cutsitesSelector";
 import filteredRestrictionEnzymesSelector from "./filteredRestrictionEnzymesSelector";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-// import { getLowerCaseObj } from "../utils/arrayUtils";
 import { flatMap } from "lodash";
+import isEnzymeFilterAndSelector from "./isEnzymeFilterAndSelector";
 
 export default createSelector(
   cutsitesSelector,
   filteredRestrictionEnzymesSelector,
+  isEnzymeFilterAndSelector,
   (state, addEnzs, enzymeGroupsOverride) => enzymeGroupsOverride,
   function (
     { cutsitesByName },
     filteredRestrictionEnzymes,
+    isEnzymeFilterAnd,
     enzymeGroupsOverride
   ) {
-    const andReturnVal = {
-      cutsitesByName: {}
-    };
-    let returnVal = {
+    const returnVal = {
       cutsitesByName: {}
     };
     // const cutsitesByName = getLowerCaseObj(cutsitesByName);
@@ -106,13 +105,15 @@ export default createSelector(
     const interesect2 = intersect1.filter((value) =>
       normaleEnzymeCutsites.includes(value)
     );
-    window.localStorage.setItem("cutsiteIntersectionCount", interesect2.length);
+
+    returnVal.cutsiteIntersectionCount = interesect2.length;
+    const cutsbyname_AND = {};
     interesect2.forEach((key) => {
-      andReturnVal.cutsitesByName[key] = cutsitesByName[key];
+      cutsbyname_AND[key] = cutsitesByName[key];
     });
 
-    if (window.localStorage.getItem("enzymeFilterMode") === "and") {
-      returnVal = andReturnVal;
+    if (isEnzymeFilterAnd && returnVal.cutsiteIntersectionCount > 0) {
+      returnVal.cutsitesByName = cutsbyname_AND;
     }
 
     returnVal.cutsitesArray = flatmap(

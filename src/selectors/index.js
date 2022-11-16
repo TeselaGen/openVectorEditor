@@ -15,6 +15,7 @@ import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import filteredFeaturesSelector from "./filteredFeaturesSelector";
 import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 import filteredPartsSelector from "./filteredPartsSelector";
+import isEnzymeFilterAndSelector from "./isEnzymeFilterAndSelector";
 
 export default {
   translationsSelector,
@@ -31,6 +32,7 @@ export default {
   filteredRestrictionEnzymesSelector,
   filteredFeaturesSelector,
   filteredPartsSelector,
+  isEnzymeFilterAndSelector,
   restrictionEnzymesSelector,
   sequenceSelector,
   cutsiteLabelColorSelector

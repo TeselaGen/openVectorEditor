@@ -1,14 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Icon, Tag } from "@blueprintjs/core";
+import { Icon, Tag, Tooltip } from "@blueprintjs/core";
+// import tgUseLocalStorageState from "tg-use-local-storage-state";
+
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 
-import React from "react";
+import React, { useState } from "react";
 
 import "./style.css";
-import { TgSelect } from "teselagen-react-components";
+import { popoverOverflowModifiers, TgSelect } from "teselagen-react-components";
 
 import { map, flatMap, includes, pickBy, isEmpty } from "lodash";
 import { omit } from "lodash";
@@ -21,7 +23,6 @@ import {
 } from "./AdditionalCutsiteInfoDialog";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
-import { Tooltip } from "@blueprintjs/core";
 
 const NoResults = withRestrictionEnzymes(
   ({
@@ -106,53 +107,29 @@ const NoResults = withRestrictionEnzymes(
   }
 );
 
-export class CutsiteFilter extends React.Component {
-  static defaultProps = {
-    onChangeHook: () => {},
-    closeDropDown: () => {},
-    filteredRestrictionEnzymes: [],
-    filteredRestrictionEnzymesUpdate: () => {},
-    allCutsites: { cutsitesByName: {} },
-    sequenceData: {
-      sequence: ""
-    }
-  };
+export function CutsiteFilter(props) {
+  const {
+    onChangeHook,
+    style = {},
+    filteredRestrictionEnzymes,
+    isEnzymeFilterAndUpdate,
+    filteredRestrictionEnzymesUpdate: _filteredRestrictionEnzymesUpdate,
+    allCutsites: { cutsitesByName },
+    allCutsites,
+    filteredCutsites,
+    closeDropDown = () => {},
+    enzymeManageOverride,
+    enzymeGroupsOverride,
+    editorName,
+    additionalEnzymes,
+    isEnzymeFilterAnd,
+    sequenceData
+  } = props;
+  // const [isEnzymeFilterAnd, setAnd] = tgUseLocalStorageState("isEnzymeFilterAnd", false);
+  const showAndOr = filteredCutsites.cutsiteIntersectionCount > 0;
+  const [queryTracker, setQueryTracker] = useState("");
 
-  getEnzymeFilterMode = () => {
-    const mode = window.localStorage.getItem("enzymeFilterMode");
-    if (mode) {
-      return mode;
-    } else {
-      window.localStorage.setItem("enzymeFilterMode", "and");
-      return "and";
-    }
-  };
-
-  switchEnzymeFilterMode = (newMode = null) => {
-    if (newMode) {
-      window.localStorage.setItem("enzymeFilterMode", newMode);
-      this.setState({ logic: newMode });
-    } else {
-      if (this.getEnzymeFilterMode() === "and") {
-        window.localStorage.setItem("enzymeFilterMode", "or");
-        this.setState({ logic: "or" });
-      } else {
-        window.localStorage.setItem("enzymeFilterMode", "and");
-        this.setState({ logic: "and" });
-      }
-    }
-  };
-  //the queryTracker is just used for tracking purposes
-  state = {
-    queryTracker: "",
-    logic: this.getEnzymeFilterMode(),
-    showFilterEnzymes: false
-  };
-
-  renderOptions = ({ label, value, canBeHidden }, props) => {
-    // if (value === "manageEnzymes") {
-    //   return this.getManageEnzymesLink();
-    // }
+  const renderOptions = ({ label, value, canBeHidden }, props) => {
     const { filteredRestrictionEnzymes, filteredRestrictionEnzymesUpdate } =
       props;
 
@@ -194,205 +171,179 @@ export class CutsiteFilter extends React.Component {
       </div>
     );
   };
-
-  render() {
-    const {
-      onChangeHook,
-      style = {},
-      filteredRestrictionEnzymes,
-      filteredRestrictionEnzymesUpdate: _filteredRestrictionEnzymesUpdate,
-      allCutsites: { cutsitesByName },
-      allCutsites,
-      filteredCutsites,
-      closeDropDown = () => {},
-      enzymeManageOverride,
-      enzymeGroupsOverride,
-      editorName,
-      additionalEnzymes,
-      sequenceData
-    } = this.props;
-    const filteredRestrictionEnzymesUpdate = (enzymes) => {
-      _filteredRestrictionEnzymesUpdate(enzymes);
-      if (sequenceData?.id) {
-        try {
-          window.localStorage.setItem(
-            `tgInitialCutsiteFilter-${sequenceData.id}`,
-            JSON.stringify(
-              enzymes.map((e) => omit(e, "canBeHidden", "nameArray", "label"))
-            )
-          );
-        } catch (err) {
-          // eslint-disable-next-line no-console
-          console.warn(`err 872g4e setting enzymes for sequence:`, err);
-        }
+  const filteredRestrictionEnzymesUpdate = (enzymes) => {
+    _filteredRestrictionEnzymesUpdate(enzymes);
+    if (sequenceData?.id) {
+      try {
+        window.localStorage.setItem(
+          `tgInitialCutsiteFilter-${sequenceData.id}`,
+          JSON.stringify(
+            enzymes.map((e) => omit(e, "canBeHidden", "nameArray", "label"))
+          )
+        );
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn(`err 872g4e setting enzymes for sequence:`, err);
       }
-      this.setState({
-        showFilterEnzymes:
-          window.localStorage.getItem("cutsiteIntersectionCount") > 0
-      });
-    };
-    const userEnzymeGroups =
-      enzymeGroupsOverride || window.getExistingEnzymeGroups();
-    const options = [
-      ...map(specialCutsiteFilterOptions, (opt) => opt),
-      ...map(userEnzymeGroups, (nameArray, name) => {
-        return {
-          label: getUserGroupLabel({ nameArray, name }),
-          value: "__userCreatedGroup" + name,
-          nameArray
-        };
-      }),
+    }
+  };
+  const userEnzymeGroups =
+    enzymeGroupsOverride || window.getExistingEnzymeGroups();
+  const options = [
+    ...map(specialCutsiteFilterOptions, (opt) => opt),
+    ...map(userEnzymeGroups, (nameArray, name) => {
+      return {
+        label: getUserGroupLabel({ nameArray, name }),
+        value: "__userCreatedGroup" + name,
+        nameArray
+      };
+    }),
 
-      ...Object.keys(cutsitesByName)
-        .sort()
-        .map(function (key) {
-          const numCuts = (cutsitesByName[key] || []).length;
-          const label = getCutsiteWithNumCuts({
-            numCuts,
-            name: numCuts ? cutsitesByName[key][0].name : key
-          });
-          return {
-            canBeHidden: true,
-            label,
-            value: key
-          };
-        })
-    ].map((n) => addClickableLabel(n, { closeDropDown }));
-
-    const value = filteredRestrictionEnzymes.map((filteredOpt) => {
-      let toRet;
-      if (filteredOpt.cutsThisManyTimes || filteredOpt.isSpecialGroup) {
-        toRet = filteredOpt;
-      } else if (filteredOpt.value.includes("__userCreatedGroup")) {
-        toRet = filteredOpt;
-      } else {
-        const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
+    ...Object.keys(cutsitesByName)
+      .sort()
+      .map(function (key) {
+        const numCuts = (cutsitesByName[key] || []).length;
         const label = getCutsiteWithNumCuts({
           numCuts,
-          name: numCuts
-            ? cutsitesByName[filteredOpt.value][0].name
-            : defaultEnzymesByName[filteredOpt.value]?.name || filteredOpt.value
+          name: numCuts ? cutsitesByName[key][0].name : key
         });
-        toRet = {
-          ...filteredOpt,
-          label
+        return {
+          canBeHidden: true,
+          label,
+          value: key
         };
-      }
-      return addClickableLabel(toRet, { closeDropDown });
-    });
-    let andColor = this.state.logic === "or" ? "unset" : "purple";
-    let orColor = this.state.logic === "or" ? "purple" : "unset";
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "wrap",
-          ...style
-        }}
-      >
-        <TgSelect
-          additionalRightEl={
-            this.state.showFilterEnzymes ? (
-              <Tooltip
-                content={
-                  this.state.logic === "or"
-                    ? "See Enzymes that are in Both/All Groups"
-                    : "See Enzymes That Are In Either/Any Group?"
-                }
-              >
-                <Tag
-                  minimal
-                  interactive
-                  onClick={async () => {
-                    await this.switchEnzymeFilterMode();
-                    andColor = this.state.logic === "or" ? "unset" : "purple";
-                    orColor = this.state.logic === "or" ? "purple" : "unset";
+      })
+  ].map((n) => addClickableLabel(n, { closeDropDown }));
 
-                    onChangeHook(filteredRestrictionEnzymes);
-                    filteredRestrictionEnzymesUpdate(
-                      map(filteredRestrictionEnzymes, (r) => {
-                        return omit(r, ["label"]);
-                      })
-                    );
-                    if (
-                      window.localStorage.getItem("cutsiteIntersectionCount") >
-                      0
-                    ) {
-                      this.state.showFilterEnzymes = true;
-                    }
-                  }}
+  const value = filteredRestrictionEnzymes.map((filteredOpt) => {
+    let toRet;
+    if (filteredOpt.cutsThisManyTimes || filteredOpt.isSpecialGroup) {
+      toRet = filteredOpt;
+    } else if (filteredOpt.value.includes("__userCreatedGroup")) {
+      toRet = filteredOpt;
+    } else {
+      const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
+      const label = getCutsiteWithNumCuts({
+        numCuts,
+        name: numCuts
+          ? cutsitesByName[filteredOpt.value][0].name
+          : defaultEnzymesByName[filteredOpt.value]?.name || filteredOpt.value
+      });
+      toRet = {
+        ...filteredOpt,
+        label
+      };
+    }
+    return addClickableLabel(toRet, { closeDropDown });
+  });
+  const numEnzymesInAnd = 4;
+  const numEnzymesInOr = 14;
+  const numGroups = 3;
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap",
+        ...style
+      }}
+    >
+      <TgSelect
+        additionalRightEl={
+          showAndOr ? (
+            <Tooltip
+              modifiers={popoverOverflowModifiers}
+              content={
+                isEnzymeFilterAnd
+                  ? `AND -- Viewing ${numEnzymesInAnd} enzymes that are shared by ${
+                      numGroups === 2
+                        ? "both groups"
+                        : `all ${numGroups} groups`
+                    }`
+                  : `OR -- Viewing ${numEnzymesInOr} enzymes that are in any of the ${numGroups} groups`
+              }
+            >
+              <Tag
+                minimal
+                interactive
+                style={{ display: "flex", marginTop: 5 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  isEnzymeFilterAndUpdate(!isEnzymeFilterAnd);
+                }}
+              >
+                <span
+                  style={{ color: isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}
                 >
-                  <p>
-                    {" "}
-                    <span style={{ color: andColor }}>AND</span>/
-                    <span style={{ color: orColor }}>OR</span>
-                  </p>
-                </Tag>
-              </Tooltip>
-            ) : (
-              false
-            )
-          }
-          multi
-          allowCreate
-          wrapperStyle={{ zIndex: 11 }}
-          noResultsText={
-            <NoResults
-              {...{
-                closeDropDown,
-                queryString: this.state.queryTracker,
-                additionalEnzymes,
-                enzymeGroupsOverride,
-                cutsitesByNameActive: filteredCutsites.cutsitesByName,
-                cutsitesByName: allCutsites.cutsitesByName,
-                editorName
-              }}
-            ></NoResults>
-          }
-          onInputChange={(queryTracker) => {
-            this.setState({ queryTracker });
-          }}
-          placeholder="Filter cut sites..."
-          options={options}
-          filteredRestrictionEnzymes={filteredRestrictionEnzymes}
-          filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
-          optionRenderer={this.renderOptions}
-          isSimpleSearch
-          onChange={(filteredRestrictionEnzymes) => {
-            onChangeHook && onChangeHook(filteredRestrictionEnzymes);
-            filteredRestrictionEnzymesUpdate(
-              map(filteredRestrictionEnzymes, (r) => {
-                return omit(r, ["label"]);
-              })
-            );
-            this.setState({
-              showFilterEnzymes:
-                window.localStorage.getItem("cutsiteIntersectionCount") > 0
-            });
-          }}
-          value={value}
-        />
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <a
-            onClick={() => {
-              enzymeManageOverride
-                ? enzymeManageOverride(this.props)
-                : showDialog({
-                    dialogType: "EnzymesDialog"
-                    // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
-                  });
-              closeDropDown();
+                  AND
+                </span>
+                /
+                <span
+                  style={{ color: !isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}
+                >
+                  OR
+                </span>
+              </Tag>
+            </Tooltip>
+          ) : (
+            false
+          )
+        }
+        multi
+        allowCreate
+        wrapperStyle={{ zIndex: 11 }}
+        noResultsText={
+          <NoResults
+            {...{
+              closeDropDown,
+              queryString: queryTracker,
+              additionalEnzymes,
+              enzymeGroupsOverride,
+              cutsitesByNameActive: filteredCutsites.cutsitesByName,
+              cutsitesByName: allCutsites.cutsitesByName,
+              editorName
             }}
-            style={{ width: "fit-content", fontSize: 11 }}
-          >
-            Manage Enzymes...
-          </a>
-        </div>
+          ></NoResults>
+        }
+        onInputChange={(queryTracker) => {
+          setQueryTracker(queryTracker);
+        }}
+        placeholder="Filter cut sites..."
+        options={options}
+        filteredRestrictionEnzymes={filteredRestrictionEnzymes}
+        filteredRestrictionEnzymesUpdate={filteredRestrictionEnzymesUpdate}
+        optionRenderer={renderOptions}
+        isSimpleSearch
+        onChange={(filteredRestrictionEnzymes) => {
+          onChangeHook && onChangeHook(filteredRestrictionEnzymes);
+          filteredRestrictionEnzymesUpdate(
+            map(filteredRestrictionEnzymes, (r) => {
+              return omit(r, ["label"]);
+            })
+          );
+          // setShowFilterEnzymes(showAndOr);
+        }}
+        value={value}
+      />
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <a
+          onClick={() => {
+            enzymeManageOverride
+              ? enzymeManageOverride(props)
+              : showDialog({
+                  dialogType: "EnzymesDialog"
+                  // inputSequenceToTestAgainst: sequenceData ? sequenceData.sequence : ""
+                });
+            closeDropDown();
+          }}
+          style={{ width: "fit-content", fontSize: 11 }}
+        >
+          Manage Enzymes...
+        </a>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default compose(withEditorProps, connect())(CutsiteFilter);

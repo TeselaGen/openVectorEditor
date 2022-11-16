@@ -8,6 +8,7 @@ import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOption
 export const filteredRestrictionEnzymesUpdate = createAction(
   "FILTERED_RESTRICTION_ENZYMES_UPDATE"
 );
+export const isEnzymeFilterAndUpdate = createAction("IS_ENZYME_FILTER_AND");
 export const filteredRestrictionEnzymesReset = createAction(
   "FILTERED_RESTRICTION_ENZYMES_RESET"
 );
@@ -32,6 +33,12 @@ const defaultInitialState = [specialCutsiteFilterOptions.single];
 
 export default combineReducers({
   //filteredRestrictionEnzymes refer to the enzymes actively included in the react-select filter component
+  isEnzymeFilterAnd: createReducer(
+    {
+      [isEnzymeFilterAndUpdate]: (state, payload) => payload
+    },
+    false
+  ),
   filteredRestrictionEnzymes: createReducer(
     {
       [filteredRestrictionEnzymesReset]: () => defaultInitialState,

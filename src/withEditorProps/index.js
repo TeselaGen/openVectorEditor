@@ -44,6 +44,44 @@ import {
 } from "../GlobalDialogUtils";
 // import { getStartEndFromBases } from "../utils/editorUtils";
 
+const getUpperOrLowerSeq = defaultMemoize(
+  (uppercaseSequenceMapFont, sequence = "") =>
+    uppercaseSequenceMapFont === "uppercase"
+      ? sequence.toUpperCase()
+      : uppercaseSequenceMapFont === "lowercase"
+      ? sequence.toLowerCase()
+      : sequence
+);
+
+const getTypesToOmit = (annotationsToSupport) => {
+  const typesToOmit = {};
+  allTypes.forEach((type) => {
+    if (!annotationsToSupport[type]) typesToOmit[type] = false;
+  });
+  return typesToOmit;
+};
+
+const getVisibilities = (
+  annotationVisibility,
+  annotationLabelVisibility,
+  annotationsToSupport
+) => {
+  const typesToOmit = getTypesToOmit(annotationsToSupport);
+  const annotationVisibilityToUse = {
+    ...annotationVisibility,
+    ...typesToOmit
+  };
+  const annotationLabelVisibilityToUse = {
+    ...annotationLabelVisibility,
+    ...typesToOmit
+  };
+  return {
+    annotationVisibilityToUse,
+    annotationLabelVisibilityToUse,
+    typesToOmit
+  };
+};
+
 async function getSaveDialogEl() {
   return new Promise((resolve) => {
     showDialog({
@@ -568,6 +606,7 @@ function mapStateToProps(state, ownProps) {
   const cutsites = filteredCutsites.cutsitesArray;
   const filteredRestrictionEnzymes =
     s.filteredRestrictionEnzymesSelector(editorState);
+  const isEnzymeFilterAnd = s.isEnzymeFilterAndSelector(editorState);
   const orfs = s.orfsSelector(editorState);
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
@@ -658,6 +697,7 @@ function mapStateToProps(state, ownProps) {
     allCutsites,
     filteredCutsites,
     filteredRestrictionEnzymes,
+    isEnzymeFilterAnd,
     annotationSearchMatches,
     searchLayers,
     matchedSearchLayer,
@@ -767,35 +807,6 @@ export function getCombinedActions(
   return bindActionCreators(actionsToPass, dispatch);
 }
 
-const getTypesToOmit = (annotationsToSupport) => {
-  const typesToOmit = {};
-  allTypes.forEach((type) => {
-    if (!annotationsToSupport[type]) typesToOmit[type] = false;
-  });
-  return typesToOmit;
-};
-
-const getVisibilities = (
-  annotationVisibility,
-  annotationLabelVisibility,
-  annotationsToSupport
-) => {
-  const typesToOmit = getTypesToOmit(annotationsToSupport);
-  const annotationVisibilityToUse = {
-    ...annotationVisibility,
-    ...typesToOmit
-  };
-  const annotationLabelVisibilityToUse = {
-    ...annotationLabelVisibility,
-    ...typesToOmit
-  };
-  return {
-    annotationVisibilityToUse,
-    annotationLabelVisibilityToUse,
-    typesToOmit
-  };
-};
-
 function truncateOriginSpanningAnnotations(seqData) {
   const {
     features = [],
@@ -894,15 +905,6 @@ export const withEditorPropsNoRedux = withProps((props) => {
   };
   return toReturn;
 });
-
-const getUpperOrLowerSeq = defaultMemoize(
-  (uppercaseSequenceMapFont, sequence = "") =>
-    uppercaseSequenceMapFont === "uppercase"
-      ? sequence.toUpperCase()
-      : uppercaseSequenceMapFont === "lowercase"
-      ? sequence.toLowerCase()
-      : sequence
-);
 
 export function getShowGCContent(state, ownProps) {
   const showGCContent = state.VectorEditor.__allEditorsOptions.showGCContent;
