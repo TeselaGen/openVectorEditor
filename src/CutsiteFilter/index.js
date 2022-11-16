@@ -143,7 +143,11 @@ export class CutsiteFilter extends React.Component {
     }
   };
   //the queryTracker is just used for tracking purposes
-  state = { queryTracker: "", logic: this.getEnzymeFilterMode() };
+  state = {
+    queryTracker: "",
+    logic: this.getEnzymeFilterMode(),
+    showFilterEnzymes: false
+  };
 
   renderOptions = ({ label, value, canBeHidden }, props) => {
     // if (value === "manageEnzymes") {
@@ -222,6 +226,10 @@ export class CutsiteFilter extends React.Component {
           console.warn(`err 872g4e setting enzymes for sequence:`, err);
         }
       }
+      this.setState({
+        showFilterEnzymes:
+          window.localStorage.getItem("cutsiteIntersectionCount") > 0
+      });
     };
     const userEnzymeGroups =
       enzymeGroupsOverride || window.getExistingEnzymeGroups();
@@ -285,36 +293,46 @@ export class CutsiteFilter extends React.Component {
       >
         <TgSelect
           additionalRightEl={
-            <Tooltip
-              content={
-                this.state.logic === "or"
-                  ? "See Enzymes that are in Both/All Groups"
-                  : "See Enzymes That Are In Either/Any Group?"
-              }
-            >
-              <Tag
-                minimal
-                interactive
-                onClick={async () => {
-                  await this.switchEnzymeFilterMode();
-                  andColor = this.state.logic === "or" ? "unset" : "purple";
-                  orColor = this.state.logic === "or" ? "purple" : "unset";
-
-                  onChangeHook(filteredRestrictionEnzymes);
-                  filteredRestrictionEnzymesUpdate(
-                    map(filteredRestrictionEnzymes, (r) => {
-                      return omit(r, ["label"]);
-                    })
-                  );
-                }}
+            this.state.showFilterEnzymes ? (
+              <Tooltip
+                content={
+                  this.state.logic === "or"
+                    ? "See Enzymes that are in Both/All Groups"
+                    : "See Enzymes That Are In Either/Any Group?"
+                }
               >
-                <p>
-                  {" "}
-                  <span style={{ color: andColor }}>AND</span>/
-                  <span style={{ color: orColor }}>OR</span>
-                </p>
-              </Tag>
-            </Tooltip>
+                <Tag
+                  minimal
+                  interactive
+                  onClick={async () => {
+                    await this.switchEnzymeFilterMode();
+                    andColor = this.state.logic === "or" ? "unset" : "purple";
+                    orColor = this.state.logic === "or" ? "purple" : "unset";
+
+                    onChangeHook(filteredRestrictionEnzymes);
+                    filteredRestrictionEnzymesUpdate(
+                      map(filteredRestrictionEnzymes, (r) => {
+                        return omit(r, ["label"]);
+                      })
+                    );
+                    if (
+                      window.localStorage.getItem("cutsiteIntersectionCount") >
+                      0
+                    ) {
+                      this.state.showFilterEnzymes = true;
+                    }
+                  }}
+                >
+                  <p>
+                    {" "}
+                    <span style={{ color: andColor }}>AND</span>/
+                    <span style={{ color: orColor }}>OR</span>
+                  </p>
+                </Tag>
+              </Tooltip>
+            ) : (
+              false
+            )
           }
           multi
           allowCreate
@@ -348,6 +366,10 @@ export class CutsiteFilter extends React.Component {
                 return omit(r, ["label"]);
               })
             );
+            this.setState({
+              showFilterEnzymes:
+                window.localStorage.getItem("cutsiteIntersectionCount") > 0
+            });
           }}
           value={value}
         />

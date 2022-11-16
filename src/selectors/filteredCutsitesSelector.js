@@ -89,29 +89,32 @@ export default createSelector(
         }
       });
     }
-    if (window.localStorage.getItem("enzymeFilterMode") === "and") {
-      if (type2sCutsites.length === 0) {
-        type2sCutsites = Object.keys(cutsitesByName);
-      }
-      if (cutThisManyTimesCutsites.length === 0) {
-        cutThisManyTimesCutsites = Object.keys(cutsitesByName);
-      }
-      if (normaleEnzymeCutsites.length === 0) {
-        normaleEnzymeCutsites = Object.keys(cutsitesByName);
-      }
-      // find the intersect of all groups
-      const intersect1 = type2sCutsites.filter((value) =>
-        cutThisManyTimesCutsites.includes(value)
-      );
-      const interesect2 = intersect1.filter((value) =>
-        normaleEnzymeCutsites.includes(value)
-      );
+    //calculate group intersect
+    if (type2sCutsites.length === 0) {
+      type2sCutsites = Object.keys(cutsitesByName);
+    }
+    if (cutThisManyTimesCutsites.length === 0) {
+      cutThisManyTimesCutsites = Object.keys(cutsitesByName);
+    }
+    if (normaleEnzymeCutsites.length === 0) {
+      normaleEnzymeCutsites = Object.keys(cutsitesByName);
+    }
+    // find the intersect of all groups
+    const intersect1 = type2sCutsites.filter((value) =>
+      cutThisManyTimesCutsites.includes(value)
+    );
+    const interesect2 = intersect1.filter((value) =>
+      normaleEnzymeCutsites.includes(value)
+    );
+    window.localStorage.setItem("cutsiteIntersectionCount", interesect2.length);
+    interesect2.forEach((key) => {
+      andReturnVal.cutsitesByName[key] = cutsitesByName[key];
+    });
 
-      interesect2.forEach((key) => {
-        andReturnVal.cutsitesByName[key] = cutsitesByName[key];
-      });
+    if (window.localStorage.getItem("enzymeFilterMode") === "and") {
       returnVal = andReturnVal;
     }
+
     returnVal.cutsitesArray = flatmap(
       returnVal.cutsitesByName,
       (cutsitesByNameArray) => cutsitesByNameArray
