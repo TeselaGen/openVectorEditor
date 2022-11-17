@@ -236,9 +236,9 @@ export function CutsiteFilter(props) {
     }
     return addClickableLabel(toRet, { closeDropDown });
   });
-  const numEnzymesInAnd = 4;
-  const numEnzymesInOr = 14;
-  const numGroups = 3;
+  const numEnzymesInAnd = filteredCutsites.cutsiteIntersectionCount;
+  const numEnzymesInOr = filteredCutsites.cutsiteTotalCount;
+  const numGroups = filteredRestrictionEnzymes.length;
   return (
     <div
       style={{
