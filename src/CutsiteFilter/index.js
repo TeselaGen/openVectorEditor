@@ -77,7 +77,11 @@ const NoResults = withRestrictionEnzymes(
       return (
         <div>
           {onHiddenEnzymeAdd
-            ? `These Hidden enzymes match, click one to add it to your enzyme library`
+            ? `These Hidden enzymes match, ${
+                map(hiddenEnzymesByNameThatMatch).length > 1
+                  ? `click one`
+                  : "click it"
+              } to add it to your enzyme library`
             : `These Hidden enzymes match, add them via the Manage Enzymes link`}
           <br></br>
           <div style={{ display: "flex" }}>

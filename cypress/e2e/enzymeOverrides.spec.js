@@ -6,7 +6,7 @@ describe("enzyme overrides", () => {
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
     cy.focused().type("eco47III");
     cy.contains(
-      `These Hidden enzymes match, click one to add it to your enzyme library`
+      `These Hidden enzymes match, click it to add it to your enzyme library`
     );
     cy.contains(`Eco47III`).click();
     cy.contains(`onHiddenEnzymeAdd clicked -- Eco47III`);
