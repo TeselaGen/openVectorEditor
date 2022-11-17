@@ -342,6 +342,10 @@ export default class EditorDemo extends React.Component {
       }),
       renderToggle({
         that: this,
+        type: "onHiddenEnzymeAdd"
+      }),
+      renderToggle({
+        that: this,
         type: "onDuplicate"
       }),
       renderToggle({
@@ -2192,6 +2196,11 @@ clickOverrides: {
             {...(this.state.onConfigureFeatureTypesClick && {
               onConfigureFeatureTypesClick: () => {
                 window.toastr.success("onConfigureFeatureTypesClick clicked");
+              }
+            })}
+            {...(this.state.onHiddenEnzymeAdd && {
+              onHiddenEnzymeAdd: (e) => {
+                window.toastr.success(`onHiddenEnzymeAdd clicked -- ${e.name}`);
               }
             })}
             {...(this.state.withGetAdditionalCreateOpts && {

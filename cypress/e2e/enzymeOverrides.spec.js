@@ -1,6 +1,18 @@
 describe("enzyme overrides", () => {
   it(`if an enzyme group is updated it should update`, () => {
     cy.visit("");
+    cy.tgToggle("onHiddenEnzymeAdd");
+    cy.triggerFileCmd("Filter Cut Sites");
+    cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();
+    cy.focused().type("eco47III");
+    cy.contains(
+      `These Hidden enzymes match, click one to add it to your enzyme library`
+    );
+    cy.contains(`Eco47III`).click();
+    cy.contains(`onHiddenEnzymeAdd clicked -- Eco47III`);
+  });
+  it(`if an enzyme group is updated it should update`, () => {
+    cy.visit("");
     cy.tgToggle("overrideManageEnzymes");
     cy.triggerFileCmd("Filter Cut Sites");
     cy.get(`.veToolbarCutsiteFilterHolder .tg-select`).click();

@@ -20,6 +20,7 @@ export const userDefinedHandlersAndOpts = [
   "disableSetReadOnly",
   "showReadOnly",
   "showCircularity",
+  "onHiddenEnzymeAdd",
   "showMoleculeType",
   "showAvailability",
   "showCicularViewInternalLabels",

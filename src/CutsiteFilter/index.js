@@ -28,7 +28,8 @@ const NoResults = withRestrictionEnzymes(
     cutsitesByNameActive,
     closeDropDown,
     allRestrictionEnzymes,
-    queryString = ""
+    queryString = "",
+    onHiddenEnzymeAdd
   }) => {
     const enzymesByNameThatMatch = pickBy(
       allRestrictionEnzymes,
@@ -75,16 +76,25 @@ const NoResults = withRestrictionEnzymes(
     if (!isEmpty(hiddenEnzymesByNameThatMatch)) {
       return (
         <div>
-          These Hidden enzymes match, add them via the Manage Enzymes link
+          {onHiddenEnzymeAdd
+            ? `These Hidden enzymes match, click one to add it to your enzyme library`
+            : `These Hidden enzymes match, add them via the Manage Enzymes link`}
           <br></br>
           <div style={{ display: "flex" }}>
             {flatMap(hiddenEnzymesByNameThatMatch, (e, i) => {
               if (i > 3) return [];
               return (
                 <CutsiteTag
-                  onWrapperClick={closeDropDown}
+                  onWrapperClick={
+                    onHiddenEnzymeAdd
+                      ? () => {
+                          onHiddenEnzymeAdd(e);
+                          closeDropDown();
+                        }
+                      : closeDropDown
+                  }
                   allRestrictionEnzymes={allRestrictionEnzymes}
-                  forceOpenCutsiteInfo
+                  forceOpenCutsiteInfo={!onHiddenEnzymeAdd}
                   name={e.name}
                   cutsitesByName={cutsitesByName}
                   cutsitesByNameActive={cutsitesByNameActive}
@@ -177,6 +187,7 @@ export class CutsiteFilter extends React.Component {
       closeDropDown = () => {},
       enzymeManageOverride,
       enzymeGroupsOverride,
+      onHiddenEnzymeAdd,
       editorName,
       additionalEnzymes,
       sequenceData
@@ -263,6 +274,7 @@ export class CutsiteFilter extends React.Component {
             <NoResults
               {...{
                 closeDropDown,
+                onHiddenEnzymeAdd,
                 queryString: this.state.queryTracker,
                 additionalEnzymes,
                 enzymeGroupsOverride,
