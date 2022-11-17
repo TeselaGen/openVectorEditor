@@ -65,9 +65,9 @@ describe("autoAnnotate", function () {
       "csvAnnotationList.csv",
       "text/csv"
     );
+    cy.contains("button", "Annotate").click();
     cy.contains("Review and Edit Data").click();
     cy.contains("Add File").click();
-    cy.contains("button", "Annotate").click();
     cy.contains("10 Selected");
     cy.contains("button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
@@ -83,10 +83,10 @@ describe("autoAnnotate", function () {
       "csvAnnotationList_no_type.csv",
       "text/csv"
     );
-    cy.contains("Review and Edit Data").click();
-    cy.contains("Add File").click();
 
     cy.contains("button", "Annotate").click();
+    cy.contains("Review and Edit Data").click();
+    cy.contains("Add File").click();
     cy.contains("10 Selected");
     cy.contains("button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
