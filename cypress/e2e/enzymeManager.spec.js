@@ -8,7 +8,7 @@ describe("enzymeManager", () => {
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("newGroup");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
-    cy.contains("Hidden").click();
+    cy.contains(".bp3-dialog div", "Hidden").click();
     cy.contains("Bpa36II").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
 
