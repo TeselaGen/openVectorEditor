@@ -1,11 +1,12 @@
 import React from "react";
-import { featureColors } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "ve-sequence-utils";
 
 export const typeField = {
   path: "type",
   type: "string",
   render: (name, { color }) => {
-    const colorToUse = color || featureColors[name];
+    const colorToUse =
+      color || getFeatureToColorMap({ includeHidden: true })[name];
     return (
       <div style={{ display: "flex", alignItems: "center" }}>
         <div

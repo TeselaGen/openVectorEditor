@@ -4,6 +4,7 @@ module.exports = defineConfig({
   projectId: 'mp89gp',
   viewportHeight: 800,
   viewportWidth: 1280,
+
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
@@ -13,4 +14,11 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:3344',
     specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}',
   },
+
+  "component": {
+    "devServer": {
+      "framework": "react",
+      "bundler": "webpack"
+    }
+  }
 })

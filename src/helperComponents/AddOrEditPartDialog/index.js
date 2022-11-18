@@ -6,7 +6,7 @@ import {
   CheckboxField,
   InfoHelper
 } from "teselagen-react-components";
-import { FeatureTypes as featureTypes } from "ve-sequence-utils";
+import { getFeatureTypes } from "ve-sequence-utils";
 import { get } from "lodash";
 
 const renderTypes = ({ readOnly }) => (
@@ -15,7 +15,7 @@ const renderTypes = ({ readOnly }) => (
     tooltipError
     disabled={readOnly}
     defaultValue="misc_feature"
-    options={featureTypes.map((type) => {
+    options={getFeatureTypes().map((type) => {
       return {
         label: type,
         // label: (
@@ -28,7 +28,7 @@ const renderTypes = ({ readOnly }) => (
         //   >
         //     <div
         //       style={{
-        //         // background: featureColors[type], add back in if we want colors. import from vesequtils
+        //         // background: getFeatureToColorMap()[type], add back in if we want colors. import from vesequtils
         //         height: 15,
         //         width: 15,
         //         marginRight: 5

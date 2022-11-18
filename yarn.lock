@@ -2639,10 +2639,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^8.3.32:
-  version "8.3.32"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-8.3.32.tgz#a271ae125a08f81ab3faaaa0dbcb2f4b01907412"
-  integrity sha512-ZsCdmSRgrNDTHdNrRyQebFgJJ19v2gR8BmB5LmwoSf7QMKkhGtCCLlSIFFgO2WZaCqcnsFtQuNl9m5G7sKiGbQ==
+bio-parsers@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.0.1.tgz#78d0ecacfb66ce2dcdb538b146f011fb443d04ca"
+  integrity sha512-f90ZEMssDeguz8o7I2U4XqSFNtmr79fI1oCRSWZWtQoE9oVeHDubnsQG4i8v2lW1FRwMcO81rqKuGlv7vPAmrw==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -3987,10 +3987,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress@^10.6.0:
-  version "10.6.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-10.6.0.tgz#13f46867febf2c3715874ed5dce9c2e946b175fe"
-  integrity sha512-6sOpHjostp8gcLO34p6r/Ci342lBs8S5z9/eb3ZCQ22w2cIhMWGUoGKkosabPBfKcvRS9BE4UxybBtlIs8gTQA==
+cypress@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-11.1.0.tgz#b8f16495a8a5d8f9a7dd3374ae7b2cef45e9c779"
+  integrity sha512-kzizbG9s3p3ahWqxUwG/21NqLWEGtScMevMyUPeYlcmMX9RzVxWM18MkA3B4Cb3jKx72hSyIE2mHgHymfCM1bg==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
@@ -4011,7 +4011,7 @@ cypress@^10.6.0:
     dayjs "^1.10.4"
     debug "^4.3.2"
     enquirer "^2.3.6"
-    eventemitter2 "^6.4.3"
+    eventemitter2 "6.4.7"
     execa "4.1.0"
     executable "^4.1.1"
     extract-zip "2.0.1"
@@ -4774,10 +4774,10 @@ eslint-config-react-app@^6.0.0:
   dependencies:
     confusing-browser-globals "^1.0.10"
 
-eslint-config-teselagen@^6.0.12:
-  version "6.0.12"
-  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-6.0.12.tgz#4d2792af262bb2d5c9eb1715674d43d5dc568f86"
-  integrity sha512-ad9HnmQDtsnKUR1zibqxKbGxoHRsfc1GiuWOnHh3x48XmNHLw3HJopMZp+HuobjDfRPyaTkh+/lRSFdmErl1xw==
+eslint-config-teselagen@6.0.16:
+  version "6.0.16"
+  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-6.0.16.tgz#04077819f55b34eb00fa51d9cf2b6545012525e3"
+  integrity sha512-aqlZZImUOxc1olzZetpLdLEhjRsjJmJ4M+322vsCxptnVG178E32ZQwY+whvOXPOM6uNss04bHwHZhHGKefJEw==
   dependencies:
     "@rushstack/eslint-patch" "^1.1.0"
     "@typescript-eslint/eslint-plugin" "^4.0.0"
@@ -4793,7 +4793,7 @@ eslint-config-teselagen@^6.0.12:
     eslint-plugin-react "^7.20.3"
     eslint-plugin-react-app "^6.2.2"
     eslint-plugin-react-hooks "^4.0.8"
-    typescript "^4.9.3"
+    typescript "4.4.4"
 
 eslint-import-resolver-node@^0.3.6:
   version "0.3.6"
@@ -5187,10 +5187,10 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-eventemitter2@^6.4.3:
-  version "6.4.5"
-  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.5.tgz#97380f758ae24ac15df8353e0cc27f8b95644655"
-  integrity sha512-bXE7Dyc1i6oQElDG0jMRZJrRAn9QR2xyyFGmBdZleNmyQX0FqGYmhZIrIrpPfm/w//LTo4tVQGOGQcGCb5q9uw==
+eventemitter2@6.4.7:
+  version "6.4.7"
+  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.7.tgz#a7f6c4d7abf28a14c1ef3442f21cb306a054271d"
+  integrity sha512-tYUSVOGeQPKt/eC1ABfhHy5Xd96N3oIijJvN3O9+TsC28T5V9yX9oEfEK5faP0EFSNVOG97qtAS68GBrQB2hDg==
 
 eventemitter3@^4.0.0:
   version "4.0.7"
@@ -11780,10 +11780,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.13.1:
-  version "30.13.1"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.1.tgz#4d2cc094f1620e1aa2384dba81f5cf37a9b251da"
-  integrity sha512-6kFh3P/pPpaGqcPZ4gNHtcsZynqfbA15nF1pZNqV6DUu6Urk6vAy4NYOCNDQNjH3h1lYzkRXNgHBi8wLFkg2lg==
+teselagen-react-components@30.13.9:
+  version "30.13.9"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.9.tgz#65c8edfb14a54079c21ed0e56fac24586a27995b"
+  integrity sha512-LaRaG1AFT2sF+CFFKtBUtK4DtFNOuj/Kzjl5ACsRx8ueFk9DM3hFwGhUk+apiClZk6phgUzITtivWgPuKcYOTg==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -12149,10 +12149,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.9.3:
-  version "4.9.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.3.tgz#3aea307c1746b8c384435d8ac36b8a2e580d85db"
-  integrity sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==
+typescript@4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.4.tgz#2cd01a1a1f160704d3101fd5a58ff0f9fcb8030c"
+  integrity sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==
 
 ua-parser-js@0.7.21:
   version "0.7.21"
@@ -12538,10 +12538,10 @@ ve-range-utils@^2.6.6:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.1.36:
-  version "5.1.36"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.1.36.tgz#8082930e71df3f667b654df9186c46abdf653189"
-  integrity sha512-3s6wp57+D5FiZ9g1SluazwqNLi4vCz3qTju3a3X6mu7+n9zD7kPx85UXecoIBZ+dm4WD2o73MzmcrKCnrSVrdw==
+ve-sequence-utils@^5.2.8:
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.2.8.tgz#6ed6fd8992e90d7a93fd4f1dad8a0ed60a653b63"
+  integrity sha512-+/C7zaul2EYQWgaTqOMEf28eXNzOuS29ipJey6lLouSKhK8LRwiSouy2lEeXlCdgpNYIy0gsen1W0hBvw/SXSw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

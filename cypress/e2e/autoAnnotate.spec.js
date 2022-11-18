@@ -66,6 +66,8 @@ describe("autoAnnotate", function () {
       "text/csv"
     );
     cy.contains("button", "Annotate").click();
+    cy.contains("Review and Edit Data").click();
+    cy.contains("Add File").click();
     cy.contains("10 Selected");
     cy.contains("button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
@@ -81,7 +83,10 @@ describe("autoAnnotate", function () {
       "csvAnnotationList_no_type.csv",
       "text/csv"
     );
+
     cy.contains("button", "Annotate").click();
+    cy.contains("Review and Edit Data").click();
+    cy.contains("Add File").click();
     cy.contains("10 Selected");
     cy.contains("button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
@@ -99,9 +104,10 @@ describe("autoAnnotate", function () {
       "text/csv"
     );
     cy.contains("button", "Annotate").click();
-    cy.contains("10 Selected");
+    cy.contains("11 Selected");
     cy.get(`.rt-tr:contains(Example Feature 1)`).click();
     cy.get(`.rt-tr:contains(Example Feature 2)`);
+    cy.get(`.rt-tr:contains(amino acid Feat):contains(protein)`);
     cy.get(`.rt-tr:contains(Example Feature 3):contains(1)`);
     cy.get(`.rt-tr:contains(Reverse Feature):contains(-1)`);
 

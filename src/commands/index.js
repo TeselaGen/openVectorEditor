@@ -301,6 +301,11 @@ const fileCommandDefs = {
     isHidden: (props) =>
       !some(partsPrimersFeatures, (type) => props[`autoAnnotate${type}`])
   },
+  onConfigureFeatureTypesClick: {
+    name: "Configure Feature Types",
+    handler: (p) => p.onConfigureFeatureTypesClick(),
+    isHidden: (props) => !props.onConfigureFeatureTypesClick
+  },
   ...partsPrimersFeatures.reduce((acc, type) => {
     const handlerName = `autoAnnotate${type}`;
     acc[handlerName] = {

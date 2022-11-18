@@ -1,4 +1,4 @@
-import { featureColors } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "ve-sequence-utils";
 import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
@@ -64,7 +64,8 @@ function StackedAnnotations(props) {
     const annotation = annotationRange.annotation;
     const annotationColor =
       annotation.color ||
-      (annotation.type && featureColors[annotation.type]) ||
+      (annotation.type &&
+        getFeatureToColorMap({ includeHidden: true })[annotation.type]) ||
       "#BBBBBB";
     const result = getXStartAndWidthOfRowAnnotation(
       annotationRange,

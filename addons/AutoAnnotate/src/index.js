@@ -11,6 +11,7 @@ import {
   validateCSVRow
 } from "./fileUtils";
 import downloadjs from "downloadjs";
+import { convertProteinSeqToDNAIupac } from "ve-sequence-utils";
 
 const {
   shortid,
@@ -21,8 +22,8 @@ const {
   pluralize,
   reduxForm,
   SubmissionError,
-  featureColors,
-  FeatureTypes,
+  getFeatureToColorMap,
+  getFeatureTypes,
   InfoHelper,
   showConfirmationDialog,
   wrapDialog,
@@ -299,7 +300,7 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
               let regexConvertedSeq;
 
               if (annotationType === "feature") {
-                const cleanedType = FeatureTypes.find(
+                const cleanedType = getFeatureTypes().find(
                   (t) => t.toLowerCase() === type.toLowerCase()
                 );
                 if (!cleanedType) {
@@ -343,10 +344,16 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                 // eslint-disable-next-line no-unused-vars
                 i,
                 // eslint-disable-next-line no-unused-vars
-                { name, sequence, type, isRegex }
+                { name, sequence, matchType, type, isRegex }
               ] of customAnnResponse.list.entries()) {
                 await validateRow(
-                  { name, sequence, type, isRegex: isRegex ? "TRUE" : "FALSE" },
+                  {
+                    name,
+                    sequence,
+                    matchType,
+                    type,
+                    isRegex: isRegex ? "TRUE" : "FALSE"
+                  },
                   `Row ${i + 1} (${name})`
                 );
               }
@@ -400,6 +407,9 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
             }
             const annotationsToCheckById = {};
             annsToCheck.forEach((ann) => {
+              if (ann.matchType === "protein") {
+                ann.sequence = convertProteinSeqToDNAIupac(ann.sequence);
+              }
               const id = shortid();
               annotationsToCheckById[id] = {
                 ...ann,
@@ -427,7 +437,8 @@ FRT	GAAGTTCCTATTCTCTAGAAAGTATAGGAACTTC	misc_recomb	orchid	pink	0	0`,
                     forward: a.strand !== -1,
                     id: shortid()
                   };
-                  toRet.color = toRet.color || featureColors[toRet.type];
+                  toRet.color =
+                    toRet.color || getFeatureToColorMap()[toRet.type];
                   return toRet;
                 })
               );
@@ -480,7 +491,7 @@ const validateAgainstSchema = {
     {
       path: "type",
       type: "dropdown",
-      values: FeatureTypes,
+      values: getFeatureTypes(),
       defaultValue: "misc_feature"
     },
     {

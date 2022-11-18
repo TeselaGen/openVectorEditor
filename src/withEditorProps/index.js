@@ -1,4 +1,4 @@
-import { featureColors } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "ve-sequence-utils";
 import {
   anyToJson,
   jsonToGenbank,
@@ -572,7 +572,9 @@ function mapStateToProps(state, ownProps) {
     const vals = getFormValues(n)(state);
     if (vals) {
       annotationToAdd = {
-        color: featureColors[vals.type || "primer_bind"], //we won't have the correct color yet so we set it here
+        color: getFeatureToColorMap({ includeHidden: true })[
+          vals.type || "primer_bind"
+        ], //we won't have the correct color yet so we set it here
         ...vals,
         formName: n,
         type,
