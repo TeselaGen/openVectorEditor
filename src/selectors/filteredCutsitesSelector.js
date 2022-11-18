@@ -25,7 +25,7 @@ export default createSelector(
     let filteredEnzymes = [];
     let enzymesFromGroups = [];
     let hasUserGroup;
-    // let groupCount2 = 0
+    let groupCount = 0;
     //handle adding enzymes that are included in user created groups
     filteredRestrictionEnzymes.forEach((e) => {
       if (e.value.includes("__userCreatedGroup")) {
@@ -39,18 +39,16 @@ export default createSelector(
         const zs = flatMap(enzymes, (e) => (e ? { value: e } : []));
         filteredEnzymes = filteredEnzymes.concat(zs);
         enzymesFromGroups = enzymesFromGroups.concat(zs);
-        // groupCount2 += 1
+        groupCount += 1;
       } else if (e.isHidden) {
         hiddenEnzymesByName[e.value] = e;
       } else {
         if (!e) return;
-        // groupCount2 += 1
+        groupCount += 1;
         filteredEnzymes.push(e);
       }
     });
-    const type2sCutsites = [];
-    const cutSiteCountGroup = [];
-    const individualCutsites = [];
+    const cutSiteList = [];
     if (!filteredEnzymes || (filteredEnzymes.length === 0 && !hasUserGroup)) {
       returnVal.cutsitesByName = cutsitesByName;
     } else {
@@ -71,7 +69,7 @@ export default createSelector(
               cutsitesByName[key].length &&
               cutsitesByName[key][0]?.restrictionEnzyme?.isType2S
             ) {
-              type2sCutsites.push(key);
+              cutSiteList.push(key);
               returnVal.cutsitesByName[key] = cutsitesByName[key];
             }
           });
@@ -80,7 +78,7 @@ export default createSelector(
           Object.keys(cutsitesByName).forEach(function (key) {
             if (hiddenEnzymesByName[key]) return; //don't show that cutsite
             if (cutsitesByName[key].length === cutsThisManyTimes) {
-              cutSiteCountGroup.push(key);
+              cutSiteList.push(key);
               returnVal.cutsitesByName[key] = cutsitesByName[key];
             }
           });
@@ -88,72 +86,32 @@ export default createSelector(
           if (hiddenEnzymesByName[lowerValue]) return; //don't show that cutsite
           //normal enzyme ('BamHI')
           if (!cutsitesByName[lowerValue]) return;
-          individualCutsites.push(lowerValue);
+          cutSiteList.push(lowerValue);
           returnVal.cutsitesByName[lowerValue] = cutsitesByName[lowerValue];
         }
       });
     }
 
-    const filteredEnzymesValues = filteredEnzymes.map((group) => {
-      return group.value.toLowerCase();
-    });
-    const enzymesFromGroupsValues = [];
-    enzymesFromGroups.forEach((c) => {
-      if (!enzymesFromGroupsValues.includes(c.value.toLowerCase())) {
-        enzymesFromGroupsValues.push(c.value.toLowerCase());
-      }
-    });
-
-    const uniqueIndividualCutsites = [];
-    individualCutsites.forEach((c) => {
-      if (!uniqueIndividualCutsites.includes(c)) {
-        uniqueIndividualCutsites.push(c);
-      }
-    });
-
     const enzymeCounts = {};
-    filteredEnzymesValues.forEach(
+    cutSiteList.forEach(
       (enzyme) =>
         (enzymeCounts[enzyme] = enzymeCounts[enzyme]
           ? enzymeCounts[enzyme] + 1
           : 1)
     );
-    const groupCount = Math.max.apply(Math, Object.values(enzymeCounts));
 
-    let intersectionOfFilteredEnzymesValues = filteredEnzymesValues.filter(
-      (a, index) =>
-        filteredEnzymesValues.indexOf(a) === index &&
-        filteredEnzymesValues.reduce((acc, b) => +(a === b) + acc, 0) ===
-          groupCount
-    );
+    const intersectionCutSites = [];
+    Object.keys(enzymeCounts).forEach((key) => {
+      if (enzymeCounts[key] === groupCount) intersectionCutSites.push(key);
+    });
 
-    if (filteredEnzymesValues.length - enzymesFromGroupsValues.length > 2) {
-      intersectionOfFilteredEnzymesValues = [];
-    }
-    if (uniqueIndividualCutsites.length !== enzymesFromGroupsValues.length) {
-      intersectionOfFilteredEnzymesValues = [];
-    }
-
-    if (type2sCutsites.length > 0) {
-      intersectionOfFilteredEnzymesValues =
-        intersectionOfFilteredEnzymesValues.filter((value) =>
-          type2sCutsites.includes(value)
-        );
-    }
-    if (cutSiteCountGroup.length > 0) {
-      intersectionOfFilteredEnzymesValues =
-        intersectionOfFilteredEnzymesValues.filter((value) =>
-          cutSiteCountGroup.includes(value)
-        );
-    }
-
-    returnVal.cutsiteIntersectionCount =
-      intersectionOfFilteredEnzymesValues.length;
+    returnVal.cutsiteIntersectionCount = intersectionCutSites.length;
 
     const cutsbyname_AND = {};
-    intersectionOfFilteredEnzymesValues.forEach((value) => {
+    intersectionCutSites.forEach((value) => {
       cutsbyname_AND[value] = cutsitesByName[value];
     });
+
     returnVal.cutsiteTotalCount = Object.keys(returnVal.cutsitesByName).length;
 
     if (isEnzymeFilterAnd && returnVal.cutsiteIntersectionCount > 0) {
