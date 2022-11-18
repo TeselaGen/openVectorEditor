@@ -23,8 +23,9 @@ export default createSelector(
     // const cutsitesByName = getLowerCaseObj(cutsitesByName);
     const hiddenEnzymesByName = {};
     let filteredEnzymes = [];
+    let enzymesFromGroups = [];
     let hasUserGroup;
-    let intersectionOfFilteredEnzymes = [];
+    // let groupCount2 = 0
     //handle adding enzymes that are included in user created groups
     filteredRestrictionEnzymes.forEach((e) => {
       if (e.value.includes("__userCreatedGroup")) {
@@ -37,13 +38,13 @@ export default createSelector(
           existingGroups[e.value.replace("__userCreatedGroup", "")] || [];
         const zs = flatMap(enzymes, (e) => (e ? { value: e } : []));
         filteredEnzymes = filteredEnzymes.concat(zs);
-        intersectionOfFilteredEnzymes = filteredEnzymes.filter((value) =>
-          zs.includes(value)
-        );
+        enzymesFromGroups = enzymesFromGroups.concat(zs);
+        // groupCount2 += 1
       } else if (e.isHidden) {
         hiddenEnzymesByName[e.value] = e;
       } else {
         if (!e) return;
+        // groupCount2 += 1
         filteredEnzymes.push(e);
       }
     });
@@ -93,11 +94,46 @@ export default createSelector(
       });
     }
 
-    let intersectionOfFilteredEnzymesValues = intersectionOfFilteredEnzymes.map(
-      (group) => {
-        return group.value.toLowerCase();
+    const filteredEnzymesValues = filteredEnzymes.map((group) => {
+      return group.value.toLowerCase();
+    });
+    const enzymesFromGroupsValues = [];
+    enzymesFromGroups.forEach((c) => {
+      if (!enzymesFromGroupsValues.includes(c.value.toLowerCase())) {
+        enzymesFromGroupsValues.push(c.value.toLowerCase());
       }
+    });
+
+    const uniqueIndividualCutsites = [];
+    individualCutsites.forEach((c) => {
+      if (!uniqueIndividualCutsites.includes(c)) {
+        uniqueIndividualCutsites.push(c);
+      }
+    });
+
+    const enzymeCounts = {};
+    filteredEnzymesValues.forEach(
+      (enzyme) =>
+        (enzymeCounts[enzyme] = enzymeCounts[enzyme]
+          ? enzymeCounts[enzyme] + 1
+          : 1)
     );
+    const groupCount = Math.max.apply(Math, Object.values(enzymeCounts));
+
+    let intersectionOfFilteredEnzymesValues = filteredEnzymesValues.filter(
+      (a, index) =>
+        filteredEnzymesValues.indexOf(a) === index &&
+        filteredEnzymesValues.reduce((acc, b) => +(a === b) + acc, 0) ===
+          groupCount
+    );
+
+    if (filteredEnzymesValues.length - enzymesFromGroupsValues.length > 2) {
+      intersectionOfFilteredEnzymesValues = [];
+    }
+    if (uniqueIndividualCutsites.length !== enzymesFromGroupsValues.length) {
+      intersectionOfFilteredEnzymesValues = [];
+    }
+
     if (type2sCutsites.length > 0) {
       intersectionOfFilteredEnzymesValues =
         intersectionOfFilteredEnzymesValues.filter((value) =>
@@ -110,18 +146,7 @@ export default createSelector(
           cutSiteCountGroup.includes(value)
         );
     }
-    const uniqueIndividualCutsites = [];
-    individualCutsites.forEach((c) => {
-      if (!uniqueIndividualCutsites.includes(c)) {
-        uniqueIndividualCutsites.push(c);
-      }
-    });
-    if (
-      uniqueIndividualCutsites.length >
-      intersectionOfFilteredEnzymesValues.length
-    ) {
-      intersectionOfFilteredEnzymesValues = [];
-    }
+
     returnVal.cutsiteIntersectionCount =
       intersectionOfFilteredEnzymesValues.length;
 
