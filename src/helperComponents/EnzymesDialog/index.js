@@ -301,6 +301,9 @@ class EnzymesDialog extends React.Component {
                           color="grey"
                           isInline
                           content={group.tooltipInfo}
+                          className={
+                            group.name === "Hidden" ? "hiddenGroup" : ""
+                          }
                         ></InfoHelper>
                       )}
                     </div>
