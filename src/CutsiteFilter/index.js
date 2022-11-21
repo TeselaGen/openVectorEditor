@@ -141,7 +141,9 @@ export function CutsiteFilter(props) {
     sequenceData
   } = props;
   // const [isEnzymeFilterAnd, setAnd] = tgUseLocalStorageState("isEnzymeFilterAnd", false);
-  const showAndOr = filteredCutsites.cutsiteIntersectionCount > 0;
+  const showAndOr =
+    filteredCutsites.cutsiteIntersectionCount > 0 &&
+    filteredRestrictionEnzymes.length > 1;
   const [queryTracker, setQueryTracker] = useState("");
 
   const renderOptions = ({ label, value, canBeHidden }, props) => {
