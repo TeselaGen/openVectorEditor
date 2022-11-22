@@ -32,6 +32,7 @@ describe("enzymeFilterAndLogic.spec", () => {
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("group1");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.get("body").click(0, 0); //click away so tool tip resets
     cy.contains("My Enzymes").click();
     cy.contains("AluI").click();
     cy.contains("AccII").click();
@@ -41,6 +42,7 @@ describe("enzymeFilterAndLogic.spec", () => {
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("group2");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.get("body").click(0, 0); //click away so tool tip resets
     cy.contains("My Enzymes").click();
     cy.contains("AfaI").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
@@ -65,18 +67,20 @@ describe("enzymeFilterAndLogic.spec", () => {
       win.localStorage.clear();
     });
     cy.triggerFileCmd("Manage Enzymes");
-    cy.get(".veEnzymeDialogAddGroupBtn").click();
+    cy.get(".bp3-button-group .veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("group1");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.get("body").click(0, 0); //click away so tool tip resets
     cy.contains("My Enzymes").click();
     cy.contains("AluI").click();
     cy.contains("AfaI").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
     cy.get(".veEnzymeGroupMoveEnzymePopover .bp3-icon-tick").click();
 
-    cy.get(".veEnzymeDialogAddGroupBtn").click();
+    cy.get(".bp3-button-group .veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("group2");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.get("body").click(0, 0); //click away so tool tip resets
     cy.contains("My Enzymes").click();
     cy.contains("AfaI").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
@@ -104,6 +108,7 @@ describe("enzymeFilterAndLogic.spec", () => {
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("group1");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.get("body").click(0, 0); //click away so tool tip resets
     cy.contains("My Enzymes").click();
     cy.contains("AluI").click();
     cy.contains("AfaI").click();
@@ -113,6 +118,7 @@ describe("enzymeFilterAndLogic.spec", () => {
     cy.get(".veEnzymeDialogAddGroupBtn").click();
     cy.get(".veNewEnzymeGroupPopover input").type("group2");
     cy.get(".veNewEnzymeGroupPopover .bp3-icon-tick").click();
+    cy.get("body").click(0, 0); //click away so tool tip resets
     cy.contains("My Enzymes").click();
     cy.contains("AfaI").click();
     cy.get(".veEnzymeGroupAddEnzymesBtn").click();
