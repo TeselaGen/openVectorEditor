@@ -25,7 +25,7 @@ describe("autoAnnotate", function () {
 
     cy.triggerFileCmd("Auto Annotate Features");
     cy.contains("My Features").click();
-    cy.contains("button", "Annotate").click();
+    cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains(
       `Detected that Row 1 (I cover the full Seq) has a non-standard type of`
     );
@@ -45,7 +45,7 @@ describe("autoAnnotate", function () {
     cy.triggerFileCmd("Auto Annotate Features");
     cy.contains("ApE File").click();
     cy.uploadFile(`.bp3-dialog .tg-dropzone`, "Default_Features.txt");
-    cy.contains("button", "Annotate").click();
+    cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains(
       `Detected that Row 5 (SP6) has a non-standard type of primer_zoink. We will assign it and all subsequent non-standard types to use the misc_feature type instead`
     );
@@ -65,7 +65,8 @@ describe("autoAnnotate", function () {
       "csvAnnotationList.csv",
       "text/csv"
     );
-    cy.contains("button", "Annotate").click();
+    cy.contains(`csvAnnotationList.csv`);
+    cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains("11 Selected");
     cy.contains("button", "Add").click();
     cy.contains(`Part - Example Feature 1 - Start: 74 End: 102`);
@@ -84,7 +85,7 @@ describe("autoAnnotate", function () {
 
     cy.contains("Review and Edit Data").click();
     cy.contains("Add File").click();
-    cy.contains("button", "Annotate").click();
+    cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains("10 Selected");
 
     cy.contains("button", "Add").click();
@@ -102,7 +103,8 @@ describe("autoAnnotate", function () {
       "csvAnnotationList.csv",
       "text/csv"
     );
-    cy.contains("button", "Annotate").click();
+    cy.contains(`csvAnnotationList.csv`);
+    cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains("11 Selected");
     cy.get(`.rt-tr:contains(Example Feature 1)`).click();
     cy.get(`.rt-tr:contains(Example Feature 2)`);

@@ -387,7 +387,7 @@ describe("editor", function () {
     cy.contains(".bp3-menu-item", "Edit Part").click();
     const longName =
       "long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name_long_name{enter}";
-    cy.focused().type(longName, { passThru: true, timeout: 40000 });
+    cy.focused().type(longName, { passThru: true, timeout: 90000 });
     cy.contains(
       "Part 0long_name_long_name_long_name_long_name_long_name_long_name_long_nam.."
     );

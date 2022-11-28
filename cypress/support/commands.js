@@ -347,6 +347,8 @@ Cypress.Commands.overwrite(
   (originalFn, subject, text, options = {}) => {
     if (text === "{selectall}{del}") {
       return originalFn(subject, text, options); //pass thru .clear() calls
+    } else if (options.passThru) {
+      return originalFn(subject, text, options); //pass thru .clear() calls
     } else {
       cy.wrap(subject, { log: false })
         .invoke("val")
