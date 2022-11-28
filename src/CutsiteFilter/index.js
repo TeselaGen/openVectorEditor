@@ -2,13 +2,9 @@
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Icon, Tag, Tooltip } from "@blueprintjs/core";
-// import tgUseLocalStorageState from "tg-use-local-storage-state";
-
 import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
-
 import React, { useState } from "react";
-
 import "./style.css";
 import { popoverOverflowModifiers, TgSelect } from "teselagen-react-components";
 
