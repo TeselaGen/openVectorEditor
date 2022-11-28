@@ -1,3 +1,4 @@
+@import url(darkmode.css);
 .veEditor {
   position: relative;
   flex-grow: 1;
@@ -77,8 +78,6 @@
 .bp3-tag.tg-smallTag {
   transform: scale(0.8);
 }
-
-@import url(darkmode.css);
 
 .veSearchLayer {
   cursor: pointer;
