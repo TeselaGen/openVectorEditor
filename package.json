@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.1.49",
+  "version": "18.1.50",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -99,7 +99,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn changelog; lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {

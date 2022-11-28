@@ -39,6 +39,10 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
 
+      - name: Update Changelog
+        run: npm run changelog
+        if: steps.check.outputs.changed == 'true'
+        
       - name: get-npm-version
         if: steps.check.outputs.changed == 'true'
         id: package-version
