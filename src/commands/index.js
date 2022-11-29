@@ -33,6 +33,8 @@ import {
 } from "../GlobalDialogUtils";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
+const isOligo = (props) => props.sequenceData && props.sequenceData.isOligo;
+const isRna = (props) => props.sequenceData && props.sequenceData.isRna;
 const partsPrimersFeatures = ["Parts", "Features", "Primers"];
 const getNewTranslationHandler = (isReverse) => ({
   handler: (props, state, ctxInfo) => {
@@ -370,6 +372,10 @@ const triggerClipboardCommand = (type) => {
 const editCommandDefs = {
   changeCaseCmd: {
     isHidden: isProtein,
+    handler: () => {}
+  },
+  changeCircularityCmd: {
+    isHidden: (p) => isProtein(p) || isOligo(p) || isRna(p),
     handler: () => {}
   },
   cut: {

@@ -87,6 +87,7 @@ export default [
       },
       {
         text: "Change Circular/Linear",
+        cmd: "changeCircularityCmd",
         submenu: ["toggleCircular", "toggleLinear"]
       },
       // {
