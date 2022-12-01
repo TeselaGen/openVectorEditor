@@ -11,7 +11,7 @@ describe("onSavePng", function () {
     cy.get(`[data-test="saveTool"]`).click();
     cy.contains(".bp3-dialog", "Generating Image to Save");
     cy.get(".bp3-dialog .veCircularView");
-    cy.contains("onSave callback triggered", { timeout: 20000 }).then(() => {
+    cy.contains("onSave callback triggered", { timeout: 40000 }).then(() => {
       // eslint-disable-next-line no-unused-expressions
       expect(window.Cypress.pngFile).to.exist;
       expect(window.Cypress.pngFile.type).to.eq("image/png");
