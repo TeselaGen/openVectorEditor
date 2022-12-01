@@ -312,7 +312,11 @@ class EnzymesDialog extends React.Component {
               })}
             </div>
             <ButtonGroup style={{ width: "fit-content" }}>
-              <Tooltip position="bottom" content="Create New Group">
+              <Tooltip
+                disabled={window.Cypress}
+                position="bottom"
+                content="Create New Group"
+              >
                 <Popover
                   content={
                     <div
@@ -408,7 +412,11 @@ class EnzymesDialog extends React.Component {
                   </div>
                 }
               >
-                <Tooltip position="bottom" content="Edit Group Name">
+                <Tooltip
+                  disabled={window.Cypress}
+                  position="bottom"
+                  content="Edit Group Name"
+                >
                   <AnchorButton
                     disabled={fullSelectedEnzGroup.protected}
                     minimal
@@ -416,7 +424,11 @@ class EnzymesDialog extends React.Component {
                   ></AnchorButton>
                 </Tooltip>
               </Popover>
-              <Tooltip position="bottom" content="Delete Group">
+              <Tooltip
+                disabled={window.Cypress}
+                position="bottom"
+                content="Delete Group"
+              >
                 <AnchorButton
                   disabled={fullSelectedEnzGroup.protected}
                   onClick={async () => {
@@ -536,7 +548,11 @@ class EnzymesDialog extends React.Component {
                   </Tooltip>
                 </div>
                 <div>
-                  <Tooltip position="bottom" content="Remove Enzymes">
+                  <Tooltip
+                    disabled={window.Cypress}
+                    position="bottom"
+                    content="Remove Enzymes"
+                  >
                     <AnchorButton
                       className="veRemoveEnzymeFromGroupBtn"
                       onClick={async () => {
@@ -714,7 +730,11 @@ class EnzymesDialog extends React.Component {
               </ButtonGroup>
               {selectedEnzymeGroup === "My Enzymes" && (
                 <div>
-                  <Tooltip position="left" content="Create Custom Enzyme">
+                  <Tooltip
+                    disabled={window.Cypress}
+                    position="left"
+                    content="Create Custom Enzyme"
+                  >
                     <Button
                       minimal
                       onClick={() => {
