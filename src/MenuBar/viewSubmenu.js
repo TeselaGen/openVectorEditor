@@ -71,7 +71,7 @@ export default [
   //{ cmd: "toggleFeatures", shouldDismissPopover: false },
   {
     cmd: "toggleFeatures",
-    onClick: () => {}, //override this click so that they have to hit the submenu
+    // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false,
     submenu: [
       {
@@ -95,7 +95,7 @@ export default [
   },
   {
     cmd: "toggleTranslations",
-    onClick: () => {}, //override this click so that they have to hit the submenu
+    // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false,
     submenu: [
       {
@@ -123,14 +123,14 @@ export default [
   // },
   {
     cmd: "togglePartsWithSubmenu",
-    onClick: () => {},
+    // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false
   },
   { cmd: "toggleCutsites", shouldDismissPopover: false },
   // TODO translations, cds feature translations?
   {
     cmd: "toggleOrfs",
-    onClick: () => {}, //override this click so that they have to hit the submenu
+    // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false,
     submenu: [
       {
