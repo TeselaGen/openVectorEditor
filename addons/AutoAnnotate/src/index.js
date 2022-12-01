@@ -196,6 +196,7 @@ export const AutoAnnotateModal = compose(
                       }
                     ></InfoHelper>
                   </span>
+                  ,matchType
                 </div>
                 <br></br>
                 {annotationType !== "feature" && (
