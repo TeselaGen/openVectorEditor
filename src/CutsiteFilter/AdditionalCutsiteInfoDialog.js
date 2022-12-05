@@ -445,12 +445,12 @@ export const CutsiteTag = ({
 }) => {
   const isHidden = getIsEnzymeHidden({ name, allRestrictionEnzymes });
 
-  let numCuts = cutsitesByName[name.toLowerCase()]?.length;
+  let numCuts = (cutsitesByName[name.toLowerCase()] || []).length;
 
   const aliases = getEnzymeAliases(name);
   aliases.forEach((alias) => {
-    if (!numCuts) {
-      numCuts = cutsitesByName[alias.toLowerCase()]?.length;
+    if (numCuts === 0) {
+      numCuts = (cutsitesByName[alias.toLowerCase()] || []).length;
     }
   });
   const isActive = numCuts
@@ -469,7 +469,7 @@ export const CutsiteTag = ({
         {getCutsiteWithNumCuts({
           name,
           numCuts,
-          doNotShowCuts: doNotShowCuts || numCuts === undefined
+          doNotShowCuts
         })}
         {showActiveText ? (
           isHidden ? (
