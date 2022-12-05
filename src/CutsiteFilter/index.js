@@ -20,102 +20,97 @@ import {
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
 
-const NoResults = withRestrictionEnzymes(
-  ({
+const NoResults = withRestrictionEnzymes((props) => {
+  const {
     cutsitesByName,
     cutsitesByNameActive,
     closeDropDown,
     allRestrictionEnzymes,
     queryString = "",
     onHiddenEnzymeAdd
-  }) => {
-    const enzymesByNameThatMatch = pickBy(
-      allRestrictionEnzymes,
-      function (v, k) {
-        if (cutsitesByName[k]) {
-          return false;
-        }
-        return includes(k.toLowerCase(), queryString.toLowerCase());
-      }
-    );
-    if (!isEmpty(enzymesByNameThatMatch)) {
-      return (
-        <div>
-          No Active Results.. These inactive enzymes match:
-          <br></br>
-          <div style={{ display: "flex" }}>
-            {flatMap(enzymesByNameThatMatch, (e, i) => {
-              if (i > 3) return [];
-              return (
-                <CutsiteTag
-                  onWrapperClick={closeDropDown}
-                  allRestrictionEnzymes={allRestrictionEnzymes}
-                  forceOpenCutsiteInfo
-                  name={e.name}
-                  cutsitesByName={cutsitesByName}
-                  cutsitesByNameActive={cutsitesByName}
-                  key={i}
-                ></CutsiteTag>
-              );
-            })}
-          </div>
-        </div>
-      );
+  } = props;
+  const enzymesByNameThatMatch = pickBy(allRestrictionEnzymes, function (v, k) {
+    if (cutsitesByName[k]) {
+      return false;
     }
-    const hiddenEnzymesByNameThatMatch = pickBy(
-      aliasedEnzymesByName,
-      function (v, k) {
-        if (cutsitesByName[k]) {
-          return false;
-        }
-        return includes(k.toLowerCase(), queryString.toLowerCase());
-      }
-    );
-    if (!isEmpty(hiddenEnzymesByNameThatMatch)) {
-      return (
-        <div>
-          {onHiddenEnzymeAdd
-            ? `These Hidden enzymes match, ${
-                map(hiddenEnzymesByNameThatMatch).length > 1
-                  ? `click one`
-                  : "click it"
-              } to add it to your enzyme library`
-            : `These Hidden enzymes match, add them via the Manage Enzymes link`}
-          <br></br>
-          <div style={{ display: "flex" }}>
-            {flatMap(hiddenEnzymesByNameThatMatch, (e, i) => {
-              if (i > 3) return [];
-              return (
-                <CutsiteTag
-                  onWrapperClick={
-                    onHiddenEnzymeAdd
-                      ? () => {
-                          onHiddenEnzymeAdd(e);
-                          closeDropDown();
-                        }
-                      : closeDropDown
-                  }
-                  allRestrictionEnzymes={allRestrictionEnzymes}
-                  forceOpenCutsiteInfo={!onHiddenEnzymeAdd}
-                  name={e.name}
-                  cutsitesByName={cutsitesByName}
-                  cutsitesByNameActive={cutsitesByNameActive}
-                  key={i}
-                ></CutsiteTag>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
-
+    return includes(k.toLowerCase(), queryString.toLowerCase());
+  });
+  if (!isEmpty(enzymesByNameThatMatch)) {
     return (
-      <div className="noResultsTextPlusButton">
-        No results... Add enzymes to your list via the Manage Enzymes link{" "}
+      <div>
+        No Active Results.. These inactive enzymes match:
+        <br></br>
+        <div style={{ display: "flex" }}>
+          {flatMap(enzymesByNameThatMatch, (e, i) => {
+            if (i > 3) return [];
+            return (
+              <CutsiteTag
+                onWrapperClick={closeDropDown}
+                allRestrictionEnzymes={allRestrictionEnzymes}
+                forceOpenCutsiteInfo
+                name={e.name}
+                cutsitesByName={cutsitesByName}
+                cutsitesByNameActive={cutsitesByName}
+                key={i}
+              ></CutsiteTag>
+            );
+          })}
+        </div>
       </div>
     );
   }
-);
+  const hiddenEnzymesByNameThatMatch = pickBy(
+    aliasedEnzymesByName,
+    function (v, k) {
+      if (cutsitesByName[k]) {
+        return false;
+      }
+      return includes(k.toLowerCase(), queryString.toLowerCase());
+    }
+  );
+  if (!isEmpty(hiddenEnzymesByNameThatMatch)) {
+    return (
+      <div>
+        {onHiddenEnzymeAdd
+          ? `These Hidden enzymes match, ${
+              map(hiddenEnzymesByNameThatMatch).length > 1
+                ? `click one`
+                : "click it"
+            } to add it to your enzyme library`
+          : `These Hidden enzymes match, add them via the Manage Enzymes link`}
+        <br></br>
+        <div style={{ display: "flex" }}>
+          {flatMap(hiddenEnzymesByNameThatMatch, (e, i) => {
+            if (i > 3) return [];
+            return (
+              <CutsiteTag
+                onWrapperClick={
+                  onHiddenEnzymeAdd
+                    ? () => {
+                        onHiddenEnzymeAdd(e, props);
+                      }
+                    : closeDropDown
+                }
+                allRestrictionEnzymes={allRestrictionEnzymes}
+                forceOpenCutsiteInfo={!onHiddenEnzymeAdd}
+                name={e.name}
+                cutsitesByName={cutsitesByName}
+                cutsitesByNameActive={cutsitesByNameActive}
+                key={i}
+              ></CutsiteTag>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="noResultsTextPlusButton">
+      No results... Add enzymes to your list via the Manage Enzymes link{" "}
+    </div>
+  );
+});
 
 export function CutsiteFilter(props) {
   const {
