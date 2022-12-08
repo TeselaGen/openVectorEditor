@@ -486,13 +486,13 @@ export function CircularView(props) {
             sequenceData[layerName] ||
             [],
           (range) => {
-            const trimmedRange = getOverlapsOfPotentiallyCircularRanges(
+            const overlapOfRanges = getOverlapsOfPotentiallyCircularRanges(
               range,
               rangeToShow,
               sequenceLength,
               true
             );
-            if (!trimmedRange || !trimmedRange.length) return [];
+            if (!overlapOfRanges || !overlapOfRanges.length) return [];
             return { ...range };
           }
         );

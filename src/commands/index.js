@@ -375,7 +375,7 @@ const editCommandDefs = {
     handler: () => {}
   },
   changeCircularityCmd: {
-    isHidden: (p) => isProtein(p) || isOligo(p) || isRna(p),
+    isHidden: (p) => p.readOnly || isProtein(p) || isOligo(p) || isRna(p),
     handler: () => {}
   },
   cut: {
