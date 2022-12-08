@@ -6,11 +6,11 @@ const useShowChromQualScores = () => {
   return tgUseLocalStorageState("showChromQualScores", { defaultValue: true });
 };
 
-const ShowChromQualScoresMenu = ({ noOuter } = {}) =>
+const ShowChromQualScoresMenu = () =>
   function ShowChromQualScoresMenu(props) {
     const [showChromQualScores, setShowChromQualScores] =
       useShowChromQualScores();
-    const inner = (
+    return (
       <MenuItem
         {...props}
         text="Show Quality Scores"
@@ -21,19 +21,11 @@ const ShowChromQualScoresMenu = ({ noOuter } = {}) =>
         icon={showChromQualScores ? "small-tick" : "blank"}
       ></MenuItem>
     );
-    if (noOuter) {
-      return inner;
-    }
-    return (
-      <MenuItem {...props} text="Chromatogram" shouldDismissPopover={false}>
-        {inner}
-      </MenuItem>
-    );
   };
-const chromatogramMenu = (opts) => ({
+const chromatogramMenu = {
   text: "Chromatogram (Quality Scores)",
   cmd: "showChromQualScoresMenu",
-  component: ShowChromQualScoresMenu(opts),
+  component: ShowChromQualScoresMenu(),
   shouldDismissPopover: false
-});
+};
 export { chromatogramMenu, useShowChromQualScores };

@@ -12,6 +12,7 @@ export const visibilityDefaultValues = {
   features: true,
   warnings: true,
   assemblyPieces: true,
+  chromatogram: true,
   lineageAnnotations: true,
   translations: true,
   parts: true,

@@ -1127,7 +1127,7 @@ const annotationToggleCommandDefs = {};
   "axis",
   { type: "orfs", text: "ORFs", isHidden: isProtein },
   { type: "primers", isHidden: isProtein },
-
+  { type: "chromatogram", isHidden: (p) => !p.sequenceData.chromatogramData },
   "translations",
 
   {
