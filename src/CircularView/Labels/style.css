@@ -34,7 +34,7 @@
   text-decoration: underline;
 }
 .veCircularView .partWithSelectedTag.vePart .veLabelText {
-  /* stroke: purple; */
+  /* stroke: #ac68cc; */
   font-size: 15px !important;
 }
 .vePartLabel.partWithSelectedTag {

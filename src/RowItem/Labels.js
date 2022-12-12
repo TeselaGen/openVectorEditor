@@ -288,7 +288,7 @@ const DrawLabel = withHover(
               whiteSpace: "nowrap",
               color:
                 annotation.annotationTypePlural === "parts"
-                  ? "purple"
+                  ? "#ac68cc"
                   : annotation.labelColor,
               zIndex: 10
             }}
