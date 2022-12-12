@@ -1251,6 +1251,20 @@ const additionalAnnotationCommandsDefs = {
   limitsMenu: {
     isHidden: (props) => props.maxAnnotationsToDisplay
   },
+  clearSavedDefaults: {
+    name: "Reset Visibilities",
+    icon: "refresh",
+    handler: (props) => {
+      if (props?.sequenceData?.id) {
+        localStorage.removeItem(`oveVizDefaults_${props?.sequenceData?.id}`);
+        localStorage.removeItem(
+          `oveLabelVizDefaults_${props?.sequenceData?.id}`
+        );
+        props.refreshAnnotationVis();
+        props.refreshAnnotationLabelVis();
+      }
+    }
+  },
   showAll: {
     handler: (props) => {
       annotationTypes.forEach((type) => {

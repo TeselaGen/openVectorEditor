@@ -1,9 +1,7 @@
 import { omit } from "lodash";
-
-//./caretPosition.js
-
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import { getPersistedVisibility } from "./getPersistedVisibility";
 
 export const visibilityDefaultValues = {
   featureTypesToHide: {},
@@ -21,7 +19,6 @@ export const visibilityDefaultValues = {
   cdsFeatureTranslations: true,
   axis: true,
   cutsites: true,
-  // cutsites: true,
   cutsitesInSequence: true,
   primers: true,
   dnaColors: false,
@@ -45,6 +42,7 @@ export const annotationVisibilityShow = createAction(
   "annotationVisibilityShow"
 );
 export const hideFeatureTypes = createAction("hideFeatureTypes");
+export const refreshAnnotationVis = createAction("refreshAnnotationVis");
 export const showFeatureTypes = createAction("showFeatureTypes");
 export const resetFeatureTypesToHide = createAction("resetFeatureTypesToHide");
 export const hideFeatureIndividual = createAction("hideFeatureIndividual");
@@ -68,6 +66,9 @@ const annotationVisibility = createMergedDefaultStateReducer(
         ...state,
         partIndividualToHide: {}
       };
+    },
+    [refreshAnnotationVis]: () => {
+      return "__RESET__";
     },
     [showPartIndividual]: (state, payload) => {
       return {
@@ -157,7 +158,10 @@ const annotationVisibility = createMergedDefaultStateReducer(
       };
     }
   },
-  visibilityDefaultValues
+  ...getPersistedVisibility({
+    defaultVals: visibilityDefaultValues,
+    persistKey: "oveVizDefaults_"
+  })
 );
 
 export default annotationVisibility;

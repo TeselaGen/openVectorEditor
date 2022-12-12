@@ -33,8 +33,9 @@ import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
 import * as partLengthsToHide from "./partLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
-import { combineReducers } from "redux";
 import createAction from "./utils/createMetaAction";
+import combineReducersGlobalState from "./combineReducersGlobalState";
+
 export { default as vectorEditorMiddleware } from "./middleware";
 
 const subReducers = {
@@ -42,6 +43,10 @@ const subReducers = {
   annotationLabelVisibility,
   annotationsToSupport,
   annotationVisibility,
+  // annotationVisibility: (...a) => {
+  //   console.log(`a:`, a);
+  //   return annotationVisibility(...a);
+  // },
   caretPosition,
   copyOptions,
   deletionLayers,
@@ -108,7 +113,7 @@ const reducers = {
   instantiated: () => true
 };
 
-export const editorReducer = combineReducers(reducers);
+export const editorReducer = combineReducersGlobalState(reducers);
 const customDeepMerge = (state = {}, newState = {}) => {
   return {
     ...state,
@@ -184,11 +189,4 @@ export default function reducerFactory(initialState = {}) {
   };
 }
 
-// export const getBlankEditor = (state) => (state.blankEditor)
 export const getEditorByName = (state, editorName) => state[editorName];
-
-// export default connect((state, ownProps) => {
-//   return {
-//     toggled: state.VectorEditor[ownProps.editorName].annotationVisibility.features
-//   }
-// })()

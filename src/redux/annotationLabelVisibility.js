@@ -1,8 +1,9 @@
 //./caretPosition.js
 import createAction from "./utils/createMetaAction";
 import createMergedDefaultStateReducer from "./utils/createMergedDefaultStateReducer";
+import { getPersistedVisibility } from "./getPersistedVisibility";
 
-const visibilityInitialValues = {
+const labelVisibilityDefaultValues = {
   features: true,
   parts: true,
   primers: true,
@@ -18,6 +19,9 @@ const visibilityInitialValues = {
 export const annotationLabelVisibilityToggle = createAction(
   "annotationLabelVisibilityToggle"
 );
+export const refreshAnnotationLabelVis = createAction(
+  "refreshAnnotationLabelVis"
+);
 export const annotationLabelVisibilityShow = createAction(
   "annotationLabelVisibilityShow"
 );
@@ -30,6 +34,9 @@ export const annotationLabelVisibilityHide = createAction(
 // ------------------------------------
 export default createMergedDefaultStateReducer(
   {
+    [refreshAnnotationLabelVis]: () => {
+      return "__RESET__";
+    },
     [annotationLabelVisibilityToggle]: (state, payload) => {
       return {
         ...state,
@@ -49,5 +56,8 @@ export default createMergedDefaultStateReducer(
       };
     }
   },
-  visibilityInitialValues
+  ...getPersistedVisibility({
+    defaultVals: labelVisibilityDefaultValues,
+    persistKey: "oveLabelVizDefaults_"
+  })
 );

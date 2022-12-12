@@ -514,7 +514,10 @@ updateEditor(store, "DemoEditor", {
                 onClick: () => {
                   updateEditor(store, "DemoEditor", {
                     sequenceDataHistory: {},
-                    sequenceData: generateSequenceData()
+                    sequenceData: {
+                      ...generateSequenceData(),
+                      id: "some_new_seq"
+                    }
                   });
                 },
                 isButton: true,

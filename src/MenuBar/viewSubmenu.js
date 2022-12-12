@@ -62,6 +62,11 @@ export const fullSequenceTranslationMenu = {
 };
 export default [
   // { cmd: "mapCaret" },
+  {
+    cmd: "clearSavedDefaults",
+    icon: "properties",
+    shouldDismissPopover: false
+  },
   { cmd: "showAll", shouldDismissPopover: false },
   { cmd: "hideAll", shouldDismissPopover: false },
   {
