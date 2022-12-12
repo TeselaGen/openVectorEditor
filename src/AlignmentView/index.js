@@ -40,7 +40,7 @@ import ReactList from "@teselagen/react-list";
 import ReactDOM from "react-dom";
 
 import { NonReduxEnhancedLinearView } from "../LinearView";
-import Minimap from "./Minimap";
+import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../redux/alignments";
@@ -77,10 +77,6 @@ import classNames from "classnames";
 import { getTrackFromEvent } from "./getTrackFromEvent";
 import { PerformantSelectionLayer } from "./PerformantSelectionLayer";
 import { PairwiseAlignmentView } from "./PairwiseAlignmentView";
-import {
-  invertRange,
-  splitRangeIntoTwoPartsIfItIsCircular
-} from "ve-range-utils";
 import { updateTrackHelper } from "./updateTrackHelper";
 import { getGaps } from "./getGaps";
 import { isTargetWithinEl } from "./isTargetWithinEl";
@@ -567,16 +563,12 @@ export class AlignmentView extends React.Component {
       chromatogramData
       // mismatches
     } = track;
-
-    let trimmedRangesToDisplay = [];
     const seqLen = this.getMaxLength();
-    if (alignmentData?.trimmedRange) {
-      const inverted = invertRange(alignmentData?.trimmedRange, seqLen);
-      trimmedRangesToDisplay = splitRangeIntoTwoPartsIfItIsCircular(
-        inverted,
-        seqLen
-      );
-    }
+
+    const trimmedRangesToDisplay = getTrimmedRangesToDisplay({
+      seqLen,
+      trimmedRange: alignmentData?.trimmedRange
+    });
     const linearViewWidth =
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
@@ -1727,6 +1719,7 @@ export class AlignmentView extends React.Component {
                   alignmentId,
                   alignmentTracks: allTracks,
                   alignmentTrackIndex: track.index,
+                  hasBeenTrimmed: true,
                   update: {
                     trimmedRange: {
                       start: nearestCaretPos,
@@ -1761,6 +1754,7 @@ export class AlignmentView extends React.Component {
                   alignmentId,
                   alignmentTracks: allTracks,
                   alignmentTrackIndex: track.index,
+                  hasBeenTrimmed: true,
                   update: {
                     trimmedRange: {
                       start: track.alignmentData.trimmedRange?.start || 0,

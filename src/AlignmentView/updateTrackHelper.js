@@ -4,6 +4,7 @@ export function updateTrackHelper({
   currentPairwiseAlignmentIndex,
   pairwiseAlignments,
   upsertAlignmentRun,
+  hasBeenTrimmed,
   alignmentId,
   alignmentTracks,
   alignmentTrackIndex,
@@ -30,6 +31,7 @@ export function updateTrackHelper({
 
   upsertAlignmentRun({
     id: alignmentId,
+    hasBeenTrimmed,
     ...(pairwiseAlignments
       ? {
           pairwiseAlignments: pairwiseAlignments.map((ats, i) => {

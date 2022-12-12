@@ -61,7 +61,7 @@ export default function Chromatogram(props) {
         position: "relative"
       }}
       onContextMenu={(e) => {
-        showContextMenu([chromatogramMenu({ noOuter: true })], undefined, e);
+        showContextMenu([chromatogramMenu], undefined, e);
       }}
     >
       <Button

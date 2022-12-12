@@ -4,8 +4,13 @@ import ReactList from "@teselagen/react-list";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "@risingstack/react-easy-state";
-import { some } from "lodash";
-import { isPositionWithinRange } from "ve-range-utils";
+import { flatMap, some } from "lodash";
+import {
+  getOverlapOfNonCircularRanges,
+  invertRange,
+  isPositionWithinRange,
+  splitRangeIntoTwoPartsIfItIsCircular
+} from "ve-range-utils";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
 export default class Minimap extends React.Component {
@@ -42,17 +47,21 @@ export default class Minimap extends React.Component {
     onMinimapScrollX(percent);
     this.scrollMinimapVertical({ e, force: true });
   };
+  getSeqLen = () => {
+    const { alignmentTracks = [] } = this.props;
+    const [template] = alignmentTracks;
+    const seqLength = template.alignmentData.sequence.length;
+    return seqLength;
+  };
   /**
    * @returns current nucleotide char
    * width, nucelotide char width scales with zooming
    */
   getCharWidth = () => {
     const {
-      alignmentTracks = [],
       dimensions: { width = 200 }
     } = this.props;
-    const [template] = alignmentTracks;
-    const seqLength = template.alignmentData.sequence.length;
+    const seqLength = this.getSeqLen();
     const charWidth = Math.min(16, width / seqLength);
     return charWidth || 12;
   };
@@ -174,7 +183,18 @@ export default class Minimap extends React.Component {
     } = this.props;
     const charWidth = this.getCharWidth();
 
-    const { matchHighlightRanges } = alignmentTracks[i];
+    const {
+      matchHighlightRanges: _matchHighlightRanges,
+      alignmentData: { trimmedRange } = {}
+    } = alignmentTracks[i];
+    const matchHighlightRanges = !trimmedRange
+      ? _matchHighlightRanges
+      : flatMap(_matchHighlightRanges, (r) => {
+          const overlap = getOverlapOfNonCircularRanges(r, trimmedRange);
+          if (!overlap) return [];
+          return { ...r, ...overlap };
+        });
+
     //need to get the chunks that can be rendered
     let redPath = ""; //draw these as just 1 path instead of a bunch of rectangles to improve browser performance
     let bluePath = "";
@@ -488,3 +508,9 @@ const YellowScrollHandle = view(
     }
   }
 );
+
+export function getTrimmedRangesToDisplay({ trimmedRange, seqLen }) {
+  if (!trimmedRange) return [];
+  const inverted = invertRange(trimmedRange, seqLen);
+  return splitRangeIntoTwoPartsIfItIsCircular(inverted, seqLen);
+}

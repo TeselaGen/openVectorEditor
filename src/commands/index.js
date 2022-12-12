@@ -375,7 +375,7 @@ const editCommandDefs = {
     handler: () => {}
   },
   changeCircularityCmd: {
-    isHidden: (p) => isProtein(p) || isOligo(p) || isRna(p),
+    isHidden: (p) => p.readOnly || isProtein(p) || isOligo(p) || isRna(p),
     handler: () => {}
   },
   cut: {
@@ -1127,7 +1127,7 @@ const annotationToggleCommandDefs = {};
   "axis",
   { type: "orfs", text: "ORFs", isHidden: isProtein },
   { type: "primers", isHidden: isProtein },
-
+  { type: "chromatogram", isHidden: (p) => !p.sequenceData.chromatogramData },
   "translations",
 
   {

@@ -64,6 +64,14 @@ export default [
   // { cmd: "mapCaret" },
   { cmd: "showAll", shouldDismissPopover: false },
   { cmd: "hideAll", shouldDismissPopover: false },
+  {
+    cmd: "toggleChromatogram",
+    shouldDismissPopover: false,
+    submenu: [
+      { cmd: "toggleChromatogram", shouldDismissPopover: false },
+      chromatogramMenu
+    ]
+  },
   { cmd: "toggleWarnings", shouldDismissPopover: false },
   { cmd: "toggleAssemblyPieces", shouldDismissPopover: false },
   { cmd: "toggleLineageAnnotations", shouldDismissPopover: false },
@@ -263,7 +271,6 @@ export default [
     },
     shouldDismissPopover: false
   },
-  chromatogramMenu(),
   { cmd: "toggleDnaColors", shouldDismissPopover: false },
   {
     text: "Sequence",
