@@ -6,9 +6,7 @@ describe("chromatogram", function () {
     cy.tgToggle("chromatogramExample");
     cy.get(".chromatogram");
     cy.get(".chromatogram.noQualityScores").should("not.exist");
-    cy.triggerFileCmd("Chromatogram", { noEnter: true });
-    cy.contains("Chromatogram").click();
-    cy.contains("Show Quality Scores").click({ force: true });
+    cy.triggerFileCmd("Show Quality Scores");
     cy.get(".chromatogram.noQualityScores").should("exist");
   });
 
