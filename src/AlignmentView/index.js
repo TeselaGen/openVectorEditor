@@ -16,7 +16,8 @@ import {
   MenuItem,
   Tooltip,
   Icon,
-  Spinner
+  Spinner,
+  AnchorButton
 } from "@blueprintjs/core";
 import {
   InfoHelper,
@@ -787,6 +788,21 @@ export class AlignmentView extends React.Component {
                   icon={<Icon size={12} color="lightgrey" icon="edit"></Icon>}
                   minimal
                 ></Button>
+              )}
+              {sequenceData.seqLink && (
+                <AnchorButton
+                  href={sequenceData.seqLink}
+                  target="_blank"
+                  small
+                  icon={
+                    <Icon
+                      size={12}
+                      color="lightgrey"
+                      icon="document-open"
+                    ></Icon>
+                  }
+                  minimal
+                ></AnchorButton>
               )}
               {name}
             </div>
