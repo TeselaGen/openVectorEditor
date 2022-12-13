@@ -21,14 +21,15 @@ import "./commands";
 // require('./commands')
 
 //filter out socketIO requests here
-beforeEach(function () {
-  cy.server({
-    ignore: (xhr) => {
-      //filter out socketIO requests here
-      if (xhr.url.indexOf("socket.io/") > -1) return true;
-      if (xhr.url.indexOf("sockjs-node/") > -1) return true;
-      //return the default cypress ignore filer
-      return xhr.method === "GET" && /\.(jsx?|html|css)(\?.*)?$/.test(xhr.url);
-    }
-  });
-});
+// tnr: I don't think we need this in OVE, but either way cy.server has been removed
+// beforeEach(function () {
+//   cy.server({
+//     ignore: (xhr) => {
+//       //filter out socketIO requests here
+//       if (xhr.url.indexOf("socket.io/") > -1) return true;
+//       if (xhr.url.indexOf("sockjs-node/") > -1) return true;
+//       //return the default cypress ignore filer
+//       return xhr.method === "GET" && /\.(jsx?|html|css)(\?.*)?$/.test(xhr.url);
+//     }
+//   });
+// });

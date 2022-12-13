@@ -342,66 +342,66 @@ Cypress.Commands.add("closeToasts", () => {
   });
 });
 
-Cypress.Commands.overwrite(
-  "type",
-  (originalFn, subject, text, options = {}) => {
-    if (text === "{selectall}{del}") {
-      return originalFn(subject, text, options); //pass thru .clear() calls
-    } else if (options.passThru) {
-      return originalFn(subject, text, options); //pass thru .clear() calls
-    } else {
-      cy.wrap(subject, { log: false })
-        .invoke("val")
-        .then((prevValue) => {
-          if (
-            options.passThru ||
-            options.parseSpecialCharSequences === false ||
-            (text.includes && text.includes("{")) //if special chars are getting used just pass them thru
-          ) {
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(0, { log: false }).then(
-              { timeout: options.timeout || 40000 },
-              () => originalFn(subject, text, options)
-            );
-          } else {
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(0, { log: false }).then(
-              { timeout: options.timeout || 40000 },
-              () => originalFn(subject, text, options)
-            );
+// Cypress.Commands.overwrite(
+//   "type",
+//   (originalFn, subject, text, options = {}) => {
+//     if (text === "{selectall}{del}") {
+//       return originalFn(subject, text, options); //pass thru .clear() calls
+//     } else if (options.passThru) {
+//       return originalFn(subject, text, options); //pass thru .clear() calls
+//     } else {
+//       cy.wrap(subject, { log: false })
+//         .invoke("val")
+//         .then((prevValue) => {
+//           if (
+//             options.passThru ||
+//             options.parseSpecialCharSequences === false ||
+//             (text.includes && text.includes("{")) //if special chars are getting used just pass them thru
+//           ) {
+//             // eslint-disable-next-line cypress/no-unnecessary-waiting
+//             cy.wait(0, { log: false }).then(
+//               { timeout: options.timeout || 40000 },
+//               () => originalFn(subject, text, options)
+//             );
+//           } else {
+//             // eslint-disable-next-line cypress/no-unnecessary-waiting
+//             cy.wait(0, { log: false }).then(
+//               { timeout: options.timeout || 40000 },
+//               () => originalFn(subject, text, options)
+//             );
 
-            const valToCheck =
-              options.assertVal ||
-              `${options.noPrevValue ? "" : prevValue}${text}`;
-            if (options.containsSelector) {
-              cy.contains(options.containsSelector, valToCheck);
-            } else {
-              // Adds guarding that asserts that the value is typed.
-              cy.wrap(subject, { log: false }).then(($el) => {
-                // $el is a wrapped jQuery element
-                if (!($el.val() === valToCheck)) {
-                  if (options.runCount > 5) {
-                    //if the type fails more than 5 times then throw an error
-                    console.error("Error! Tried re-typing 5 times to no avail");
-                    throw new Error(
-                      "Error! Tried re-typing 5 times to no avail"
-                    );
-                  } else {
-                    //if the type failed, retry it again up to 5 times
-                    cy.wrap(subject)
-                      .clear()
-                      .type(valToCheck, {
-                        ...options,
-                        runCount: (options.runCount || 0) + 1
-                      });
-                  }
-                } else {
-                  //continue on, the type completed successfully!
-                }
-              });
-            }
-          }
-        });
-    }
-  }
-);
+//             const valToCheck =
+//               options.assertVal ||
+//               `${options.noPrevValue ? "" : prevValue}${text}`;
+//             if (options.containsSelector) {
+//               cy.contains(options.containsSelector, valToCheck);
+//             } else {
+//               // Adds guarding that asserts that the value is typed.
+//               cy.wrap(subject, { log: false }).then(($el) => {
+//                 // $el is a wrapped jQuery element
+//                 if (!($el.val() === valToCheck)) {
+//                   if (options.runCount > 5) {
+//                     //if the type fails more than 5 times then throw an error
+//                     console.error("Error! Tried re-typing 5 times to no avail");
+//                     throw new Error(
+//                       "Error! Tried re-typing 5 times to no avail"
+//                     );
+//                   } else {
+//                     //if the type failed, retry it again up to 5 times
+//                     cy.wrap(subject)
+//                       .clear()
+//                       .type(valToCheck, {
+//                         ...options,
+//                         runCount: (options.runCount || 0) + 1
+//                       });
+//                   }
+//                 } else {
+//                   //continue on, the type completed successfully!
+//                 }
+//               });
+//             }
+//           }
+//         });
+//     }
+//   }
+// );

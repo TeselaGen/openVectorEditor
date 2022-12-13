@@ -10,9 +10,10 @@ import classNames from "classnames";
 export default function Chromatogram(props) {
   const { isRowView, chromatogramData, row, getGaps, charWidth } = props;
   const [showChromQualScores] = useShowChromQualScores();
-  const [scalePct, setScalePct] = useState(0.05);
+  let [scalePct, setScalePct] = useState(0.05);
   const [hasDrawnOnce, setHasDrawnOnce] = useState(false);
-
+  if (props.scalePct) scalePct = props.scalePct;
+  if (props.setScalePct) setScalePct = props.setScalePct;
   const canvasRef = useRef();
   const gapsBeforeRow = getGaps(row.start).gapsBefore;
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function Chromatogram(props) {
     >
       <Button
         minimal
+        data-tip="Scale Chromatogram Up"
         className="scaleChromatogramButtonUp"
         icon="caret-up"
         onClick={(e) => {
@@ -80,6 +82,7 @@ export default function Chromatogram(props) {
       />
       <Button
         minimal
+        data-tip="Scale Chromatogram Down"
         className="scaleChromatogramButtonDown"
         icon="caret-down"
         onClick={(e) => {
@@ -205,7 +208,7 @@ function drawTrace({
     thymine: "red",
     guanine: "black",
     cytosine: "blue",
-    other: "purple"
+    other: "#ac68cc"
   };
   const ctx = peakCanvas.getContext("2d");
 

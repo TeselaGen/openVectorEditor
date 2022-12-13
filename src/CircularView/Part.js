@@ -21,7 +21,7 @@ export default function Part({
   });
   const colorToUse = startsWith(color, "override_")
     ? color.replace("override_", "")
-    : "purple";
+    : "#ac68cc";
   return (
     <path
       className={className}

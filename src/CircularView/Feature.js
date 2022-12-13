@@ -26,7 +26,7 @@ export default function Feature(props) {
   if (isPart) {
     colorToUse = startsWith(color, "override_")
       ? color.replace("override_", "")
-      : "purple";
+      : "#ac68cc";
   }
   const labelNeedsFlip = shouldFlipText(centerAngle + rotationRadians);
   if (containsLocations) {
