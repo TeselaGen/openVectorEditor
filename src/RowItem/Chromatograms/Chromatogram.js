@@ -205,7 +205,7 @@ function drawTrace({
     thymine: "red",
     guanine: "black",
     cytosine: "blue",
-    other: "purple"
+    other: "#ac68cc"
   };
   const ctx = peakCanvas.getContext("2d");
 
