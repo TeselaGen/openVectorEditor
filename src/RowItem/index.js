@@ -116,7 +116,9 @@ export default function RowItem(props) {
     scrollData,
     onlyShowLabelsThatDoNotFit,
     labelLineIntensity,
-    isLinearView
+    isLinearView,
+    scalePct,
+    setScalePct
   } = props;
 
   const {
@@ -381,6 +383,8 @@ export default function RowItem(props) {
           <Chromatogram
             chromatogramData={chromatogramData}
             alignmentData={alignmentData}
+            scalePct={scalePct}
+            setScalePct={setScalePct}
             {...annotationCommonProps}
           />
         )}
