@@ -296,11 +296,12 @@ class _LinearView extends React.Component {
                 fullSequence: sequenceData.sequence,
                 emptyText: getEmptyText({ sequenceData, caretPosition }),
                 tickSpacing:
-                  tickSpacing || isLinViewZoomed
+                  tickSpacing ||
+                  (isLinViewZoomed
                     ? massageTickSpacing(Math.ceil(120 / this.charWidth))
                     : Math.floor(
                         this.getMaxLength() / (sequenceData.isProtein ? 9 : 10)
-                      ),
+                      )),
                 annotationVisibility: {
                   ...rest.annotationVisibility,
                   ...((!isLinViewZoomed || this.charWidth < 5) && {
