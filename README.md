@@ -109,14 +109,14 @@ Here is where you can see how to run the `<Editor/>` in a Create-React-App envir
 If you clone that repo you can see it working and see how to set up the redux store/provider and initialize the editor. You should just clone it and run:
 
 ```
-yarn
-yarn start
+pnpm
+pnpm start
 ```
 
 ## Installation (react)
 
 ```
-yarn add open-vector-editor
+pnpm add open-vector-editor
 ```
 
 ## Code (react)
@@ -711,7 +711,7 @@ pass shouldAutosave=true as a prop and in the onSave() handler, make sure to ret
 ## Prerequisites
 
 [Node.js](http://nodejs.org/) >= v8 must be installed.
-download the latest yarn
+download the latest pnpm
 
 ## Outside Developer Set Up Steps
 
@@ -719,14 +719,14 @@ download the latest yarn
 IMPORTANT! First make sure you make an issue for whatever it is you'd like to see changed!
 fork your own branch of openVectorEditor from https://github.com/TeselaGen/openVectorEditor
 cd openVectorEditor
-yarn
-(cd addons/AutoAnnotate; yarn);
-yarn start
+pnpm
+(cd addons/AutoAnnotate; pnpm);
+pnpm start
 navigate to http://localhost:3344/ once the demo app has built
 modify the openVectorEditor code base to fix/build whatever it is you're trying to do
 set up a demo for your fix/feature if applicable in demo/src/EditorDemo/index.js
 set up a cypress test for your fix/feature if applicable
-you can run the cypress dev tool by running `yarn c` and see your tests
+you can run the cypress dev tool by running `pnpm c` and see your tests
 you can view existing cypress tests in the cypress/integration folder
 you can either add your test to an existing cypress file or make a new test file
 
