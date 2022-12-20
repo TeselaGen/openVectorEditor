@@ -19,6 +19,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          fail-fast: false
           record: true
           parallel: true
           start: yarn start

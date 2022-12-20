@@ -1,9 +1,10 @@
+import shortid from "shortid";
 import circularSelector from "./circularSelector";
 import sequenceSelector from "./sequenceSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 import { createSelector } from "reselect";
-import bsonObjectid from "bson-objectid";
+
 import { flatMap as flatmap, map } from "lodash";
 import { getCutsitesFromSequence } from "ve-sequence-utils";
 import { getLowerCaseObj } from "../utils/arrayUtils";
@@ -19,7 +20,7 @@ function cutsitesSelector(sequence, circular, enzymeList, cutsiteLabelColors) {
     const cutsitesForEnzyme = cutsitesByName[enzymeName];
     cutsitesForEnzyme.forEach(function (cutsite) {
       const numberOfCuts = cutsitesByName[enzymeName].length;
-      const uniqueId = bsonObjectid().str;
+      const uniqueId = shortid();
       cutsite.id = uniqueId;
       cutsite.numberOfCuts = numberOfCuts;
       cutsite.annotationType = "cutsite";
