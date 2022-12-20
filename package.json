@@ -13,12 +13,12 @@
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
     "buildWithDemo": "nwb build-react-component --copy-files",
-    "build-watch": "nodemon  --watch src --exec \"rm .babelrc; pnpm build\" ",
+    "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
     "clean": "nwb clean-module && npm clean-demo",
     "start": "nwb serve-react-demo --port 3344",
     "localj5": "AMQP=localhost:5672 REMOTE_J5=http://localhost:10000 nwb serve-react-demo --port 3344",
-    "c": "pnpm cypress open --e2e --browser chrome",
-    "test-e2e": "pnpm cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9",
+    "c": "yarn cypress open --e2e --browser chrome",
+    "test-e2e": "yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9",
     "changelog": "auto-changelog -p && git add CHANGELOG.md",
     "prepare": "husky install"
   },

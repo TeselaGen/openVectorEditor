@@ -22,7 +22,7 @@ jobs:
           fail-fast: false
           record: true
           parallel: true
-          start: pnpm start
+          start: yarn start
           wait-on: http://localhost:3344
         env:
           WITH_COVERAGE: true
