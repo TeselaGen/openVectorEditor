@@ -1,12 +1,14 @@
-import bsonObjectid from "bson-objectid";
 //helper function to make sure any arrays coming in
+
+import shortid from "shortid";
+
 //get converted to objects with unique ids
 export default function arrayToObjWithIds(array) {
-  let newObj = {};
-  array.forEach(function(item) {
-    let newItem = {
+  const newObj = {};
+  array.forEach(function (item) {
+    const newItem = {
       ...item,
-      id: item.id || bsonObjectid().str
+      id: item.id || shortid()
     };
     newObj[newItem.id] = newItem;
   });
