@@ -53,14 +53,15 @@ export class RowView extends React.Component {
   shouldClearCache = () => {
     const { annotationVisibility, annotationLabelVisibility, sequenceData } =
       this.props;
-
     const toCompare = {
       bpsPerRow: getBpsPerRow(this.props),
       annotationVisibility,
+      scalePct: this.state?.scalePct,
       annotationLabelVisibility,
       stateTrackingId: sequenceData.stateTrackingId
     };
     if (!isEqual(toCompare, this.oldToCompare)) {
+      this.cache = {};
       this.oldToCompare = toCompare;
       return true;
     }
@@ -375,6 +376,7 @@ export class RowView extends React.Component {
         );
       }
     }
+
     if (rowData[index]) {
       const rowItem = (
         <div data-row-number={index} key={index}>
@@ -386,6 +388,10 @@ export class RowView extends React.Component {
               rowTopComp,
               truncateLabelsThatDoNotFit,
               rowBottomComp,
+              scalePct: this.state?.scalePct,
+              setScalePct: (scalePct) => {
+                this.setState({ scalePct });
+              },
               isRowView: true,
               isProtein: sequenceData.isProtein,
               chromatogramData: sequenceData.chromatogramData,

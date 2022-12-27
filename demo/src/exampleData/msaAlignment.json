@@ -18,6 +18,7 @@
   "alignmentTracks": [
     {
       "sequenceData": {
+        "seqLink": "https://github.com/TeselaGen/",
         "id": "0bd61b29-d822-474f-86e1-877c476fb5dc",
         "features": [{
           "start": 10,

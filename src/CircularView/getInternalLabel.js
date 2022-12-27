@@ -23,7 +23,7 @@ export function getInternalLabel({
           (revTransform || "") + (angleAdjust ? ` rotate(${angleAdjust})` : "")
         }
         fill={
-          isPart ? "purple" : Color(colorToUse).isDark() ? "white" : "black"
+          isPart ? "#ac68cc" : Color(colorToUse).isDark() ? "white" : "black"
         }
         dy={-2}
       >

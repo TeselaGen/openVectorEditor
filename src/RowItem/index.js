@@ -117,7 +117,9 @@ export default function RowItem(props) {
     onlyShowLabelsThatDoNotFit,
     labelLineIntensity,
     isLinearView,
-    extraAnnotationProps
+    scalePct,
+    setScalePct,
+    extraAnnotationProps = {}
   } = props;
 
   const {
@@ -315,13 +317,11 @@ export default function RowItem(props) {
       const { color } = annotation;
       const colorToUse = startsWith(color, "override_")
         ? color.replace("override_", "")
-        : "purple";
+        : "#ac68cc";
 
+      const extraPropsGetter = extraAnnotationProps["part"];
       const extraProps =
-        (extraAnnotationProps["part"] &&
-          extraAnnotationProps["part"](annotation)) ||
-        {};
-
+        (extraAnnotationProps && extraPropsGetter(annotation)) || {};
       return {
         textColor: colorToUse,
         stroke: colorToUse,
@@ -389,6 +389,8 @@ export default function RowItem(props) {
           <Chromatogram
             chromatogramData={chromatogramData}
             alignmentData={alignmentData}
+            scalePct={scalePct}
+            setScalePct={setScalePct}
             {...annotationCommonProps}
           />
         )}

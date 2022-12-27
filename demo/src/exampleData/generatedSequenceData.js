@@ -1,8 +1,9 @@
-import {generateRandomRange} from "ve-range-utils";
-import objectid from "bson-objectid";
-let seqLen = 1000000;
+import { generateRandomRange } from "ve-range-utils";
+import shortid from "shortid";
 
-let exampleData = {
+const seqLen = 1000000;
+
+const exampleData = {
   // "sequence" : "gtggatgcatgtgtcatggtcat",
   circular: true,
   name: "pBbS8c-RFP",
@@ -18,7 +19,7 @@ export default exampleData;
 
 function generateSequence(m = 9) {
   let s = "";
-  let r = "gatc";
+  const r = "gatc";
   for (let i = 0; i < m; i++) {
     s += r.charAt(Math.floor(Math.random() * r.length));
   }
@@ -31,7 +32,7 @@ function generateAnnotations(
   stop,
   maxLength
 ) {
-  let result = {};
+  const result = {};
   for (let i = 0; i < numberOfAnnotationsToGenerate; i++) {
     const annotation = generateAnnotation(start, stop, maxLength);
     result[annotation.id] = annotation;
@@ -44,12 +45,12 @@ function getRandomInt(min, max) {
 }
 
 function generateAnnotation(start, stop, maxLength) {
-  let range = generateRandomRange(start, stop, maxLength);
+  const range = generateRandomRange(start, stop, maxLength);
   return {
     ...range,
     name: getRandomInt(0, 100000).toString(),
     type: "misc_feature",
-    id: objectid().str,
+    id: shortid(),
     forward: getRandomInt(0, 1) > 0.5,
     notes: {}
   };
