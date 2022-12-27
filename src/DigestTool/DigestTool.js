@@ -104,8 +104,8 @@ export class DigestTool extends React.Component {
               fontSize: "15px"
             }}
           >
-            >{MAX_DIGEST_CUTSITES} cut sites detected. Filter out additional
-            restriction enzymes to visualize digest results
+            {`>${MAX_DIGEST_CUTSITES} cut sites detected. Filter out additional
+            restriction enzymes to visualize digest results`}
           </div>
         )}
         <Tabs

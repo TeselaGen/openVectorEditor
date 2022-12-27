@@ -103,15 +103,15 @@ function PointedAnnotation(props) {
   let path;
   let hasAPoint = false;
   const endLine = annotation.overlapsSelf
-    ? `L 0,${height / 2} 
-  L -10,${height / 2} 
+    ? `L 0,${height / 2}
+  L -10,${height / 2}
   L 0,${height / 2} `
     : "";
   const bottomLine = `${insertTicks || ""} L 0,${height}`;
-  const startLines = `M 0,0 
+  const startLines = `M 0,0
   ${insertPaths || ""}`;
   const arrowLine = annotation.overlapsSelf
-    ? `L ${width + 10},${height / 2} 
+    ? `L ${width + 10},${height / 2}
   L ${width},${height / 2} `
     : "";
 
@@ -130,35 +130,35 @@ function PointedAnnotation(props) {
   } else if (_rangeType === "start") {
     path = `
         ${startLines}
-        L ${width - pointiness / 2},0 
-        
+        L ${width - pointiness / 2},0
+
         Q ${width + pointiness / 2},${height / 2} ${
       width - pointiness / 2
     },${height}
-    
-        ${bottomLine} 
+
+        ${bottomLine}
         ${endLine}
         z`;
   } else if (_rangeType === "beginningAndEnd") {
     hasAPoint = true;
     path = `
         ${startLines}
-        L ${widthMinusOne},0 
-        L ${width},${height / 2} 
+        L ${widthMinusOne},0
+        L ${width},${height / 2}
         ${arrowLine}
-        L ${widthMinusOne},${height} 
-        ${bottomLine} 
+        L ${widthMinusOne},${height}
+        ${bottomLine}
         ${endLine}
         z`;
   } else {
     hasAPoint = true;
     path = `
       ${startLines}
-      L ${widthMinusOne},0 
-      L ${width},${height / 2} 
+      L ${widthMinusOne},0
+      L ${width},${height / 2}
       ${arrowLine}
-      L ${widthMinusOne},${height} 
-      ${bottomLine} 
+      L ${widthMinusOne},${height}
+      ${bottomLine}
       Q ${pointiness},${height / 2} ${0},${0}
       z`;
   }
@@ -249,7 +249,7 @@ function PointedAnnotation(props) {
         d={path}
       />
       {partOverhangStart &&
-        (rangeType === "end" || rangeType === "beginningAndEnd") && (
+        (rangeType === "start" || rangeType === "beginningAndEnd") && (
           <Tooltip
             onInteraction={(isOpen) => {
               setOpen(isOpen);
@@ -270,7 +270,7 @@ function PointedAnnotation(props) {
           </Tooltip>
         )}
       {partOverhangEnd &&
-        (rangeType === "start" || rangeType === "beginningAndEnd") && (
+        (rangeType === "end" || rangeType === "beginningAndEnd") && (
           <Tooltip
             onInteraction={(isOpen) => {
               setOpen2(isOpen);

@@ -116,7 +116,8 @@ export default function RowItem(props) {
     scrollData,
     onlyShowLabelsThatDoNotFit,
     labelLineIntensity,
-    isLinearView
+    isLinearView,
+    extraAnnotationProps
   } = props;
 
   const {
@@ -315,9 +316,16 @@ export default function RowItem(props) {
       const colorToUse = startsWith(color, "override_")
         ? color.replace("override_", "")
         : "purple";
+
+      const extraProps =
+        (extraAnnotationProps["part"] &&
+          extraAnnotationProps["part"](annotation)) ||
+        {};
+
       return {
         textColor: colorToUse,
-        stroke: colorToUse
+        stroke: colorToUse,
+        ...extraProps
       };
     },
     alignmentType

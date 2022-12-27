@@ -61,9 +61,15 @@ import PCRTool from "../PCRTool/PCRTool";
 // }
 
 const _panelMap = {
-  circular: CircularView,
-  sequence: RowView,
-  rail: LinearView,
+  circular: {
+    comp: CircularView,
+    panelSpecificProps: ["extraAnnotationProps"]
+  },
+  sequence: {
+    comp: RowView,
+    panelSpecificProps: ["extraAnnotationProps"]
+  },
+  rail: { comp: LinearView, panelSpecificProps: ["extraAnnotationProps"] },
   // alignmentTool: AlignmentTool,
   alignment: AlignmentView,
   digestTool: DigestTool,
