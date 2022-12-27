@@ -319,9 +319,10 @@ export default function RowItem(props) {
         ? color.replace("override_", "")
         : "#ac68cc";
 
-      const extraPropsGetter = extraAnnotationProps["part"];
-      const extraProps =
-        (extraAnnotationProps && extraPropsGetter(annotation)) || {};
+      let extraProps = {};
+      if (typeof extraAnnotationProps["part"] === "function") {
+        extraProps = extraAnnotationProps["part"](annotation);
+      }
       return {
         textColor: colorToUse,
         stroke: colorToUse,
