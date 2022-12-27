@@ -21,7 +21,8 @@ function PointedAnnotation(props) {
     rangeType,
     forward,
     arrowheadType,
-    name = "",
+    name: _name = "",
+    customName,
     type,
     readOnly,
     isStriped,
@@ -48,6 +49,8 @@ function PointedAnnotation(props) {
     truncateLabelsThatDoNotFit,
     onlyShowLabelsThatDoNotFit
   } = props;
+
+  const name = customName || _name;
   let pointiness = props.pointiness || 4;
   let arrowPointiness = props.arrowPointiness || 1;
   const [isOpen, setOpen] = useState(false);
@@ -249,7 +252,8 @@ function PointedAnnotation(props) {
         d={path}
       />
       {partOverhangStart &&
-        (rangeType === "start" || rangeType === "beginningAndEnd") && (
+        (rangeType === (forward ? "start" : "end") ||
+          rangeType === "beginningAndEnd") && (
           <Tooltip
             onInteraction={(isOpen) => {
               setOpen(isOpen);
@@ -270,7 +274,8 @@ function PointedAnnotation(props) {
           </Tooltip>
         )}
       {partOverhangEnd &&
-        (rangeType === "end" || rangeType === "beginningAndEnd") && (
+        (rangeType === (forward ? "end" : "start") ||
+          rangeType === "beginningAndEnd") && (
           <Tooltip
             onInteraction={(isOpen) => {
               setOpen2(isOpen);
