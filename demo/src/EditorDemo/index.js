@@ -267,6 +267,17 @@ export default class EditorDemo extends React.Component {
       ]
     }
   };
+  extraAnnotationPropsExample = {
+    extraAnnotationProps: {
+      part: (annotation) => {
+        return {
+          customName: `${annotation.name} (digest)`,
+          fivePrimeOverhang: "tgca",
+          threePrimeUnderhang: "gcgc"
+        };
+      }
+    }
+  };
 
   setLinearPanelAsActive = () => {
     store.dispatch(
@@ -287,6 +298,7 @@ export default class EditorDemo extends React.Component {
       isFullscreen,
       withPreviewMode
     } = this.state;
+
     const isNotDna =
       this.state.moleculeType === "RNA" ||
       this.state.moleculeType === "Protein";
@@ -367,7 +379,7 @@ export default class EditorDemo extends React.Component {
         label: "beforeSequenceInsertOrDelete (Alter changed sequence)",
         type: "beforeSequenceInsertOrDelete",
         info: `
-The beforeSequenceInsertOrDelete handler can be used to 
+The beforeSequenceInsertOrDelete handler can be used to
 override the values being used in the insertion/deletion
 \`\`\`
 beforeSequenceInsertOrDelete: (
@@ -376,7 +388,7 @@ existingSequenceData,
 caretPositionOrRange,
 // the maintainOriginSplit option will be passed in as TRUE on complement/revComp actions (delete --> insert at start of selection and wrap around origin)
 // and FALSE on replace actions (delete --> insert at end of selection)
-options // {maintainOriginSplit: true} 
+options // {maintainOriginSplit: true}
 ) => {
 return {
 // you can return one or more of the following to override the values used
@@ -502,7 +514,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
               {renderToggle({
                 type: "randomizeSeqData",
                 info: `
-You can change the sequence in a given <Editor/> by calling: 
+You can change the sequence in a given <Editor/> by calling:
 \`\`\`js
 updateEditor(store, "DemoEditor", {
   sequenceDataHistory: {},
@@ -531,13 +543,13 @@ updateEditor(store, "DemoEditor", {
                 info: `
 The editor supports Amino Acid sequences and RNA sequences as well as DNA sequences and!
 
-Trigger the different modes with these flags: 
+Trigger the different modes with these flags:
 isProtein
 isRna
 isOligo
 isMixedRnaAndDna
 
-Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object: 
+Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object:
 \`\`\`
 updateEditor(store, "DemoEditor", {
   readOnly: false,
@@ -553,34 +565,34 @@ the protein sequenceData object should look like so
 	//either or both .proteinSequence (aa string) or .sequence (dna string) must be provided if isProtein: true
 	//if only .sequence is provided, OVE will automatically compute the amino acids from the provided dna sequence
 	//if only .proteinSequence is provided, OVE will automatically compute the degenerate DNA sequence from the provided aa string
-	//if both .proteinSequence and .sequence are provided, then OVE will assume that the underlying 
+	//if both .proteinSequence and .sequence are provided, then OVE will assume that the underlying
 	//dna sequence maps to the provided aa string as long as sequence.length === 3 * proteinSequence.length
 	proteinSequence: "mmhlrlfcillaavs...etc"
 	sequence: "gtagagagagcca...etc" //optional!
-	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices . 
-	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has 
+	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices .
+	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
 	//features/parts coming in as AA-indexed
-	features: [{name: "testFeature1", 
+	features: [{name: "testFeature1",
 		start: 3, //start on AA 1
-		end: 5 //end on AA 1 
+		end: 5 //end on AA 1
 	}],
 	parts: [{
 		name: "myFakePart"
 		start: 0, //start on AA 0
-		end: 11 //end on AA 3 
+		end: 11 //end on AA 3
 	}]
 }
 \`\`\`
 
-The usual onSave, onCopy, onCut handlers will now come back with a .proteinSequence field. 
+The usual onSave, onCopy, onCut handlers will now come back with a .proteinSequence field.
 You'll need to save/manipulate the protein sequence data however you do for dna sequences.
 
 certain dna specific tools and annotations are automatically disabled when isProtein=true :
  - primers
  - orfs
- - translations 
+ - translations
  - cutsites
- - sequence digestions 
+ - sequence digestions
  - ...etc
 
 
@@ -673,7 +685,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                 that: this,
                 label: "Truncate Internal Labels That Don't Fit",
                 type: "truncateLabelsThatDoNotFit",
-                info: `By default truncateLabelsThatDoNotFit=true 
+                info: `By default truncateLabelsThatDoNotFit=true
 This option allows for labels that are too big to usually fit into an annotation to still be drawn, just ellipsized.`
               })}
               {renderToggle({
@@ -742,7 +754,7 @@ ToolBarProps: {
                     });
                 },
                 info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
-                
+
                 `
               })}
               {renderToggle({
@@ -878,7 +890,7 @@ ToolBarProps: {
 \`\`\`js
 //override the panelsShown redux state adding your custom tab wherever you see fit:
 updateEditor(store, "DemoEditor", {
-  panelsShown: [ 
+  panelsShown: [
     [ //the first row of tabs
       {
         id: "rail",
@@ -911,7 +923,7 @@ updateEditor(store, "DemoEditor", {
 
 //create the custom tab component:
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
-  //you can optionally grab additional editor data using the exported connectToEditor function 
+  //you can optionally grab additional editor data using the exported connectToEditor function
   return {
     sequenceData
   };
@@ -926,7 +938,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
 });
 
 //and pass the custom tab component to the editor via the panelMap prop such that the key matches the panel id:
-<Editor panelMap={{ 
+<Editor panelMap={{
   myCustomTabId: MyCustomTab
 }} />
 \`\`\`
@@ -936,7 +948,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
                 that: this,
                 label: "Customize property tabs",
                 type: "propertiesOverridesExample",
-                info: `//The panels shown in the properties tab can be customized. 
+                info: `//The panels shown in the properties tab can be customized.
                 Here is an example of how to pass Properties overrides
 \`\`\`js
 
@@ -968,7 +980,7 @@ PropertiesProps: {
 }
 
 const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
-  //you can optionally grab additional editor data using the exported connectToEditor function 
+  //you can optionally grab additional editor data using the exported connectToEditor function
   return {
     sequenceData
   };
@@ -989,7 +1001,7 @@ const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
                 that: this,
                 label: "Customize menu bar",
                 type: "menuOverrideExample",
-                info: `The top menu bar can be customized as desired. 
+                info: `The top menu bar can be customized as desired.
                 Here is an example of how to do that:
 \`\`\`
 menuFilter:
@@ -1025,7 +1037,7 @@ menuFilter:
                 that: this,
                 label: "Customize Right Click Menus",
                 type: "overrideRightClickExample",
-                info: `If enabled, right clicking a part will fire a custom alert. 
+                info: `If enabled, right clicking a part will fire a custom alert.
 Here is an example of how to pass rightClick overrides:
 \`\`\`
 rightClickOverrides: {
@@ -1077,7 +1089,7 @@ rightClickOverrides: {
                 type: "withVersionHistory",
                 label: "Include Revision History Tool",
                 info: `
-To show the version history (File > Revision History), pass two handlers: 
+To show the version history (File > Revision History), pass two handlers:
 \`\`\`
 getSequenceAtVersion: async versionId => {
   //the returned sequenceData should be in Teselagen Json format
@@ -1085,7 +1097,7 @@ getSequenceAtVersion: async versionId => {
 },
 getVersionList: async () => {
   return await getVersionListFromBackend()
-  //this should return an array with this structure: 
+  //this should return an array with this structure:
   [
     {
       dateChanged: "12/30/2211",
@@ -1107,7 +1119,7 @@ getVersionList: async () => {
               {renderToggle({
                 that: this,
                 info: `
-You can set default visibilities like so: 
+You can set default visibilities like so:
 \`\`\`
 updateEditor(store, "DemoEditor", {
   annotationVisibility: {
@@ -1140,7 +1152,7 @@ updateEditor(store, "DemoEditor", {
                 type: "showWarningFeature",
                 label: "Show Warnings/Errors in Editor",
                 description: `
-Warnings can be displayed directly in the editor like so: 
+Warnings can be displayed directly in the editor like so:
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -1241,10 +1253,30 @@ sequenceData: {
               })}
               {renderToggle({
                 that: this,
+                type: "extraAnnotationPropsExample",
+                hook: (shouldUpdate) => {
+                  shouldUpdate &&
+                    updateEditor(store, "DemoEditor", {
+                      justPassingPartialSeqData: true,
+                      sequenceData: {
+                        parts: [
+                          {
+                            start: 1,
+                            end: 584,
+                            name: "Part 1",
+                            id: "2asdfgag"
+                          }
+                        ]
+                      }
+                    });
+                }
+              })}
+              {renderToggle({
+                that: this,
                 type: "showLineageAnnotations",
                 label: "Show Lineage Annotations in Editor",
                 description: `
-Lineage Annotations (aka the input parts that went into the assembly) can be displayed directly in the editor like so: 
+Lineage Annotations (aka the input parts that went into the assembly) can be displayed directly in the editor like so:
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -1307,7 +1339,7 @@ sequenceData: {
                 label: "Show AssemblyPieces  in Editor",
                 description: `
 Input Parts get turned into assembly pieces by j5, which then have the proper overlaps / overhangs and are ready for assembly
-Assembly Pieces can be displayed directly in the editor like so: 
+Assembly Pieces can be displayed directly in the editor like so:
 \`\`\`
 sequenceData: {
   ...allTheNormalThings,
@@ -1408,7 +1440,7 @@ sequenceData: {
               {renderToggle({
                 that: this,
                 type: "additionalEnzymes",
-                description: `Additional enzymes, including ones that are hidden by default, can be shown by passing the following to the Editor 
+                description: `Additional enzymes, including ones that are hidden by default, can be shown by passing the following to the Editor
 \`\`\`
 additionalEnzymes: {
   specialEnzyme1: {
@@ -1460,10 +1492,10 @@ additionalEnzymes: {
                       }
                     });
                 },
-                description: `If allowPartsToOverlapSelf=true is passed to <Editor/> 
-                then a new option will appear in the 
-                Edit/Create Part Dialog that a user can use to create a 
-                part that "wraps around the whole sequence and back over itself". 
+                description: `If allowPartsToOverlapSelf=true is passed to <Editor/>
+                then a new option will appear in the
+                Edit/Create Part Dialog that a user can use to create a
+                part that "wraps around the whole sequence and back over itself".
                 This will cause part.overlapsSelf = true
                 `
               })}
@@ -1537,7 +1569,7 @@ additionalEnzymes: {
                     readOnly
                   });
                 },
-                description: `The editor can be put into readOnly mode like so: 
+                description: `The editor can be put into readOnly mode like so:
 \`\`\`
 updateEditor(store, "DemoEditor", {
   readOnly
@@ -1561,7 +1593,7 @@ updateEditor(store, "DemoEditor", {
                   });
                 },
                 label: "Toggle Linear",
-                description: `The editor can be put into linear mode like so: 
+                description: `The editor can be put into linear mode like so:
 \`\`\`
 updateEditor(store, "DemoEditor", {
   sequenceData: {...exampleSequenceData, circular: false}
@@ -1576,14 +1608,14 @@ updateEditor(store, "DemoEditor", {
                 description: `Say for example if you want to pop open the edit-part dialog the first time the user navigates to the sequence editor, you can pass an initialAnnotationToEdit={"part-someidhere"} `
               })}
               {renderToggle({
-                info: `Any panel can be programatically focused from outside the editor. 
+                info: `Any panel can be programatically focused from outside the editor.
 Here is how to do that for the linear view:
 \`\`\`js
 store.dispatch(
   actions.setPanelAsActive("rail", { editorName: "DemoEditor" })
-); 
+);
 \`\`\`
-other options are: 
+other options are:
 \`\`\`
 "digestTool"
 "circular"
@@ -1625,13 +1657,13 @@ other options are:
                 label: "Set A Selection",
                 type: "setASelection",
                 info: `
-You can programatically update the editor like so:                 
+You can programatically update the editor like so:
 \`\`\`
 updateEditor(store, "DemoEditor", {
   selectionLayer: { start: 30, end: 59 }
 });
 \`\`\`
-              
+
                 `
               })}
               {renderToggle({
@@ -1645,7 +1677,7 @@ passing withPreviewMode=true to <Editor> causes the editor to first show up as a
                 that: this,
                 type: "shouldAutosave",
                 info: `
-passing shouldAutosave=true to <Editor> causes the editor to automatically 
+passing shouldAutosave=true to <Editor> causes the editor to automatically
 trigger the onSave() callback without first waiting for the user to hit "Save"
 `
               })}
@@ -1661,7 +1693,7 @@ passing an autoAnnotateFeatures=()=>{} (or Primers/Parts) prop to the <Editor> w
                 label: "Enable autoAnnotateAddon",
                 type: "withAutoAnnotateAddon",
                 info: `Use this like so:
-\`\`\`                
+\`\`\`
 import {
   autoAnnotateFeatures,
   autoAnnotateParts,
@@ -1671,7 +1703,7 @@ import {
 <Editor
   {...{ autoAnnotateFeatures, autoAnnotateParts, autoAnnotatePrimers, ...etc }}
 />;
- \`\`\` 
+ \`\`\`
  or if you're using umd: see usage example here: https://github.com/TeselaGen/openVectorEditor/blob/master/addons/README.md
 `
               })}
@@ -1684,7 +1716,7 @@ The autoAnnotateAddon must be enabled for this to work
 \`\`\`
 getCustomAutoAnnotateList = async ({annotationType, sequenceData}) => {
   const dataToReturn = await fetch("/my/endpoint/here", {...someParams})
-  
+
   return {
     title: 'My Annotations',
     list: [
@@ -1700,7 +1732,7 @@ getCustomAutoAnnotateList = async ({annotationType, sequenceData}) => {
 ]
 }
 }
- \`\`\` 
+ \`\`\`
  or if you're using umd: see usage example here: https://github.com/TeselaGen/openVectorEditor/blob/master/addons/README.md
 `
               })}
@@ -1735,7 +1767,7 @@ you can pass clickOverrides to the <Editor> like so:
 \`\`\`
 clickOverrides: {
   featureClicked: ({ event }) => {
-    //do whatever 
+    //do whatever
     window.toastr.success("Feature Click Override Hit!");
     event.stopPropagation();
     return true; //returning truthy stops the regular click action from occurring
@@ -1793,7 +1825,7 @@ clickOverrides: {
                 that: this,
                 type: "withPartTags",
                 info: `Passing allPartTags to the <Editor/> allows the tags to be rendered in the Edit Part dialog. You can optionally pass a editTagsLink prop too!
-                \`\`\` 
+                \`\`\`
                 editTagsLink={<Button style={{height: 30}} icon="edit" href={"google.com"}></Button>}
                 allPartTags={[{
                 id: "1",
@@ -1826,7 +1858,7 @@ clickOverrides: {
                 name: "tag2",
                 description: "tag 2 description",
                 color: "red"
-              }]} 
+              }]}
               \`\`\`
               to the <Editor> and pass parts[x].tags = ["1:2","5"]`
               })}
@@ -1838,7 +1870,7 @@ clickOverrides: {
               {renderToggle({
                 that: this,
                 type: "allowPanelTabDraggable",
-                description: `If allowPanelTabDraggable=true is passed to <Editor/> 
+                description: `If allowPanelTabDraggable=true is passed to <Editor/>
                 then the panel tabs will be draggable (except mobiles).
                 `
               })}
@@ -1891,8 +1923,8 @@ clickOverrides: {
                       }
                     });
                 },
-                description: `If allowPrimerBasesToBeEdited=true is passed to <Editor/> 
-                then the bases of primers can be edited. 
+                description: `If allowPrimerBasesToBeEdited=true is passed to <Editor/>
+                then the bases of primers can be edited.
                 `
               })}
               {editorHandlers.length ? (
@@ -2420,6 +2452,8 @@ clickOverrides: {
             {...(this.state.overrideToolbarOptions &&
               this.toolbarOverridesExample)}
             {...(this.state.menuOverrideExample && this.menuOverrideExample)}
+            {...(this.state.extraAnnotationPropsExample &&
+              this.extraAnnotationPropsExample)}
           />
           {/* </div> */}
         </div>

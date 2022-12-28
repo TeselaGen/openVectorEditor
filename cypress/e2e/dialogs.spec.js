@@ -103,6 +103,7 @@ describe("dialogs", function () {
     //open the edit part dialog by right clicking part 0
     cy.get(".veLabelText")
       .contains("Part 0")
+      .eq(1)
       .trigger("contextmenu", { force: true });
     cy.contains("Edit Part").click();
     //make an assertion that the part strand is currently negative
@@ -123,6 +124,7 @@ describe("dialogs", function () {
     //re-open the dialog and make sure the strand stays positive
     cy.get(".veLabelText")
       .contains("Part 0")
+      .eq(1)
       .trigger("contextmenu", { force: true });
     cy.contains("Edit Part").click();
     cy.get(".tg-test-forward")

@@ -6,7 +6,10 @@ describe("chromatogram", function () {
     cy.tgToggle("chromatogramExample");
     cy.get(".chromatogram");
     cy.get(".chromatogram.noQualityScores").should("not.exist");
-    cy.triggerFileCmd("Show Quality Scores");
+    cy.triggerFileCmd("Quality Scores");
+    // Show Quality Scores options appears like a menu item to be clicked, so
+    // the meta command {enter} doesnt cut it for this one, we need to click it.
+    cy.contains("Show Quality Scores").click({ force: true });
     cy.get(".chromatogram.noQualityScores").should("exist");
   });
 

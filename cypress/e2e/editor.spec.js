@@ -135,7 +135,7 @@ describe("editor", function () {
     cy.contains("onSave callback triggered");
     cy.contains("Selection Cut");
   });
-  it(`should 
+  it(`should
   -trigger the onSaveAs callback if that handler is passed
   -allow saveAs when in read only mode `, function () {
     cy.tgToggle("onSaveAs");
@@ -199,7 +199,7 @@ describe("editor", function () {
     //clicking the part SHOULD change the selection because in this demo the default part click is not
     cy.contains("div", "Selecting 21 bps from 11 to 31").should("be.visible");
 
-    cy.get(".veLabelText").contains("araC").click();
+    cy.get(".veLabelText").contains("araC").eq(0).click();
 
     cy.contains("Feature Click Override Hit!").should("be.visible");
     //clicking the feature SHOULD NOT change the selection because in this demo the default feature click is overridden
