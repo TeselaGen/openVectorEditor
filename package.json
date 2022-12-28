@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.1.62",
+  "version": "18.1.66",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -87,6 +87,7 @@
     "gh-pages": "^4.0.0",
     "husky": "^8.0.2",
     "lint-staged": "10.5.4",
+    "nodemon": "^2.0.20",
     "nwb": "0.25.2",
     "papaparse": "^5.3.2",
     "prettier": "2.8.1",

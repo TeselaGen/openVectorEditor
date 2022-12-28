@@ -118,7 +118,8 @@ export default function RowItem(props) {
     labelLineIntensity,
     isLinearView,
     scalePct,
-    setScalePct
+    setScalePct,
+    extraAnnotationProps = {}
   } = props;
 
   const {
@@ -317,9 +318,15 @@ export default function RowItem(props) {
       const colorToUse = startsWith(color, "override_")
         ? color.replace("override_", "")
         : "#ac68cc";
+
+      let extraProps = {};
+      if (typeof extraAnnotationProps["part"] === "function") {
+        extraProps = extraAnnotationProps["part"](annotation);
+      }
       return {
         textColor: colorToUse,
-        stroke: colorToUse
+        stroke: colorToUse,
+        ...extraProps
       };
     },
     alignmentType
