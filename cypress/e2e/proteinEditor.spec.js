@@ -48,6 +48,7 @@ describe("proteinEditor", function () {
 
     cy.get(".veLabelText")
       .contains("Part 0")
+      .eq(0)
       .trigger("contextmenu", { force: true });
     cy.contains("Edit Part").click();
     cy.get(`.tg-test-start input[value="11"]`);
@@ -128,7 +129,7 @@ describe("proteinEditor", function () {
 
   it(`goTo, rotateTo work
   -can't go to a position outside of the sequence
-  -can go to a position inside the sequence 
+  -can go to a position inside the sequence
   // -can rotate the sequence to that position
   `, () => {
     cy.get(".tg-menu-bar").contains("Edit").click();
@@ -158,7 +159,7 @@ describe("proteinEditor", function () {
   });
   it(`
   -can find AA's by default in the search bar
-  
+
   `, () => {
     cy.get(`[data-test="ve-find-tool-toggle"]`).click().focused().type("mmh");
     cy.get(`[data-test="veFindBarOptionsToggle"]`).click();
@@ -175,7 +176,7 @@ describe("proteinEditor", function () {
     cy.get(".veSearchLayerContainer.notCaret").click({ force: true });
     cy.contains("Selecting 5 AAs from 1 to 5");
   });
-  it(`should 
+  it(`should
   -has 1, 5, 10 AA's in the rowview axis
   -can click an AA and have the selecting message display correctly
   -not show circularity/cutsite/orf/translations tools or properties
@@ -219,10 +220,10 @@ describe("proteinEditor", function () {
     // cy.contains("join(7..25,29..49,501..885)"); //tnr: not allowing locations in proteins for the moment
   });
 
-  it(`should 
+  it(`should
   -show the AA count
   -the protein seq should be the primary sequence displayed
-  -not show any dna sequence by default 
+  -not show any dna sequence by default
   -should not show options to update restriction enzymes or simulate digestion
   -not show options to view cutsites, orfs, translations, full sequence translations
   -be able to hide/show the underlying dna sequence
