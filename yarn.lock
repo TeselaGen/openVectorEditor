@@ -2667,10 +2667,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.0.1.tgz#78d0ecacfb66ce2dcdb538b146f011fb443d04ca"
-  integrity sha512-f90ZEMssDeguz8o7I2U4XqSFNtmr79fI1oCRSWZWtQoE9oVeHDubnsQG4i8v2lW1FRwMcO81rqKuGlv7vPAmrw==
+bio-parsers@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.1.0.tgz#7cab50432d31494ece22925962da137d348cd13c"
+  integrity sha512-6xnBUPQRM2sCYqhbKrQqhgiNgkf62yWZf/N0BoeTAqUS4pXpfjNOJS8xl5H7gxMVKOhZ++/yJKLSzO9Mnp1BiA==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
