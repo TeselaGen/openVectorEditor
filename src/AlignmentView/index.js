@@ -11,13 +11,13 @@ import {
   Button,
   Intent,
   Popover,
-  InputGroup,
   Menu,
   MenuItem,
   Tooltip,
   Icon,
   Spinner,
-  AnchorButton
+  AnchorButton,
+  EditableText
 } from "@blueprintjs/core";
 import {
   InfoHelper,
@@ -1008,6 +1008,7 @@ export class AlignmentView extends React.Component {
       additionalSelectionLayerRightClickedOptions,
       selectionLayerRightClicked,
       additionalTopEl,
+      handleAlignmentRename,
       alignmentVisibilityToolOptions
     } = this.props;
     const sequenceLength = this.getMaxLength();
@@ -1426,53 +1427,39 @@ export class AlignmentView extends React.Component {
                       />
                     </Tooltip>
                   )}
-                  {this.props.handleAlignmentRename ? (
-                    <InputGroup
-                      minimal
-                      small
-                      value={this.props.alignmentName}
-                      placeholder="Untitled Alignment"
-                    />
-                  ) : (
-                    <div style={{ display: "flex" }}>
-                      <div
-                        className="veAlignmentName"
-                        style={{
-                          paddingTop: "3px",
-                          fontWeight: "bold",
-                          fontSize: "14px",
-                          maxWidth: "300px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap"
-                        }}
-                        title={this.props.alignmentName || "Untitled Alignment"}
-                      >
-                        {this.props.alignmentName || "Untitled Alignment"}
-                      </div>
-                      &nbsp;&nbsp;&nbsp;
-                      <div
-                        className="veAlignmentType"
-                        style={{
-                          paddingTop: "3px",
-                          fontSize: "14px",
-                          color: "grey",
-                          maxWidth: "300px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap"
-                        }}
-                        title={
-                          this.props.alignmentType || "Unknown Alignment Type"
-                        }
-                      >
-                        {this.props.alignmentType || "Unknown Alignment Type"}
-                      </div>
+
+                  <div style={{ display: "flex" }}>
+                    <EditableText
+                      disabled={!handleAlignmentRename}
+                      defaultValue={
+                        this.props.alignmentName || "Untitled Alignment"
+                      }
+                      onConfirm={(v) => {
+                        handleAlignmentRename(v);
+                      }}
+                      selectAllOnFocus={true}
+                      className="veAlignmentName"
+                    ></EditableText>
+                    &nbsp;&nbsp;&nbsp;
+                    <div
+                      className="veAlignmentType"
+                      style={{
+                        paddingTop: "3px",
+                        fontSize: "14px",
+                        color: "grey",
+                        maxWidth: "300px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}
+                      title={
+                        this.props.alignmentType || "Unknown Alignment Type"
+                      }
+                    >
+                      {this.props.alignmentType || "Unknown Alignment Type"}
                     </div>
-                  )}
-                  {this.props.handleAlignmentRename && (
-                    <Button small>Rename</Button>
-                  )}
+                  </div>
+
                   {this.props.unmappedSeqs && (
                     <InfoHelper
                       size={20}

@@ -84,3 +84,16 @@
 .minimapLane.lane-hovered .miniBluePath {
   fill: rgb(169, 169, 245) !important;
 }
+
+.veAlignmentName {
+  padding-top: 3px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 3px;
+  font-weight: bold;
+  font-size: 14px;
+  max-width: 300px;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

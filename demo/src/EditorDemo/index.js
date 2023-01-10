@@ -404,7 +404,7 @@ options
       renderToggle({
         that: this,
         type: "defaultLinkedOligoMessage",
-        info: "Pass an overriding oligo message here if you'd like"
+        info: "Pass an overriding oligo message here if you'd like. Requires allowPrimerBasesToBeEdited to be toggled as well on the demo page"
       }),
       renderToggle({
         that: this,
@@ -455,21 +455,8 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
           {
             <div
               data-test="optionContainer"
+              className="tgOptionContainer"
               style={{
-                // background: "white",
-                zIndex: 1000,
-                position: "absolute",
-                overflowY: "auto",
-                left: 0,
-                paddingTop: 10,
-                width: 250,
-                height: "100%",
-                minWidth: 250,
-                maxWidth: 250,
-                display: "flex",
-                flexDirection: "column",
-                paddingRight: "5px",
-                borderRight: "1px solid lightgrey",
                 ...(!this.state.showDemoOptions && {
                   display: "none",
                   width: 0,

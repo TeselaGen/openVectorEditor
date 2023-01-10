@@ -19,3 +19,18 @@ body,
   max-height: 350px;
   max-width: 550px;
 }
+.tgOptionContainer {
+  z-index: 1000;
+  position: absolute;
+  overflow-y: auto;
+  left: 0px;
+  padding-top: 10px;
+  width: 250px;
+  height: 100%;
+  min-width: 250px;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  padding-right: 5px;
+  border-right: 1px solid lightgrey;
+}

@@ -6,15 +6,10 @@ import pairwiseAlignment from "./exampleData/pairwiseAlignment.json";
 import sangerAlignment from "./exampleData/sangerAlignment.json";
 import msaAlignmentWithGaps from "./exampleData/msaAlignment_withGaps.json";
 import { addAlignment, AlignmentView /* updateEditor */ } from "../../src/";
-// import { selectionLayerUpdate } from "../../src/redux/selectionLayer";
-// import { caretPositionUpdate } from "../../src/redux/caretPosition";
 import renderToggle from "./utils/renderToggle";
 import { BPSelect } from "teselagen-react-components";
 import pairwiseAlignment2 from "./exampleData/pairwiseAlignment2.json";
 import { Button } from "@blueprintjs/core";
-
-// import { upsertPart } from "../../src/redux/sequenceData";
-// import { MenuItem } from "@blueprintjs/core";
 
 // Use the line below because using the full 30 sequences murders Redux dev tools.
 msaAlignment.alignmentTracks = msaAlignment.alignmentTracks.slice(0, 20);
@@ -53,31 +48,28 @@ export default class AlignmentDemo extends React.Component {
   }
   render() {
     return (
-      <div>
+      <>
         <div style={{ width: 250 }}>
-          {renderToggle({ that: this, type: "showDemoOptions" })}
+          {renderToggle({
+            that: this,
+            alwaysShow: true,
+            type: "showDemoOptions",
+            label: "Show Demo Options",
+            hotkey: `cmd+'`
+          })}
         </div>
-
-        <div
-          style={{
-            display: "flex",
-            position: "relative",
-            // flexDirection: "column",
-            flexGrow: "1"
-          }}
-        >
+        <div>
           {this.state.showDemoOptions && (
             <div
               data-test="optionContainer"
               style={{
-                // background: "white",
                 zIndex: 1000,
                 position: "absolute",
                 overflowY: "auto",
                 left: 0,
                 paddingTop: 10,
                 width: 250,
-                // height: "100%",
+                height: "90%",
                 minWidth: 250,
                 maxWidth: 250,
                 display: "flex",
@@ -153,6 +145,10 @@ export default class AlignmentDemo extends React.Component {
               })}
               {renderToggle({
                 that: this,
+                type: "handleAlignmentRename"
+              })}
+              {renderToggle({
+                that: this,
                 type: "shouldAutosave"
               })}
               {renderToggle({
@@ -201,58 +197,75 @@ export default class AlignmentDemo extends React.Component {
                     onClick: () => this.addDiversityRegionIfPossible()
                   })} prop`
               })}
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
             </div>
           )}
-        </div>
-        <AlignmentView
-          style={{
-            ...(this.state.showDemoOptions && { paddingLeft: 250 }),
-            marginRight: 10
-          }}
-          {...{
-            ...(this.state.addSelectionRightClickOptions && {
-              additionalSelectionLayerRightClickedOptions: () => [
-                {
-                  text: "I'm an additional option",
-                  className: "createDiversityRegion",
-                  onClick: () => window.toastr.success("You did it!")
+          <AlignmentView
+            style={{
+              ...(this.state.showDemoOptions && { paddingLeft: 250 }),
+              marginRight: 10
+            }}
+            {...{
+              ...(this.state.addSelectionRightClickOptions && {
+                additionalSelectionLayerRightClickedOptions: () => [
+                  {
+                    text: "I'm an additional option",
+                    className: "createDiversityRegion",
+                    onClick: () => window.toastr.success("You did it!")
+                  }
+                ]
+              }),
+              ...(this.state.overrideSelectionRightClick && {
+                selectionLayerRightClicked: () => {
+                  window.toastr.success("lezzz goooo!");
                 }
-              ]
-            }),
-            ...(this.state.overrideSelectionRightClick && {
-              selectionLayerRightClicked: () => {
-                window.toastr.success("lezzz goooo!");
+              }),
+              additionalTopEl: <Button>Additional Top El</Button>,
+              id: this.state.alignmentDataId,
+              height: this.state.forceHeightMode ? 500 : undefined,
+              isFullyZoomedOut: this.state.isFullyZoomedOut,
+              minimapLaneHeight: this.state.setMinimapLaneHeight
+                ? 13
+                : undefined,
+              minimapLaneSpacing: this.state.setMinimapLaneSpacing
+                ? 3
+                : undefined,
+              handleAlignmentRename: this.state.handleAlignmentRename
+                ? (newName) => {
+                    window.toastr.success(
+                      `handleAlignmentRename triggered with ${newName}`
+                    );
+                    this.setState({ alignmentName: newName });
+                  }
+                : undefined,
+              alignmentName: this.state.alignmentName
+                ? this.state.alignmentName
+                : this.state.alignmentName
+                ? "Ref Seq Name"
+                : "Alignment Name Placeholder",
+              noClickDragHandlers: this.state.noClickDragHandlers,
+              allowTrackNameEdit: this.state.allowTrackNameEdit,
+              allowTrimming: this.state.allowTrimming,
+              shouldAutosave: this.state.shouldAutosave,
+              handleAlignmentSave: this.state.shouldAutosave
+                ? () => {
+                    window.toastr.success("Autosave Triggered");
+                  }
+                : undefined,
+              allowTrackRearrange: this.state.allowTrackRearrange,
+              hasTemplate: this.state.hasTemplate,
+              noVisibilityOptions: this.state.noVisibilityOptions,
+              linearViewOptions: {
+                ...(this.state.setTickSpacing && { tickSpacing: 10 })
               }
-            }),
-            additionalTopEl: <Button>Additional Top El</Button>,
-            id: this.state.alignmentDataId,
-            height: this.state.forceHeightMode ? 500 : undefined,
-            isFullyZoomedOut: this.state.isFullyZoomedOut,
-            minimapLaneHeight: this.state.setMinimapLaneHeight ? 13 : undefined,
-            minimapLaneSpacing: this.state.setMinimapLaneSpacing
-              ? 3
-              : undefined,
-            alignmentName: this.state.setAlignmentName
-              ? "Ref Seq Name"
-              : "Alignment Name Placeholder",
-            noClickDragHandlers: this.state.noClickDragHandlers,
-            allowTrackNameEdit: this.state.allowTrackNameEdit,
-            allowTrimming: this.state.allowTrimming,
-            shouldAutosave: this.state.shouldAutosave,
-            handleAlignmentSave: this.state.shouldAutosave
-              ? () => {
-                  window.toastr.success("Autosave Triggered");
-                }
-              : undefined,
-            allowTrackRearrange: this.state.allowTrackRearrange,
-            hasTemplate: this.state.hasTemplate,
-            noVisibilityOptions: this.state.noVisibilityOptions,
-            linearViewOptions: {
-              ...(this.state.setTickSpacing && { tickSpacing: 10 })
-            }
-          }}
-        />
-      </div>
+            }}
+          />
+        </div>
+      </>
     );
   }
 }
