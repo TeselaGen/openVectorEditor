@@ -1434,8 +1434,16 @@ export class AlignmentView extends React.Component {
                       defaultValue={
                         this.props.alignmentName || "Untitled Alignment"
                       }
-                      onConfirm={(v) => {
-                        handleAlignmentRename(v);
+                      onConfirm={async (v) => {
+                        this.setState({ saveMessage: "Alignment Renaming.." });
+                        this.setState({ saveMessageLoading: true });
+                        await handleAlignmentRename(v, this.props);
+                        this.setState({ saveMessage: "Rename Successful" });
+                        this.setState({ saveMessageLoading: false });
+                        setTimeout(() => {
+                          this.setState({ saveMessage: undefined });
+                          this.setState({ saveMessageLoading: false });
+                        }, 5000);
                       }}
                       selectAllOnFocus={true}
                       className="veAlignmentName"
