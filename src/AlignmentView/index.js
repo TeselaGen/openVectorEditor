@@ -211,6 +211,7 @@ export class AlignmentView extends React.Component {
     return seqDataOfAllTracksToCopy.join("");
   };
   state = {
+    alignmentName: this.props.alignmentName,
     isTrackDragging: false,
     charWidthInLinearView: charWidthInLinearViewDefault,
     scrollAlignmentView: false,
@@ -1431,10 +1432,22 @@ export class AlignmentView extends React.Component {
                   <div style={{ display: "flex" }}>
                     <EditableText
                       disabled={!handleAlignmentRename}
-                      defaultValue={
-                        this.props.alignmentName || "Untitled Alignment"
-                      }
+                      onChange={(v) => {
+                        this.setState({
+                          alignmentName: v
+                        });
+                      }}
+                      value={this.state.alignmentName}
                       onConfirm={async (v) => {
+                        if (!v) {
+                          this.setState({
+                            alignmentName: this.props.alignmentName
+                          });
+                          return;
+                        }
+                        if (v === this.props.alignmentName) {
+                          return; //already saved this name
+                        }
                         this.setState({ saveMessage: "Alignment Renaming.." });
                         this.setState({ saveMessageLoading: true });
                         await handleAlignmentRename(v, this.props);
