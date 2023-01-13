@@ -603,7 +603,7 @@ export class AlignmentView extends React.Component {
             // const gapsBeforeFeatureInSeqRead = getGaps(feature.start - gapsBeforeSeqRead, alignmentData.sequence).gapsBefore
             const gapsAfterSeqRead =
               alignmentData.sequence.length -
-              cloneDeep(alignmentData.sequence).replace(/-+$/g, "").length;
+              alignmentData.sequence.replace(/-+$/g, "").length;
             const seqReadLengthWithoutGapsBeforeAfter =
               alignmentData.sequence.length -
               gapsBeforeSeqRead -
@@ -1921,22 +1921,18 @@ export default compose(
         alignmentVisibilityToolOptions: {
           alignmentAnnotationVisibility,
           alignmentAnnotationLabelVisibility,
-          alignmentAnnotationVisibilityToggle: (
-            name,
-            { useChecked, checked } = {}
-          ) => {
+          alignmentAnnotationVisibilityToggle: (updates) => {
             setTimeout(() => {
               updateLabelsForInViewFeatures({
                 rectElement: ".alignmentHolder"
               });
             }, 0);
+
             updateAlignmentViewVisibility({
               ...alignment,
               alignmentAnnotationVisibility: {
                 ...alignment.alignmentAnnotationVisibility,
-                [name]: useChecked
-                  ? checked
-                  : !alignment.alignmentAnnotationVisibility[name]
+                ...updates
               }
             });
           },

@@ -61,12 +61,21 @@ function VisibilityOptions({
             onClick={(e) => {
               e.stopPropagation();
               if (annotationName === "axis") {
-                alignmentAnnotationVisibilityToggle("axisNumbers", {
-                  useChecked: true,
-                  checked: !visible
+                return alignmentAnnotationVisibilityToggle({
+                  axisNumbers: !visible,
+                  axis: !visible
                 });
               }
-              alignmentAnnotationVisibilityToggle(annotationName);
+              if (annotationName === "cdsFeatureTranslations" && !visible) {
+                return alignmentAnnotationVisibilityToggle({
+                  cdsFeatureTranslations: !visible,
+                  translations: !visible
+                });
+              }
+
+              alignmentAnnotationVisibilityToggle({
+                [annotationName]: !visible
+              });
             }}
             text={
               <>

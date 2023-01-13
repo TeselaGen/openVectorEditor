@@ -151,8 +151,6 @@ function PCRTool(props) {
             height={Math.max(height - 250, 400)}
             sequenceData={seqBetween}
             primerClicked={(args) => {
-              // const { annotation } = args
-              // console.log(`~ annotation`, annotation);
               primerClicked({
                 ...args,
                 annotation: sequenceData.primers[args.annotation.originalId]
