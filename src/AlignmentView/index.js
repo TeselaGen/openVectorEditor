@@ -28,7 +28,7 @@ import {
 import { store } from "@risingstack/react-easy-state";
 import {
   throttle,
-  cloneDeep,
+  // cloneDeep,
   map,
   some,
   forEach,
@@ -79,7 +79,7 @@ import { getTrackFromEvent } from "./getTrackFromEvent";
 import { PerformantSelectionLayer } from "./PerformantSelectionLayer";
 import { PairwiseAlignmentView } from "./PairwiseAlignmentView";
 import { updateTrackHelper } from "./updateTrackHelper";
-import { getGaps } from "./getGaps";
+// import { getGaps } from "./getGaps";
 import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
@@ -575,112 +575,113 @@ export class AlignmentView extends React.Component {
       (alignmentData || sequenceData).sequence.length * charWidthInLinearView;
     const name = sequenceData.name || sequenceData.id;
 
+    //tnw: commenting this out for now since it can significantly slow down the alignment visualization
     /**
      * for alignment of sanger seq reads to a ref seq, have translations show up at the bp pos of ref seq's CDS features across all seq reads
      **/
-    let sequenceDataWithRefSeqCdsFeatures;
-    if (this.props.alignmentType === "SANGER SEQUENCING") {
-      if (i !== 0) {
-        sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData);
-        const refSeqCdsFeaturesBpPos = [];
-        alignmentTracks[0].sequenceData.features.forEach((feature) => {
-          if (feature.type === "CDS") {
-            const editedFeature = cloneDeep(feature);
-            // in seq reads, ref seq's CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
-            // actual position in the track
-            const absoluteFeatureStart =
-              getGaps(feature.start, alignmentTracks[0].alignmentData.sequence)
-                .gapsBefore + feature.start;
-            const gapsBeforeSeqRead = getGaps(
-              0,
-              alignmentData.sequence
-            ).gapsBefore;
-            const bpsFromSeqReadStartToFeatureStartIncludingGaps =
-              absoluteFeatureStart - gapsBeforeSeqRead;
-            const absoluteFeatureEnd =
-              getGaps(feature.end, alignmentTracks[0].alignmentData.sequence)
-                .gapsBefore + feature.end;
-            // const gapsBeforeFeatureInSeqRead = getGaps(feature.start - gapsBeforeSeqRead, alignmentData.sequence).gapsBefore
-            const gapsAfterSeqRead =
-              alignmentData.sequence.length -
-              alignmentData.sequence.replace(/-+$/g, "").length;
-            const seqReadLengthWithoutGapsBeforeAfter =
-              alignmentData.sequence.length -
-              gapsBeforeSeqRead -
-              gapsAfterSeqRead;
-            const absoluteSeqReadStart = gapsBeforeSeqRead;
-            const absoluteSeqReadEnd =
-              absoluteSeqReadStart + seqReadLengthWithoutGapsBeforeAfter;
-            let featureStartInSeqRead;
-            if (absoluteFeatureEnd < absoluteSeqReadStart) {
-              // if the feature ends before the seq read starts, do nothing
-            } else if (absoluteFeatureStart > absoluteSeqReadEnd) {
-              // if the feature starts after the seq read ends, do nothing
-            } else if (
-              absoluteFeatureStart < absoluteSeqReadStart &&
-              absoluteFeatureEnd > absoluteSeqReadStart
-            ) {
-              // if the feature starts before the seq read starts but doesn't end before the seq read starts
-              const arrayOfCodonStartPos = [];
-              for (
-                let i = absoluteFeatureStart;
-                i < absoluteSeqReadStart + 6;
-                i += 3
-              ) {
-                arrayOfCodonStartPos.push(i);
-              }
-              // want to start translation at the codon start pos closest to seq read start
-              const absoluteTranslationStartInFrame =
-                arrayOfCodonStartPos.reduce((prev, curr) =>
-                  Math.abs(curr - absoluteSeqReadStart) <
-                    Math.abs(prev - absoluteSeqReadStart) &&
-                  curr >= absoluteSeqReadStart
-                    ? curr
-                    : prev
-                );
-              const seqReadTranslationStartInFrame =
-                absoluteTranslationStartInFrame - gapsBeforeSeqRead;
-              editedFeature.start = seqReadTranslationStartInFrame;
-              const shortenedFeatureLength =
-                Math.abs(absoluteFeatureEnd - absoluteFeatureStart) -
-                (absoluteTranslationStartInFrame - absoluteFeatureStart);
-              editedFeature.end = editedFeature.start + shortenedFeatureLength;
-              refSeqCdsFeaturesBpPos.push(editedFeature);
-            } else {
-              // if the feature is fully contained within the seq read start/end
-              const seqReadStartToFeatureStartIncludingGaps =
-                alignmentData.sequence
-                  .replace(/^-+/g, "")
-                  .replace(/-+$/g, "")
-                  .slice(0, bpsFromSeqReadStartToFeatureStartIncludingGaps);
-              const arrayOfGaps = seqReadStartToFeatureStartIncludingGaps.match(
-                new RegExp("-", "g")
-              );
-              let numOfGapsFromSeqReadStartToFeatureStart = 0;
-              if (arrayOfGaps !== null) {
-                numOfGapsFromSeqReadStartToFeatureStart = arrayOfGaps.length;
-              }
-              featureStartInSeqRead =
-                bpsFromSeqReadStartToFeatureStartIncludingGaps -
-                numOfGapsFromSeqReadStartToFeatureStart;
-              editedFeature.start = featureStartInSeqRead;
-              const featureLength = Math.abs(feature.end - feature.start);
-              editedFeature.end = editedFeature.start + featureLength;
-              refSeqCdsFeaturesBpPos.push(editedFeature);
-            }
-          }
-        });
-        // add ref seq's CDS features to seq reads (not the actual sequenceData) to generate translations at those bp pos
-        if (refSeqCdsFeaturesBpPos.length !== 0) {
-          sequenceDataWithRefSeqCdsFeatures.features.push(
-            ...refSeqCdsFeaturesBpPos
-          );
-          // use returned aligned sequence rather than original sequence because after bowtie2, may be reverse complement or have soft-clipped ends
-          sequenceDataWithRefSeqCdsFeatures.sequence =
-            alignmentData.sequence.replace(/-/g, "");
-        }
-      }
-    }
+    // let sequenceDataWithRefSeqCdsFeatures;
+    // if (this.props.alignmentType === "SANGER SEQUENCING") {
+    //   if (i !== 0) {
+    //     sequenceDataWithRefSeqCdsFeatures = cloneDeep(sequenceData);
+    //     const refSeqCdsFeaturesBpPos = [];
+    //     alignmentTracks[0].sequenceData.features.forEach((feature) => {
+    //       if (feature.type === "CDS") {
+    //         const editedFeature = cloneDeep(feature);
+    //         // in seq reads, ref seq's CDS feature translations need to show up at the bp pos of alignment, not the original bp pos
+    //         // actual position in the track
+    //         const absoluteFeatureStart =
+    //           getGaps(feature.start, alignmentTracks[0].alignmentData.sequence)
+    //             .gapsBefore + feature.start;
+    //         const gapsBeforeSeqRead = getGaps(
+    //           0,
+    //           alignmentData.sequence
+    //         ).gapsBefore;
+    //         const bpsFromSeqReadStartToFeatureStartIncludingGaps =
+    //           absoluteFeatureStart - gapsBeforeSeqRead;
+    //         const absoluteFeatureEnd =
+    //           getGaps(feature.end, alignmentTracks[0].alignmentData.sequence)
+    //             .gapsBefore + feature.end;
+    //         // const gapsBeforeFeatureInSeqRead = getGaps(feature.start - gapsBeforeSeqRead, alignmentData.sequence).gapsBefore
+    //         const gapsAfterSeqRead =
+    //           alignmentData.sequence.length -
+    //           alignmentData.sequence.replace(/-+$/g, "").length;
+    //         const seqReadLengthWithoutGapsBeforeAfter =
+    //           alignmentData.sequence.length -
+    //           gapsBeforeSeqRead -
+    //           gapsAfterSeqRead;
+    //         const absoluteSeqReadStart = gapsBeforeSeqRead;
+    //         const absoluteSeqReadEnd =
+    //           absoluteSeqReadStart + seqReadLengthWithoutGapsBeforeAfter;
+    //         let featureStartInSeqRead;
+    //         if (absoluteFeatureEnd < absoluteSeqReadStart) {
+    //           // if the feature ends before the seq read starts, do nothing
+    //         } else if (absoluteFeatureStart > absoluteSeqReadEnd) {
+    //           // if the feature starts after the seq read ends, do nothing
+    //         } else if (
+    //           absoluteFeatureStart < absoluteSeqReadStart &&
+    //           absoluteFeatureEnd > absoluteSeqReadStart
+    //         ) {
+    //           // if the feature starts before the seq read starts but doesn't end before the seq read starts
+    //           const arrayOfCodonStartPos = [];
+    //           for (
+    //             let i = absoluteFeatureStart;
+    //             i < absoluteSeqReadStart + 6;
+    //             i += 3
+    //           ) {
+    //             arrayOfCodonStartPos.push(i);
+    //           }
+    //           // want to start translation at the codon start pos closest to seq read start
+    //           const absoluteTranslationStartInFrame =
+    //             arrayOfCodonStartPos.reduce((prev, curr) =>
+    //               Math.abs(curr - absoluteSeqReadStart) <
+    //                 Math.abs(prev - absoluteSeqReadStart) &&
+    //               curr >= absoluteSeqReadStart
+    //                 ? curr
+    //                 : prev
+    //             );
+    //           const seqReadTranslationStartInFrame =
+    //             absoluteTranslationStartInFrame - gapsBeforeSeqRead;
+    //           editedFeature.start = seqReadTranslationStartInFrame;
+    //           const shortenedFeatureLength =
+    //             Math.abs(absoluteFeatureEnd - absoluteFeatureStart) -
+    //             (absoluteTranslationStartInFrame - absoluteFeatureStart);
+    //           editedFeature.end = editedFeature.start + shortenedFeatureLength;
+    //           refSeqCdsFeaturesBpPos.push(editedFeature);
+    //         } else {
+    //           // if the feature is fully contained within the seq read start/end
+    //           const seqReadStartToFeatureStartIncludingGaps =
+    //             alignmentData.sequence
+    //               .replace(/^-+/g, "")
+    //               .replace(/-+$/g, "")
+    //               .slice(0, bpsFromSeqReadStartToFeatureStartIncludingGaps);
+    //           const arrayOfGaps = seqReadStartToFeatureStartIncludingGaps.match(
+    //             new RegExp("-", "g")
+    //           );
+    //           let numOfGapsFromSeqReadStartToFeatureStart = 0;
+    //           if (arrayOfGaps !== null) {
+    //             numOfGapsFromSeqReadStartToFeatureStart = arrayOfGaps.length;
+    //           }
+    //           featureStartInSeqRead =
+    //             bpsFromSeqReadStartToFeatureStartIncludingGaps -
+    //             numOfGapsFromSeqReadStartToFeatureStart;
+    //           editedFeature.start = featureStartInSeqRead;
+    //           const featureLength = Math.abs(feature.end - feature.start);
+    //           editedFeature.end = editedFeature.start + featureLength;
+    //           refSeqCdsFeaturesBpPos.push(editedFeature);
+    //         }
+    //       }
+    //     });
+    //     // add ref seq's CDS features to seq reads (not the actual sequenceData) to generate translations at those bp pos
+    //     if (refSeqCdsFeaturesBpPos.length !== 0) {
+    //       sequenceDataWithRefSeqCdsFeatures.features.push(
+    //         ...refSeqCdsFeaturesBpPos
+    //       );
+    //       // use returned aligned sequence rather than original sequence because after bowtie2, may be reverse complement or have soft-clipped ends
+    //       sequenceDataWithRefSeqCdsFeatures.sequence =
+    //         alignmentData.sequence.replace(/-/g, "");
+    //     }
+    //   }
+    // }
     const tickSpacing = massageTickSpacing(
       Math.ceil(120 / charWidthInLinearView)
     );
@@ -873,7 +874,7 @@ export class AlignmentView extends React.Component {
             searchLayerClicked: this.annotationClicked,
             hideName: true,
             sequenceData,
-            sequenceDataWithRefSeqCdsFeatures,
+            // sequenceDataWithRefSeqCdsFeatures,
             tickSpacing,
             allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
