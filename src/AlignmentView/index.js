@@ -1695,6 +1695,7 @@ export class AlignmentView extends React.Component {
     alignmentId
   }) {
     const track = getTrackFromEvent(e, allTracks);
+
     this.getNearestCursorPositionToMouseEvent(
       this.rowData,
       e,
@@ -1785,6 +1786,27 @@ export class AlignmentView extends React.Component {
                       start: track.alignmentData.trimmedRange?.start || 0,
                       end: nearestCaretPos - 1
                     }
+                  }
+                });
+              }
+            },
+            {
+              divider: ""
+            },
+            {
+              text: "Clear Trim(s)",
+              disabled: !(track?.alignmentData?.trimmedRange?.start > -1),
+              icon: "trash",
+              onClick: () => {
+                updateTrackHelper({
+                  currentPairwiseAlignmentIndex,
+                  upsertAlignmentRun,
+                  alignmentId,
+                  alignmentTracks: allTracks,
+                  alignmentTrackIndex: track.index,
+                  hasBeenTrimmed: false,
+                  update: {
+                    trimmedRange: undefined
                   }
                 });
               }
