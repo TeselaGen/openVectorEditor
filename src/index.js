@@ -13,7 +13,7 @@ window.tgCreateMenu = showContextMenu;
 // } //add this to the window so people can easily override the default context menus
 
 FocusStyleManager.onlyShowFocusOnTabs();
-
+export { getGaps } from "./AlignmentView/getGaps";
 export { default as createVectorEditor } from "./createVectorEditor";
 export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
