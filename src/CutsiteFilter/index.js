@@ -263,35 +263,46 @@ export function CutsiteFilter(props) {
               modifiers={popoverOverflowModifiers}
               content={
                 isEnzymeFilterAnd
-                  ? `AND -- Viewing ${numEnzymesInAnd} enzymes that are shared by ${
-                      numGroups === 2
-                        ? "both groups"
-                        : `all ${numGroups} groups`
-                    }`
-                  : `OR -- Viewing ${numEnzymesInOr} enzymes that are in any of the ${numGroups} groups`
+                  ? `Do NOT include enzymes in this selection`
+                  : `Only include enzymes in this selction`
               }
             >
-              <Tag
-                minimal
-                interactive
-                style={{ display: "flex", marginTop: 5 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  isEnzymeFilterAndUpdate(!isEnzymeFilterAnd);
-                }}
-              >
-                <span
-                  style={{ color: isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}
+              <div>
+                <Tag
+                  minimal
+                  interactive
+                  style={{alignContent: "center",display: "flex", marginTop: 5 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    isEnzymeFilterAndUpdate(!isEnzymeFilterAnd);
+                  }}
+                  
                 >
-                  AND
-                </span>
-                /
-                <span
-                  style={{ color: !isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}
+                  <span
+                    style={{color: isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}>NOT</span>
+                </Tag>
+                <Tag
+                  minimal
+                  interactive
+                  style={{ display: "flex", marginTop: 5 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    isEnzymeFilterAndUpdate(!isEnzymeFilterAnd);
+                  }}
                 >
-                  OR
-                </span>
-              </Tag>
+                  <span
+                    style={{ color: isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}
+                  >
+                    AND
+                  </span>
+                  /
+                  <span
+                    style={{ color: !isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}
+                  >
+                    OR
+                  </span>
+                </Tag>
+              </div>
             </Tooltip>
           ) : (
             false
