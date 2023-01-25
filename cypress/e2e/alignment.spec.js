@@ -65,7 +65,7 @@ describe("alignment", function () {
     cy.contains("Additional Top El");
     cy.selectAlignmentRange(10, 20);
     cy.get(".veAlignmentSelectionLayer:first").rightclick({ force: true });
-    cy.contains(".bp3-menu-item", "Copy Selection of F05225 as Fasta");
+    cy.contains(".bp3-menu-item", "Copy Selection of F05224 as Fasta");
     cy.contains(".bp3-menu-item", "Copy Selection of All Alignments ").click();
     cy.contains(".bp3-toast", "Selection Copied");
   });
