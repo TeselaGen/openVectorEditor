@@ -1474,6 +1474,7 @@ export class AlignmentView extends React.Component {
                           alignmentName: v
                         });
                       }}
+                      maxLength={399} //stop the name from being tooo long
                       value={this.state.alignmentName}
                       onConfirm={async (v) => {
                         if (!v) {
