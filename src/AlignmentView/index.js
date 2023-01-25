@@ -168,6 +168,8 @@ export class AlignmentView extends React.Component {
       delete window.updateAlignmentSelection;
       delete window.Cypress.updateAlignmentSelection;
     }
+    const { removeAlignmentFromRedux, id } = this.props;
+    removeAlignmentFromRedux({ id });
     this.onShortcutCopy &&
       document.removeEventListener("keydown", this.handleAlignmentCopy);
   }
@@ -561,6 +563,8 @@ export class AlignmentView extends React.Component {
     const {
       sequenceData,
       alignmentData,
+      isReversed,
+      wasTrimmed,
       additionalSelectionLayers,
       chromatogramData
       // mismatches
@@ -786,6 +790,7 @@ export class AlignmentView extends React.Component {
                     });
                   }}
                   small
+                  data-tip="Edit Track Name"
                   className="edit-track-name-btn"
                   icon={<Icon size={12} color="lightgrey" icon="edit"></Icon>}
                   minimal
@@ -794,26 +799,57 @@ export class AlignmentView extends React.Component {
               {sequenceData.seqLink && (
                 <AnchorButton
                   href={sequenceData.seqLink}
+                  data-tip={sequenceData.seqLinkTooltip}
                   target="_blank"
                   small
                   icon={
-                    <Icon
-                      size={12}
-                      color="lightgrey"
-                      icon="document-open"
-                    ></Icon>
+                    <Icon size={12} color="white" icon="document-open"></Icon>
                   }
                   minimal
                 ></AnchorButton>
               )}
               {name}
             </div>
-            <div style={{ fontSize: 10 }}>
+            <div style={{ fontSize: 10, marginTop: 2, marginBottom: 2 }}>
               {/* <Icon //tnr: add this once we support forward/reverse for each track
                 color="darkgrey"
                 style={{ marginRight: 10 }}
                 icon="arrow-right"
               ></Icon> */}
+              {isReversed && (
+                <span
+                  style={{
+                    backgroundColor: isReversed ? "#E76A6E" : "#4C90F0",
+                    padding: 2,
+                    paddingLeft: 4,
+                    color: "white",
+                    marginRight: 2,
+                    borderRadius: "5px"
+                  }}
+                  data-tip={
+                    isReversed
+                      ? "The alignment algorithm matched the reverse complement of this input sequence"
+                      : "The original sequence was NOT reversed complemented by the alignment algorithm"
+                  }
+                >
+                  {isReversed ? "REV" : "FWD"}{" "}
+                </span>
+              )}
+              {wasTrimmed && (
+                <span
+                  style={{
+                    backgroundColor: "#13C9BA",
+                    padding: 2,
+                    paddingLeft: 4,
+                    color: "white",
+                    marginRight: 2,
+                    borderRadius: "5px"
+                  }}
+                  data-tip="This sequence was trimmed and resubmitted for alignment"
+                >
+                  TRIMMED
+                </span>
+              )}
               {sequenceData.sequence.length} bps
             </div>
           </div>

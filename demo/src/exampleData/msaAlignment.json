@@ -19,6 +19,7 @@
     {
       "sequenceData": {
         "seqLink": "https://github.com/TeselaGen/",
+        "seqLinkTooltip": "View the original sequence",
         "id": "0bd61b29-d822-474f-86e1-877c476fb5dc",
         "features": [{
           "start": 10,
@@ -168,6 +169,8 @@
       }
     },
     {
+      "isReversed": true,
+      "wasTrimmed": true,
       "sequenceData": {
         "id": "a4daa28a-7745-4edf-af2b-9038b8e5aa6f",
         "name": "F05210",

@@ -8,6 +8,7 @@ import shortid from "shortid";
 import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
 
 import { /* createReducer, */ createAction } from "redux-act";
+import { omit } from "lodash";
 
 const alignmentAnnotationSettings = {
   axis: true,
@@ -60,6 +61,9 @@ try {
 // Actions
 // ------------------------------------
 export const upsertAlignmentRun = createAction("UPSERT_ALIGNMENT_RUN");
+export const removeAlignmentFromRedux = createAction(
+  "REMOVE_ALIGNMENT_FROM_REDUX"
+);
 export const updateAlignmentViewVisibility = createAction(
   "UPDATE_ALIGNMENT_VIEW_VISIBILITY"
 );
@@ -140,7 +144,6 @@ export default (state = {}, { payload = {}, type }) => {
       [payload.id]: { ...payload }
     };
   }
-
   if (type === "UPSERT_ALIGNMENT_RUN") {
     const { id } = payload;
     const payloadToUse = {
@@ -249,6 +252,10 @@ export default (state = {}, { payload = {}, type }) => {
         hasError
       }
     };
+  }
+  if (type === "REMOVE_ALIGNMENT_FROM_REDUX") {
+    const { id } = payload;
+    state = omit(state, [id]);
   }
   return state;
 };
