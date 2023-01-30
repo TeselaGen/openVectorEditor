@@ -1,4 +1,3 @@
-import { getListStyle } from "./../utils/getListStyle";
 import { debounce, find, get, some, isArray } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
@@ -54,6 +53,7 @@ import { GlobalDialog } from "../GlobalDialog";
 import isMobile from "is-mobile";
 import { getClientX, getClientY } from "../utils/editorUtils";
 import PCRTool from "../PCRTool/PCRTool";
+import classNames from "classnames";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -658,15 +658,14 @@ export class Editor extends React.Component {
             >
               {(drop_provided, drop_snapshot) => (
                 <div
-                  className="ve-draggable-tabs"
+                  className={classNames("ve-draggable-tabs", {
+                    "is-dragging-over": drop_snapshot.isDraggingOver
+                  })}
                   data-test={"ve-draggable-tabs" + index}
                   ref={drop_provided.innerRef}
                   style={{
                     height: tabHeight,
-                    paddingLeft: 3,
-                    ...getListStyle(
-                      drop_snapshot.isDraggingOver /* , tabDragging */
-                    )
+                    paddingLeft: 3
                   }}
                 >
                   {panelGroup.map(({ id, name, canClose }, index) => {
@@ -681,7 +680,7 @@ export class Editor extends React.Component {
                         index={index}
                         draggableId={id}
                       >
-                        {(provided, snapshot) => (
+                        {(provided) => (
                           <div
                             style={{
                               wordWrap: "normal",
@@ -703,10 +702,6 @@ export class Editor extends React.Component {
                               style={{
                                 // some basic styles to make the items look a bit nicer
                                 userSelect: "none",
-                                // change background colour if dragging
-                                background: snapshot.isDragging
-                                  ? "lightgreen"
-                                  : "none",
                                 cursor: tabDraggable ? "move" : "pointer",
                                 flex: "0 0 auto",
                                 ...provided.draggableProps.style

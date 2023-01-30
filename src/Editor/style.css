@@ -217,9 +217,18 @@ tspan.vePart {
   padding-top: 3px;
   padding-bottom: 3px;
 }
+
+.ve-draggable-tabs.is-dragging-over {
+  background: #e5f3ff;
+}
+
 .bp3-dark .veEditor .ve-draggable-tabs {
   color: #f5f8fa !important;
   border-bottom: 1px solid #4a4b4b;
+}
+
+.bp3-dark .veEditor .ve-draggable-tabs.is-dragging-over {
+  background: #0c5174;
 }
 .ve-draggable-tabs::-webkit-scrollbar {
   display: none;
