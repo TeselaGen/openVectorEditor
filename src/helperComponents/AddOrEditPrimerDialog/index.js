@@ -195,7 +195,7 @@ const RenderBases = (props) => {
         <CheckboxField
           name="useLinkedOligo"
           label="Linked Oligo?"
-          tooltipInfo={`Check this box if you'd like to link this primer to an oligo in your Oligo Library.`}
+          tooltipInfo={`Check this box to link this primer to an oligo in your Oligo Library. If the primer bases match exactly the bases of an existing oligo, it will be linked to that existing oligo. If the bases don't match, a new oligo will be created in the library.`}
           noMarginBottom
           defaultValue={true}
           disabled={readOnly}
