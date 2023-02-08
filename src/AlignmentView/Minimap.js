@@ -4,7 +4,7 @@ import ReactList from "@teselagen/react-list";
 import Axis from "../RowItem/Axis";
 import getXStartAndWidthFromNonCircularRange from "../RowItem/getXStartAndWidthFromNonCircularRange";
 import { view } from "@risingstack/react-easy-state";
-import { flatMap, some } from "lodash";
+import { flatMap, some, toNumber } from "lodash";
 import {
   getOverlapOfNonCircularRanges,
   invertRange,
@@ -100,13 +100,17 @@ export default class Minimap extends React.Component {
         return;
       }
       const lanes = document.querySelectorAll(".minimapLane");
-
       some(lanes, (lane) => {
         const rect = lane.getBoundingClientRect();
         if (rect.top > clientY && rect.top - rect.height < clientY) {
-          this.props.scrollYToTrack(
-            Math.max(lane.getAttribute("data-lane-index") - 3, 0)
-          );
+          const laneI = toNumber(lane.getAttribute("data-lane-index"));
+          let scrollToLane = laneI - 3;
+          if (laneI === lanes.length - 1) {
+            scrollToLane = laneI - 1;
+          } else if (laneI === lanes.length - 2) {
+            scrollToLane = laneI - 2;
+          }
+          this.props.scrollYToTrack(Math.max(scrollToLane, 0));
           return true;
         }
         return false;
