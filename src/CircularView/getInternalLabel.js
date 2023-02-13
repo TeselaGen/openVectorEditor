@@ -17,7 +17,7 @@ export function getInternalLabel({
     <>
       <path id={pathId} fill="none" d={textPath.print()}></path>
       <text
-        className="veLabelText ve-monospace-font"
+        className="veLabelText veCircularViewInternalLabelText ve-monospace-font"
         // transform={revTransform}
         transform={
           (revTransform || "") + (angleAdjust ? ` rotate(${angleAdjust})` : "")
@@ -25,7 +25,7 @@ export function getInternalLabel({
         fill={
           isPart ? "#ac68cc" : Color(colorToUse).isDark() ? "white" : "black"
         }
-        dy={-2}
+        dy={-3}
       >
         <textPath
           textAnchor="middle"

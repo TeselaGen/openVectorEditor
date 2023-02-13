@@ -41,3 +41,6 @@
 .bp3-dark .circularViewMinimap {
   --bg: #293742;
 }
+.veCircularView .ve-monospace-font.veCircularViewInternalLabelText {
+  font-size: 13px;
+}

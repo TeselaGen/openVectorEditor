@@ -2667,19 +2667,18 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.2.0.tgz#30f9cd0db8775f2cc5d5d76c2598592161fec1ec"
-  integrity sha512-PfBnUnnfetiyR6DgoAVj+Stkgdl4zTKpsIryvzS1NdaVoJa5WBqMVPogbprxzgV2g/sKL6K98Jq40SeichlCLw==
+bio-parsers@^9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.3.0.tgz#07805f9c5765aa8298369798bcafd4b66f060b64"
+  integrity sha512-XtARGAytcygFe80lHDoA3ZxWMSpyNWtLjBRFyPhb8HaHuh1CCasXlQYlt8HMxDOOsLE8yE8s+hXLT3LZfM5klg==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
     bufferpack "^0.0.6"
     color "^4.2.3"
     fast-xml-parser "^4.0.9"
-    flatmap "0.0.3"
+    fflate "^0.7.4"
     lodash "^4.17.21"
-    safe-access "^0.1.0"
     string_decoder "^1.3.0"
     validate.io-nonnegative-integer-array "^1.0.1"
 
@@ -5411,6 +5410,11 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
+fflate@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.7.4.tgz#61587e5d958fdabb5a9368a302c25363f4f69f50"
+  integrity sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw==
+
 figgy-pudding@^3.5.1:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.2.tgz#b4eee8148abb01dcf1d1ac34367d59e12fa61d6e"
@@ -5587,11 +5591,6 @@ flat@^4.1.0:
   integrity sha512-FmTtBsHskrU6FJ2VxCnsDb84wu9zhmO3cUX2kGFb5tuwhfXxGciiT0oRY+cck35QmG+NmGh5eLz6lLCpWTqwpA==
   dependencies:
     is-buffer "~2.0.3"
-
-flatmap@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/flatmap/-/flatmap-0.0.3.tgz#1f18a4d938152d495965f9c958d923ab2dd669b4"
-  integrity sha512-OuR+o7kHVe+x9RtIujPay7Uw3bvDZBZFSBXClEphZuSDLmZTqMdclasf4vFSsogC8baDz0eaC2NdO/2dlXHBKQ==
 
 flatted@^2.0.2:
   version "2.0.2"
@@ -10620,11 +10619,6 @@ rxjs@^7.5.1:
   dependencies:
     tslib "^2.1.0"
 
-safe-access@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/safe-access/-/safe-access-0.1.0.tgz#ce46b1190bd316672e1c7d001cab32970c488955"
-  integrity sha512-iIRnXb3CTZLlJhfvbS0a2uJD5NOwnkhBmOT+wUOIs3LdrafUuvo7VuY0J7qXeieIX2mWaQ7tR7fof9B4z5SsMg==
-
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -11586,10 +11580,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.13.21:
-  version "30.13.21"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.21.tgz#260952ffefcd0eace0676358aadd7ded577b3870"
-  integrity sha512-JE31n1/KN/wJzpnlS1N1CHpgybbiowOUslgByxE3isGPN6d+wW0fGXZa8fn5T/lSYo5TJqRx+WBZ8hp6/amcdA==
+teselagen-react-components@30.13.28:
+  version "30.13.28"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.28.tgz#0035c03d0180d4bf0f0c89018e82e870b7a5e2b8"
+  integrity sha512-Rr3tD6NjLpxCgHdfDyuFa1JZXguAl4eh2QqV1uoYkTpPKTzz+Uae7ZZckXuIsKsm8I+Ux/11iMs28M/ZftIeFw==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"

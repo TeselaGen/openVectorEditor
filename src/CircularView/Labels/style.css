@@ -12,6 +12,11 @@
 
 .veEditor .veAnnotationHovered:not(.topLevelLabelGroup) {
   font-weight: bold;
+}
+.veEditor
+  .veAnnotationHovered:not(.topLevelLabelGroup):not(
+    .veCircularViewInternalLabelText
+  ) {
   text-decoration: underline;
 }
 
