@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { compose, withHandlers, withProps } from "recompose";
 import { getFormValues /* formValueSelector */ } from "redux-form";
 import { showConfirmationDialog } from "teselagen-react-components";
-import { some, map, keyBy, omit } from "lodash";
+import { some, map, keyBy, omit, isArray } from "lodash";
 import {
   tidyUpSequenceData,
   getComplementSequenceAndAnnotations,
@@ -232,7 +232,7 @@ export const importSequenceFromFile =
     // TODO maybe handle import errors/warnings better
     const failed = !result[0].success;
     const messages = result[0].messages;
-    if (messages && messages.length) {
+    if (isArray(messages)) {
       messages.forEach((msg) => {
         const type = msg.substr(0, 20).toLowerCase().includes("error")
           ? failed
@@ -243,9 +243,11 @@ export const importSequenceFromFile =
       });
     }
     if (failed) {
-      window.toastr.error("Error importing sequence");
-    }
-    if (result.length > 1) {
+      window.toastr.error(
+        "Error importing sequence(s). See console for more errors"
+      );
+      console.error(`Seq import results:`, result);
+    } else if (result.length > 1) {
       showDialog({
         dialogType: "MultipleSeqsDetectedOnImportDialog",
         props: {

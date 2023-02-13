@@ -213,7 +213,7 @@ then add the links
 
 ### Full Example:
 
-A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/openVectorEditor/blob/master/demo/src/UMDDemo.html
+A full example of how to set up the unpkg/UMD demo can be seen here: https://github.com/TeselaGen/openVectorEditor/blob/master/demo/public/UMDDemo.html
 Demo here http://teselagen.github.io/openVectorEditor/UMDDemo.html
 
 ## Code (Universal)

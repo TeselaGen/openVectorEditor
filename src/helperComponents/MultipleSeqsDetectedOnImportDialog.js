@@ -5,14 +5,16 @@ import { Button, Callout, Card } from "@blueprintjs/core";
 import { hideDialog } from "../GlobalDialogUtils";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import React, { useState } from "react";
+import { tidyUpSequenceData } from "ve-sequence-utils/lib";
 
 export const MultipleSeqsDetectedOnImportDialog = wrapDialog({
   title: "Multiple Sequences Detected"
   // style: { height: 600, width: 800 }
 })(({ results, finishDisplayingSeq }) => {
-  const [selectedSeqData, setSelectedSeqData] = useState(
+  const [_selectedSeqData, setSelectedSeqData] = useState(
     results[0].parsedSequence
   );
+  const selectedSeqData = tidyUpSequenceData(_selectedSeqData);
   return (
     <div>
       <div className="bp3-dialog-body">

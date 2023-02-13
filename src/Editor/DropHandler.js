@@ -22,6 +22,7 @@ export default class DropHandler extends React.Component {
           ".gbk",
           ".fasta",
           ".fa",
+          ".geneious",
           ".gp",
           ".txt",
           ".dna",
