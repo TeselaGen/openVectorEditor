@@ -366,6 +366,7 @@ export class Editor extends React.Component {
       expandTabToSplitScreen,
       closePanel,
       onSave,
+      hideStatusBar,
       caretPositionUpdate,
       getVersionList,
       getSequenceAtVersion,
@@ -940,20 +941,22 @@ export class Editor extends React.Component {
               </ReflexContainer>
             </DragDropContext>
           </div>
-          <StatusBar
-            {...pickedUserDefinedHandlersAndOpts}
-            isProtein={sequenceData.isProtein}
-            showCircularity={
-              !!(
-                showCircularity &&
-                !sequenceData.isProtein &&
-                !sequenceData.isOligo &&
-                !sequenceData.isRna
-              )
-            }
-            editorName={editorName}
-            {...StatusBarProps}
-          />
+          {!hideStatusBar && (
+            <StatusBar
+              {...pickedUserDefinedHandlersAndOpts}
+              isProtein={sequenceData.isProtein}
+              showCircularity={
+                !!(
+                  showCircularity &&
+                  !sequenceData.isProtein &&
+                  !sequenceData.isOligo &&
+                  !sequenceData.isRna
+                )
+              }
+              editorName={editorName}
+              {...StatusBarProps}
+            />
+          )}
         </DropHandler>
         <GlobalDialog
           editorName={editorName}

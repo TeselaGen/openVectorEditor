@@ -22,6 +22,11 @@ import "./style.css";
 import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
 import isMobile from "is-mobile";
 import classnames from "classnames";
+import {
+  editorDragged,
+  editorDragStarted,
+  editorDragStopped
+} from "../withEditorInteractions/clickAndDragUtils";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
 
@@ -37,11 +42,8 @@ export class RowView extends React.Component {
     sequenceData: { sequence: "" },
     selectionLayer: {},
     // bpToJumpTo:0,
-    editorDragged: noop,
-    editorDragStarted: noop,
     editorClicked: noop,
     backgroundRightClicked: noop,
-    editorDragStopped: noop,
     // onScroll: noop,
     width: defaultContainerWidth,
     marginWidth: defaultMarginWidth,
@@ -155,16 +157,29 @@ export class RowView extends React.Component {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
     if (sequenceLength === 0) nearestCaretPos = 0;
+    const {
+      updateSelectionOrCaret,
+      caretPosition,
+      selectionLayer,
+      caretPositionUpdate,
+      selectionLayerUpdate
+    } = this.props;
     callback({
+      updateSelectionOrCaret,
+      caretPosition,
+      selectionLayer,
+      caretPositionUpdate,
+      selectionLayerUpdate,
+      sequenceLength,
       doNotWrapOrigin: !(
         this.props.sequenceData && this.props.sequenceData.circular
       ),
+      selectionStartGrabbed,
+      selectionEndGrabbed,
       event,
       className: event.target.className,
       shiftHeld: event.shiftKey,
-      nearestCaretPos,
-      selectionStartGrabbed,
-      selectionEndGrabbed
+      nearestCaretPos
     });
   };
 
@@ -267,8 +282,8 @@ export class RowView extends React.Component {
               el.scrollIntoView &&
                 el.scrollIntoView({
                   behavior: "auto",
-                  block: "center",
-                  inline: "center"
+                  block: "nearest",
+                  inline: "nearest"
                 });
               try {
                 //djr I think there is some double clearing going on here causing cypress to fail so now its in a try block
@@ -315,12 +330,9 @@ export class RowView extends React.Component {
       //currently found in props
       sequenceData,
       // bpToJumpTo,
-      editorDragged,
-      editorDragStarted,
       editorClicked,
       caretPosition,
       backgroundRightClicked,
-      editorDragStopped,
       // onScroll,
       width,
       marginWidth,
@@ -431,11 +443,7 @@ export class RowView extends React.Component {
 
     this.dragging = true;
     const rowData = this.rowData;
-    this.getNearestCursorPositionToMouseEvent(
-      rowData,
-      event,
-      this.props.editorDragged
-    );
+    this.getNearestCursorPositionToMouseEvent(rowData, event, editorDragged);
   };
   onStart = (event) => {
     this.dragging = true;
@@ -443,13 +451,13 @@ export class RowView extends React.Component {
     this.getNearestCursorPositionToMouseEvent(
       rowData,
       event,
-      this.props.editorDragStarted
+      editorDragStarted
     );
   };
 
-  onStop = (e) => {
+  onStop = () => {
     this.dragging = false;
-    this.props.editorDragStopped(e);
+    editorDragStopped();
   };
 
   getRef = (ref) => (this.node = ref);

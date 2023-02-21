@@ -146,11 +146,18 @@ export class AlignmentView extends React.Component {
     }
     if (this.props.sequenceLength === 0) nearestCaretPos = 0;
     const callbackVals = {
+      updateSelectionOrCaret: this.updateSelectionOrCaret,
+      nearestCaretPos,
+      sequenceLength: this.getSequenceLength(),
+      caretPosition: this.easyStore.caretPosition,
+      selectionLayer: this.easyStore.selectionLayer,
+      easyStore: this.easyStore,
+      caretPositionUpdate: this.caretPositionUpdate,
+      selectionLayerUpdate: this.selectionLayerUpdate,
       event,
       doNotWrapOrigin: true,
       shiftHeld: event.shiftKey,
-      nearestCaretPos,
-      caretGrabbed: event.target.className === "cursor",
+      // caretGrabbed: event.target.className === "cursor",
       selectionStartGrabbed: event.target.classList.contains(
         draggableClassnames.selectionStart
       ),
@@ -287,10 +294,6 @@ export class AlignmentView extends React.Component {
     window.updateAlignmentSelection = updateAlignmentSelection;
     if (window.Cypress)
       window.Cypress.updateAlignmentSelection = updateAlignmentSelection;
-    this.editorDragged = editorDragged.bind(this);
-    this.editorClicked = editorClicked.bind(this);
-    this.editorDragStarted = editorDragStarted.bind(this);
-    this.editorDragStopped = editorDragStopped.bind(this);
     setTimeout(() => {
       updateLabelsForInViewFeatures({ rectElement: ".alignmentHolder" });
     }, 0);
@@ -1113,7 +1116,7 @@ export class AlignmentView extends React.Component {
                         this.getNearestCursorPositionToMouseEvent(
                           rowData,
                           event,
-                          this.editorDragged
+                          editorDragged
                         );
                       }
                 }
@@ -1128,7 +1131,7 @@ export class AlignmentView extends React.Component {
                         this.getNearestCursorPositionToMouseEvent(
                           rowData,
                           event,
-                          this.editorDragStarted
+                          editorDragStarted
                         );
                       }
                 }
@@ -1139,7 +1142,7 @@ export class AlignmentView extends React.Component {
                         setTimeout(() => {
                           this.setState({ isTrackDragging: false });
                         }, 0);
-                        this.editorDragStopped(...args);
+                        editorDragStopped(...args);
                       }
                 }
               >
@@ -1170,7 +1173,7 @@ export class AlignmentView extends React.Component {
                           this.getNearestCursorPositionToMouseEvent(
                             rowData,
                             event,
-                            this.editorClicked
+                            editorClicked
                           );
                         }
                   }

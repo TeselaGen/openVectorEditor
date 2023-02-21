@@ -48,10 +48,75 @@ import { normalizeAngleRange } from "./normalizeAngleRange";
 import { CircularDnaSequence } from "./CircularDnaSequence";
 import { VeTopRightContainer } from "./VeTopRightContainer";
 import { normalizeAngle } from "./normalizeAngle";
+import {
+  editorDragged,
+  editorDragStarted,
+  editorDragStopped
+} from "../withEditorInteractions/clickAndDragUtils";
 // import { updateLabelsForInViewFeaturesCircView } from "../utils/updateLabelsForInViewFeaturesCircView";
 
 function noop() {}
 const BASE_RADIUS = 70;
+
+function getNearestCursorPositionToMouseEvent(
+  event,
+  {
+    updateSelectionOrCaret,
+    caretPosition,
+    selectionLayer,
+    caretPositionUpdate,
+    selectionLayerUpdate,
+    sequenceData,
+    sequenceLength,
+    circRef,
+    rotationRadians
+  },
+  callback
+) {
+  const clientX = getClientX(event);
+  const clientY = getClientY(event);
+  if (!clientX) {
+    return;
+  }
+  const boundingRect = circRef.current.getBoundingClientRect();
+  //get relative click positions
+  const clickX = clientX - boundingRect.left - boundingRect.width / 2;
+  const clickY = clientY - boundingRect.top - boundingRect.height / 2;
+
+  //get angle
+  let angle = Math.atan2(clickY, clickX) + Math.PI / 2 - rotationRadians;
+  if (angle < 0) angle += Math.PI * 2; //normalize the angle if necessary
+  let nearestCaretPos =
+    sequenceLength === 0
+      ? 0
+      : normalizePositionByRangeLength(
+          getPositionFromAngle(angle, sequenceLength, true),
+          sequenceLength
+        ); //true because we're in between positions
+  if (sequenceData && sequenceData.isProtein) {
+    nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
+  }
+
+  callback({
+    updateSelectionOrCaret,
+    caretPosition,
+    selectionLayer,
+    caretPositionUpdate,
+    selectionLayerUpdate,
+    sequenceLength,
+    event,
+    doNotWrapOrigin: !(sequenceData && sequenceData.circular),
+    className: event.target.parentNode.className.animVal,
+    shiftHeld: event.shiftKey,
+    nearestCaretPos,
+    selectionStartGrabbed: event.target.parentNode.classList.contains(
+      draggableClassnames.selectionStart
+    ),
+    selectionEndGrabbed: event.target.parentNode.classList.contains(
+      draggableClassnames.selectionEnd
+    )
+  });
+}
 
 export function CircularView(props) {
   const [limits] = useAnnotationLimits();
@@ -92,48 +157,7 @@ export function CircularView(props) {
     smallZoom = _zoomLevel;
     zoomLevel = 1;
   }
-  function getNearestCursorPositionToMouseEvent(
-    event,
-    sequenceLength,
-    callback
-  ) {
-    const clientX = getClientX(event);
-    const clientY = getClientY(event);
-    if (!clientX) {
-      return;
-    }
-    const boundingRect = circRef.current.getBoundingClientRect();
-    //get relative click positions
-    const clickX = clientX - boundingRect.left - boundingRect.width / 2;
-    const clickY = clientY - boundingRect.top - boundingRect.height / 2;
 
-    //get angle
-    let angle = Math.atan2(clickY, clickX) + Math.PI / 2 - rotationRadians;
-    if (angle < 0) angle += Math.PI * 2; //normalize the angle if necessary
-    let nearestCaretPos =
-      sequenceLength === 0
-        ? 0
-        : normalizePositionByRangeLength(
-            getPositionFromAngle(angle, sequenceLength, true),
-            sequenceLength
-          ); //true because we're in between positions
-    if (props.sequenceData && props.sequenceData.isProtein) {
-      nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
-    }
-    callback({
-      event,
-      doNotWrapOrigin: !(props.sequenceData && props.sequenceData.circular),
-      className: event.target.parentNode.className.animVal,
-      shiftHeld: event.shiftKey,
-      nearestCaretPos,
-      selectionStartGrabbed: event.target.parentNode.classList.contains(
-        draggableClassnames.selectionStart
-      ),
-      selectionEndGrabbed: event.target.parentNode.classList.contains(
-        draggableClassnames.selectionEnd
-      )
-    });
-  }
   const {
     //set defaults for all of these vars
     width = 400,
@@ -152,12 +176,9 @@ export function CircularView(props) {
     annotationVisibility = {},
     annotationLabelVisibility = {},
     caretPosition = -1,
-    editorDragged = noop,
-    editorDragStarted = noop,
     editorClicked = noop,
     backgroundRightClicked = noop,
     searchLayers = [],
-    editorDragStopped = noop,
     additionalSelectionLayers = [],
     maxAnnotationsToDisplay,
     searchLayerRightClicked = noop,
@@ -581,6 +602,7 @@ export function CircularView(props) {
         ) {
           return (
             <SelectionLayer
+              key={index}
               {...{
                 index,
                 isDraggable: true,
@@ -698,6 +720,8 @@ export function CircularView(props) {
       from: [zoomLevel]
     }
   );
+  const toPass = { ...props, sequenceLength, circRef, rotationRadians };
+
   return (
     <div
       style={{
@@ -787,16 +811,12 @@ export function CircularView(props) {
         // enableUserSelectHack={false} //needed to prevent the input bubble from losing focus post user drag
         bounds={{ top: 0, left: 0, right: 0, bottom: 0 }}
         onDrag={(event) => {
-          getNearestCursorPositionToMouseEvent(
-            event,
-            sequenceLength,
-            editorDragged
-          );
+          getNearestCursorPositionToMouseEvent(event, toPass, editorDragged);
         }}
         onStart={(event) => {
           getNearestCursorPositionToMouseEvent(
             event,
-            sequenceLength,
+            toPass,
             editorDragStarted
           );
         }}
@@ -811,14 +831,14 @@ export function CircularView(props) {
               instantiated &&
                 getNearestCursorPositionToMouseEvent(
                   event,
-                  sequenceLength,
+                  toPass,
                   editorClicked
                 );
             }}
             onContextMenu={(e) => {
               getNearestCursorPositionToMouseEvent(
                 e,
-                sequenceLength,
+                toPass,
                 backgroundRightClicked
               );
             }}

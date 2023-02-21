@@ -22,6 +22,11 @@ import PinchHelper from "../helperComponents/PinchHelper/PinchHelper";
 import { updateLabelsForInViewFeatures } from "../utils/updateLabelsForInViewFeatures";
 import { VeTopRightContainer } from "../CircularView/VeTopRightContainer";
 import { ZoomLinearView } from "./ZoomLinearView";
+import {
+  editorDragged,
+  editorDragStarted,
+  editorDragStopped
+} from "../withEditorInteractions/clickAndDragUtils";
 
 const defaultMarginWidth = 10;
 
@@ -55,14 +60,28 @@ class _LinearView extends React.Component {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
     if (this.props.sequenceLength === 0) nearestCaretPos = 0;
+    const {
+      updateSelectionOrCaret,
+      caretPosition,
+      selectionLayer,
+      caretPositionUpdate,
+      selectionLayerUpdate,
+      sequenceLength
+    } = this.props;
     const callbackVals = {
+      updateSelectionOrCaret,
+      caretPosition,
+      selectionLayer,
+      caretPositionUpdate,
+      selectionLayerUpdate,
+      sequenceLength,
       doNotWrapOrigin: !(
         this.props.sequenceData && this.props.sequenceData.circular
       ),
       event,
       shiftHeld: event.shiftKey,
       nearestCaretPos,
-      caretGrabbed: event.target.className === "cursor",
+      // caretGrabbed: event.target.className === "cursor",
       selectionStartGrabbed: event.target.classList.contains(
         draggableClassnames.selectionStart
       ),
@@ -133,10 +152,7 @@ class _LinearView extends React.Component {
       sequenceData = { sequence: "" },
       alignmentData,
       hideName = false,
-      editorDragged = noop,
-      editorDragStarted = noop,
       editorClicked = noop,
-      editorDragStopped = noop,
       width = 400,
       className,
       tickSpacing,

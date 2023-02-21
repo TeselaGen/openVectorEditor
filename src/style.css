@@ -70,6 +70,9 @@ body.tg-no-scroll-body {
   overflow-y: hidden;
 }
 
+.veToolbar {
+  padding-top: 3px;
+}
 .veToolbar-outer {
   padding-bottom: 1px;
   background: #ebf1f5;

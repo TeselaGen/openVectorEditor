@@ -13,7 +13,7 @@ import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
-import { cloneDeep, flatMap, map, startCase } from "lodash";
+import { cloneDeep, flatMap, map, pick, startCase } from "lodash";
 import {
   Button,
   ButtonGroup,
@@ -28,17 +28,20 @@ import { exportSequenceToFile } from "./withEditorProps";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default (props) => {
-  const {
+  let {
     sequenceData: _sequenceData,
     annotationVisibility: _annotationVisibility = {},
     noWarnings = true,
     withDownload,
     withChoosePreviewType,
     withCaretEnabled,
+    withSelectionEnabled,
     smallSlider,
     withVisibilityOptions,
     minimalPreviewTypeBtns,
-    withFullscreen
+    withFullscreen,
+    selectionLayer,
+    selectionLayerUpdate
   } = props;
   const [previewType, setPreviewType] = useState(
     _sequenceData.circular ? "circular" : "linear"
@@ -48,6 +51,16 @@ export default (props) => {
   const [visibilityOptions, setVisibilityOptions] = useState({});
 
   const [caretPosition, setCaret] = useState(withCaretEnabled ? -1 : undefined);
+  const [_selectionLayer, _selectionLayerUpdate] = useState(
+    withSelectionEnabled ? { start: -1, end: -1 } : undefined
+  );
+  selectionLayer = selectionLayer || _selectionLayer;
+  selectionLayerUpdate = selectionLayerUpdate || _selectionLayerUpdate;
+
+  function annotationClicked({ annotation }) {
+    withSelectionEnabled &&
+      selectionLayerUpdate(pick(annotation, ["start", "end", "overlapsSelf"]));
+  }
 
   let tickSpacing = undefined;
   let Component = (
@@ -178,9 +191,16 @@ export default (props) => {
               width: width - 10,
               height: height - 10
             }),
+            partClicked: annotationClicked,
+            featureClicked: annotationClicked,
+            primerClicked: annotationClicked,
             smartCircViewLabelRender: true,
             caretPosition,
             smallSlider,
+            ...(withSelectionEnabled && {
+              selectionLayer,
+              selectionLayerUpdate
+            }),
             readOnly: true,
             editorClicked: ({ nearestCaretPos } = {}) => {
               withCaretEnabled && setCaret(nearestCaretPos);

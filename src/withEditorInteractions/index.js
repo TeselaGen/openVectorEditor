@@ -32,10 +32,7 @@ import createSequenceInputPopup from "./createSequenceInputPopup";
 import Keyboard from "./Keyboard";
 import {
   handleCaretMoved,
-  editorDragged,
   editorClicked,
-  editorDragStarted,
-  editorDragStopped,
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
 import getBpsPerRow from "./getBpsPerRow";
@@ -105,11 +102,6 @@ function VectorInteractionHOC(Component /* options */) {
     }
 
     componentDidMount() {
-      this.editorDragged = editorDragged.bind(this);
-      this.editorClicked = editorClicked.bind(this);
-      this.editorDragStarted = editorDragStarted.bind(this);
-      this.editorDragStopped = editorDragStopped.bind(this);
-
       if (!this.node) return;
       this.combokeys = new Combokeys(this.node);
 
@@ -1137,10 +1129,12 @@ function VectorInteractionHOC(Component /* options */) {
             acc[handler] = this[handler];
             return acc;
           }, {}),
-          editorDragged: this.editorDragged,
-          editorDragStarted: this.editorDragStarted,
-          editorClicked: this.editorClicked,
-          editorDragStopped: this.editorDragStopped
+          editorClicked: (p) => {
+            editorClicked({
+              ...p,
+              updateSelectionOrCaret: this.updateSelectionOrCaret
+            });
+          }
         };
       }
       // propsToPass.triggerClipboardCommand = this.triggerClipboardCommand;

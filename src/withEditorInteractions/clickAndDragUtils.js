@@ -1,3 +1,4 @@
+import { noop } from "lodash";
 import {
   getRangeLength,
   trimRangeByAnotherRange,
@@ -10,16 +11,19 @@ let dragInProgress = false;
 let selectionStartOrEndGrabbed;
 
 let caretPositionOnDragStart;
-export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
-  let {
-    caretPosition = -1,
-    selectionLayer = { start: -1, end: -1 },
-    sequenceLength = this.getSequenceLength && this.getSequenceLength()
-  } = this.props;
-
-  if (this.easyStore && this.easyStore.selectionLayer) {
-    caretPosition = this.easyStore.caretPosition;
-    selectionLayer = this.easyStore.selectionLayer;
+export const editorDragged = function ({
+  nearestCaretPos,
+  doNotWrapOrigin,
+  caretPosition = -1,
+  easyStore,
+  caretPositionUpdate = noop,
+  selectionLayerUpdate = noop,
+  selectionLayer = { start: -1, end: -1 },
+  sequenceLength
+}) {
+  if (easyStore && easyStore.selectionLayer) {
+    caretPosition = easyStore.caretPosition;
+    selectionLayer = easyStore.selectionLayer;
   }
   if (!dragInProgress) {
     //we're starting the drag, so update the caret position!
@@ -31,8 +35,8 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
     handleSelectionStartGrabbed({
       caretPosition,
       selectionLayer,
-      caretPositionUpdate: this.caretPositionUpdate,
-      selectionLayerUpdate: this.selectionLayerUpdate,
+      caretPositionUpdate: caretPositionUpdate,
+      selectionLayerUpdate: selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength,
       doNotWrapOrigin
@@ -44,8 +48,8 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
     handleSelectionEndGrabbed({
       caretPosition,
       selectionLayer,
-      caretPositionUpdate: this.caretPositionUpdate,
-      selectionLayerUpdate: this.selectionLayerUpdate,
+      caretPositionUpdate: caretPositionUpdate,
+      selectionLayerUpdate: selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength,
       doNotWrapOrigin
@@ -56,7 +60,7 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
       selectionLayer: caretPositionOnDragStart
         ? { start: -1, end: -1 }
         : selectionLayer,
-      selectionLayerUpdate: this.selectionLayerUpdate,
+      selectionLayerUpdate: selectionLayerUpdate,
       nearestCaretPos,
       sequenceLength,
       doNotWrapOrigin
@@ -64,12 +68,16 @@ export const editorDragged = function ({ nearestCaretPos, doNotWrapOrigin }) {
   }
 };
 
-export const editorClicked = function ({ nearestCaretPos, shiftHeld }) {
+export const editorClicked = function ({
+  nearestCaretPos,
+  shiftHeld,
+  updateSelectionOrCaret
+}) {
   const timeDif = new Date().getTime() - dragInProgress;
   if (!dragInProgress || 200 > timeDif) {
     //if the drag is less than 200 ms it probably isn't a real drag!
     //we're not dragging the caret or selection handles
-    this.updateSelectionOrCaret(shiftHeld, nearestCaretPos);
+    updateSelectionOrCaret(shiftHeld, nearestCaretPos);
   }
 };
 
@@ -424,8 +432,8 @@ export function updateSelectionOrCaret({
   newRangeOrCaret,
   caretPosition,
   selectionLayer,
-  selectionLayerUpdate,
-  caretPositionUpdate,
+  selectionLayerUpdate = noop,
+  caretPositionUpdate = noop,
   doNotWrapOrigin
 }) {
   let newCaret;
