@@ -11,6 +11,9 @@ jobs:
         # of the current job in parallel
         machines: [1, 2, 3]
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: Checkout
         uses: actions/checkout@v1
       - uses: bahmutov/npm-install@v1
