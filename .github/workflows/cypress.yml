@@ -24,7 +24,7 @@ jobs:
         with:
           record: true
           parallel: true
-          start: export NODE_OPTIONS=--openssl-legacy-provider; yarn start
+          start: yarn start
           wait-on: http://localhost:3344
         env:
           WITH_COVERAGE: true
