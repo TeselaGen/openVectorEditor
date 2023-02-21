@@ -75,14 +75,14 @@
     "react-dom": "^16.9.0"
   },
   "optionalDependencies": {
-    "cypress": "12.1.0"
+    "cypress": "12.6.0"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.1.1",
     "copy-to-clipboard": "^3.3.3",
-    "eslint": "^8.32.0",
+    "eslint": "^8.34.0",
     "eslint-config-teselagen": "6.0.16",
     "gh-pages": "^4.0.0",
     "husky": "^8.0.3",
@@ -90,7 +90,7 @@
     "nodemon": "^2.0.20",
     "nwb": "0.25.2",
     "papaparse": "^5.3.2",
-    "prettier": "2.8.3",
+    "prettier": "2.8.4",
     "react": "^17.0.2",
     "react-addons-perf": "^15.4.2",
     "react-dom": "^17.0.2",
