@@ -21,9 +21,10 @@ jobs:
         with:
           record: true
           parallel: true
-          start: NODE_OPTIONS=--openssl-legacy-provider yarn start
+          start:  yarn start
           wait-on: http://localhost:3344
         env:
+          NODE_OPTIONS: --openssl-legacy-provider
           WITH_COVERAGE: true
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: 373658d4-4931-4ffd-9263-8eb78a838ab9
