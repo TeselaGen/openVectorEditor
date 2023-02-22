@@ -20,7 +20,7 @@ describe("dialogs", function () {
   });
   it("adding notes on a new feature should save", function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
-    cy.contains(".veLabelText", "araD").rightclick();
+    cy.contains(".veLabelText", "araD").rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Create").click();
     cy.contains(".bp3-menu-item", "New Feature").click({ force: true });
     cy.focused().type("new feat");
@@ -101,10 +101,9 @@ describe("dialogs", function () {
   -todo handle notes add`, function () {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     //open the edit part dialog by right clicking part 0
-    cy.get(".veLabelText")
-      .contains("Part 0")
-      .eq(1)
-      .trigger("contextmenu", { force: true });
+    cy.contains(".veLabelText", "Part 0").trigger("contextmenu", {
+      force: true
+    });
     cy.contains("Edit Part").click();
     //make an assertion that the part strand is currently negative
     cy.get(".tg-test-forward")
@@ -122,10 +121,9 @@ describe("dialogs", function () {
     cy.get(".tg-upsert-annotation").contains("Save").click();
 
     //re-open the dialog and make sure the strand stays positive
-    cy.get(".veLabelText")
-      .contains("Part 0")
-      .eq(1)
-      .trigger("contextmenu", { force: true });
+    cy.contains(".veLabelText", "Part 0").trigger("contextmenu", {
+      force: true
+    });
     cy.contains("Edit Part").click();
     cy.get(".tg-test-forward")
       .contains("Negative")

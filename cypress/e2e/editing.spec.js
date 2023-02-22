@@ -79,7 +79,7 @@ describe("editing", function () {
   it("should be able to change the color of features by changing the feature type", () => {
     cy.get(`[data-test="cutsiteHideShowTool"]`).click();
     cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
-    cy.contains(".veLabelText", "araD").rightclick();
+    cy.contains(".veLabelText", "araD").rightclick({ force: true });
     cy.contains(".bp3-menu-item", "Edit Feature").click();
     cy.get(".tg-test-type input").click();
     cy.contains(".tg-select-option", "3'UTR").click();
@@ -94,7 +94,7 @@ describe("editing", function () {
     cy.get(".tg-test-name input").should("have.value", "Part 0");
     cy.get(".bp3-dialog-close-button").click();
     cy.contains(".veRowViewFeature", "araD").find(`path[fill="#006FEF"]`);
-    cy.contains(".veLabelText", "araD").dblclick();
+    cy.contains(".veLabelText", "araD").dblclick({ force: true });
     cy.get(".tg-test-name input").should("have.value", "araD");
     cy.get(".bp3-dialog-close-button").click();
     cy.contains(".veLabelText", "Example Primer 1").dblclick();

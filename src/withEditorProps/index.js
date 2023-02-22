@@ -541,7 +541,8 @@ function mapStateToProps(state, ownProps) {
   const {
     editorName,
     sequenceData: sequenceDataFromProps,
-    allowSeqDataOverride
+    allowSeqDataOverride,
+    allowMultipleFeatureDirections
   } = ownProps;
   const meta = { editorName };
   const { VectorEditor } = state;
@@ -662,34 +663,34 @@ function mapStateToProps(state, ownProps) {
   if (annotationToAdd) {
     const selectionLayer = convertRangeTo0Based(annotationToAdd);
     delete selectionLayer.color;
-    // const id = annotationToAdd.id || "tempId123";
-    // const name = annotationToAdd.name || "";
+    const id = annotationToAdd.id || "tempId123";
+    const name = annotationToAdd.name || "";
     const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
-    // let toSpread = {};
-    // if (
-    //   annotationToAdd.annotationTypePlural === "features" &&
-    //   allowMultipleFeatureDirections &&
-    //   annotationToAdd.arrowheadType !== undefined
-    // ) {
-    //   toSpread = {
-    //     forward: annotationToAdd.arrowheadType !== "BOTTOM",
-    //     arrowheadType: annotationToAdd.arrowheadType
-    //   };
-    // }
-    // anns[id] = {
-    //   ...annotationToAdd,
-    //   id,
-    //   name,
-    //   ...selectionLayer,
-    //   ...(annotationToAdd.bases && {
-    //     // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
-    //     fullSeq: sequenceData.sequence
-    //   }),
-    //   ...toSpread,
-    //   locations: annotationToAdd.locations
-    //     ? annotationToAdd.locations.map(convertRangeTo0Based)
-    //     : undefined
-    // };
+    let toSpread = {};
+    if (
+      annotationToAdd.annotationTypePlural === "features" &&
+      allowMultipleFeatureDirections &&
+      annotationToAdd.arrowheadType !== undefined
+    ) {
+      toSpread = {
+        forward: annotationToAdd.arrowheadType !== "BOTTOM",
+        arrowheadType: annotationToAdd.arrowheadType
+      };
+    }
+    anns[id] = {
+      ...annotationToAdd,
+      id,
+      name,
+      ...selectionLayer,
+      ...(annotationToAdd.bases && {
+        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
+        fullSeq: sequenceData.sequence
+      }),
+      ...toSpread,
+      locations: annotationToAdd.locations
+        ? annotationToAdd.locations.map(convertRangeTo0Based)
+        : undefined
+    };
     sequenceDataToUse[annotationToAdd.type] = anns;
     toReturn.selectionLayer = selectionLayer;
   }

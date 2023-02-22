@@ -1,0 +1,20 @@
+LOCUS       Test_Seq                 164 bp    DNA     linear   SYN 22-FEB-2023
+FEATURES             Location/Qualifiers
+     misc_feature    2..71
+                     /label="Feat 1"
+                     /color="green"
+     misc_feature    91..101
+                     /label="Feat 2"
+                     /color="green"
+     misc_feature    11..21
+                     /label="Part 1"
+                     /pragma="Teselagen_Part"
+     misc_feature    26..31
+                     /label="Part 2"
+                     /pragma="Teselagen_Part"
+                     /pragma="overlapsSelf"
+ORIGIN      
+        1 GGGAAAagag agtgagagag tagagagaga ccacaccccc cGGGAAAaga gagtgagaga
+       61 gtagagagag accacacccc ccGGGAAAag agagtgagag agtagagaga gaccacaccc
+      121 cccGGGAAAa gagagtgaga gagtagagag agaccacacc cccc 
+//

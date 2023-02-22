@@ -186,14 +186,14 @@ export default (props) => {
             width: 300,
             height: 300,
             noWarnings,
+            partClicked: annotationClicked,
+            featureClicked: annotationClicked,
+            primerClicked: annotationClicked,
             ...props,
             ...(isFullscreen && {
               width: width - 10,
               height: height - 10
             }),
-            partClicked: annotationClicked,
-            featureClicked: annotationClicked,
-            primerClicked: annotationClicked,
             smartCircViewLabelRender: true,
             caretPosition,
             smallSlider,
