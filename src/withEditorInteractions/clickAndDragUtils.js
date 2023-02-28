@@ -335,7 +335,7 @@ export function handleSelectionStartGrabbed({
   }
 }
 
-function handleSelectionEndGrabbed({
+export function handleSelectionEndGrabbed({
   caretPosition,
   selectionLayer,
   selectionLayerUpdate,
