@@ -12,7 +12,7 @@ import {
   tidyUpSequenceData,
   shiftAnnotationsByLen
 } from "ve-sequence-utils";
-import { getRangeLength, getSequenceWithinRange } from "ve-range-utils/lib";
+import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
 
 function PCRTool(props) {
   const {
