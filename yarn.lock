@@ -4004,10 +4004,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha512-NJGVKPS81XejHcLhaLJS7plab0fK3slPh11mESeeDq2W4ZI5kUKK/LRRdVDvjJseojbPB7ZwjnyOybg3Igea/A==
 
-cypress@12.6.0:
-  version "12.6.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-12.6.0.tgz#d71a82639756173c0682b3d467eb9f0523460e91"
-  integrity sha512-WdHSVaS1lumSd5XpVTslZd8ui9GIGphrzvXq9+3DtVhqjRZC5M70gu5SW/Y/SLPq3D1wiXGZoHC6HJ7ESVE2lw==
+cypress@12.7.0:
+  version "12.7.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-12.7.0.tgz#69900f82af76cf3ba0ddb9b59ec3b0d38222ab22"
+  integrity sha512-7rq+nmhzz0u6yabCFyPtADU2OOrYt6pvUau9qV7xyifJ/hnsaw/vkr0tnLlcuuQKUAOC1v1M1e4Z0zG7S0IAvA==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
@@ -11593,10 +11593,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.13.28:
-  version "30.13.28"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.28.tgz#0035c03d0180d4bf0f0c89018e82e870b7a5e2b8"
-  integrity sha512-Rr3tD6NjLpxCgHdfDyuFa1JZXguAl4eh2QqV1uoYkTpPKTzz+Uae7ZZckXuIsKsm8I+Ux/11iMs28M/ZftIeFw==
+teselagen-react-components@30.13.33:
+  version "30.13.33"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.33.tgz#f9b513fb67897d64219419c733f7d1e336741ff6"
+  integrity sha512-nI5ajs4aEkRLRhTnkDqn+0CcNYFqs2CNuLq2EN3Tbo0pwMT1Zt2o0hlsOplHyslbHLDng1cxVj0z5oehJqbV5Q==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -12351,10 +12351,10 @@ ve-range-utils@^2.6.6:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.2.13:
-  version "5.2.13"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.2.13.tgz#a26dcc80794c0349c1d72c7c1de8ce8247138167"
-  integrity sha512-62uce2atWK8BaaEwm3icPyiLOAqiwrkQAeDOLDBb2A6woVQ97Pw+BhftOZpXXo8uTxFlq0eavxgt4/VyQidfGA==
+ve-sequence-utils@^5.2.14:
+  version "5.2.14"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.2.14.tgz#97a719e0043729129c94ab7bc669cba38d77da79"
+  integrity sha512-jfSCgwdomCZvWRGh2EpvU2IAC/wlXsQX/23m6pKn+HFPLj7cOpGr06XwKIuj4HIhSBxRzQAQJakTzMOhawYmXw==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
