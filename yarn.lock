@@ -1258,10 +1258,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@eslint/eslintrc@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.4.1.tgz#af58772019a2d271b7e2d4c23ff4ddcba3ccfb3e"
-  integrity sha512-XXrH9Uarn0stsyldqDYq8r++mROmWRI1xKMXa640Bb//SY1+ECYX6VzT6Lcx5frD0V30XieqJ0oX9I2Xj5aoMA==
+"@eslint/eslintrc@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-2.0.0.tgz#943309d8697c52fc82c076e90c1c74fbbe69dbff"
+  integrity sha512-fluIaaV+GyV24CCu/ggiHdV+j4RNh85yQnAYS/G2mZODZgGmmlrgCydjUcV3YvxCm9x8nMAfThsqTni4KiXT4A==
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
@@ -1272,6 +1272,11 @@
     js-yaml "^4.1.0"
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
+
+"@eslint/js@8.35.0":
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.35.0.tgz#b7569632b0b788a0ca0e438235154e45d42813a7"
+  integrity sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==
 
 "@fontsource/ubuntu-mono@^4.5.11":
   version "4.5.11"
@@ -2667,10 +2672,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^9.3.0:
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.3.0.tgz#07805f9c5765aa8298369798bcafd4b66f060b64"
-  integrity sha512-XtARGAytcygFe80lHDoA3ZxWMSpyNWtLjBRFyPhb8HaHuh1CCasXlQYlt8HMxDOOsLE8yE8s+hXLT3LZfM5klg==
+bio-parsers@^9.3.1:
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.3.1.tgz#ec3568041c7eeddee3ab9ce53eb2bef52d851824"
+  integrity sha512-Fymp7EZ2OFVpDAm8ww64CG0VLkWJLpPM1ZmxvlqtvUpp+nnBC4JR0k2dbmgoq76zrrkNKwGvCFkKg7Pw+3A8mg==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -4778,10 +4783,10 @@ eslint-config-react-app@^6.0.0:
   dependencies:
     confusing-browser-globals "^1.0.10"
 
-eslint-config-teselagen@6.0.16:
-  version "6.0.16"
-  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-6.0.16.tgz#04077819f55b34eb00fa51d9cf2b6545012525e3"
-  integrity sha512-aqlZZImUOxc1olzZetpLdLEhjRsjJmJ4M+322vsCxptnVG178E32ZQwY+whvOXPOM6uNss04bHwHZhHGKefJEw==
+eslint-config-teselagen@6.0.17:
+  version "6.0.17"
+  resolved "https://registry.yarnpkg.com/eslint-config-teselagen/-/eslint-config-teselagen-6.0.17.tgz#17147e0751c2ac3260d9312937182209085f4348"
+  integrity sha512-eiWjEPABmdAiVOFWVVHcZe4ckiD5MpdHQpovh4je//uHQPXxPK/piKkxMAC6bgDL5uwqVnhAmmmyOoG9RmJGfw==
   dependencies:
     "@rushstack/eslint-patch" "^1.1.0"
     "@typescript-eslint/eslint-plugin" "^4.0.0"
@@ -5024,12 +5029,13 @@ eslint@7.32.0:
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
-eslint@^8.34.0:
-  version "8.34.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.34.0.tgz#fe0ab0ef478104c1f9ebc5537e303d25a8fb22d6"
-  integrity sha512-1Z8iFsucw+7kSqXNZVslXS8Ioa4u2KM7GPwuKtkTFAqZ/cHMcEaR+1+Br0wLlot49cNxIiZk5wp8EAbPcYZxTg==
+eslint@^8.35.0:
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.35.0.tgz#fffad7c7e326bae606f0e8f436a6158566d42323"
+  integrity sha512-BxAf1fVL7w+JLRQhWl2pzGeSiGqbWumV4WNvc9Rhp6tiCtm4oHnyPBSEtMGZwrQgudFQ+otqzWoPB7x+hxoWsw==
   dependencies:
-    "@eslint/eslintrc" "^1.4.1"
+    "@eslint/eslintrc" "^2.0.0"
+    "@eslint/js" "8.35.0"
     "@humanwhocodes/config-array" "^0.11.8"
     "@humanwhocodes/module-importer" "^1.0.1"
     "@nodelib/fs.walk" "^1.2.8"
@@ -5043,7 +5049,7 @@ eslint@^8.34.0:
     eslint-utils "^3.0.0"
     eslint-visitor-keys "^3.3.0"
     espree "^9.4.0"
-    esquery "^1.4.0"
+    esquery "^1.4.2"
     esutils "^2.0.2"
     fast-deep-equal "^3.1.3"
     file-entry-cache "^6.0.1"
@@ -5096,6 +5102,13 @@ esquery@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.4.0.tgz#2148ffc38b82e8c7057dfed48425b3e61f0f24a5"
   integrity sha512-cCDispWt5vHHtwMY2YrAQ4ibFkAL8RbH5YGBnZBc90MolvvfkkQcJro/aZiAQUlQ3qgrYS6D6v8Gc5G5CQsc9w==
+  dependencies:
+    estraverse "^5.1.0"
+
+esquery@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.4.2.tgz#c6d3fee05dd665808e2ad870631f221f5617b1d1"
+  integrity sha512-JVSoLdTlTDkmjFmab7H/9SL9qGSyjElT3myyKp7krqjVFQCDLmj1QFaCLRFBszBKI0XVZaiiXvuPIX3ZwHe1Ng==
   dependencies:
     estraverse "^5.1.0"
 
@@ -12338,10 +12351,10 @@ ve-range-utils@^2.6.6:
   dependencies:
     lodash "^4.17.4"
 
-ve-sequence-utils@^5.2.9:
-  version "5.2.9"
-  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.2.9.tgz#e131efdbe523ee97c95d1f5a84b391214070c664"
-  integrity sha512-sLEL2oYgWsE0hCicGNualL85BgEkSuAueL/QethDfbAf3+ciQyu50MKLu8lERvYGIyzcJCGh4l36JFG22stFjA==
+ve-sequence-utils@^5.2.13:
+  version "5.2.13"
+  resolved "https://registry.yarnpkg.com/ve-sequence-utils/-/ve-sequence-utils-5.2.13.tgz#a26dcc80794c0349c1d72c7c1de8ce8247138167"
+  integrity sha512-62uce2atWK8BaaEwm3icPyiLOAqiwrkQAeDOLDBb2A6woVQ97Pw+BhftOZpXXo8uTxFlq0eavxgt4/VyQidfGA==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"

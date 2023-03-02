@@ -44,3 +44,6 @@
 .veCircularView .ve-monospace-font.veCircularViewInternalLabelText {
   font-size: 13px;
 }
+.veCircularView {
+  pointer-events: initial;
+}

@@ -1,5 +1,4 @@
 import { getFeatureToColorMap } from "ve-sequence-utils";
-import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 import forEach from "lodash/forEach";
 import React from "react";
@@ -180,4 +179,4 @@ function StackedAnnotations(props) {
   );
 }
 
-export default pureNoFunc(StackedAnnotations);
+export default StackedAnnotations;

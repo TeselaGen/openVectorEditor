@@ -13,7 +13,7 @@ import { HoveredIdContext } from "./helperComponents/withHover";
 import { visibilityDefaultValues } from "./redux/annotationVisibility";
 import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
-import { cloneDeep, flatMap, map, pick, startCase } from "lodash";
+import { cloneDeep, flatMap, map, startCase } from "lodash";
 import {
   Button,
   ButtonGroup,
@@ -25,6 +25,10 @@ import {
 import getCommands from "./commands";
 import { withHandlers } from "recompose";
 import { exportSequenceToFile } from "./withEditorProps";
+import {
+  editorClicked,
+  updateSelectionOrCaret
+} from "./withEditorInteractions/clickAndDragUtils";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
 export default (props) => {
@@ -41,7 +45,8 @@ export default (props) => {
     minimalPreviewTypeBtns,
     withFullscreen,
     selectionLayer,
-    selectionLayerUpdate
+    selectionLayerUpdate,
+    caretPositionUpdate
   } = props;
   const [previewType, setPreviewType] = useState(
     _sequenceData.circular ? "circular" : "linear"
@@ -49,17 +54,46 @@ export default (props) => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
   const [visibilityOptions, setVisibilityOptions] = useState({});
-
-  const [caretPosition, setCaret] = useState(withCaretEnabled ? -1 : undefined);
+  const [caretPosition, _caretPositionUpdate] = useState(
+    withCaretEnabled ? -1 : undefined
+  );
   const [_selectionLayer, _selectionLayerUpdate] = useState(
     withSelectionEnabled ? { start: -1, end: -1 } : undefined
   );
+  const sequenceLength = _sequenceData.noSequence
+    ? _sequenceData.size
+    : _sequenceData.sequence.length;
   selectionLayer = selectionLayer || _selectionLayer;
-  selectionLayerUpdate = selectionLayerUpdate || _selectionLayerUpdate;
 
-  function annotationClicked({ annotation }) {
+  const selectionLayerUpdateOld = selectionLayerUpdate || _selectionLayerUpdate;
+  const caretPositionUpdateOld = caretPositionUpdate || _caretPositionUpdate;
+
+  selectionLayerUpdate = (newSel, dontTrigger) => {
+    if (!dontTrigger && newSel.start > -1) {
+      caretPositionUpdate(-1, true);
+    }
+    selectionLayerUpdateOld(newSel);
+  };
+  caretPositionUpdate = (newCaret, dontTrigger) => {
+    if (!dontTrigger && newCaret > -1) {
+      selectionLayerUpdate({ start: -1, end: -1 }, true);
+    }
+    caretPositionUpdateOld(newCaret);
+  };
+  function annotationClicked({ annotation, event }) {
+    event.stopPropagation();
+    event.preventDefault();
     withSelectionEnabled &&
-      selectionLayerUpdate(pick(annotation, ["start", "end", "overlapsSelf"]));
+      updateSelectionOrCaret({
+        doNotWrapOrigin: !sequenceData.circular,
+        shiftHeld: event.shiftKey,
+        sequenceLength,
+        newRangeOrCaret: annotation,
+        caretPosition,
+        selectionLayer,
+        selectionLayerUpdate: selectionLayerUpdate,
+        caretPositionUpdate: caretPositionUpdate
+      });
   }
 
   let tickSpacing = undefined;
@@ -202,8 +236,29 @@ export default (props) => {
               selectionLayerUpdate
             }),
             readOnly: true,
-            editorClicked: ({ nearestCaretPos } = {}) => {
-              withCaretEnabled && setCaret(nearestCaretPos);
+            editorClicked: ({ nearestCaretPos, event } = {}) => {
+              if (!withCaretEnabled) {
+                if (!withSelectionEnabled) return;
+                if (!event.shiftKey) return;
+                if (!(selectionLayer.start > -1)) return;
+              }
+
+              editorClicked({
+                nearestCaretPos,
+                shiftHeld: !withSelectionEnabled ? false : event.shiftKey,
+                updateSelectionOrCaret: (shiftHeld, newRangeOrCaret) => {
+                  updateSelectionOrCaret({
+                    doNotWrapOrigin: !sequenceData.circular,
+                    sequenceLength,
+                    shiftHeld,
+                    newRangeOrCaret,
+                    caretPosition,
+                    selectionLayer,
+                    selectionLayerUpdate: selectionLayerUpdate,
+                    caretPositionUpdate: caretPositionUpdate
+                  });
+                }
+              });
             },
             instantiated: true,
             tickSpacing,

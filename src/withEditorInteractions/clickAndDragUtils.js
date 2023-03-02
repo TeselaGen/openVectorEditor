@@ -82,7 +82,7 @@ export const editorClicked = function ({
 };
 
 export const editorDragStarted = function (opts) {
-  document.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
+  document?.body.classList.add("sequenceDragging"); //needed to prevent the input bubble from losing focus post user drag
   window.__veDragging = true;
 
   caretPositionOnDragStart = opts.nearestCaretPos; //bump the drag counter
@@ -371,10 +371,7 @@ export function handleSelectionEndGrabbed({
       selectionStartOrEndGrabbed = "end";
       //there must be a selection layer
       //we need to move the selection layer
-      const newEnd = normalizePositionByRangeLength(
-        nearestCaretPos - 1,
-        sequenceLength
-      );
+      const newEnd = Math.min(nearestCaretPos - 1, sequenceLength - 1);
       selectionLayerUpdate({
         start: selectionLayer.start,
         end: newEnd,

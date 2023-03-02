@@ -86,7 +86,10 @@ export class RowView extends React.Component {
     });
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
-    const { charWidth = defaultCharWidth, sequenceLength } = this.props;
+    const { charWidth = defaultCharWidth, sequenceData } = this.props;
+    const sequenceLength = sequenceData.noSequence
+      ? sequenceData.size
+      : sequenceData.sequence.length;
     let rowNotFound = true;
     const visibleRowsContainer =
       this.InfiniteScroller && this.InfiniteScroller.items;

@@ -73,6 +73,8 @@ function getNearestCursorPositionToMouseEvent(
   },
   callback
 ) {
+  event.stopPropagation();
+  event.preventDefault();
   const clientX = getClientX(event);
   const clientY = getClientY(event);
   if (!clientX) {
@@ -132,7 +134,10 @@ export function CircularView(props) {
   }
   const { sequenceData = {}, smallSlider } = props;
   const { sequence = "atgc", circular } = sequenceData;
-  const sequenceLength = sequence.length;
+
+  const sequenceLength = sequenceData.noSequence
+    ? sequenceData.size
+    : sequenceData.sequence.length;
 
   const hasZoomableLength = sequenceLength >= 50;
   const hasRotateableLength = sequenceLength >= 10;
@@ -316,6 +321,8 @@ export function CircularView(props) {
       hideAnnotation: showSeqText,
       useStartAngle: true,
       allOnSameLevel: true,
+      noHeight: true,
+      addHeight: false,
       positionBy: positionCutsites,
       isAnnotation: true
     },
@@ -359,11 +366,7 @@ export function CircularView(props) {
       zIndex: 15,
       alwaysShow: true,
       layerName: "caret",
-      Annotation: drawCaret,
-      drawProps: ({ radius }) => ({
-        radius: initialRadius - annotationHeight / 2,
-        annotationHeight: radius - initialRadius
-      })
+      Annotation: drawCaret
     },
 
     {
@@ -371,11 +374,7 @@ export function CircularView(props) {
       alwaysShow: true,
       layerName: "selectionLayer",
       Annotation: drawSelectionLayer,
-      drawProps: ({ radius }) => ({
-        radius:
-          initialRadius + (radius - initialRadius) / 2 - annotationHeight / 2,
-        annotationHeight: radius - initialRadius
-      })
+      spaceAfter: 10
     },
     {
       zIndex: 20,
@@ -411,7 +410,8 @@ export function CircularView(props) {
       zIndex: 20,
       layerName: "parts",
       isAnnotation: true,
-      spaceBefore: 15
+      spaceBefore: 10,
+      spaceAfter: 5
     },
     {
       zIndex: 20,
@@ -462,7 +462,6 @@ export function CircularView(props) {
         spaceAfter = 0,
         zIndex,
         passLabels,
-        drawProps,
         noTitle,
         ...rest
       } = layer;
@@ -491,7 +490,6 @@ export function CircularView(props) {
         sequenceLength,
         editorName,
         showCicularViewInternalLabels,
-        ...(drawProps && drawProps({ radius })),
         ...rest
       };
       if (isAnnotation) {
@@ -616,7 +614,6 @@ export function CircularView(props) {
                   ? searchLayerClicked
                   : undefined,
                 sequenceLength,
-                baseRadius: BASE_RADIUS,
                 radius,
                 innerRadius
               }}

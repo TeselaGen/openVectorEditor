@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.2.17",
+  "version": "18.2.18",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -31,7 +31,7 @@
     "@risingstack/react-easy-state": "^6.3.0",
     "@teselagen/react-list": "^0.8.18",
     "@use-gesture/react": "^10.2.23",
-    "bio-parsers": "^9.3.0",
+    "bio-parsers": "^9.3.1",
     "classnames": "^2.3.2",
     "clipboard": "2.0.8",
     "color": "^3.2.1",
@@ -68,7 +68,7 @@
     "use-local-storage-state": "^13.0.0",
     "validate.io-nonnegative-integer-array": "^1.0.1",
     "ve-range-utils": "^2.6.6",
-    "ve-sequence-utils": "^5.2.9"
+    "ve-sequence-utils": "^5.2.13"
   },
   "peerDependencies": {
     "react": "^16.10.2",
@@ -82,8 +82,8 @@
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.1.1",
     "copy-to-clipboard": "^3.3.3",
-    "eslint": "^8.34.0",
-    "eslint-config-teselagen": "6.0.16",
+    "eslint": "^8.35.0",
+    "eslint-config-teselagen": "6.0.17",
     "gh-pages": "^4.0.0",
     "husky": "^8.0.3",
     "lint-staged": "10.5.4",

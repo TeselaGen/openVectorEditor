@@ -59,14 +59,13 @@ class _LinearView extends React.Component {
     if (this.props.sequenceData && this.props.sequenceData.isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
-    if (this.props.sequenceLength === 0) nearestCaretPos = 0;
+    if (maxEnd === 0) nearestCaretPos = 0;
     const {
       updateSelectionOrCaret,
       caretPosition,
       selectionLayer,
       caretPositionUpdate,
-      selectionLayerUpdate,
-      sequenceLength
+      selectionLayerUpdate
     } = this.props;
     const callbackVals = {
       updateSelectionOrCaret,
@@ -74,7 +73,7 @@ class _LinearView extends React.Component {
       selectionLayer,
       caretPositionUpdate,
       selectionLayerUpdate,
-      sequenceLength,
+      sequenceLength: maxEnd,
       doNotWrapOrigin: !(
         this.props.sequenceData && this.props.sequenceData.circular
       ),
