@@ -335,8 +335,7 @@ export default compose(
         toSpread.caretPositionUpdate = () => {};
       }
       return { ...ownProps, ...mapProps, ...dispatchProps, ...toSpread };
-    },
-    { pure: false }
+    }
   ),
   withHandlers({
     wrappedInsertSequenceDataAtPositionOrRange: (props) => {
