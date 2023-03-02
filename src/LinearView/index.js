@@ -219,17 +219,17 @@ class _LinearView extends React.Component {
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
-            editorDragged
+            this.props.editorDragged || editorDragged
           );
         }}
         onStart={(event) => {
           this.getNearestCursorPositionToMouseEvent(
             rowData,
             event,
-            editorDragStarted
+            this.props.editorDragStarted || editorDragStarted
           );
         }}
-        onStop={editorDragStopped}
+        onStop={this.props.editorDragStopped || editorDragStopped}
       >
         <div
           ref={(ref) => (this.linearView = ref)}

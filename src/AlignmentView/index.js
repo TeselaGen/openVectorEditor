@@ -911,6 +911,9 @@ export class AlignmentView extends React.Component {
             featureClicked: this.annotationClicked,
             partClicked: this.annotationClicked,
             searchLayerClicked: this.annotationClicked,
+            editorDragStarted: noop, //override these since we're defining the handlers above
+            editorDragStopped: noop, //override these since we're defining the handlers above
+            editorDragged: noop, //override these since we're defining the handlers above
             hideName: true,
             sequenceData,
             // sequenceDataWithRefSeqCdsFeatures,
