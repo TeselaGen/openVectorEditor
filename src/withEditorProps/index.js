@@ -228,7 +228,6 @@ export const importSequenceFromFile =
   async (file, opts = {}) => {
     const { updateSequenceData, onImport } = props;
     const result = await anyToJson(file, { acceptParts: true, ...opts });
-
     // TODO maybe handle import errors/warnings better
     const failed = !result[0].success;
     const messages = result[0].messages;

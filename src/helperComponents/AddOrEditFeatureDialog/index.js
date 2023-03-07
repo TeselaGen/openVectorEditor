@@ -47,6 +47,7 @@ export default AddOrEditAnnotationDialog({
   },
   getProps: (props) => ({
     upsertAnnotation: props.upsertFeature,
+    // renderLocations: true, //tnw enable this eventually for proteins
     renderLocations: !props.sequenceData.isProtein,
     renderTypes: renderTypes({ readOnly: props.readOnly }),
     annotationTypePlural: "features"

@@ -26,6 +26,7 @@ export default class DropHandler extends React.Component {
           ".gp",
           ".txt",
           ".dna",
+          ".prot",
           ".ab1",
           ".json"
         ]}
