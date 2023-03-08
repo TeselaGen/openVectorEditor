@@ -73,8 +73,6 @@ function getNearestCursorPositionToMouseEvent(
   },
   callback
 ) {
-  event.stopPropagation();
-  event.preventDefault();
   const clientX = getClientX(event);
   const clientY = getClientY(event);
   if (!clientX) {

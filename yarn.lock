@@ -2672,10 +2672,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bio-parsers@^9.3.1:
-  version "9.3.1"
-  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.3.1.tgz#ec3568041c7eeddee3ab9ce53eb2bef52d851824"
-  integrity sha512-Fymp7EZ2OFVpDAm8ww64CG0VLkWJLpPM1ZmxvlqtvUpp+nnBC4JR0k2dbmgoq76zrrkNKwGvCFkKg7Pw+3A8mg==
+bio-parsers@^9.3.2:
+  version "9.3.2"
+  resolved "https://registry.yarnpkg.com/bio-parsers/-/bio-parsers-9.3.2.tgz#58be451c14f329dc8b41d8446151c289f6dacb39"
+  integrity sha512-W8LfI2lH0ElG2fm4ZS/iMUDTJsFi9ZwFzthQoRm++g8I+GZnKc3rfFXDzvZeZqPCQZTjKuSjisJIZ4dJZ5DaWA==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -8501,10 +8501,10 @@ node-releases@^2.0.6:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.8.tgz#0f349cdc8fcfa39a92ac0be9bc48b7706292b9ae"
   integrity sha512-dFSmB8fFHEH/s81Xi+Y/15DQY6VHW81nXRj86EMSL3lmuTmK1e+aT4wrFCkTbm+gSwkw4KpX+rT/pMM2c1mF+A==
 
-nodemon@^2.0.20:
-  version "2.0.20"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.20.tgz#e3537de768a492e8d74da5c5813cb0c7486fc701"
-  integrity sha512-Km2mWHKKY5GzRg6i1j5OxOHQtuvVsgskLfigG25yTtbyfRGn/GNvIbRyOf1PSCKJ2aT/58TiuUsuOU5UToVViw==
+nodemon@^2.0.21:
+  version "2.0.21"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.21.tgz#267edff25578da91075d6aa54346ef77ecb7b302"
+  integrity sha512-djN/n2549DUtY33S7o1djRCd7dEm0kBnj9c7S9XVXqRUbuggN1MZH/Nqa+5RFQr63Fbefq37nFXAE9VU86yL1A==
   dependencies:
     chokidar "^3.5.2"
     debug "^3.2.7"
@@ -9037,6 +9037,11 @@ papaparse@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.2.tgz#d1abed498a0ee299f103130a6109720404fbd467"
   integrity sha512-6dNZu0Ki+gyV0eBsFKJhYr+MdQYAzFUGlBMNj3GNrmHxmz1lfRa24CjFObPXtjcetlOv5Ad299MhIK0znp3afw==
+
+papaparse@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.4.0.tgz#a3e47c32f32466d30af67ce2fef7910b3c3d4d91"
+  integrity sha512-ZBQABWG09p+u8rFoJVl/GhgxZ5zy9Zh1Lu/LVc7VX5T4nljjC14/YTcpebYwqP218B9X307eBOP7Tuhoqv7v7w==
 
 parallel-transform@^1.1.0:
   version "1.2.0"
@@ -11593,10 +11598,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.13.33:
-  version "30.13.33"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.33.tgz#f9b513fb67897d64219419c733f7d1e336741ff6"
-  integrity sha512-nI5ajs4aEkRLRhTnkDqn+0CcNYFqs2CNuLq2EN3Tbo0pwMT1Zt2o0hlsOplHyslbHLDng1cxVj0z5oehJqbV5Q==
+teselagen-react-components@30.13.34:
+  version "30.13.34"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.13.34.tgz#51566ffe01991bc55bc35039a42b9121f26f7c02"
+  integrity sha512-YE1UhMli4AX2AnGyDs/lJ6k6q16lwCiYWTM6JUte4OS7YfvWKwKAqAHdP2/gq4+IiVtzIcnPARCfnUapwdMuvw==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"
@@ -11663,10 +11668,10 @@ tg-client-query-builder@^2.14.2:
   dependencies:
     lodash "^4.17.4"
 
-tg-use-local-storage-state@^16.0.1:
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/tg-use-local-storage-state/-/tg-use-local-storage-state-16.0.1.tgz#21b1b23dee38a11c4a9239ac5e4a67ff346eb2f3"
-  integrity sha512-Oy2l5enKVG54q6hAtqZXh3/AabbRZ049VCzBE9U2NFJknFteOlwwjMIVLelbT7bObf3wAV590zlF1Onff1nalA==
+tg-use-local-storage-state@^16.0.3:
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/tg-use-local-storage-state/-/tg-use-local-storage-state-16.0.3.tgz#a5b2b4ad690b8bbd8c33b4520ce0539997f8e909"
+  integrity sha512-q5IXfOVxOZ9ikYr2iDffzPhF9JHnYifLjC9mIbp6JzjNm94ITbGDg8ay/oZyK2mCg2dQGC0ItWbSBjsdY1RUqA==
 
 throttle-debounce@^2.1.0:
   version "2.3.0"
