@@ -174,24 +174,40 @@ function drawAnnotations(props) {
       let ellipsizedName;
       // let spaceBeforeName = 0;
       let angleAdjust;
+
       if (name && showCicularViewInternalLabels) {
-        const arcLength =
-          2 * Math.PI * (annotationRadius - annotationHeight) * totalAngle; //for arrowhead
+        // eslint-disable-next-line no-inner-declarations
+        function getEllipsizedName(totalAngle) {
+          let ellipsizedName;
+          const arcLength =
+            2 * Math.PI * (annotationRadius - annotationHeight) * totalAngle; //for arrowhead
 
-        const annLength = Math.max(0, Math.floor(arcLength / 55 - 3));
-
-        // const arcLength = (annLength + 3)  * 55
-        // const nameAngle = arcLength /( 2 * Math.PI * (annotationRadius - annotationHeight))
-
-        ellipsizedName = name.slice(0, annLength);
-        if (ellipsizedName && ellipsizedName !== name) {
-          if (ellipsizedName.length >= name.length - 2) {
-            ellipsizedName = name;
-          } else if (ellipsizedName.length > 3) {
-            ellipsizedName += "..";
-          } else {
-            ellipsizedName = undefined;
+          const annLength = Math.max(0, Math.floor(arcLength / 55 - 3));
+          ellipsizedName = name.slice(0, annLength);
+          if (ellipsizedName && ellipsizedName !== name) {
+            if (ellipsizedName.length >= name.length - 2) {
+              ellipsizedName = name;
+            } else if (ellipsizedName.length > 3) {
+              ellipsizedName += "..";
+            } else {
+              ellipsizedName = undefined;
+            }
           }
+          return ellipsizedName;
+        }
+        if (locationAngles) {
+          annotation.locationAngles = locationAngles.map((l) => {
+            const en = getEllipsizedName(l.totalAngle);
+            if (en?.length > (ellipsizedName?.length || 0)) {
+              ellipsizedName = en;
+            }
+            return {
+              ...l,
+              ellipsizedName: en
+            };
+          });
+        } else {
+          ellipsizedName = getEllipsizedName(totalAngle);
         }
 
         // //tnr: WIP to try to adjust the inline label in the circular view to always show up even when zoomed in
@@ -346,7 +362,14 @@ function DrawAnnotationInner({
   };
   const title = <title>{titleText}</title>;
   function getInner(
-    { startAngle, endAngle, totalAngle, isNotLocation, containsLocations },
+    {
+      startAngle,
+      endAngle,
+      totalAngle,
+      isNotLocation,
+      containsLocations,
+      ellipsizedName: ellipsizedNameLocation
+    },
     i
   ) {
     const { transform, revTransform } = PositionAnnotationOnCircle({
@@ -377,7 +400,10 @@ function DrawAnnotationInner({
           centerAngle={centerAngle}
           revTransform={revTransform}
           rotationRadians={rotationRadians}
-          ellipsizedName={ellipsizedName}
+          ellipsizedName={
+            containsLocations ? ellipsizedNameLocation : ellipsizedName
+          }
+          locationNumber={i}
           angleAdjust={angleAdjust}
           color={annotationColor}
           isProtein={isProtein}
@@ -397,8 +423,7 @@ function DrawAnnotationInner({
         endAngle,
         totalAngle,
         centerAngle,
-        containsLocations: !!locationAngles,
-        i: 0
+        containsLocations: !!locationAngles
       })}
       {locationAngles && locationAngles.map(getInner)}
     </React.Fragment>
@@ -406,52 +431,3 @@ function DrawAnnotationInner({
 }
 
 const DrawAnnotation = withHover(DrawAnnotationInner);
-
-// const nameAngle =
-//   ((ellipsizedName.length + 3) * 55) /
-//   (2 * Math.PI * (annotationRadius - annotationHeight)) /
-//   2;
-//get how far label end is from angle range end
-
-// const spaceBeforeNameAngle = totalAngle - nameAngle / 2;
-// const spaceBeforeNameAngle =
-//   ((annLength - ellipsizedName.length + 3) * 55) /
-//   (2 * Math.PI * (annotationRadius - annotationHeight)) /
-//   2;
-// const nameAngleRange = normalizeAngleRange({
-//   start: centerAngle - nameAngle / 2,
-//   end: centerAngle + nameAngle / 2
-// });
-//           const isInRange = isRangeOrPositionWithinRange(
-//             nameAngleRange,
-//             visibleAngleRange,
-//             Math.PI * 2 + 1 //need to hack it for circular ranges
-//           );
-
-//           if (!isInRange) {
-//             const trimmed = trimRangeByAnotherRange(
-//               visibleAngleRange,
-//               normalizeAngleRange({ start: startAngle, end: endAngle }),
-//               Math.PI * 2 + 1 //need to hack it for circular ranges
-//             );
-//             if (
-//               trimmed &&
-//               isRangeOrPositionWithinRange(
-//                 trimmed.start,
-//                 visibleAngleRange,
-//                 Math.PI * 2 + 1 //need to hack it for circular ranges
-//               )
-//             ) {
-//               angleAdjust =
-//                 ((startAngle - nameAngleRange.start) / Math.PI) * 180;
-//             } else if (
-//               trimmed &&
-//               isRangeOrPositionWithinRange(
-//                 trimmed.end,
-//                 visibleAngleRange,
-//                 Math.PI * 2 + 1 //need to hack it for circular ranges
-//               )
-//             ) {
-//               angleAdjust = ((nameAngleRange.end - endAngle) / Math.PI) * 180;
-//             }
-//           }

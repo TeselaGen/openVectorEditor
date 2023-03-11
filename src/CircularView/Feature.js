@@ -19,7 +19,8 @@ export default function Feature(props) {
     overlapsSelf,
     rotationRadians,
     centerAngle,
-    totalAngle
+    totalAngle,
+    locationNumber
   } = props;
   const isPart = annotationType === "part";
   let colorToUse = color;
@@ -70,7 +71,13 @@ export default function Feature(props) {
         fill={isPart ? undefined : colorToUse}
         d={path.print()}
       />
-      {getInternalLabel({ ...props, colorToUse, textPath, isPart })}
+      {getInternalLabel({
+        ...props,
+        colorToUse,
+        textPath,
+        isPart,
+        locationNumber
+      })}
     </>
   );
 }
