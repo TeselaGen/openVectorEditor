@@ -2,6 +2,7 @@ import { map, flatMap } from "lodash";
 import { createReducer } from "redux-act";
 import createAction from "./utils/createMetaAction";
 import { removeItem } from "../utils/arrayUtils";
+import immer from "immer";
 
 //manages which tab panels are shown in the editor
 
@@ -17,6 +18,9 @@ export const collapsePanel = createAction("collapsePanel");
 export const closePanel = createAction("closePanel");
 export const _collapseSplitScreen = createAction("_collapseSplitScreen");
 export const setPanelAsActive = createAction("setPanelAsActive");
+export const flipActiveTabFromLinearOrCircularIfNecessary = createAction(
+  "flipActiveTabFromLinearOrCircularIfNecessary"
+);
 export const expandTabToSplitScreen = createAction("expandTabToSplitScreen");
 export const propertiesViewOpen = (unused, meta) => {
   return setPanelAsActive("properties", meta);
@@ -120,6 +124,15 @@ export default createReducer(
     [panelsShownUpdate]: (state, payload) => {
       return payload.filter((group) => group.length); //filter out any empty groups
     },
+    [flipActiveTabFromLinearOrCircularIfNecessary]: (state, setCircActive) => {
+      const newState = immer(state, (s) => {
+        s.forEach((g) => {
+          flipActiveForGroup(g, setCircActive);
+        });
+      });
+
+      return newState;
+    },
     [closePanel]: (state, idToClose) => {
       const newState = state.map((group) => {
         let indexToClose;
@@ -139,11 +152,7 @@ export default createReducer(
       return newState.filter((group) => group.length); //filter out any empty groups
     },
     [_collapseSplitScreen]: (state) => {
-      return [
-        flatMap(state, (panelGroup) => {
-          return panelGroup;
-        })
-      ];
+      return [flatMap(state)];
     },
     [expandTabToSplitScreen]: (state, activePanelId) => {
       let panelToMove;
@@ -248,3 +257,17 @@ export default createReducer(
     ]
   ]
 );
+
+function flipActiveForGroup(group, setCircActive) {
+  const activeTab = group.find(({ active }) => active);
+  if (activeTab?.id === (setCircActive ? "rail" : "circular")) {
+    //we're on the wrong tab type so check if the other tab is in
+    const newTabToActivate = group.find(
+      ({ id }) => id === (setCircActive ? "circular" : "rail")
+    );
+    if (newTabToActivate) {
+      newTabToActivate.active = true;
+      activeTab.active = false;
+    }
+  }
+}

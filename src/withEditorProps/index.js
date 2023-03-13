@@ -42,6 +42,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
+import updateEditor from "../updateEditor";
 // import { getStartEndFromBases } from "../utils/editorUtils";
 
 const getUpperOrLowerSeq = defaultMemoize(
@@ -226,7 +227,7 @@ export const updateCircular = (props) => async (isCircular) => {
 export const importSequenceFromFile =
   (props) =>
   async (file, opts = {}) => {
-    const { updateSequenceData, onImport } = props;
+    const { onImport } = props;
     const result = await anyToJson(file, { acceptParts: true, ...opts });
     // TODO maybe handle import errors/warnings better
     const failed = !result[0].success;
@@ -264,7 +265,16 @@ export const importSequenceFromFile =
 
       if (seqData) {
         seqData.stateTrackingId = shortid();
-        updateSequenceData(seqData);
+        updateEditor(
+          {
+            getState: () => ({ VectorEditor: { [props.editorName]: props } }),
+            dispatch: props.dispatch
+          },
+          props.editorName,
+          { sequenceData: seqData }
+        );
+        props.flipActiveTabFromLinearOrCircularIfNecessary(seqData.circular);
+
         window.toastr.success("Sequence Imported");
       }
     }
