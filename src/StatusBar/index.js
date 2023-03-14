@@ -11,9 +11,9 @@ import "./style.css";
 import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
-import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import useMeltingTemp from "../utils/useMeltingTemp";
 import MeltingTemp from "./MeltingTemp";
+import { getSequenceWithinRange } from "ve-range-utils";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly
@@ -81,10 +81,10 @@ const ShowSelectionItem = compose(
   }) => {
     const [showMeltingTemp] = useMeltingTemp();
 
-    const sequence = getSequenceDataBetweenRange(
-      sequenceData,
-      selectionLayer
-    ).sequence;
+    const sequence = getSequenceWithinRange(
+      selectionLayer,
+      sequenceData.sequence
+    );
 
     return (
       <React.Fragment>

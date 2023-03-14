@@ -1506,6 +1506,19 @@ function getFilterIndividualCmd(type) {
   const pluralType = pluralize(type);
   const upperType = startCase(type);
   return {
+    isHidden: (props) => {
+      const total = Object.keys(
+        reduce(
+          props.sequenceData[pluralType],
+          (acc, feat) => {
+            acc[feat.id] = true;
+            return acc;
+          },
+          {}
+        )
+      ).length;
+      return total > 500;
+    },
     name: (props) => {
       const total = Object.keys(
         reduce(

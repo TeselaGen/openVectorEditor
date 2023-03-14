@@ -1,10 +1,9 @@
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
 import React from "react";
 import { divideBy3 } from "./proteinUtils";
 import {
   getInsertBetweenVals,
   calculatePercentGC,
-  getSequenceDataBetweenRange,
   bioData,
   aliasedEnzymesByName
 } from "ve-sequence-utils";
@@ -30,7 +29,7 @@ export function getSelectionMessage({
     const length = getRangeLength(_selectionLayer, sequenceLength);
     const GCContent = (numDecimalDigits = 0) =>
       calculatePercentGC(
-        getSequenceDataBetweenRange(sequenceData, _selectionLayer).sequence
+        getSequenceWithinRange(_selectionLayer, sequenceData.sequence)
       ).toFixed(numDecimalDigits);
     const seqLen = divideBy3(length, isProtein);
     return `${customTitle || "Selecting"} ${seqLen} ${

@@ -1,4 +1,6 @@
+import { set } from "lodash";
 import { tidyUpSequenceData } from "ve-sequence-utils";
+import { annotationTypes } from "ve-sequence-utils";
 
 export default function updateEditor(
   store,
@@ -166,6 +168,15 @@ export default function updateEditor(
         })
       })
     };
+  }
+  annotationTypes.forEach((t) => {
+    if (Object.keys(sequenceData?.[t] || {}).length > 100) {
+      set(payload, `annotationLabelVisibility.${t}`, false);
+    }
+  });
+  if (sequenceData && sequenceData.size > 20000) {
+    set(payload, "annotationVisibility.translations", false);
+    set(payload, "annotationVisibility.cutsites", false);
   }
 
   store.dispatch({
