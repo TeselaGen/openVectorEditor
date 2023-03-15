@@ -76,6 +76,7 @@ export const AutoAnnotateModal = compose(
   reduxForm({ form: formName })
 )((props) => {
   const {
+    ed,
     sequenceData,
     handleSubmit,
     annotationType = "feature",
@@ -106,7 +107,7 @@ export const AutoAnnotateModal = compose(
   if (newAnnotations) {
     return (
       <CreateAnnotationsPage
-        {...props}
+        ed={ed}
         newAnnotations={newAnnotations}
       ></CreateAnnotationsPage>
     );

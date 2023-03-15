@@ -9,7 +9,7 @@
 }
 
 /*# sourceMappingURL=style.css.map */
-.veLinearView.isLinViewZoomed .veRowItemWrapper {
+.veLinearView.isViewZoomedLV .veRowItemWrapper {
   overflow-x: auto;
 }
 /* .tg-pinch-helper {

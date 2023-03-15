@@ -631,7 +631,6 @@ function mapStateToProps(state, ownProps) {
   const sequenceLength = s.sequenceLengthSelector(editorState);
 
   let matchedSearchLayer = { start: -1, end: -1 };
-  const annotationSearchMatches = s.annotationSearchSelector(editorState);
   let searchLayers = s.searchLayersSelector(editorState).map((item, index) => {
     let itemToReturn = item;
     if (index === findTool.matchNumber) {
@@ -711,7 +710,6 @@ function mapStateToProps(state, ownProps) {
     filteredCutsites,
     filteredRestrictionEnzymes,
     isEnzymeFilterAnd,
-    annotationSearchMatches,
     searchLayers,
     matchedSearchLayer,
     findTool: {

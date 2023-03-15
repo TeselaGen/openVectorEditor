@@ -27,17 +27,16 @@ const CreateCustomEnzyme = function (props) {
   const {
     inputSequenceToTestAgainst = "", //pass this prop in!
     seqName = "Destination Vector",
-    createYourOwnEnzyme,
     dispatch,
     hideModal,
-    editorName
+    ed
   } = props;
 
-  createYourOwnEnzyme.chop_top_index = Number(
-    createYourOwnEnzyme.chop_top_index
+  ed.createYourOwnEnzyme.chop_top_index = Number(
+    ed.createYourOwnEnzyme.chop_top_index
   );
-  createYourOwnEnzyme.chop_bottom_index = Number(
-    createYourOwnEnzyme.chop_bottom_index
+  ed.createYourOwnEnzyme.chop_bottom_index = Number(
+    ed.createYourOwnEnzyme.chop_bottom_index
   );
 
   const {
@@ -45,7 +44,7 @@ const CreateCustomEnzyme = function (props) {
     chop_top_index = 0,
     chop_bottom_index = 0,
     name = ""
-  } = createYourOwnEnzyme;
+  } = ed.createYourOwnEnzyme;
   const regexString = bpsToRegexString(sequence);
   const enzyme = {
     name: name,
@@ -180,15 +179,8 @@ const CreateCustomEnzyme = function (props) {
         disabled={invalid}
         onClick={() => {
           addCustomEnzyme(enzyme);
-          dispatch({
-            type: "FILTERED_RESTRICTION_ENZYMES_ADD", //filteredRestrictionEnzymesAdd
-            payload: {
-              value: name
-            },
-            meta: {
-              editorName
-            }
-          });
+          ed.restrictionEnzymes.filteredRestrictionEnzymesAdd(value: name)
+          
           hideModal && hideModal();
         }}
       ></DialogFooter>

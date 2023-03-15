@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   showContextMenu,
   commandMenuEnhancer,
@@ -9,11 +9,8 @@ import { CircularView } from "./CircularView";
 import { LinearView } from "./LinearView";
 import { RowView } from "./RowView";
 
-import { HoveredIdContext } from "./helperComponents/withHover";
-import { visibilityDefaultValues } from "./redux/annotationVisibility";
-import { addWrappedAddons } from "./utils/addWrappedAddons";
 import { SimpleOligoPreview } from "./SimpleOligoPreview";
-import { cloneDeep, flatMap, map, startCase } from "lodash";
+import { flatMap, map, startCase } from "lodash";
 import {
   Button,
   ButtonGroup,
@@ -31,247 +28,169 @@ import {
 } from "./withEditorInteractions/clickAndDragUtils";
 
 //this view is meant to be a helper for showing a simple (non-redux connected) circular or linear view!
-export default (props) => {
-  let {
-    sequenceData: _sequenceData,
-    annotationVisibility: _annotationVisibility = {},
-    noWarnings = true,
-    withDownload,
-    withChoosePreviewType,
-    withCaretEnabled,
-    withSelectionEnabled,
-    smallSlider,
-    withVisibilityOptions,
-    minimalPreviewTypeBtns,
-    withFullscreen,
-    selectionLayer,
-    selectionLayerUpdate,
-    caretPositionUpdate
-  } = props;
-  const [previewType, setPreviewType] = useState(
-    _sequenceData.circular ? "circular" : "linear"
-  );
-  const [isPopoverOpen, setPopoverOpen] = useState(false);
-  const [isFullscreen, setFullscreen] = useState(false);
-  const [visibilityOptions, setVisibilityOptions] = useState({});
-  const [caretPosition, _caretPositionUpdate] = useState(
-    withCaretEnabled ? -1 : undefined
-  );
-  const [_selectionLayer, _selectionLayerUpdate] = useState(
-    withSelectionEnabled ? { start: -1, end: -1 } : undefined
-  );
-  const sequenceLength = _sequenceData.noSequence
-    ? _sequenceData.size
-    : _sequenceData.sequence.length;
-  selectionLayer = selectionLayer || _selectionLayer;
-
-  const selectionLayerUpdateOld = selectionLayerUpdate || _selectionLayerUpdate;
-  const caretPositionUpdateOld = caretPositionUpdate || _caretPositionUpdate;
-
-  selectionLayerUpdate = (newSel, dontTrigger) => {
-    if (!dontTrigger && newSel.start > -1) {
-      caretPositionUpdate(-1, true);
-    }
-    selectionLayerUpdateOld(newSel);
-  };
-  caretPositionUpdate = (newCaret, dontTrigger) => {
-    if (!dontTrigger && newCaret > -1) {
-      selectionLayerUpdate({ start: -1, end: -1 }, true);
-    }
-    caretPositionUpdateOld(newCaret);
-  };
+export default ({ ed, hoveredId, noWarnings = true }) => {
   function annotationClicked({ annotation, event }) {
     event.stopPropagation();
     event.preventDefault();
-    withSelectionEnabled &&
+    ed.withSelectionEnabled &&
       updateSelectionOrCaret({
-        doNotWrapOrigin: !sequenceData.circular,
+        doNotWrapOrigin: !ed.circular,
         shiftHeld: event.shiftKey,
-        sequenceLength,
+        sequenceLength: ed.size,
         newRangeOrCaret: annotation,
-        caretPosition,
-        selectionLayer,
-        selectionLayerUpdate: selectionLayerUpdate,
-        caretPositionUpdate: caretPositionUpdate
+        caretPosition: ed.caretPosition,
+        selectionLayer: ed.selectionLayer,
+        selectionLayerUpdate: ed.selectionLayerUpdate,
+        caretPositionUpdate: ed.caretPositionUpdate
       });
   }
 
   let tickSpacing = undefined;
   let Component = (
-    withChoosePreviewType ? previewType === "circular" : _sequenceData.circular
+    ed.withChoosePreviewType ? ed.previewType === "circular" : ed.circular
   )
     ? CircularView
-    : _sequenceData.isOligo && _sequenceData.sequence
+    : ed.isOligo && ed.sequence
     ? SimpleOligoPreview
     : LinearView;
-  if (withChoosePreviewType && previewType === "row") {
+  if (ed.withChoosePreviewType && ed.previewType === "row") {
     Component = RowView;
     tickSpacing = undefined;
   }
 
-  let sequenceData = cloneDeep(_sequenceData);
-  const annotationVisibility = {
-    ...visibilityDefaultValues,
-    ..._annotationVisibility,
-    ...visibilityOptions
-  };
-
-  //here we're making it possible to not pass a sequenceData.sequence
+  //here we're making it possible to not pass a ed.sequence
   //we can just pass a .size property to save having to send the whole sequence if it isn't needed!
-  if (sequenceData.noSequence) {
-    annotationVisibility.sequence = false;
-    annotationVisibility.reverseSequence = false;
-    if (sequenceData.size === undefined) {
-      return (
-        <div>
-          Error: No sequenceData.size detected when using noSequence flag{" "}
-        </div>
-      );
-    }
-    sequenceData = {
-      ...sequenceData,
-      sequence: {
-        length: sequenceData.size
-      }
-    };
-  }
-  sequenceData.parts = addWrappedAddons(
-    sequenceData.parts,
-    sequenceData.sequence.length
-  );
+  // if (ed.noSequence) {
+  //   ed.annotationVisibility.sequence = false;
+  //   ed.annotationVisibility.reverseSequence = false;
+  //   if (ed.size === undefined) {
+  //     return (
+  //       <div>
+  //         Error: No ed.size detected when using noSequence flag{" "}
+  //       </div>
+  //     );
+  //   }
+  //   ed = {
+  //     ...ed,
+  //     sequence: {
+  //       length: ed.size
+  //     }
+  //   };
+  // }
+  // ed.parts = addWrappedAddons(
+  //   ed.parts,
+  //   ed.sequence.length
+  // );
   const inner = ({ width, height }) => (
-    <HoveredIdContext.Provider value={{ hoveredId: props.hoveredId }}>
-      <div style={{ width: "fit-content" }}>
-        {(withDownload ||
-          withChoosePreviewType ||
-          withFullscreen ||
-          VisibilityOptions) && (
-          <div
-            style={{
-              marginLeft: 10,
-              marginBottom: 5,
-              ...(isFullscreen && {
-                marginRight: 10,
-                paddingTop: 10
-              }),
-              display: "flex",
-              justifyContent: "end"
-            }}
-          >
-            {withDownload && <DownloadBtn {...props}></DownloadBtn>}
-            {withVisibilityOptions && (
-              <VisibilityOptions
-                {...{
-                  ...props,
-                  sequenceData,
-                  annotationVisibility,
-                  setVisibilityOptions,
-                  isPopoverOpen,
-                  setPopoverOpen
-                }}
-              ></VisibilityOptions>
-            )}
-
-            {withChoosePreviewType && (
-              <ButtonGroup>
-                <Tooltip content="Circular View">
-                  <Button
-                    minimal={minimalPreviewTypeBtns}
-                    className="tgPreviewTypeCircular"
-                    active={previewType === "circular"}
-                    intent="primary"
-                    onClick={() => setPreviewType("circular")}
-                    icon="circle"
-                  ></Button>
-                </Tooltip>
-                <Tooltip content="Linear View">
-                  <Button
-                    minimal={minimalPreviewTypeBtns}
-                    className="tgPreviewTypeLinear"
-                    active={previewType === "linear"}
-                    intent="primary"
-                    onClick={() => setPreviewType("linear")}
-                    icon="layout-linear"
-                  ></Button>
-                </Tooltip>
-                <Tooltip content="Sequence View">
-                  <Button
-                    minimal={minimalPreviewTypeBtns}
-                    className="tgPreviewTypeRow"
-                    active={previewType === "row"}
-                    intent="primary"
-                    onClick={() => setPreviewType("row")}
-                    icon="menu"
-                  ></Button>
-                </Tooltip>
-              </ButtonGroup>
-            )}
-            {withFullscreen && (
-              <FullscreenBtn
-                {...{ setFullscreen, isFullscreen }}
-              ></FullscreenBtn>
-            )}
-          </div>
-        )}
-        <Component
-          {...{
-            showCicularViewInternalLabels: true,
-            className: "tg-simple-dna-view veEditor",
-            width: 300,
-            height: 300,
-            noWarnings,
-            partClicked: annotationClicked,
-            featureClicked: annotationClicked,
-            primerClicked: annotationClicked,
-            ...props,
-            ...(isFullscreen && {
-              width: width - 10,
-              height: height - 10
+    <div style={{ width: "fit-content" }}>
+      {(ed.withDownload ||
+        ed.withChoosePreviewType ||
+        ed.withFullscreen ||
+        VisibilityOptions) && (
+        <div
+          style={{
+            marginLeft: 10,
+            marginBottom: 5,
+            ...(ed.isFullscreen && {
+              marginRight: 10,
+              paddingTop: 10
             }),
-            smartCircViewLabelRender: true,
-            caretPosition,
-            smallSlider,
-            ...(withSelectionEnabled && {
-              selectionLayer,
-              selectionLayerUpdate
-            }),
-            readOnly: true,
-            editorClicked: ({ nearestCaretPos, event } = {}) => {
-              if (!withCaretEnabled) {
-                if (!withSelectionEnabled) return;
-                if (!event.shiftKey) return;
-                if (!(selectionLayer.start > -1)) return;
-              }
-
-              editorClicked({
-                nearestCaretPos,
-                shiftHeld: !withSelectionEnabled ? false : event.shiftKey,
-                updateSelectionOrCaret: (shiftHeld, newRangeOrCaret) => {
-                  updateSelectionOrCaret({
-                    doNotWrapOrigin: !sequenceData.circular,
-                    sequenceLength,
-                    shiftHeld,
-                    newRangeOrCaret,
-                    caretPosition,
-                    selectionLayer,
-                    selectionLayerUpdate: selectionLayerUpdate,
-                    caretPositionUpdate: caretPositionUpdate
-                  });
-                }
-              });
-            },
-            instantiated: true,
-            tickSpacing,
-            hoveredId: props.hoveredId,
-            annotationVisibility,
-            sequenceData,
-            showTitle: true
+            display: "flex",
+            justifyContent: "end"
           }}
-        />
-      </div>
-    </HoveredIdContext.Provider>
+        >
+          {ed.withDownload && <DownloadBtn ed={ed}></DownloadBtn>}
+          {ed.withVisibilityOptions && (
+            <VisibilityOptions ed={ed}></VisibilityOptions>
+          )}
+
+          {ed.withChoosePreviewType && (
+            <ButtonGroup>
+              <Tooltip content="Circular View">
+                <Button
+                  minimal={ed.minimalPreviewTypeBtns}
+                  className="tgPreviewTypeCircular"
+                  active={ed.previewType === "circular"}
+                  intent="primary"
+                  onClick={() => ed.setPreviewType("circular")}
+                  icon="circle"
+                ></Button>
+              </Tooltip>
+              <Tooltip content="Linear View">
+                <Button
+                  minimal={ed.minimalPreviewTypeBtns}
+                  className="tgPreviewTypeLinear"
+                  active={ed.previewType === "linear"}
+                  intent="primary"
+                  onClick={() => ed.setPreviewType("linear")}
+                  icon="layout-linear"
+                ></Button>
+              </Tooltip>
+              <Tooltip content="Sequence View">
+                <Button
+                  minimal={ed.minimalPreviewTypeBtns}
+                  className="tgPreviewTypeRow"
+                  active={ed.previewType === "row"}
+                  intent="primary"
+                  onClick={() => ed.setPreviewType("row")}
+                  icon="menu"
+                ></Button>
+              </Tooltip>
+            </ButtonGroup>
+          )}
+          {ed.withFullscreen && (
+            <FullscreenBtn
+              {...{
+                setFullscreen: ed.setFullscreen,
+                isFullscreen: ed.isFullscreen
+              }}
+            ></FullscreenBtn>
+          )}
+        </div>
+      )}
+      <Component
+        ed={ed}
+        {...{
+          width: 300,
+          height: 300,
+          noWarnings,
+          partClicked: annotationClicked,
+          featureClicked: annotationClicked,
+          primerClicked: annotationClicked,
+          smartCircViewLabelRender: true,
+          hoveredId,
+          showTitle: true,
+
+          readOnly: true,
+          editorClicked: ({ nearestCaretPos, event } = {}) => {
+            if (!ed.withCaretEnabled) {
+              if (!ed.withSelectionEnabled) return;
+              if (!event.shiftKey) return;
+              if (!(ed.selectionLayer.start > -1)) return;
+            }
+
+            editorClicked({
+              nearestCaretPos,
+              shiftHeld: !ed.withSelectionEnabled ? false : event.shiftKey,
+              updateSelectionOrCaret: (shiftHeld, newRangeOrCaret) => {
+                updateSelectionOrCaret({
+                  doNotWrapOrigin: !ed.circular,
+                  sequenceLength: ed.sequenceLength,
+                  shiftHeld,
+                  newRangeOrCaret,
+                  caretPosition: ed.caretPosition,
+                  selectionLayer: ed.selectionLayer,
+                  selectionLayerUpdate: ed.selectionLayerUpdate,
+                  caretPositionUpdate: ed.caretPositionUpdate
+                });
+              }
+            });
+          }
+        }}
+      />
+    </div>
   );
-  if (isFullscreen) {
+  if (ed.isFullscreen) {
     return (
       <FillWindow asPortal className="tgSimpleViewFullscreen">
         {inner}
@@ -326,37 +245,28 @@ const FullscreenBtn = ({ setFullscreen, isFullscreen }) => {
     </Tooltip>
   );
 };
-const VisibilityOptions = ({
-  annotationVisibility,
-  sequenceData,
-  setVisibilityOptions,
-  isPopoverOpen,
-  setPopoverOpen
-}) => {
+const VisibilityOptions = ({ ed }) => {
   return (
-    <Tooltip disabled={isPopoverOpen} content="Visibility Options">
+    <Tooltip disabled={ed.isVisPopoverOpen} content="Visibility Options">
       <Popover
         minimal
         onInteraction={(isOpen) => {
-          setPopoverOpen(isOpen);
+          ed.setVisPopoverOpen(isOpen);
         }}
-        isOpen={isPopoverOpen}
+        isOpen={ed.isVisPopoverOpen}
         content={
           <Menu>
             {flatMap(
               ["features", "parts", "primers", "translations", "cutsites"],
               (name) => {
-                if (!map(sequenceData[name]).length) return [];
+                if (!map(ed[name])?.length) return [];
                 return (
                   <MenuItem
                     onClick={(e) => {
-                      setVisibilityOptions({
-                        ...annotationVisibility,
-                        [name]: !annotationVisibility[name]
-                      });
+                      ed.annotationVisibility.toggleAnnotationVisibility(name);
                       e.stopPropagation();
                     }}
-                    icon={annotationVisibility[name] ? "tick" : "blank"}
+                    icon={ed.annotationVisibility[name] ? "tick" : "blank"}
                     key={name}
                     text={startCase(name)}
                   ></MenuItem>

@@ -1,3 +1,5 @@
+import { observer } from "mobx-react";
+
 import { ZoomCircularViewSlider } from "./ZoomCircularViewSlider";
 import VeWarning from "../helperComponents/VeWarning";
 import Labels from "./Labels";
@@ -19,9 +21,8 @@ import {
   getSequenceWithinRange,
   trimRangeByAnotherRange
 } from "ve-range-utils";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import Draggable from "react-draggable";
-import withEditorInteractions from "../withEditorInteractions";
 import drawAnnotations from "./drawAnnotations";
 import "./style.css";
 import draggableClassnames from "../constants/draggableClassnames";
@@ -29,7 +30,6 @@ import { getOrfColor } from "../constants/orfFrameToColorMap";
 import { getSingular } from "../utils/annotationTypes";
 import { upperFirst, map, flatMap } from "lodash";
 
-import useAnnotationLimits from "../utils/useAnnotationLimits";
 import {
   getClientX,
   getClientY,
@@ -53,6 +53,7 @@ import {
   editorDragStarted,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
+import withEditorInteractions from "../withEditorInteractions";
 // import { updateLabelsForInViewFeaturesCircView } from "../utils/updateLabelsForInViewFeaturesCircView";
 
 function noop() {}
@@ -66,7 +67,7 @@ function getNearestCursorPositionToMouseEvent(
     selectionLayer,
     caretPositionUpdate,
     selectionLayerUpdate,
-    sequenceData,
+    ed,
     sequenceLength,
     circRef,
     rotationRadians
@@ -93,7 +94,7 @@ function getNearestCursorPositionToMouseEvent(
           getPositionFromAngle(angle, sequenceLength, true),
           sequenceLength
         ); //true because we're in between positions
-  if (sequenceData && sequenceData.isProtein) {
+  if (ed && ed.isProtein) {
     nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
   }
 
@@ -105,7 +106,7 @@ function getNearestCursorPositionToMouseEvent(
     selectionLayerUpdate,
     sequenceLength,
     event,
-    doNotWrapOrigin: !(sequenceData && sequenceData.circular),
+    doNotWrapOrigin: !(ed && ed.circular),
     className: event.target.parentNode.className.animVal,
     shiftHeld: event.shiftKey,
     nearestCaretPos,
@@ -118,48 +119,9 @@ function getNearestCursorPositionToMouseEvent(
   });
 }
 
-export function CircularView(props) {
-  const [limits] = useAnnotationLimits();
-  let [rotationRadians, setRotationRadians] = useState(0);
-  let [_zoomLevel, setZoomLevel] = useState(1);
-
-  if (props.circ_zoomLevel !== undefined) {
-    //override from the editor to not lose the state when the Circular View component isn't rendered
-    rotationRadians = props.circ_rotationRadians;
-    setRotationRadians = props.circ_setRotationRadians;
-    _zoomLevel = props.circ_zoomLevel;
-    setZoomLevel = props.circ_setZoomLevel;
-  }
-  const { sequenceData = {}, smallSlider } = props;
-  const { sequence = "atgc", circular } = sequenceData;
-
-  const sequenceLength = sequenceData.noSequence
-    ? sequenceData.size
-    : sequenceData.sequence.length;
-
-  const hasZoomableLength = sequenceLength >= 50;
-  const hasRotateableLength = sequenceLength >= 10;
-  if (!hasZoomableLength) _zoomLevel = 1;
-  if (!hasRotateableLength) rotationRadians = 0;
+export const CircularView = observer(function CircularView({ ed }) {
+  const { sequence = "atgc", circular, sequenceLength } = ed;
   const circRef = useRef();
-  const rotateHelper = useRef({});
-  const zoomHelper = useRef({});
-  useEffect(() => {
-    rotateHelper.current.triggerChange &&
-      rotateHelper.current.triggerChange(({ changeValue }) => {
-        changeValue(
-          (normalizeAngle(Math.PI * 2 - rotationRadians) / Math.PI) * 180
-        );
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  let zoomLevel = _zoomLevel;
-
-  let smallZoom = 1;
-  if (_zoomLevel < 1) {
-    smallZoom = _zoomLevel;
-    zoomLevel = 1;
-  }
 
   const {
     //set defaults for all of these vars
@@ -191,27 +153,27 @@ export function CircularView(props) {
     noWarnings,
     labelLineIntensity,
     fontHeightMultiplier,
-    hoveredId,
     labelSize,
     nameFontSizeCircularView = 14,
     fullScreen
-  } = props;
+  } = ed;
   const withRotateCircularView =
     _withRotateCircularView || withZoomCircularView; //if we're showing zoom then we MUST show rotation as well
 
-  const sequenceName = hideName ? "" : sequenceData.name || "";
+  const sequenceName = hideName ? "" : ed.name || "";
   let annotationsSvgs = [];
   let labels = {};
 
-  const { isProtein } = sequenceData;
-  const maxZoomLevel = Math.max(5, Math.floor(sequenceLength / 100));
+  const { isProtein } = ed;
+  
 
   const svgWidth = Math.max(Number(width) || 300);
   const svgHeight = Math.max(Number(height) || 300);
-  const percentOfCircle = ((1 / zoomLevel) * Math.min(svgWidth, 800)) / 800;
-  const isZoomedIn = zoomLevel !== 1;
+  const percentOfCircle =
+    ((1 / ed.circZoomLevel) * Math.min(svgWidth, 800)) / 800;
+  const isZoomedIn = ed.circZoomLevel !== 1;
   let radius = BASE_RADIUS;
-  const rotation = 2 * Math.PI - rotationRadians; //get radians
+  const rotation = 2 * Math.PI - ed.rotationRadians; //get radians
 
   let rangeToShowLength = sequenceLength;
   let rangeToShow = { start: 0, end: Math.max(sequenceLength - 1, 0) };
@@ -482,9 +444,9 @@ export function CircularView(props) {
         isProtein,
         smartCircViewLabelRender,
         extraSideSpace: Math.max(0, width - height),
-        onClick: props[singularName + "Clicked"],
-        onDoubleClick: props[singularName + "DoubleClicked"],
-        onRightClicked: props[singularName + "RightClicked"],
+        onClick: ed[singularName + "Clicked"],
+        onDoubleClick: ed[singularName + "DoubleClicked"],
+        onRightClicked: ed[singularName + "RightClicked"],
         sequenceLength,
         editorName,
         showCicularViewInternalLabels,
@@ -492,15 +454,15 @@ export function CircularView(props) {
       };
       if (isAnnotation) {
         //we're drawing features/cutsites/primers/orfs/etc (something that lives on the seqData)
-        if (!map(sequenceData[layerName]).length && !alwaysShow) {
+        if (!map(ed[layerName]).length && !alwaysShow) {
           radius -= spaceBefore;
           return null;
         }
 
         const trimmedAnnotations = flatMap(
           layer.annotations ||
-            sequenceData["filtered" + nameUpper] ||
-            sequenceData[layerName] ||
+            ed["filtered" + nameUpper] ||
+            ed[layerName] ||
             [],
           (range) => {
             const overlapOfRanges = getOverlapsOfPotentiallyCircularRanges(
@@ -518,7 +480,7 @@ export function CircularView(props) {
           !isZoomedIn &&
           ((maxAnnotationsToDisplay
             ? maxAnnotationsToDisplay[layerName]
-            : limits[layerName]) ||
+            : ed.limits[layerName]) ||
             50);
         const [trimmedAndParedAnns, paredDown] = maxToShow
           ? pareDownAnnotations(trimmedAnnotations, maxToShow)
@@ -535,14 +497,14 @@ export function CircularView(props) {
         }
 
         results = drawAnnotations({
+          ed,
           readOnly,
           noTitle,
-          rotationRadians,
+          rotationRadians: ed.rotationRadians,
           visibleAngleRange,
           isZoomedIn,
           Annotation: Annotation || Comp || Feature,
           fontStyle: fontStyle,
-          hoveredId: hoveredId,
           annotationType: singularName,
           type: singularName,
           reverseAnnotations: true,
@@ -551,12 +513,12 @@ export function CircularView(props) {
           annotationHeight,
           spaceBetweenAnnotations,
           ...sharedProps,
-          ...props[singularName + "Options"]
+          ...ed[singularName + "Options"]
         });
       } else {
         //we're drawing axis/selectionLayer/labels/caret/etc (something that doesn't live on the seqData)
         results = Annotation({
-          rotationRadians: rotationRadians,
+          rotationRadians: ed.rotationRadians,
           ...(passLabels && { labels }),
           ...sharedProps
         });
@@ -666,15 +628,20 @@ export function CircularView(props) {
         pointerEvents: "none",
         display: "flex",
         justifyContent: "center",
-        alignItems: isZoomedIn || smallZoom < 1 ? "end" : "center",
-        paddingLeft: isZoomedIn || smallZoom < 1 ? 20 : 0,
-        paddingRight: isZoomedIn || smallZoom < 1 ? 20 : 0,
+        alignItems:
+          isZoomedIn || ed._circ_smallZoomLevel < 1 ? "end" : "center",
+        paddingLeft: isZoomedIn || ed._circ_smallZoomLevel < 1 ? 20 : 0,
+        paddingRight: isZoomedIn || ed._circ_smallZoomLevel < 1 ? 20 : 0,
         textAlign: "center",
 
         zIndex: 1
       }}
     >
-      <div style={{ marginBottom: isZoomedIn || smallZoom < 1 ? 80 : 0 }}>
+      <div
+        style={{
+          marginBottom: isZoomedIn || ed._circ_smallZoomLevel < 1 ? 80 : 0
+        }}
+      >
         <div
           title={sequenceName}
           className="veCircularViewTextWrapper"
@@ -685,7 +652,10 @@ export function CircularView(props) {
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            width: isZoomedIn || smallZoom < 1 ? undefined : innerRadius,
+            width:
+              isZoomedIn || ed._circ_smallZoomLevel < 1
+                ? undefined
+                : innerRadius,
             maxHeight: innerRadius - 15,
             fontSize: nameFontSizeCircularView
           }}
@@ -705,17 +675,22 @@ export function CircularView(props) {
     ({ delta: [d], event }) => {
       if (d === 0) return;
       event.stopPropagation();
-      zoomHelper.current.triggerChange &&
-        zoomHelper.current.triggerChange(({ changeValue, value }) => {
+      ed.setCircZoomLevel &&
+        ed.setCircZoomLevel(({ changeValue, value }) => {
           changeValue(value + d * 5);
         });
     },
     {
       target,
-      from: [zoomLevel]
+      from: [ed.circZoomLevel]
     }
   );
-  const toPass = { ...props, sequenceLength, circRef, rotationRadians };
+  const toPass = {
+    ...ed,
+    sequenceLength,
+    circRef,
+    rotationRadians: ed.rotationRadians
+  };
 
   return (
     <div
@@ -726,14 +701,14 @@ export function CircularView(props) {
         overflow: "hidden"
       }}
       onWheel={
-        withZoomCircularView && hasRotateableLength
+        withZoomCircularView && ed.hasRotateableLength
           ? (e) => {
               let delta = e.deltaY;
               if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
                 delta = e.deltaX;
               }
-              rotateHelper.current.triggerChange &&
-                rotateHelper.current.triggerChange(({ changeValue, value }) => {
+              ed.setRotationRadians &&
+                ed.setRotationRadians(({ changeValue, value }) => {
                   changeValue(
                     (normalizeAngle(((value + delta / 4) * Math.PI) / 180) /
                       Math.PI) *
@@ -745,23 +720,16 @@ export function CircularView(props) {
             }
           : undefined
       }
-      className={classNames("veCircularView", props.className)}
+      className={classNames("veCircularView", ed.className)}
     >
       {!hideName && isZoomedIn && nameEl}
 
-      {withRotateCircularView && hasRotateableLength && (
-        <RotateCircularViewSlider
-          bindOutsideChangeHelper={rotateHelper.current}
-          zoomLevel={zoomLevel}
-          smallSlider={smallSlider}
-          maxZoomLevel={maxZoomLevel}
-          setRotationRadians={setRotationRadians}
-        ></RotateCircularViewSlider>
+      {withRotateCircularView && ed.hasRotateableLength && (
+        <RotateCircularViewSlider ed={ed}></RotateCircularViewSlider>
       )}
-      {withZoomCircularView && hasZoomableLength && (
+      {withZoomCircularView && ed.hasZoomableLength && (
         <ZoomCircularViewSlider
-          zoomHelper={zoomHelper}
-          smallSlider={smallSlider}
+          ed={ed}
           onZoom={() => {
             const caret =
               caretPosition > -1
@@ -771,8 +739,8 @@ export function CircularView(props) {
                 : undefined;
             if (caret !== undefined) {
               const radToRotateTo = (caret / sequenceLength) * Math.PI * 2;
-              rotateHelper.current.triggerChange &&
-                rotateHelper.current.triggerChange(({ changeValue }) => {
+              ed.setRotationRadians &&
+                ed.setRotationRadians(({ changeValue }) => {
                   const isInView = isRangeOrPositionWithinRange(
                     caret,
                     rangeToShow,
@@ -797,9 +765,6 @@ export function CircularView(props) {
             }
             // updateLabelsForInViewFeaturesCircView({ radius });
           }}
-          zoomLevel={_zoomLevel}
-          maxZoomLevel={maxZoomLevel}
-          setZoomLevel={setZoomLevel}
         />
       )}
       <Draggable
@@ -818,7 +783,9 @@ export function CircularView(props) {
         onStop={editorDragStopped}
       >
         <div
-          ref={withZoomCircularView && hasZoomableLength ? target : undefined}
+          ref={
+            withZoomCircularView && ed.hasZoomableLength ? target : undefined
+          }
         >
           <svg
             key="circViewSvg"
@@ -844,19 +811,18 @@ export function CircularView(props) {
             className="circularViewSvg"
             viewBox={
               isZoomedIn
-                ? `${-svgWidth / 2 / smallZoom},${
-                    -svgHeight / 2 / smallZoom -
+                ? `${-svgWidth / 2 / ed._circ_smallZoomLevel},${
+                    -svgHeight / 2 / ed._circ_smallZoomLevel -
                     (!isZoomedIn ? 0 : initialRadius + BASE_RADIUS * 2 - 100)
-                  },${svgWidth / smallZoom},${svgHeight / smallZoom}`
+                  },${svgWidth / ed._circ_smallZoomLevel},${
+                    svgHeight / ed._circ_smallZoomLevel
+                  }`
                 : `-${radius} -${radius} ${radius * 2} ${radius * 2}`
             }
             width={svgWidth}
             height={svgHeight}
           >
             <g>
-              {/* {isZoomedIn && (
-                
-              )} */}
               <circle
                 ref={circRef}
                 r={radius}
@@ -870,7 +836,7 @@ export function CircularView(props) {
                   y={-72.5 / 2}
                   width={72.5}
                   height={72.5}
-                  transform={`rotate(${(-rotationRadians * 180) / Math.PI})`}
+                  transform={`rotate(${(-ed.rotationRadians * 180) / Math.PI})`}
                 >
                   <div
                     xmlns="http://www.w3.org/1999/xhtml"
@@ -915,7 +881,7 @@ export function CircularView(props) {
             {!noWarnings && paredDownMessages}
             {isZoomedIn && (
               <CircularZoomMinimap
-                rotationRadians={rotationRadians}
+                rotationRadians={ed.rotationRadians}
                 percentOfCircle={percentOfCircle}
               ></CircularZoomMinimap>
             )}
@@ -924,6 +890,6 @@ export function CircularView(props) {
       </Draggable>
     </div>
   );
-}
+});
 
 export default withEditorInteractions(CircularView);

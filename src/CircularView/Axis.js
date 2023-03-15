@@ -6,11 +6,11 @@ function Axis({
   tickMarkHeight = 5,
   textOffset = 15,
   ringThickness = 4,
-  zoomLevel
+  zoomLevelCV
 }) {
   const height =
     (ringThickness + (showAxisNumbers ? textOffset + tickMarkHeight : 0)) /
-    zoomLevel;
+    zoomLevelCV;
   const radiusToUse = showAxisNumbers
     ? radius + textOffset + tickMarkHeight
     : radius;

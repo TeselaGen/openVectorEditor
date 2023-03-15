@@ -1,14 +1,14 @@
 import React from "react";
 
-export function SequenceName({ sequenceName, sequenceLength, isProtein }) {
+export function SequenceName({ ed }) {
   return (
     <div key="circViewSvgCenterText" style={{ textAlign: "center" }}>
-      <span>{sequenceName} </span>
+      <span>{ed.name} </span>
       <br />
       <span>
-        {isProtein
-          ? `${Math.floor(sequenceLength / 3)} AAs`
-          : `${sequenceLength} bps`}
+        {ed.isProtein
+          ? `${Math.floor(ed.sequenceLength / 3)} AAs`
+          : `${ed.sequenceLength} bps`}
       </span>
     </div>
   );

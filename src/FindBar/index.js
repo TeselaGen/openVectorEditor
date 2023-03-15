@@ -9,6 +9,8 @@ import {
   TextArea,
   Tooltip
 } from "@blueprintjs/core";
+import mobxReact, { observer } from "mobx-react";
+
 import withEditorProps from "../withEditorProps";
 import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
@@ -307,10 +309,7 @@ export class FindBar extends React.Component {
           }
           content={
             <AnnotationSearchMatchComp
-              annotationVisibilityShow={annotationVisibilityShow}
-              toggleFindTool={toggleFindTool}
-              selectionLayerUpdate={selectionLayerUpdate}
-              annotationSearchMatches={annotationSearchMatches}
+              ed
             />
           }
         />
@@ -352,16 +351,13 @@ function mod(n, m) {
   return ((n % m) + m) % m;
 }
 
-function AnnotationSearchMatchComp({
-  annotationSearchMatches,
-  selectionLayerUpdate,
-  annotationVisibilityShow,
-  toggleFindTool
+const AnnotationSearchMatchComp = observer(function ({
+  ed
 }) {
   const toReturn = (
     <div className="veAnnotationFindMatches">
       {searchableTypes.map((type, i) => {
-        const annotationsFound = annotationSearchMatches[i];
+        const annotationsFound = ed.annotationSearchMatches[i];
         if (!annotationsFound) return null;
         return annotationsFound.length ? (
           <div key={i}>
@@ -375,9 +371,9 @@ function AnnotationSearchMatchComp({
                 return (
                   <div
                     onClick={() => {
-                      annotationVisibilityShow(type);
-                      selectionLayerUpdate(ann);
-                      toggleFindTool();
+                      ed.annotationVisibilityShow(type);
+                      ed.selectionLayerUpdate(ann);
+                      ed.toggleFindTool();
                     }}
                     className="veAnnotationFoundResult"
                     key={i}
@@ -412,4 +408,4 @@ function AnnotationSearchMatchComp({
     </div>
   );
   return toReturn;
-}
+})

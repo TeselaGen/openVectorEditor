@@ -4,13 +4,14 @@ import { SLIDER_NORM_WIDTH, SLIDER_SMALL_WIDTH } from "../constants/constants";
 
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
 
-export function RotateCircularViewSlider({
-  setRotationRadians,
-  zoomLevel,
-  maxZoomLevel,
-  bindOutsideChangeHelper,
-  smallSlider
-}) {
+export function RotateCircularViewSlider({ ed }) {
+  const {
+    setRotationRadians,
+    zoomLevelCV,
+    maxZoomLevelCV,
+    bindOutsideChangeHelper,
+    smallSlider
+  } = ed;
   const target = React.useRef();
   const showLabelsDebounced = useDebouncedCallback(
     () => {
@@ -33,7 +34,7 @@ export function RotateCircularViewSlider({
 
   const stepSize = Math.min(
     3,
-    (3 / (zoomLevel / 2)) * (maxZoomLevel / (zoomLevel / 2))
+    (3 / (zoomLevelCV / 2)) * (maxZoomLevelCV / (zoomLevelCV / 2))
   );
   return (
     <div
@@ -54,7 +55,7 @@ export function RotateCircularViewSlider({
             .querySelector(`.circularViewSvg g`);
           innerEl.style.transform = `rotate(${val}deg)`;
           setRotationRadians((val * Math.PI) / 180);
-          if (zoomLevel <= 1) {
+          if (zoomLevelCV <= 1) {
             el.classList.add("veHideLabels");
           }
           showLabelsDebounced();

@@ -110,14 +110,6 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
 };
 
 export class Editor extends React.Component {
-  state = {
-    rotationRadians: 0,
-    zoomLevel: 1,
-    isHotkeyDialogOpen: false,
-    tabDragging: false,
-    previewModeFullscreen: false
-  };
-
   getExtraPanel = (/*panelOptions */) => {
     return [];
   };
@@ -342,6 +334,7 @@ export class Editor extends React.Component {
     const { previewModeFullscreen: uncontrolledPreviewModeFullscreen } =
       this.state;
     const {
+      ed,
       ToolBarProps = {},
       StatusBarProps = {},
       extraRightSidePanel,
@@ -360,7 +353,6 @@ export class Editor extends React.Component {
       readOnly,
       setPanelAsActive,
       style = {},
-      maxAnnotationsToDisplay,
       togglePanelFullScreen,
       collapseSplitScreen,
       expandTabToSplitScreen,
@@ -370,15 +362,12 @@ export class Editor extends React.Component {
       caretPositionUpdate,
       getVersionList,
       getSequenceAtVersion,
-      selectionLayer,
       VersionHistoryViewProps,
       sequenceData = {},
       fullScreenOffsets,
       withPreviewMode,
       isFullscreen,
-      hoveredId,
       handleFullscreenClose,
-      onlyShowLabelsThatDoNotFit = true,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu,
       allowPanelTabDraggable = true
@@ -465,19 +454,9 @@ export class Editor extends React.Component {
               className="preview-mode-simple-sequence-view"
             >
               <SimpleCircularOrLinearView
-                sequenceData={sequenceData}
-                hoveredId={hoveredId}
+                ed={ed}
                 tabHeight={tabHeight}
-                selectionLayer={selectionLayer}
-                editorName={editorName}
                 height={null}
-                isProtein={sequenceData.isProtein}
-                annotationLabelVisibility={{
-                  features: false,
-                  parts: false,
-                  cutsites: false,
-                  primers: false
-                }}
               />
             </div>
           </div>
@@ -558,41 +537,13 @@ export class Editor extends React.Component {
       const Panel =
         (panelMap[activePanelType] && panelMap[activePanelType].comp) ||
         panelMap[activePanelType];
-      const panelSpecificProps =
-        panelMap[activePanelType] &&
-        panelMap[activePanelType].panelSpecificProps;
-      const panelSpecificPropsToSpread =
-        panelMap[activePanelType] &&
-        panelMap[activePanelType].panelSpecificPropsToSpread;
       const panel = Panel ? (
         <Panel
-          withZoomLinearView={withZoomLinearView}
-          withRotateCircularView={withRotateCircularView}
-          withZoomCircularView={withZoomCircularView}
-          {...pickedUserDefinedHandlersAndOpts}
-          {...(panelSpecificProps && pick(this.props, panelSpecificProps))}
-          {...(panelSpecificPropsToSpread &&
-            panelSpecificPropsToSpread.reduce((acc, key) => {
-              acc = { ...acc, ...get(this.props, key) };
-              return acc;
-            }, {}))}
-          circ_rotationRadians={this.state.rotationRadians}
-          circ_setRotationRadians={(val) => {
-            this.setState({ rotationRadians: val });
-          }}
-          circ_zoomLevel={this.state.zoomLevel}
-          circ_setZoomLevel={(val) => {
-            this.setState({ zoomLevel: val });
-          }}
-          maxAnnotationsToDisplay={maxAnnotationsToDisplay}
+          ed={ed}
           key={activePanelId}
           fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
-          {...panelPropsToSpread}
-          editorName={editorName}
-          isProtein={sequenceData.isProtein}
-          onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
           tabHeight={tabHeight}
           nameFontSizeCircularView={this.props.nameFontSizeCircularView}
           {...editorDimensions}
@@ -941,22 +892,7 @@ export class Editor extends React.Component {
               </ReflexContainer>
             </DragDropContext>
           </div>
-          {!hideStatusBar && (
-            <StatusBar
-              {...pickedUserDefinedHandlersAndOpts}
-              isProtein={sequenceData.isProtein}
-              showCircularity={
-                !!(
-                  showCircularity &&
-                  !sequenceData.isProtein &&
-                  !sequenceData.isOligo &&
-                  !sequenceData.isRna
-                )
-              }
-              editorName={editorName}
-              {...StatusBarProps}
-            />
-          )}
+          {!hideStatusBar && <StatusBar ed={ed} {...StatusBarProps} />}
         </DropHandler>
         <GlobalDialog
           editorName={editorName}

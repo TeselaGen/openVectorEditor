@@ -19,7 +19,7 @@ import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 
 // import ReactList from './ReactVariable';
 import "./style.css";
-import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
+import { getClientX, getClientY } from "../utils/editorUtils";
 import isMobile from "is-mobile";
 import classnames from "classnames";
 import {
@@ -38,19 +38,7 @@ const rowJumpButtonStyle = {
 
 const bounds = { top: 0, left: 0, right: 0, bottom: 0 };
 export class RowView extends React.Component {
-  static defaultProps = {
-    sequenceData: { sequence: "" },
-    selectionLayer: {},
-    // bpToJumpTo:0,
-    editorClicked: noop,
-    backgroundRightClicked: noop,
-    // onScroll: noop,
-    width: defaultContainerWidth,
-    marginWidth: defaultMarginWidth,
-    height: 400,
-    charWidth: defaultCharWidth,
-    RowItemProps: {}
-  };
+ 
 
   shouldClearCache = () => {
     const { annotationVisibility, annotationLabelVisibility, sequenceData } =
@@ -306,40 +294,16 @@ export class RowView extends React.Component {
     }
   };
 
-  cache = {};
 
-  getRowData = (sequenceData, bpsPerRow) => {
-    if (
-      !isEqual(bpsPerRow, this.oldBpsPerRow) ||
-      !isEqual(sequenceData, this.oldSeqData)
-    ) {
-      this.rowData = prepareRowData(
-        {
-          ...sequenceData,
-          features: sequenceData.filteredFeatures || sequenceData.features,
-          parts: sequenceData.filteredParts || sequenceData.parts
-        },
-        bpsPerRow
-      );
-      this.oldBpsPerRow = bpsPerRow;
-      this.oldSeqData = sequenceData;
-    }
-    return this.rowData;
-  };
+
+  
 
   renderItem = (index) => {
-    if (this.cache[index]) return this.cache[index];
     const {
       //currently found in props
-      sequenceData,
-      // bpToJumpTo,
+      ed,
       editorClicked,
-      caretPosition,
       backgroundRightClicked,
-      // onScroll,
-      width,
-      marginWidth,
-      height,
       truncateLabelsThatDoNotFit,
       RowItemProps,
       ...rest
@@ -347,8 +311,8 @@ export class RowView extends React.Component {
 
     let rowTopComp;
     let rowBottomComp;
-    const rowData = this.rowData;
-    const bpsPerRow = this.bpsPerRow;
+    const rowData = ed.rowDataRV;
+    const bpsPerRow = ed.bpsPerRow;
 
     this.showJumpButtons = rowData.length > 15;
     if (this.showJumpButtons) {
@@ -400,6 +364,7 @@ export class RowView extends React.Component {
           <RowItem
             {...{
               ...rest,
+              ed,
               rowTopComp,
               truncateLabelsThatDoNotFit,
               rowBottomComp,
@@ -408,13 +373,8 @@ export class RowView extends React.Component {
                 this.setState({ scalePct });
               },
               isRowView: true,
-              isProtein: sequenceData.isProtein,
-              chromatogramData: sequenceData.chromatogramData,
-              sequenceLength: sequenceData.sequence.length,
+              isProtein: ed.isProtein,
               bpsPerRow,
-              caretPosition,
-              emptyText: getEmptyText({ sequenceData, caretPosition }),
-              fullSequence: sequenceData.sequence,
               ...RowItemProps
             }}
             row={rowData[index]}
@@ -424,7 +384,6 @@ export class RowView extends React.Component {
           ) : null}
         </div>
       );
-      this.cache[index] = rowItem;
       return rowItem;
     } else {
       return null;

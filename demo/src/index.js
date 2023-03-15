@@ -22,6 +22,7 @@ import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
 import VersionHistoryView from "../../src/VersionHistoryView";
 import EditorDemo from "./EditorDemo";
+import MobXEditorDemo from "./MobXEditorDemo";
 import "./style.css";
 import VersionSwitcher from "./VersionSwitcher";
 
@@ -39,6 +40,7 @@ const Demo = () => {
   const links = useMemo(() => {
     const links = [
       { name: "Editor", url: "Editor" },
+      { name: " MobXEditor", url: "MobXEditor" },
       { name: "Standalone", url: "Standalone" },
       { name: "VersionHistoryView", url: "VersionHistoryView" },
       { name: "StandaloneAlignment", url: "StandaloneAlignment" },
@@ -164,6 +166,12 @@ const Demo = () => {
               return <EditorDemo history={history} />;
             }}
             path="/Editor"
+          />
+          <Route
+            render={({ history }) => {
+              return <MobXEditorDemo history={history} />;
+            }}
+            path="/MobXEditor"
           />
           <Route
             render={() => {

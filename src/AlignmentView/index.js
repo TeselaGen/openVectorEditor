@@ -25,7 +25,7 @@ import {
   showContextMenu,
   withStore
 } from "teselagen-react-components";
-import { store } from "@risingstack/react-easy-state";
+
 import {
   throttle,
   // cloneDeep,
@@ -44,7 +44,7 @@ import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
-import * as alignmentActions from "../redux/alignments";
+import * as alignmentActions from "../mobxStore/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
 import withEditorProps from "../withEditorProps";
@@ -62,7 +62,7 @@ import ReactDraggable from "react-draggable";
 import draggableClassnames from "../constants/draggableClassnames";
 import Caret from "../RowItem/Caret";
 import { debounce } from "lodash";
-import { view } from "@risingstack/react-easy-state";
+
 import { noop } from "lodash";
 import { massageTickSpacing } from "../utils/massageTickSpacing";
 import { getClientX, getClientY } from "../utils/editorUtils";
@@ -227,13 +227,6 @@ export class AlignmentView extends React.Component {
     width: 0,
     nameDivWidth: 140
   };
-  easyStore = store({
-    selectionLayer: { start: -1, end: -1 },
-    caretPosition: -1,
-    percentScrolled: 0,
-    viewportWidth: 400,
-    verticalVisibleRange: { start: 0, end: 0 }
-  });
 
   getMinCharWidth = (noNameDiv) => {
     const toReturn = Math.min(

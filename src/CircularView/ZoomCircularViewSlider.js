@@ -1,50 +1,38 @@
 import React from "react";
+import { observer } from "mobx-react";
+
 import { SLIDER_NORM_WIDTH, SLIDER_SMALL_WIDTH } from "../constants/constants";
 import UncontrolledSliderWithPlusMinusBtns from "../helperComponents/UncontrolledSliderWithPlusMinusBtns";
-export function ZoomCircularViewSlider({
-  zoomHelper,
-  zoomLevel,
-  setZoomLevel,
-  maxZoomLevel,
-  onZoom,
-  smallSlider
+export const ZoomCircularViewSlider = observer(function ZoomCircularViewSlider({
+  ed
 }) {
-  let clickStepSize = (maxZoomLevel - 1) / 440;
-  clickStepSize = clickStepSize * Math.max(1, Math.log(zoomLevel + 2));
+  let clickStepSize = (ed.maxZoomLevelCV - 1) / 440;
+  clickStepSize = clickStepSize * Math.max(1, Math.log(ed.zoomLevelCV + 2));
   clickStepSize = Math.round(clickStepSize * 1000) / 1000;
   const stepSize = clickStepSize;
   const min = 1;
   function setZoom(val) {
     const newZoomLev = val;
-    setZoomLevel(newZoomLev);
-    onZoom(newZoomLev);
+    ed.setCircZoomLevel(newZoomLev);
+    ed.onZoom(newZoomLev);
   }
-  if (zoomLevel > maxZoomLevel) {
-    setTimeout(() => {
-      if (zoomHelper.current && zoomHelper.current.triggerChange) {
-        zoomHelper.current.triggerChange(({ changeValue }) => {
-          changeValue(maxZoomLevel);
-        });
-      }
-    }, 0);
-  }
+
   return (
     <div
       style={{
         position: "absolute",
-        left: smallSlider ? 100 : 150,
+        left: ed.smallSlider ? 100 : 150,
         top: 0,
         zIndex: 900
       }}
     >
       <UncontrolledSliderWithPlusMinusBtns
-        bindOutsideChangeHelper={zoomHelper.current}
         onChange={setZoom}
         onRelease={setZoom}
         title="Adjust Zoom Level"
         style={{
           paddingTop: "4px",
-          width: smallSlider ? SLIDER_SMALL_WIDTH : SLIDER_NORM_WIDTH
+          width: ed.smallSlider ? SLIDER_SMALL_WIDTH : SLIDER_NORM_WIDTH
         }}
         smallSlider
         noWraparound
@@ -52,11 +40,11 @@ export function ZoomCircularViewSlider({
         labelRenderer={false}
         stepSize={stepSize}
         clickStepSize={clickStepSize}
-        initialValue={zoomLevel || 1}
+        initialValue={ed.zoomLevelCV || 1}
         justUpdateInitialValOnce
-        max={maxZoomLevel || 14}
+        max={ed.maxZoomLevelCV || 14}
         min={min}
       />
     </div>
   );
-}
+});

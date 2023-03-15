@@ -21,14 +21,14 @@ export default compose(
   withSelectTableRecords(formName)
 )(function CreateAnnotationsPage(props) {
   const {
-    newAnnotations,
-    annotationType,
-    annotationVisibilityShow,
-    beforeAnnotationCreate,
+    ed,
     handleSubmit,
+    annotationType,
+    beforeAnnotationCreate,
     selectTableRecords,
-    sequenceData
+    newAnnotations
   } = props;
+
   const ents = props[`${formName}SelectedEntities`];
   useEffect(() => {
     selectTableRecords(newAnnotations);
@@ -81,12 +81,14 @@ export default compose(
             }
             props[`upsert${startCase(annotationType)}`](
               tidyUpAnnotation(newAnnotation, {
-                sequenceData,
+                sequenceData: ed.sequenceData,
                 annotationType: annotationTypePlural
               }),
               conditionals
             );
-            annotationVisibilityShow(annotationTypePlural);
+            ed.annotationVisibility.annotationVisibilityShow(
+              annotationTypePlural
+            );
           });
 
           hideDialog();

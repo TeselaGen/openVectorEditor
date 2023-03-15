@@ -23,7 +23,7 @@ import {
   sortBy
 } from "lodash";
 import showFileDialog from "../utils/showFileDialog";
-import { defaultCopyOptions } from "../redux/copyOptions";
+import { defaultCopyOptions } from "../mobxStore/CopyOptions";
 import { divideBy3 } from "../utils/proteinUtils";
 import packageJson from "../../package.json";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
@@ -207,8 +207,8 @@ const fileCommandDefs = {
             shouldDismissPopover: false,
             onClick: () =>
               checked
-                ? props.hideFeatureTypes([feat.type])
-                : props.showFeatureTypes([feat.type]),
+                ? props.ed.annotationVisibility.hideFeatureTypes([feat.type])
+                : props.ed.annotationVisibility.showFeatureTypes([feat.type]),
             checked
           };
         }
@@ -225,7 +225,7 @@ const fileCommandDefs = {
       return [
         {
           text: "Uncheck All",
-          onClick: () => props.hideFeatureTypes(Object.keys(types)),
+          onClick: () => props.ed.annotationVisibility.hideFeatureTypes(Object.keys(types)),
           shouldDismissPopover: false
         },
         {
@@ -794,14 +794,14 @@ const editCommandDefs = {
   },
   sequenceAA_allFrames: {
     isActive: (props) =>
-      props.frameTranslations["1"] &&
-      props.frameTranslations["2"] &&
-      props.frameTranslations["3"],
+      props.ed.frameTranslations["1"] &&
+      props.ed.frameTranslations["2"] &&
+      props.ed.frameTranslations["3"],
     handler: (props) => {
       if (
-        props.frameTranslations["1"] &&
-        props.frameTranslations["2"] &&
-        props.frameTranslations["3"]
+        props.ed.frameTranslations["1"] &&
+        props.ed.frameTranslations["2"] &&
+        props.ed.frameTranslations["3"]
       ) {
         props.frameTranslationToggleOff("1");
         props.frameTranslationToggleOff("2");
@@ -818,14 +818,14 @@ const editCommandDefs = {
     isHidden: isProtein,
 
     isActive: (props) =>
-      props.frameTranslations["-1"] &&
-      props.frameTranslations["-2"] &&
-      props.frameTranslations["-3"],
+      props.ed.frameTranslations["-1"] &&
+      props.ed.frameTranslations["-2"] &&
+      props.ed.frameTranslations["-3"],
     handler: (props) => {
       if (
-        props.frameTranslations["-1"] &&
-        props.frameTranslations["-2"] &&
-        props.frameTranslations["-3"]
+        props.ed.frameTranslations["-1"] &&
+        props.ed.frameTranslations["-2"] &&
+        props.ed.frameTranslations["-3"]
       ) {
         props.frameTranslationToggleOff("-1");
         props.frameTranslationToggleOff("-2");
@@ -839,45 +839,45 @@ const editCommandDefs = {
     }
   },
   sequenceAA_frame1: {
-    isActive: (props) => props.frameTranslations["1"],
+    isActive: (props) => props.ed.frameTranslations["1"],
     handler: (props) => {
-      if (!props.frameTranslations["1"]) {
+      if (!props.ed.frameTranslations["1"]) {
         props.annotationVisibilityShow("translations");
       }
       props.frameTranslationToggle("1");
     }
   },
   sequenceAA_frame2: {
-    isActive: (props) => props.frameTranslations["2"],
+    isActive: (props) => props.ed.frameTranslations["2"],
     handler: (props) => {
-      if (!props.frameTranslations["2"]) {
+      if (!props.ed.frameTranslations["2"]) {
         props.annotationVisibilityShow("translations");
       }
       props.frameTranslationToggle("2");
     }
   },
   sequenceAA_frame3: {
-    isActive: (props) => props.frameTranslations["3"],
+    isActive: (props) => props.ed.frameTranslations["3"],
     handler: (props) => {
-      if (!props.frameTranslations["3"]) {
+      if (!props.ed.frameTranslations["3"]) {
         props.annotationVisibilityShow("translations");
       }
       props.frameTranslationToggle("3");
     }
   },
   sequenceAAReverse_frame1: {
-    isActive: (props) => props.frameTranslations["-1"],
+    isActive: (props) => props.ed.frameTranslations["-1"],
     handler: (props) => {
-      if (!props.frameTranslations["-1"]) {
+      if (!props.ed.frameTranslations["-1"]) {
         props.annotationVisibilityShow("translations");
       }
       props.frameTranslationToggle("-1");
     }
   },
   sequenceAAReverse_frame2: {
-    isActive: (props) => props.frameTranslations["-2"],
+    isActive: (props) => props.ed.frameTranslations["-2"],
     handler: (props) => {
-      if (!props.frameTranslations["-2"]) {
+      if (!props.ed.frameTranslations["-2"]) {
         props.annotationVisibilityShow("translations");
       }
       props.frameTranslationToggle("-2");
@@ -885,9 +885,9 @@ const editCommandDefs = {
   },
 
   sequenceAAReverse_frame3: {
-    isActive: (props) => props.frameTranslations["-3"],
+    isActive: (props) => props.ed.frameTranslations["-3"],
     handler: (props) => {
-      if (!props.frameTranslations["-3"]) {
+      if (!props.ed.frameTranslations["-3"]) {
         props.annotationVisibilityShow("translations");
       }
       props.frameTranslationToggle("-3");
@@ -1030,7 +1030,10 @@ const labelToggleCommandDefs = {};
     const plural = type + "s";
     labelToggleCommandDefs[cmdId] = {
       toggle: ["show", "hide"],
-      handler: (props) => props.annotationLabelVisibilityToggle(plural),
+      handler: (props) =>
+        props.ed.annotationLabelVisibility.annotationLabelVisibilityToggle(
+          plural
+        ),
       isHidden: (props) => {
         return (
           props && props.typesToOmit && props.typesToOmit[plural] === false
@@ -1276,14 +1279,14 @@ const additionalAnnotationCommandsDefs = {
         //   if (type === "translations" || type === "cutsites")
         //     return props.annotationVisibilityHide(type);
         // }
-        props.annotationLabelVisibilityShow(type);
+        props.ed.annotationLabelVisibility.annotationLabelVisibilityShow(type);
       });
     }
   },
   hideAllLabels: {
     handler: (props) => {
       annotationTypes.forEach((type) => {
-        props.annotationLabelVisibilityHide(type);
+        props.ed.annotationLabelVisibility.annotationLabelVisibilityHide(type);
       });
     }
   },

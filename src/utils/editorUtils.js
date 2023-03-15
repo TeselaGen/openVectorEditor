@@ -79,8 +79,8 @@ export function getNodeToRefocus(caretEl) {
   return nodeToReFocus;
 }
 
-export function getEmptyText({ sequenceData, caretPosition }) {
-  return sequenceData.sequence.length === 0 && caretPosition === -1 ? (
+export function EmptyText({ed}) {
+  return ed.sequenceLength === 0 && ed.caretPosition === -1 ? (
     <div className="veEmptySeqText">Insert Sequence Here</div>
   ) : null;
 }

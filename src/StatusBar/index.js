@@ -14,41 +14,32 @@ import { getSelectionMessage } from "../utils/editorUtils";
 import useMeltingTemp from "../utils/useMeltingTemp";
 import MeltingTemp from "./MeltingTemp";
 import { getSequenceWithinRange } from "ve-range-utils";
+import { observer } from "mobx-react";
 
-const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
-  readOnly
-}))(
-  ({
-    onSave,
-    readOnly,
-    showReadOnly,
-    disableSetReadOnly,
-    updateReadOnlyMode
-  }) => {
-    return showReadOnly ? (
-      <StatusBarItem dataTest="veStatusBar-readOnly">
-        {onSave ? (
-          <HTMLSelect
-            options={[
-              { label: "Read Only", value: "readOnly" },
-              { label: "Editable", value: "editable" }
-            ]}
-            disabled={disableSetReadOnly || !onSave} //the !onSave here is redundant
-            className={Classes.MINIMAL}
-            value={readOnly ? "readOnly" : "editable"}
-            onChange={({ target: { value } }) => {
-              updateReadOnlyMode(value === "readOnly");
-            }}
-          />
-        ) : readOnly ? (
-          "Read Only"
-        ) : (
-          "Editable"
-        )}
-      </StatusBarItem>
-    ) : null;
-  }
-);
+const EditReadOnlyItem = ({ ed }) => {
+  return ed.showReadOnly ? (
+    <StatusBarItem dataTest="veStatusBar-readOnly">
+      {ed.onSave ? (
+        <HTMLSelect
+          options={[
+            { label: "Read Only", value: "readOnly" },
+            { label: "Editable", value: "editable" }
+          ]}
+          disabled={ed.disableSetReadOnly || !ed.onSave} //the !onSave here is redundant
+          className={Classes.MINIMAL}
+          value={ed.readOnly ? "readOnly" : "editable"}
+          onChange={({ target: { value } }) => {
+            ed.updateReadOnlyMode(value === "readOnly");
+          }}
+        />
+      ) : ed.readOnly ? (
+        "Read Only"
+      ) : (
+        "Editable"
+      )}
+    </StatusBarItem>
+  ) : null;
+};
 
 const ShowSelectionItem = compose(
   connectToEditor(
@@ -121,49 +112,27 @@ const ShowSelectionItem = compose(
   }
 );
 
-const ShowLengthItem = connectToEditor(
-  ({ sequenceData = { sequence: "" } }) => ({
-    sequenceLength: sequenceData.sequence.length
-  })
-)(({ isProtein, sequenceLength = 0 }) => (
+const ShowLengthItem = observer(({ ed }) => (
   <StatusBarItem dataTest="veStatusBar-length">{`Length: ${divideBy3(
-    sequenceLength,
-    isProtein
-  )} ${isProtein ? "AAs" : "bps"}`}</StatusBarItem>
+    ed.sequenceLength,
+    ed.isProtein
+  )} ${ed.isProtein ? "AAs" : "bps"}`}</StatusBarItem>
 ));
 
-const ShowTypeItem = connectToEditor(({ sequenceData }) => ({
-  isProtein: sequenceData.isProtein,
-  isOligo: sequenceData.isOligo,
-  isRna: sequenceData.isRna,
-  isMixedRnaAndDna: sequenceData.isMixedRnaAndDna
-}))(({ isProtein, isOligo, isRna, isMixedRnaAndDna }) => {
+const ShowTypeItem = observer(({ ed }) => {
   let type = "DNA";
-  if (isProtein) type = "Protein";
-  if (isRna) type = "RNA";
-  if (isOligo) type = "Oligo";
-  if (isMixedRnaAndDna) type = "Mixed RNA/DNA";
+  if (ed.isProtein) type = "Protein";
+  if (ed.isRna) type = "RNA";
+  if (ed.isOligo) type = "Oligo";
+  if (ed.isMixedRnaAndDna) type = "Mixed RNA/DNA";
   return <StatusBarItem dataTest="veStatusBar-type">{type}</StatusBarItem>;
 });
 
-const EditCircularityItem = compose(
-  connectToEditor(
-    ({
-      readOnly,
-      sequenceData,
-      sequenceData: { circular /* materiallyAvailable */ } = {}
-    }) => ({
-      readOnly,
-      sequenceData,
-      circular
-    })
-  ),
-  withHandlers({ updateCircular })
-)(({ readOnly, showCircularity, circular, updateCircular }) => {
-  return showCircularity ? (
+const EditCircularityItem = observer(({ ed }) => {
+  return ed.showCircularity ? (
     <StatusBarItem dataTest="veStatusBar-circularity">
-      {readOnly ? (
-        circular ? (
+      {ed.readOnly ? (
+        ed.circular ? (
           "Circular"
         ) : (
           "Linear"
@@ -174,7 +143,7 @@ const EditCircularityItem = compose(
             updateCircular(value === "circular");
           }}
           className={Classes.MINIMAL}
-          value={circular ? "circular" : "linear"}
+          value={ed.circular ? "circular" : "linear"}
           options={[
             { label: "Circular", value: "circular" },
             { label: "Linear", value: "linear" }
@@ -184,16 +153,11 @@ const EditCircularityItem = compose(
     </StatusBarItem>
   ) : null;
 });
-const EditAvailabilityItem = connectToEditor(
-  ({ readOnly, sequenceData: { materiallyAvailable } = {} }) => ({
-    readOnly,
-    materiallyAvailable
-  })
-)(({ readOnly, showAvailability, materiallyAvailable, updateAvailability }) => {
-  return showAvailability ? (
+const EditAvailabilityItem = observer(({ ed }) => {
+  return ed.showAvailability ? (
     <StatusBarItem>
-      {readOnly ? (
-        materiallyAvailable ? (
+      {ed.readOnly ? (
+        ed.materiallyAvailable ? (
           "Available"
         ) : (
           "Unavailable"
@@ -201,10 +165,10 @@ const EditAvailabilityItem = connectToEditor(
       ) : (
         <HTMLSelect
           onChange={({ target: { value } }) => {
-            updateAvailability(value === "available");
+            ed.updateAvailability(value === "available");
           }}
           className={Classes.MINIMAL}
-          value={materiallyAvailable ? "available" : "unavailable"}
+          value={ed.materiallyAvailable ? "available" : "unavailable"}
           options={[
             { label: "Available", value: "available" },
             { label: "Unavailable", value: "unavailable" }
@@ -215,51 +179,18 @@ const EditAvailabilityItem = connectToEditor(
   ) : null;
 });
 
-export function StatusBar({
-  disableSetReadOnly,
-  onSave,
-  editorName,
-  showCircularity = true,
-  showMoleculeType = true,
-  showReadOnly = true,
-  showAvailability = false,
-  showGCContentByDefault,
-  onSelectionOrCaretChanged,
-  GCDecimalDigits = 1,
-  isProtein
-}) {
+export const StatusBar = observer(({ ed }) => {
   return (
     <div className="veStatusBar">
-      {showMoleculeType && (
-        <ShowTypeItem editorName={editorName}></ShowTypeItem>
-      )}
-      <EditReadOnlyItem
-        editorName={editorName}
-        {...{
-          onSave,
-          disableSetReadOnly,
-          showReadOnly
-        }}
-      />
-      <EditCircularityItem
-        editorName={editorName}
-        showCircularity={showCircularity}
-      />
-      <EditAvailabilityItem
-        editorName={editorName}
-        showAvailability={showAvailability}
-      />
-      <ShowSelectionItem
-        editorName={editorName}
-        isProtein={isProtein}
-        showGCContentByDefault={showGCContentByDefault}
-        onSelectionOrCaretChanged={onSelectionOrCaretChanged}
-        GCDecimalDigits={GCDecimalDigits}
-      />
-      <ShowLengthItem isProtein={isProtein} editorName={editorName} />
+      {ed.showMoleculeType && <ShowTypeItem ed={ed}></ShowTypeItem>}
+      <EditReadOnlyItem ed={ed} />
+      <EditCircularityItem ed={ed} />
+      <EditAvailabilityItem ed={ed} />
+      <ShowSelectionItem ed={ed} />
+      <ShowLengthItem ed={ed} />
     </div>
   );
-}
+});
 
 function StatusBarItem({ children, dataTest }) {
   return (

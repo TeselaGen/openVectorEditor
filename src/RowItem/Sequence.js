@@ -1,10 +1,8 @@
 import React from "react";
 import { times, map } from "lodash";
-import { view } from "@risingstack/react-easy-state";
 import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";
 import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
-import { hoveredAnnEasyStore } from "../helperComponents/withHover";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import { partOverhangs } from "./partOverhangs";
 import { isPositionWithinRange } from "ve-range-utils";
@@ -15,6 +13,7 @@ const getChunk = (sequence, chunkSize, chunkNumber) =>
 class Sequence extends React.Component {
   render() {
     const {
+      ed,
       isReplacementLayer,
       sequence,
       hideBps,
@@ -27,8 +26,7 @@ class Sequence extends React.Component {
       startOffset = 0,
       chunkSize = 100,
       scrollData,
-      showDnaColors,
-      fivePrimeThreePrimeHints,
+      
       alignmentData,
       sequenceLength,
       rowStart,
@@ -43,40 +41,39 @@ class Sequence extends React.Component {
     const rowSeqLen = sequence.length;
     let overlapToBold;
     let isDigestPart;
-    [hoveredAnnEasyStore.hoveredAnn].forEach((ann) => {
-      if (ann && !isReplacementLayer) {
-        let start = ann.start;
-        let end = ann.end - 1;
+    const ann = ed.hoveredAnnotation.annotation;
+    if (ann && !isReplacementLayer) {
+      let start = ann.start;
+      let end = ann.end - 1;
 
-        partOverhangs.forEach((h) => {
-          if (ann[h]) {
-            isDigestPart = true;
-            if (h.includes("Underhang") && isReverse) {
-              return;
-            } else if (h.includes("Overhang") && !isReverse) {
-              return;
-            }
-            const overhangBps = ann[h];
-            if (h.includes("fivePrime")) {
-              start = start + overhangBps.length;
-            } else {
-              end = end - overhangBps.length;
-            }
+      partOverhangs.forEach((h) => {
+        if (ann[h]) {
+          isDigestPart = true;
+          if (h.includes("Underhang") && isReverse) {
+            return;
+          } else if (h.includes("Overhang") && !isReverse) {
+            return;
           }
-        });
+          const overhangBps = ann[h];
+          if (h.includes("fivePrime")) {
+            start = start + overhangBps.length;
+          } else {
+            end = end - overhangBps.length;
+          }
+        }
+      });
 
-        overlapToBold = isDigestPart
-          ? getOverlapsOfPotentiallyCircularRanges(
-              { start, end },
-              {
-                start: rowStart,
-                end: rowEnd
-              },
-              sequenceLength
-            )
-          : undefined;
-      }
-    });
+      overlapToBold = isDigestPart
+        ? getOverlapsOfPotentiallyCircularRanges(
+            { start, end },
+            {
+              start: rowStart,
+              end: rowEnd
+            },
+            sequenceLength
+          )
+        : undefined;
+    }
 
     const style = {
       position: "relative",
@@ -138,7 +135,7 @@ class Sequence extends React.Component {
         style={style}
         className={(className ? className : "") + " ve-row-item-sequence"}
       >
-        {fivePrimeThreePrimeHints && (
+        {ed.annotationVisibility.fivePrimeThreePrimeHints && (
           <div
             className={`tg-${
               isReverse ? "left" : "right"
@@ -147,7 +144,7 @@ class Sequence extends React.Component {
             3'
           </div>
         )}
-        {fivePrimeThreePrimeHints && (
+        {ed.annotationVisibility.fivePrimeThreePrimeHints && (
           <div
             className={`tg-${
               isReverse ? "right" : "left"
@@ -168,7 +165,7 @@ class Sequence extends React.Component {
             className="rowViewTextContainer"
             height={Math.max(0, Number(height))}
           >
-            {showDnaColors && (
+            {ed.annotationVisibility.showDnaColors && (
               <ColoredSequence
                 {...{
                   ...this.props,
@@ -187,7 +184,7 @@ class Sequence extends React.Component {
   }
 }
 
-export default view(Sequence);
+export default Sequence;
 
 class ColoredSequence extends React.Component {
   shouldComponentUpdate(newProps) {

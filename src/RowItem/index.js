@@ -23,6 +23,7 @@ import { getAllSelectionLayers } from "../utils/selectionLayer";
 import { filter } from "lodash";
 import { defaultCharWidth } from "../constants/rowviewContants";
 import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
+import { EmptyText } from "../utils/editorUtils";
 
 function noop() {}
 
@@ -65,6 +66,7 @@ function getPropsForType(props, type, pluralType, extraProps) {
 
 export default function RowItem(props) {
   let {
+    ed,
     noRedux,
     charWidth = defaultCharWidth,
     selectionLayer = { start: -1, end: -1 },
@@ -95,7 +97,6 @@ export default function RowItem(props) {
     },
     readOnly,
     isRowView,
-    emptyText,
     alignmentType,
     alignmentData,
     sequenceLength = row.sequence.length,
@@ -439,7 +440,7 @@ export default function RowItem(props) {
               {deletionLayerStrikeThrough}
             </Sequence>
           )}
-          {emptyText}
+          <EmptyText ed={ed}></EmptyText>
 
           {showReverseSequence && (
             <Sequence
