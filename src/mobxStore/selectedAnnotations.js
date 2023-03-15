@@ -86,4 +86,4 @@ export default createReducer(
     }
   },
   startingState
-);
+)

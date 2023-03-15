@@ -1,25 +1,8 @@
-import { createReducer } from "redux-act";
+export default class UppercaseSequenceMapFont{
+  private newVal = window.localStorage.getItem("uppercaseSequenceMapFont");
+  uppercaseSequenceMapFont = newVal || "noPreference";
 
-//./caretPosition.js
-import createAction from "../redux/utils/createMetaAction";
-// import createReducer from "./utils/createMergedDefaultStateReducer";
-
-// ------------------------------------
-// Actions
-// ------------------------------------
-export const updateSequenceCase = createAction("updateSequenceCase");
-
-const newVal = window.localStorage.getItem("uppercaseSequenceMapFont");
-
-// ------------------------------------
-// Reducer
-// ------------------------------------
-export default createReducer(
-  {
-    [updateSequenceCase]: (state, payload) => {
-      localStorage.setItem("uppercaseSequenceMapFont", payload);
-      return payload;
-    }
-  },
-  newVal || "noPreference" //  noPreference || uppercase || lowercase
-);
+  updateSequenceCase = (uppercaseSequenceMapFont) => {
+    this.uppercaseSequenceMapFont = uppercaseSequenceMapFont;
+  };
+}

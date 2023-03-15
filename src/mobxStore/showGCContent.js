@@ -1,23 +1,8 @@
-import { createReducer } from "redux-act";
+export default class ShowGCContent{
+  showGCContent = window.localStorage.getItem("showGCContent") || false;
 
-//./caretPosition.js
-import createAction from "../redux/utils/createMetaAction";
-// import createReducer from "./utils/createMergedDefaultStateReducer";
-
-// ------------------------------------
-// Actions
-// ------------------------------------
-export const toggleShowGCContent = createAction("toggleShowGCContent");
-
-// ------------------------------------
-// Reducer
-// ------------------------------------
-export default createReducer(
-  {
-    [toggleShowGCContent]: (state, val) => {
-      localStorage.setItem("showGCContent", val);
-      return val;
-    }
-  },
-  window.localStorage.getItem("showGCContent")
-);
+  toggleShowGCContent = (val) => {
+    localStorage.setItem("showGCContent", val);
+    this.showGCContent = val;
+  };
+}

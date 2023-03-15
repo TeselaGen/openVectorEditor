@@ -174,48 +174,48 @@ export default createReducer(
         [{ ...panelToMove, active: true }]
       ];
     },
-    [setPanelAsActive]: (state, panelId) => {
-      return map(state, (panelGroup) => {
-        const isPanelInGroup = panelGroup.some(({ id }) => {
-          return panelId === id;
-        });
-        return panelGroup.map((panel) => {
-          return {
-            ...panel,
-            active:
-              panelId === panel.id
-                ? true
-                : isPanelInGroup
-                ? false
-                : panel.active
-          };
-        });
-      });
-    },
-    [togglePanelFullScreen]: (state, panelId) => {
-      return map(state, (panelGroup) => {
-        const isPanelInGroup = panelGroup.some(({ id }) => {
-          return panelId === id;
-        });
-        return panelGroup.map((panel) => {
-          return {
-            ...panel,
-            active:
-              panelId === panel.id
-                ? true
-                : isPanelInGroup
-                ? false
-                : panel.active,
-            fullScreen:
-              panelId === panel.id
-                ? !panel.fullScreen
-                : isPanelInGroup
-                ? false
-                : panel.fullScreen
-          };
-        });
-      });
-    },
+    // [setPanelAsActive]: (state, panelId) => {
+    //   return map(state, (panelGroup) => {
+    //     const isPanelInGroup = panelGroup.some(({ id }) => {
+    //       return panelId === id;
+    //     });
+    //     return panelGroup.map((panel) => {
+    //       return {
+    //         ...panel,
+    //         active:
+    //           panelId === panel.id
+    //             ? true
+    //             : isPanelInGroup
+    //             ? false
+    //             : panel.active
+    //       };
+    //     });
+    //   });
+    // },
+    // [togglePanelFullScreen]: (state, panelId) => {
+    //   return map(state, (panelGroup) => {
+    //     const isPanelInGroup = panelGroup.some(({ id }) => {
+    //       return panelId === id;
+    //     });
+    //     return panelGroup.map((panel) => {
+    //       return {
+    //         ...panel,
+    //         active:
+    //           panelId === panel.id
+    //             ? true
+    //             : isPanelInGroup
+    //             ? false
+    //             : panel.active,
+    //         fullScreen:
+    //           panelId === panel.id
+    //             ? !panel.fullScreen
+    //             : isPanelInGroup
+    //             ? false
+    //             : panel.fullScreen
+    //       };
+    //     });
+    //   });
+    // },
     [collapsePanel]: (state, panelToCloseId) => {
       return [
         flatMap(state, (panelGroup) => {
@@ -274,8 +274,6 @@ function flipActiveForGroup(group, setCircActive) {
     }
   }
 }
-
-
 export default class PanelShown {
   panels = [
     [
@@ -354,17 +352,85 @@ export default class PanelShown {
     this.panels = newPanels.fitler((group) => group.length)
   }
 
-  //I'm not sure how this is working, I just copied the code form the redux implementation
+  //djr: I'm not sure how this is working, I just copied the code form the redux implementation
   collapseSplitScreen(){
-    this.panel = [flatMap(this.panel)]
+    this.panels = [flatMap(this.panel)]
   }
 
+  //djr still working on this one
+  expandTabToSplitScreen(activePanelId){
+    let panelToMove;
+    this.panels = [
+      this.panels[0]
+        .filter((panel) => { 
+          if (panel.id === activePanelId) {
+            panelToMove = panel;
+            return false;
+          }
+          return true;
+        })
+        .map((panel, i) => {
+          return i === 0 ? { ...panel, active: true } : panel;
+        }),
+    ]
+  }
 
+  setPanelAsActive(panelId) {
+      this.panels = this.panels.map((panelGroup) => {
+        const isPanelInGroup = panelGroup.some(({ id }) => {
+          return panelId === id;
+        });
+        return panelGroup.map((panel) => {
+          return {
+            ...panel,
+            active:
+              panelId === panel.id
+                ? true
+                : isPanelInGroup
+                ? false
+                : panel.active
+          };
+        });
+      })
+    }
+  
+    togglePanelFullScreen(panelId){
+      this.panels = this.panels.map((panelGroup) => {
+        const isPanelInGroup = panelGroup.some(({ id }) => {
+          return panelId === id;
+        });
+        return panelGroup.map((panel) => {
+          return {
+            ...panel,
+            active:
+              panelId === panel.id
+                ? true
+                : isPanelInGroup
+                ? false
+                : panel.active,
+            fullScreen:
+              panelId === panel.id
+                ? !panel.fullScreen
+                : isPanelInGroup
+                ? false
+                : panel.fullScreen
+          };
+        });
+      });
+    }
 
-
-
-
-
-
-
+    collapsePanel(panelToCloseId){
+      this.panels = flatMap(this.panels, (panelGroup) => {
+        return panelGroup;
+      })
+      .map((panel) => {
+        if (panel.id === panelToCloseId) {
+          return {
+            ...panel,
+            active: false
+          };
+        }
+        return panel;
+      })
+    }   
 }
