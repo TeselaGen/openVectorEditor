@@ -6,7 +6,7 @@ import {
 } from "teselagen-react-components";
 import { map, get } from "lodash";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button } from "@blueprintjs/core";
+import { Button, Tag, Tooltip } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
@@ -21,7 +21,9 @@ class CutsiteProperties extends React.Component {
     super(props);
     this.commands = commands(this);
   }
-
+  state = {
+    notLogic: false
+  }
   SubComponent = (row) => {
     return (
       <SingleEnzymeCutsiteInfo
@@ -55,20 +57,20 @@ class CutsiteProperties extends React.Component {
       editorName,
       createNewDigest,
       filteredCutsites: allCutsites,
-      selectedAnnotationId
+      selectedAnnotationId,
+      allRestrictionEnzymes
     } = this.props;
-
     const { cutsitesByName, cutsitesById } = allCutsites;
-    const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
+    
+
+    let cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
       const name = cutsiteGroup[0].restrictionEnzyme.name;
       let groups = "";
       const exisitingEnzymeGroups = window.getExistingEnzymeGroups();
-
       Object.keys(exisitingEnzymeGroups).forEach((key) => {
         if (exisitingEnzymeGroups[key].includes(name)) groups += key;
         groups += " ";
       });
-
       return {
         cutsiteGroup,
         id: name,
@@ -79,6 +81,32 @@ class CutsiteProperties extends React.Component {
         // size: getRangeLength(cutsiteGroup, sequenceData.sequence.length)
       };
     });
+    if (this.state && this.state.notLogic) {
+      const allRestrictionEnzymesLower = Object.keys(allRestrictionEnzymes).reduce((acc, key) => {
+        acc[key.toLowerCase()] = allRestrictionEnzymes[key]
+        return acc
+      }, {})
+      const filteredEnzymes = Object.keys(allRestrictionEnzymesLower).filter((key) => {
+        return !cutsitesByName[key]
+      }).map((key) => {
+        return allRestrictionEnzymesLower[key]
+      })
+      const filteredEnzymesObj = filteredEnzymes.reduce((acc, enzyme) => {
+        acc[enzyme.name] = enzyme
+        return acc
+      }, {})
+
+      cutsitesToUse = map(filteredEnzymesObj, (enzyme) => {
+        const name = enzyme.name;
+        return {
+          numberOfCuts: 0,
+          cutsiteGroup: [],
+          id: name,
+          name,
+          enzyme,
+        };
+      })
+    }
     return (
       <>
         <div
@@ -112,6 +140,21 @@ class CutsiteProperties extends React.Component {
             Virtual Digest
           </Button>
         </div>
+        <Tooltip
+          content={
+            this.state.notLogic
+            ?`Display enzymes that are not in the groups selected`:
+            `Display enzymes that are in the groups selected` 
+          }
+        >
+          <Tag 
+            style={{width: "10vw", textAlign: "center", marginBottom: "2%"}}
+            onClick={(e) => {
+              e.stopPropagation()
+              this.setState({notLogic: !this.state.notLogic})}}>
+            {this.state.notLogic ? "NOT Included" : "Included"}
+          </Tag>
+        </Tooltip>
         <DataTable
           selectedIds={get(
             cutsitesById[selectedAnnotationId],

@@ -271,19 +271,6 @@ export function CutsiteFilter(props) {
                 <Tag
                   minimal
                   interactive
-                  style={{alignContent: "center",display: "flex", marginTop: 5 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    isEnzymeFilterAndUpdate(!isEnzymeFilterAnd);
-                  }}
-                  
-                >
-                  <span
-                    style={{color: isEnzymeFilterAnd ? "#ce5bce" : "darkgray" }}>NOT</span>
-                </Tag>
-                <Tag
-                  minimal
-                  interactive
                   style={{ display: "flex", marginTop: 5 }}
                   onClick={(e) => {
                     e.stopPropagation();
