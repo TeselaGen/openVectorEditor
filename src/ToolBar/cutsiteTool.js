@@ -11,7 +11,7 @@ export default connectToEditor(
     return {
       readOnly,
       toggled: annotationVisibility.cutsites,
-      isOpen: toolBar.openItem === "cutsiteTool"
+      isOpen: toolBar.openToolbarItem === "cutsiteTool"
     };
   }
 )(({ toolbarItemProps, toggled, isOpen, annotationVisibilityToggle }) => {

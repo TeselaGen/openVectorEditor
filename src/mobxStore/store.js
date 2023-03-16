@@ -18,10 +18,24 @@ import { normalizePositionByRangeLength } from "ve-range-utils/lib";
 import LabelLineIntensity from "./LabelLineIntensity";
 import LabelSize from "./LabelSize";
 import PartLengthsToHide from "./PartLengthsToHide";
+import FeatureLengthsToHide from "./FeatureLengthsToHide";
 import PanelsShown from "./PanelsShown";
 import HoveredAnnotation from "./HoveredAnnotation";
+import PropertiesTool from "./PropertiesTool";
+import RestrictionEnzymes from "./RestrictionEnzymes";
+import { addWrappedAddons } from "../utils/addWrappedAddons";
+import { hideAnnByLengthFilter } from "../utils/editorUtils";
 
-const { forEach, reduce, filter, each } = require("lodash");
+const {
+  forEach,
+  reduce,
+  filter,
+  each,
+  keyBy,
+  map,
+  some,
+  omitBy
+} = require("lodash");
 
 const { makeAutoObservable, autorun } = require("mobx");
 // const annotationTypes = require("./utils/annotationTypes");
@@ -50,11 +64,14 @@ export default class EditorStore {
     });
     makeAutoObservable(this);
   }
-  
+
   findTool = new FindTool(this);
+  restrictionEnzymes = new RestrictionEnzymes(this);
+  propertiesTool = new PropertiesTool(this);
   hoveredAnnotation = new HoveredAnnotation(this);
   panelsShown = new PanelsShown(this);
   partLengthsToHide = new PartLengthsToHide(this);
+  featureLengthsToHide = new FeatureLengthsToHide(this);
   labelSize = new LabelSize(this);
   labelLineIntensity = new LabelLineIntensity(this);
   annotationsToSupport = new AnnotationsToSupport(this);
@@ -68,6 +85,7 @@ export default class EditorStore {
 
   get sequenceData() {
     return {
+      name: this.name,
       warnings: this.warnings,
       assemblyPieces: this.assemblyPieces,
       lineageAnnotations: this.lineageAnnotations,
@@ -347,12 +365,67 @@ export default class EditorStore {
   setRotationRadians(v) {
     this._rotationRadians = v;
   }
-
+  selectedPartTags = [];
+  updateSelectedPartTags(v) {
+    this.selectedPartTags = v;
+  }
   get filteredFeatures() {
-    return this.features.slice(0, this.limits.features);
+    let filteredFeatures = this.features.slice(0, this.limits.features);
+    filteredFeatures = map(
+      omitBy(filteredFeatures, (ann) => {
+        const hideIndividually =
+          this.annotationVisibility.featureIndividualToHide[ann.id];
+        return (
+          hideAnnByLengthFilter(
+            this.featureLengthsToHide,
+            ann,
+            this.sequenceLength
+          ) || hideIndividually
+        );
+      })
+    );
+    return filteredFeatures;
   }
   get filteredParts() {
-    return this.parts.slice(0, this.limits.parts);
+    let filteredParts = this.parts.slice(0, this.limits.parts);
+    if (this.selectedPartTags) {
+      const keyedTagsToBold = keyBy(this.selectedPartTags, "value");
+      filteredParts = map(filteredParts || {}, (p) => {
+        if (p.tags) {
+          if (
+            some(p.tags, (tagId) => {
+              return keyedTagsToBold[tagId];
+            })
+          ) {
+            return {
+              ...p,
+              className: "partWithSelectedTag",
+              labelClassName: "partWithSelectedTag",
+              highPriorityLabel: true
+            };
+          } else {
+            return p;
+          }
+        }
+      });
+    } else {
+      //only omit ones that aren't being searched for actively
+      filteredParts = map(
+        omitBy(filteredParts, (ann) => {
+          const hideIndividually =
+            this.annotationVisibility.partIndividualToHide[ann.id];
+          return (
+            hideAnnByLengthFilter(
+              this.partLengthsToHide,
+              ann,
+              this.sequenceLength
+            ) || hideIndividually
+          );
+        })
+      );
+    }
+
+    return addWrappedAddons(filteredParts, this.sequenceLength);
   }
   get filteredPrimers() {
     return this.primers.slice(0, this.limits.primers);
@@ -375,6 +448,17 @@ export default class EditorStore {
   get proteinSize() {
     return this.size * 3;
   }
+  showGCContent = window.localStorage.getItem("showGCContent") || false;
+
+  toggleShowGCContent = (val) => {
+    localStorage.setItem("showGCContent", val);
+    this.showGCContent = val;
+  };
+  openToolbarItem = "";
+
+  openToolbarItemUpdate = (openToolbarItem) => {
+    this.openToolbarItem = openToolbarItem;
+  };
 
   selectionLayerUpdate(newSel) {
     if (newSel.start > -1) this.caretPosition = -1;

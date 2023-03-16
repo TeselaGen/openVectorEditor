@@ -28,7 +28,7 @@ let CreateCustomEnzyme = function (props) {
     createYourOwnEnzyme,
     dispatch,
     hideModal,
-    editorName
+    ed
   } = props;
 
   createYourOwnEnzyme.chop_top_index = Number(
@@ -178,15 +178,7 @@ let CreateCustomEnzyme = function (props) {
         disabled={invalid}
         onClick={() => {
           addCustomEnzyme(enzyme);
-          dispatch({
-            type: "FILTERED_RESTRICTION_ENZYMES_ADD", //filteredRestrictionEnzymesAdd
-            payload: {
-              value: name
-            },
-            meta: {
-              editorName
-            }
-          });
+          ed.restrictionEnzymes.filteredRestrictionEnzymesAdd({value: name})
           hideModal && hideModal();
         }}
       ></DialogFooter>

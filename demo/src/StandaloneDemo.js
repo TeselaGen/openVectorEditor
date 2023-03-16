@@ -152,7 +152,7 @@ export default class StandaloneDemo extends React.Component {
               "redoTool",
               "cutsiteTool",
               "featureTool",
-              "alignmentTool",
+              // "alignmentTool",
               "versionHistoryTool",
               // "oligoTool",
               "orfTool",
@@ -224,11 +224,11 @@ export default class StandaloneDemo extends React.Component {
               name: "Sequence Map",
               active: true
             },
-            {
-              id: "alignmentTool",
-              name: "New Alignment",
-              canClose: true
-            },
+            // {
+            //   id: "alignmentTool",
+            //   name: "New Alignment",
+            //   canClose: true
+            // },
             {
               id: "digestTool",
               name: "New Digest",

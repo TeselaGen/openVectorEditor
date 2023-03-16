@@ -14,7 +14,7 @@ import {
   AdditionalCutsiteInfoDialog,
   CompareEnzymeGroupsDialog
 } from "./CutsiteFilter/AdditionalCutsiteInfoDialog";
-import { AlignmentToolDialog } from "./ToolBar/alignmentTool";
+// import { AlignmentToolDialog } from "./ToolBar/alignmentTool";
 import MergeFeaturesDialog from "./helperComponents/MergeFeaturesDialog";
 import AddOrEditPartDialog from "./helperComponents/AddOrEditPartDialog";
 import AddOrEditFeatureDialog from "./helperComponents/AddOrEditFeatureDialog";
@@ -31,7 +31,7 @@ const Dialogs = {
   CreateCustomEnzyme,
   AdditionalCutsiteInfoDialog,
   CompareEnzymeGroupsDialog,
-  AlignmentToolDialog,
+  // AlignmentToolDialog,
   MergeFeaturesDialog,
   AddOrEditPartDialog,
   AddOrEditFeatureDialog,

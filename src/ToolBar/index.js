@@ -16,7 +16,7 @@ import orfTool from "./orfTool";
 import editTool from "./editTool";
 import findTool from "./findTool";
 import inlineFindTool from "./inlineFindTool";
-import alignmentTool from "./alignmentTool";
+// import alignmentTool from "./alignmentTool";
 import saveTool from "./saveTool";
 import visibilityTool from "./visibilityTool";
 import undoTool from "./undoTool";
@@ -28,7 +28,7 @@ const allTools = {
   downloadTool,
   importTool,
   cutsiteTool,
-  alignmentTool,
+  // alignmentTool,
   featureTool,
   partTool,
   oligoTool,
@@ -97,8 +97,7 @@ export function ToolBar(props) {
       if (isProtein) {
         if (
           toolName === "cutsiteTool" ||
-          toolName === "orfTool" ||
-          toolName === "alignmentTool"
+          toolName === "orfTool" 
         ) {
           return [];
         }
@@ -224,7 +223,7 @@ const defaultToolList = [
   "partTool",
   "oligoTool",
   "orfTool",
-  "alignmentTool",
+  // "alignmentTool",
   "editTool",
   "findTool",
   "visibilityTool"

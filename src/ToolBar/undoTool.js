@@ -1,23 +1,15 @@
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor(editorState => {
-  return {
-    disabled: !(
-      editorState.sequenceDataHistory &&
-      editorState.sequenceDataHistory.past &&
-      editorState.sequenceDataHistory.past.length
-    )
-  };
-})(({ toolbarItemProps, undo, disabled }) => {
+export default ({ toolbarItemProps, ed }) => {
+  const disabled = !ed.sequenceDataHistory.past.length;
   return (
     <ToolbarItem
       {...{
         Icon: <Icon data-test="veUndoTool" icon="undo" />,
         disabled,
-        onIconClick: undo,
+        onIconClick: ed.undo,
         tooltip: (
           <span>
             Undo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Z)</span>
@@ -27,4 +19,4 @@ export default connectToEditor(editorState => {
       }}
     />
   );
-});
+};

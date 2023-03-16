@@ -1,4 +1,3 @@
-import { connectToEditor } from "../withEditorProps";
 // import download from 'in-browser-download'
 import {
   Popover,
@@ -8,20 +7,21 @@ import {
   AnchorButton,
   Intent
 } from "@blueprintjs/core";
+import { observer } from "mobx-react";
 import React from "react";
 import "./style.css";
 
 class ToolbarItem extends React.Component {
   toggleDropdown = ({ forceClose } = {}) => {
-    const { toolName, isOpen } = this.props;
-
-    this.props.openToolbarItemUpdate(isOpen || forceClose ? "" : toolName);
+    const { toolName, ed } = this.props;
+    const isOpen = ed.openToolbarItem === toolName;
+    ed.openToolbarItemUpdate(isOpen || forceClose ? "" : toolName);
   };
 
   render() {
     const { overrides = {} } = this.props;
     const {
-      isOpen,
+      ed,
       index,
       Icon,
       // dynamicIcon,
@@ -51,7 +51,7 @@ class ToolbarItem extends React.Component {
       tooltipToDisplay = tooltipToggled;
     }
     // const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
-
+    const isOpen = ed.openToolbarItem === toolName;
     const buttonTarget = (
       <div
         className={
@@ -185,9 +185,6 @@ class ToolbarItem extends React.Component {
     );
   }
 }
+export default observer(ToolbarItem);
 
 function noop() {}
-
-export default connectToEditor(({ toolBar = {} }, { toolName }) => ({
-  isOpen: toolBar.openItem === toolName
-}))(ToolbarItem);

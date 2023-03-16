@@ -11,7 +11,7 @@ import {
 } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 
-import VersionHistoryView from "../VersionHistoryView";
+// import VersionHistoryView from "../VersionHistoryView";
 import { importSequenceFromFile } from "../withEditorProps";
 import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
 import { showAddOrEditAnnotationDialog } from "../GlobalDialogUtils";
@@ -287,7 +287,7 @@ export class Editor extends React.Component {
   };
 
   getPanelsToShow = () => {
-    const { panelsShown } = this.props;
+    const { panelsShown } = this.props.ed;
     if (isMobile()) return [flatMap(panelsShown)];
     return map(panelsShown);
   };
@@ -312,11 +312,12 @@ export class Editor extends React.Component {
 
   togglePreviewFullscreen = () => {
     const {
-      togglePreviewFullscreen,
+      ed,
       onPreviewModeFullscreenClose,
       previewModeFullscreen: controlledPreviewModeFullscreen
     } = this.props;
-    if (togglePreviewFullscreen) togglePreviewFullscreen();
+
+    if (ed.togglePreviewFullscreen) ed.togglePreviewFullscreen();
     const previewModeFullscreen = this.state.previewModeFullscreen;
     if (
       controlledPreviewModeFullscreen === undefined
@@ -338,18 +339,12 @@ export class Editor extends React.Component {
       ToolBarProps = {},
       StatusBarProps = {},
       extraRightSidePanel,
-      editorName,
       height: _height,
-      showCircularity,
       hideSingleImport,
       minHeight = 400,
       showMenuBar,
-      annotationsToSupport,
-      withRotateCircularView = true,
-      withZoomCircularView = true,
-      withZoomLinearView = true,
       displayMenuBarAboveTools = true,
-      updateSequenceData,
+      // updateSequenceData,
       readOnly,
       setPanelAsActive,
       style = {},
@@ -357,13 +352,12 @@ export class Editor extends React.Component {
       collapseSplitScreen,
       expandTabToSplitScreen,
       closePanel,
-      onSave,
+      editorName,
+      // onSave,
       hideStatusBar,
-      caretPositionUpdate,
-      getVersionList,
-      getSequenceAtVersion,
-      VersionHistoryViewProps,
-      sequenceData = {},
+      // getVersionList,
+      // getSequenceAtVersion,
+      // VersionHistoryViewProps,
       fullScreenOffsets,
       withPreviewMode,
       isFullscreen,
@@ -372,26 +366,24 @@ export class Editor extends React.Component {
       previewModeButtonMenu,
       allowPanelTabDraggable = true
     } = this.props;
-    if (
-      !this.props.noVersionHistory &&
-      this.props.versionHistory &&
-      this.props.versionHistory.viewVersionHistory
-    ) {
-      return (
-        <VersionHistoryView
-          {...{
-            onSave, //we need to pass this user defined handler
-            updateSequenceData,
-            caretPositionUpdate,
-            editorName,
-            sequenceData,
-            getVersionList,
-            getSequenceAtVersion,
-            ...VersionHistoryViewProps
-          }}
-        />
-      );
-    }
+    const { annotationsToSupport } = ed;
+    // if (
+    //   !this.props.noVersionHistory &&
+    //   this.props.versionHistory &&
+    //   this.props.versionHistory.viewVersionHistory
+    // ) {
+    //   return (
+    //     <VersionHistoryView
+    //       {...{
+    //         onSave, //we need to pass this user defined handler
+    //         ed,
+    //         getVersionList,
+    //         getSequenceAtVersion,
+    //         ...VersionHistoryViewProps
+    //       }}
+    //     />
+    //   );
+    // }
     const previewModeFullscreen = !!(
       (controlledPreviewModeFullscreen === undefined
         ? uncontrolledPreviewModeFullscreen
@@ -843,7 +835,8 @@ export class Editor extends React.Component {
             handleFullscreenClose={
               handleFullscreenClose || this.togglePreviewFullscreen
             }
-            isProtein={sequenceData.isProtein}
+            isProtein={ed.isProtein}
+            ed={ed}
             userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
             annotationsToSupport={annotationsToSupport}
             closeFullscreen={
@@ -851,8 +844,7 @@ export class Editor extends React.Component {
             }
             {...{
               modifyTools: this.props.modifyTools,
-              contentLeft: this.props.contentLeft,
-              editorName
+              contentLeft: this.props.contentLeft
             }}
             withDigestTool
             {...ToolBarProps}
@@ -865,7 +857,7 @@ export class Editor extends React.Component {
               onClose: this.closeHotkeyDialog
             }}
             {...pickedUserDefinedHandlersAndOpts}
-            editorName={editorName}
+            ed={ed}
           />
 
           <div
@@ -895,7 +887,7 @@ export class Editor extends React.Component {
           {!hideStatusBar && <StatusBar ed={ed} {...StatusBarProps} />}
         </DropHandler>
         <GlobalDialog
-          editorName={editorName}
+          ed={ed}
           {...pickedUserDefinedHandlersAndOpts}
           dialogOverrides={pick(this.props, [
             "AddOrEditFeatureDialogOverride",
@@ -912,30 +904,6 @@ Editor.childContextTypes = {
   blueprintPortalClassName: PropTypes.string
 };
 
-export default compose(
-  connectToEditor(
-    (
-      {
-        panelsShown,
-        annotationsToSupport,
-        versionHistory,
-        sequenceData = {},
-        selectionLayer
-      },
-      { additionalEnzymes }
-    ) => {
-      return {
-        additionalEnzymes: getAdditionalEnzymesSelector(
-          null,
-          additionalEnzymes
-        ),
-        annotationsToSupport,
-        selectionLayer,
-        panelsShown,
-        versionHistory,
-        sequenceData
-      };
-    }
-  ),
-  withHandlers({ handleSave, importSequenceFromFile })
-)(Editor);
+export default compose(withHandlers({ handleSave, importSequenceFromFile }))(
+  Editor
+);

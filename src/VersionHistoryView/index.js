@@ -5,7 +5,8 @@ import { DataTable } from "teselagen-react-components";
 
 import Editor from "../Editor";
 import FillWindow from "../Editor/FillWindow";
-import withEditorProps from "../withEditorProps";
+// import withEditorProps from "../withEditorProps";
+import { observer } from "mobx-react";
 
 const SIDE_PANEL_WIDTH = 350;
 
@@ -131,7 +132,7 @@ export class VersionHistoryView extends React.Component {
                     "cutsiteTool",
                     "featureTool",
                     "orfTool",
-                    "alignmentTool",
+                    // "alignmentTool",
                     "findTool",
                     "visibilityTool"
                   ],
@@ -211,4 +212,4 @@ export class VersionHistoryView extends React.Component {
   }
 }
 
-export default withEditorProps(VersionHistoryView);
+export default observer(VersionHistoryView);

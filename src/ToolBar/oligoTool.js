@@ -1,23 +1,16 @@
 import { Icon } from "@blueprintjs/core";
 import React from "react";
 import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor(editorState => {
-  return {
-    isHidden: editorState.sequenceData && editorState.sequenceData.isProtein,
-
-    toggled:
-      editorState.annotationVisibility &&
-      editorState.annotationVisibility.primers
-  };
-})(({ toolbarItemProps, isHidden, toggled, annotationVisibilityToggle }) => {
+export default ({ toolbarItemProps,  ed }) => {
+  const isHidden = ed.isProtein;
+  const toggled = ed.annotationVisibility.primers;
   return (
     <ToolbarItem
       {...{
         Icon: <Icon icon="swap-horizontal" />,
-        onIconClick: function() {
-          annotationVisibilityToggle("primers");
+        onIconClick: function () {
+          ed.annotationVisibilityToggle("primers");
         },
         isHidden,
         toggled,
@@ -27,4 +20,4 @@ export default connectToEditor(editorState => {
       }}
     />
   );
-});
+}

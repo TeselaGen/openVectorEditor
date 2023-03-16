@@ -20,7 +20,7 @@ import StandaloneDemo from "./StandaloneDemo";
 import SimpleCircularOrLinearViewDemo from "./SimpleCircularOrLinearViewDemo";
 import StandaloneAlignmentDemo from "./StandaloneAlignmentDemo";
 import AlignmentDemo from "./AlignmentDemo";
-import VersionHistoryView from "../../src/VersionHistoryView";
+// import VersionHistoryView from "../../src/VersionHistoryView";
 import EditorDemo from "./EditorDemo";
 import MobXEditorDemo from "./MobXEditorDemo";
 import "./style.css";
@@ -42,7 +42,7 @@ const Demo = () => {
       { name: "Editor", url: "Editor" },
       { name: " MobXEditor", url: "MobXEditor" },
       { name: "Standalone", url: "Standalone" },
-      { name: "VersionHistoryView", url: "VersionHistoryView" },
+      // { name: "VersionHistoryView", url: "VersionHistoryView" },
       { name: "StandaloneAlignment", url: "StandaloneAlignment" },
       { name: "Alignment", url: "Alignment" },
       { name: "SimpleCircularOrLinearView", url: "SimpleCircularOrLinearView" },
@@ -173,7 +173,7 @@ const Demo = () => {
             }}
             path="/MobXEditor"
           />
-          <Route
+          {/* <Route
             render={() => {
               return (
                 <div>
@@ -232,7 +232,7 @@ const Demo = () => {
               );
             }}
             path="/VersionHistoryView"
-          />
+          /> */}
           <Route
             render={() => {
               return <StandaloneDemo />;

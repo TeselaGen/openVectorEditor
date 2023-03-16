@@ -3,10 +3,11 @@ import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
 import ToolbarItem from "./ToolbarItem";
 import { compose, withHandlers } from "recompose";
-import { importSequenceFromFile, connectToEditor } from "../withEditorProps";
+import { importSequenceFromFile } from "../withEditorProps";
+import { observer } from "mobx-react";
 
 export default compose(
-  connectToEditor(),
+  observer,
   withHandlers({ importSequenceFromFile })
 )(({ toolbarItemProps, importSequenceFromFile }) => {
   return (

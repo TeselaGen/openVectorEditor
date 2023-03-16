@@ -4,6 +4,7 @@ export default class AnnotationVisibility{
   featureTypesToHide = {}
   featureIndividualToHide= {}
   partIndividualToHide= {}
+  featureLengthsToHide
   features= true
   warnings= true
   assemblyPieces= true

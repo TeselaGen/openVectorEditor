@@ -2,13 +2,9 @@ import React from "react";
 import { Icon } from "@blueprintjs/core";
 import FindBar from "../FindBar";
 import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor(({ findTool = {} }) => {
-  return {
-    isOpen: findTool.isOpen
-  };
-})(({ toolbarItemProps, editorName, toggleFindTool, isOpen }) => {
+export default ({ed, toolbarItemProps}) => {
+  const isOpen =  ed.findTool.isOpen
   return (
     <ToolbarItem
       {...{
@@ -18,10 +14,10 @@ export default connectToEditor(({ findTool = {} }) => {
             <Icon icon="caret-right" />
           </div>
         ) : (
-          <FindBar editorName={editorName} />
+          <FindBar ed={ed} />
         ),
         renderIconAbove: isOpen,
-        onIconClick: toggleFindTool,
+        onIconClick: ed.findTool.toggleFindTool,
         tooltip: isOpen ? (
           <span>
             Hide Find Tool <span style={{ fontSize: 10 }}>(Cmd/Ctrl+F)</span>
@@ -35,4 +31,4 @@ export default connectToEditor(({ findTool = {} }) => {
       }}
     />
   );
-});
+}

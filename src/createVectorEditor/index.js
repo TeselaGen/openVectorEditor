@@ -8,7 +8,7 @@ import updateEditor from "../updateEditor";
 import addAlignment from "../addAlignment";
 import AlignmentView from "../AlignmentView";
 import sizeMe from "react-sizeme";
-import VersionHistoryView from "../VersionHistoryView";
+// import VersionHistoryView from "../VersionHistoryView";
 
 let store;
 
@@ -36,16 +36,16 @@ function StandaloneAlignment(props) {
   );
 }
 
-function StandaloneVersionHistoryView(props) {
-  if (!store) {
-    store = makeStore();
-  }
-  return (
-    <Provider store={store}>
-      <VersionHistoryView {...{ ...props }} />
-    </Provider>
-  );
-}
+// function StandaloneVersionHistoryView(props) {
+//   if (!store) {
+//     store = makeStore();
+//   }
+//   return (
+//     <Provider store={store}>
+//       <VersionHistoryView {...{ ...props }} />
+//     </Provider>
+//   );
+// }
 
 export default function createVectorEditor(
   _node,
@@ -85,28 +85,28 @@ export default function createVectorEditor(
   return editor;
 }
 
-export function createVersionHistoryView(
-  node,
-  { editorName = "StandaloneVersionHistoryView", ...rest } = {}
-) {
-  if (!store) {
-    store = makeStore();
-  }
-  const editor = {};
-  editor.renderResponse = render(
-    <StandaloneVersionHistoryView {...{ editorName, ...rest }} />,
-    node
-  );
+// export function createVersionHistoryView(
+//   node,
+//   { editorName = "StandaloneVersionHistoryView", ...rest } = {}
+// ) {
+//   if (!store) {
+//     store = makeStore();
+//   }
+//   const editor = {};
+//   editor.renderResponse = render(
+//     <StandaloneVersionHistoryView {...{ editorName, ...rest }} />,
+//     node
+//   );
 
-  editor.updateEditor = (values) => {
-    updateEditor(store, editorName, values);
-  };
-  editor.getState = () => {
-    return store.getState().VectorEditor["StandaloneVersionHistoryView"];
-  };
+//   editor.updateEditor = (values) => {
+//     updateEditor(store, editorName, values);
+//   };
+//   editor.getState = () => {
+//     return store.getState().VectorEditor["StandaloneVersionHistoryView"];
+//   };
 
-  return editor;
-}
+//   return editor;
+// }
 
 const SizedStandaloneAlignment = sizeMe()(StandaloneAlignment);
 export function createAlignmentView(node, props = {}) {
@@ -135,4 +135,4 @@ export function createAlignmentView(node, props = {}) {
 
 window.createVectorEditor = createVectorEditor;
 window.createAlignmentView = createAlignmentView;
-window.createVersionHistoryView = createVersionHistoryView;
+// window.createVersionHistoryView = createVersionHistoryView;

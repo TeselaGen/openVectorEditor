@@ -10,15 +10,13 @@ import { uniqBy } from "lodash";
 export const PartTagSearch = withEditorProps(PartToolDropdown);
 
 function PartToolDropdown({
-  sequenceData,
-  updateSelectedPartTags,
-  selectedPartTags,
+  ed,
   allPartTags,
   annotationVisibilityShow,
   editTagsLink,
   dontAutoOpen
 }) {
-  if (!sequenceData) return <div>No Parts Present</div>;
+  if (!ed.sequenceLength || !ed.parts.length) return <div>No Parts Present</div>;
   const keyedTags = getKeyedTagsAndTagOptions(allPartTags);
 
   // this is what keyedTags looks like:
@@ -29,7 +27,7 @@ function PartToolDropdown({
   // }
 
   const tags = uniqBy(
-    flatMap(sequenceData.parts, ({ tags }) => {
+    flatMap(ed.parts, ({ tags }) => {
       return flatMap(tags, (t) => {
         const tag = keyedTags[t];
         if (!tag) return [];
@@ -43,10 +41,10 @@ function PartToolDropdown({
       <div>Search Parts By Tag: </div>
       <div style={{ display: "flex" }}>
         <TgSelect
-          value={selectedPartTags.parts}
+          value={ed.selectedPartTags}
           onChange={(...args) => {
             annotationVisibilityShow("parts");
-            updateSelectedPartTags(...args);
+            ed.updateSelectedPartTags(...args);
           }}
           isTagSelect
           multi

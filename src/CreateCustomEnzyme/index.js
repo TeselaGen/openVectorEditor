@@ -179,8 +179,7 @@ const CreateCustomEnzyme = function (props) {
         disabled={invalid}
         onClick={() => {
           addCustomEnzyme(enzyme);
-          ed.restrictionEnzymes.filteredRestrictionEnzymesAdd(value: name)
-          
+          ed.restrictionEnzymes.filteredRestrictionEnzymesAdd({value: name})
           hideModal && hideModal();
         }}
       ></DialogFooter>

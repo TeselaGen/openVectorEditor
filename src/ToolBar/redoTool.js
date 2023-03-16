@@ -1,23 +1,15 @@
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
 
-export default connectToEditor(editorState => {
-  return {
-    disabled: !(
-      editorState.sequenceDataHistory &&
-      editorState.sequenceDataHistory.future &&
-      editorState.sequenceDataHistory.future.length
-    )
-  };
-})(({ toolbarItemProps, redo, disabled }) => {
+export default ({ toolbarItemProps, ed }) => {
+  const disabled = !ed.sequenceDataHistory.future.length;
   return (
     <ToolbarItem
       {...{
         Icon: <Icon data-test="veRedoTool" icon="redo" />,
         disabled,
-        onIconClick: redo,
+        onIconClick: ed.redo,
         tooltip: (
           <span>
             Redo <span style={{ fontSize: 10 }}>(Cmd/Ctrl+Shift+Z)</span>
@@ -27,4 +19,4 @@ export default connectToEditor(editorState => {
       }}
     />
   );
-});
+}

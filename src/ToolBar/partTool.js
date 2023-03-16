@@ -5,43 +5,33 @@ import React from "react";
 // import { convertRangeTo1Based } from "ve-range-utils";
 //import { partIcon } from "teselagen-react-components";
 import ToolbarItem from "./ToolbarItem";
-import { connectToEditor } from "../withEditorProps";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
 
-export default connectToEditor(
-  ({ annotationVisibility = {}, toolBar = {} }) => {
-    return {
-      toggled: annotationVisibility.parts,
-      isOpen: toolBar.openItem === "partTool"
-    };
-  }
-)(
-  ({
-    allPartTags,
-    editTagsLink,
-    toolbarItemProps,
-    toggled,
-    annotationVisibilityToggle,
-    isOpen
-  }) => {
-    return (
-      <ToolbarItem
-        {...{
-          Icon: <Icon icon="doughnut-chart" />,
-          onIconClick: function () {
-            annotationVisibilityToggle("parts");
-          },
-          toggled,
-          editTagsLink,
-          allPartTags,
-          tooltip: "Show parts",
-          tooltipToggled: "Hide parts",
-          noDropdownIcon: !allPartTags,
-          Dropdown: PartTagSearch,
-          dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
-          ...toolbarItemProps
-        }}
-      />
-    );
-  }
-);
+export default ({
+  allPartTags,
+  editTagsLink,
+  toolbarItemProps,
+  ed
+}) => {
+  const toggled = ed.annotationVisibility.parts,
+  const isOpen = ed.openToolbarItem === "partTool"
+  return (
+    <ToolbarItem
+      {...{
+        Icon: <Icon icon="doughnut-chart" />,
+        onIconClick: function () {
+          ed.annotationVisibilityToggle("parts");
+        },
+        toggled,
+        editTagsLink,
+        allPartTags,
+        tooltip: "Show parts",
+        tooltipToggled: "Hide parts",
+        noDropdownIcon: !allPartTags,
+        Dropdown: PartTagSearch,
+        dropdowntooltip: (!isOpen ? "Show" : "Hide") + " Part Options",
+        ...toolbarItemProps
+      }}
+    />
+  );
+}

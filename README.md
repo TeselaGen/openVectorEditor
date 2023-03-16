@@ -340,7 +340,7 @@ These props consist of hooks and editor config options that can be passed like s
 				"redoTool",
 				"cutsiteTool",
 				"featureTool",
-				"alignmentTool",
+				// "alignmentTool",
 				// "oligoTool",
 				"orfTool",
 				// "viewTool",
