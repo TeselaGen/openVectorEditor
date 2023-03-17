@@ -1,7 +1,5 @@
 import { compose } from "recompose";
 import React from "react";
-
-import withEditorInteractions from "../withEditorInteractions";
 import { ReactSelectField, tgFormValues } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
 import { flatMap, forEach, keyBy } from "lodash";
@@ -13,15 +11,19 @@ import {
   shiftAnnotationsByLen
 } from "ve-sequence-utils";
 import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
+import { observer } from "mobx-react";
 
 function PCRTool(props) {
   const {
-    sequenceData,
+    ed,
     dimensions: { width, height },
     forwardPrimer,
     reversePrimer,
-    primerClicked
   } = props;
+  const{
+    sequenceData,
+    primerClicked,
+  } = ed
   const origSeqLen = sequenceData.sequence.length;
   forEach(sequenceData.primers, (p) => (p.originalId = p.id));
   const fPrimer = sequenceData.primers[forwardPrimer];
@@ -169,7 +171,7 @@ function PCRTool(props) {
 }
 
 export default compose(
-  withEditorInteractions,
+  observer,
   reduxForm({ form: "PCRTool" }),
   tgFormValues("forwardPrimer", "reversePrimer")
 )(PCRTool);

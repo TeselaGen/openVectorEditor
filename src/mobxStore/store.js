@@ -146,6 +146,8 @@ export default class EditorStore {
     };
   }
 
+
+
   get rowDataLV() {
     return prepareRowData(this.sequenceData, this.sequenceLength)[0];
   }
