@@ -1,4 +1,9 @@
+import { makeAutoObservable } from "mobx";
+
 export default class CopyOptions {
+  constructor() {
+    makeAutoObservable(this)
+  }
   features = true;
   partialFeatures = true;
   parts = true;

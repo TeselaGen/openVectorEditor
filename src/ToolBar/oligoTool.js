@@ -7,10 +7,10 @@ export default ({ toolbarItemProps,  ed }) => {
   const toggled = ed.annotationVisibility.primers;
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon icon="swap-horizontal" />,
         onIconClick: function () {
-          ed.annotationVisibilityToggle("primers");
+          ed.annotationVisibility.annotationVisibilityToggle("primers");
         },
         isHidden,
         toggled,

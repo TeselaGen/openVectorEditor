@@ -17,6 +17,7 @@ const getTextLength = (text) => {
 };
 
 function Labels({
+  ed,
   labels = [],
   extraSideSpace,
   smartCircViewLabelRender,
@@ -25,12 +26,17 @@ function Labels({
   noRedux,
   rotationRadians,
   textScalingFactor,
-  labelLineIntensity,
-  labelSize = 8,
-  fontHeightMultiplier = 2.4,
+  
   circularViewWidthVsHeightRatio, //width of the circular view
   condenseOverflowingXLabels = true //set to true to make labels tha
 }) {
+  const {
+
+    labelLineIntensity,
+    labelSize = 8,
+    fontHeightMultiplier = 2.4,
+  } = ed
+
   if (!labels.length) {
     return {
       component: null,

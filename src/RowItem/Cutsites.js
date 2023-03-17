@@ -105,17 +105,12 @@ function getSnipConnector(
 }
 
 function Cutsites(props) {
-  const {
-    annotationRanges,
-    charWidth,
-    bpsPerRow,
-    row,
-    sequenceLength,
-    topStrand,
-    hoveredAnnotation
-  } = props;
+  const { ed, row, topStrand, hoveredAnnotation } = props;
   const snips = [];
   const snipConnectors = [];
+  const { sequenceLength } = ed;
+  const { bpsPerRow, charWidth } = row;
+  const annotationRanges = row.cutsites;
   Object.keys(annotationRanges)
     .sort((a) =>
       annotationRanges[a].annotation.id === hoveredAnnotation ? 1 : -1
@@ -263,6 +258,4 @@ function Cutsites(props) {
   );
 }
 
-export default observer(
-  (Cutsites)
-);
+export default observer(Cutsites);

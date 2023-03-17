@@ -1,10 +1,14 @@
 import { filter } from "lodash";
+import { makeAutoObservable } from "mobx";
 import { findSequenceMatches } from "ve-sequence-utils/lib";
 import { searchableTypes } from "../utils/annotationTypes";
 
 export default class FindTool {
   constructor(ed) {
+    makeAutoObservable(this)
     this.ed = ed;
+    
+    
   }
   isOpen = false;
   isInline = !localStorage.getItem("veFindBarIsExpanded");

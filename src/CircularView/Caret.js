@@ -4,7 +4,7 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
 import { getSelectionMessage } from "../utils/editorUtils";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 
 function Caret({ ed }) {
   const {

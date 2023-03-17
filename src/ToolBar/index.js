@@ -22,6 +22,7 @@ import undoTool from "./undoTool";
 import redoTool from "./redoTool";
 import isMobile from "is-mobile";
 import { useMemo } from "react";
+import { autorun } from "mobx";
 
 const allTools = {
   downloadTool,
@@ -47,6 +48,7 @@ export function ToolBar(props) {
     modifyTools,
     contentLeft,
     showMenuBar,
+    ed,
     displayMenuBarAboveTools,
     isProtein,
     openHotkeyDialog,
@@ -60,9 +62,6 @@ export function ToolBar(props) {
     toolList = defaultToolList,
     ...rest
   } = props;
-  const userDefinedProps = {
-    ...pick(props, userDefinedHandlersAndOpts)
-  };
 
   const toolListToUse = useMemo(() => {
     return flatMap(toolList, (toolNameOrOverrides) => {
@@ -94,10 +93,7 @@ export function ToolBar(props) {
       }
 
       if (isProtein) {
-        if (
-          toolName === "cutsiteTool" ||
-          toolName === "orfTool" 
-        ) {
+        if (toolName === "cutsiteTool" || toolName === "orfTool") {
           return [];
         }
       }
@@ -116,15 +112,13 @@ export function ToolBar(props) {
       return (
         <Tool
           {...rest}
-          {...userDefinedProps}
           toolbarItemProps={{
-            ...userDefinedProps,
             index,
             toolName,
-            editorName,
+            ed,
             ...toolOverride
           }}
-          editorName={editorName}
+          ed={ed}
           key={toolName}
         />
       );
@@ -159,7 +153,6 @@ export function ToolBar(props) {
         {showMenuBar && (
           <MenuBar
             openHotkeyDialog={openHotkeyDialog}
-            {...userDefinedProps}
             onSave={onSave} //needs to be passed so that editor commands will have it
             style={{ marginLeft: 0 }}
             editorName={editorName}

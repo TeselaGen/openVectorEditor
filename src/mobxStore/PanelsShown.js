@@ -1,7 +1,11 @@
 import { flatMap } from "lodash";
 import { removeItem } from "../utils/arrayUtils";
 import immer from "immer";
+import { makeAutoObservable } from "mobx";
 export default class PanelShown {
+  constructor() {
+    makeAutoObservable(this)
+  }
   panels = [
     [
       {

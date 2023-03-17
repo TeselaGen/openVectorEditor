@@ -2,24 +2,21 @@ import React from "react";
 import classnames from "classnames";
 import "./style.css";
 import { getSelectionMessage } from "../../utils/editorUtils";
-import { observer } from "mobx-react-lite";
-// import draggableClassnames from "../../constants/draggableClassnames";
+import { observer } from "mobx-react";
 
-function Caret({ed}) {
-  const {
-    charWidth,
-    row,
-    sequenceLength,
-    caretPosition,
-    isProtein,
-    onClick,
-    isDraggable,
-    leftMargin = 0,
-    onRightClick,
-    style,
-    selectionMessage,
-    className = ""
-  } = ed;
+function Caret({
+  ed,
+  row,
+  onClick,
+  selectionMessage,
+  style,
+  isDraggable,
+  leftMargin = 0,
+  onRightClick,
+  className = ""
+}) {
+  const { charWidth } = row;
+  const { sequenceLength, caretPosition, isProtein } = ed;
 
   if (
     (row.start <= caretPosition && row.end + 1 >= caretPosition) ||

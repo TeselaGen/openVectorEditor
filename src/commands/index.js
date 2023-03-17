@@ -225,7 +225,8 @@ const fileCommandDefs = {
       return [
         {
           text: "Uncheck All",
-          onClick: () => props.ed.annotationVisibility.hideFeatureTypes(Object.keys(types)),
+          onClick: () =>
+            props.ed.annotationVisibility.hideFeatureTypes(Object.keys(types)),
           shouldDismissPopover: false
         },
         {
@@ -422,9 +423,9 @@ const editCommandDefs = {
     isDisabled: (props) =>
       props.readOnly ||
       !(
-        props.sequenceDataHistory &&
-        props.sequenceDataHistory.past &&
-        props.sequenceDataHistory.past.length
+        props.ed.sequenceDataHistory &&
+        props.ed.sequenceDataHistory.past &&
+        props.ed.sequenceDataHistory.past.length
       ),
     handler: (props) => props.undo(),
     hotkey: "mod+z"
@@ -436,9 +437,9 @@ const editCommandDefs = {
     isDisabled: (props) =>
       props.readOnly ||
       !(
-        props.sequenceDataHistory &&
-        props.sequenceDataHistory.future &&
-        props.sequenceDataHistory.future.length
+        props.ed.sequenceDataHistory &&
+        props.ed.sequenceDataHistory.future &&
+        props.ed.sequenceDataHistory.future.length
       ),
     handler: (props) => props.redo(),
     hotkey: "mod+shift+z"
@@ -1344,7 +1345,7 @@ const toolCommandDefs = {
     name: "Create Custom Enzyme",
     handler: () => {
       showDialog({
-        dialogType: "CreateCustomEnzyme",
+        dialogType: "CreateCustomEnzyme"
       });
     },
     isHidden: (props) => props.overrideManageEnzymes
@@ -1380,8 +1381,8 @@ const labelCommandDefs = {
     submenu: (props) =>
       map(Object.keys(labelSizes), (key) => ({
         text: key,
-        checked: props.labelSize === labelSizes[key],
-        onClick: () => props.changeLabelSize(labelSizes[key])
+        checked: props.ed.labelSize === labelSizes[key],
+        onClick: () => props.ed.changeLabelSize(labelSizes[key])
       }))
   }
 };

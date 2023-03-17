@@ -11,6 +11,7 @@ export default observer(({ toolbarItemProps, ed }) => {
   return (
     <ToolbarItem
       {...{
+        ed,
         Icon: <Icon icon="eye-open" />,
         onIconClick: "toggleDropdown",
         Dropdown: VisibilityOptions,

@@ -1,7 +1,7 @@
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
 import { some, isEqual, debounce } from "lodash";
-import prepareRowData from "../utils/prepareRowData";
+import prepareRowData from "../mobxStore/utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
@@ -182,7 +182,6 @@ export class RowView extends React.Component {
     );
   }
   updateScrollPosition = (oldProps, newProps) => {
-    this.cache = {};
     if (this.dragging === true) {
       return;
     }
@@ -373,8 +372,6 @@ export class RowView extends React.Component {
                 this.setState({ scalePct });
               },
               isRowView: true,
-              isProtein: ed.isProtein,
-              bpsPerRow,
               ...RowItemProps
             }}
             row={rowData[index]}

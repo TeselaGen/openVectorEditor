@@ -1,4 +1,9 @@
+import { makeAutoObservable } from "mobx"
+
 export default class AnnotationLabelVisibility{
+  constructor() {
+    makeAutoObservable(this)
+  }
   features= true
   parts= true
   primers= true

@@ -1,29 +1,33 @@
+import { makeAutoObservable } from "mobx";
 import { getVirtualDigest } from "ve-sequence-utils/lib";
-import { MAX_DIGEST_CUTSITES, MAX_PARTIAL_DIGEST_CUTSITES } from "../constants/constants";
+import {
+  MAX_DIGEST_CUTSITES,
+  MAX_PARTIAL_DIGEST_CUTSITES
+} from "../constants/constants";
 
 export default class DigestTool {
-
-  constructor({ed}){
-    this.ed = ed
+  constructor({ ed }) {
+    this.ed = ed;
+    makeAutoObservable(this);
   }
-  selectedFragment= undefined;
-  computePartialDigest= false;
+  selectedFragment = undefined;
+  computePartialDigest = false;
   updateSelectedFragment(payload) {
-    this.selectedFragment = payload
+    this.selectedFragment = payload;
   }
-  updateComputePartialDigest(payload){
-    this.computePartialDigest = payload
+  updateComputePartialDigest(payload) {
+    this.computePartialDigest = payload;
   }
 
-  get computePartialDigestDisabled(){
+  get computePartialDigestDisabled() {
     return this.cutsites.length > MAX_PARTIAL_DIGEST_CUTSITES;
   }
 
-  get computeDigestDisabled(){
+  get computeDigestDisabled() {
     return this.cutsites.length > MAX_DIGEST_CUTSITES;
   }
 
-  get virtualDigest(){
+  get virtualDigest() {
     const { fragments, overlappingEnzymes } = getVirtualDigest({
       cutsites: this.ed.cutsites,
       sequenceLength: this.ed.sequenceLength,
@@ -33,7 +37,7 @@ export default class DigestTool {
       computeDigestDisabled: this.ed.computeDigestDisabled
     });
 
-    const lanes =  [
+    const lanes = [
       fragments.map((f) => ({
         ...f,
         onFragmentSelect: () => {
@@ -45,10 +49,8 @@ export default class DigestTool {
           this.ed.updateSelectedFragment(f.Intentid);
         }
       }))
-    ]
+    ];
 
-    return {lanes,overlappingEnzymes}
+    return { lanes, overlappingEnzymes };
   }
 }
-
-

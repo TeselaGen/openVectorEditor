@@ -24,12 +24,21 @@ import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
 import { observer } from "mobx-react";
 import EditorStore from "../../../src/mobxStore/store";
+import { autorun } from "mobx";
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
 const ed = new EditorStore({});
+
+autorun(() => {
+  console.log(
+    `ed.annotationVisibility.cutsites:`,
+    ed.annotationVisibility.cutsites
+  );
+});
+
 const updateEditor = ed.updateEditor;
 const MyCustomTab = observer(function () {
   console.info("These are the props passed to our Custom Tab:", ed);
@@ -1920,6 +1929,7 @@ clickOverrides: {
           }
 
           <Editor
+            ed={ed}
             panelMap={{
               myCustomTab: MyCustomTab
             }}

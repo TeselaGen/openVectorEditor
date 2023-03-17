@@ -5,7 +5,7 @@ import {
 } from "ve-sequence-utils";
 import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
-import { compose } from "recompose";
+import { branch, compose } from "recompose";
 import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
@@ -19,7 +19,7 @@ import Combokeys from "combokeys";
 import {
   showContextMenu,
   showConfirmationDialog,
-  commandMenuEnhancer,
+  commandMenuEnhancer
 } from "teselagen-react-components";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
@@ -94,6 +94,7 @@ function VectorInteractionHOC(Component /* options */) {
         return <ConnectedMenu {...props} {...p} />;
       };
     }
+    
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
@@ -139,16 +140,15 @@ function VectorInteractionHOC(Component /* options */) {
       moveCaretBindings.forEach(({ keyCombo, type }) => {
         this.combokeys.bind(keyCombo, (event) => {
           const shiftHeld = event.shiftKey;
-          const bpsPerRow = getBpsPerRow(this.props);
           const {
             selectionLayer,
             caretPosition,
             sequenceLength,
-            sequenceData: { isProtein, circular } = {},
-            circular: circular2,
+            isProtein,
+            circular,
             caretPositionUpdate,
             selectionLayerUpdate
-          } = this.props;
+          } = this.props.ed;
           const moveBy = moveCaret({
             sequenceLength,
             bpsPerRow,
@@ -251,14 +251,15 @@ function VectorInteractionHOC(Component /* options */) {
     };
 
     handleCutOrCopy = (isCut) => (e) => {
+      const { ed } = this.props;
       const {
         onCopy = () => {},
         sequenceData,
         selectionLayer,
         copyOptions,
         readOnly
-      } = this.props;
-      const onCut = this.props.onCut || this.props.onCopy || (() => {});
+      } = ed;
+      const onCut = this.props.ed.onCut || this.props.ed.onCopy || (() => {});
       const seqData = tidyUpSequenceData(
         this.sequenceDataToCopy ||
           getSequenceDataBetweenRange(
@@ -330,9 +331,6 @@ function VectorInteractionHOC(Component /* options */) {
         selectionLayer = { start: -1, end: -1 },
         sequenceData = { sequence: "" },
         readOnly
-        // updateSequenceData,
-        // wrappedInsertSequenceDataAtPositionOrRange
-        // handleInsert
       } = this.props;
       const sequenceLength = sequenceData.sequence.length;
       const isReplace = selectionLayer.start > -1;
@@ -367,7 +365,7 @@ function VectorInteractionHOC(Component /* options */) {
         sequenceData = { sequence: "" },
         readOnly,
         updateSequenceData,
-        wrappedInsertSequenceDataAtPositionOrRange,
+        insertSequenceDataAtPositionOrRange,
         caretPositionUpdate
         // handleInsert
       } = this.props;
@@ -397,7 +395,7 @@ function VectorInteractionHOC(Component /* options */) {
             isCaretAtEndOfSeq = true;
           }
         }
-        const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
+        const [newSeqData] = insertSequenceDataAtPositionOrRange(
           {},
           sequenceData,
           rangeToDelete
@@ -1124,21 +1122,23 @@ function VectorInteractionHOC(Component /* options */) {
   };
 }
 
+const withEditorInteractions = compose(
+  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
+);
+export default withEditorInteractions;
 
-
-
-const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
+const insertAndSelectHelper = ({ seqDataToInsert, ed }) => {
   const {
     updateSequenceData,
-    wrappedInsertSequenceDataAtPositionOrRange,
+    insertSequenceDataAtPositionOrRange,
     sequenceData,
     selectionLayerUpdate,
     caretPosition,
     selectionLayer
-  } = props;
+  } = ed;
 
   const [newSeqData, { maintainOriginSplit }] =
-    wrappedInsertSequenceDataAtPositionOrRange(
+    insertSequenceDataAtPositionOrRange(
       seqDataToInsert,
       sequenceData,
       caretPosition > -1 ? caretPosition : selectionLayer

@@ -12,7 +12,7 @@ export default observer(({ toolbarItemProps, ed }) => {
       {...{
         Icon: <Icon data-test="cutsiteHideShowTool" icon="cut" />,
         onIconClick: function () {
-          ed.annotationVisibilityToggle("cutsites");
+          ed.annotationVisibility.annotationVisibilityToggle("cutsites");
         },
         toggled: ed.annotationVisibility.cutsites,
         tooltip: "Show cut sites",

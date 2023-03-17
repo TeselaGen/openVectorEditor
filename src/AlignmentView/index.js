@@ -45,7 +45,6 @@ import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../mobxStore/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
-import prepareRowData from "../utils/prepareRowData";
 
 import "./style.css";
 import {
@@ -82,6 +81,8 @@ import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
 import LinearView from "../LinearView";
+import prepareRowData from "../mobxStore/utils/prepareRowData";
+import { observer } from "mobx-react";
 
 let charWidthInLinearViewDefault = 12;
 try {
@@ -1708,14 +1709,7 @@ export class AlignmentView extends React.Component {
                 />
               </div>
             )}
-            <GlobalDialog
-            // {...pickedUserDefinedHandlersAndOpts}
-            // dialogOverrides={pick(this.props, [
-            //   "AddOrEditFeatureDialogOverride",
-            //   "AddOrEditPartDialogOverride",
-            //   "AddOrEditPrimerDialogOverride"
-            // ])}
-            />
+            <GlobalDialog />
           </div>
         </ResizeSensor>
       </PinchHelper>
@@ -2033,7 +2027,7 @@ export default compose(
   )
 )(AlignmentView);
 
-const PerformantCaret = view(({ easyStore, ...rest }) => {
+const PerformantCaret = observer(({ easyStore, ...rest }) => {
   return <Caret caretPosition={easyStore.caretPosition} {...rest} />;
 });
 

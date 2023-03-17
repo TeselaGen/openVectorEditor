@@ -9,7 +9,7 @@ export default genericAnnotationProperties({
   withBases: true,
   additionalFooterEls: (props) => {
     return (
-      <Button onClick={props.createNewPCR} intent="success">
+      <Button onClick={props.ed.createNewPCR} intent="success">
         Simulate PCR
       </Button>
     );

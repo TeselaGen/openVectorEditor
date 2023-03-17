@@ -14,10 +14,10 @@ export default ({ toolbarItemProps, ed }) => {
   const isOpen = ed.openToolbarItem === "orfTool";
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon data-test="orfTool" icon={orfIcon} />,
         onIconClick: function () {
-          ed.annotationVisibilityToggle("orfs");
+          ed.annotationVisibility.annotationVisibilityToggle("orfs");
         },
         toggled,
         tooltip: "Show Open Reading Frames",

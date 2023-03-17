@@ -67,15 +67,9 @@ function getPropsForType(props, type, pluralType, extraProps) {
 export default function RowItem(props) {
   let {
     ed,
-    noRedux,
     charWidth = defaultCharWidth,
-    selectionLayer = { start: -1, end: -1 },
-    deletionLayers = {},
-    replacementLayers = {},
-    searchLayers = [],
     rowTopComp,
     rowBottomComp,
-    isProtein,
     tickSpacing,
     truncateLabelsThatDoNotFit = true,
     aminoAcidNumbersHeight = rowHeights.aminoAcidNumbers.height,
@@ -85,44 +79,40 @@ export default function RowItem(props) {
     primerHeight = rowHeights.primers.height,
     axisMarginTop = rowHeights.axis.marginTop,
     width,
-    annotationVisibility = {},
-    annotationLabelVisibility = {},
-    additionalSelectionLayers = [],
-    caretPosition = -1,
-    row = {
-      sequence: "",
-      start: 0,
-      end: 0,
-      rowNumber: 0
-    },
-    readOnly,
+    row,
     isRowView,
     alignmentType,
     alignmentData,
-    sequenceLength = row.sequence.length,
     chromatogramData,
-    fullSequence = "",
-    replacementLayerClicked = noop,
-    replacementLayerRightClicked = noop,
     searchLayerClicked = noop,
     backgroundRightClicked = noop,
     selectionLayerRightClicked = noop,
     searchLayerRightClicked = noop,
     translationDoubleClicked = noop,
     minHeight = 22,
-    bpsPerRow = sequenceLength,
-    editorName,
     rowContainerStyle,
     onScroll,
     scrollData,
-    onlyShowLabelsThatDoNotFit,
-    labelLineIntensity,
+
     isLinearView,
     scalePct,
     setScalePct,
     extraAnnotationProps = {}
   } = props;
+  const {
+    sequence: fullSequence,
+    onlyShowLabelsThatDoNotFit,
+    selectionLayer,
+    deletionLayers,
+    replacementLayers,
+    searchLayers,
+    annotationLabelVisibility,
+    additionalSelectionLayers,
+    caretPosition,
+    sequenceLength
+  } = ed;
 
+  const { sequence = "", annotationVisibility, bpsPerRow } = row;
   const {
     chromatogram: showChromatogram,
     // orfLabels: showOrfLabel,
@@ -137,8 +127,6 @@ export default function RowItem(props) {
     reverseSequence: showReverseSequence,
     sequence: showSequence
   } = annotationVisibility;
-
-  const { sequence = "", cutsites = [] } = row;
 
   const reverseSequence = getComplementSequenceString(
     (alignmentData && alignmentData.sequence) || sequence
@@ -189,16 +177,10 @@ export default function RowItem(props) {
   };
 
   const annotationCommonProps = {
-    noRedux,
-    editorName,
-    charWidth,
-    bpsPerRow,
+    ed,
     getGaps,
-    isProtein,
-    readOnly,
-    sequenceLength,
     isRowView,
-    row: { start: row.start, end: row.end }
+    row
   };
 
   const drawLabels = (type, noDraw, { filterOpts, ...extraProps } = {}) => {
@@ -223,7 +205,6 @@ export default function RowItem(props) {
       <Labels
         {...annotationCommonProps}
         onlyShowLabelsThatDoNotFit={onlyShowLabelsThatDoNotFit}
-        labelLineIntensity={labelLineIntensity}
         rangeMax={bpsPerRow}
         annotationRanges={ranges}
         annotationHeight={cutsiteLabelHeight}
@@ -414,25 +395,17 @@ export default function RowItem(props) {
         >
           {showSequence && (
             <Sequence
-              sequenceLength={sequenceLength}
-              cutsites={cutsites} //pass this in order to get children cutsites to re-render
-              showDnaColors={showDnaColors}
-              fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
+              ed={ed}
+              row={row}
               scrollData={scrollData}
               hideBps={charWidth < 7}
-              sequence={alignmentData ? alignmentData.sequence : row.sequence} //from alignment data and has "-"" chars in it
-              rowStart={row.start}
-              rowEnd={row.end}
               height={sequenceHeight}
-              showCutsites={showCutsites}
-              charWidth={charWidth}
-              alignmentData={alignmentData}
               {...annotationCommonProps}
             >
-              {showCutsites && Object.keys(cutsites).length > 0 && (
+              {showCutsites && Object.keys(row.cutsites).length > 0 && (
                 <Cutsites
-                  sequenceLength={sequenceLength}
-                  annotationRanges={cutsites}
+                  ed={ed}
+                  row={row}
                   topStrand
                   {...annotationCommonProps}
                 />
@@ -444,10 +417,7 @@ export default function RowItem(props) {
 
           {showReverseSequence && (
             <Sequence
-              sequenceLength={sequenceLength}
-              fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               isReverse
-              cutsites={cutsites} //pass this in order to get children cutsites to re-render
               showDnaColors={showDnaColors}
               hideBps={charWidth < 7}
               length={reverseSequence.length}
@@ -471,7 +441,7 @@ export default function RowItem(props) {
           {showCutsites && showCutsitesInSequence && (
             <CutsiteSelectionLayers
               {...{
-                editorName,
+                ed,
                 cutsites,
                 annotationCommonProps,
                 showReverseSequence,
@@ -495,7 +465,7 @@ export default function RowItem(props) {
         {drawLabels("feature")}
         {drawAnnotations("feature")}
 
-        {map(replacementLayers, function (replacementLayer) {
+        {/* {map(replacementLayers, function (replacementLayer) {
           if (!replacementLayer) return null;
           const atCaret = replacementLayer.caretPosition > -1;
           let normedCaretPos;
@@ -535,9 +505,9 @@ export default function RowItem(props) {
             const arrowHeight = isStart ? 8 : 0;
             return (
               <Sequence
-                sequenceLength={sequenceLength}
+                ed={ed}
+                row={row}
                 isReplacementLayer
-                showDnaColors={showDnaColors}
                 key={index}
                 sequence={seqInRow}
                 startOffset={startOffset}
@@ -582,7 +552,7 @@ export default function RowItem(props) {
               </Sequence>
             );
           });
-        })}
+        })} */}
         {/* <DeletionLayers
           deletionLayerClicked={deletionLayerClicked}
           deletionLayerRightClicked={deletionLayerRightClicked}
@@ -608,13 +578,9 @@ export default function RowItem(props) {
         )}
         {caretPosition > -1 && (
           <Caret
-            caretPosition={caretPosition}
             {...{ ...annotationCommonProps, ...{ getGaps: undefined } }}
-            row={
-              alignmentData
-                ? { start: 0, end: alignmentData.sequence.length - 1 }
-                : row
-            }
+            row={row}
+            ed={ed}
           />
         )}
       </div>

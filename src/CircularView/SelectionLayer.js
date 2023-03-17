@@ -9,7 +9,7 @@ import {
   getSelectionMessage,
   preventDefaultStopPropagation
 } from "../utils/editorUtils";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 
 function SelectionLayer({
   ed

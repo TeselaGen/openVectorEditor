@@ -56,13 +56,8 @@ class RemoveDuplicatesDialog extends React.Component {
     });
   };
   recomputeDups = () => {
-    const {
-      ed,
-      type,
-      ignoreName,
-      ignoreStrand,
-      ignoreStartAndEnd
-    } = this.props;
+    const { ed, type, ignoreName, ignoreStrand, ignoreStartAndEnd } =
+      this.props;
     const { sequenceLength } = ed;
 
     const annotations = ed[type];
@@ -177,11 +172,9 @@ class RemoveDuplicatesDialog extends React.Component {
 }
 
 export default compose(
-  wrapDialog(),
   observer,
-
+  wrapDialog(),
   withSelectedEntities("duplicatesToRemove"),
-
   reduxForm({
     form: "RemoveDuplicatesDialog"
   }),

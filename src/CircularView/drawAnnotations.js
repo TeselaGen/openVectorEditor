@@ -9,23 +9,22 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 import Feature from "./Feature";
 import getAnnotationClassnames from "../utils/getAnnotationClassnames";
+import { observer } from "mobx-react";
 // import { normalizeAngleRange } from "./normalizeAngleRange";
 // import { normalizeAngle } from "./normalizeAngle";
 
 //annotations coming in can be positioned either by caretPosition or range
-function drawAnnotations(props) {
+const drawAnnotations = function (props) {
   const {
-    readOnly,
+    ed,
     annotationType,
     radius,
     noHover,
-    isProtein,
     type,
     annotations,
     annotationHeight,
     noTitle,
     spaceBetweenAnnotations,
-    sequenceLength,
     showCicularViewInternalLabels,
     // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
     // editorName,
@@ -46,6 +45,7 @@ function drawAnnotations(props) {
     // isZoomedIn,
     // visibleAngleRange
   } = props;
+  const { sequenceLength, isProtein, readOnly } = ed;
   const totalAnnotationHeight = annotationHeight + spaceBetweenAnnotations;
   const featureITree = new IntervalTree();
   let maxYOffset = 0;
@@ -282,7 +282,6 @@ function drawAnnotations(props) {
               annotationHeight,
               annotationRadius,
               annotationType,
-              isProtein,
               noTitle,
               titleText,
               classNames,
@@ -315,7 +314,7 @@ function drawAnnotations(props) {
       : maxYOffset * totalAnnotationHeight + 0.5 * annotationHeight,
     labels
   };
-}
+};
 
 export default drawAnnotations;
 

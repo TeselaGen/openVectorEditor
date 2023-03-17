@@ -1,4 +1,9 @@
+import { makeAutoObservable } from "mobx"
+
 export default class AnnotationsToSupport{
+  constructor() {
+    makeAutoObservable(this)
+  }
   parts = true
   features = true
   translations = true

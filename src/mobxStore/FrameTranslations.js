@@ -1,5 +1,9 @@
+import { makeAutoObservable } from "mobx"
 
 export default class FrameTranslations {
+  constructor() {
+    makeAutoObservable(this)
+  }
   frameTranslations = {
   "1": false,
   "2": false,

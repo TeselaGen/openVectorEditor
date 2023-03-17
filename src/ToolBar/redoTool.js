@@ -6,7 +6,7 @@ export default ({ toolbarItemProps, ed }) => {
   const disabled = !ed.sequenceDataHistory.future.length;
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon data-test="veRedoTool" icon="redo" />,
         disabled,
         onIconClick: ed.redo,

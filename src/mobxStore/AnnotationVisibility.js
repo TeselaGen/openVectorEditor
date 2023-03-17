@@ -1,6 +1,10 @@
 import { omit } from "lodash";
+import { makeAutoObservable } from "mobx";
 
 export default class AnnotationVisibility{
+  constructor() {
+    makeAutoObservable(this)
+  }
   featureTypesToHide = {}
   featureIndividualToHide= {}
   partIndividualToHide= {}

@@ -9,7 +9,7 @@ export default observer(({ toolbarItemProps, alwaysAllowSave, handleSave, ed }) 
     ed.stateTrackingId === ed.lastSavedId;
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon data-test="saveTool" icon="floppy-disk" />,
         onIconClick: handleSave,
         disabled: alwaysAllowSave

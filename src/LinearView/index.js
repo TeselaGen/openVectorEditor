@@ -5,7 +5,7 @@ import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
 import "./style.css";
 import {
-  getClientX,
+  getClientX
   // getParedDownWarning,
 } from "../utils/editorUtils";
 import { SequenceName } from "./SequenceName";
@@ -199,23 +199,12 @@ export const LinearView = (props) => {
               charWidth: ed.charWidthLV,
               // scrollData,
               width: ed.innerWidthLV,
-              bpsPerRow: ed.sequenceLength,
               tickSpacing:
                 ed.tickSpacingLV ||
                 (ed.isViewZoomedLV
                   ? massageTickSpacing(Math.ceil(120 / ed.charWidthLV))
                   : Math.floor(ed.sequenceLength / (ed.isProtein ? 9 : 10))),
-              annotationVisibility: {
-                ...ed.annotationVisibility,
-                ...((!ed.isViewZoomedLV || ed.charWidthLV < 5) && {
-                  translations: false,
-                  primaryProteinSequence: false,
-                  reverseSequence: false,
-                  sequence: false,
-                  cutsitesInSequence: false
-                }),
-                ...annotationVisibilityOverrides
-              },
+
               ...RowItemProps
             }}
             row={ed.rowDataLV}
@@ -226,7 +215,6 @@ export const LinearView = (props) => {
     </Draggable>
   );
 };
-
 
 export default withEditorInteractions(LinearView);
 

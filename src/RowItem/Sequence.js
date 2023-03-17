@@ -6,6 +6,7 @@ import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import { partOverhangs } from "./partOverhangs";
 import { isPositionWithinRange } from "ve-range-utils";
+import { observer } from "mobx-react";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));
@@ -14,10 +15,9 @@ class Sequence extends React.Component {
   render() {
     const {
       ed,
+      row,
       isReplacementLayer,
-      sequence,
       hideBps,
-      charWidth,
       containerStyle = {},
       children,
       isReverse,
@@ -26,12 +26,10 @@ class Sequence extends React.Component {
       startOffset = 0,
       chunkSize = 100,
       scrollData,
-      
-      alignmentData,
-      sequenceLength,
-      rowStart,
-      rowEnd
+      alignmentData
     } = this.props;
+    const { sequenceLength } = ed;
+    const { sequence, charWidth } = row;
 
     // the fudge factor is used to position the sequence in the middle of the <text> element
     const fudge = charWidth - realCharWidth;
@@ -66,10 +64,7 @@ class Sequence extends React.Component {
       overlapToBold = isDigestPart
         ? getOverlapsOfPotentiallyCircularRanges(
             { start, end },
-            {
-              start: rowStart,
-              end: rowEnd
-            },
+            row,
             sequenceLength
           )
         : undefined;
@@ -126,7 +121,12 @@ class Sequence extends React.Component {
             textLength: (alignmentData ? seqReadWidth : width) - fudge - fudge2
           }}
         >
-          {getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength })}
+          {getBoldRegion({
+            sequence,
+            overlapToBold,
+            rowStart: row.start,
+            sequenceLength
+          })}
         </text>
       );
     }
@@ -186,67 +186,58 @@ class Sequence extends React.Component {
 
 export default Sequence;
 
-class ColoredSequence extends React.Component {
-  shouldComponentUpdate(newProps) {
-    const { props } = this;
-    if (
-      ["charWidth", "sequence", "height", "isReverse", "width"].some(
-        (key) => props[key] !== newProps[key]
-      )
-    )
-      return true;
-    if (!!props.alignmentData !== !!newProps.alignmentData) return true;
-    return false;
-  }
-  drawRects = () => {
-    let {
-      charWidth,
-      sequence,
-      height,
-      isReverse,
-      alignmentData,
-      getGaps,
-      fudge,
-      totalWidth
-    } = this.props;
-    if (alignmentData) {
-      sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
-    }
-    //we use big paths instead of many individual rects to improve performance
-    const colorPaths = Object.values(dnaToColor).reduce((acc, color) => {
-      acc[color] = "";
-      return acc;
-    }, {});
-    const gapsBefore = getGaps ? getGaps({ start: 0, end: 0 }).gapsBefore : 0;
-    sequence.split("").forEach((char, i) => {
-      const width = Number(charWidth);
-      const color = getDnaColor(char, isReverse);
-      const x = (i + gapsBefore) * charWidth;
-      const y = 0;
-      colorPaths[color] =
-        (colorPaths[color] || "") +
-        `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
-          y + height
-        }`;
-    });
-    const scalex = (totalWidth - fudge) / totalWidth;
+const ColoredSequence = observer(
+  class ColoredSequence extends React.Component {
+    drawRects = () => {
+      let {
+        charWidth,
+        sequence,
+        height,
+        isReverse,
+        alignmentData,
+        getGaps,
+        fudge,
+        totalWidth
+      } = this.props;
+      if (alignmentData) {
+        sequence = sequence.replace(/^-+/g, "").replace(/-+$/g, "");
+      }
+      //we use big paths instead of many individual rects to improve performance
+      const colorPaths = Object.values(dnaToColor).reduce((acc, color) => {
+        acc[color] = "";
+        return acc;
+      }, {});
+      const gapsBefore = getGaps ? getGaps({ start: 0, end: 0 }).gapsBefore : 0;
+      sequence.split("").forEach((char, i) => {
+        const width = Number(charWidth);
+        const color = getDnaColor(char, isReverse);
+        const x = (i + gapsBefore) * charWidth;
+        const y = 0;
+        colorPaths[color] =
+          (colorPaths[color] || "") +
+          `M${x},${y} L${x + width},${y} L${x + width},${y + height} L${x},${
+            y + height
+          }`;
+      });
+      const scalex = (totalWidth - fudge) / totalWidth;
 
-    return (
-      <g
-        style={{
-          transform: `scaleX(${scalex})`
-        }}
-      >
-        {map(colorPaths, (d, color) => {
-          return <path transform="tran" key={color} d={d} fill={color} />;
-        })}
-      </g>
-    );
-  };
-  render() {
-    return this.drawRects();
+      return (
+        <g
+          style={{
+            transform: `scaleX(${scalex})`
+          }}
+        >
+          {map(colorPaths, (d, color) => {
+            return <path transform="tran" key={color} d={d} fill={color} />;
+          })}
+        </g>
+      );
+    };
+    render() {
+      return this.drawRects();
+    }
   }
-}
+);
 
 function getBoldRegion({ sequence, overlapToBold, rowStart, sequenceLength }) {
   const toRet = [];

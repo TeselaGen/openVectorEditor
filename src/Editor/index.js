@@ -106,6 +106,9 @@ const getSplitScreenListStyle = (isDraggingOver, isDragging) => {
 };
 
 export class Editor extends React.Component {
+  state = {
+    previewModeFullscreen: false
+  };
   getExtraPanel = (/*panelOptions */) => {
     return [];
   };
@@ -211,7 +214,7 @@ export class Editor extends React.Component {
 
   onTabDragEnd = (result) => {
     this.setState({ tabDragging: false });
-    const { panelsShownUpdate, panelsShown } = this.props;
+    const { ed } = this.props;
     // dropped outside the list
     if (!result.destination) {
       return;
@@ -220,11 +223,11 @@ export class Editor extends React.Component {
     let newPanelsShown;
     if (result.destination.droppableId !== result.source.droppableId) {
       //we're moving a tab from one group to another group
-      const secondPanel = panelsShown.length === 1 ? [[]] : [];
-      const panelsToMapOver = [...panelsShown, ...secondPanel];
+      const secondPanel = ed.panelsShown.panels.length === 1 ? [[]] : [];
+      const panelsToMapOver = [...ed.panelsShown.panels, ...secondPanel];
       newPanelsShown = map(panelsToMapOver, (panelGroup, groupIndex) => {
         const panelToMove =
-          panelsShown[
+          ed.panelsShown.panels[
             Number(result.source.droppableId.replace("droppable-id-", ""))
           ][result.source.index];
         if (
@@ -256,7 +259,7 @@ export class Editor extends React.Component {
       });
     } else {
       //we're moving tabs within the same group
-      newPanelsShown = map(panelsShown, (panelGroup, groupIndex) => {
+      newPanelsShown = map(ed.panelsShown.panels, (panelGroup, groupIndex) => {
         if (
           Number(groupIndex) ===
           Number(result.destination.droppableId.replace("droppable-id-", ""))
@@ -279,13 +282,13 @@ export class Editor extends React.Component {
     filter(newPanelsShown, (panelGroup) => {
       return panelGroup.length;
     });
-    panelsShownUpdate(newPanelsShown);
+    ed.panelsShown.panelsShownUpdate(newPanelsShown);
   };
 
   getPanelsToShow = () => {
-    const { panelsShown } = this.props.ed;
-    if (isMobile()) return [flatMap(panelsShown)];
-    return map(panelsShown);
+    const { ed } = this.props;
+    if (isMobile()) return [flatMap(ed.panelsShown.panels)];
+    return map(ed.panelsShown.panels);
   };
 
   onPreviewModeButtonContextMenu = (event) => {
@@ -341,14 +344,7 @@ export class Editor extends React.Component {
       showMenuBar,
       displayMenuBarAboveTools = true,
       // updateSequenceData,      readOnly,
-      setPanelAsActive,
       style = {},
-      togglePanelFullScreen,
-      collapseSplitScreen,
-      expandTabToSplitScreen,
-      closePanel,
-      editorName,
-      // onSave,
       hideStatusBar,
       // getVersionList,
       // getSequenceAtVersion,
@@ -361,7 +357,7 @@ export class Editor extends React.Component {
       previewModeButtonMenu,
       allowPanelTabDraggable = true
     } = this.props;
-    const { annotationsToSupport } = ed;
+    const { annotationsToSupport, editorName } = ed;
     // if (
     //   !this.props.noVersionHistory &&
     //   this.props.versionHistory &&
@@ -486,10 +482,6 @@ export class Editor extends React.Component {
         if (fullScreen) this.hasFullscreenPanel = true;
       });
     });
-    const pickedUserDefinedHandlersAndOpts = pick(
-      this.props,
-      userDefinedHandlersAndOpts
-    );
     const panels = flatMap(panelsToShow, (panelGroup, index) => {
       // let activePanelId
       let activePanelId;
@@ -520,7 +512,7 @@ export class Editor extends React.Component {
         ..._panelMap,
         ...this.props.panelMap
       };
-
+      console.log(`panelMap:`, panelMap);
       const Panel =
         (panelMap[activePanelType] && panelMap[activePanelType].comp) ||
         panelMap[activePanelType];
@@ -528,7 +520,6 @@ export class Editor extends React.Component {
         <Panel
           ed={ed}
           key={activePanelId}
-          fontHeightMultiplier={this.props.fontHeightMultiplier}
           rightClickOverrides={this.props.rightClickOverrides}
           clickOverrides={this.props.clickOverrides}
           tabHeight={tabHeight}
@@ -547,8 +538,8 @@ export class Editor extends React.Component {
             {
               onClick: () => {
                 panelsToShow.length > 1
-                  ? collapseSplitScreen(tabIdToUse)
-                  : expandTabToSplitScreen(tabIdToUse);
+                  ? ed.panelsShown.collapseSplitScreen(tabIdToUse)
+                  : ed.panelsShown.expandTabToSplitScreen(tabIdToUse);
               },
               text:
                 panelsToShow.length > 1
@@ -557,7 +548,7 @@ export class Editor extends React.Component {
             },
             {
               onClick: () => {
-                togglePanelFullScreen(tabIdToUse);
+                ed.panelsShown.togglePanelFullScreen(tabIdToUse);
               },
               text: "View in Fullscreen"
             }
@@ -628,7 +619,7 @@ export class Editor extends React.Component {
                               fontSize: "14px"
                             }}
                             onClick={() => {
-                              setPanelAsActive(id);
+                              ed.panelsShown.setPanelAsActive(id);
                             }}
                           >
                             <div
@@ -683,7 +674,9 @@ export class Editor extends React.Component {
                                         icon="minimize"
                                         onClick={(e) => {
                                           e.stopPropagation();
-                                          togglePanelFullScreen(activePanelId);
+                                          ed.panelsShown.togglePanelFullScreen(
+                                            activePanelId
+                                          );
                                         }}
                                       />
                                     </Tooltip>
@@ -694,7 +687,7 @@ export class Editor extends React.Component {
                                   <Icon
                                     icon="small-cross"
                                     onClick={() => {
-                                      closePanel(id);
+                                      ed.panelsShown.closePanel(id);
                                     }}
                                     style={{ paddingLeft: 5 }}
                                     className="ve-clickable"
@@ -822,7 +815,7 @@ export class Editor extends React.Component {
           }`}
         >
           <ToolBar
-            {...pickedUserDefinedHandlersAndOpts}
+            ed={ed}
             openHotkeyDialog={this.openHotkeyDialog}
             key="toolbar"
             showMenuBar={showMenuBar}
@@ -831,7 +824,6 @@ export class Editor extends React.Component {
               handleFullscreenClose || this.togglePreviewFullscreen
             }
             isProtein={ed.isProtein}
-            ed={ed}
             userDefinedHandlersAndOpts={userDefinedHandlersAndOpts}
             annotationsToSupport={annotationsToSupport}
             closeFullscreen={
@@ -851,7 +843,6 @@ export class Editor extends React.Component {
               isOpen: this.state.isHotkeyDialogOpen,
               onClose: this.closeHotkeyDialog
             }}
-            {...pickedUserDefinedHandlersAndOpts}
             ed={ed}
           />
 
@@ -883,7 +874,6 @@ export class Editor extends React.Component {
         </DropHandler>
         <GlobalDialog
           ed={ed}
-          {...pickedUserDefinedHandlersAndOpts}
           dialogOverrides={pick(this.props, [
             "AddOrEditFeatureDialogOverride",
             "AddOrEditPartDialogOverride",
@@ -899,6 +889,4 @@ Editor.childContextTypes = {
   blueprintPortalClassName: PropTypes.string
 };
 
-export default observer(
-  Editor
-);
+export default observer(Editor);

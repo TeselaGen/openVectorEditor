@@ -151,8 +151,6 @@ export const CircularView = observer(function CircularView({ ed }) {
     searchLayerClicked = noop,
     instantiated,
     noWarnings,
-    labelLineIntensity,
-    fontHeightMultiplier,
     labelSize,
     nameFontSizeCircularView = 14,
     fullScreen
@@ -401,9 +399,6 @@ export const CircularView = observer(function CircularView({ ed }) {
       Annotation: Labels,
       circularViewWidthVsHeightRatio: width / height,
       passLabels: true,
-      labelLineIntensity: labelLineIntensity,
-      labelSize: labelSize,
-      fontHeightMultiplier: fontHeightMultiplier,
       textScalingFactor: 700 / Math.min(width, height)
     }
   ];
@@ -437,18 +432,16 @@ export const CircularView = observer(function CircularView({ ed }) {
       radius += spaceBefore;
 
       const sharedProps = {
+        ed,
         radius,
         innerRadius: BASE_RADIUS,
         outerRadius: radius,
         noRedux,
-        isProtein,
         smartCircViewLabelRender,
         extraSideSpace: Math.max(0, width - height),
         onClick: ed[singularName + "Clicked"],
         onDoubleClick: ed[singularName + "DoubleClicked"],
         onRightClicked: ed[singularName + "RightClicked"],
-        sequenceLength,
-        editorName,
         showCicularViewInternalLabels,
         ...rest
       };

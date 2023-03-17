@@ -7,7 +7,7 @@ import { observer } from "mobx-react";
 export default observer(({ toolbarItemProps, ed }) => {
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon data-test="veImportTool" icon="export" />,
         IconWrapper: Dropzone,
         IconWrapperProps: {

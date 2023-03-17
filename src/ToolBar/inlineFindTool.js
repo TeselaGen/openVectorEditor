@@ -7,7 +7,7 @@ export default ({ed, toolbarItemProps}) => {
   const isOpen =  ed.findTool.isOpen
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: !isOpen ? (
           <div>
             <Icon data-test="ve-find-tool-toggle" icon="search" />

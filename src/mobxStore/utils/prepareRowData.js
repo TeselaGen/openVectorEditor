@@ -1,6 +1,7 @@
 import { mapAnnotationsToRows } from "ve-sequence-utils";
 import { annotationTypes } from "ve-sequence-utils";
-export default function prepareRowData(sequenceData, bpsPerRow) {
+
+export default function prepareRowData({ sequenceData, bpsPerRow }) {
   const sequenceLength = sequenceData.noSequence
     ? sequenceData.size
     : sequenceData.sequence.length;

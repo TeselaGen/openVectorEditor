@@ -12,6 +12,7 @@ export default ({ ed, toolbarItemProps }) => {
         onIconClick: function () {
           ed.annotationVisibility.annotationVisibilityToggle("features");
         },
+        ed,
         toggled: ed.annotationVisibility.features,
         tooltip: "Show features",
         tooltipToggled: "Hide features",

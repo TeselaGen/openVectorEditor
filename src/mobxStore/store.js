@@ -1,16 +1,19 @@
 /*eslint no-dupe-class-members: "error"*/
 
 import {
+  annotationTypes,
   findOrfsInPlasmid,
   getAminoAcidDataForEachBaseOfDna,
   getComplementSequenceAndAnnotations,
   getCutsitesFromSequence,
   getReverseComplementSequenceAndAnnotations,
+  insertSequenceDataAtPositionOrRange,
+  rotateSequenceDataToPosition,
   tidyUpSequenceData
 } from "ve-sequence-utils/lib";
 import shortid from "shortid";
 
-import prepareRowData from "../utils/prepareRowData";
+import prepareRowData from "./utils/prepareRowData";
 import AnnotationLabelVisibility from "./AnnotationLabelVisibility";
 import AnnotationsToSupport from "./AnnotationsToSupport";
 import AnnotationVisibility from "./AnnotationVisibility";
@@ -18,7 +21,6 @@ import CopyOptions from "./CopyOptions";
 import DigestTool from "./DigestTool";
 import FindTool from "./FindTool";
 import FrameTranslations from "./FrameTranslations";
-import LastSavedId from "./LastSavedId";
 import MinimumOrfSize from "./MinimumOrfSize";
 import {
   getRangeLength,
@@ -27,7 +29,6 @@ import {
   normalizeRange
 } from "ve-range-utils/lib";
 import LabelLineIntensity from "./LabelLineIntensity";
-import LabelSize from "./LabelSize";
 import PartLengthsToHide from "./PartLengthsToHide";
 import FeatureLengthsToHide from "./FeatureLengthsToHide";
 import PanelsShown from "./PanelsShown";
@@ -52,7 +53,10 @@ import {
   jsonToGenbank
 } from "bio-parsers";
 import { generatePngFromPrintDialog } from "./utils/generatePngFromPrintDialog";
-import { showDialog } from "../GlobalDialogUtils";
+import {
+  showAddOrEditAnnotationDialog,
+  showDialog
+} from "../GlobalDialogUtils";
 
 const {
   forEach,
@@ -66,11 +70,11 @@ const {
   flatMap,
   omit,
   isArray,
-  pickBy
+  pickBy,
+  set
 } = require("lodash");
 
-const { makeAutoObservable, autorun } = require("mobx");
-// const annotationTypes = require("./utils/annotationTypes");
+const { makeAutoObservable } = require("mobx");
 
 const MARGIN_WIDTH = 10;
 
@@ -83,8 +87,39 @@ class T {
     return this.b;
   }
   get d() {
-    console.log(`this.ed:`, this.ed);
     return this.a + this.b + this.ed.sequence;
+  }
+}
+
+class RowStore {
+  features;
+  warnings;
+  assemblyPieces;
+  lineageAnnotations;
+  parts;
+  cutsites;
+  orfs;
+  translations;
+  primers;
+  guides;
+  constructor({
+    ed,
+    annotationVisibility,
+    charWidth,
+    rowNumber,
+    start,
+    end,
+    primaryProteinSequence,
+    sequence
+  }) {
+    this.annotationVisibility = annotationVisibility;
+    this.ed = ed;
+    this.charWidth = charWidth;
+    this.rowNumber = rowNumber;
+    this.start = start;
+    this.end = end;
+    this.primaryProteinSequence = primaryProteinSequence;
+    this.sequence = sequence;
   }
 }
 
@@ -95,7 +130,7 @@ export default class EditorStore {
     forEach(opts, (val, key) => {
       this[key] = val;
     });
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
     this.T = new T(this);
     this.findTool = new FindTool(this);
     this.propertiesTool = new PropertiesTool(this);
@@ -103,13 +138,12 @@ export default class EditorStore {
     this.panelsShown = new PanelsShown(this);
     this.partLengthsToHide = new PartLengthsToHide(this);
     this.featureLengthsToHide = new FeatureLengthsToHide(this);
-    this.labelSize = new LabelSize(this);
     this.labelLineIntensity = new LabelLineIntensity(this);
     this.annotationsToSupport = new AnnotationsToSupport(this);
     this.annotationVisibility = new AnnotationVisibility(this);
     this.annotationLabelVisibility = new AnnotationLabelVisibility(this);
     this.minimumOrfSize = new MinimumOrfSize(this);
-    this.lastSavedId = new LastSavedId(this);
+
     this.frameTranslations = new FrameTranslations(this);
     this.copyOptions = new CopyOptions(this);
     this.digestTool = new DigestTool(this);
@@ -131,6 +165,17 @@ export default class EditorStore {
   frameTranslations;
   copyOptions;
   digestTool;
+
+  size = window.localStorage.getItem("labelSize")
+    ? parseInt(window.localStorage.getItem("labelSize"))
+    : 8;
+  changeLabelSize(payload) {
+    this.size = payload;
+  }
+
+  lastSavedIdUpdate(payload) {
+    this.lastSavedId = payload;
+  }
   get sequenceData() {
     return {
       name: this.name,
@@ -142,18 +187,51 @@ export default class EditorStore {
       features: this.features,
       parts: this.parts,
       primers: this.primers,
-      translations: this._translations 
+      translations: this._translations
     };
   }
 
-
-
+  get _rowDataLV() {
+    return prepareRowData({
+      sequenceData: this.sequenceData,
+      sequenceLength: this.sequenceLength
+    })[0];
+  }
   get rowDataLV() {
-    return prepareRowData(this.sequenceData, this.sequenceLength)[0];
+    return new RowStore({
+      ...this._rowDataLV,
+      annotationVisibility: this.annotationVisibility,
+      charWidth: this.charWidthLV,
+      ed: this
+    });
+  }
+  get _rowDataRV() {
+    return prepareRowData({
+      sequenceData: this.sequenceData,
+      bpsPerRow: this.bpsPerRow
+    });
   }
   get rowDataRV() {
-    return prepareRowData(this.sequenceData, this.bpsPerRow);
+    const annotationVisibility = {
+      ...this.annotationVisibility,
+      ...((!this.isViewZoomedLV || this.charWidthLV < 5) && {
+        translations: false,
+        primaryProteinSequence: false,
+        reverseSequence: false,
+        sequence: false,
+        cutsitesInSequence: false
+      })
+    };
+    return this._rowDataRV.map((r) => {
+      return new RowStore({
+        ...r,
+        annotationVisibility, //pass a custom annotatationVisibility on the row
+        charWidth: this.charWidthLV,
+        ed: this
+      });
+    });
   }
+
   get zoomEnabledLV() {
     return (
       this.sequenceLength >= 50 &&
@@ -218,6 +296,10 @@ export default class EditorStore {
       this.useAdditionalOrfStartCodons
     );
   }
+  sequenceDataHistory = {
+    past: [],
+    future: []
+  };
   useAdditionalOrfStartCodons = false;
   caretPosition = -1;
   sequence = "";
@@ -318,7 +400,7 @@ export default class EditorStore {
         {}
       )
     };
-    each(translationsToPass, function (translation) {
+    each(translationsToPass, (translation) => {
       translation.aminoAcids = getAminoAcidDataForEachBaseOfDna(
         this.sequence,
         translation.forward,
@@ -429,9 +511,9 @@ export default class EditorStore {
     );
     //tag each cutsite with a unique id
     const cutsitesById = {};
-    Object.keys(cutsitesByName).forEach(function (enzymeName) {
+    Object.keys(cutsitesByName).forEach((enzymeName) => {
       const cutsitesForEnzyme = cutsitesByName[enzymeName];
-      cutsitesForEnzyme.forEach(function (cutsite) {
+      cutsitesForEnzyme.forEach((cutsite) => {
         const numberOfCuts = cutsitesByName[enzymeName].length;
         const uniqueId = shortid();
         cutsite.id = uniqueId;
@@ -455,7 +537,7 @@ export default class EditorStore {
       });
     });
     // create an array of the cutsites
-    const cutsitesArray = flatMap(cutsitesByName, function (cutsitesForEnzyme) {
+    const cutsitesArray = flatMap(cutsitesByName, (cutsitesForEnzyme) => {
       return cutsitesForEnzyme;
     });
     return {
@@ -497,7 +579,7 @@ export default class EditorStore {
   get bpsPerRow() {
     const toRet = Math.floor(
       this.innerWidthRV /
-        (this.isProtein ? this.charWidthRV * 3 : this.charWidth)
+        (this.isProtein ? this.charWidthRV * 3 : this.charWidthRV)
     );
     return this.isProtein ? toRet * 3 : toRet;
   }
@@ -617,7 +699,7 @@ export default class EditorStore {
   get filteredTranslations() {
     return this.translations.slice(0, this.limits.translations);
   }
-  get filteredCutsitesObj() {
+  get filteredCutsites() {
     const returnVal = {
       cutsitesByName: {},
       cutsiteIntersectionCount: 0,
@@ -626,6 +708,7 @@ export default class EditorStore {
       cutsitesById: {}
     };
     // const cutsitesByName = getLowerCaseObj(cutsitesByName);
+
     const hiddenEnzymesByName = {};
     let filteredEnzymes = [];
     let enzymesFromGroups = [];
@@ -641,31 +724,33 @@ export default class EditorStore {
         const zs = flatMap(enzymes, (e) => (e ? { value: e } : []));
         filteredEnzymes = filteredEnzymes.concat(zs);
         enzymesFromGroups = enzymesFromGroups.concat(zs);
-        groupCount += 1;
+        groupCount += 4;
       } else if (e.isHidden) {
         hiddenEnzymesByName[e.value] = e;
       } else {
         if (!e) return;
-        groupCount += 1;
+        groupCount += 5;
         filteredEnzymes.push(e);
       }
     });
+
     const cutSiteList = [];
     if (!filteredEnzymes || (filteredEnzymes.length === 0 && !hasUserGroup)) {
       returnVal.cutsitesByName = this.cutsites.cutsitesByName;
     } else {
       //loop through each filter option ('Single Cutters', 'BamHI')
-      filteredEnzymes.forEach(function ({ value, ...rest }) {
+      filteredEnzymes.forEach(({ value, ...rest }) => {
         if (!value) {
           console.error(`Missing value for filtered enzyme`, rest);
           return;
         }
         const lowerValue = value.toLowerCase();
+
         const cutsThisManyTimes =
           specialCutsiteFilterOptions[value] &&
           specialCutsiteFilterOptions[value].cutsThisManyTimes;
         if (value === "type2s") {
-          Object.keys(this.cutsites.cutsitesByName).forEach(function (key) {
+          Object.keys(this.cutsites.cutsitesByName).forEach((key) => {
             if (hiddenEnzymesByName[key]) return; //don't show that cutsite
             if (
               this.cutsites.cutsitesByName[key].length &&
@@ -676,8 +761,8 @@ export default class EditorStore {
             }
           });
         } else if (cutsThisManyTimes > 0) {
-          //the cutter type is either 1,2,3 for single, double or triple cutters
-          Object.keys(this.cutsites.cutsitesByName).forEach(function (key) {
+          //the cutter type is either 9,2,3 for single, double or triple cutters
+          Object.keys(this.cutsites.cutsitesByName).forEach((key) => {
             if (hiddenEnzymesByName[key]) return; //don't show that cutsite
             if (
               this.cutsites.cutsitesByName[key].length === cutsThisManyTimes
@@ -727,21 +812,15 @@ export default class EditorStore {
       returnVal.cutsitesByName,
       (cutsitesByNameArray) => cutsitesByNameArray
     );
-    returnVal.cutsitesById = returnVal.cutsitesArray.reduce(function (
-      obj,
-      item
-    ) {
+    returnVal.cutsitesById = returnVal.cutsitesArray.reduce((obj, item) => {
       if (item && item.id) {
         obj[item.id] = item;
       }
       return obj;
-    },
-    {});
+    }, {});
     return returnVal;
   }
-  get filteredCutsites() {
-    return this.filteredCutsitesObj.slice(0, this.limits.cutsites);
-  }
+
   get filteredOrfs() {
     return this.orfs.slice(0, this.limits.orfs);
   }
@@ -911,7 +990,7 @@ export default class EditorStore {
     "cutsites",
     "orfs",
     "genbank"
-  ]
+  ];
   exportSequenceToFile(format) {
     let convert, fileExt;
 
@@ -1037,7 +1116,7 @@ export default class EditorStore {
     } else {
       finishDisplayingSeq(result[0].parsedSequence);
     }
-    async function finishDisplayingSeq(seqData) {
+    const finishDisplayingSeq = async (seqData) => {
       if (onImport) {
         seqData = await onImport(seqData);
       }
@@ -1051,7 +1130,7 @@ export default class EditorStore {
 
         window.toastr.success("Sequence Imported");
       }
-    }
+    };
   }
   isRna = false;
   isOligo = false;
@@ -1062,18 +1141,15 @@ export default class EditorStore {
   get isAlreadyProteinEditor() {
     return this.isProtein || this.isRna || this.isOligo;
   }
-  updateEditor({
-    justPassingPartialSeqData,
-    sequenceData,
-    annotationVisibility,
-    annotationsToSupport,
-    convertAnnotationsFromAAIndices
-  }) {
+  updateEditor(initialVals) {
     const {
-      findTool,
-
-      isAlreadyProteinEditor
-    } = this;
+      justPassingPartialSeqData,
+      sequenceData,
+      annotationVisibility,
+      annotationsToSupport,
+      convertAnnotationsFromAAIndices
+    } = initialVals;
+    const { findTool, isAlreadyProteinEditor } = this;
 
     let toSpread = {};
     let payload;
@@ -1173,7 +1249,7 @@ export default class EditorStore {
               ...annotationsToSupport //we spread this here to allow the user to override this .. if they must!
             }
           };
-        } else if (this.isAlreadySpecialEditor && isDna) {
+        } else if (this.isAlreadySpecialEditor && this.isDna) {
           //we're editing dna but haven't initialized the dna editor yet
           sequenceData.isProtein = false;
           toSpread = {
@@ -1204,7 +1280,7 @@ export default class EditorStore {
         }
       }
       payload = {
-        ...initialValues,
+        ...initialVals,
         ...toSpread,
         ...(sequenceData && {
           sequenceData: tidyUpSequenceData(sequenceData, {
@@ -1248,11 +1324,11 @@ export default class EditorStore {
   // deleteFeature tnwtodo //add these handlers
   // upsertFeature
   handleNewAnnotation(type) {
-    const { readOnly, selectionLayer, caretPosition, sequenceData } = props;
+    const { readOnly, selectionLayer, caretPosition, sequenceData } = this;
 
     if (readOnly) {
       window.toastr.warning(
-        `Sorry, Can't Create New ${key}s in Read-Only Mode`
+        `Sorry, Can't Create New ${type}s in Read-Only Mode`
       );
     } else {
       const rangeToUse =
@@ -1268,7 +1344,7 @@ export default class EditorStore {
               end: sequenceData.isProtein ? 2 : 0
             };
       showAddOrEditAnnotationDialog({
-        type: key.toLowerCase(),
+        type: type.toLowerCase(),
         annotation: {
           ...rangeToUse,
           forward: !(selectionLayer.forward === false)
@@ -1303,11 +1379,26 @@ export default class EditorStore {
     caretPositionUpdate(0);
   }
 
+  insertSequenceDataAtPositionOrRange(...a) {
+    const {
+      sequenceDataToInsert,
+      existingSequenceData,
+      caretPositionOrRange,
+      options
+    } = this.beforeSequenceInsertOrDelete(...a);
+    return insertSequenceDataAtPositionOrRange(
+      sequenceDataToInsert,
+      existingSequenceData,
+      caretPositionOrRange,
+      options
+    );
+  }
+
   handleReverseComplementSelection() {
     const {
       sequenceData,
       updateSequenceData,
-      wrappedInsertSequenceDataAtPositionOrRange,
+      insertSequenceDataAtPositionOrRange,
       selectionLayer
     } = this;
     if (!(selectionLayer.start > -1)) {
@@ -1319,7 +1410,7 @@ export default class EditorStore {
         range: selectionLayer
       }
     );
-    const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
+    const [newSeqData] = insertSequenceDataAtPositionOrRange(
       reversedSeqData,
       sequenceData,
       selectionLayer,
@@ -1335,15 +1426,15 @@ export default class EditorStore {
       sequenceData,
       updateSequenceData,
       selectionLayer,
-      wrappedInsertSequenceDataAtPositionOrRange
-    } = props;
+      insertSequenceDataAtPositionOrRange
+    } = this;
     if (!(selectionLayer.start > -1)) {
       return; //return early
     }
     const comp = getComplementSequenceAndAnnotations(sequenceData, {
       range: selectionLayer
     });
-    const [newSeqData] = wrappedInsertSequenceDataAtPositionOrRange(
+    const [newSeqData] = insertSequenceDataAtPositionOrRange(
       comp,
       sequenceData,
       selectionLayer,
@@ -1411,15 +1502,15 @@ export default class EditorStore {
   }
 }
 
-const ed = new EditorStore({});
-// ed.digestTool.selectedFragment
+// const ed = new EditorStore({});
+// // ed.digestTool.selectedFragment
 
-autorun(() => {
-  console.log("someData:", ed.c.d);
-});
+// autorun(() => {
+//   console.log("someData:", ed.c.d);
+// });
 
-ed.c.b = "weee";
-ed.sequence = "gaga";
+// ed.c.b = "weee";
+// ed.sequence = "gaga";
 
 // ed.primers = []
 // ed.primers = []
@@ -1430,12 +1521,12 @@ ed.sequence = "gaga";
 // ed.parts = []
 // ed.parts = []
 
-// // console.log(`ed.selectionLayer.start:`, ed.selectionLayer.start);
-// // console.log(`ed.filt:`, ed.filteredFeatures);
+// //
+// //
 
 // // ed.features[0] = "asdf";
 
-function jsonToJson(incomingJson) {
+const jsonToJson = (incomingJson) => {
   return JSON.stringify(
     omit(
       cleanUpTeselagenJsonForExport(
@@ -1451,4 +1542,4 @@ function jsonToJson(incomingJson) {
       ]
     )
   );
-}
+};

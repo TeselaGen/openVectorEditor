@@ -17,7 +17,7 @@ import {
   getUserGroupLabel
 } from "./AdditionalCutsiteInfoDialog";
 import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 
 const NoResults = observer((props) => {
   const { ed, closeDropDown, queryString = "" } = props;

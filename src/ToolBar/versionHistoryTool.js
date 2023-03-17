@@ -5,7 +5,7 @@ import ToolbarItem from "./ToolbarItem";
 export default ({ toolbarItemProps, ed }) => {
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon icon="history" />,
         onIconClick: ed.toggleViewVersionHistory,
         // disabled: hasBeenSaved || lastEdit,

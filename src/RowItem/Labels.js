@@ -14,19 +14,14 @@ const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on th
 function Labels(props) {
   let {
     annotationRanges = {},
-    bpsPerRow,
-    charWidth,
     rangeMax,
     onlyShowLabelsThatDoNotFit,
     annotationHeight,
     textWidth = 6,
-    editorName,
-    labelLineIntensity,
-    isProtein,
-    noRedux,
-    readOnly,
-    noLabelLine
+    ed,
+    row
   } = props;
+  const { bpsPerRow, charWidth } = row;
 
   if (annotationRanges.length === 0) {
     return null;
@@ -137,24 +132,19 @@ function Labels(props) {
         id={annotation.id}
         key={"cutsiteLabel" + index}
         {...{
-          readOnly,
-          editorName,
+          ed,
+          row,
           annotation,
-          noLabelLine,
           className: `${annotationRange.annotation.labelClassName || ""} ${
             labelClassNames[pluralType]
           } veLabel `,
-          isProtein,
           xStartOriginal,
           onClick: annotationRange.onClick,
           onDoubleClick: annotationRange.onDoubleClick,
           onRightClick: annotationRange.onRightClick,
           height,
           xStart,
-          xEnd,
-          textWidth,
-          labelLineIntensity,
-          noRedux
+          xEnd
         }}
       />
     );
@@ -194,6 +184,8 @@ const DrawLabel = withHover(
   class DrawLabelInner extends React.Component {
     render() {
       const {
+        ed,
+        row,
         hovered,
         className,
         annotation,
@@ -205,13 +197,10 @@ const DrawLabel = withHover(
         xStartOriginal,
         xStart,
         onMouseLeave,
-        isProtein,
-        onMouseOver,
-        editorName,
-        labelLineIntensity,
-        textWidth,
-        readOnly
+        onMouseOver
       } = this.props;
+
+      const { readOnly, labelLineIntensity, isProtein, editorName } = ed;
       let heightToUse = height;
       let bottom = 0;
       if (hovered) {

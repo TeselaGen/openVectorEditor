@@ -8,10 +8,10 @@ export default ({ allPartTags, editTagsLink, toolbarItemProps, ed }) => {
   const isOpen = ed.openToolbarItem === "partTool";
   return (
     <ToolbarItem
-      {...{
+      {...{ed,
         Icon: <Icon icon="doughnut-chart" />,
         onIconClick: function () {
-          ed.annotationVisibilityToggle("parts");
+          ed.annotationVisibility.annotationVisibilityToggle("parts");
         },
         toggled,
         editTagsLink,
