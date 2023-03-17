@@ -4,8 +4,9 @@ export const userDefinedTypes = [
   "translations",
   "primers"
 ];
+export const searchableTypes = ["parts", "features", "primers"];
 
-export const userDefinedTypesMap = userDefinedTypes.reduce(function(
+export const userDefinedTypesMap = userDefinedTypes.reduce(function (
   nextVal,
   key
 ) {
@@ -22,7 +23,7 @@ export const userDefinedTypesMap = userDefinedTypes.reduce(function(
 {});
 
 export const derivedDataTypes = ["cutsites", "orfs"];
-export const derivedDataTypesMap = derivedDataTypes.reduce(function(
+export const derivedDataTypesMap = derivedDataTypes.reduce(function (
   nextVal,
   key
 ) {

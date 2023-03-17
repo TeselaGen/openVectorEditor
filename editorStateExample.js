@@ -126,7 +126,7 @@ const exampleEditorState = {
         cutsThisManyTimes: 1
       }
     ],
-    // allRestrictionEnzymes: {
+    // ed.restrictionEnzymes: {
     //   aatii: {
     //     name: "AatII",
     //     site: "gacgtc",

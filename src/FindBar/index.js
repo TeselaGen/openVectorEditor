@@ -9,15 +9,12 @@ import {
   TextArea,
   Tooltip
 } from "@blueprintjs/core";
-import mobxReact, { observer } from "mobx-react";
-
-import withEditorProps from "../withEditorProps";
-import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
+import  { observer } from "mobx-react";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
-import { searchableTypes } from "../selectors/annotationSearchSelector";
-import { getSingular } from "../utils/annotationTypes";
+
+import { getSingular, searchableTypes } from "../utils/annotationTypes";
 import { getFeatureToColorMap } from "ve-sequence-utils";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
 import isMobile from "is-mobile";
@@ -342,10 +339,9 @@ export class FindBar extends React.Component {
   }
 }
 
-const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
+export default observer(
   FindBar
 );
-export default withEditorProps(wrapped);
 
 function mod(n, m) {
   return ((n % m) + m) % m;

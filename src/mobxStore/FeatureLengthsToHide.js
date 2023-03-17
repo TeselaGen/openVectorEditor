@@ -1,6 +1,6 @@
 import { forEach } from "lodash";
 
-export class FeatureLengthsToHide {
+export default class FeatureLengthsToHide {
   enabled = false;
   min = 0;
   max = 800;

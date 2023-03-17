@@ -4,7 +4,6 @@ import makeStore from "./makeStore";
 import { render, unmountComponentAtNode } from "react-dom";
 
 import Editor from "../Editor";
-import updateEditor from "../updateEditor";
 import addAlignment from "../addAlignment";
 import AlignmentView from "../AlignmentView";
 import sizeMe from "react-sizeme";
@@ -73,7 +72,8 @@ export default function createVectorEditor(
     node.remove();
   };
   editor.updateEditor = (values) => {
-    updateEditor(store, editorName, values);
+    // tnwtodo
+    // updateEditor(store, editorName, values);
   };
   editor.addAlignment = (values) => {
     addAlignment(store, values);

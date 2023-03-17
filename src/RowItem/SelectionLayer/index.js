@@ -2,7 +2,6 @@
 import draggableClassnames from "../../constants/draggableClassnames";
 import React from "react";
 import Caret from "../Caret";
-import pureNoFunc from "../../utils/pureNoFunc";
 
 import "./style.css";
 
@@ -12,16 +11,15 @@ import {
   getSelectionMessage,
   preventDefaultStopPropagation
 } from "../../utils/editorUtils";
+import { observer } from "mobx-react";
 
-function SelectionLayer(props) {
+function SelectionLayer({ ed, props }) {
   const {
-    charWidth,
     isDraggable,
     row,
     sequenceLength,
     regions,
     leftMargin = 0,
-    isProtein,
     getGaps,
     hideTitle: topLevelHideTitle,
     customTitle: topLevelCustomTitle,
@@ -31,6 +29,7 @@ function SelectionLayer(props) {
     className: globalClassname = "",
     onClick
   } = props;
+  const { charWidthRV: charWidth } = ed;
   let hasSelection = false;
 
   const toReturn = (
@@ -60,10 +59,8 @@ function SelectionLayer(props) {
           hideTitle || topLevelHideTitle
             ? ""
             : getSelectionMessage({
-                selectionLayer,
-                customTitle: customTitle || topLevelCustomTitle,
-                sequenceLength,
-                isProtein
+                ed,
+                customTitle: customTitle || topLevelCustomTitle
               });
         const onSelectionContextMenu = function (event) {
           selectionLayerRightClicked &&
@@ -181,4 +178,4 @@ function SelectionLayer(props) {
   return hasSelection ? toReturn : null;
 }
 
-export default pureNoFunc(SelectionLayer);
+export default observer(SelectionLayer);

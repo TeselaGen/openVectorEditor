@@ -1,4 +1,4 @@
-import { debounce, find, get, some, isArray } from "lodash";
+import { debounce, find, some, isArray } from "lodash";
 // import sizeMe from "react-sizeme";
 import { showContextMenu } from "teselagen-react-components";
 import {
@@ -12,8 +12,6 @@ import {
 import PropTypes from "prop-types";
 
 // import VersionHistoryView from "../VersionHistoryView";
-import { importSequenceFromFile } from "../withEditorProps";
-import getAdditionalEnzymesSelector from "../selectors/getAdditionalEnzymesSelector";
 import { showAddOrEditAnnotationDialog } from "../GlobalDialogUtils";
 
 import "../Reflex/reflex-styles.css";
@@ -22,11 +20,8 @@ import React from "react";
 import AlignmentView from "../AlignmentView";
 // import * as customIcons from "teselagen-react-components";
 // import { Button } from "@blueprintjs/core";
-import { compose } from "redux";
 //tnr: this can be removed once https://github.com/leefsmp/Re-Flex/pull/30 is merged and deployed
 /* eslint-disable */
-import { connectToEditor, handleSave } from "../withEditorProps";
-import { withHandlers } from "recompose";
 
 import CommandHotkeyHandler from "./CommandHotkeyHandler";
 
@@ -54,6 +49,7 @@ import isMobile from "is-mobile";
 import { getClientX, getClientY } from "../utils/editorUtils";
 import PCRTool from "../PCRTool/PCRTool";
 import classNames from "classnames";
+import { observer } from "mobx-react";
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -344,8 +340,7 @@ export class Editor extends React.Component {
       minHeight = 400,
       showMenuBar,
       displayMenuBarAboveTools = true,
-      // updateSequenceData,
-      readOnly,
+      // updateSequenceData,      readOnly,
       setPanelAsActive,
       style = {},
       togglePanelFullScreen,
@@ -797,7 +792,7 @@ export class Editor extends React.Component {
         <DropHandler
           key="dropHandler"
           importSequenceFromFile={this.props.importSequenceFromFile}
-          disabled={readOnly || hideSingleImport}
+          disabled={ed.readOnly || hideSingleImport}
           style={{
             width: "100%",
             maxWidth: "100%",
@@ -904,6 +899,6 @@ Editor.childContextTypes = {
   blueprintPortalClassName: PropTypes.string
 };
 
-export default compose(withHandlers({ handleSave, importSequenceFromFile }))(
+export default observer(
   Editor
 );

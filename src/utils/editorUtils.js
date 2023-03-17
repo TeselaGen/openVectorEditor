@@ -7,21 +7,22 @@ import {
   bioData,
   aliasedEnzymesByName
 } from "ve-sequence-utils";
-import { get, sortBy } from "lodash";
+import { get, map, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import { filter } from "lodash";
+import { jsonToGenbank } from "bio-parsers";
 
-export function getSelectionMessage({
-  caretPosition = -1,
-  selectionLayer = { start: -1, end: -1 },
-  customTitle,
-  sequenceLength,
-  sequenceData,
-  showGCContent, //these are only passed in for the status bar
-  GCDecimalDigits, //these are only passed in for the status bar
-  isProtein
-}) {
+export function getSelectionMessage({ ed, customTitle }) {
+  const {
+    caretPosition = -1,
+    selectionLayer = { start: -1, end: -1 },
+    sequenceLength,
+    sequenceData,
+    showGCContent, //these are only passed in for the status bar
+    GCDecimalDigits, //these are only passed in for the status bar
+    isProtein
+  } = ed;
   let _selectionLayer = selectionLayer;
   const isSelecting = selectionLayer.start > -1;
   if (isSelecting) {
@@ -79,7 +80,7 @@ export function getNodeToRefocus(caretEl) {
   return nodeToReFocus;
 }
 
-export function EmptyText({ed}) {
+export function EmptyText({ ed }) {
   return ed.sequenceLength === 0 && ed.caretPosition === -1 ? (
     <div className="veEmptySeqText">Insert Sequence Here</div>
   ) : null;
@@ -221,3 +222,23 @@ export const getEnzymeAliases = (enzyme) => {
     (n) => n.toLowerCase() !== lowerName //filter out current enzyme
   );
 };
+
+export function getGenbankFromSelection(selectedSeqData, sequenceData) {
+  const spansEntireSeq =
+    sequenceData.sequence.length === selectedSeqData.sequence.length;
+  const feats = map(selectedSeqData.features);
+  const just1Feat = feats.length === 1;
+
+  return {
+    ...selectedSeqData,
+    textToCopy: jsonToGenbank({
+      ...selectedSeqData,
+      name: spansEntireSeq
+        ? selectedSeqData.name
+        : just1Feat
+        ? feats[0].name
+        : selectedSeqData.name + "_partial",
+      circular: spansEntireSeq ? selectedSeqData.circular : false
+    })
+  };
+}

@@ -4,7 +4,7 @@ import { reduxForm } from "redux-form";
 import { startCase } from "lodash";
 import { withProps } from "recompose";
 import { InputField, wrapDialog } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import classNames from "classnames";
 import "./simpleDialog.css";

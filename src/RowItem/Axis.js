@@ -147,4 +147,4 @@ const Axis = function (props) {
 
 // export default Axis
 export default view(Axis);
-// export default pureNoFunc(Axis);
+// export default observer(Axis);

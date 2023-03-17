@@ -1,20 +1,11 @@
 import { Icon } from "@blueprintjs/core";
-// import { Checkbox, Button } from "@blueprintjs/core";
 import React from "react";
-// import { connect } from "react-redux";
-// import { convertRangeTo1Based } from "ve-range-utils";
-//import { partIcon } from "teselagen-react-components";
 import ToolbarItem from "./ToolbarItem";
 import { PartTagSearch } from "../helperComponents/partTagSearch";
 
-export default ({
-  allPartTags,
-  editTagsLink,
-  toolbarItemProps,
-  ed
-}) => {
-  const toggled = ed.annotationVisibility.parts,
-  const isOpen = ed.openToolbarItem === "partTool"
+export default ({ allPartTags, editTagsLink, toolbarItemProps, ed }) => {
+  const toggled = ed.annotationVisibility.parts;
+  const isOpen = ed.openToolbarItem === "partTool";
   return (
     <ToolbarItem
       {...{
@@ -34,4 +25,4 @@ export default ({
       }}
     />
   );
-}
+};

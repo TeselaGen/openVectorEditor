@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { DataTable } from "teselagen-react-components";
 
@@ -6,26 +7,15 @@ import { CutsiteTag } from "../../CutsiteFilter/AdditionalCutsiteInfoDialog";
 import EnzymeViewer from "../../EnzymeViewer";
 import { getEnzymeAliases } from "../../utils/editorUtils";
 
-export default function SingleEnzymeCutsiteInfo({
+export default observer(function SingleEnzymeCutsiteInfo({
   cutsiteGroup,
   enzyme,
-  dispatch,
-  allRestrictionEnzymes,
-  editorName,
-  selectedAnnotationId,
-  allCutsites,
-  filteredCutsites: { cutsitesByName: cutsitesByNameActive }
+  ed,
+  selectedAnnotationId
 }) {
   const onRowSelect = ([record]) => {
     if (!record) return;
-
-    dispatch({
-      type: "CARET_POSITION_UPDATE",
-      payload: record.topSnipPosition,
-      meta: {
-        editorName
-      }
-    });
+    ed.caretPositionUpdate(record.topSnipPosition)
   };
   const aliases = getEnzymeAliases(enzyme);
   const entities = cutsiteGroup
@@ -100,9 +90,7 @@ export default function SingleEnzymeCutsiteInfo({
               {aliases.map((n, i) => {
                 return (
                   <CutsiteTag
-                    allRestrictionEnzymes={allRestrictionEnzymes}
-                    cutsitesByNameActive={cutsitesByNameActive}
-                    cutsitesByName={allCutsites.cutsitesByName}
+                    ed={ed}
                     key={i}
                     name={n}
                     doNotShowCuts
@@ -115,7 +103,7 @@ export default function SingleEnzymeCutsiteInfo({
       </div>
     </div>
   );
-}
+});
 
 const schema = {
   fields: [
@@ -124,8 +112,3 @@ const schema = {
     { path: "strand", type: "string" }
   ]
 };
-
-// export default compose(
-//   withEditorProps,
-//   withRestrictionEnzymes
-// )(SingleEnzymeCutsiteInfo);

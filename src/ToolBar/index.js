@@ -1,7 +1,6 @@
 import React from "react";
 import { flatMap, isString, pick } from "lodash";
 import versionHistoryTool from "./versionHistoryTool";
-// import {connectToEditor} from "../withEditorProps";
 import MenuBar from "../MenuBar";
 import "./style.css";
 import { Button, Tooltip } from "@blueprintjs/core";

@@ -5,7 +5,6 @@ import { DataTable } from "teselagen-react-components";
 
 import Editor from "../Editor";
 import FillWindow from "../Editor/FillWindow";
-// import withEditorProps from "../withEditorProps";
 import { observer } from "mobx-react";
 
 const SIDE_PANEL_WIDTH = 350;

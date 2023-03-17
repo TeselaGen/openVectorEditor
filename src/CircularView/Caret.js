@@ -3,20 +3,20 @@ import { getRangeAngles } from "ve-range-utils";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
 import { getSelectionMessage } from "../utils/editorUtils";
+import { observer } from "mobx-react-lite";
 
-function Caret({
-  caretPosition,
-  sequenceLength,
-  className,
-  onClick,
-  isSelection,
-  innerRadius,
-  outerRadius,
-  isProtein,
-  selectionMessage
-}) {
+function Caret({ ed }) {
+  const {
+    caretPosition,
+    sequenceLength,
+    className,
+    onClick,
+    isSelection,
+    innerRadius,
+    outerRadius,
+    selectionMessage
+  } = ed;
   const { startAngle, endAngle } = getRangeAngles(
     { start: caretPosition, end: caretPosition },
     sequenceLength || 1
@@ -35,10 +35,7 @@ function Caret({
       transform={transform}
       className={className + " veCaret " + draggableClassnames.caret}
     >
-      <title>
-        {selectionMessage ||
-          getSelectionMessage({ caretPosition, isProtein, sequenceLength })}
-      </title>
+      <title>{selectionMessage || getSelectionMessage({ ed })}</title>
       <line
         strokeWidth="1.5px"
         x1={0}
@@ -60,4 +57,4 @@ function Caret({
   );
 }
 
-export default pureNoFunc(Caret);
+export default observer(Caret);

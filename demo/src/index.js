@@ -11,7 +11,6 @@ import {
   RowView,
   LinearView,
   DigestTool,
-  updateEditor,
   EnzymeViewer
 } from "../../src";
 
@@ -332,10 +331,10 @@ const Demo = () => {
 
 const WrapSimpleDemo = ({ children }) => {
   useMemo(() => {
-    updateEditor(store, "DemoEditor", {
-      readOnly: false,
-      sequenceData: exampleSequenceData
-    });
+    // updateEditor(store, "DemoEditor", {
+    //   readOnly: false,
+    //   sequenceData: exampleSequenceData
+    // });
   }, []);
   return children;
 };

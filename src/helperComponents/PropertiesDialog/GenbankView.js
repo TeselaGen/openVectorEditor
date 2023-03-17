@@ -6,15 +6,16 @@ import {
   cleanUpTeselagenJsonForExport
 } from "bio-parsers";
 import { HTMLSelect } from "@blueprintjs/core";
-import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
+import { observer } from "mobx-react";
 
 class GenbankView extends React.Component {
   state = {
     fileTypeToView: "genbank"
   };
   render() {
-    const { sequenceData = {} } = this.props;
+    const { ed } = this.props;
+    const { sequenceData } = ed;
     let filestring;
     switch (this.state.fileTypeToView) {
       case "fasta":
@@ -64,10 +65,4 @@ class GenbankView extends React.Component {
   }
 }
 
-export default compose(
-  connectToEditor(({ sequenceData = {} }) => {
-    return {
-      sequenceData
-    };
-  })
-)(GenbankView);
+export default observer(GenbankView);

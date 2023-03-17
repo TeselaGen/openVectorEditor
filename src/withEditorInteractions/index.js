@@ -5,15 +5,13 @@ import {
 } from "ve-sequence-utils";
 import { getSequenceWithinRange } from "ve-range-utils";
 import Clipboard from "clipboard";
-import { compose } from "redux";
+import { compose } from "recompose";
 import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
 } from "ve-sequence-utils";
-import { some, map } from "lodash";
+import { some } from "lodash";
 import { Menu } from "@blueprintjs/core";
-import { branch } from "recompose";
-
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import React from "react";
 
@@ -22,10 +20,7 @@ import {
   showContextMenu,
   showConfirmationDialog,
   commandMenuEnhancer,
-  withStore
 } from "teselagen-react-components";
-import { jsonToGenbank } from "bio-parsers";
-import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";
 import createSequenceInputPopup from "./createSequenceInputPopup";
@@ -43,6 +38,7 @@ import {
 import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 import {
   getAcceptedChars,
+  getGenbankFromSelection,
   getNodeToRefocus,
   getSelFromWrappedAddon
 } from "../utils/editorUtils";
@@ -51,6 +47,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
+import { observer } from "mobx-react";
 
 const annotationClickHandlers = [
   "orfClicked",
@@ -70,7 +67,7 @@ const annotationClickHandlers = [
 ];
 //tnr: because this menu is being rendered outside the main render tree (by blueprint)
 //we need to make sure it re-renders whenever the redux state changes (so things like tick-marks will toggle properly etc..)
-const ConnectedMenu = withEditorProps(({ children }) => (
+const ConnectedMenu = observer(({ children }) => (
   <Menu>{children.map(React.cloneElement)}</Menu>
 ));
 
@@ -419,35 +416,6 @@ function VectorInteractionHOC(Component /* options */) {
         );
         if (showToast) window.toastr.success("Sequence Deleted Successfully");
       }
-    };
-
-    caretPositionUpdate = (position) => {
-      const { caretPosition = -1 } = this.props;
-      if (caretPosition === position) {
-        return;
-      }
-      //we only call caretPositionUpdate if we're actually changing something
-      this.props.caretPositionUpdate(position);
-    };
-    selectionLayerUpdate = (newSelection) => {
-      const { selectionLayer = { start: -1, end: -1 }, ignoreGapsOnHighlight } =
-        this.props;
-      if (!newSelection) return;
-      const { start, end, forceUpdate } = newSelection;
-      if (
-        selectionLayer.start === start &&
-        selectionLayer.end === end &&
-        selectionLayer.forceUpdate === forceUpdate
-      ) {
-        return;
-      }
-      //we only call selectionLayerUpdate if we're actually changing something
-      this.props.selectionLayerUpdate({
-        ...newSelection,
-        start,
-        end,
-        ignoreGaps: ignoreGapsOnHighlight
-      });
     };
 
     annotationClicked = ({ event, annotation }) => {
@@ -1156,32 +1124,8 @@ function VectorInteractionHOC(Component /* options */) {
   };
 }
 
-const withEditorInteractions = compose(
-  withStore,
-  withEditorProps,
-  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
-);
-export default withEditorInteractions;
 
-function getGenbankFromSelection(selectedSeqData, sequenceData) {
-  const spansEntireSeq =
-    sequenceData.sequence.length === selectedSeqData.sequence.length;
-  const feats = map(selectedSeqData.features);
-  const just1Feat = feats.length === 1;
 
-  return {
-    ...selectedSeqData,
-    textToCopy: jsonToGenbank({
-      ...selectedSeqData,
-      name: spansEntireSeq
-        ? selectedSeqData.name
-        : just1Feat
-        ? feats[0].name
-        : selectedSeqData.name + "_partial",
-      circular: spansEntireSeq ? selectedSeqData.circular : false
-    })
-  };
-}
 
 const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
   const {
@@ -1193,24 +1137,6 @@ const insertAndSelectHelper = ({ seqDataToInsert, props }) => {
     selectionLayer
   } = props;
 
-  // sequenceData,
-  //             caretPosition,
-  //             selectionLayer
-
-  // updateSequenceData(
-  //   wrappedInsertSequenceDataAtPositionOrRange(
-  //     seqDataToInsert,
-  //     sequenceData,
-  //     caretPosition > -1 ? caretPosition : selectionLayer
-  //   )
-  // );
-
-  // const newSelectionLayerStart =
-  //   caretPosition > -1 ? caretPosition : (selectionLayer.start > selectionLayer.end ? 0 : selectionLayer.start);
-  // selectionLayerUpdate({
-  //   start: newSelectionLayerStart,
-  //   end: newSelectionLayerStart + seqDataToInsert.sequence.length - 1
-  // });
   const [newSeqData, { maintainOriginSplit }] =
     wrappedInsertSequenceDataAtPositionOrRange(
       seqDataToInsert,

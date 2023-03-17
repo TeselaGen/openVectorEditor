@@ -1,5 +1,3 @@
-import { connect } from "react-redux";
-// import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
 import {
   DialogFooter,
@@ -16,7 +14,6 @@ import {
 } from "ve-sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
 import "./style.css";
-import { connectToEditor } from "../withEditorProps";
 import { compose } from "recompose";
 import { Callout } from "@blueprintjs/core";
 import { addCustomEnzyme } from "../utils/editorUtils";
@@ -206,18 +203,6 @@ const CreateCustomEnzyme = function (props) {
 export default compose(
   wrapDialog({
     title: "Create Custom Enzyme"
-  }),
-  connectToEditor(({ sequenceData = {} }) => {
-    return {
-      seqName: sequenceData.name,
-      inputSequenceToTestAgainst: sequenceData.sequence || ""
-    };
-  }),
-  connect(function (state) {
-    return {
-      createYourOwnEnzyme:
-        state.VectorEditor.__allEditorsOptions.createYourOwnEnzyme
-    };
   })
 )(CreateCustomEnzyme);
 

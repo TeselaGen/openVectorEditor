@@ -3,7 +3,6 @@ import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
 import withEditorInteractions from "../withEditorInteractions";
-import { withEditorPropsNoRedux } from "../withEditorProps";
 import "./style.css";
 import {
   getClientX,
@@ -22,6 +21,7 @@ import {
   editorDragStarted,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
+import { noop } from "lodash";
 
 function getNearestCursorPositionToMouseEvent({
   ed,
@@ -227,7 +227,6 @@ export const LinearView = (props) => {
   );
 };
 
-export const NonReduxEnhancedLinearView = withEditorPropsNoRedux(LinearView);
 
 export default withEditorInteractions(LinearView);
 

@@ -4,7 +4,6 @@ import { createCommandMenu } from "teselagen-react-components";
 import viewSubmenu from "../MenuBar/viewSubmenu";
 import getCommands from "../commands";
 import ToolbarItem from "./ToolbarItem";
-import withEditorProps from "../withEditorProps";
 import { observer } from "mobx-react";
 
 export default observer(({ toolbarItemProps, ed }) => {
@@ -24,7 +23,7 @@ export default observer(({ toolbarItemProps, ed }) => {
   );
 });
 
-const VisibilityOptions = withEditorProps(function (props) {
+const VisibilityOptions = observer(function (props) {
   return (
     <Menu>
       {createCommandMenu(viewSubmenu, getCommands({ props }), {

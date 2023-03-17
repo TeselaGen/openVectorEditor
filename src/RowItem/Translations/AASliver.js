@@ -1,6 +1,6 @@
 // import PropTypes from "prop-types";
+import { observer } from "mobx-react";
 import React from "react";
-import pureNoFunc from "../../utils/pureNoFunc";
 
 function AASliver(props) {
   const {
@@ -189,4 +189,4 @@ function AASliver(props) {
   );
 }
 
-export default pureNoFunc(AASliver);
+export default observer(AASliver);

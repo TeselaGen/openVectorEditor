@@ -9,12 +9,11 @@ import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
-import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
-import selectors from "../../selectors";
 
 import getCommands from "../../commands";
 import { sizeSchema } from "./utils";
+import { observer } from "mobx-react";
 
 class OrfProperties extends React.Component {
   constructor(props) {
@@ -33,7 +32,8 @@ class OrfProperties extends React.Component {
     });
   };
   render() {
-    const { orfs, sequenceLength, annotationVisibility } = this.props;
+    const { ed } = this.props;
+    const { orfs, sequenceLength, annotationVisibility } = ed;
     const orfsToUse = map(orfs, (orf) => {
       return {
         ...orf,
@@ -97,24 +97,6 @@ class OrfProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor((editorState) => {
-    const {
-      readOnly,
-      annotationVisibility = {},
-      sequenceData: { sequence = "" } = {},
-      sequenceData,
-      minimumOrfSize,
-      useAdditionalOrfStartCodons
-    } = editorState;
-    return {
-      readOnly,
-      annotationVisibility,
-      useAdditionalOrfStartCodons,
-      orfs: selectors.orfsSelector(editorState),
-      sequenceLength: sequence.length,
-      sequenceData,
-      minimumOrfSize
-    };
-  }),
+  observer,
   withSelectedEntities("orfProperties")
 )(OrfProperties);

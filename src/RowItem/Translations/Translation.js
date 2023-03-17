@@ -4,8 +4,8 @@ import {
   zeroSubrangeByContainerRange
 } from "ve-range-utils";
 import AASliver from "./AASliver";
-import pureNoFunc from "../../utils/pureNoFunc";
 import { proteinAlphabet } from "ve-sequence-utils";
+import { observer } from "mobx-react";
 
 class Translation extends React.Component {
   state = {
@@ -159,4 +159,4 @@ class Translation extends React.Component {
   }
 }
 
-export default pureNoFunc(Translation);
+export default observer(Translation);

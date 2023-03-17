@@ -5,14 +5,13 @@ import PropTypes from "prop-types";
 import { reduxForm } from "redux-form";
 
 import { wrapDialog } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Button, Classes, ButtonGroup } from "@blueprintjs/core";
 import classNames from "classnames";
-
-import withEditorProps from "../../withEditorProps";
 import CircularView from "../../CircularView";
 import LinearView from "../../LinearView";
 import "./style.css";
+import { observer } from "mobx-react";
 
 class PrintDialog extends React.Component {
   state = {
@@ -24,14 +23,13 @@ class PrintDialog extends React.Component {
       hideLinearCircularToggle,
       hidePrintButton,
       addPaddingBottom,
-      sequenceData,
+      ed
       // handleSubmit,
-      editorName
       // circular,
       // upsertFeature
     } = this.props;
     // const sequenceLength = sequenceData.sequence.length;
-    let isCirc = sequenceData.circular;
+    let isCirc = ed.circular;
 
     if (this.state.circular !== null) {
       isCirc = this.state.circular;
@@ -67,7 +65,7 @@ class PrintDialog extends React.Component {
         <ComponentToPrint
           fullscreen={this.state && this.state.fullscreen}
           circular={isCirc}
-          editorName={editorName || "StandaloneEditor"}
+          ed={ed}
           ref={(el) => (this.componentRef = el)}
         />
         <br />
@@ -102,7 +100,7 @@ export default compose(
   wrapDialog({
     title: "Print"
   }),
-  withEditorProps,
+  observer,
   reduxForm({
     form: "PrintDialog"
   })

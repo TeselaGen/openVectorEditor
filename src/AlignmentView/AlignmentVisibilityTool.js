@@ -9,10 +9,10 @@ import {
 } from "@blueprintjs/core";
 import React from "react";
 import { map, startCase } from "lodash";
-import pureNoFunc from "../utils/pureNoFunc";
+import { observer } from "mobx-react";
 // import { fullSequenceTranslationMenu } from "../MenuBar/viewSubmenu";
 
-export default pureNoFunc(function AlignmentVisibilityTool(props) {
+export default observer(function AlignmentVisibilityTool(props) {
   return (
     <Popover
       minimal

@@ -1,6 +1,5 @@
 import React from "react";
-import { compose } from "redux";
-import withEditorProps from "../withEditorProps";
+import { compose } from "recompose";
 import { withHotkeys } from "teselagen-react-components";
 import getCommands from "../commands";
 import {
@@ -8,6 +7,7 @@ import {
   getCommandHotkeyHandlers,
   HotkeysDialog
 } from "teselagen-react-components";
+import { observer } from "mobx-react";
 
 class CommandHotkeyHandler extends React.Component {
   constructor(props) {
@@ -41,4 +41,4 @@ class CommandHotkeyHandler extends React.Component {
   }
 }
 
-export default compose(withEditorProps)(CommandHotkeyHandler);
+export default observer(CommandHotkeyHandler);

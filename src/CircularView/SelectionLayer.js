@@ -5,24 +5,28 @@ import getRangeAngles from "./getRangeAnglesSpecial";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";
-import pureNoFunc from "../utils/pureNoFunc";
 import {
   getSelectionMessage,
   preventDefaultStopPropagation
 } from "../utils/editorUtils";
+import { observer } from "mobx-react-lite";
 
 function SelectionLayer({
-  isDraggable,
-  selectionLayer,
-  sequenceLength,
-  radius,
-  hideTitle,
-  innerRadius,
-  onRightClicked,
-  onClick,
-  index,
-  isProtein
+  ed
 }) {
+
+  const{
+    isDraggable,
+    selectionLayer,
+    sequenceLength,
+    radius,
+    hideTitle,
+    innerRadius,
+    onRightClicked,
+    onClick,
+    index,
+  } = ed
+
   const {
     color,
     start,
@@ -45,9 +49,7 @@ function SelectionLayer({
   });
 
   const selectionMessage = getSelectionMessage({
-    sequenceLength,
-    selectionLayer,
-    isProtein
+    ed
   });
   // let section2 = sector({
   //   center: [0, 0], //the center is always 0,0 for our annotations :) we rotate later!
@@ -129,4 +131,4 @@ function SelectionLayer({
   );
 }
 
-export default pureNoFunc(SelectionLayer);
+export default observer(SelectionLayer);

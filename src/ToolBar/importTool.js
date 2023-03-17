@@ -2,14 +2,9 @@ import React from "react";
 import { Icon } from "@blueprintjs/core";
 import Dropzone from "react-dropzone";
 import ToolbarItem from "./ToolbarItem";
-import { compose, withHandlers } from "recompose";
-import { importSequenceFromFile } from "../withEditorProps";
 import { observer } from "mobx-react";
 
-export default compose(
-  observer,
-  withHandlers({ importSequenceFromFile })
-)(({ toolbarItemProps, importSequenceFromFile }) => {
+export default observer(({ toolbarItemProps, ed }) => {
   return (
     <ToolbarItem
       {...{
@@ -18,7 +13,7 @@ export default compose(
         IconWrapperProps: {
           multiple: false,
           style: {},
-          onDrop: (files) => importSequenceFromFile(files[0])
+          onDrop: (files) => ed.importSequenceFromFile(files[0])
         },
         tooltip: "Click or drag to import and view files (.fasta .gb .dna)",
         ...toolbarItemProps

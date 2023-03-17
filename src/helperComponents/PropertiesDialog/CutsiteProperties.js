@@ -7,14 +7,11 @@ import {
 import { map, get } from "lodash";
 import CutsiteFilter from "../../CutsiteFilter";
 import { Button } from "@blueprintjs/core";
-import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
-import selectors from "../../selectors";
 import commands from "../../commands";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
 import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
-import { withRestrictionEnzymes } from "../../CutsiteFilter/withRestrictionEnzymes";
 
 class CutsiteProperties extends React.Component {
   constructor(props) {
@@ -26,11 +23,7 @@ class CutsiteProperties extends React.Component {
     return (
       <SingleEnzymeCutsiteInfo
         {...{
-          allRestrictionEnzymes: this.props.allRestrictionEnzymes,
-          allCutsites: this.props.allCutsites,
-          filteredCutsites: this.props.filteredCutsites,
-          editorName: this.props.editorName,
-          dispatch: this.props.dispatch,
+          ed: this.props.ed,
           selectedAnnotationId: this.props.selectedAnnotationId,
           cutsiteGroup: row.original.cutsiteGroup,
           enzyme: row.original.enzyme
@@ -52,13 +45,10 @@ class CutsiteProperties extends React.Component {
   };
   render() {
     const {
-      editorName,
-      createNewDigest,
-      filteredCutsites: allCutsites,
-      selectedAnnotationId
+      ed,
     } = this.props;
 
-    const { cutsitesByName, cutsitesById } = allCutsites;
+    const { cutsitesByName, cutsitesById } = ed.cutsites;
     const cutsitesToUse = map(cutsitesByName, (cutsiteGroup) => {
       const name = cutsiteGroup[0].restrictionEnzyme.name;
       let groups = "";
@@ -99,14 +89,14 @@ class CutsiteProperties extends React.Component {
           <CutsiteFilter
             {...pick(this.props, userDefinedHandlersAndOpts)}
             style={{ flexGrow: 2 }}
-            editorName={editorName}
+            ed={ed}
             onChangeHook={this.onChangeHook}
           />
 
           <Button
             style={{ marginLeft: 15, flexGrow: -1 }}
             onClick={() => {
-              createNewDigest();
+              ed.panelsShown.createNewDigest();
             }}
           >
             Virtual Digest
@@ -114,7 +104,7 @@ class CutsiteProperties extends React.Component {
         </div>
         <DataTable
           selectedIds={get(
-            cutsitesById[selectedAnnotationId],
+            cutsitesById[ed.selectedAnnotationId],
             "restrictionEnzyme.name"
           )}
           compact
@@ -138,24 +128,6 @@ class CutsiteProperties extends React.Component {
   }
 }
 
-export default compose(
-  connectToEditor((editorState, ownProps) => {
-    const cutsites = selectors.filteredCutsitesSelector(
-      editorState,
-      ownProps.additionalEnzymes,
-      ownProps.enzymeGroupsOverride
-    );
-    const allCutsites = selectors.cutsitesSelector(
-      editorState,
-      ownProps.additionalEnzymes
-    );
-    return {
-      annotationVisibility: editorState.annotationVisibility || {},
-      filteredCutsites: cutsites,
-      allCutsites,
-      cutsites: cutsites.cutsitesArray
-    };
-  }),
-  withRestrictionEnzymes,
-  withSelectedEntities("cutsiteProperties")
-)(CutsiteProperties);
+export default compose(withSelectedEntities("cutsiteProperties"))(
+  CutsiteProperties
+);

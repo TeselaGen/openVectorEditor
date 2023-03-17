@@ -15,7 +15,6 @@ window.tgCreateMenu = showContextMenu;
 FocusStyleManager.onlyShowFocusOnTabs();
 export { getGaps } from "./AlignmentView/getGaps";
 export { default as createVectorEditor } from "./createVectorEditor";
-export { default as withEditorProps, connectToEditor } from "./withEditorProps";
 export { default as withEditorInteractions } from "./withEditorInteractions";
 export { default as specialCutsiteFilterOptions } from "./constants/specialCutsiteFilterOptions";
 //export components
@@ -46,12 +45,6 @@ export {
 } from "./DigestTool/DigestTool";
 export { default as withHover } from "./helperComponents/withHover";
 
-export {
-  default as vectorEditorReducer,
-  vectorEditorMiddleware,
-  actions
-} from "./redux";
-export { default as updateEditor } from "./updateEditor";
 export { default as addAlignment } from "./addAlignment";
 
 export { default as getRangeAnglesSpecial } from "./CircularView/getRangeAnglesSpecial";

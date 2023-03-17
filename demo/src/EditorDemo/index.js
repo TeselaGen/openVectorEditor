@@ -5,15 +5,12 @@ import { isRangeOrPositionWithinRange } from "ve-range-utils";
 import isMobile from "is-mobile";
 
 import store from "./../store";
-import { updateEditor, actions } from "../../../src/";
-
 import Editor from "../../../src/Editor";
 import renderToggle from "./../utils/renderToggle";
 import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
 import exampleSequenceData from "./../exampleData/exampleSequenceData";
 import AddEditFeatureOverrideExample from "./AddEditFeatureOverrideExample";
 import exampleProteinData from "../exampleData/exampleProteinData";
-import { connectToEditor } from "../../../src";
 import { showConfirmationDialog } from "teselagen-react-components";
 import {
   autoAnnotateFeatures,
@@ -25,22 +22,21 @@ import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+import { observer } from "mobx-react";
+import EditorStore from "../../../src/mobxStore/store";
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
 const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
-const MyCustomTab = connectToEditor(({ sequenceData = {} }) => {
-  //you can optionally grab additional editor data using the exported connectToEditor function
-  return {
-    sequenceData
-  };
-})(function (props) {
-  console.info("These are the props passed to our Custom Tab:", props);
+const ed = new EditorStore({});
+const updateEditor = ed.updateEditor;
+const MyCustomTab = observer(function () {
+  console.info("These are the props passed to our Custom Tab:", ed);
   return (
     <div>
       <h3>Hello World, I am a Custom Tab</h3>
-      <h4>sequenceLength: {props.sequenceData.sequence.length}</h4>
+      <h4>sequenceLength: {ed.sequenceLength}</h4>
     </div>
   );
 });
@@ -104,12 +100,12 @@ export default class EditorDemo extends React.Component {
     super(props);
     setupOptions({ that: this, defaultState, props });
     window.ove_updateEditor = (vals) => {
-      updateEditor(store, "DemoEditor", vals);
+      updateEditor(vals);
     };
     window.ove_getEditorState = () => {
       return store.getState().VectorEditor["DemoEditor"];
     };
-    updateEditor(store, "DemoEditor", {
+    updateEditor({
       readOnly: false,
       sequenceData: exampleSequenceData
     });
@@ -281,7 +277,7 @@ export default class EditorDemo extends React.Component {
 
   setLinearPanelAsActive = () => {
     store.dispatch(
-      actions.setPanelAsActive("rail", { editorName: "DemoEditor" })
+      ed.panelsShown.setPanelAsActive("rail", { editorName: "DemoEditor" })
     );
   };
 
@@ -503,7 +499,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 info: `
 You can change the sequence in a given <Editor/> by calling:
 \`\`\`js
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   sequenceDataHistory: {},
   sequenceData: generateSequenceData() //update with random seq data!
 });
@@ -511,7 +507,7 @@ updateEditor(store, "DemoEditor", {
 
               `,
                 onClick: () => {
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     sequenceDataHistory: {},
                     sequenceData: generateSequenceData()
                   });
@@ -538,7 +534,7 @@ isMixedRnaAndDna
 
 Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object:
 \`\`\`
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   readOnly: false,
   sequenceData: tidyUpSequenceData(exampleProteinData, {
     convertAnnotationsFromAAIndices: true
@@ -586,19 +582,19 @@ certain dna specific tools and annotations are automatically disabled when isPro
                 `,
                 hook: (val) => {
                   if (val === "Protein") {
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       readOnly: false,
                       sequenceData: tidyUpSequenceData(exampleProteinData, {
                         convertAnnotationsFromAAIndices: true
                       })
                     });
                   } else if (val === "RNA") {
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       readOnly: false,
                       sequenceData: { ...exampleSequenceData, isRna: true }
                     });
                   } else if (val === "Oligo") {
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       readOnly: false,
                       sequenceData: {
                         sequence:
@@ -608,7 +604,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                       }
                     });
                   } else if (val === "mixedRnaAndDna") {
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       readOnly: false,
                       sequenceData: tidyUpSequenceData(
                         {
@@ -624,7 +620,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                       this.state.sequenceLength !== 5299 ||
                       !this.state.sequenceLength
                     ) {
-                      updateEditor(store, "DemoEditor", {
+                      updateEditor({
                         readOnly: false,
                         sequenceData: exampleSequenceData
                       });
@@ -655,7 +651,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   this.state.moleculeType !== "DNA" && this.state.moleculeType,
                 hook: (val) => {
                   if (!val) return;
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     sequenceDataHistory: {},
                     sequenceData:
                       val === "5299"
@@ -705,7 +701,7 @@ ToolBarProps: {
                 type: "focusProperties",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       propertiesTool: {
                         tabId:
                           new URL(
@@ -750,7 +746,7 @@ ToolBarProps: {
                 type: "focusDigestTool",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       panelsShown: [
                         [
                           {
@@ -790,7 +786,7 @@ ToolBarProps: {
                 type: "focusPCRTool",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       panelsShown: [
                         [
                           {
@@ -831,7 +827,7 @@ ToolBarProps: {
                 type: "customizeTabs",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       panelsShown: [
                         [
                           {
@@ -876,7 +872,7 @@ ToolBarProps: {
                 info: `//The positions of the tabs shown in the editor can be changed programatically:
 \`\`\`js
 //override the panelsShown redux state adding your custom tab wherever you see fit:
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   panelsShown: [
     [ //the first row of tabs
       {
@@ -1108,7 +1104,7 @@ getVersionList: async () => {
                 info: `
 You can set default visibilities like so:
 \`\`\`
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   annotationVisibility: {
     features: false,
     primers: false,
@@ -1123,7 +1119,7 @@ updateEditor(store, "DemoEditor", {
                 label: "Set Default Visibilities",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       annotationVisibility: {
                         features: false,
                         primers: false,
@@ -1169,7 +1165,7 @@ sequenceData: {
 \`\`\`
 `,
                 hook: (shouldUpdate) => {
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     justPassingPartialSeqData: true,
                     sequenceData: {
                       warnings: shouldUpdate
@@ -1205,7 +1201,7 @@ sequenceData: {
                 type: "allowPartOverhangs",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         parts: [
@@ -1243,7 +1239,7 @@ sequenceData: {
                 type: "extraAnnotationPropsExample",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         parts: [
@@ -1292,7 +1288,7 @@ sequenceData: {
 
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         lineageAnnotations: shouldUpdate
@@ -1355,7 +1351,7 @@ sequenceData: {
 `,
 
                 hook: (shouldUpdate) => {
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     justPassingPartialSeqData: true,
                     sequenceData: {
                       assemblyPieces: shouldUpdate
@@ -1402,7 +1398,7 @@ sequenceData: {
                 type: "longSequenceName",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         name: `LALALALA I'm a really Long Sequence Name gahhahaghaghaghahg hagahghah lorem ipsum stacato lorem ipsum stacato`
@@ -1456,7 +1452,7 @@ additionalEnzymes: {
                 type: "allowPartsToOverlapSelf",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         parts: {
@@ -1491,7 +1487,7 @@ additionalEnzymes: {
                 type: "chromatogramExample",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       annotationVisibility: {
                         chromatogram: true,
                         features: true,
@@ -1552,13 +1548,13 @@ additionalEnzymes: {
                 that: this,
                 type: "readOnly",
                 hook: (readOnly) => {
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     readOnly
                   });
                 },
                 description: `The editor can be put into readOnly mode like so:
 \`\`\`
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   readOnly
 });
 \`\`\`
@@ -1574,7 +1570,7 @@ updateEditor(store, "DemoEditor", {
                   if (isNotDna) {
                     return;
                   }
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     justPassingPartialSeqData: true,
                     sequenceData: { circular: !linear }
                   });
@@ -1582,7 +1578,7 @@ updateEditor(store, "DemoEditor", {
                 label: "Toggle Linear",
                 description: `The editor can be put into linear mode like so:
 \`\`\`
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   sequenceData: {...exampleSequenceData, circular: false}
 });
 \`\`\`
@@ -1635,7 +1631,7 @@ other options are:
               })}
               {renderToggle({
                 onClick: () => {
-                  updateEditor(store, "DemoEditor", {
+                  updateEditor({
                     selectionLayer: { start: 30, end: 59 }
                   });
                 },
@@ -1646,7 +1642,7 @@ other options are:
                 info: `
 You can programatically update the editor like so:
 \`\`\`
-updateEditor(store, "DemoEditor", {
+updateEditor( {
   selectionLayer: { start: 30, end: 59 }
 });
 \`\`\`
@@ -1866,7 +1862,7 @@ clickOverrides: {
                 type: "allowPrimerBasesToBeEdited",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor(store, "DemoEditor", {
+                    updateEditor({
                       justPassingPartialSeqData: true,
                       sequenceData: {
                         primers: shouldUpdate

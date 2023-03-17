@@ -4,7 +4,8 @@ import { createCommandMenu } from "teselagen-react-components";
 import getCommands from "../commands";
 
 import ToolbarItem from "./ToolbarItem";
-import withEditorProps from "../withEditorProps";
+import { observer } from "mobx-react";
+
 
 export default ({ toolbarItemProps }) => {
   return (
@@ -21,7 +22,7 @@ export default ({ toolbarItemProps }) => {
   );
 };
 
-const Dropdown = withEditorProps(props => {
+const Dropdown = observer(props => {
   return (
     <Menu>
       {createCommandMenu(

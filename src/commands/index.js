@@ -1302,7 +1302,7 @@ const additionalAnnotationCommandsDefs = {
 
 const toolCommandDefs = {
   simulateDigestion: {
-    handler: (props) => props.createNewDigest(),
+    handler: (props) => props.ed.panelsShown.createNewDigest(),
     hotkey: "mod+shift+d",
     hotkeyProps: { preventDefault: true },
     isHidden: (props) => isProtein(props)
@@ -1344,7 +1344,7 @@ const toolCommandDefs = {
     name: "Create Custom Enzyme",
     handler: () => {
       showDialog({
-        dialogType: "CreateCustomEnzyme"
+        dialogType: "CreateCustomEnzyme",
       });
     },
     isHidden: (props) => props.overrideManageEnzymes

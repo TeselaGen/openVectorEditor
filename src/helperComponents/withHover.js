@@ -1,4 +1,4 @@
-import { withHandlers, branch } from "recompose";
+import { withHandlers, compose } from "recompose";
 import { annotationTypes } from "ve-sequence-utils";
 
 

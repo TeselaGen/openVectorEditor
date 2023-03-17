@@ -12,7 +12,6 @@ import { Button, Tag } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
-import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import commands from "../../commands";
 import { sizeSchema } from "./utils";
@@ -20,6 +19,7 @@ import { showAddOrEditAnnotationDialog } from "../../GlobalDialogUtils";
 import { typeField } from "./typeField";
 import { getSequenceWithinRange } from "ve-range-utils";
 import { getReverseComplementSequenceString } from "ve-sequence-utils";
+import { observer } from "mobx-react";
 
 const genericAnnotationProperties = ({
   annotationType,
@@ -75,7 +75,7 @@ const genericAnnotationProperties = ({
                 }
               ]),
           sizeSchema,
-          ...(withTags && this.props.allPartTags
+          ...(withTags && this.props.ed.allPartTags
             ? [
                 {
                   path: "tags",
@@ -121,18 +121,11 @@ const genericAnnotationProperties = ({
     };
     render() {
       const {
-        readOnly,
-        annotations = {},
-        annotationVisibility,
-        sequenceLength,
-        selectionLayer,
-        sequence,
-        isProtein,
-        allPartTags,
+        ed,
         annotationPropertiesSelectedEntities:
-          _annotationPropertiesSelectedEntities,
-        selectedAnnotationId
+          _annotationPropertiesSelectedEntities
       } = this.props;
+      const annotations = ed[annotationType + "s"];
       const annotationPropertiesSelectedEntities =
         _annotationPropertiesSelectedEntities.filter((a) => annotations[a.id]);
 
@@ -144,7 +137,7 @@ const genericAnnotationProperties = ({
           ...(annotation.strand === undefined && {
             strand: annotation.forward ? 1 : -1
           }),
-          size: getRangeLength(annotation, sequenceLength)
+          size: getRangeLength(annotation, ed.sequenceLength)
         };
       });
 
@@ -163,30 +156,35 @@ const genericAnnotationProperties = ({
                 annotation
               });
             }}
-            annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
-            sequence={sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            annotationVisibility={ed.annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            sequence={ed.sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             noPadding
             noFullscreenButton
             onRowSelect={this.onRowSelect}
-            selectedIds={selectedAnnotationId}
+            selectedIds={ed.selectedAnnotationId}
             formName="annotationProperties"
             noRouter
-            isProtein={isProtein}
-            keyedPartTags={getKeyedTagsAndTagOptions(allPartTags)}
+            isProtein={ed.isProtein}
+            keyedPartTags={getKeyedTagsAndTagOptions(ed.allPartTags)}
             compact
             isInfinite
             schema={this.schema}
             entities={annotationsToUse}
           />
-          {!readOnly && (
+          {!ed.readOnly && (
             <div className="vePropertiesFooter">
               <Button
-                disabled={!sequenceLength}
+                disabled={!ed.sequenceLength}
                 style={{ marginRight: 15 }}
                 onClick={() => {
                   showAddOrEditAnnotationDialog({
                     type: annotationType,
-                    annotation: pick(selectionLayer, "start", "end", "forward")
+                    annotation: pick(
+                      ed.selectionLayer,
+                      "start",
+                      "end",
+                      "forward"
+                    )
                   });
                 }}
               >
@@ -239,24 +237,7 @@ const genericAnnotationProperties = ({
   }
 
   return compose(
-    connectToEditor(
-      ({
-        readOnly,
-        annotationVisibility = {},
-        sequenceData,
-        selectionLayer
-      }) => {
-        return {
-          annotationVisibility,
-          selectionLayer,
-          readOnly,
-          sequence: sequenceData.sequence,
-          annotations: sequenceData[annotationType + "s"],
-          [annotationType + "s"]: sequenceData[annotationType + "s"],
-          sequenceLength: sequenceData.sequence.length
-        };
-      }
-    ),
+    observer,
     withSelectedEntities("annotationProperties")
   )(AnnotationProperties);
 };

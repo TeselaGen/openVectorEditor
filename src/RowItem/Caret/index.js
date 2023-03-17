@@ -1,12 +1,12 @@
 import React from "react";
 import classnames from "classnames";
-// import pure from "../../utils/pureNoFunc";
 import "./style.css";
 import { getSelectionMessage } from "../../utils/editorUtils";
+import { observer } from "mobx-react-lite";
 // import draggableClassnames from "../../constants/draggableClassnames";
 
-function Caret(props) {
-  let {
+function Caret({ed}) {
+  const {
     charWidth,
     row,
     sequenceLength,
@@ -19,14 +19,14 @@ function Caret(props) {
     style,
     selectionMessage,
     className = ""
-  } = props;
+  } = ed;
 
   if (
     (row.start <= caretPosition && row.end + 1 >= caretPosition) ||
     (row.end === sequenceLength - 1 && row.end < caretPosition)
   ) {
     //the second logical operator catches the special case where we're at the very end of the sequence..
-    let cursorEl = (
+    const cursorEl = (
       <div
         onClick={onClick}
         onContextMenu={
@@ -60,5 +60,4 @@ function Caret(props) {
   }
 }
 
-export default Caret;
-// export default pure(Caret);
+export default observer(Caret);

@@ -2,162 +2,118 @@ import {
   tidyUpSequenceData /* generateSequenceData */,
   condensePairwiseAlignmentDifferences
 } from "ve-sequence-utils";
-import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
 import shortid from "shortid";
 
-import addDashesForMatchStartAndEndForTracks from "../redux/utils/addDashesForMatchStartAndEndForTracks";
-
-import { /* createReducer, */ createAction } from "redux-act";
 import { omit } from "lodash";
+import addDashesForMatchStartAndEndForTracks from "./utils/addDashesForMatchStartAndEndForTracks";
+export default class Alignments {
+  alignments = {};
 
-const alignmentAnnotationSettings = {
-  axis: true,
-  axisNumbers: true,
-  chromatogram: false,
-  dnaColors: false,
-  features: false,
-  parts: false,
-  reverseSequence: false,
-  sequence: true,
-  translations: true,
-  orfs: false,
-  orfTranslations: false,
-  cdsFeatureTranslations: false,
-  cutsites: false,
-  primers: false,
-  compactNames: false
-};
+  highlightRangeProps = {
+    color: "red",
+    hideCarets: true,
+    ignoreGaps: true
+  };
 
-const defaultVisibilities = {
-  alignmentAnnotationVisibility: alignmentAnnotationSettings,
-  pairwise_alignmentAnnotationVisibility: alignmentAnnotationSettings,
-  alignmentAnnotationLabelVisibility: {
+  alignmentAnnotationSettings = {
+    axis: true,
+    axisNumbers: true,
+    chromatogram: false,
+    dnaColors: false,
     features: false,
     parts: false,
-    cutsites: false
-  },
-  pairwise_alignmentAnnotationLabelVisibility: {
-    features: false,
-    parts: false,
-    cutsites: false
-  }
-};
-const defaultVisibilityTypes = Object.keys(defaultVisibilities);
+    reverseSequence: false,
+    sequence: true,
+    translations: true,
+    orfs: false,
+    orfTranslations: false,
+    cdsFeatureTranslations: false,
+    cutsites: false,
+    primers: false,
+    compactNames: false
+  };
 
-try {
-  defaultVisibilityTypes.forEach((type) => {
-    const newVal = JSON.parse(window.localStorage.getItem(type));
-    if (newVal)
-      defaultVisibilities[type] = {
-        ...defaultVisibilities[type],
-        ...newVal
-      };
-  });
-} catch (e) {
-  console.error("error setting localstorage visibility config", e);
-}
-
-// ------------------------------------
-// Actions
-// ------------------------------------
-export const upsertAlignmentRun = createAction("UPSERT_ALIGNMENT_RUN");
-export const removeAlignmentFromRedux = createAction(
-  "REMOVE_ALIGNMENT_FROM_REDUX"
-);
-export const updateAlignmentViewVisibility = createAction(
-  "UPDATE_ALIGNMENT_VIEW_VISIBILITY"
-);
-export const alignmentRunUpdate = createAction("ALIGNMENT_RUN_UPDATE");
-
-const highlightRangeProps = {
-  color: "red",
-  hideCarets: true,
-  ignoreGaps: true
-};
-function addHighlightedDifferences(alignmentTracks) {
-  return alignmentTracks.map((track) => {
-    if (track.isUnmapped) {
-      return track;
+  defaultVisibilities = {
+    alignmentAnnotationVisibility: this.alignmentAnnotationSettings,
+    pairwise_alignmentAnnotationVisibility: this.alignmentAnnotationSettings,
+    alignmentAnnotationLabelVisibility: {
+      features: false,
+      parts: false,
+      cutsites: false
+    },
+    pairwise_alignmentAnnotationLabelVisibility: {
+      features: false,
+      parts: false,
+      cutsites: false
     }
-    const sequenceData = tidyUpSequenceData(track.sequenceData);
-    const matchHighlightRanges = getRangeMatchesBetweenTemplateAndNonTemplate(
-      alignmentTracks[0].alignmentData.sequence,
-      track.alignmentData.sequence
-    );
-    // .filter by the user-specified mismatch overrides (initially [])
-    const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
-    return {
-      ...track,
-      sequenceData,
-      matchHighlightRanges,
-      additionalSelectionLayers: matchHighlightRanges
-        .filter(({ isMatch }) => !isMatch)
-        .map((range) => {
-          return { ...range, ...highlightRangeProps };
-        }),
-      mismatches
-    };
-  });
-}
+  };
+  defaultVisibilityTypes = Object.keys(this.defaultVisibilities);
 
-// alignmentTracks = addHighlightedDifferences(alignmentTracks);
+  constructor() {
+    try {
+      this.defaultVisibilityTypes.forEach((type) => {
+        const newVal = JSON.parse(window.localStorage.getItem(type));
+        if (newVal)
+          this.defaultVisibilities[type] = {
+            ...this.defaultVisibilities[type],
+            ...newVal
+          };
+      });
+    } catch (e) {
+      console.error("error setting localstorage visibility config", e);
+    }
+  }
 
-// ------------------------------------
-// Reducer
-// ------------------------------------
-
-export default (state = {}, { payload = {}, type }) => {
-  if (type === "ALIGNMENT_RUN_UPDATE") {
+  alignmentRunUpdate(payload) {
     const { alignmentId } = payload;
-    const newState = {
-      ...state,
+    this.alignments = {
+      ...this.alignments,
       [alignmentId]: {
-        ...state[alignmentId],
+        ...this.alignments[alignmentId],
         ...payload
       }
     };
-    return newState;
   }
 
-  if (type === "UPDATE_ALIGNMENT_VIEW_VISIBILITY") {
-    defaultVisibilityTypes.forEach((type) => {
+  updateAlighmnetViewVisibility(payload) {
+    this.defaultVisibilityTypes.forEach((type) => {
       if (
         (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
         (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
       ) {
-        defaultVisibilities[type] = {
-          ...defaultVisibilities[type],
+        this.defaultVisibilities[type] = {
+          ...this.defaultVisibilities[type],
           ...payload[type.replace("pairwise_", "")]
         };
 
         localStorage.setItem(
           type,
           JSON.stringify({
-            ...defaultVisibilities[type],
+            ...this.defaultVisibilities[type],
             ...payload[type.replace("pairwise_", "")]
           })
         );
       }
     });
-    return {
-      ...state,
-      [payload.id]: { ...payload }
-    };
+    this.alignments = { ...this.alignments, [payload.id]: { ...payload } };
   }
-  if (type === "UPSERT_ALIGNMENT_RUN") {
+
+  upsertAlignmentRun(payload) {
     const { id } = payload;
     const payloadToUse = {
-      stateTrackingId: state[id]?.stateTrackingId ? shortid() : "initialLoadId",
-      alignmentType: state[id]?.alignmentType,
+      stateTrackingId: this.alignments[id]?.stateTrackingId
+        ? shortid()
+        : "initialLoadId",
+      alignmentType: this.alignments[id]?.alignmentType,
       ...payload,
       //assign default visibilities
-      ...defaultVisibilityTypes.reduce((acc, type) => {
+      ...this.defaultVisibilityTypes.reduce((acc, type) => {
         if (
           (type.startsWith("pairwise_") && payload.pairwiseAlignments) ||
           (!type.startsWith("pairwise_") && !payload.pairwiseAlignments)
         ) {
           acc[type.replace("pairwise_", "")] = {
-            ...defaultVisibilities[type],
+            ...this.defaultVisibilities[type],
             ...payload[type.replace("pairwise_", "")]
           };
         }
@@ -196,7 +152,7 @@ export default (state = {}, { payload = {}, type }) => {
           additionalSelectionLayers.push({
             start: match.index,
             end: match.index + match[0].length - 1,
-            ...highlightRangeProps
+            ...this.highlightRangeProps
           });
         }
         re = /g+/gi;
@@ -205,7 +161,7 @@ export default (state = {}, { payload = {}, type }) => {
           additionalSelectionLayers.push({
             start: match.index,
             end: match.index + match[0].length - 1,
-            ...highlightRangeProps,
+            ...this.highlightRangeProps,
             color: "grey"
           });
         }
@@ -226,16 +182,16 @@ export default (state = {}, { payload = {}, type }) => {
       payloadToUse.pairwiseOverviewAlignmentTracks =
         pairwiseOverviewAlignmentTracks;
       payloadToUse.pairwiseAlignments = payloadToUse.pairwiseAlignments.map(
-        addHighlightedDifferences
+        this.addHighlightedDifferences
       );
     }
     if (payloadToUse.alignmentTracks) {
-      payloadToUse.alignmentTracks = addHighlightedDifferences(
+      payloadToUse.alignmentTracks = this.addHighlightedDifferences(
         payloadToUse.alignmentTracks
       );
     }
     //check for issues
-    let hasError = checkForIssues(
+    let hasError = this.checkForIssues(
       payloadToUse.alignmentTracks,
       payload.alignmentType
     );
@@ -245,129 +201,85 @@ export default (state = {}, { payload = {}, type }) => {
         hasError = error;
       }
     });
-    return {
-      ...state,
+
+    this.alignments = {
+      ...this.alignments,
       [payload.id]: {
         ...payloadToUse,
         hasError
       }
     };
   }
-  if (type === "REMOVE_ALIGNMENT_FROM_REDUX") {
+
+  removeAlignment(payload) {
     const { id } = payload;
-    state = omit(state, [id]);
+    this.alignments = omit(this.alignments, [id]);
   }
-  return state;
-};
 
-//returns an array like so: [{start: 0, end: 4, isMatch: false}, {start,end,isMatch} ... etc]
-function getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
-  //assume all sequences are the same length (with gap characters "-" in some places)
-  //loop through all non template sequences and compare them with the template
+  //--- Helper Functions
 
-  const seqLength = nonTempSeq.length;
-  const ranges = [];
-  // const startIndex = "".match/[-]/ Math.max(0, .indexOf("-"));
-  const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, "");
-  const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
+  addHighlightedDifferences(alignmentTracks) {
+    return alignmentTracks.map((track) => {
+      if (track.isUnmapped) {
+        return track;
+      }
+      const sequenceData = tidyUpSequenceData(track.sequenceData);
+      const matchHighlightRanges =
+        this.getRangeMatchesBetweenTemplateAndNonTemplate(
+          alignmentTracks[0].alignmentData.sequence,
+          track.alignmentData.sequence
+        );
+      // .filter by the user-specified mismatch overrides (initially [])
+      const mismatches = matchHighlightRanges.filter(({ isMatch }) => !isMatch);
+      return {
+        ...track,
+        sequenceData,
+        matchHighlightRanges,
+        additionalSelectionLayers: matchHighlightRanges
+          .filter(({ isMatch }) => !isMatch)
+          .map((range) => {
+            return { ...range, ...this.highlightRangeProps };
+          }),
+        mismatches
+      };
+    });
+  }
 
-  const startIndex = seqLength - nonTempSeqWithoutLeadingDashes.length;
-  const endIndex =
-    seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
-  for (let index = startIndex; index < endIndex; index++) {
-    const isMatch =
-      tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();
-    const previousRange = ranges[ranges.length - 1];
-    if (previousRange) {
-      if (previousRange.isMatch === isMatch) {
-        previousRange.end++;
+  //returns an array like so: [{start: 0, end: 4, isMatch: false}, {start,end,isMatch} ... etc]
+  getRangeMatchesBetweenTemplateAndNonTemplate(tempSeq, nonTempSeq) {
+    //assume all sequences are the same length (with gap characters "-" in some places)
+    //loop through all non template sequences and compare them with the template
+    const seqLength = nonTempSeq.length;
+    const ranges = [];
+    // const startIndex = "".match/[-]/ Math.max(0, .indexOf("-"));
+    const nonTempSeqWithoutLeadingDashes = nonTempSeq.replace(/^-+/g, "");
+    const nonTempSeqWithoutTrailingDashes = nonTempSeq.replace(/-+$/g, "");
+
+    const startIndex = seqLength - nonTempSeqWithoutLeadingDashes.length;
+    const endIndex =
+      seqLength - (seqLength - nonTempSeqWithoutTrailingDashes.length);
+    for (let index = startIndex; index < endIndex; index++) {
+      const isMatch =
+        tempSeq[index].toLowerCase() === nonTempSeq[index].toLowerCase();
+      const previousRange = ranges[ranges.length - 1];
+      if (previousRange) {
+        if (previousRange.isMatch === isMatch) {
+          previousRange.end++;
+        } else {
+          ranges.push({
+            start: index,
+            end: index,
+            isMatch
+          });
+        }
       } else {
         ranges.push({
-          start: index,
-          end: index,
+          start: startIndex,
+          end: startIndex,
           isMatch
         });
       }
-    } else {
-      ranges.push({
-        start: startIndex,
-        end: startIndex,
-        isMatch
-      });
     }
-  }
-  return ranges;
-}
-
-function checkForIssues(alignmentTracks, alignmentType) {
-  if (
-    !alignmentTracks ||
-    !alignmentTracks[0] ||
-    !alignmentTracks[0].alignmentData
-  ) {
-    return;
-  }
-
-  const alignmentTrackLength = alignmentTracks[0].alignmentData.sequence.length;
-  let hasError;
-  alignmentTracks.some((track) => {
-    if (track.alignmentData.sequence.length !== alignmentTrackLength) {
-      console.error("incorrect length", alignmentTracks);
-
-      return "incorrect length";
-    }
-    if (
-      track.chromatogramData &&
-      track.sequenceData.sequence.length !==
-        track.chromatogramData.baseCalls.length
-    ) {
-      console.error("incorrect chromatogram length", alignmentTracks);
-
-      return "incorrect chromatogram length";
-    }
-    if (track.chromatogramData && !track.chromatogramData.baseTraces) {
-      if (!track.chromatogramData.basePos) {
-        console.error("corrupted chromatogram data", alignmentTracks);
-        return "corrupted chromatogram data";
-      }
-      track.chromatogramData = convertBasePosTraceToPerBpTrace(
-        track.chromatogramData
-      );
-    }
-    if (
-      alignmentType !== "Parallel Part Creation" &&
-      track.sequenceData.sequence.length !==
-        track.alignmentData.sequence.replace(/-/g, "").length
-    ) {
-      console.error(
-        "sequence data length does not match alignment data w/o gaps"
-      );
-      console.error(
-        "track.sequenceData.sequence:",
-        track.sequenceData.sequence
-      );
-      console.error(
-        "track.sequenceData.sequence.length:",
-        track.sequenceData.sequence.length
-      );
-      console.error(
-        "track.alignmentData.sequence:",
-        track.alignmentData.sequence
-      );
-      console.error(
-        'track.alignmentData.sequence.replace(/-/g,""):',
-        track.alignmentData.sequence.replace(/-/g, "")
-      );
-      console.error(
-        'track.alignmentData.sequence.replace(/-/g,"").length:',
-        track.alignmentData.sequence.replace(/-/g, "").length
-      );
-      hasError = "sequence data length does not match alignment data w/o gaps";
-      return true;
-    }
-    return false;
-  });
-  if (hasError) {
-    return hasError;
+    return ranges;
   }
 }

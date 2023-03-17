@@ -8,7 +8,7 @@ import {
   showConfirmationDialog,
   wrapDialog
 } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import {
   Classes,
   ButtonGroup,
@@ -21,7 +21,6 @@ import {
   Button
 } from "@blueprintjs/core";
 import classNames from "classnames";
-import withEditorProps from "../../withEditorProps";
 
 import EnzymeViewer from "../../EnzymeViewer";
 import "./style.css";
@@ -34,6 +33,7 @@ import {
 } from "ve-sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
 import { showDialog } from "../../GlobalDialogUtils";
+import { observer } from "mobx-react";
 
 const upsertLocalEnzymeGroups = (newGroups) => {
   const existingGroups = window.getExistingEnzymeGroups();
@@ -203,7 +203,7 @@ class EnzymesDialog extends React.Component {
     });
   };
   render() {
-    const { hideModal } = this.props;
+    const { hideModal, ed } = this.props;
     if (!this.enzymeGroups) return null;
     const { selectedEnzymeGroup, searchInput, enzymeGroupToMoveTo } =
       this.state;
@@ -759,7 +759,7 @@ class EnzymesDialog extends React.Component {
 
 export default compose(
   wrapDialog({ title: "Manage Enzymes" }),
-  withEditorProps
+  observer
   // reduxForm({
   //   form: "EnzymesDialog",
   //   validate: ({ id1, id2 }) => {

@@ -1,9 +1,5 @@
 //optionally connect to the redux store
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import {
-  vectorEditorReducer as VectorEditor,
-  vectorEditorMiddleware
-} from "../../src";
 import thunk from "redux-thunk";
 import { reducer as form } from "redux-form";
 
@@ -20,11 +16,10 @@ const composeEnhancer =
 const store = createStore(
   combineReducers({
     form,
-    VectorEditor: VectorEditor()
   }),
   undefined,
   composeEnhancer(
-    applyMiddleware(thunk, vectorEditorMiddleware) //your store should be redux-thunk connected for the VectorEditor component to work
+    applyMiddleware(thunk) //your store should be redux-thunk connected for the VectorEditor component to work
   )
 );
 

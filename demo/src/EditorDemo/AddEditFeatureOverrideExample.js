@@ -10,7 +10,7 @@ import {
   TextareaField,
   wrapDialog
 } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
@@ -24,7 +24,6 @@ import {
 } from "ve-sequence-utils";
 import classNames from "classnames";
 
-import { withEditorProps } from "../../../src";
 import tgFormValues from "../../../src/utils/tgFormValues";
 
 export class AddOrEditFeatureDialog extends React.Component {
@@ -308,7 +307,6 @@ export default compose(
     height: 570,
     width: 400
   }),
-  withEditorProps,
   reduxForm({
     form: "AddOrEditFeatureDialog",
     validate: (values, { sequenceLength }) => {

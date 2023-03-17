@@ -50,7 +50,6 @@ class ToolbarItem extends React.Component {
     if (toggled && tooltipToggled) {
       tooltipToDisplay = tooltipToggled;
     }
-    // const Dropdown = _DropDown && withEditorProps && withEditorProps(_DropDown);
     const isOpen = ed.openToolbarItem === toolName;
     const buttonTarget = (
       <div

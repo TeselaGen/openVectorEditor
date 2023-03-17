@@ -1,11 +1,11 @@
 import React from "react";
 import { MenuBar, commandMenuEnhancer } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { memoize } from "lodash";
-import withEditorProps from "../withEditorProps";
 import menuDef from "./defaultConfig";
 import getCommands from "../commands";
 import { Icon, Spinner } from "@blueprintjs/core";
+import { observer } from "mobx-react";
 
 const ident = (x) => x;
 
@@ -95,4 +95,4 @@ class OveMenuBar extends React.Component {
   }
 }
 
-export default compose(withEditorProps)(OveMenuBar);
+export default compose(observer)(OveMenuBar);

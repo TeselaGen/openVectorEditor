@@ -1,4 +1,6 @@
+import { filter } from "lodash";
 import { findSequenceMatches } from "ve-sequence-utils/lib";
+import { searchableTypes } from "../utils/annotationTypes";
 
 export default class FindTool {
   constructor(ed) {
@@ -11,6 +13,19 @@ export default class FindTool {
   ambiguousOrLiteral = "LITERAL";
   highlightAll = false;
   matchNumber = 0;
+  annotationMatches() {
+    if (!this.searchText || !this.isOpen) {
+      return [];
+    }
+    return searchableTypes.map((type) => {
+      const annotations = this[type];
+      return filter(annotations, (ann) =>
+        ann.name
+          .toLowerCase()
+          .includes(this.searchText ? this.searchText.toLowerCase() : "")
+      );
+    });
+  }
   get searchLayers() {
     if (!this.searchText || !this.isOpen) {
       return [];
@@ -60,6 +75,29 @@ export default class FindTool {
       isSearchLayer: true
     }));
   }
+  // get matchedSearchLayer (){
+
+  //   let matchedSearchLayer = { start: -1, end: -1 };
+  //   let searchLayers = this.searchLayers.map((item, index) => {
+  //     let itemToReturn = item;
+  //     if (index === findTool.matchNumber) {
+  //       itemToReturn = {
+  //         ...item,
+  //         className: item.className + " veSearchLayerActive"
+  //       };
+  //       matchedSearchLayer = itemToReturn;
+  //     }
+  //     return itemToReturn;
+  //   });
+  //   const matchesTotal = searchLayers.length;
+  //   if (
+  //     (!findTool.highlightAll && searchLayers[findTool.matchNumber]) ||
+  //     searchLayers.length > MAX_MATCHES_DISPLAYED
+  //   ) {
+  //     searchLayers = [searchLayers[findTool.matchNumber]];
+  //   }
+  // }
+
   get translationSearchMatches() {
     if (this.dnaOrAA === "DNA") return [];
     if (!this.highlightAll) return [this.searchLayers[this.matchNumber]];

@@ -7,15 +7,14 @@ import {
   withSelectedEntities,
   SwitchField
 } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Button, Classes, Popover } from "@blueprintjs/core";
 import classNames from "classnames";
-
-import withEditorProps from "../../withEditorProps";
 import { forEach, camelCase, startCase } from "lodash";
 import { sizeSchema } from "../PropertiesDialog/utils";
 import { getRangeLength } from "ve-range-utils";
 import tgFormValues from "../../utils/tgFormValues";
+import { observer } from "mobx-react";
 
 const schema = {
   fields: [
@@ -58,19 +57,15 @@ class RemoveDuplicatesDialog extends React.Component {
   };
   recomputeDups = () => {
     const {
-      // hideModal,
+      ed,
       type,
-      sequenceData = { sequence: "" },
-      // handleSubmit,
-      sequenceLength,
       ignoreName,
       ignoreStrand,
       ignoreStartAndEnd
-      // circular,
-      // upsertFeature
     } = this.props;
+    const { sequenceLength } = ed;
 
-    const annotations = sequenceData[type];
+    const annotations = ed[type];
     const dups = [];
     const seqsHashByStartEndStrandName = {};
     forEach(annotations, (a) => {
@@ -183,7 +178,7 @@ class RemoveDuplicatesDialog extends React.Component {
 
 export default compose(
   wrapDialog(),
-  withEditorProps,
+  observer,
 
   withSelectedEntities("duplicatesToRemove"),
 

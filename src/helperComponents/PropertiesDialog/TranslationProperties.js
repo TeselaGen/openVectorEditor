@@ -8,10 +8,9 @@ import {
 import getCommands from "../../commands";
 import { map } from "lodash";
 import { getRangeLength } from "ve-range-utils";
-import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
-import selectors from "../../selectors";
 import { getMassOfAaString } from "ve-sequence-utils";
+import { observer } from "mobx-react";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -31,14 +30,18 @@ class TranslationProperties extends React.Component {
   };
   render() {
     const {
+      translationPropertiesSelectedEntities,
+
+      ed
+    } = this.props;
+    const {
       readOnly,
       translations,
-      translationPropertiesSelectedEntities,
       deleteTranslation,
       sequenceLength,
       selectedAnnotationId,
       annotationVisibility
-    } = this.props;
+    } = ed;
     const translationsToUse = map(translations, (translation) => {
       let aaString = "";
       for (let i = 0; i < translation.aminoAcids.length; i++) {
@@ -137,16 +140,6 @@ class TranslationProperties extends React.Component {
 }
 
 export default compose(
-  connectToEditor((editorState) => {
-    const { readOnly, annotationVisibility = {}, sequenceData } = editorState;
-    return {
-      readOnly,
-      translations: selectors.translationsSelector(editorState),
-      orfs: selectors.orfsSelector(editorState),
-      annotationVisibility,
-      sequenceLength: (sequenceData.sequence || "").length,
-      sequenceData
-    };
-  }),
+  observer,
   withSelectedEntities("translationProperties")
 )(TranslationProperties);

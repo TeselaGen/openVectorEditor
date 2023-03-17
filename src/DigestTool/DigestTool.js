@@ -1,7 +1,6 @@
 // import uniqid from "shortid";
 // import Ladder from "./Ladder";
 import { compose, withProps } from "recompose";
-// import selectionLayer from "../redux/selectionLayer";
 import React from "react";
 import { DataTable } from "teselagen-react-components";
 import { getCutsiteType, getVirtualDigest } from "ve-sequence-utils";

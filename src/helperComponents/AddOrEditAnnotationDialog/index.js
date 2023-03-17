@@ -13,7 +13,7 @@ import {
   bluntFeatureIcon,
   featureIcon
 } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import {
   Button,
   Intent,
@@ -31,12 +31,11 @@ import {
 import { tidyUpAnnotation, getFeatureToColorMap } from "ve-sequence-utils";
 import classNames from "classnames";
 import { store, view } from "@risingstack/react-easy-state";
-
-import withEditorProps from "../../withEditorProps";
 import { withProps } from "recompose";
 import { map, flatMap } from "lodash";
 import "./style.css";
 import tgFormValues from "../../utils/tgFormValues";
+import { observer } from "mobx-react";
 
 class AddOrEditAnnotationDialog extends React.Component {
   componentDidMount() {
@@ -181,11 +180,10 @@ class AddOrEditAnnotationDialog extends React.Component {
   };
   render() {
     const {
+      ed,
       defaultLinkedOligoMessage,
       hideModal,
-      sequenceData = { sequence: "" },
       handleSubmit,
-      beforeAnnotationCreate,
       renderTypes,
       renderTags,
       RenderBases,
@@ -200,7 +198,6 @@ class AddOrEditAnnotationDialog extends React.Component {
       submitting,
       change,
       annotationTypePlural,
-      annotationVisibilityShow,
       renderLocations,
       locations,
       overlapsSelf,
@@ -209,11 +206,10 @@ class AddOrEditAnnotationDialog extends React.Component {
       getAdditionalEditAnnotationComps,
       advancedOptions,
       advancedDefaultOpen,
-      upsertAnnotation,
       original_selectionLayerUpdate
     } = this.props;
-    const { isProtein } = sequenceData;
-    const sequenceLength = sequenceData.sequence.length;
+    const { isProtein } = ed;
+    const sequenceLength = ed.sequenceLength
     const annotationLength = getRangeLength(
       locations && locations.length
         ? {
@@ -287,13 +283,13 @@ class AddOrEditAnnotationDialog extends React.Component {
               })
             }),
             {
-              sequenceData,
+              sequenceData: ed.sequenceData,
               annotationType: annotationTypePlural
             }
           );
 
-          if (beforeAnnotationCreate) {
-            const shouldContinue = await beforeAnnotationCreate({
+          if (ed.beforeAnnotationCreate) {
+            const shouldContinue = await ed.beforeAnnotationCreate({
               annotationTypePlural,
               annotation: newAnnotation,
               props: this.props,
@@ -488,7 +484,7 @@ export default ({ formName, getProps, dialogProps }) => {
       width: 400,
       ...dialogProps
     }),
-    withEditorProps,
+    observer,
     withProps(getProps),
     reduxForm({
       form: formName, // "AddOrEditAnnotationDialog",

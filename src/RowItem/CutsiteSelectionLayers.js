@@ -1,13 +1,9 @@
 import React from "react";
 import SelectionLayer from "./SelectionLayer";
-import { connectToEditor } from "../withEditorProps";
 import classNames from "classnames";
+import { observer } from "mobx-react";
 
-export const CutsiteSelectionLayers = connectToEditor(
-  ({ hoveredAnnotation }) => ({
-    hoveredAnnotation
-  })
-)(function CutsiteSelectionLayersInner({
+export const CutsiteSelectionLayers = observer(function CutsiteSelectionLayersInner({
   hoveredAnnotation,
   cutsites,
   annotationCommonProps,

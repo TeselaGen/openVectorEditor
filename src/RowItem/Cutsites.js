@@ -4,8 +4,7 @@ import React from "react";
 import areNonNegativeIntegers from "validate.io-nonnegative-integer-array";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import getXStartAndWidthOfRangeWrtRow from "./getXStartAndWidthOfRangeWrtRow";
-import pureNoFunc from "../utils/pureNoFunc";
-import { connectToEditor } from "../withEditorProps";
+import { observer } from "mobx-react";
 
 let snipStyle = {
   height: "100%",
@@ -264,8 +263,6 @@ function Cutsites(props) {
   );
 }
 
-export default pureNoFunc(
-  connectToEditor(({ hoveredAnnotation }) => ({
-    hoveredAnnotation
-  }))(Cutsites)
+export default observer(
+  (Cutsites)
 );

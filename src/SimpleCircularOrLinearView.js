@@ -21,7 +21,6 @@ import {
 } from "@blueprintjs/core";
 import getCommands from "./commands";
 import { withHandlers } from "recompose";
-import { exportSequenceToFile } from "./withEditorProps";
 import {
   editorClicked,
   updateSelectionOrCaret
@@ -200,7 +199,7 @@ export default ({ ed, hoveredId, noWarnings = true }) => {
   return inner({});
 };
 
-const DownloadBtn = withHandlers({ exportSequenceToFile })((props) => {
+const DownloadBtn = ((props) => {
   return (
     <Tooltip content="Download">
       <Button

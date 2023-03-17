@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { connect } from "react-redux";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Icon, Tag, Tooltip } from "@blueprintjs/core";
-import withEditorProps from "../withEditorProps";
 import specialCutsiteFilterOptions from "../constants/specialCutsiteFilterOptions";
 import React, { useState } from "react";
 import "./style.css";
@@ -17,20 +16,13 @@ import {
   getCutsiteWithNumCuts,
   getUserGroupLabel
 } from "./AdditionalCutsiteInfoDialog";
-import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
+import { observer } from "mobx-react-lite";
 
-const NoResults = withRestrictionEnzymes((props) => {
-  const {
-    cutsitesByName,
-    cutsitesByNameActive,
-    closeDropDown,
-    allRestrictionEnzymes,
-    queryString = "",
-    onHiddenEnzymeAdd
-  } = props;
-  const enzymesByNameThatMatch = pickBy(allRestrictionEnzymes, function (v, k) {
-    if (cutsitesByName[k]) {
+const NoResults = observer((props) => {
+  const { ed, closeDropDown, queryString = "" } = props;
+  const enzymesByNameThatMatch = pickBy(ed.restictionEnzymes, function (v, k) {
+    if (ed.cutsites.cutsitesByName[k]) {
       return false;
     }
     return includes(k.toLowerCase(), queryString.toLowerCase());
@@ -45,12 +37,10 @@ const NoResults = withRestrictionEnzymes((props) => {
             if (i > 3) return [];
             return (
               <CutsiteTag
+                ed={ed}
                 onWrapperClick={closeDropDown}
-                allRestrictionEnzymes={allRestrictionEnzymes}
                 forceOpenCutsiteInfo
                 name={e.name}
-                cutsitesByName={cutsitesByName}
-                cutsitesByNameActive={cutsitesByName}
                 key={i}
               ></CutsiteTag>
             );
@@ -62,7 +52,7 @@ const NoResults = withRestrictionEnzymes((props) => {
   const hiddenEnzymesByNameThatMatch = pickBy(
     aliasedEnzymesByName,
     function (v, k) {
-      if (cutsitesByName[k]) {
+      if (ed.cutsites.cutsitesByName[k]) {
         return false;
       }
       return includes(k.toLowerCase(), queryString.toLowerCase());
@@ -71,7 +61,7 @@ const NoResults = withRestrictionEnzymes((props) => {
   if (!isEmpty(hiddenEnzymesByNameThatMatch)) {
     return (
       <div>
-        {onHiddenEnzymeAdd
+        {ed.onHiddenEnzymeAdd
           ? `These Hidden enzymes match, ${
               map(hiddenEnzymesByNameThatMatch).length > 1
                 ? `click one`
@@ -85,17 +75,15 @@ const NoResults = withRestrictionEnzymes((props) => {
             return (
               <CutsiteTag
                 onWrapperClick={
-                  onHiddenEnzymeAdd
+                  ed.onHiddenEnzymeAdd
                     ? () => {
-                        onHiddenEnzymeAdd(e, props);
+                        ed.onHiddenEnzymeAdd(e, props);
                       }
                     : closeDropDown
                 }
-                allRestrictionEnzymes={allRestrictionEnzymes}
-                forceOpenCutsiteInfo={!onHiddenEnzymeAdd}
+                ed={ed}
+                forceOpenCutsiteInfo={!ed.onHiddenEnzymeAdd}
                 name={e.name}
-                cutsitesByName={cutsitesByName}
-                cutsitesByNameActive={cutsitesByNameActive}
                 key={i}
               ></CutsiteTag>
             );
@@ -114,24 +102,19 @@ const NoResults = withRestrictionEnzymes((props) => {
 
 export function CutsiteFilter(props) {
   const {
+    ed,
     onChangeHook,
     style = {},
     filteredRestrictionEnzymes,
     isEnzymeFilterAndUpdate,
     filteredRestrictionEnzymesUpdate: _filteredRestrictionEnzymesUpdate,
-    allCutsites: { cutsitesByName },
-    allCutsites,
+    
     filteredCutsites,
-    onHiddenEnzymeAdd,
+
     closeDropDown = () => {},
     enzymeManageOverride,
-    enzymeGroupsOverride,
-    editorName,
-    additionalEnzymes,
-    isEnzymeFilterAnd,
-    sequenceData
   } = props;
-  // const [isEnzymeFilterAnd, setAnd] = tgUseLocalStorageState("isEnzymeFilterAnd", false);
+  const { isEnzymeFilterAnd, sequenceData } = ed;
   const showAndOr =
     filteredCutsites.cutsiteIntersectionCount > 0 &&
     filteredRestrictionEnzymes.length > 1;
@@ -195,11 +178,9 @@ export function CutsiteFilter(props) {
       }
     }
   };
-  const userEnzymeGroups =
-    enzymeGroupsOverride || window.getExistingEnzymeGroups();
   const options = [
     ...map(specialCutsiteFilterOptions, (opt) => opt),
-    ...map(userEnzymeGroups, (nameArray, name) => {
+    ...map(ed.enzymeGroups, (nameArray, name) => {
       return {
         label: getUserGroupLabel({ nameArray, name }),
         value: "__userCreatedGroup" + name,
@@ -207,13 +188,13 @@ export function CutsiteFilter(props) {
       };
     }),
 
-    ...Object.keys(cutsitesByName)
+    ...Object.keys(ed.cutsites.cutsitesByName)
       .sort()
       .map(function (key) {
-        const numCuts = (cutsitesByName[key] || []).length;
+        const numCuts = (ed.cutsites.cutsitesByName[key] || []).length;
         const label = getCutsiteWithNumCuts({
           numCuts,
-          name: numCuts ? cutsitesByName[key][0].name : key
+          name: numCuts ? ed.cutsites.cutsitesByName[key][0].name : key
         });
         return {
           canBeHidden: true,
@@ -230,11 +211,11 @@ export function CutsiteFilter(props) {
     } else if (filteredOpt.value.includes("__userCreatedGroup")) {
       toRet = filteredOpt;
     } else {
-      const numCuts = (cutsitesByName[filteredOpt.value] || []).length;
+      const numCuts = (ed.cutsites.cutsitesByName[filteredOpt.value] || []).length;
       const label = getCutsiteWithNumCuts({
         numCuts,
         name: numCuts
-          ? cutsitesByName[filteredOpt.value][0].name
+          ? ed.cutsites.cutsitesByName[filteredOpt.value][0].name
           : defaultEnzymesByName[filteredOpt.value]?.name || filteredOpt.value
       });
       toRet = {
@@ -304,13 +285,8 @@ export function CutsiteFilter(props) {
           <NoResults
             {...{
               closeDropDown,
-              onHiddenEnzymeAdd,
               queryString: queryTracker,
-              additionalEnzymes,
-              enzymeGroupsOverride,
-              cutsitesByNameActive: filteredCutsites.cutsitesByName,
-              cutsitesByName: allCutsites.cutsitesByName,
-              editorName
+              ed
             }}
           ></NoResults>
         }
@@ -355,7 +331,7 @@ export function CutsiteFilter(props) {
   );
 }
 
-export default compose(withEditorProps, connect())(CutsiteFilter);
+export default observer(CutsiteFilter);
 
 function addClickableLabel(toRet, { closeDropDown }) {
   return {

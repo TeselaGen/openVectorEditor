@@ -28,7 +28,6 @@ const {
   showConfirmationDialog,
   wrapDialog,
   showDialog,
-  withEditorProps,
   DialogFooter,
   useState,
   hideDialog,
@@ -72,7 +71,6 @@ export const AutoAnnotateModal = compose(
     canEscapeKeyClose: false,
     title: `Auto Annotate ${startCase(pluralize(p.annotationType))}`
   })),
-  withEditorProps,
   reduxForm({ form: formName })
 )((props) => {
   const {

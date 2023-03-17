@@ -7,57 +7,51 @@ import {
   InfoHelper
 } from "teselagen-react-components";
 import ToolbarItem from "./ToolbarItem";
-import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 
 export default ({ toolbarItemProps, ed }) => {
-  const toggled = ed.annotationVisibility.orfs,
-      const isOpen = ed.openToolbarItem === "orfTool"
-   return (
-     <ToolbarItem
-       {...{
-         Icon: <Icon data-test="orfTool" icon={orfIcon} />,
-         onIconClick: function () {
-           ed.annotationVisibilityToggle("orfs");
-         },
-         toggled,
-         tooltip: "Show Open Reading Frames",
-         tooltipToggled: "Hide Open Reading Frames",
-         Dropdown: OrfToolDropdown,
-         dropdowntooltip:
-           (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
-         ...toolbarItemProps
-       }}
-     />
-   );
- }
+  const toggled = ed.annotationVisibility.orfs;
+  const isOpen = ed.openToolbarItem === "orfTool";
+  return (
+    <ToolbarItem
+      {...{
+        Icon: <Icon data-test="orfTool" icon={orfIcon} />,
+        onIconClick: function () {
+          ed.annotationVisibilityToggle("orfs");
+        },
+        toggled,
+        tooltip: "Show Open Reading Frames",
+        tooltipToggled: "Hide Open Reading Frames",
+        Dropdown: OrfToolDropdown,
+        dropdowntooltip:
+          (!isOpen ? "Show" : "Hide") + " Open Reading Frame Options",
+        ...toolbarItemProps
+      }}
+    />
+  );
+};
 
-const OrfToolDropdown = withEditorProps(
-  class OrfDropdown extends React.Component {
-    constructor(props) {
-      super(props);
-      this.commands = getCommands(this);
-    }
-    render() {
-      return (
-        <div className="veToolbarOrfOptionsHolder">
-          <CmdCheckbox
-            prefix="Show "
-            cmd={this.commands.toggleOrfTranslations}
-          />
-          <CmdCheckbox
-            prefix="Show "
-            cmd={this.commands.useGtgAndCtgAsStartCodons}
-          />
-          <CmdDiv cmd={this.commands.minOrfSizeCmd} />
-          <div className="vespacer" />
-
-          <InfoHelper
-            displayToSide
-            content="To translate an arbitrary area, right click a selection."
-          />
-        </div>
-      );
-    }
+class OrfToolDropdown extends React.Component {
+  constructor(props) {
+    super(props);
+    this.commands = getCommands(this);
   }
-);
+  render() {
+    return (
+      <div className="veToolbarOrfOptionsHolder">
+        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
+        <CmdCheckbox
+          prefix="Show "
+          cmd={this.commands.useGtgAndCtgAsStartCodons}
+        />
+        <CmdDiv cmd={this.commands.minOrfSizeCmd} />
+        <div className="vespacer" />
+
+        <InfoHelper
+          displayToSide
+          content="To translate an arbitrary area, right click a selection."
+        />
+      </div>
+    );
+  }
+}

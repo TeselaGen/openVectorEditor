@@ -4,7 +4,7 @@ import React from "react";
 
 import { reduxForm } from "redux-form";
 import { wrapDialog } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 
 import { NumericInputField } from "teselagen-react-components";

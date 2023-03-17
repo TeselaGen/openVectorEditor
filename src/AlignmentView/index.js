@@ -40,14 +40,12 @@ import { getSequenceDataBetweenRange } from "ve-sequence-utils";
 import ReactList from "@teselagen/react-list";
 import ReactDOM from "react-dom";
 
-import { NonReduxEnhancedLinearView } from "../LinearView";
 import Minimap, { getTrimmedRangesToDisplay } from "./Minimap";
 import { compose, branch, renderComponent } from "recompose";
 import AlignmentVisibilityTool from "./AlignmentVisibilityTool";
 import * as alignmentActions from "../mobxStore/alignments";
 import estimateRowHeight from "../RowView/estimateRowHeight";
 import prepareRowData from "../utils/prepareRowData";
-import withEditorProps from "../withEditorProps";
 
 import "./style.css";
 import {
@@ -83,6 +81,7 @@ import { updateTrackHelper } from "./updateTrackHelper";
 import { isTargetWithinEl } from "./isTargetWithinEl";
 import { EditTrackNameDialog } from "./EditTrackNameDialog";
 import { coerceInitialValue } from "./coerceInitialValue";
+import LinearView from "../LinearView";
 
 let charWidthInLinearViewDefault = 12;
 try {
@@ -883,7 +882,7 @@ export class AlignmentView extends React.Component {
             Inspect track
           </div>
         )}
-        <NonReduxEnhancedLinearView
+        <LinearView
           {...{
             ...rest,
             caretPosition: this.state[`tempTrimmingCaret${i}`] || -1,
@@ -911,7 +910,7 @@ export class AlignmentView extends React.Component {
             sequenceData,
             // sequenceDataWithRefSeqCdsFeatures,
             tickSpacing,
-            allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
+            // allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
             editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
             alignmentData,
             chromatogramData,
@@ -1865,7 +1864,6 @@ export class AlignmentView extends React.Component {
 
 export default compose(
   withStore,
-  withEditorProps,
   connect(
     (state, ownProps) => {
       // const {id}

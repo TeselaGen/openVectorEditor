@@ -19,7 +19,6 @@ import {
 } from "teselagen-react-components";
 
 import { showDialog } from "./GlobalDialogUtils";
-import withEditorProps from "./withEditorProps";
 import { Colors, Tab, Tabs } from "@blueprintjs/core";
 import { reduxForm, SubmissionError } from "redux-form";
 import {
@@ -34,7 +33,6 @@ import shortid from "shortid";
 window.addOnGlobals = {
   tidyUpAnnotation,
   wrapDialog,
-  withEditorProps,
   reduxForm,
   shortid,
   FileUploadField,

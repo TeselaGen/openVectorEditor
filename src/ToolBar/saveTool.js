@@ -1,15 +1,9 @@
 import React from "react";
 import { Icon } from "@blueprintjs/core";
 import ToolbarItem from "./ToolbarItem";
-import { handleSave } from "../withEditorProps";
-import { withHandlers } from "recompose";
-import { compose } from "redux";
 import { observer } from "mobx-react";
 
-export default compose(
-  observer,
-  withHandlers({ handleSave })
-)(({ toolbarItemProps, alwaysAllowSave, handleSave, ed, onSave }) => {
+export default observer(({ toolbarItemProps, alwaysAllowSave, handleSave, ed }) => {
   const hasBeenSaved =
     ed.stateTrackingId === "initialLoadId" ||
     ed.stateTrackingId === ed.lastSavedId;
@@ -20,7 +14,7 @@ export default compose(
         onIconClick: handleSave,
         disabled: alwaysAllowSave
           ? false
-          : !onSave || hasBeenSaved || ed.readOnly,
+          : !ed.onSave || hasBeenSaved || ed.readOnly,
         tooltip: (
           <span>
             Save <span style={{ fontSize: 10 }}>(Cmd/Ctrl+S)</span>

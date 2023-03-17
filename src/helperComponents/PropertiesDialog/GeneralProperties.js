@@ -5,8 +5,8 @@ import {
   TextareaField
 } from "teselagen-react-components";
 import { reduxForm } from "redux-form";
-import withEditorProps from "../../withEditorProps";
 import { compose } from "recompose";
+import { observer } from "mobx-react";
 
 class GeneralProperties extends React.Component {
   updateSeqDesc = (val) => {
@@ -133,7 +133,7 @@ class GeneralProperties extends React.Component {
 }
 
 export default compose(
-  withEditorProps,
+  observer,
   reduxForm({
     form: "GeneralProperties"
   })

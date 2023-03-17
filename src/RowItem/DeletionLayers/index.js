@@ -1,12 +1,12 @@
 import AnnotationPositioner from "../AnnotationPositioner";
 import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import React from "react";
-import pureNoFunc from "../../utils/pureNoFunc";
 
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
 import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
+import { observer } from "mobx-react";
 
 function DeletionLayers(props) {
   const {
@@ -110,4 +110,4 @@ function DeletionLayers(props) {
   );
 }
 
-export default pureNoFunc(DeletionLayers);
+export default observer(DeletionLayers);

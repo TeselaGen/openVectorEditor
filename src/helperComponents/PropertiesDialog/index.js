@@ -1,5 +1,4 @@
 import React from "react";
-import { compose } from "redux";
 import { Tab, Tabs } from "@blueprintjs/core";
 import { flatMap, startCase } from "lodash";
 import FeatureProperties from "./FeatureProperties";
@@ -10,10 +9,10 @@ import GenbankView from "./GenbankView";
 import TranslationProperties from "./TranslationProperties";
 import PrimerProperties from "./PrimerProperties";
 import PartProperties from "./PartProperties";
-import { connectToEditor } from "../../withEditorProps";
 import "./style.css";
 import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndOpts";
 import { pick } from "lodash";
+import { observer } from "mobx-react";
 
 const PropertiesContainer = (Comp) => (props) => {
   const { additionalFooterEls, additionalHeaderEls, ...rest } = props;
@@ -42,26 +41,15 @@ export class PropertiesDialog extends React.Component {
       propertiesViewTabUpdate,
       dimensions = {},
       height,
-      editorName,
-      onSave,
-      showReadOnly,
-      showAvailability,
-      isProtein,
-      annotationsToSupport = {},
-      disableSetReadOnly,
-      propertiesList = [
-        "general",
-        "features",
-        "parts",
-        "primers",
-        "translations",
-        "cutsites",
-        "orfs",
-        "genbank"
-      ],
+      ed,
+      
       closePanelButton
     } = { ...this.props, ...this.props.PropertiesProps };
-
+    const {
+      propertiesList,
+      isProtein,
+      annotationsToSupport = {},
+    } = ed
     const { width, height: heightFromDim } = dimensions;
 
     let { tabId, selectedAnnotationId } = propertiesTool;
@@ -104,12 +92,7 @@ export class PropertiesDialog extends React.Component {
             <Comp
               {...{
                 ...pick(this.props, userDefinedHandlersAndOpts),
-                editorName,
-                onSave,
-                isProtein,
-                showReadOnly,
-                showAvailability,
-                disableSetReadOnly,
+                ed,
                 selectedAnnotationId,
                 ...(nameOrOverride.name && nameOrOverride)
               }}
@@ -159,8 +142,4 @@ export class PropertiesDialog extends React.Component {
   }
 }
 
-export default compose(
-  connectToEditor(({ propertiesTool, annotationsToSupport }) => {
-    return { propertiesTool, annotationsToSupport };
-  })
-)(PropertiesDialog);
+export default observer(PropertiesDialog);

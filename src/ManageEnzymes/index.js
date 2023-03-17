@@ -1,4 +1,3 @@
-import { connect } from "react-redux";
 // import {reduxForm, Field, formValueSelector} from 'redux-form'
 import React from "react";
 import { DialogFooter, InfoHelper } from "teselagen-react-components";
@@ -12,24 +11,24 @@ import {
 } from "ve-sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
 import "./style.css";
-import { connectToEditor } from "../withEditorProps";
-import { compose } from "recompose";
 import { Callout } from "@blueprintjs/core";
 import { addCustomEnzyme } from "../utils/editorUtils";
+import { observer } from "mobx-react";
 
-let CreateCustomEnzyme = function (props) {
+const CreateCustomEnzyme = function (props) {
   const paddingStart = "-------";
   const paddingEnd = "-------";
   const {
     // filteredRestrictionEnzymesAdd,
     // addRestrictionEnzyme,
-    inputSequenceToTestAgainst = "", //pass this prop in!
+    inputSequenceToTestAgainst: _inputSequenceToTestAgainst, //pass this prop in!
     seqName = "Destination Vector",
     createYourOwnEnzyme,
     dispatch,
     hideModal,
     ed
   } = props;
+  const inputSequenceToTestAgainst = _inputSequenceToTestAgainst || ed.sequence;
 
   createYourOwnEnzyme.chop_top_index = Number(
     createYourOwnEnzyme.chop_top_index
@@ -178,7 +177,7 @@ let CreateCustomEnzyme = function (props) {
         disabled={invalid}
         onClick={() => {
           addCustomEnzyme(enzyme);
-          ed.restrictionEnzymes.filteredRestrictionEnzymesAdd({value: name})
+          ed.restrictionEnzymes.filteredRestrictionEnzymesAdd({ value: name });
           hideModal && hideModal();
         }}
       ></DialogFooter>
@@ -202,22 +201,22 @@ let CreateCustomEnzyme = function (props) {
   );
 };
 
-CreateCustomEnzyme = compose(
-  connectToEditor(({ sequenceData = {} }) => {
-    return {
-      seqName: sequenceData.name,
-      inputSequenceToTestAgainst: sequenceData.sequence || ""
-    };
-  }),
-  connect(function (state) {
-    return {
-      createYourOwnEnzyme:
-        state.VectorEditor.__allEditorsOptions.createYourOwnEnzyme
-    };
-  })
-)(CreateCustomEnzyme);
+// CreateCustomEnzyme = compose(
+//   connectToEditor(({ sequenceData = {} }) => {
+//     return {
+//       seqName: sequenceData.name,
+//       inputSequenceToTestAgainst: sequenceData.sequence || ""
+//     };
+//   }),
+//   connect(function (state) {
+//     return {
+//       createYourOwnEnzyme:
+//         state.VectorEditor.__allEditorsOptions.createYourOwnEnzyme
+//     };
+//   })
+// )(CreateCustomEnzyme);
 
-export default CreateCustomEnzyme;
+export default observer(CreateCustomEnzyme);
 
 function validate(values) {
   const errors = {};

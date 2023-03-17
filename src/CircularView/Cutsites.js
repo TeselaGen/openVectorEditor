@@ -4,7 +4,7 @@ import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import each from "lodash/each";
 import withHover from "../helperComponents/withHover";
-import pureNoFunc from "../utils/pureNoFunc";
+import { observer } from "mobx-react";
 
 function Cutsites({
   radius,
@@ -85,7 +85,7 @@ function Cutsites({
 
 export default Cutsites;
 
-const DrawCutsite = pureNoFunc(
+const DrawCutsite = observer(
   withHover(function ({
     className,
     startAngle,

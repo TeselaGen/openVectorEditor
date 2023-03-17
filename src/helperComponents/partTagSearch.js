@@ -1,18 +1,17 @@
 import React from "react";
-import withEditorProps from "../withEditorProps";
 import {
   TgSelect,
   getKeyedTagsAndTagOptions
 } from "teselagen-react-components";
 import { flatMap } from "lodash";
 import { uniqBy } from "lodash";
+import { observer } from "mobx-react";
 
-export const PartTagSearch = withEditorProps(PartToolDropdown);
+export const PartTagSearch = observer(PartToolDropdown);
 
 function PartToolDropdown({
   ed,
   allPartTags,
-  annotationVisibilityShow,
   editTagsLink,
   dontAutoOpen
 }) {
@@ -43,7 +42,7 @@ function PartToolDropdown({
         <TgSelect
           value={ed.selectedPartTags}
           onChange={(...args) => {
-            annotationVisibilityShow("parts");
+            ed.annotationVisibility.annotationVisibilityShow("parts");
             ed.updateSelectedPartTags(...args);
           }}
           isTagSelect

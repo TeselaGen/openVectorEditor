@@ -1,14 +1,7 @@
 import React from "react";
 import { Button, Classes, HTMLSelect } from "@blueprintjs/core";
 
-import {
-  connectToEditor,
-  updateCircular,
-  handleInverse,
-  getShowGCContent
-} from "../withEditorProps";
 import "./style.css";
-import { withHandlers, compose } from "recompose";
 import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
 import useMeltingTemp from "../utils/useMeltingTemp";
@@ -16,7 +9,7 @@ import MeltingTemp from "./MeltingTemp";
 import { getSequenceWithinRange } from "ve-range-utils";
 import { observer } from "mobx-react";
 
-const EditReadOnlyItem = ({ ed }) => {
+const EditReadOnlyItem = observer(({ ed }) => {
   return ed.showReadOnly ? (
     <StatusBarItem dataTest="veStatusBar-readOnly">
       {ed.onSave ? (
@@ -39,78 +32,37 @@ const EditReadOnlyItem = ({ ed }) => {
       )}
     </StatusBarItem>
   ) : null;
-};
+});
 
-const ShowSelectionItem = compose(
-  connectToEditor(
-    (
-      { selectionLayer, caretPosition, sequenceData = { sequence: "" } },
-      ownProps,
-      ...rest
-    ) => {
-      return {
-        showGCContent: getShowGCContent(rest[rest.length - 1], ownProps),
-        selectionLayer,
-        isProtein: sequenceData.isProtein,
-        caretPosition,
-        sequenceLength: sequenceData.sequence.length,
-        sequenceData
-      };
-    }
-  ),
-  withHandlers({ handleInverse })
-)(
-  ({
-    selectionLayer = { start: -1, end: -1 },
-    caretPosition = -1,
-    sequenceLength = 0,
-    isProtein,
-    sequenceData = { sequence: "" },
-    showGCContent,
-    GCDecimalDigits,
-    handleInverse
-  }) => {
-    const [showMeltingTemp] = useMeltingTemp();
+const ShowSelectionItem = observer(({ ed }) => {
+  const [showMeltingTemp] = useMeltingTemp();
 
-    const sequence = getSequenceWithinRange(
-      selectionLayer,
-      sequenceData.sequence
-    );
+  const sequence = getSequenceWithinRange(ed.selectionLayer, ed.sequence);
 
-    return (
-      <React.Fragment>
-        <StatusBarItem dataTest="veStatusBar-selection">
-          {getSelectionMessage({
-            caretPosition,
-            selectionLayer,
-            sequenceLength,
-            sequenceData,
-            showGCContent,
+  return (
+    <React.Fragment>
+      <StatusBarItem dataTest="veStatusBar-selection">
+        {getSelectionMessage({ ed })}
 
-            GCDecimalDigits,
-            isProtein
-          })}
-
-          <Button
-            minimal
-            disabled={sequenceLength <= 0}
-            onClick={handleInverse}
-            style={{ marginLeft: 5, color: "#48AFF0" }}
-            small
-          >
-            Select Inverse
-          </Button>
-        </StatusBarItem>
-        {showMeltingTemp && (
-          <MeltingTemp
-            WrapperToUse={StatusBarItem}
-            sequence={sequence}
-          ></MeltingTemp>
-        )}
-      </React.Fragment>
-    );
-  }
-);
+        <Button
+          minimal
+          disabled={ed.sequenceLength <= 0}
+          onClick={ed.handleInverse}
+          style={{ marginLeft: 5, color: "#48AFF0" }}
+          small
+        >
+          Select Inverse
+        </Button>
+      </StatusBarItem>
+      {showMeltingTemp && (
+        <MeltingTemp
+          WrapperToUse={StatusBarItem}
+          sequence={sequence}
+        ></MeltingTemp>
+      )}
+    </React.Fragment>
+  );
+});
 
 const ShowLengthItem = observer(({ ed }) => (
   <StatusBarItem dataTest="veStatusBar-length">{`Length: ${divideBy3(
@@ -140,7 +92,7 @@ const EditCircularityItem = observer(({ ed }) => {
       ) : (
         <HTMLSelect
           onChange={({ target: { value } }) => {
-            updateCircular(value === "circular");
+            ed.updateCircular(value === "circular");
           }}
           className={Classes.MINIMAL}
           value={ed.circular ? "circular" : "linear"}
@@ -192,7 +144,7 @@ export const StatusBar = observer(({ ed }) => {
   );
 });
 
-function StatusBarItem({ children, dataTest }) {
+const StatusBarItem = observer(function ({ children, dataTest }) {
   return (
     <React.Fragment>
       <div data-test={dataTest} className="veStatusBarItem">
@@ -201,6 +153,6 @@ function StatusBarItem({ children, dataTest }) {
       <div className="veStatusBarSpacer" />
     </React.Fragment>
   );
-}
+});
 
 export default StatusBar;

@@ -9,31 +9,27 @@ import {
   wrapDialog,
   InfoHelper
 } from "teselagen-react-components";
-import { compose } from "redux";
+import { compose } from "recompose";
 import { Button, Intent, Classes } from "@blueprintjs/core";
 import { flatMap } from "lodash";
 import classNames from "classnames";
-import withEditorProps from "../../withEditorProps";
 import { CheckboxField } from "teselagen-react-components";
 import "./style.css";
 import tgFormValues from "../../utils/tgFormValues";
+import { observer } from "mobx-react";
 
 class MergeFeaturesDialog extends React.Component {
   render() {
     const {
-      // editorName,
+      ed,
       hideModal,
       handleSubmit,
-      selectedAnnotations,
-      sequenceData,
-      selectionLayerUpdate,
       id1,
-      upsertFeature,
-      deleteFeature,
       id2,
       change
     } = this.props;
-    const { features } = sequenceData;
+    
+    const { features,selectedAnnotations  } = ed;
     const feat1 = features[id1];
     const feat2 = features[id2];
     const [id1default, id2default] = flatMap(
@@ -51,11 +47,11 @@ class MergeFeaturesDialog extends React.Component {
         onSubmit={handleSubmit(
           ({ id1, id2, name, preserveFeatures, start, end }) => {
             if (!preserveFeatures) {
-              deleteFeature([id1, id2], {
+              ed.deleteFeature([id1, id2], {
                 batchUndoStart: true
               });
             }
-            upsertFeature(
+            ed.upsertFeature(
               {
                 ...feat1,
                 id: uuid(),
@@ -67,7 +63,7 @@ class MergeFeaturesDialog extends React.Component {
                 batchUndoEnd: true
               }
             );
-            selectionLayerUpdate({
+            ed.selectionLayerUpdate({
               start: start - 1,
               end: end - 1
             });
@@ -235,7 +231,7 @@ export default compose(
     isDraggable: true,
     width: 400
   }),
-  withEditorProps,
+  observer,
   reduxForm({
     form: "MergeFeaturesDialog",
     validate: ({ id1, id2 }) => {
