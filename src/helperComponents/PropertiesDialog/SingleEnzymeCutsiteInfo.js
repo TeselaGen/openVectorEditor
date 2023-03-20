@@ -11,7 +11,7 @@ export default observer(function SingleEnzymeCutsiteInfo({
   cutsiteGroup,
   enzyme,
   ed,
-  selectedAnnotationId
+
 }) {
   const onRowSelect = ([record]) => {
     if (!record) return;
@@ -63,7 +63,7 @@ export default observer(function SingleEnzymeCutsiteInfo({
           <div>
             <DataTable
               style={{ minHeight: 0, maxHeight: 200 }}
-              selectedIds={selectedAnnotationId}
+              selectedIds={ed.selectedAnnotationId}
               maxHeight={300}
               onRowSelect={onRowSelect}
               formName="cutLocations"

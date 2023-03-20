@@ -89,23 +89,15 @@ const annotationsToCompute = {
 };
 
 export default (props) => {
-  let {
+  const {
     index,
-    cache,
-    clearCache,
     chromatogramData,
     rowCount,
     row,
     showJumpButtons,
     annotationVisibility
   } = props;
-  if (clearCache) {
-    cache = {};
-  }
 
-  if (cache[index]) {
-    return cache[index];
-  }
   if (!row) return 0;
   let totalHeight = 0; //account for spacer
   if (showJumpButtons && (index === 0 || index === rowCount - 1)) {
@@ -154,7 +146,6 @@ export default (props) => {
   if (annotationVisibility.compactNames) {
     totalHeight = Math.max(totalHeight, 31);
   }
-  cache[index] = totalHeight;
   return totalHeight;
 };
 

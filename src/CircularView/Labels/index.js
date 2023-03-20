@@ -22,8 +22,6 @@ function Labels({
   extraSideSpace,
   smartCircViewLabelRender,
   radius: outerRadius,
-  editorName,
-  noRedux,
   rotationRadians,
   textScalingFactor,
   
@@ -174,8 +172,7 @@ function Labels({
       >
         <DrawGroupedLabels
           {...{
-            editorName,
-            noRedux,
+            ed,
             groupedLabels,
             circularViewWidthVsHeightRatio,
             fontWidth,
@@ -203,12 +200,11 @@ const DrawLabelGroup = withHover(function ({
   label,
   labelAndSublabels,
   fontWidth,
-  noRedux,
   fontHeight,
   outerRadius,
   onMouseLeave,
   onMouseOver,
-  editorName,
+  ed,
   circularViewWidthVsHeightRatio,
   condenseOverflowingXLabels,
   hoveredId,
@@ -316,7 +312,7 @@ const DrawLabelGroup = withHover(function ({
     content = [
       line,
 
-      <PutMyParentOnTop editorName={editorName} key="gGroup">
+      <PutMyParentOnTop ed={ed} key="gGroup">
         <g className={className + " topLevelLabelGroup"}>
           <rect
             onMouseOver={cancelFn}
@@ -341,8 +337,7 @@ const DrawLabelGroup = withHover(function ({
               return (
                 <DrawGroupInnerLabel
                   isSubLabel
-                  noRedux={noRedux}
-                  editorName={editorName}
+                  ed={ed}
                   logHover
                   key={"labelItem" + index}
                   className={
@@ -481,11 +476,10 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
   groupedLabels,
   circularViewWidthVsHeightRatio,
   fontWidth,
-  noRedux,
   fontHeight,
   condenseOverflowingXLabels,
   outerRadius,
-  editorName,
+  ed,
   labelLineIntensity
 }) {
   return groupedLabels.map(function (label, i) {
@@ -497,7 +491,6 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
         id={labelIds}
         {...{
           label,
-          noRedux,
           passHoveredId: true, //needed to get the hoveredId
           isLabelGroup: true,
           className: "DrawLabelGroup",
@@ -506,7 +499,7 @@ const DrawGroupedLabels = function DrawGroupedLabelsInner({
           labelIds,
           circularViewWidthVsHeightRatio,
           fontWidth,
-          editorName,
+          ed,
           fontHeight,
           condenseOverflowingXLabels,
           outerRadius,
@@ -522,11 +515,10 @@ function cancelFn(e) {
 
 class PutMyParentOnTop extends React.Component {
   componentDidMount() {
-    const { editorName } = this.props;
     //we use this component to re-order the svg groupedLabels because z-index won't work in svgs
     try {
       const el = document.querySelector(
-        `.veEditor.${editorName} .topLevelLabelGroup`
+        `.veEditor .topLevelLabelGroup`
       );
       const parent = el.parentElement.parentElement;
       const i = Array.prototype.indexOf.call(parent.children, el.parentElement);

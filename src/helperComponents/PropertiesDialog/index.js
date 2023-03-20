@@ -37,8 +37,7 @@ const allTabs = {
 export class PropertiesDialog extends React.Component {
   render() {
     const {
-      propertiesTool = {},
-      propertiesViewTabUpdate,
+
       dimensions = {},
       height,
       ed,
@@ -48,17 +47,18 @@ export class PropertiesDialog extends React.Component {
     const {
       propertiesList,
       isProtein,
+      
       annotationsToSupport = {},
     } = ed
     const { width, height: heightFromDim } = dimensions;
 
-    let { tabId, selectedAnnotationId } = propertiesTool;
+    let { propertiesTabId, selectedAnnotationId } = propertiesTool;
     if (
       propertiesList
         .map((nameOrOverride) => nameOrOverride.name || nameOrOverride)
-        .indexOf(tabId) === -1
+        .indexOf(propertiesTabId) === -1
     ) {
-      tabId = propertiesList[0].name || propertiesList[0];
+      propertiesTabId = propertiesList[0].name || propertiesList[0];
     }
     const propertiesTabs = flatMap(propertiesList, (nameOrOverride) => {
       if (annotationsToSupport[nameOrOverride] === false) {
@@ -124,8 +124,8 @@ export class PropertiesDialog extends React.Component {
             <Tabs
               style={{ width }}
               renderActiveTabPanelOnly
-              selectedTabId={tabId}
-              onChange={propertiesViewTabUpdate}
+              selectedTabId={propertiesTabId}
+              onChange={ed.propertiesViewTabUpdate}
             >
               <Tabs.Expander />
               {propertiesTabs}

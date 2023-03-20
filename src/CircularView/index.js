@@ -36,7 +36,6 @@ import {
   getParedDownWarning,
   pareDownAnnotations
 } from "../utils/editorUtils";
-import { getAllSelectionLayers } from "../utils/selectionLayer";
 import classNames from "classnames";
 import calculateTickMarkPositionsForGivenRange from "../utils/calculateTickMarkPositionsForGivenRange";
 import { RotateCircularViewSlider } from "./RotateCircularViewSlider";
@@ -127,10 +126,8 @@ export const CircularView = observer(function CircularView({ ed }) {
     //set defaults for all of these vars
     width = 400,
     height = 400,
-    noRedux,
     readOnly,
     hideName = false,
-    editorName,
     smartCircViewLabelRender,
     showCicularViewInternalLabels,
     withRotateCircularView: _withRotateCircularView,
@@ -143,15 +140,12 @@ export const CircularView = observer(function CircularView({ ed }) {
     caretPosition = -1,
     editorClicked = noop,
     backgroundRightClicked = noop,
-    searchLayers = [],
-    additionalSelectionLayers = [],
     maxAnnotationsToDisplay,
     searchLayerRightClicked = noop,
     selectionLayerRightClicked = noop,
     searchLayerClicked = noop,
     instantiated,
     noWarnings,
-    labelSize,
     nameFontSizeCircularView = 14,
     fullScreen
   } = ed;
@@ -163,7 +157,6 @@ export const CircularView = observer(function CircularView({ ed }) {
   let labels = {};
 
   const { isProtein } = ed;
-  
 
   const svgWidth = Math.max(Number(width) || 300);
   const svgHeight = Math.max(Number(height) || 300);
@@ -436,7 +429,6 @@ export const CircularView = observer(function CircularView({ ed }) {
         radius,
         innerRadius: BASE_RADIUS,
         outerRadius: radius,
-        noRedux,
         smartCircViewLabelRender,
         extraSideSpace: Math.max(0, width - height),
         onClick: ed[singularName + "Clicked"],
@@ -540,11 +532,7 @@ export const CircularView = observer(function CircularView({ ed }) {
 
   function drawSelectionLayer() {
     //DRAW SELECTION LAYER
-    return getAllSelectionLayers({
-      additionalSelectionLayers,
-      searchLayers,
-      selectionLayer
-    })
+    return ed.allSelectionLayers
       .map(function (selectionLayer, index) {
         if (
           selectionLayer.start >= 0 &&

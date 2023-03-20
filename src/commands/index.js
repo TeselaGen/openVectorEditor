@@ -735,9 +735,9 @@ const editCommandDefs = {
             <Slider
               stepSize={1}
               onChange={(v) => {
-                props.updateSequenceSpacing(v);
+                props.ed.updateSequenceSpacingRV(v);
               }}
-              value={Number(props.charWidth)}
+              value={Number(props.ed.charWidthRV)}
               max={16}
               min={8}
               labelStepSize={1}
@@ -1109,12 +1109,12 @@ const viewPropertiesCommandDefs = [
     name,
     handler: (props, state, ctxInfo) => {
       const annotation = get(ctxInfo, "context.annotation");
-      props.propertiesViewOpen();
+      props.ed.panelsShown.propertiesViewOpen();
       //we need to clear the properties tab first in case the same item has already been selected
-      props.propertiesViewTabUpdate(key, undefined);
+      props.ed.propertiesViewTabUpdate(key);
       setTimeout(() => {
         //then shortly after we can update it with the correct annotation
-        props.propertiesViewTabUpdate(key, annotation);
+        props.ed.selectedAnnotationIdUpdate(annotation.id);
       }, 0);
     }
   };

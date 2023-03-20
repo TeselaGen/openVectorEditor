@@ -27,7 +27,6 @@ const drawAnnotations = function (props) {
     spaceBetweenAnnotations,
     showCicularViewInternalLabels,
     // reverseAnnotations, //set true when drawing annotations that use the drawDirectedPiePiece function because that function returns things that need to be flipped
-    // editorName,
     getColor,
     useStartAngle, //use the startAngle instead of the centerAngle to position the labels
     onClick = noop,

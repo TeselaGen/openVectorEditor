@@ -32,8 +32,8 @@ import LabelLineIntensity from "./LabelLineIntensity";
 import PartLengthsToHide from "./PartLengthsToHide";
 import FeatureLengthsToHide from "./FeatureLengthsToHide";
 import PanelsShown from "./PanelsShown";
-import HoveredAnnotation from "./HoveredAnnotation";
-import PropertiesTool from "./PropertiesTool";
+
+// import PropertiesTool from "./PropertiesTool";
 import { addWrappedAddons } from "../utils/addWrappedAddons";
 import { getCustomEnzymes, hideAnnByLengthFilter } from "../utils/editorUtils";
 import { getLowerCaseObj } from "../utils/arrayUtils";
@@ -76,6 +76,11 @@ const {
 
 const { makeAutoObservable } = require("mobx");
 
+const initialSequenceDataHistory = {
+  past: [],
+  future: []
+};
+
 const MARGIN_WIDTH = 10;
 
 class T {
@@ -110,8 +115,12 @@ class RowStore {
     start,
     end,
     primaryProteinSequence,
-    sequence
+    sequence,
+    ...opts
   }) {
+    forEach(opts, (val, key) => {
+      this[key] = val;
+    });
     this.annotationVisibility = annotationVisibility;
     this.ed = ed;
     this.charWidth = charWidth;
@@ -133,8 +142,7 @@ export default class EditorStore {
     makeAutoObservable(this, {}, { autoBind: true });
     this.T = new T(this);
     this.findTool = new FindTool(this);
-    this.propertiesTool = new PropertiesTool(this);
-    this.hoveredAnnotation = new HoveredAnnotation(this);
+
     this.panelsShown = new PanelsShown(this);
     this.partLengthsToHide = new PartLengthsToHide(this);
     this.featureLengthsToHide = new FeatureLengthsToHide(this);
@@ -150,8 +158,7 @@ export default class EditorStore {
   }
   T;
   findTool;
-  propertiesTool;
-  hoveredAnnotation;
+
   panelsShown;
   partLengthsToHide;
   featureLengthsToHide;
@@ -165,7 +172,10 @@ export default class EditorStore {
   frameTranslations;
   copyOptions;
   digestTool;
-
+  hoveredAnnotation;
+  get hoveredAnnotationId() {
+    return this.hoveredAnnotation?.id;
+  }
   size = window.localStorage.getItem("labelSize")
     ? parseInt(window.localStorage.getItem("labelSize"))
     : 8;
@@ -194,7 +204,7 @@ export default class EditorStore {
   get _rowDataLV() {
     return prepareRowData({
       sequenceData: this.sequenceData,
-      sequenceLength: this.sequenceLength
+      bpsPerRow: this.sequenceLength
     })[0];
   }
   get rowDataLV() {
@@ -205,13 +215,13 @@ export default class EditorStore {
       ed: this
     });
   }
-  get _rowDataRV() {
+  get _rowData() {
     return prepareRowData({
       sequenceData: this.sequenceData,
       bpsPerRow: this.bpsPerRow
     });
   }
-  get rowDataRV() {
+  get rowData() {
     const annotationVisibility = {
       ...this.annotationVisibility,
       ...((!this.isViewZoomedLV || this.charWidthLV < 5) && {
@@ -222,7 +232,7 @@ export default class EditorStore {
         cutsitesInSequence: false
       })
     };
-    return this._rowDataRV.map((r) => {
+    return this._rowData.map((r) => {
       return new RowStore({
         ...r,
         annotationVisibility, //pass a custom annotatationVisibility on the row
@@ -268,7 +278,7 @@ export default class EditorStore {
     return this.charWidthLV !== this.initialCharWidthLV;
   }
   zoomLevelCV = 1;
-  maxZoomLevelCV = 1;
+  maxZoomLevelCV = 10;
   isVisPopoverOpen = false;
   withZoomCircularView = true;
   withZoomLinearView = true;
@@ -279,6 +289,7 @@ export default class EditorStore {
   setPreviewType(t) {
     this.previewType = t;
   }
+  additionalSelectionLayers = [];
   isHotkeyDialogOpen = false;
   tabDragging = false;
   previewModeFullscreen = false;
@@ -286,7 +297,29 @@ export default class EditorStore {
   selectionLayer = { start: -1, end: -1 };
 
   get allSelectionLayers() {
-    return [...this.selectionLayer];
+    const selectionLayers = [
+      ...this.additionalSelectionLayers,
+      ...this.findTool.searchLayers,
+      ...(Array.isArray(this.selectionLayer)
+        ? this.selectionLayer
+        : [this.selectionLayer])
+    ];
+    const doubleWrappedColor = "#edb2f1";
+    // const doubleWrappedColor = "#abdbfb";
+
+    if (this.selectionLayer.overlapsSelf) {
+      selectionLayers.push({
+        start: this.selectionLayer.end + 1,
+        end: this.selectionLayer.start - 1,
+        color: this.selectionLayer.isWrappedAddon
+          ? undefined
+          : doubleWrappedColor
+      });
+      if (this.selectionLayer.isWrappedAddon) {
+        this.selectionLayer.color = doubleWrappedColor;
+      }
+    }
+    return selectionLayers;
   }
   get orfs() {
     return findOrfsInPlasmid(
@@ -296,10 +329,10 @@ export default class EditorStore {
       this.useAdditionalOrfStartCodons
     );
   }
-  sequenceDataHistory = {
-    past: [],
-    future: []
-  };
+  sequenceDataHistory = initialSequenceDataHistory;
+  initializeSequenceDataHistory() {
+    this.sequenceDataHistory = initialSequenceDataHistory;
+  }
   useAdditionalOrfStartCodons = false;
   caretPosition = -1;
   sequence = "";
@@ -1300,17 +1333,21 @@ export default class EditorStore {
       set(payload, "annotationVisibility.translations", false);
       set(payload, "annotationVisibility.cutsites", false);
     }
-    // this.updateSequenceData()
-    // store.dispatch({
-    //   type: "VECTOR_EDITOR_UPDATE",
-    //   payload,
-    //   meta: {
-    //     mergeStateDeep: true,
-    //     editorName,
-    //     disregardUndo: true,
-    //     ...extraMeta
-    //   }
-    // });
+
+    this.updateSequenceData({ sequenceData: payload });
+  }
+
+  propertiesViewTabUpdate(propertiesTabId) {
+    this.propertiesTabId = propertiesTabId;
+  }
+  propertiesTabId = "general";
+  selectedAnnotationId = undefined;
+  selectedAnnotationIdUpdate(selectedAnnotationOrAnnotationId) {
+    this.selectedAnnotationId = selectedAnnotationOrAnnotationId;
+  }
+  initializeSeqData({ sequenceData }) {
+    this.updateSequenceData({ sequenceData });
+    this.initializeSequenceDataHistory();
   }
   //add additional "computed handlers here"
   selectAll() {
@@ -1373,9 +1410,9 @@ export default class EditorStore {
       return;
     }
     if (caretPosition < 0) return;
-    updateSequenceData(
-      rotateSequenceDataToPosition(sequenceData, caretPosition)
-    );
+    updateSequenceData({
+      sequenceData: rotateSequenceDataToPosition(sequenceData, caretPosition)
+    });
     caretPositionUpdate(0);
   }
 
@@ -1418,7 +1455,7 @@ export default class EditorStore {
         maintainOriginSplit: true
       }
     );
-    updateSequenceData(newSeqData);
+    updateSequenceData({ sequenceData: newSeqData });
   }
 
   handleComplementSelection() {
@@ -1442,25 +1479,27 @@ export default class EditorStore {
         maintainOriginSplit: true
       }
     );
-    updateSequenceData(newSeqData);
+    updateSequenceData({ sequenceData: newSeqData });
   }
 
   handleReverseComplementSequence() {
     const { sequenceData, updateSequenceData } = this;
-    updateSequenceData(
-      getReverseComplementSequenceAndAnnotations(sequenceData)
-    );
+    updateSequenceData({
+      sequenceData: getReverseComplementSequenceAndAnnotations(sequenceData)
+    });
     window.toastr.success("Reverse Complemented Sequence Successfully");
   }
-  updateSequenceData(newSeqData) {
-    forEach(newSeqData, (v, k) => {
+  updateSequenceData({ sequenceData }) {
+    forEach(sequenceData, (v, k) => {
       this[k] = v;
     });
   }
 
   handleComplementSequence() {
     const { sequenceData, updateSequenceData } = this;
-    updateSequenceData(getComplementSequenceAndAnnotations(sequenceData));
+    updateSequenceData({
+      sequenceData: getComplementSequenceAndAnnotations(sequenceData)
+    });
     window.toastr.success("Complemented Sequence Successfully");
   }
   handleInverse() {

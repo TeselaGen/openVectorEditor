@@ -140,6 +140,6 @@ class TranslationProperties extends React.Component {
 }
 
 export default compose(
+  withSelectedEntities("translationProperties"),
   observer,
-  withSelectedEntities("translationProperties")
 )(TranslationProperties);

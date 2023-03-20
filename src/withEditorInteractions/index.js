@@ -30,7 +30,6 @@ import {
   editorClicked,
   updateSelectionOrCaret
 } from "./clickAndDragUtils";
-import getBpsPerRow from "./getBpsPerRow";
 import {
   copyOptionsMenu,
   createNewAnnotationMenu
@@ -94,7 +93,7 @@ function VectorInteractionHOC(Component /* options */) {
         return <ConnectedMenu {...props} {...p} />;
       };
     }
-    
+
     componentWillUnmount() {
       this.combokeys && this.combokeys.detach();
     }
@@ -146,6 +145,7 @@ function VectorInteractionHOC(Component /* options */) {
             sequenceLength,
             isProtein,
             circular,
+            bpsPerRow,
             caretPositionUpdate,
             selectionLayerUpdate
           } = this.props.ed;
@@ -160,7 +160,7 @@ function VectorInteractionHOC(Component /* options */) {
           });
           handleCaretMoved({
             moveBy,
-            circular: circular || circular2,
+            circular,
             sequenceLength,
             bpsPerRow,
             caretPosition,
@@ -419,12 +419,8 @@ function VectorInteractionHOC(Component /* options */) {
     annotationClicked = ({ event, annotation }) => {
       event.preventDefault && event.preventDefault();
       event.stopPropagation && event.stopPropagation();
-      const {
-        annotationSelect,
-        selectionLayer,
-        annotationDeselectAll,
-        propertiesViewTabUpdate
-      } = this.props;
+      const { annotationSelect, selectionLayer, annotationDeselectAll, ed } =
+        this.props;
       let forceUpdate;
       if (
         annotation.start > -1 &&
@@ -441,8 +437,10 @@ function VectorInteractionHOC(Component /* options */) {
       });
       !event.shiftKey && annotationDeselectAll(undefined);
       annotation.id && annotationSelect(annotation);
-      annotation.annotationTypePlural &&
-        propertiesViewTabUpdate(annotation.annotationTypePlural, annotation);
+      if (annotation.annotationTypePlural) {
+        ed.propertiesViewTabUpdate(annotation.annotationTypePlural);
+        ed.selectedAnnotationIdUpdate(annotation.id);
+      }
     };
 
     cutsiteClicked_localOverride = ({ event, annotation }) => {

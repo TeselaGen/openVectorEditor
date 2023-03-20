@@ -13,22 +13,22 @@ import {
 } from "../../utils/editorUtils";
 import { observer } from "mobx-react";
 
-function SelectionLayer({ ed, props }) {
-  const {
-    isDraggable,
-    row,
-    sequenceLength,
-    regions,
-    leftMargin = 0,
-    getGaps,
-    hideTitle: topLevelHideTitle,
-    customTitle: topLevelCustomTitle,
-    color: topLevelColor,
-    hideCarets: topLevelHideCarets = false,
-    selectionLayerRightClicked,
-    className: globalClassname = "",
-    onClick
-  } = props;
+function SelectionLayer({
+  ed,
+  row,
+  regions,
+  leftMargin = 0,
+  getGaps,
+  hideTitle: topLevelHideTitle,
+  customTitle: topLevelCustomTitle,
+  color: topLevelColor,
+  hideCarets: topLevelHideCarets = false,
+  selectionLayerRightClicked,
+  className: globalClassname = "",
+  onClick,
+  isDraggable
+}) {
+  const { sequenceLength } = ed;
   const { charWidthRV: charWidth } = ed;
   let hasSelection = false;
 

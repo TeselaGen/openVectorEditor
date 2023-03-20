@@ -105,7 +105,7 @@ function getSnipConnector(
 }
 
 function Cutsites(props) {
-  const { ed, row, topStrand, hoveredAnnotation } = props;
+  const { ed, row, topStrand } = props;
   const snips = [];
   const snipConnectors = [];
   const { sequenceLength } = ed;
@@ -113,7 +113,7 @@ function Cutsites(props) {
   const annotationRanges = row.cutsites;
   Object.keys(annotationRanges)
     .sort((a) =>
-      annotationRanges[a].annotation.id === hoveredAnnotation ? 1 : -1
+      annotationRanges[a].annotation.id === ed.hoveredAnnotationId ? 1 : -1
     )
     .forEach(function (key) {
       const annotationRange = annotationRanges[key];
@@ -133,7 +133,7 @@ function Cutsites(props) {
       bottomSnipPosition = bottomSnipPosition && Number(bottomSnipPosition);
       upstreamTopSnip = upstreamTopSnip && Number(upstreamTopSnip);
       upstreamBottomSnip = upstreamBottomSnip && Number(upstreamBottomSnip);
-      const isHovered = annotation.id === hoveredAnnotation;
+      const isHovered = annotation.id === ed.hoveredAnnotationId;
       snipStyle = {
         ...snipStyle,
         background: annotation.restrictionEnzyme.color

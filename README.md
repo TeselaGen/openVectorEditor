@@ -146,7 +146,6 @@ This is a non-redux connected component that is easy to use:
     sequence: "gagagagag",
     features: [{ id: "lalala", name: "Mr Feature" }]
   }}
-  editorName="previewEditor"
   annotationLabelVisibility={{
     //set visibilities as you please
     features: true,

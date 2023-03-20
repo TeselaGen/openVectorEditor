@@ -237,8 +237,8 @@ const genericAnnotationProperties = ({
   }
 
   return compose(
+    withSelectedEntities("annotationProperties"),
     observer,
-    withSelectedEntities("annotationProperties")
   )(AnnotationProperties);
 };
 

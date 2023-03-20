@@ -97,6 +97,6 @@ class OrfProperties extends React.Component {
 }
 
 export default compose(
+  withSelectedEntities("orfProperties"),
   observer,
-  withSelectedEntities("orfProperties")
 )(OrfProperties);

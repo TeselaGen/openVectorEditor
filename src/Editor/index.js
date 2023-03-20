@@ -117,38 +117,19 @@ export class Editor extends React.Component {
     //tnrtodo this will need to be updated once blueprint uses the react 16 api
     return { blueprintPortalClassName: "ove-portal" };
   }
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.initialAnnotationToEdit &&
-      !this.hasShownInitialAnnotationToEditDialog &&
-      !this.inPreviewMode
-    ) {
-      ["part", "feature", "primer"].forEach((type) => {
-        if (this.props.initialAnnotationToEdit.startsWith(type)) {
-          const annid = this.props.initialAnnotationToEdit.replace(
-            type + "-",
-            ""
-          );
-          const anns = this.props.sequenceData[type + "s"];
-          const annotation = find(anns, (a) => a.id === annid);
-          if (annotation) {
-            showAddOrEditAnnotationDialog({ type, annotation });
-            this.hasShownInitialAnnotationToEditDialog = true;
-          }
-        }
-      });
-    }
-    //autosave if necessary!
-    if (
-      this.props.shouldAutosave &&
-      prevProps.sequenceData &&
-      prevProps.sequenceData.stateTrackingId &&
-      this.props.sequenceData.stateTrackingId !==
-        prevProps.sequenceData.stateTrackingId
-    ) {
-      this.props.handleSave();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+    
+  //   //autosave if necessary!
+  //   if (
+  //     this.props.shouldAutosave &&
+  //     prevProps.sequenceData &&
+  //     prevProps.sequenceData.stateTrackingId &&
+  //     this.props.sequenceData.stateTrackingId !==
+  //       prevProps.sequenceData.stateTrackingId
+  //   ) {
+  //     this.props.handleSave();
+  //   }
+  // }
   updateDimensions = debounce(() => {
     // (this.hasFullscreenPanel || this.fitHeight) &&
     this.setState({ randomRerenderTrigger: Math.random() });

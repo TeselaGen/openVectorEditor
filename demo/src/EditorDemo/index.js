@@ -4,7 +4,6 @@ import React from "react";
 import { isRangeOrPositionWithinRange } from "ve-range-utils";
 import isMobile from "is-mobile";
 
-import store from "./../store";
 import Editor from "../../../src/Editor";
 import renderToggle from "./../utils/renderToggle";
 import { setupOptions, setParamsIfNecessary } from "./../utils/setupOptions";
@@ -24,7 +23,7 @@ import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
 import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
 import { observer } from "mobx-react";
 import EditorStore from "../../../src/mobxStore/store";
-import { autorun } from "mobx";
+// import { autorun } from "mobx";
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
@@ -32,14 +31,13 @@ const chromData = convertBasePosTraceToPerBpTrace(_chromData);
 
 const ed = new EditorStore({});
 
-autorun(() => {
-  console.log(
-    `ed.annotationVisibility.cutsites:`,
-    ed.annotationVisibility.cutsites
-  );
-});
+// autorun(() => {
+//   console.log(
+//     `ed.annotationVisibility.cutsites:`,
+//     ed.annotationVisibility.cutsites
+//   );
+// });
 
-const updateEditor = ed.updateEditor;
 const MyCustomTab = observer(function () {
   console.info("These are the props passed to our Custom Tab:", ed);
   return (
@@ -108,16 +106,9 @@ export default class EditorDemo extends React.Component {
   constructor(props) {
     super(props);
     setupOptions({ that: this, defaultState, props });
-    window.ove_updateEditor = (vals) => {
-      updateEditor(vals);
-    };
-    window.ove_getEditorState = () => {
-      return store.getState().VectorEditor["DemoEditor"];
-    };
-    updateEditor({
-      readOnly: false,
-      sequenceData: exampleSequenceData
-    });
+    window.ed = ed;
+    ed.readOnly = false;
+    ed.initializeSeqData(exampleSequenceData);
   }
   componentDidUpdate() {
     setParamsIfNecessary({ that: this, defaultState });
@@ -282,12 +273,6 @@ export default class EditorDemo extends React.Component {
         };
       }
     }
-  };
-
-  setLinearPanelAsActive = () => {
-    store.dispatch(
-      ed.panelsShown.setPanelAsActive("rail", { editorName: "DemoEditor" })
-    );
   };
 
   render() {
@@ -508,16 +493,14 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
                 info: `
 You can change the sequence in a given <Editor/> by calling:
 \`\`\`js
-updateEditor( {
-  sequenceDataHistory: {},
-  sequenceData: generateSequenceData() //update with random seq data!
+ed.initializeSeqData({
+  sequenceData: generateSequenceData()
 });
 \`\`\`
 
               `,
                 onClick: () => {
-                  updateEditor({
-                    sequenceDataHistory: {},
+                  ed.initializeSeqData({
                     sequenceData: generateSequenceData()
                   });
                 },
@@ -541,10 +524,9 @@ isRna
 isOligo
 isMixedRnaAndDna
 
-Protein sequence mode is enabled by calling updateEditor with a protein sequenceData object:
+Protein sequence mode is enabled by calling ed.initializeSeqData with a protein sequenceData object:
 \`\`\`
-updateEditor( {
-  readOnly: false,
+ed.initializeSeqData( {
   sequenceData: tidyUpSequenceData(exampleProteinData, {
     convertAnnotationsFromAAIndices: true
   })
@@ -590,21 +572,19 @@ certain dna specific tools and annotations are automatically disabled when isPro
 
                 `,
                 hook: (val) => {
+                  ed.readOnly = false;
                   if (val === "Protein") {
-                    updateEditor({
-                      readOnly: false,
+                    ed.initializeSeqData({
                       sequenceData: tidyUpSequenceData(exampleProteinData, {
                         convertAnnotationsFromAAIndices: true
                       })
                     });
                   } else if (val === "RNA") {
-                    updateEditor({
-                      readOnly: false,
+                    ed.initializeSeqData({
                       sequenceData: { ...exampleSequenceData, isRna: true }
                     });
                   } else if (val === "Oligo") {
-                    updateEditor({
-                      readOnly: false,
+                    ed.initializeSeqData({
                       sequenceData: {
                         sequence:
                           "cccccttttttttcacacactactatattagtgagagagacccaca",
@@ -613,8 +593,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                       }
                     });
                   } else if (val === "mixedRnaAndDna") {
-                    updateEditor({
-                      readOnly: false,
+                    ed.initializeSeqData({
                       sequenceData: tidyUpSequenceData(
                         {
                           ...exampleSequenceData,
@@ -629,8 +608,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                       this.state.sequenceLength !== 5299 ||
                       !this.state.sequenceLength
                     ) {
-                      updateEditor({
-                        readOnly: false,
+                      ed.initializeSeqData({
                         sequenceData: exampleSequenceData
                       });
                     }
@@ -660,8 +638,7 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   this.state.moleculeType !== "DNA" && this.state.moleculeType,
                 hook: (val) => {
                   if (!val) return;
-                  updateEditor({
-                    sequenceDataHistory: {},
+                  ed.initializeSeqData({
                     sequenceData:
                       val === "5299"
                         ? exampleSequenceData
@@ -709,41 +686,12 @@ ToolBarProps: {
                 label: "Focus Properties",
                 type: "focusProperties",
                 hook: (shouldUpdate) => {
-                  shouldUpdate &&
-                    updateEditor({
-                      propertiesTool: {
-                        tabId:
-                          new URL(
-                            `https://1.com?${
-                              window.location.href.split("?")[1]
-                            }`
-                          ).searchParams.get("propertyTab") || "General"
-                      },
-                      panelsShown: [
-                        [
-                          {
-                            id: "rail",
-                            name: "Linear Map",
-                            active: true
-                          },
-                          {
-                            id: "circular",
-                            name: "Circular Map"
-                          }
-                        ],
-                        [
-                          {
-                            id: "sequence",
-                            name: "Sequence Map"
-                          },
-                          {
-                            id: "properties",
-                            name: "Properties",
-                            active: true
-                          }
-                        ]
-                      ]
-                    });
+                  shouldUpdate && ed.panelsShown.focusPanel("properties");
+                  ed.propertiesViewTabUpdate(
+                    new URL(
+                      `https://1.com?${window.location.href.split("?")[1]}`
+                    ).searchParams.get("propertyTab") || "General"
+                  );
                 },
                 info: `//Focus the properties tab and focus on a particular sub tab (parts by default)
 
@@ -754,38 +702,7 @@ ToolBarProps: {
                 label: "Focus Digest Tool",
                 type: "focusDigestTool",
                 hook: (shouldUpdate) => {
-                  shouldUpdate &&
-                    updateEditor({
-                      panelsShown: [
-                        [
-                          {
-                            id: "rail",
-                            name: "Linear Map",
-                            active: true
-                          },
-                          {
-                            id: "circular",
-                            name: "Circular Map"
-                          }
-                        ],
-                        [
-                          {
-                            id: "sequence",
-                            name: "Sequence Map"
-                          },
-                          {
-                            id: "digestTool",
-                            name: "New Digest",
-                            active: true,
-                            canClose: true
-                          },
-                          {
-                            id: "properties",
-                            name: "Properties"
-                          }
-                        ]
-                      ]
-                    });
+                  shouldUpdate && ed.panelsShown.focusPanel("direstTool");
                 },
                 info: `//Focus the properties tab and focus on a particular sub tab (parts by default)`
               })}
@@ -794,39 +711,7 @@ ToolBarProps: {
                 label: "Focus PCR Tool",
                 type: "focusPCRTool",
                 hook: (shouldUpdate) => {
-                  shouldUpdate &&
-                    updateEditor({
-                      panelsShown: [
-                        [
-                          {
-                            id: "pcrTool",
-                            name: "New PCR",
-                            active: true,
-                            canClose: true
-                          },
-                          {
-                            id: "rail",
-                            name: "Linear Map"
-                          },
-                          {
-                            id: "circular",
-                            name: "Circular Map"
-                          }
-                        ],
-                        [
-                          {
-                            id: "sequence",
-                            active: true,
-                            name: "Sequence Map"
-                          },
-
-                          {
-                            id: "properties",
-                            name: "Properties"
-                          }
-                        ]
-                      ]
-                    });
+                  shouldUpdate && ed.panelsShown.createNewPCR();
                 },
                 info: `//Focus the properties tab and focus on a particular sub tab (parts by default)`
               })}
@@ -836,7 +721,7 @@ ToolBarProps: {
                 type: "customizeTabs",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
+                    ed.panelsShown.panelsShownUpdate({
                       panelsShown: [
                         [
                           {
@@ -1128,14 +1013,12 @@ updateEditor( {
                 label: "Set Default Visibilities",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      annotationVisibility: {
-                        features: false,
-                        primers: false,
-                        // parts: false,
-                        cutsites: false
-                        // orfTranslations: false
-                      }
+                    ed.annotationVisibility.annotationVisibilityUpdate({
+                      features: false,
+                      primers: false,
+                      // parts: false,
+                      cutsites: false
+                      // orfTranslations: false
                     });
                 }
               })}
@@ -1174,8 +1057,7 @@ sequenceData: {
 \`\`\`
 `,
                 hook: (shouldUpdate) => {
-                  updateEditor({
-                    justPassingPartialSeqData: true,
+                  ed.updateSequenceData({
                     sequenceData: {
                       warnings: shouldUpdate
                         ? [
@@ -1210,8 +1092,7 @@ sequenceData: {
                 type: "allowPartOverhangs",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      justPassingPartialSeqData: true,
+                    ed.updateSequenceData({
                       sequenceData: {
                         parts: [
                           {
@@ -1248,8 +1129,7 @@ sequenceData: {
                 type: "extraAnnotationPropsExample",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      justPassingPartialSeqData: true,
+                    ed.updateSequenceData({
                       sequenceData: {
                         parts: [
                           {
@@ -1297,8 +1177,7 @@ sequenceData: {
 
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      justPassingPartialSeqData: true,
+                    ed.updateSequenceData({
                       sequenceData: {
                         lineageAnnotations: shouldUpdate
                           ? [
@@ -1360,8 +1239,7 @@ sequenceData: {
 `,
 
                 hook: (shouldUpdate) => {
-                  updateEditor({
-                    justPassingPartialSeqData: true,
+                  ed.updateSequenceData({
                     sequenceData: {
                       assemblyPieces: shouldUpdate
                         ? [
@@ -1407,8 +1285,7 @@ sequenceData: {
                 type: "longSequenceName",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      justPassingPartialSeqData: true,
+                    ed.updateSequenceData({
                       sequenceData: {
                         name: `LALALALA I'm a really Long Sequence Name gahhahaghaghaghahg hagahghah lorem ipsum stacato lorem ipsum stacato`
                       }
@@ -1461,8 +1338,7 @@ additionalEnzymes: {
                 type: "allowPartsToOverlapSelf",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      justPassingPartialSeqData: true,
+                    ed.updateSequenceData({
                       sequenceData: {
                         parts: {
                           101: {
@@ -1495,18 +1371,18 @@ additionalEnzymes: {
                 that: this,
                 type: "chromatogramExample",
                 hook: (shouldUpdate) => {
-                  shouldUpdate &&
-                    updateEditor({
-                      annotationVisibility: {
-                        chromatogram: true,
-                        features: true,
-                        primers: false,
-                        // parts: false,
-                        cutsites: false
-                        // orfTranslations: false
-                      },
+                  if (shouldUpdate) {
+                    ed.annotationVisibility.annotationVisibilityUpdate({
+                      chromatogram: true,
+                      features: true,
+                      primers: false,
+                      // parts: false,
+                      cutsites: false
+                      // orfTranslations: false
+                    });
+                    ed.panelsShown.collapseSplitScreen("sequence");
+                    ed.initializeSeqData({
                       //JBEI sequence 'GFPvv50'
-
                       sequenceData: {
                         id: "1",
                         // chromatogramData: example1Ab1,
@@ -1521,35 +1397,10 @@ additionalEnzymes: {
                             end: 80
                           }
                         ],
-
-                        // chromatogramData: chromData,
                         name: "GFPvv50"
-                        // sequence:
-                        //   "TTGTACACTTTTTTGTTGATATGTCATTCTTGTTGATTACATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTTTCTCTTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCATATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAACTACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAATACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCTGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAGCTCGGCGGCGGCGGCAGCAAGGTCTACGGCAAGGAACAGTTTTTGCGGATGCGCCAGAGCATGTTCCCCGATCGCTAAATCGAGTAAGGATCTCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATACCTAGGGTACGGGTTTTGCTGCCCGCAAACGGGCTGTTCTGGTGTTGCTAGTTTGTTATCAGAATCGCAGATCCCGGCTTCAGCCGGG"
-                      },
-                      panelsShown: [
-                        [
-                          {
-                            id: "rail",
-                            name: "Linear Map"
-                          },
-                          {
-                            id: "sequence",
-                            name: "Sequence Map",
-                            active: true
-                          },
-                          {
-                            // fullScreen: true,
-                            id: "circular",
-                            name: "Circular Map"
-                          },
-                          {
-                            id: "properties",
-                            name: "Properties"
-                          }
-                        ]
-                      ]
+                      }
                     });
+                  }
                 },
                 description: `Show chromatogram data in the editor`
               })}
@@ -1557,9 +1408,7 @@ additionalEnzymes: {
                 that: this,
                 type: "readOnly",
                 hook: (readOnly) => {
-                  updateEditor({
-                    readOnly
-                  });
+                  ed.readOnly = readOnly;
                 },
                 description: `The editor can be put into readOnly mode like so:
 \`\`\`
@@ -1579,10 +1428,7 @@ updateEditor( {
                   if (isNotDna) {
                     return;
                   }
-                  updateEditor({
-                    justPassingPartialSeqData: true,
-                    sequenceData: { circular: !linear }
-                  });
+                  ed.circular = !linear;
                 },
                 label: "Toggle Linear",
                 description: `The editor can be put into linear mode like so:
@@ -1603,9 +1449,7 @@ updateEditor( {
                 info: `Any panel can be programatically focused from outside the editor.
 Here is how to do that for the linear view:
 \`\`\`js
-store.dispatch(
-  actions.setPanelAsActive("rail", { editorName: "DemoEditor" })
-);
+ed.panelsShown.setPanelAsActive("rail");
 \`\`\`
 other options are:
 \`\`\`
@@ -1620,7 +1464,7 @@ other options are:
                 type: "focusLinearView",
                 label: "Focus Linear View",
                 hook: (show) => {
-                  show && this.setLinearPanelAsActive();
+                  show && ed.panelsShown.setPanelAsActive("rail");
                 }
               })}
               {renderToggle({
@@ -1640,7 +1484,7 @@ other options are:
               })}
               {renderToggle({
                 onClick: () => {
-                  updateEditor({
+                  ed.selectionLayerUpdate({
                     selectionLayer: { start: 30, end: 59 }
                   });
                 },
@@ -1871,8 +1715,7 @@ clickOverrides: {
                 type: "allowPrimerBasesToBeEdited",
                 hook: (shouldUpdate) => {
                   shouldUpdate &&
-                    updateEditor({
-                      justPassingPartialSeqData: true,
+                  ed.updateSequenceData({
                       sequenceData: {
                         primers: shouldUpdate
                           ? [

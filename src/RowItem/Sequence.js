@@ -39,7 +39,7 @@ class Sequence extends React.Component {
     const rowSeqLen = sequence.length;
     let overlapToBold;
     let isDigestPart;
-    const ann = ed.hoveredAnnotation.annotation;
+    const ann = ed.hoveredAnnotation;
     if (ann && !isReplacementLayer) {
       let start = ann.start;
       let end = ann.end - 1;

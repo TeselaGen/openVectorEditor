@@ -1,101 +1,108 @@
 import { omit } from "lodash";
 import { makeAutoObservable } from "mobx";
 
-export default class AnnotationVisibility{
+export default class AnnotationVisibility {
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this);
   }
-  featureTypesToHide = {}
-  featureIndividualToHide= {}
-  partIndividualToHide= {}
-  featureLengthsToHide
-  features= true
-  warnings= true
-  assemblyPieces= true
-  chromatogram= true
-  lineageAnnotations= true
-  translations= true
-  parts= true
-  orfs= false
-  orfTranslations= false
-  cdsFeatureTranslations= true
-  axis= true
-  cutsites= true
-  cutsitesInSequence= true
-  primers= true
-  dnaColors= false
-  sequence= true
-  reverseSequence= true
-  fivePrimeThreePrimeHints= true
-  axisNumbers= true
+  featureTypesToHide = {};
+  featureIndividualToHide = {};
+  partIndividualToHide = {};
+  featureLengthsToHide;
+  features = true;
+  warnings = true;
+  assemblyPieces = true;
+  chromatogram = true;
+  lineageAnnotations = true;
+  translations = true;
+  parts = true;
+  orfs = false;
+  orfTranslations = false;
+  cdsFeatureTranslations = true;
+  axis = true;
+  cutsites = true;
+  cutsitesInSequence = true;
+  primers = true;
+  dnaColors = false;
+  sequence = true;
+  reverseSequence = true;
+  fivePrimeThreePrimeHints = true;
+  axisNumbers = true;
 
-  resetPartIndividualToHide(){
-    this.partIndividualToHide = {}
-  }
-
-  showPartIndividual(payload){
-    this.partIndividualToHide= omit(this.partIndividualToHide, payload)
+  resetPartIndividualToHide() {
+    this.partIndividualToHide = {};
   }
 
-  hidePartIndividual(payload){
-    this.featureIndividualToHide =  {
+  showPartIndividual(payload) {
+    this.partIndividualToHide = omit(this.partIndividualToHide, payload);
+  }
+
+  hidePartIndividual(payload) {
+    this.featureIndividualToHide = {
       ...this.featureIndividualToHide,
       ...payload.reduce((acc, key) => {
         acc[key] = true;
         return acc;
       }, {})
-    }
+    };
   }
 
-  resetFeatureIndividualToHide(){
-    this.featureIndividualToHide = {}
+  resetFeatureIndividualToHide() {
+    this.featureIndividualToHide = {};
   }
 
-  showFeatureIndividual(payload){
-    this.featureIndividualToHide = omit(this.featureIndividualToHide, payload)
+  showFeatureIndividual(payload) {
+    this.featureIndividualToHide = omit(this.featureIndividualToHide, payload);
   }
 
-  hideFeatureIndividual(payload){
-    this.featureIndividualToHide= {
-        ...this.featureIndividualToHide,
-        ...payload.reduce((acc, key) => {
-          acc[key] = true;
-          return acc;
-        }, {})
-    }
+  hideFeatureIndividual(payload) {
+    this.featureIndividualToHide = {
+      ...this.featureIndividualToHide,
+      ...payload.reduce((acc, key) => {
+        acc[key] = true;
+        return acc;
+      }, {})
+    };
   }
 
-  resetFeatureTypesToHide(){
-    this.featureIndividualToHide = {}
+  resetFeatureTypesToHide() {
+    this.featureIndividualToHide = {};
   }
 
-  showFeatureTypes(payload){
-    this.featureTypesToHide = omit(this.featureTypesToHide, payload)
+  showFeatureTypes(payload) {
+    this.featureTypesToHide = omit(this.featureTypesToHide, payload);
   }
 
-  hideFeatureTypes(payload){
-      this.featureTypesToHide= {
-        ...this.featureTypesToHide,
-        ...payload.reduce((acc, key) => {
-          acc[key] = true;
-          return acc;
-        }, {})
-      }
-    }
-
-  annotationVisibilityToggle(payload){
-    this[payload] = !this[payload]
-    this.orfTranslations = 
-        payload === "orfs" && this.orfs === this.orfTranslations ? 
-        !this.orfTranslations : null
+  hideFeatureTypes(payload) {
+    this.featureTypesToHide = {
+      ...this.featureTypesToHide,
+      ...payload.reduce((acc, key) => {
+        acc[key] = true;
+        return acc;
+      }, {})
+    };
   }
 
-  annotationVisibilityHide(payload){
-    this[payload] = false
+  annotationVisibilityToggle(payload) {
+    this[payload] = !this[payload];
+    this.orfTranslations =
+      payload === "orfs" && this.orfs === this.orfTranslations
+        ? !this.orfTranslations
+        : null;
   }
 
-  annotationVisibilityShow(payload){
-    this[payload] = true
+  annotationVisibilityHide(payload) {
+    this[payload] = false;
   }
 
+  annotationVisibilityShow(payload) {
+    this[payload] = true;
+  }
+
+  annotationVisibilityUpdate(payload) {
+    this[payload] = {
+      ...this,
+      ...payload
+    };
+  }
 }

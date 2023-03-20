@@ -158,7 +158,6 @@ const exampleEditorState = {
   },
   minimumOrfSize: 300,
   updateFeatureLengthsToHide:{enabled: true,min: 0,max:800},
-  hoveredAnnotation: "",
   caretPosition: -1,
   selectionLayer: {
     start: -1,

@@ -1,8 +1,4 @@
-import {
-  normalizePositionByRangeLength,
-  getSequenceWithinRange,
-  getOverlapsOfPotentiallyCircularRanges
-} from "ve-range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
 import { map, camelCase, startCase, startsWith, flatMap, assign } from "lodash";
 import { getComplementSequenceString } from "ve-sequence-utils";
 import React, { useMemo } from "react";
@@ -19,7 +15,6 @@ import StackedAnnotations from "./StackedAnnotations";
 import "./style.css";
 import Chromatogram from "./Chromatograms/Chromatogram";
 import { rowHeights } from "../RowView/estimateRowHeight";
-import { getAllSelectionLayers } from "../utils/selectionLayer";
 import { filter } from "lodash";
 import { defaultCharWidth } from "../constants/rowviewContants";
 import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
@@ -102,12 +97,10 @@ export default function RowItem(props) {
   const {
     sequence: fullSequence,
     onlyShowLabelsThatDoNotFit,
-    selectionLayer,
     deletionLayers,
     replacementLayers,
-    searchLayers,
+    findTool: { searchLayers },
     annotationLabelVisibility,
-    additionalSelectionLayers,
     caretPosition,
     sequenceLength
   } = ed;
@@ -123,7 +116,6 @@ export default function RowItem(props) {
     // yellowAxis: showYellowAxis,
     aminoAcidNumbers: showAminoAcidNumbers,
     dnaColors: showDnaColors,
-    fivePrimeThreePrimeHints,
     reverseSequence: showReverseSequence,
     sequence: showSequence
   } = annotationVisibility;
@@ -349,10 +341,7 @@ export default function RowItem(props) {
               ? { start: 0, end: alignmentData.sequence.length - 1 }
               : row
           }
-          regions={getAllSelectionLayers({
-            additionalSelectionLayers,
-            selectionLayer
-          })}
+          regions={ed.allSelectionLayers}
         />
         {drawAnnotations("warning")}
         {drawAnnotations("assemblyPiece")}
@@ -417,21 +406,18 @@ export default function RowItem(props) {
 
           {showReverseSequence && (
             <Sequence
+              ed={ed}
+              row={row}
               isReverse
-              showDnaColors={showDnaColors}
               hideBps={charWidth < 7}
               length={reverseSequence.length}
-              showCutsites={showCutsites}
-              rowStart={row.start}
-              rowEnd={row.end}
               sequence={reverseSequence}
               height={sequenceHeight}
-              charWidth={charWidth}
             >
-              {showCutsites && Object.keys(cutsites).length > 0 && (
+              {showCutsites && Object.keys(row.cutsites).length > 0 && (
                 <Cutsites
                   topStrand={false}
-                  annotationRanges={cutsites}
+                  annotationRanges={row.cutsites}
                   {...annotationCommonProps}
                 />
               )}
@@ -442,7 +428,7 @@ export default function RowItem(props) {
             <CutsiteSelectionLayers
               {...{
                 ed,
-                cutsites,
+                cutsites: row.cutsites,
                 annotationCommonProps,
                 showReverseSequence,
                 sequenceHeight,
@@ -464,102 +450,6 @@ export default function RowItem(props) {
         })}
         {drawLabels("feature")}
         {drawAnnotations("feature")}
-
-        {/* {map(replacementLayers, function (replacementLayer) {
-          if (!replacementLayer) return null;
-          const atCaret = replacementLayer.caretPosition > -1;
-          let normedCaretPos;
-          if (atCaret) {
-            normedCaretPos = normalizePositionByRangeLength(
-              replacementLayer.caretPosition,
-              sequenceLength
-            );
-          }
-          const insertedBpsLayer = {
-            ...replacementLayer,
-            start: atCaret ? normedCaretPos : replacementLayer.start,
-            end:
-              (atCaret ? normedCaretPos : replacementLayer.start) +
-              replacementLayer.sequence.length
-          };
-          const { sequence } = insertedBpsLayer;
-          const layerRangeOverlaps = getOverlapsOfPotentiallyCircularRanges(
-            insertedBpsLayer,
-            row,
-            sequenceLength
-          );
-          return layerRangeOverlaps.map(function (layer, index) {
-            const isStart = layer.start === insertedBpsLayer.start;
-            const seqInRow = getSequenceWithinRange(
-              {
-                start: layer.start - insertedBpsLayer.start,
-                end: layer.end - insertedBpsLayer.start
-              },
-              sequence
-            );
-            const startOffset = layer.start - row.start;
-            const width = seqInRow.length * charWidth;
-            const height = sequenceHeight;
-            const bufferBottom = 4;
-            const bufferLeft = 2;
-            const arrowHeight = isStart ? 8 : 0;
-            return (
-              <Sequence
-                ed={ed}
-                row={row}
-                isReplacementLayer
-                key={index}
-                sequence={seqInRow}
-                startOffset={startOffset}
-                height={height}
-                length={seqInRow.length}
-                charWidth={charWidth}
-              >
-                <svg
-                  style={{
-                    left: startOffset * charWidth,
-                    height: sequenceHeight,
-                    position: "absolute"
-                  }}
-                  ref="rowViewTextContainer"
-                  onClick={function (event) {
-                    replacementLayerClicked({
-                      annotation: replacementLayer,
-                      event
-                    });
-                  }}
-                  onContextMenu={function (event) {
-                    replacementLayerRightClicked({
-                      annotation: replacementLayer,
-                      event
-                    });
-                  }}
-                  className="rowViewTextContainer clickable"
-                  width={Math.max(0, Number(width))}
-                  height={Math.max(0, Number(height))}
-                >
-                  <polyline
-                    points={`${-bufferLeft},0 ${-bufferLeft},${-arrowHeight}, ${
-                      charWidth / 2
-                    },0 ${width},0 ${width},${
-                      height + bufferBottom
-                    } ${-bufferLeft},${height + bufferBottom} ${-bufferLeft},0`}
-                    fill="none"
-                    stroke="black"
-                    strokeWidth="2px"
-                  />
-                </svg>
-              </Sequence>
-            );
-          });
-        })} */}
-        {/* <DeletionLayers
-          deletionLayerClicked={deletionLayerClicked}
-          deletionLayerRightClicked={deletionLayerRightClicked}
-          deletionLayers={deletionLayers}
-          {...annotationCommonProps}
-        /> */}
-
         {drawAnnotations("primaryProteinSequence", {
           ...translationCommonProps,
           noPlural: true

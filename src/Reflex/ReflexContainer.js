@@ -262,9 +262,7 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   isSplitterElement(element) {
     //https://github.com/leefsmp/Re-Flex/issues/49
-    return process.env.NODE_ENV === "development"
-      ? element.type === <ReflexSplitter />.type
-      : element.type === ReflexSplitter;
+    return  element.type === ReflexSplitter;
   }
 
   /////////////////////////////////////////////////////////

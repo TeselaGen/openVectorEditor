@@ -51,29 +51,25 @@ class AddOrEditAnnotationDialog extends React.Component {
     );
   }
   formatStart = (val) => {
-    const { isProtein } = this.props.sequenceData || {};
-    if (isProtein) {
+    if (this.props.ed.isProtein) {
       return (val + 2) / 3;
     }
     return val;
   };
   formatEnd = (val) => {
-    const { isProtein } = this.props.sequenceData || {};
-    if (isProtein) {
+    if (this.props.ed.isProtein) {
       return val / 3;
     }
     return val;
   };
   parseStart = (val) => {
-    const { isProtein } = this.props.sequenceData || {};
-    if (isProtein) {
+    if (this.props.ed.isProtein) {
       return val * 3 - 2;
     }
     return val;
   };
   parseEnd = (val) => {
-    const { isProtein } = this.props.sequenceData || {};
-    if (isProtein) {
+    if (this.props.ed.isProtein) {
       return val * 3;
     }
     return val;
@@ -209,7 +205,7 @@ class AddOrEditAnnotationDialog extends React.Component {
       original_selectionLayerUpdate
     } = this.props;
     const { isProtein } = ed;
-    const sequenceLength = ed.sequenceLength
+    const sequenceLength = ed.sequenceLength;
     const annotationLength = getRangeLength(
       locations && locations.length
         ? {

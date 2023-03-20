@@ -339,4 +339,5 @@ const WrapSimpleDemo = ({ children }) => {
   return children;
 };
 
+// export default Demo
 render(<Demo />, document.querySelector("#demo"));

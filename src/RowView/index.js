@@ -1,7 +1,6 @@
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
-import { some, isEqual, debounce } from "lodash";
-import prepareRowData from "../mobxStore/utils/prepareRowData";
+import { some, isEqual } from "lodash";
 import React from "react";
 import Draggable from "react-draggable";
 import RowItem from "../RowItem";
@@ -13,7 +12,6 @@ import {
   defaultMarginWidth,
   defaultCharWidth
 } from "../constants/rowviewContants";
-import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
 
 // import TrMmInfScroll from "./TrMmInfScroll";
 
@@ -27,10 +25,10 @@ import {
   editorDragStarted,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
+import { setIntervalX } from "./setIntervalX";
+import { onScroll } from "./onScroll";
 // import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
 // import Combokeys from "combokeys";
-
-function noop() {}
 
 const rowJumpButtonStyle = {
   height: rowHeights.rowJumpButtons.height
@@ -38,46 +36,33 @@ const rowJumpButtonStyle = {
 
 const bounds = { top: 0, left: 0, right: 0, bottom: 0 };
 export class RowView extends React.Component {
- 
-
-  shouldClearCache = () => {
-    const { annotationVisibility, annotationLabelVisibility, sequenceData } =
-      this.props;
-    const toCompare = {
-      bpsPerRow: getBpsPerRow(this.props),
-      annotationVisibility,
-      scalePct: this.state?.scalePct,
-      annotationLabelVisibility,
-      stateTrackingId: sequenceData.stateTrackingId
-    };
-    if (!isEqual(toCompare, this.oldToCompare)) {
-      this.cache = {};
-      this.oldToCompare = toCompare;
-      return true;
-    }
-  };
-
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
-  estimateRowHeight = (index, cache) => {
+  estimateRowHeight = (index) => {
     const { annotationVisibility, annotationLabelVisibility, sequenceData } =
-      this.props;
+      this.props.ed;
     return estimateRowHeight({
       index,
-      cache,
       chromatogramData: sequenceData.chromatogramData,
       showJumpButtons: this.showJumpButtons,
-      clearCache: this.clearCache,
-      row: this.rowData[index],
-      rowCount: this.rowData.length,
+      row: this.props.ed.rowData[index],
+      rowCount: this.props.ed.rowData.length,
       annotationVisibility,
       annotationLabelVisibility
     });
   };
   getNearestCursorPositionToMouseEvent = (rowData, event, callback) => {
-    const { charWidth = defaultCharWidth, sequenceData } = this.props;
-    const sequenceLength = sequenceData.noSequence
-      ? sequenceData.size
-      : sequenceData.sequence.length;
+    const { ed } = this.props;
+    const {
+      sequenceLength,
+      charWidthRV,
+      updateSelectionOrCaret,
+      caretPosition,
+      selectionLayer,
+      caretPositionUpdate,
+      selectionLayerUpdate,
+      circular,
+      isProtein
+    } = ed;
     let rowNotFound = true;
     const visibleRowsContainer =
       this.InfiniteScroller && this.InfiniteScroller.items;
@@ -105,7 +90,8 @@ export class RowView extends React.Component {
           const clickXPositionRelativeToRowContainer =
             getClientX(event) - boundingRowRect.left;
           const numberOfBPsInFromRowStart = Math.floor(
-            (clickXPositionRelativeToRowContainer + charWidth / 2) / charWidth
+            (clickXPositionRelativeToRowContainer + charWidthRV / 2) /
+              charWidthRV
           );
           nearestCaretPos = numberOfBPsInFromRowStart + row.start;
           if (nearestCaretPos > row.end + 1) {
@@ -144,17 +130,11 @@ export class RowView extends React.Component {
         nearestCaretPos = 0;
       }
     }
-    if (this.props.sequenceData.isProtein) {
+    if (isProtein) {
       nearestCaretPos = Math.round(nearestCaretPos / 3) * 3;
     }
     if (sequenceLength === 0) nearestCaretPos = 0;
-    const {
-      updateSelectionOrCaret,
-      caretPosition,
-      selectionLayer,
-      caretPositionUpdate,
-      selectionLayerUpdate
-    } = this.props;
+
     callback({
       updateSelectionOrCaret,
       caretPosition,
@@ -162,9 +142,7 @@ export class RowView extends React.Component {
       caretPositionUpdate,
       selectionLayerUpdate,
       sequenceLength,
-      doNotWrapOrigin: !(
-        this.props.sequenceData && this.props.sequenceData.circular
-      ),
+      doNotWrapOrigin: !circular,
       selectionStartGrabbed,
       selectionEndGrabbed,
       event,
@@ -196,7 +174,7 @@ export class RowView extends React.Component {
       matchedSearchLayer: matchedSearchLayerOld = {}
     } = oldProps;
 
-    const bpsPerRow = getBpsPerRow(newProps);
+    // const bpsPerRow = getBpsPerRow(newProps);
     //UPDATE THE ROW VIEW'S POSITION BASED ON CARET OR SELECTION CHANGES
     // let previousBp;
     let scrollToBp = -1;
@@ -293,10 +271,6 @@ export class RowView extends React.Component {
     }
   };
 
-
-
-  
-
   renderItem = (index) => {
     const {
       //currently found in props
@@ -310,8 +284,7 @@ export class RowView extends React.Component {
 
     let rowTopComp;
     let rowBottomComp;
-    const rowData = ed.rowDataRV;
-    const bpsPerRow = ed.bpsPerRow;
+    const rowData = ed.rowData;
 
     this.showJumpButtons = rowData.length > 15;
     if (this.showJumpButtons) {
@@ -356,6 +329,7 @@ export class RowView extends React.Component {
     }
 
     if (rowData[index]) {
+      const row = rowData[index];
       const rowItem = (
         <div data-row-number={index} key={index}>
           <div className="veRowItemSpacer" />
@@ -374,7 +348,7 @@ export class RowView extends React.Component {
               isRowView: true,
               ...RowItemProps
             }}
-            row={rowData[index]}
+            row={row}
           />
           {index === rowData.length - 1 ? (
             <div className="veRowItemSpacer" />
@@ -401,12 +375,12 @@ export class RowView extends React.Component {
     }
 
     this.dragging = true;
-    const rowData = this.rowData;
+    const rowData = this.props.ed.rowData;
     this.getNearestCursorPositionToMouseEvent(rowData, event, editorDragged);
   };
   onStart = (event) => {
     this.dragging = true;
-    const rowData = this.rowData;
+    const rowData = this.props.ed.rowData;
     this.getNearestCursorPositionToMouseEvent(
       rowData,
       event,
@@ -423,14 +397,14 @@ export class RowView extends React.Component {
 
   onContextMenu = (event) => {
     this.getNearestCursorPositionToMouseEvent(
-      this.rowData,
+      this.props.ed.rowData,
       event,
       this.props.backgroundRightClicked
     );
   };
   onClick = (event) => {
     this.getNearestCursorPositionToMouseEvent(
-      this.rowData,
+      this.props.ed.rowData,
       event,
       this.props.editorClicked
     );
@@ -444,12 +418,13 @@ export class RowView extends React.Component {
   render() {
     let {
       //currently found in props
-      sequenceData,
+      ed,
       width,
       marginWidth,
       height,
       className
     } = this.props;
+    const { rowData } = ed;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
       return <div style={{ width, height: height || 300 }} />;
@@ -458,14 +433,9 @@ export class RowView extends React.Component {
       marginWidth = defaultMarginWidth;
     }
     const containerWidthMinusMargin = width - marginWidth;
-    const bpsPerRow = getBpsPerRow(this.props);
-    this.bpsPerRow = bpsPerRow;
 
     //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
-    const rowData = this.getRowData(sequenceData, bpsPerRow);
-    this.rowData = rowData;
 
-    const shouldClear = this.shouldClearCache();
     return (
       <Draggable
         bounds={bounds}
@@ -491,7 +461,6 @@ export class RowView extends React.Component {
         >
           <ReactList
             ref={this.getReactListRef}
-            clearCache={shouldClear}
             itemRenderer={this.renderItem}
             length={rowData.length}
             itemSizeEstimator={this.estimateRowHeight}
@@ -504,29 +473,3 @@ export class RowView extends React.Component {
 }
 
 export default withEditorInteractions(RowView);
-
-function onScroll() {
-  window.__veScrolling = true;
-  setTimeout(endScroll);
-}
-
-const endScroll = debounce(() => {
-  window.__veScrolling = false;
-}, 100);
-
-function setIntervalX(callback, delay, repetitions) {
-  let x = 0;
-  const intervalID = window.setInterval(function () {
-    callback();
-
-    if (++x === repetitions) {
-      try {
-        //djr I think there is some double clearing going on here so I put it in a try block
-        window.clearInterval(intervalID);
-      } catch {
-        console.error();
-      }
-    }
-  }, delay);
-  return intervalID;
-}

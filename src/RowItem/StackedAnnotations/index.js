@@ -28,7 +28,6 @@ function StackedAnnotations(props) {
     editorName,
     type,
     readOnly,
-    noRedux,
     alignmentType,
     getGaps,
     marginTop,
@@ -107,7 +106,6 @@ function StackedAnnotations(props) {
         left={result.xStart}
       >
         <InnerCompToUse
-          noRedux={noRedux}
           key={index}
           className={annotation.className}
           arrowheadType={annotation.arrowheadType}

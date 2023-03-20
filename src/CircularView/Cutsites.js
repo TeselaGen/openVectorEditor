@@ -8,8 +8,7 @@ import { observer } from "mobx-react";
 
 function Cutsites({
   radius,
-  noRedux,
-  editorName,
+  ed,
   showCutsiteLabels,
   cutsiteClicked,
   cutsiteDoubleClicked,
@@ -17,8 +16,11 @@ function Cutsites({
   cutsites,
   cutsiteWidth = 1,
   annotationHeight = 15,
-  sequenceLength
+  
 }) {
+  const {
+    sequenceLength
+  } = ed 
   radius += annotationHeight;
   const svgGroup = [];
   const labels = {};
@@ -61,8 +63,7 @@ function Cutsites({
       <DrawCutsite
         key={"cutsite" + index}
         {...{
-          noRedux,
-          editorName,
+          ed,
           id: annotation.id,
           startAngle,
           radius,

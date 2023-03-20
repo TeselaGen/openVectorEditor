@@ -4,7 +4,7 @@ import immer from "immer";
 import { makeAutoObservable } from "mobx";
 export default class PanelShown {
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this);
   }
   panels = [
     [
@@ -33,19 +33,17 @@ export default class PanelShown {
       }
     ]
   ];
-
-  flipActiveForGroup(group, setCircActive) {
-    const activeTab = group.find(({ active }) => active);
-    if (activeTab?.id === (setCircActive ? "rail" : "circular")) {
-      //we're on the wrong tab type so check if the other tab is in
-      const newTabToActivate = group.find(
-        ({ id }) => id === (setCircActive ? "circular" : "rail")
-      );
-      if (newTabToActivate) {
-        newTabToActivate.active = true;
-        activeTab.active = false;
+  // Sets the active panel in a list of panels
+  focusPanel(panelId) {
+    this.panels.forEach((group) => {
+      const panel = group.find(({ id }) => id === panelId);
+      if (panel) {
+        group.forEach((p) => {
+          p.active = false;
+        });
+        panel.active = true;
       }
-    }
+    });
   }
 
   addPanelIfItDoesntAlreadyExist(panelToAdd) {
@@ -68,15 +66,22 @@ export default class PanelShown {
   }
 
   flipActiveTabFromLinearOrCircularIfNecessary(setCircActive) {
-    const newPanels = immer(this.panels, (s) => {
-      s.forEach((g) => {
-        this.flipActiveForGroup(g, setCircActive);
-      });
+    this.panels.forEach((group) => {
+      const activeTab = group.find(({ active }) => active);
+      if (activeTab?.id === (setCircActive ? "rail" : "circular")) {
+        //we're on the wrong tab type so check if the other tab is in
+        const newTabToActivate = group.find(
+          ({ id }) => id === (setCircActive ? "circular" : "rail")
+        );
+        if (newTabToActivate) {
+          newTabToActivate.active = true;
+          activeTab.active = false;
+        }
+      }
     });
-    this.panels = newPanels;
   }
 
-  closePanels(idToClose) {
+  closePanel(idToClose) {
     const newPanels = this.panels.map((group) => {
       let indexToClose;
       group.forEach(({ id }, i) => {

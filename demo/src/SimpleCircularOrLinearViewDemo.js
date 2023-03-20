@@ -13,7 +13,6 @@ const defaultState = {
   circular: false,
   changeSize: false,
   togglePartColor: false,
-  toggleNoRedux: false
 };
 
 export default class SimpleCircularOrLinearViewDemo extends React.Component {
@@ -84,19 +83,12 @@ export default class SimpleCircularOrLinearViewDemo extends React.Component {
             })}
             {renderToggle({ that: this, type: "togglePartColor" })}
             {renderToggle({ that: this, type: "isOligo" })}
-            {renderToggle({
-              that: this,
-              type: "toggleNoRedux",
-              description:
-                "Pass noRedux=true if you want to render this component in a redux-free environment. Note: passing hoveredIds will not work with noRedux=true"
-            })}
             <br />
             <br />
           </div>
           <SimpleCircularOrLinearView
             {...{
               ...this.state,
-              ...(this.state.toggleNoRedux && { noRedux: true }),
               ...(this.state.hideNameAndInfo && { hideName: true }),
               ...(this.state.hoverPart && { hoveredId: "fakeId1" }),
               ...(this.state.changeSize && { height: 500, width: 500 }),
