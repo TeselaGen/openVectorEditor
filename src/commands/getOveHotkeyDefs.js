@@ -1,11 +1,11 @@
 import getCommands from "./index";
 import { getCommandHotkeys } from "teselagen-react-components";
 
-export default function getOveHotkeyDefs({ store, editorName }) {
+export default function getOveHotkeyDefs({ store, editorClassName }) {
   const commands = getCommands({
     props: {
       store,
-      editorName
+      editorClassName
     }
   });
   return getCommandHotkeys(commands);

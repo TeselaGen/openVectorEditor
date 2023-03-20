@@ -503,9 +503,9 @@ function VectorInteractionHOC(Component /* options */) {
         return new Clipboard(`.${className}`, {
           action: () => action,
           text: () => {
-            const { selectionLayer, editorName, store } = this.props;
+            const { selectionLayer, editorClassName, store } = this.props;
             const { sequenceData, copyOptions } =
-              store.getState().VectorEditor[editorName];
+              store.getState().VectorEditor[editorClassName];
 
             const selectedSeqData = getSequenceDataBetweenRange(
               sequenceData,
@@ -807,7 +807,7 @@ function VectorInteractionHOC(Component /* options */) {
 
     deletionLayerRightClicked = this.enhanceRightClickAction(
       ({ annotation }) => {
-        const { editorName, dispatch } = this.props;
+        const { editorClassName, dispatch } = this.props;
         return [
           {
             text: "Remove Deletion",
@@ -815,7 +815,7 @@ function VectorInteractionHOC(Component /* options */) {
             onClick: function () {
               dispatch({
                 type: "DELETION_LAYER_DELETE",
-                meta: { editorName },
+                meta: { editorClassName },
                 payload: { ...annotation }
               });
             }

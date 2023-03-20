@@ -912,7 +912,7 @@ export class AlignmentView extends React.Component {
             // sequenceDataWithRefSeqCdsFeatures,
             tickSpacing,
             // allowSeqDataOverride: true, //override the sequence data stored in redux so we can track the caret position/selection layer in redux but not have to update the redux editor
-            editorName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
+            editorClassName: `${isTemplate ? "template_" : ""}alignmentView${i}`,
             alignmentData,
             chromatogramData,
             height: "100%",

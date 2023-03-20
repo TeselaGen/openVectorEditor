@@ -48,7 +48,7 @@ export class VersionHistoryView extends React.Component {
           })
       },
       {
-        editorName: "veVersionHistoryView"
+        editorClassName: "veVersionHistoryView"
       }
     );
   };
@@ -145,7 +145,7 @@ export class VersionHistoryView extends React.Component {
                     </Button>
                   )
                 }}
-                editorName="veVersionHistoryView"
+                editorClassName="veVersionHistoryView"
               />
               <div
                 style={{

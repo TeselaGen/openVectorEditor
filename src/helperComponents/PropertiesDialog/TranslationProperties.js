@@ -19,12 +19,12 @@ class TranslationProperties extends React.Component {
   }
   onRowSelect = ([record]) => {
     if (!record) return;
-    const { dispatch, editorName } = this.props;
+    const { dispatch, editorClassName } = this.props;
     dispatch({
       type: "SELECTION_LAYER_UPDATE",
       payload: record,
       meta: {
-        editorName
+        editorClassName
       }
     });
   };

@@ -25,7 +25,7 @@ function StackedAnnotations(props) {
     disregardLocations,
     InnerComp,
     onRightClick,
-    editorName,
+    editorClassName,
     type,
     readOnly,
     alignmentType,
@@ -109,7 +109,7 @@ function StackedAnnotations(props) {
           key={index}
           className={annotation.className}
           arrowheadType={annotation.arrowheadType}
-          editorName={editorName}
+          editorClassName={editorClassName}
           id={annotation.id}
           fivePrimeOverhang={annotation.fivePrimeOverhang}
           fivePrimeUnderhang={annotation.fivePrimeUnderhang}

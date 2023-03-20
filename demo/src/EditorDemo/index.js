@@ -417,7 +417,7 @@ This feature requires beforeSequenceInsertOrDelete toggle to be true to be enabl
     ].filter((i) => i);
     return (
       <React.Fragment>
-        {/* <AutoAnnotateModal editorName={"DemoEditor"}></AutoAnnotateModal> */}
+        {/* <AutoAnnotateModal editorClassName={"DemoEditor"}></AutoAnnotateModal> */}
         {/* <button onClick={() => {
           const dragSource = document.querySelector(".veTabLinearMap")
     const dropTarget = document.querySelector(".veTabProperties")
@@ -1784,7 +1784,7 @@ clickOverrides: {
             {...(!this.state.truncateLabelsThatDoNotFit && {
               truncateLabelsThatDoNotFit: false
             })}
-            editorName="DemoEditor"
+            editorClassName="DemoEditor"
             onPreviewModeFullscreenClose={() => {
               window.toastr.success(
                 "onPreviewModeFullscreenClose hit -- Fullscreen Closed"

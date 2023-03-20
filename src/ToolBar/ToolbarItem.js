@@ -35,7 +35,7 @@ class ToolbarItem extends React.Component {
       renderIconAbove,
       noDropdownIcon,
       IconWrapper,
-      editorName,
+      editorClassName,
       popoverDisabled,
       IconWrapperProps,
       toolName,
@@ -132,7 +132,7 @@ class ToolbarItem extends React.Component {
         {Dropdown && (
           <Dropdown
             {...rest}
-            editorName={editorName}
+            editorClassName={editorClassName}
             toggleDropdown={this.toggleDropdown}
           />
         )}

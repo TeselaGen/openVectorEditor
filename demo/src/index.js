@@ -254,7 +254,7 @@ const Demo = () => {
             render={() => {
               return (
                 <WrapSimpleDemo>
-                  <CircularView editorName="DemoEditor" />
+                  <CircularView editorClassName="DemoEditor" />
                 </WrapSimpleDemo>
               );
             }}
@@ -270,7 +270,7 @@ const Demo = () => {
             render={() => {
               return (
                 <WrapSimpleDemo>
-                  <DigestTool editorName="DemoEditor" />
+                  <DigestTool editorClassName="DemoEditor" />
                 </WrapSimpleDemo>
               );
             }}
@@ -304,7 +304,7 @@ const Demo = () => {
             render={() => {
               return (
                 <WrapSimpleDemo>
-                  <RowView editorName="DemoEditor" />
+                  <RowView editorClassName="DemoEditor" />
                 </WrapSimpleDemo>
               );
             }}
@@ -316,7 +316,7 @@ const Demo = () => {
                 <WrapSimpleDemo>
                   <LinearView
                     withZoomLinearView={true}
-                    editorName="DemoEditor"
+                    editorClassName="DemoEditor"
                   />
                 </WrapSimpleDemo>
               );

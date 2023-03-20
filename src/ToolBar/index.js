@@ -54,7 +54,7 @@ export function ToolBar(props) {
     openHotkeyDialog,
     onSave,
     userDefinedHandlersAndOpts,
-    editorName,
+    editorClassName,
     annotationsToSupport,
     handleFullscreenClose,
     closeFullscreen,
@@ -155,7 +155,7 @@ export function ToolBar(props) {
             openHotkeyDialog={openHotkeyDialog}
             onSave={onSave} //needs to be passed so that editor commands will have it
             style={{ marginLeft: 0 }}
-            editorName={editorName}
+            editorClassName={editorClassName}
           />
         )}
         {displayMenuBarAboveTools && showMenuBar ? (

@@ -242,7 +242,7 @@ function validate(values) {
 
 // connect(
 //   function(state, props) {
-//     const editorState = state.VectorEditor[props.editorName];
+//     const editorState = state.VectorEditor[props.editorClassName];
 //     let selectedEnzymes = s.restrictionEnzymesSelector(editorState, props.additionalEnzymes);
 //     return {
 //       selectedEnzymes

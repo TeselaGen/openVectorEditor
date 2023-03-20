@@ -374,7 +374,7 @@ class ComponentToPrint extends React.Component {
   // }
 
   render() {
-    const { editorName, circular } = this.props;
+    const { editorClassName, circular } = this.props;
 
     // let w = window,
     //     d = document,
@@ -386,9 +386,9 @@ class ComponentToPrint extends React.Component {
     // const width =  670;
     // const height = 900;
     return circular ? (
-      <CircularView noWarnings noInteractions editorName={editorName} />
+      <CircularView noWarnings noInteractions editorClassName={editorClassName} />
     ) : (
-      <LinearView noWarnings noInteractions editorName={editorName} />
+      <LinearView noWarnings noInteractions editorClassName={editorClassName} />
     );
   }
 }

@@ -49,7 +49,7 @@ export const MultipleSeqsDetectedOnImportDialog = wrapDialog({
             <SimpleCircularOrLinearView
               sequenceData={selectedSeqData || { sequence: "" }}
               // tabHeight={tabHeight}
-              editorName="previewEditor"
+              editorClassName="previewEditor"
               height={null}
               isProtein={selectedSeqData && selectedSeqData.isProtein}
               annotationLabelVisibility={{

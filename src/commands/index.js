@@ -291,7 +291,7 @@ const fileCommandDefs = {
           dialogType: "RemoveDuplicates",
           props: {
             type: camelCase(type),
-            editorName: props.editorName,
+            editorClassName: props.editorClassName,
             dialogProps: {
               title: `Remove Duplicate ${type}`
             }

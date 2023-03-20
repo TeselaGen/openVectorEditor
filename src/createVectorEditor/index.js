@@ -7,6 +7,7 @@ import Editor from "../Editor";
 import addAlignment from "../addAlignment";
 import AlignmentView from "../AlignmentView";
 import sizeMe from "react-sizeme";
+import EditorStore from "../mobxStore/store";
 // import VersionHistoryView from "../VersionHistoryView";
 
 let store;
@@ -46,13 +47,9 @@ function StandaloneAlignment(props) {
 //   );
 // }
 
-export default function createVectorEditor(
-  _node,
-  { editorName = "StandaloneEditor", ...rest } = {}
-) {
-  if (!store) {
-    store = makeStore();
-  }
+export default function createVectorEditor(_node, opts = {}) {
+  const ed = new EditorStore(opts);
+
   let node;
 
   if (_node === "createDomNodeForMe") {
@@ -63,26 +60,13 @@ export default function createVectorEditor(
     node = _node;
   }
   const editor = {};
-  editor.renderResponse = render(
-    <StandaloneEditor {...{ editorName, ...rest }} />,
-    node
-  );
+  editor.renderResponse = render(<StandaloneEditor ed={ed} />, node);
   editor.close = () => {
     unmountComponentAtNode(node);
     node.remove();
   };
-  editor.updateEditor = (values) => {
-    // tnwtodo
-    // updateEditor(store, editorName, values);
-  };
-  editor.addAlignment = (values) => {
-    addAlignment(store, values);
-  };
-  editor.getState = () => {
-    return store.getState().VectorEditor[editorName];
-  };
 
-  return editor;
+  return ed;
 }
 
 // export function createVersionHistoryView(
@@ -113,6 +97,7 @@ export function createAlignmentView(node, props = {}) {
   if (!store) {
     store = makeStore();
   }
+
   const editor = {};
   editor.renderResponse = render(<SizedStandaloneAlignment {...props} />, node);
 

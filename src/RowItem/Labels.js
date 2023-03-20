@@ -177,7 +177,7 @@ export default onlyUpdateForKeys([
   "onRightClick",
   "onDoubleClick",
   "textWidth",
-  "editorName"
+  "editorClassName"
 ])(Labels);
 
 const DrawLabel = withHover(
@@ -200,14 +200,14 @@ const DrawLabel = withHover(
         onMouseOver
       } = this.props;
 
-      const { readOnly, labelLineIntensity, isProtein, editorName } = ed;
+      const { readOnly, labelLineIntensity, isProtein, editorClassName } = ed;
       let heightToUse = height;
       let bottom = 0;
       if (hovered) {
         try {
           const line = this.n;
           const isRowView = document
-            .querySelector(`.veEditor.${editorName} .veRowView`)
+            .querySelector(`.veEditor.${editorClassName} .veRowView`)
             .contains(line);
 
           const el = line
