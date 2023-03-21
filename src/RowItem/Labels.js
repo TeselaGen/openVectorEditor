@@ -8,6 +8,7 @@ import { reduce, values, startCase, filter, clamp } from "lodash";
 import { getRangeLength } from "ve-range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
+import { observer } from "mobx-react";
 
 const BUFFER_WIDTH = 6; //labels shouldn't be less than 6px from eachother on the same line
 
@@ -167,146 +168,140 @@ function Labels(props) {
   );
 }
 
-export default onlyUpdateForKeys([
-  "annotationRanges",
-  "bpsPerRow",
-  "charWidth",
-  "annotationHeight",
-  "spaceBetweenAnnotations",
-  "onClick",
-  "onRightClick",
-  "onDoubleClick",
-  "textWidth",
-  "editorClassName"
-])(Labels);
+export default observer(Labels);
 
 const DrawLabel = withHover(
-  class DrawLabelInner extends React.Component {
-    render() {
-      const {
-        ed,
-        row,
-        hovered,
-        className,
-        annotation,
-        onClick,
-        noLabelLine,
-        onDoubleClick,
-        onRightClick,
-        height,
-        xStartOriginal,
-        xStart,
-        onMouseLeave,
-        onMouseOver
-      } = this.props;
+  observer(
+    class DrawLabelInner extends React.Component {
+      render() {
+        const {
+          ed,
+          row,
+          hovered,
+          className,
+          annotation,
+          onClick,
+          noLabelLine,
+          onDoubleClick,
+          onRightClick,
+          height,
+          xStartOriginal,
+          xStart,
+          onMouseLeave,
+          onMouseOver
+        } = this.props;
 
-      const { readOnly, labelLineIntensity, isProtein, editorClassName } = ed;
-      let heightToUse = height;
-      let bottom = 0;
-      if (hovered) {
-        try {
-          const line = this.n;
-          const isRowView = document
-            .querySelector(`.veEditor.${editorClassName} .veRowView`)
-            .contains(line);
+        const { readOnly, labelLineIntensity, isProtein, editorClassName } = ed;
+        let heightToUse = height;
+        let bottom = 0;
+        if (hovered) {
+          try {
+            const line = this.n;
+            const isRowView = document
+              .querySelector(`.veEditor.${editorClassName} .veRowView`)
+              .contains(line);
 
-          const el = line
-            .closest(".veRowItem")
+            const el = line
+              .closest(".veRowItem")
 
-            .querySelector(
-              annotation.annotationTypePlural === "cutsites"
-                ? isRowView
-                  ? ".cutsiteLabelSelectionLayer"
-                  : ".veRowViewAxis"
-                : `[data-id="${annotation.id}"].veRowView${startCase(
-                    annotation.annotationTypePlural.slice(0, -1)
-                  )}`
-            );
-          const annDims = el.getBoundingClientRect();
-          const lineDims = line.getBoundingClientRect();
-          const heightDiff =
-            annDims.bottom - lineDims.bottom - annDims.height / 2;
-          heightToUse = height + heightDiff;
-          bottom = -heightDiff;
-        } catch (e) {
-          window.veDebugLabels && console.error(`err computing label line:`, e);
+              .querySelector(
+                annotation.annotationTypePlural === "cutsites"
+                  ? isRowView
+                    ? ".cutsiteLabelSelectionLayer"
+                    : ".veRowViewAxis"
+                  : `[data-id="${annotation.id}"].veRowView${startCase(
+                      annotation.annotationTypePlural.slice(0, -1)
+                    )}`
+              );
+            const annDims = el.getBoundingClientRect();
+            const lineDims = line.getBoundingClientRect();
+            const heightDiff =
+              annDims.bottom - lineDims.bottom - annDims.height / 2;
+            heightToUse = height + heightDiff;
+            bottom = -heightDiff;
+          } catch (e) {
+            window.veDebugLabels &&
+              console.error(`err computing label line:`, e);
+          }
         }
-      }
 
-      const truncateLabelIfNeeded = (annotationText, xLeftCoord) => {
-        const numberOfCharsToChop =
-          xLeftCoord < 0 ? Math.ceil(Math.abs(xLeftCoord) / textWidth) + 2 : 0;
-        return numberOfCharsToChop > 0
-          ? annotationText.slice(0, -numberOfCharsToChop) + ".."
-          : annotationText;
-      };
-      const titleText = getAnnotationNameAndStartStopString(annotation, {
-        isProtein,
-        readOnly
-      });
-      const labelText = annotation.name || annotation.restrictionEnzyme.name;
-      return (
-        <div>
-          <div
-            {...{ onMouseLeave, onMouseOver }}
-            className={className + " veLabelText ve-monospace-font"}
-            onClick={function (event) {
-              onClick && onClick({ event, annotation });
-              event.stopPropagation();
-            }}
-            onDoubleClick={function (event) {
-              if (onDoubleClick) {
-                onDoubleClick({ event, annotation });
-                event.stopPropagation();
-              }
-            }}
-            onContextMenu={function (event) {
-              onRightClick({ event, annotation });
-              event.stopPropagation();
-            }}
-            title={titleText}
-            style={{
-              cursor: "pointer",
-              position: "absolute",
-              bottom: height,
-              ...(hovered && { textDecoration: "underline" }),
-              ...(annotation.annotationTypePlural !== "cutsites" && {
-                fontStyle: "normal"
-              }),
-              left: clamp(xStart, 0, Number.MAX_VALUE),
-              whiteSpace: "nowrap",
-              color:
-                annotation.annotationTypePlural === "parts"
-                  ? "#ac68cc"
-                  : annotation.labelColor,
-              zIndex: 10
-            }}
-          >
-            {truncateLabelIfNeeded(labelText, xStart)}
-          </div>
-
-          {!noLabelLine && (
+        const truncateLabelIfNeeded = (annotationText, xLeftCoord) => {
+          const numberOfCharsToChop =
+            xLeftCoord < 0
+              ? Math.ceil(Math.abs(xLeftCoord) / textWidth) + 2
+              : 0;
+          return numberOfCharsToChop > 0
+            ? annotationText.slice(0, -numberOfCharsToChop) + ".."
+            : annotationText;
+        };
+        const titleText = getAnnotationNameAndStartStopString(annotation, {
+          isProtein,
+          readOnly
+        });
+        const labelText = annotation.name || annotation.restrictionEnzyme.name;
+        return (
+          <div>
             <div
-              ref={(n) => {
-                if (n) this.n = n;
+              {...{ onMouseLeave, onMouseOver }}
+              className={className + " veLabelText ve-monospace-font"}
+              onClick={function (event) {
+                onClick && onClick({ event, annotation });
+                event.stopPropagation();
               }}
-              className="veLabelLine"
+              onDoubleClick={function (event) {
+                if (onDoubleClick) {
+                  onDoubleClick({ event, annotation });
+                  event.stopPropagation();
+                }
+              }}
+              onContextMenu={function (event) {
+                onRightClick({ event, annotation });
+                event.stopPropagation();
+              }}
+              title={titleText}
               style={{
-                zIndex: 50,
+                cursor: "pointer",
                 position: "absolute",
-                left: xStartOriginal,
-                bottom,
-                height: Math.max(heightToUse, 3),
-                width: hovered ? 2 : 1,
-                opacity: hovered ? 1 : labelLineIntensity
-                // background: "black"
+                bottom: height,
+                ...(hovered && { textDecoration: "underline" }),
+                ...(annotation.annotationTypePlural !== "cutsites" && {
+                  fontStyle: "normal"
+                }),
+                left: clamp(xStart, 0, Number.MAX_VALUE),
+                whiteSpace: "nowrap",
+                color:
+                  annotation.annotationTypePlural === "parts"
+                    ? "#ac68cc"
+                    : annotation.labelColor,
+                zIndex: 10
               }}
-            />
-          )}
-        </div>
-      );
+            >
+              {truncateLabelIfNeeded(labelText, xStart)}
+            </div>
+
+            {!noLabelLine && (
+              <div
+                ref={(n) => {
+                  if (n) this.n = n;
+                }}
+                className="veLabelLine"
+                style={{
+                  zIndex: 50,
+                  position: "absolute",
+                  left: xStartOriginal,
+                  bottom,
+                  height: Math.max(heightToUse, 3),
+                  width: hovered ? 2 : 1,
+                  opacity: hovered ? 1 : labelLineIntensity
+                  // background: "black"
+                }}
+              />
+            )}
+          </div>
+        );
+      }
     }
-  }
+  )
 );
 
 const labelClassNames = {

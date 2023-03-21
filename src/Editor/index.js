@@ -493,7 +493,6 @@ export class Editor extends React.Component {
         ..._panelMap,
         ...this.props.panelMap
       };
-      console.log(`panelMap:`, panelMap);
       const Panel =
         (panelMap[activePanelType] && panelMap[activePanelType].comp) ||
         panelMap[activePanelType];

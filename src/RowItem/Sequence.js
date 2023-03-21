@@ -184,7 +184,7 @@ class Sequence extends React.Component {
   }
 }
 
-export default Sequence;
+export default observer(Sequence);
 
 const ColoredSequence = observer(
   class ColoredSequence extends React.Component {

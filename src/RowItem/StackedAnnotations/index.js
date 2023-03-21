@@ -10,6 +10,7 @@ import AnnotationContainerHolder from "../AnnotationContainerHolder";
 import AnnotationPositioner from "../AnnotationPositioner";
 import PointedAnnotation from "./PointedAnnotation";
 import { getBasesToShow } from "./primerBases";
+import { observer } from "mobx-react";
 
 function StackedAnnotations(props) {
   const {
@@ -177,4 +178,4 @@ function StackedAnnotations(props) {
   );
 }
 
-export default StackedAnnotations;
+export default observer(StackedAnnotations);

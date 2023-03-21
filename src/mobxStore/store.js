@@ -58,7 +58,7 @@ import {
   showDialog
 } from "../GlobalDialogUtils";
 
-const {
+import {
   forEach,
   reduce,
   filter,
@@ -72,9 +72,19 @@ const {
   isArray,
   pickBy,
   set
-} = require("lodash");
+} from "lodash";
 
-const { makeAutoObservable } = require("mobx");
+import { makeAutoObservable } from "mobx";
+
+import { configure } from "mobx";
+
+configure({
+  // enforceActions: "always",
+  // computedRequiresReaction: true,
+  // reactionRequiresObservable: true,
+  // observableRequiresReaction: true,
+  // disableErrorBoundaries: true
+});
 
 const initialSequenceDataHistory = {
   past: [],
@@ -187,6 +197,7 @@ export default class EditorStore {
     this.lastSavedId = payload;
   }
   get sequenceData() {
+    console.log(`computin 1`);
     return {
       name: this.name,
       warnings: this.warnings,
@@ -216,6 +227,8 @@ export default class EditorStore {
     });
   }
   get _rowData() {
+    console.log("Computing...");
+
     return prepareRowData({
       sequenceData: this.sequenceData,
       bpsPerRow: this.bpsPerRow
@@ -269,6 +282,8 @@ export default class EditorStore {
     return this.widthLV - MARGIN_WIDTH;
   }
   get innerWidthRV() {
+    console.log(`computin 3`);
+
     return this.widthRV - MARGIN_WIDTH;
   }
   get initialCharWidthLV() {
@@ -610,6 +625,8 @@ export default class EditorStore {
   }
 
   get bpsPerRow() {
+    console.log(`computin 2`);
+
     const toRet = Math.floor(
       this.innerWidthRV /
         (this.isProtein ? this.charWidthRV * 3 : this.charWidthRV)
@@ -687,7 +704,7 @@ export default class EditorStore {
   }
   get filteredParts() {
     let filteredParts = this.parts.slice(0, this.limits.parts);
-    if (this.selectedPartTags) {
+    if (this.selectedPartTags.length) {
       const keyedTagsToBold = keyBy(this.selectedPartTags, "value");
       filteredParts = map(filteredParts || {}, (p) => {
         if (p.tags) {
@@ -709,22 +726,24 @@ export default class EditorStore {
       });
     } else {
       //only omit ones that aren't being searched for actively
-      filteredParts = map(
-        omitBy(filteredParts, (ann) => {
-          const hideIndividually =
-            this.annotationVisibility.partIndividualToHide[ann.id];
-          return (
-            hideAnnByLengthFilter(
-              this.partLengthsToHide,
-              ann,
-              this.sequenceLength
-            ) || hideIndividually
-          );
-        })
-      );
+      filteredParts = omitBy(filteredParts, (ann) => {
+        const hideIndividually =
+          this.annotationVisibility.partIndividualToHide[ann.id];
+        const shouldHide =
+          hideAnnByLengthFilter(
+            this.partLengthsToHide,
+            ann,
+            this.sequenceLength
+          ) || hideIndividually;
+
+        return shouldHide;
+      });
     }
 
-    return addWrappedAddons(filteredParts, this.sequenceLength);
+    return addWrappedAddons(filteredParts, this.sequenceLength).slice(
+      0,
+      this.limits.parts
+    );
   }
   get filteredPrimers() {
     return this.primers.slice(0, this.limits.primers);

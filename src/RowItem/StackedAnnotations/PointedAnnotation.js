@@ -11,6 +11,7 @@ import { getStripedPattern } from "../../utils/editorUtils";
 import { ANNOTATION_LABEL_FONT_WIDTH } from "../constants";
 import { partOverhangs } from "../partOverhangs";
 import { Tooltip } from "@blueprintjs/core";
+import { observer } from "mobx-react";
 
 function PointedAnnotation(props) {
   const {
@@ -314,7 +315,7 @@ function PointedAnnotation(props) {
   );
 }
 
-export default withHover(PointedAnnotation);
+export default withHover(observer(PointedAnnotation));
 
 //  {/* <Tooltip
 //               wrapperTagName="g"

@@ -1121,7 +1121,7 @@ function VectorInteractionHOC(Component /* options */) {
 }
 
 const withEditorInteractions = compose(
-  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC)
+  branch(({ noInteractions }) => !noInteractions, VectorInteractionHOC),
 );
 export default withEditorInteractions;
 

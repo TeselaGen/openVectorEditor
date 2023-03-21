@@ -2,9 +2,16 @@
 //   sequence: 'aaa',
 //   parts: [{name: 'hello there', start: 0,end:3, id: '1241i'}],
 //   features: [{name: 'oh hi', start: 0,end:3, id: '12kkoo'}],
+
+import { map } from "lodash";
+import generateAnnotations from "ve-sequence-utils/lib/generateAnnotations";
+
 // }
+// const parts =  map(generateAnnotations(2000, 10, 5000, 5298))
 export default {
+  // parts,
   parts: [
+
     {
       name: "pj5_00001",
       start: 0,
@@ -25,7 +32,7 @@ export default {
       name: "Curtis' Part",
       id: "9",
       tags: ["1:2", "5"]
-    }
+    },
   ],
   primers: [
     {

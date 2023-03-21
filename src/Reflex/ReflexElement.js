@@ -9,152 +9,155 @@ import Measure from "react-measure";
 import PropTypes from "prop-types";
 import Browser from "./Browser";
 import React from "react";
+import { observer } from "mobx-react";
 
-export default class ReflexElement extends React.Component {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  static propTypes = {
-    renderOnResizeRate: PropTypes.number,
-    propagateDimensions: PropTypes.bool,
-    renderOnResize: PropTypes.bool,
-    resizeHeight: PropTypes.bool,
-    resizeWidth: PropTypes.bool,
-    className: PropTypes.string
-  };
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  static defaultProps = {
-    renderOnResize: Browser.isSafari(), // Safari is creepy ...
-    propagateDimensions: false,
-    renderOnResizeRate: 60,
-    resizeHeight: true,
-    resizeWidth: true,
-    className: ""
-  };
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  constructor(props) {
-    super(props);
-
-    this.onResize = this.onResize.bind(this);
-
-    this.setStateThrottled = throttle((state) => {
-      this.setState(state);
-    }, this.props.renderOnResizeRate);
-
-    this.state = {
-      dimensions: {
-        height: "100%",
-        width: "100%"
-      }
+export default observer(
+  class ReflexElement extends React.Component {
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    static propTypes = {
+      renderOnResizeRate: PropTypes.number,
+      propagateDimensions: PropTypes.bool,
+      renderOnResize: PropTypes.bool,
+      resizeHeight: PropTypes.bool,
+      resizeWidth: PropTypes.bool,
+      className: PropTypes.string
     };
-  }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  async UNSAFE_componentWillReceiveProps(props) {
-    if (props.size !== this.props.size) {
-      const directions = this.toArray(props.direction);
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    static defaultProps = {
+      renderOnResize: Browser.isSafari(), // Safari is creepy ...
+      propagateDimensions: false,
+      renderOnResizeRate: 60,
+      resizeHeight: true,
+      resizeWidth: true,
+      className: ""
+    };
 
-      for (const dir of directions) {
-        await this.props.events.emit("element.size", {
-          size: props.size,
-          direction: dir,
-          element: this
-        });
-      }
-    }
-  }
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    constructor(props) {
+      super(props);
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  toArray(obj) {
-    return obj ? (Array.isArray(obj) ? obj : [obj]) : [];
-  }
+      this.onResize = this.onResize.bind(this);
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  onResize(rect) {
-    const { renderOnResize, resizeHeight, resizeWidth } = this.props;
+      this.setStateThrottled = throttle((state) => {
+        this.setState(state);
+      }, this.props.renderOnResizeRate);
 
-    if (renderOnResize) {
-      this.setStateThrottled({
+      this.state = {
         dimensions: {
-          ...(resizeHeight && { height: Math.floor(rect.bounds.height) }),
-          ...(resizeWidth && { width: Math.floor(rect.bounds.width) })
+          height: "100%",
+          width: "100%"
         }
-      });
+      };
     }
-  }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  renderChildren() {
-    if (this.props.propagateDimensions) {
-      return React.Children.map(this.props.children, (child) => {
-        const newProps = Object.assign({}, child.props, {
-          dimensions: this.state.dimensions
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    async UNSAFE_componentWillReceiveProps(props) {
+      if (props.size !== this.props.size) {
+        const directions = this.toArray(props.direction);
+
+        for (const dir of directions) {
+          await this.props.events.emit("element.size", {
+            size: props.size,
+            direction: dir,
+            element: this
+          });
+        }
+      }
+    }
+
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    toArray(obj) {
+      return obj ? (Array.isArray(obj) ? obj : [obj]) : [];
+    }
+
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    onResize(rect) {
+      const { renderOnResize, resizeHeight, resizeWidth } = this.props;
+
+      if (renderOnResize) {
+        this.setStateThrottled({
+          dimensions: {
+            ...(resizeHeight && { height: Math.floor(rect.bounds.height) }),
+            ...(resizeWidth && { width: Math.floor(rect.bounds.width) })
+          }
         });
-
-        return React.cloneElement(child, newProps);
-      });
+      }
     }
 
-    return this.props.children;
-  }
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    renderChildren() {
+      if (this.props.propagateDimensions) {
+        return React.Children.map(this.props.children, (child) => {
+          const newProps = Object.assign({}, child.props, {
+            dimensions: this.state.dimensions
+          });
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  render() {
-    const classNames = ["reflex-element", ...this.props.className.split(" ")];
+          return React.cloneElement(child, newProps);
+        });
+      }
 
-    const className = classNames.join(" ");
+      return this.props.children;
+    }
 
-    const outerStyle = Object.assign(
-      {},
-      {
-        WebkitBoxFlex: this.props.flex,
-        FlexElement: this.props.flex,
-        MozBoxFlex: this.props.flex,
-        WebkitFlex: this.props.flex,
-        flex: this.props.flex
-      },
-      this.props.style
-    );
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    render() {
+      const classNames = ["reflex-element", ...this.props.className.split(" ")];
 
-    const innerStyle = {
-      height: this.state.dimensions.height,
-      width: this.state.dimensions.width
-    };
+      const className = classNames.join(" ");
 
-    return (
-      <Measure bounds onResize={this.onResize}>
-        {({ measureRef }) => (
-          <div ref={measureRef} className={className} style={outerStyle}>
-            <div className="tg-reflex-element-inner" style={innerStyle}>
-              {this.renderChildren()}
+      const outerStyle = Object.assign(
+        {},
+        {
+          WebkitBoxFlex: this.props.flex,
+          FlexElement: this.props.flex,
+          MozBoxFlex: this.props.flex,
+          WebkitFlex: this.props.flex,
+          flex: this.props.flex
+        },
+        this.props.style
+      );
+
+      const innerStyle = {
+        height: this.state.dimensions.height,
+        width: this.state.dimensions.width
+      };
+
+      return (
+        <Measure bounds onResize={this.onResize}>
+          {({ measureRef }) => (
+            <div ref={measureRef} className={className} style={outerStyle}>
+              <div className="tg-reflex-element-inner" style={innerStyle}>
+                {this.renderChildren()}
+              </div>
             </div>
-          </div>
-        )}
-      </Measure>
-    );
+          )}
+        </Measure>
+      );
+    }
   }
-}
+);

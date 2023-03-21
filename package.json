@@ -75,7 +75,7 @@
     "use-local-storage-state": "^13.0.0",
     "validate.io-nonnegative-integer-array": "^1.0.1",
     "ve-range-utils": "^2.6.6",
-    "ve-sequence-utils": "^5.2.15"
+    "ve-sequence-utils": "^5.2.16"
   },
   "peerDependencies": {
     "react": "^16.10.2",

@@ -12,6 +12,7 @@ import VeWarning from "../helperComponents/VeWarning";
 import { normalizePositionByRangeLength } from "ve-range-utils";
 import { filter } from "lodash";
 import { jsonToGenbank } from "bio-parsers";
+import { observer } from "mobx-react";
 
 export function getSelectionMessage({ ed, customTitle }) {
   const {
@@ -80,11 +81,11 @@ export function getNodeToRefocus(caretEl) {
   return nodeToReFocus;
 }
 
-export function EmptyText({ ed }) {
+export const EmptyText = observer(function EmptyText({ ed }) {
   return ed.sequenceLength === 0 && ed.caretPosition === -1 ? (
     <div className="veEmptySeqText">Insert Sequence Here</div>
   ) : null;
-}
+});
 
 export function tryToRefocusEditor() {
   const ed = document.querySelector(".veVectorInteractionWrapper");

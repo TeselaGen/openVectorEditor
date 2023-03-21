@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import { withHandlers, compose } from "recompose";
 import { annotationTypes } from "ve-sequence-utils";
 
@@ -24,5 +25,5 @@ export default compose(
       if (window.__veDragging || window.__veScrolling) return;
       props.ed.hoveredAnnotation = undefined;
     }
-  })
+  }),
 );

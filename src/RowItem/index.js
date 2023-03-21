@@ -19,6 +19,7 @@ import { filter } from "lodash";
 import { defaultCharWidth } from "../constants/rowviewContants";
 import { CutsiteSelectionLayers } from "./CutsiteSelectionLayers";
 import { EmptyText } from "../utils/editorUtils";
+import { observer } from "mobx-react";
 
 function noop() {}
 
@@ -59,7 +60,7 @@ function getPropsForType(props, type, pluralType, extraProps) {
   return toRet;
 }
 
-export default function RowItem(props) {
+export default observer(function RowItem(props) {
   let {
     ed,
     charWidth = defaultCharWidth,
@@ -477,7 +478,7 @@ export default function RowItem(props) {
       {rowBottomComp && rowBottomComp}
     </div>
   );
-}
+});
 
 function getGapMap(sequence) {
   const gapMap = [0]; //a map of position to how many gaps come before that position [0,0,0,5,5,5,5,17,17,17, ]
