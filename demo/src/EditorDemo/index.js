@@ -649,7 +649,8 @@ certain dna specific tools and annotations are automatically disabled when isPro
                   "1000",
                   "10000",
                   "25000",
-                  "45000"
+                  "45000",
+                  "145000"
                 ],
                 hidden:
                   this.state.moleculeType !== "DNA" && this.state.moleculeType,
@@ -662,6 +663,8 @@ certain dna specific tools and annotations are automatically disabled when isPro
                         ? exampleSequenceData
                         : generateSequenceData({
                             isProtein: false,
+                            numFeatures: 400,
+                            numParts: 400,
                             sequenceLength: parseInt(val)
                           })
                   });
