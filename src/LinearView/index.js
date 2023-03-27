@@ -1,4 +1,4 @@
-import { debounce, isEqual, startCase } from "lodash";
+import { debounce, startCase } from "lodash";
 import draggableClassnames from "../constants/draggableClassnames";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
@@ -102,43 +102,43 @@ class _LinearView extends React.Component {
       sequenceData = { sequence: "" },
       maxAnnotationsToDisplay
     } = this.props;
-    if (!isEqual(sequenceData, this.oldSeqData)) {
-      this.paredDownMessages = [];
-      const paredDownSeqData = ["parts", "features", "cutsites"].reduce(
-        (acc, type) => {
-          const nameUpper = startCase(type);
-          const maxToShow =
-            (maxAnnotationsToDisplay
-              ? maxAnnotationsToDisplay[type]
-              : limits[type]) || 50;
-          const [annotations, paredDown] = pareDownAnnotations(
-            sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
-            maxToShow
-          );
+    // if (!isEqual(sequenceData, this.oldSeqData)) {
+    this.paredDownMessages = [];
+    const paredDownSeqData = ["parts", "features", "cutsites"].reduce(
+      (acc, type) => {
+        const nameUpper = startCase(type);
+        const maxToShow =
+          (maxAnnotationsToDisplay
+            ? maxAnnotationsToDisplay[type]
+            : limits[type]) || 50;
+        const [annotations, paredDown] = pareDownAnnotations(
+          sequenceData["filtered" + nameUpper] || sequenceData[type] || {},
+          maxToShow
+        );
 
-          if (paredDown) {
-            this.paredDownMessages.push(
-              getParedDownWarning({
-                nameUpper,
-                isAdjustable: !maxAnnotationsToDisplay,
-                maxToShow
-              })
-            );
-          }
-          acc[type] = annotations;
-          return acc;
-        },
-        {}
-      );
-      this.rowData = prepareRowData(
-        {
-          ...sequenceData,
-          ...paredDownSeqData
-        },
-        sequenceData.sequence ? sequenceData.sequence.length : 0
-      );
-      this.oldSeqData = sequenceData;
-    }
+        if (paredDown) {
+          this.paredDownMessages.push(
+            getParedDownWarning({
+              nameUpper,
+              isAdjustable: !maxAnnotationsToDisplay,
+              maxToShow
+            })
+          );
+        }
+        acc[type] = annotations;
+        return acc;
+      },
+      {}
+    );
+    this.rowData = prepareRowData(
+      {
+        ...sequenceData,
+        ...paredDownSeqData
+      },
+      sequenceData.sequence ? sequenceData.sequence.length : 0
+    );
+    this.oldSeqData = sequenceData;
+    // }
     return this.rowData;
   };
   updateLabelsForInViewFeaturesDebounced = debounce(() => {

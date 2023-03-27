@@ -35,7 +35,7 @@ import s from "../selectors";
 import { allTypes } from "../utils/annotationTypes";
 
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
-import { defaultMemoize } from "reselect";
+import { createSelector, defaultMemoize } from "reselect";
 import domtoimage from "dom-to-image";
 import {
   hideDialog,
@@ -62,26 +62,27 @@ const getTypesToOmit = (annotationsToSupport) => {
   return typesToOmit;
 };
 
-const getVisibilities = (
-  annotationVisibility,
-  annotationLabelVisibility,
-  annotationsToSupport
-) => {
-  const typesToOmit = getTypesToOmit(annotationsToSupport);
-  const annotationVisibilityToUse = {
-    ...annotationVisibility,
-    ...typesToOmit
-  };
-  const annotationLabelVisibilityToUse = {
-    ...annotationLabelVisibility,
-    ...typesToOmit
-  };
-  return {
-    annotationVisibilityToUse,
-    annotationLabelVisibilityToUse,
-    typesToOmit
-  };
-};
+const getVisibilities = createSelector(
+  (ed) => ed.annotationVisibility,
+  (ed) => ed.annotationLabelVisibility,
+  (ed) => ed.annotationsToSupport,
+  (annotationVisibility, annotationLabelVisibility, annotationsToSupport) => {
+    const typesToOmit = getTypesToOmit(annotationsToSupport);
+    const annotationVisibilityToUse = {
+      ...annotationVisibility,
+      ...typesToOmit
+    };
+    const annotationLabelVisibilityToUse = {
+      ...annotationLabelVisibility,
+      ...typesToOmit
+    };
+    return {
+      annotationVisibilityToUse,
+      annotationLabelVisibilityToUse,
+      typesToOmit
+    };
+  }
+);
 
 async function getSaveDialogEl() {
   return new Promise((resolve) => {
@@ -545,6 +546,14 @@ export default compose(
   })
 );
 
+const getEditorState = createSelector(
+  (state) => state.VectorEditor,
+  (state, editorName) => editorName,
+  (VectorEditor, editorName) => {
+    return VectorEditor[editorName];
+  }
+);
+
 function mapStateToProps(state, ownProps) {
   const {
     editorName,
@@ -552,27 +561,18 @@ function mapStateToProps(state, ownProps) {
     allowSeqDataOverride,
     allowMultipleFeatureDirections
   } = ownProps;
+  const editorState = getEditorState(state, editorName);
   const meta = { editorName };
   const { VectorEditor } = state;
   const { __allEditorsOptions } = VectorEditor;
   const { uppercaseSequenceMapFont } = __allEditorsOptions;
-  const editorState = VectorEditor[editorName];
 
   if (!editorState) {
     return editorReducer({}, {});
   }
 
-  const {
-    findTool,
-    annotationVisibility,
-    annotationLabelVisibility,
-    annotationsToSupport = {}
-  } = editorState;
-  const visibilities = getVisibilities(
-    annotationVisibility,
-    annotationLabelVisibility,
-    annotationsToSupport
-  );
+  const { findTool, annotationsToSupport = {} } = editorState;
+  const visibilities = getVisibilities(editorState);
   let annotationToAdd;
   [
     ["AddOrEditFeatureDialog", "filteredFeatures", "features"],
@@ -609,7 +609,6 @@ function mapStateToProps(state, ownProps) {
     return toReturn;
   }
 
-  const sequenceData = s.sequenceDataSelector(editorState);
   const filteredCutsites = s.filteredCutsitesSelector(
     editorState,
     ownProps.additionalEnzymes,
@@ -619,54 +618,25 @@ function mapStateToProps(state, ownProps) {
   const filteredRestrictionEnzymes =
     s.filteredRestrictionEnzymesSelector(editorState);
   const isEnzymeFilterAnd = s.isEnzymeFilterAndSelector(editorState);
-  const orfs = s.orfsSelector(editorState);
+  // const orfs = s.orfsSelector(editorState);
   const selectedCutsites = s.selectedCutsitesSelector(editorState);
   const allCutsites = s.cutsitesSelector(
     editorState,
     ownProps.additionalEnzymes
   );
-  const translations = s.translationsSelector(editorState);
-  const filteredFeatures = s.filteredFeaturesSelector(editorState);
-  const filteredParts = s.filteredPartsSelector(editorState);
   const sequenceLength = s.sequenceLengthSelector(editorState);
 
-  let matchedSearchLayer = { start: -1, end: -1 };
+  const { matchedSearchLayer, searchLayers } =
+    getSearchLayersAndMatch(editorState);
   const annotationSearchMatches = s.annotationSearchSelector(editorState);
-  let searchLayers = s.searchLayersSelector(editorState).map((item, index) => {
-    let itemToReturn = item;
-    if (index === findTool.matchNumber) {
-      itemToReturn = {
-        ...item,
-        className: item.className + " veSearchLayerActive"
-      };
-      matchedSearchLayer = itemToReturn;
-    }
-    return itemToReturn;
-  });
-  const matchesTotal = searchLayers.length;
-  if (
-    (!findTool.highlightAll && searchLayers[findTool.matchNumber]) ||
-    searchLayers.length > MAX_MATCHES_DISPLAYED
-  ) {
-    searchLayers = [searchLayers[findTool.matchNumber]];
-  }
-  this.sequenceData = sequenceData;
-  this.cutsites = cutsites;
-  this.orfs = orfs;
-  this.translations = translations;
 
-  const sequenceDataToUse = {
-    ...sequenceData,
-    sequence: getUpperOrLowerSeq(
-      uppercaseSequenceMapFont,
-      sequenceData.sequence
-    ),
-    filteredParts,
-    filteredFeatures,
+  const matchesTotal = searchLayers.length;
+
+  const sequenceDataToUse = getSequenceDataToUse(
+    editorState,
     cutsites,
-    orfs,
-    translations
-  };
+    __allEditorsOptions
+  );
 
   if (annotationToAdd) {
     const selectionLayer = convertRangeTo0Based(annotationToAdd);
@@ -692,7 +662,7 @@ function mapStateToProps(state, ownProps) {
       ...selectionLayer,
       ...(annotationToAdd.bases && {
         // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
-        fullSeq: sequenceData.sequence
+        fullSeq: sequenceDataToUse.sequence
       }),
       ...toSpread,
       locations: annotationToAdd.locations
@@ -714,10 +684,7 @@ function mapStateToProps(state, ownProps) {
     annotationSearchMatches,
     searchLayers,
     matchedSearchLayer,
-    findTool: {
-      ...findTool,
-      matchesTotal
-    },
+    findTool: getFindTool(findTool, matchesTotal),
     annotationsToSupport,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
@@ -946,3 +913,71 @@ function jsonToJson(incomingJson) {
     )
   );
 }
+
+const getSearchLayersAndMatch = createSelector(
+  (ed) => ed.findTool,
+  s.searchLayersSelector,
+  (findTool, _searchLayers) => {
+    let searchLayers;
+    let matchedSearchLayer = { start: -1, end: -1 };
+    searchLayers = _searchLayers.map((item, index) => {
+      let itemToReturn = item;
+      if (index === findTool.matchNumber) {
+        itemToReturn = {
+          ...item,
+          className: item.className + " veSearchLayerActive"
+        };
+        matchedSearchLayer = itemToReturn;
+      }
+      return itemToReturn;
+    });
+    if (
+      (!findTool.highlightAll && searchLayers[findTool.matchNumber]) ||
+      searchLayers.length > MAX_MATCHES_DISPLAYED
+    ) {
+      searchLayers = [searchLayers[findTool.matchNumber]];
+    }
+    return {
+      searchLayers,
+      matchedSearchLayer
+    };
+  }
+);
+const getSequenceDataToUse = createSelector(
+  (a, b, __allEditorsOptions) => __allEditorsOptions.uppercaseSequenceMapFont,
+  (ed) => ed.sequenceData,
+  (ed, cutsites) => cutsites,
+  s.translationsSelector,
+  s.filteredFeaturesSelector,
+  s.filteredPartsSelector,
+  s.orfsSelector,
+  (
+    uppercaseSequenceMapFont,
+    sequenceData,
+    cutsites,
+    translations,
+    filteredFeatures,
+    filteredParts,
+    orfs
+  ) => {
+    return {
+      ...sequenceData,
+      sequence: getUpperOrLowerSeq(
+        uppercaseSequenceMapFont,
+        sequenceData.sequence
+      ),
+      filteredParts,
+      filteredFeatures,
+      cutsites,
+      orfs,
+      translations
+    };
+  }
+);
+
+const getFindTool = createSelector((findTool, matchesTotal) => {
+  return {
+    ...findTool,
+    matchesTotal
+  };
+});
