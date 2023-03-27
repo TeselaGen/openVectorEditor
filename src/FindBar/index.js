@@ -10,7 +10,6 @@ import {
   Tooltip
 } from "@blueprintjs/core";
 import withEditorProps from "../withEditorProps";
-import onlyUpdateForKeysDeep from "../utils/onlyUpdateForKeysDeep";
 import { MAX_MATCHES_DISPLAYED } from "../constants/findToolConstants";
 import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
@@ -343,10 +342,7 @@ export class FindBar extends React.Component {
   }
 }
 
-const wrapped = onlyUpdateForKeysDeep(["findTool", "annotationSearchMatches"])(
-  FindBar
-);
-export default withEditorProps(wrapped);
+export default withEditorProps(FindBar);
 
 function mod(n, m) {
   return ((n % m) + m) % m;

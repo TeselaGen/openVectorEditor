@@ -581,19 +581,7 @@ function mapStateToProps(state, ownProps) {
   ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
     if (vals) {
-      annotationToAdd = {
-        color: getFeatureToColorMap({ includeHidden: true })[
-          vals.type || "primer_bind"
-        ], //we won't have the correct color yet so we set it here
-        ...vals,
-        formName: n,
-        type,
-        annotationTypePlural,
-        name: vals.name || "Untitled"
-      };
-      if (!vals.useLinkedOligo) {
-        delete annotationToAdd.bases;
-      }
+      annotationToAdd = getAnnToAdd(vals, n, type, annotationTypePlural);
     }
   });
 
@@ -626,55 +614,28 @@ function mapStateToProps(state, ownProps) {
   );
   const sequenceLength = s.sequenceLengthSelector(editorState);
 
-  const { matchedSearchLayer, searchLayers } =
+  const { matchedSearchLayer, searchLayers, matchesTotal } =
     getSearchLayersAndMatch(editorState);
   const annotationSearchMatches = s.annotationSearchSelector(editorState);
 
-  const matchesTotal = searchLayers.length;
-
-  const sequenceDataToUse = getSequenceDataToUse(
+  const _sequenceDataToUse = getSequenceDataToUse(
     editorState,
     cutsites,
     __allEditorsOptions
   );
 
-  if (annotationToAdd) {
-    const selectionLayer = convertRangeTo0Based(annotationToAdd);
-    delete selectionLayer.color;
-    const id = annotationToAdd.id || "tempId123";
-    const name = annotationToAdd.name || "";
-    const anns = keyBy(sequenceDataToUse[annotationToAdd.type], "id");
-    let toSpread = {};
-    if (
-      annotationToAdd.annotationTypePlural === "features" &&
-      allowMultipleFeatureDirections &&
-      annotationToAdd.arrowheadType !== undefined
-    ) {
-      toSpread = {
-        forward: annotationToAdd.arrowheadType !== "BOTTOM",
-        arrowheadType: annotationToAdd.arrowheadType
-      };
-    }
-    anns[id] = {
-      ...annotationToAdd,
-      id,
-      name,
-      ...selectionLayer,
-      ...(annotationToAdd.bases && {
-        // ...getStartEndFromBases({ ...annotationToAdd, sequenceLength }),
-        fullSeq: sequenceDataToUse.sequence
-      }),
-      ...toSpread,
-      locations: annotationToAdd.locations
-        ? annotationToAdd.locations.map(convertRangeTo0Based)
-        : undefined
-    };
-    sequenceDataToUse[annotationToAdd.type] = anns;
-    toReturn.selectionLayer = selectionLayer;
-  }
+  const [sequenceDataToUse, newSelection] = getSeqDataWithAnnToAdd(
+    _sequenceDataToUse,
+    annotationToAdd,
+    allowMultipleFeatureDirections
+  );
 
+  const f = getFindTool(findTool, matchesTotal);
   return {
-    ...toReturn,
+    ...editorState,
+    meta,
+    annotationToAdd,
+    ...(newSelection && { selectionLayer: newSelection }),
     selectedCutsites,
     sequenceLength,
     allCutsites,
@@ -684,7 +645,7 @@ function mapStateToProps(state, ownProps) {
     annotationSearchMatches,
     searchLayers,
     matchedSearchLayer,
-    findTool: getFindTool(findTool, matchesTotal),
+    findTool: f,
     annotationsToSupport,
     annotationVisibility: visibilities.annotationVisibilityToUse,
     typesToOmit: visibilities.typesToOmit,
@@ -931,6 +892,7 @@ const getSearchLayersAndMatch = createSelector(
       }
       return itemToReturn;
     });
+    const matchesTotal = searchLayers.length;
     if (
       (!findTool.highlightAll && searchLayers[findTool.matchNumber]) ||
       searchLayers.length > MAX_MATCHES_DISPLAYED
@@ -938,6 +900,7 @@ const getSearchLayersAndMatch = createSelector(
       searchLayers = [searchLayers[findTool.matchNumber]];
     }
     return {
+      matchesTotal,
       searchLayers,
       matchedSearchLayer
     };
@@ -975,9 +938,69 @@ const getSequenceDataToUse = createSelector(
   }
 );
 
-const getFindTool = createSelector((findTool, matchesTotal) => {
-  return {
-    ...findTool,
-    matchesTotal
+const getFindTool = createSelector(
+  (f) => f,
+  (f, m) => m,
+  (findTool, matchesTotal) => {
+    return {
+      ...findTool,
+      matchesTotal
+    };
+  }
+);
+
+const getAnnToAdd = defaultMemoize((vals, n, type, annotationTypePlural) => {
+  const annToAdd = {
+    color: getFeatureToColorMap({ includeHidden: true })[
+      vals.type || "primer_bind"
+    ], //we won't have the correct color yet so we set it here
+    ...vals,
+    formName: n,
+    type,
+    annotationTypePlural,
+    name: vals.name || "Untitled"
   };
+  if (!vals.useLinkedOligo) {
+    delete annToAdd.bases;
+  }
+  return annToAdd;
 });
+const getSeqDataWithAnnToAdd = defaultMemoize(
+  (seqData, ann, allowMultipleFeatureDirections) => {
+    if (ann) {
+      const selectionLayer = convertRangeTo0Based(ann);
+      delete selectionLayer.color;
+      const id = ann.id || "tempId123";
+      const name = ann.name || "";
+      const anns = keyBy(seqData[ann.type], "id");
+      let toSpread = {};
+      if (
+        ann.annotationTypePlural === "features" &&
+        allowMultipleFeatureDirections &&
+        ann.arrowheadType !== undefined
+      ) {
+        toSpread = {
+          forward: ann.arrowheadType !== "BOTTOM",
+          arrowheadType: ann.arrowheadType
+        };
+      }
+      anns[id] = {
+        ...ann,
+        id,
+        name,
+        ...selectionLayer,
+        ...(ann.bases && {
+          // ...getStartEndFromBases({ ...ann, sequenceLength }),
+          fullSeq: seqData.sequence
+        }),
+        ...toSpread,
+        locations: ann.locations
+          ? ann.locations.map(convertRangeTo0Based)
+          : undefined
+      };
+
+      return [{ ...seqData, [ann.type]: anns }, selectionLayer];
+    }
+    return [seqData];
+  }
+);

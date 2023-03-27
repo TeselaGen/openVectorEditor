@@ -1,6 +1,6 @@
 import { Button } from "@blueprintjs/core";
 import draggableClassnames from "../constants/draggableClassnames";
-import { some, isEqual, debounce } from "lodash";
+import { some, debounce } from "lodash";
 import prepareRowData from "../utils/prepareRowData";
 import React from "react";
 import Draggable from "react-draggable";
@@ -14,10 +14,6 @@ import {
   defaultCharWidth
 } from "../constants/rowviewContants";
 import getBpsPerRow from "../withEditorInteractions/getBpsPerRow";
-
-// import TrMmInfScroll from "./TrMmInfScroll";
-
-// import ReactList from './ReactVariable';
 import "./style.css";
 import { getClientX, getClientY, getEmptyText } from "../utils/editorUtils";
 import isMobile from "is-mobile";
@@ -27,8 +23,8 @@ import {
   editorDragStarted,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
-// import getCutsiteLabelHeights from "../RowItem/getCutsiteLabelHeights";
-// import Combokeys from "combokeys";
+import { defaultMemoize } from "reselect";
+import { connect } from "react-redux";
 
 function noop() {}
 
@@ -52,23 +48,6 @@ export class RowView extends React.Component {
     RowItemProps: {}
   };
 
-  shouldClearCache = () => {
-    const { annotationVisibility, annotationLabelVisibility, sequenceData } =
-      this.props;
-    const toCompare = {
-      bpsPerRow: getBpsPerRow(this.props),
-      annotationVisibility,
-      scalePct: this.state?.scalePct,
-      annotationLabelVisibility,
-      stateTrackingId: sequenceData.stateTrackingId
-    };
-    if (!isEqual(toCompare, this.oldToCompare)) {
-      this.cache = {};
-      this.oldToCompare = toCompare;
-      return true;
-    }
-  };
-
   //this function gives a fairly rough height estimate for the rows so that the ReactList can give a good guess of how much space to leave for scrolling and where to jump to in the sequence
   estimateRowHeight = (index, cache) => {
     const { annotationVisibility, annotationLabelVisibility, sequenceData } =
@@ -78,7 +57,6 @@ export class RowView extends React.Component {
       cache,
       chromatogramData: sequenceData.chromatogramData,
       showJumpButtons: this.showJumpButtons,
-      clearCache: this.clearCache,
       row: this.rowData[index],
       rowCount: this.rowData.length,
       annotationVisibility,
@@ -308,27 +286,8 @@ export class RowView extends React.Component {
 
   cache = {};
 
-  getRowData = (sequenceData, bpsPerRow) => {
-    if (
-      !isEqual(bpsPerRow, this.oldBpsPerRow) ||
-      !isEqual(sequenceData, this.oldSeqData)
-    ) {
-      this.rowData = prepareRowData(
-        {
-          ...sequenceData,
-          features: sequenceData.filteredFeatures || sequenceData.features,
-          parts: sequenceData.filteredParts || sequenceData.parts
-        },
-        bpsPerRow
-      );
-      this.oldBpsPerRow = bpsPerRow;
-      this.oldSeqData = sequenceData;
-    }
-    return this.rowData;
-  };
-
   renderItem = (index) => {
-    if (this.cache[index]) return this.cache[index];
+    // if (this.cache[index]) return this.cache[index];
     const {
       //currently found in props
       sequenceData,
@@ -424,7 +383,7 @@ export class RowView extends React.Component {
           ) : null}
         </div>
       );
-      this.cache[index] = rowItem;
+      // this.cache[index] = rowItem;
       return rowItem;
     } else {
       return null;
@@ -488,11 +447,12 @@ export class RowView extends React.Component {
   render() {
     let {
       //currently found in props
-      sequenceData,
       width,
       marginWidth,
       height,
-      className
+      className,
+      bpsPerRow,
+      rowData
     } = this.props;
     if (width === "100%") {
       //we can't render an actual 100% width row view (we need a pixel measurement but we get passed width=100% by react-measure)
@@ -502,14 +462,12 @@ export class RowView extends React.Component {
       marginWidth = defaultMarginWidth;
     }
     const containerWidthMinusMargin = width - marginWidth;
-    const bpsPerRow = getBpsPerRow(this.props);
+
     this.bpsPerRow = bpsPerRow;
 
-    //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
-    const rowData = this.getRowData(sequenceData, bpsPerRow);
     this.rowData = rowData;
 
-    const shouldClear = this.shouldClearCache();
+    // const shouldClear = this.shouldClearCache();
     return (
       <Draggable
         bounds={bounds}
@@ -534,8 +492,8 @@ export class RowView extends React.Component {
           onClick={this.onClick}
         >
           <ReactList
+            clearCache
             ref={this.getReactListRef}
-            clearCache={shouldClear}
             itemRenderer={this.renderItem}
             length={rowData.length}
             itemSizeEstimator={this.estimateRowHeight}
@@ -547,7 +505,17 @@ export class RowView extends React.Component {
   }
 }
 
-export default withEditorInteractions(RowView);
+export default withEditorInteractions(
+  connect((state, ownProps) => {
+    const bpsPerRow = getBpsPerRow(ownProps);
+    //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
+    const rowData = getRowData(ownProps.sequenceData, bpsPerRow);
+    return {
+      bpsPerRow,
+      rowData
+    };
+  })(RowView)
+);
 
 function onScroll() {
   window.__veScrolling = true;
@@ -574,3 +542,14 @@ function setIntervalX(callback, delay, repetitions) {
   }, delay);
   return intervalID;
 }
+
+const getRowData = defaultMemoize((sequenceData, bpsPerRow) => {
+  return prepareRowData(
+    {
+      ...sequenceData,
+      features: sequenceData.filteredFeatures || sequenceData.features,
+      parts: sequenceData.filteredParts || sequenceData.parts
+    },
+    bpsPerRow
+  );
+});
