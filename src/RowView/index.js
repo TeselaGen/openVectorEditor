@@ -33,7 +33,7 @@ const rowJumpButtonStyle = {
 };
 
 const bounds = { top: 0, left: 0, right: 0, bottom: 0 };
-export class RowView extends React.Component {
+class _RowView extends React.Component {
   static defaultProps = {
     sequenceData: { sequence: "" },
     selectionLayer: {},
@@ -504,18 +504,17 @@ export class RowView extends React.Component {
     );
   }
 }
+export const RowView = connect((state, ownProps) => {
+  const bpsPerRow = getBpsPerRow(ownProps);
+  //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
+  const rowData = getRowData(ownProps.sequenceData, bpsPerRow);
+  return {
+    bpsPerRow,
+    rowData
+  };
+})(_RowView);
 
-export default withEditorInteractions(
-  connect((state, ownProps) => {
-    const bpsPerRow = getBpsPerRow(ownProps);
-    //the width we pass to the rowitem needs to be the exact width of the bps so we need to trim off any extra space:
-    const rowData = getRowData(ownProps.sequenceData, bpsPerRow);
-    return {
-      bpsPerRow,
-      rowData
-    };
-  })(RowView)
-);
+export default withEditorInteractions(RowView);
 
 function onScroll() {
   window.__veScrolling = true;
