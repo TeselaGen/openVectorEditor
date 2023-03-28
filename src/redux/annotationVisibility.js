@@ -9,6 +9,7 @@ export const visibilityDefaultValues = {
   featureTypesToHide: {},
   featureIndividualToHide: {},
   partIndividualToHide: {},
+  primerIndividualToHide: {},
   features: true,
   warnings: true,
   assemblyPieces: true,
@@ -52,6 +53,11 @@ export const showFeatureIndividual = createAction("showFeatureIndividual");
 export const resetFeatureIndividualToHide = createAction(
   "resetFeatureIndividualToHide"
 );
+export const hidePrimerIndividual = createAction("hidePrimerIndividual");
+export const showPrimerIndividual = createAction("showPrimerIndividual");
+export const resetPrimerIndividualToHide = createAction(
+  "resetPrimerIndividualToHide"
+);
 export const hidePartIndividual = createAction("hidePartIndividual");
 export const showPartIndividual = createAction("showPartIndividual");
 export const resetPartIndividualToHide = createAction(
@@ -72,6 +78,7 @@ const annotationVisibility = createMergedDefaultStateReducer(
     [showPartIndividual]: (state, payload) => {
       return {
         ...state,
+        parts: true,
         partIndividualToHide: omit(state.partIndividualToHide, payload)
       };
     },
@@ -96,6 +103,7 @@ const annotationVisibility = createMergedDefaultStateReducer(
     [showFeatureIndividual]: (state, payload) => {
       return {
         ...state,
+        features: true,
         featureIndividualToHide: omit(state.featureIndividualToHide, payload)
       };
     },
@@ -104,6 +112,31 @@ const annotationVisibility = createMergedDefaultStateReducer(
         ...state,
         featureIndividualToHide: {
           ...state.featureIndividualToHide,
+          ...payload.reduce((acc, key) => {
+            acc[key] = true;
+            return acc;
+          }, {})
+        }
+      };
+    },
+    [resetPrimerIndividualToHide]: (state) => {
+      return {
+        ...state,
+        primerIndividualToHide: {}
+      };
+    },
+    [showPrimerIndividual]: (state, payload) => {
+      return {
+        ...state,
+        primers: true,
+        primerIndividualToHide: omit(state.primerIndividualToHide, payload)
+      };
+    },
+    [hidePrimerIndividual]: (state, payload) => {
+      return {
+        ...state,
+        primerIndividualToHide: {
+          ...state.primerIndividualToHide,
           ...payload.reduce((acc, key) => {
             acc[key] = true;
             return acc;

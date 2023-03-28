@@ -44,7 +44,7 @@ describe("enzyme overrides", () => {
     cy.contains("enzyme manage override ");
     cy.closeToasts();
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
-    cy.contains("Manage Enzymes...").click();
+    cy.contains("Manage Enzymes").click();
     cy.contains("enzyme manage override ");
   });
   it(`should be able to override the enzyme manage and group functionality`, () => {

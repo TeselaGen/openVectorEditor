@@ -2,8 +2,8 @@ import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  CmdCheckbox,
-  CmdDiv
+  DropdownButton,
+  createCommandMenu
 } from "teselagen-react-components";
 import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
@@ -15,6 +15,8 @@ import selectors from "../../selectors";
 
 import getCommands from "../../commands";
 import { sizeSchema } from "./utils";
+import { Menu } from "@blueprintjs/core";
+import { orfsSubmenu } from "../../MenuBar/viewSubmenu";
 
 class OrfProperties extends React.Component {
   constructor(props) {
@@ -50,10 +52,18 @@ class OrfProperties extends React.Component {
       <React.Fragment>
         <DataTable
           topLeftItems={
-            <CmdCheckbox
-              name="Show ORFs (Open Reading Frames)"
-              cmd={this.commands.toggleOrfs}
-            />
+            <DropdownButton
+              style={{ marginTop: 3 }}
+              icon="eye-open"
+              data-tip="Visibility Filter"
+              menu={
+                <Menu>
+                  {createCommandMenu(orfsSubmenu, this.commands, {
+                    useTicks: true
+                  })}
+                </Menu>
+              }
+            ></DropdownButton>
           }
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
@@ -88,9 +98,6 @@ class OrfProperties extends React.Component {
           entities={orfsToUse}
         />
         <br />
-        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
-        <CmdCheckbox cmd={this.commands.useGtgAndCtgAsStartCodons} />
-        <CmdDiv cmd={this.commands.minOrfSizeCmd} />
       </React.Fragment>
     );
   }

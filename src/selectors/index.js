@@ -13,6 +13,7 @@ import searchLayersSelector from "./searchLayersSelector";
 import annotationSearchSelector from "./annotationSearchSelector";
 import restrictionEnzymesSelector from "./restrictionEnzymesSelector";
 import filteredFeaturesSelector from "./filteredFeaturesSelector";
+import filteredPrimersSelector from "./filteredPrimersSelector";
 import cutsiteLabelColorSelector from "./cutsiteLabelColorSelector";
 import filteredPartsSelector from "./filteredPartsSelector";
 import isEnzymeFilterAndSelector from "./isEnzymeFilterAndSelector";
@@ -30,6 +31,7 @@ export default {
   searchLayersSelector,
   filteredCutsitesSelector,
   filteredRestrictionEnzymesSelector,
+  filteredPrimersSelector,
   filteredFeaturesSelector,
   filteredPartsSelector,
   isEnzymeFilterAndSelector,

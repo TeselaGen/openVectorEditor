@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.2.27",
+  "version": "18.2.28",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -67,20 +67,20 @@
     "redux-thunk": "2.4.1",
     "reselect": "^4.1.7",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "30.13.39",
+    "teselagen-react-components": "30.13.40",
     "tg-use-local-storage-state": "^16.0.3",
     "use-debounce": "^8.0.4",
     "use-local-storage-state": "^13.0.0",
     "validate.io-nonnegative-integer-array": "^1.0.1",
     "ve-range-utils": "^2.6.6",
-    "ve-sequence-utils": "^5.2.15"
+    "ve-sequence-utils": "^5.2.16"
   },
   "peerDependencies": {
     "react": "^16.10.2",
     "react-dom": "^16.9.0"
   },
   "optionalDependencies": {
-    "cypress": "12.7.0"
+    "cypress": "12.9.0"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",

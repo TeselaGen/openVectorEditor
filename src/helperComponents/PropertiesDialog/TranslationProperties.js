@@ -1,9 +1,10 @@
-import { Tooltip, AnchorButton } from "@blueprintjs/core";
+import { Tooltip, AnchorButton, Menu } from "@blueprintjs/core";
 import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  CmdCheckbox
+  DropdownButton,
+  createCommandMenu
 } from "teselagen-react-components";
 import getCommands from "../../commands";
 import { map } from "lodash";
@@ -12,6 +13,7 @@ import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
 import { getMassOfAaString } from "ve-sequence-utils";
+import { translationsSubmenu } from "../../MenuBar/viewSubmenu";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -60,6 +62,7 @@ class TranslationProperties extends React.Component {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <DataTable
+          withCheckboxes
           noPadding
           onRowSelect={this.onRowSelect}
           selectedIds={selectedAnnotationId}
@@ -67,10 +70,45 @@ class TranslationProperties extends React.Component {
           noRouter
           compact
           topLeftItems={
-            <CmdCheckbox
-              prefix="Show "
-              cmd={this.commands.toggleTranslations}
-            />
+            <DropdownButton
+              style={{ marginTop: 3 }}
+              icon="eye-open"
+              data-tip="Visibility Filter"
+              menu={
+                <Menu>
+                  {createCommandMenu(translationsSubmenu, this.commands, {
+                    useTicks: true
+                  })}
+                </Menu>
+              }
+            ></DropdownButton>
+          }
+          leftOfSearchBarItems={
+            !readOnly && (
+              <Tooltip
+                content={
+                  translationPropertiesSelectedEntities.length &&
+                  translationPropertiesSelectedEntities[0].translationType !==
+                    "User Created"
+                    ? `Only "User Created" translations can be deleted`
+                    : undefined
+                }
+              >
+                <AnchorButton
+                  onClick={() => {
+                    deleteTranslation(translationPropertiesSelectedEntities);
+                  }}
+                  intent="danger"
+                  icon="trash"
+                  style={{ marginLeft: 10, marginRight: 15, height: 30 }}
+                  disabled={
+                    !translationPropertiesSelectedEntities.length ||
+                    translationPropertiesSelectedEntities[0].translationType !==
+                      "User Created"
+                  }
+                ></AnchorButton>
+              </Tooltip>
+            )
           }
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           hideSelectedCount
@@ -99,38 +137,6 @@ class TranslationProperties extends React.Component {
           }}
           entities={translationsToUse}
         />
-        <CmdCheckbox prefix="Show " cmd={this.commands.toggleOrfTranslations} />
-        <CmdCheckbox
-          prefix="Show "
-          cmd={this.commands.toggleCdsFeatureTranslations}
-        />
-        {!readOnly && (
-          <div className="vePropertiesFooter">
-            <Tooltip
-              content={
-                translationPropertiesSelectedEntities.length &&
-                translationPropertiesSelectedEntities[0].translationType !==
-                  "User Created"
-                  ? `Only "User Created" translations can be deleted`
-                  : undefined
-              }
-            >
-              <AnchorButton
-                onClick={() => {
-                  deleteTranslation(translationPropertiesSelectedEntities);
-                }}
-                style={{ marginLeft: 10, marginRight: 15, height: 30 }}
-                disabled={
-                  !translationPropertiesSelectedEntities.length ||
-                  translationPropertiesSelectedEntities[0].translationType !==
-                    "User Created"
-                }
-              >
-                Delete
-              </AnchorButton>
-            </Tooltip>
-          </div>
-        )}
       </div>
     );
   }

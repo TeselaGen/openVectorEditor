@@ -6,6 +6,103 @@ import { LimitAnnotations } from "../utils/useAnnotationLimits";
 import { chromatogramMenu } from "../utils/useChromatogramPrefs";
 import useMeltingTemp from "../utils/useMeltingTemp";
 
+export const translationsSubmenu = [
+  {
+    cmd: "toggleTranslations",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "toggleCdsFeatureTranslations",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "toggleOrfTranslations",
+    shouldDismissPopover: false
+  },
+  { cmd: "toggleAminoAcidNumbers_dna", shouldDismissPopover: false }
+];
+export const orfsSubmenu = [
+  {
+    cmd: "toggleOrfs",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "toggleOrfTranslations",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "useGtgAndCtgAsStartCodons",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "minOrfSizeCmd",
+    shouldDismissPopover: false
+  }
+];
+export const cutsitesSubmenu = [
+  {
+    cmd: "toggleCutsites",
+    shouldDismissPopover: false
+  }
+];
+export const featuresSubmenu = [
+  {
+    cmd: "toggleFeatures",
+    shouldDismissPopover: false
+  },
+  "onConfigureFeatureTypesClick",
+  {
+    cmd: "featureTypesCmd",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "featureFilterIndividualCmd",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "filterFeatureLengthsCmd",
+    shouldDismissPopover: false
+  }
+];
+export const partsSubmenu = (props) => {
+  return [
+    {
+      cmd: "toggleParts",
+      shouldDismissPopover: false
+    },
+    {
+      cmd: "partFilterIndividualCmd",
+      shouldDismissPopover: false
+    },
+    ...(props.allPartTags
+      ? [
+          {
+            cmd: "filterPartsByTagCmd",
+            shouldDismissPopover: false
+          }
+        ]
+      : []),
+    {
+      cmd: "filterPartLengthsCmd",
+      shouldDismissPopover: false
+    }
+  ];
+};
+export const primersSubmenu = [
+  {
+    cmd: "togglePrimers",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "primerFilterIndividualCmd",
+    shouldDismissPopover: false
+  },
+  {
+    cmd: "filterPrimerLengthsCmd",
+    shouldDismissPopover: false
+  }
+];
+
 export const fullSequenceTranslationMenu = {
   text: "Full Sequence Translation",
   cmd: "fullSequenceTranslations",
@@ -81,45 +178,13 @@ export default [
     cmd: "toggleFeatures",
     // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false,
-    submenu: [
-      {
-        cmd: "toggleFeatures",
-        shouldDismissPopover: false
-      },
-      "onConfigureFeatureTypesClick",
-      {
-        cmd: "featureTypesCmd",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "featureFilterIndividualCmd",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "filterFeatureLengthsCmd",
-        shouldDismissPopover: false
-      }
-    ]
+    submenu: featuresSubmenu
   },
   {
     cmd: "toggleTranslations",
     // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false,
-    submenu: [
-      {
-        cmd: "toggleTranslations",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleCdsFeatureTranslations",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleOrfTranslations",
-        shouldDismissPopover: false
-      },
-      { cmd: "toggleAminoAcidNumbers_dna", shouldDismissPopover: false }
-    ]
+    submenu: translationsSubmenu
   },
   { cmd: "togglePrimers", shouldDismissPopover: false },
   // {
@@ -140,24 +205,7 @@ export default [
     cmd: "toggleOrfs",
     // onClick: () => {}, //commenting this out to allow top level clicking -- https://github.com/TeselaGen/openVectorEditor/issues/865)
     shouldDismissPopover: false,
-    submenu: [
-      {
-        cmd: "toggleOrfs",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "toggleOrfTranslations",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "useGtgAndCtgAsStartCodons",
-        shouldDismissPopover: false
-      },
-      {
-        cmd: "minOrfSizeCmd",
-        shouldDismissPopover: false
-      }
-    ]
+    submenu: orfsSubmenu
   },
   // { cmd: "complementary" },
   // { cmd: "spaces" },

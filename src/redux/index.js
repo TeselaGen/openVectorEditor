@@ -31,6 +31,7 @@ import * as charWidth from "./charWidth";
 import * as labelLineIntensity from "./labelLineIntensity";
 import * as labelSize from "./labelSize";
 import * as featureLengthsToHide from "./featureLengthsToHide";
+import * as primerLengthsToHide from "./primerLengthsToHide";
 import * as partLengthsToHide from "./partLengthsToHide";
 import * as selectedPartTags from "./selectedPartTags";
 import { combineReducers } from "redux";
@@ -69,6 +70,7 @@ const subReducers = {
   labelLineIntensity,
   labelSize,
   partLengthsToHide,
+  primerLengthsToHide,
   featureLengthsToHide,
   selectedPartTags
 };

@@ -31,6 +31,7 @@ import {
   showAddOrEditAnnotationDialog,
   showDialog
 } from "../GlobalDialogUtils";
+import { partsSubmenu } from "../MenuBar/viewSubmenu";
 
 const isProtein = (props) => props.sequenceData && props.sequenceData.isProtein;
 const isOligo = (props) => props.sequenceData && props.sequenceData.isOligo;
@@ -169,6 +170,7 @@ const fileCommandDefs = {
   },
   filterFeatureLengthsCmd: getFilterByLengthCmd("feature"),
   filterPartLengthsCmd: getFilterByLengthCmd("part"),
+  filterPrimerLengthsCmd: getFilterByLengthCmd("primer"),
   featureTypesCmd: {
     name: (props) => {
       const total = Object.keys(
@@ -248,6 +250,7 @@ const fileCommandDefs = {
   },
   featureFilterIndividualCmd: getFilterIndividualCmd("feature"),
   partFilterIndividualCmd: getFilterIndividualCmd("part"),
+  primerFilterIndividualCmd: getFilterIndividualCmd("primer"),
   exportSequenceAsGenbank: {
     name: (props) =>
       isProtein(props) ? "Download GenPept File" : "Download Genbank File",
@@ -1391,30 +1394,7 @@ export const commandDefs = {
   },
   togglePartsWithSubmenu: {
     ...annotationToggleCommandDefs.toggleParts,
-    submenu: (props) => {
-      return [
-        {
-          cmd: "toggleParts",
-          shouldDismissPopover: false
-        },
-        {
-          cmd: "partFilterIndividualCmd",
-          shouldDismissPopover: false
-        },
-        ...(props.allPartTags
-          ? [
-              {
-                cmd: "filterPartsByTagCmd",
-                shouldDismissPopover: false
-              }
-            ]
-          : []),
-        {
-          cmd: "filterPartLengthsCmd",
-          shouldDismissPopover: false
-        }
-      ];
-    }
+    submenu: partsSubmenu
   },
   ...additionalAnnotationCommandsDefs,
   ...fileCommandDefs,

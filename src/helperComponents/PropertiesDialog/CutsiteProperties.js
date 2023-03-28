@@ -1,12 +1,13 @@
 import React from "react";
 import {
-  CmdCheckbox,
   DataTable,
-  withSelectedEntities
+  DropdownButton,
+  withSelectedEntities,
+  createCommandMenu
 } from "teselagen-react-components";
 import { map, get } from "lodash";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button } from "@blueprintjs/core";
+import { Button, ButtonGroup, Menu } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
@@ -15,6 +16,7 @@ import { userDefinedHandlersAndOpts } from "../../Editor/userDefinedHandlersAndO
 import { pick } from "lodash";
 import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
 import { withRestrictionEnzymes } from "../../CutsiteFilter/withRestrictionEnzymes";
+import { cutsitesSubmenu } from "../../MenuBar/viewSubmenu";
 
 class CutsiteProperties extends React.Component {
   constructor(props) {
@@ -84,33 +86,62 @@ class CutsiteProperties extends React.Component {
         <div
           style={{
             marginBottom: 10,
-            paddingTop: 10,
+            paddingTop: 3,
             display: "flex",
+            // flexWrap: 'wrap',
+            width: "100%",
+            // justifyContent: "space-between",
             alignItems: "center"
           }}
         >
-          <CmdCheckbox prefix="Show " cmd={this.commands.toggleCutsites} />
+          {/* <CmdCheckbox prefix="Show " cmd={this.commands.toggleCutsites} />
           <Button
             style={{ marginLeft: 10, cursor: "auto" }}
             disabled
             minimal
             icon="filter"
-          />
-          <CutsiteFilter
-            {...pick(this.props, userDefinedHandlersAndOpts)}
-            style={{ flexGrow: 2 }}
-            editorName={editorName}
-            onChangeHook={this.onChangeHook}
-          />
-
-          <Button
+          /> */}
+          <DropdownButton
+            // style={{ marginTop: 3 }}
+            icon="eye-open"
+            data-tip="Visibility Filter"
+            menu={
+              <Menu>
+                {createCommandMenu(cutsitesSubmenu, this.commands, {
+                  useTicks: true
+                })}
+              </Menu>
+            }
+          ></DropdownButton>
+          <ButtonGroup>
+            <Button
+              intent="success"
+              data-tip="Virtual Digest"
+              icon="cut"
+              style={{ marginLeft: 15, flexGrow: -1 }}
+              onClick={() => {
+                createNewDigest();
+              }}
+            ></Button>
+            {/* <Button
+            intent="success"
+            data-tip="Virtual Digest"
+            icon="cut"
             style={{ marginLeft: 15, flexGrow: -1 }}
             onClick={() => {
               createNewDigest();
             }}
           >
-            Virtual Digest
-          </Button>
+          </Button> */}
+          </ButtonGroup>
+
+          <CutsiteFilter
+            {...pick(this.props, userDefinedHandlersAndOpts)}
+            style={{ marginLeft: "auto", marginRight: 3 }}
+            editorName={editorName}
+            manageEnzymesToLeft
+            onChangeHook={this.onChangeHook}
+          />
         </div>
         <DataTable
           selectedIds={get(

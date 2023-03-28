@@ -576,7 +576,7 @@ function mapStateToProps(state, ownProps) {
   let annotationToAdd;
   [
     ["AddOrEditFeatureDialog", "filteredFeatures", "features"],
-    ["AddOrEditPrimerDialog", "primers", "primers"],
+    ["AddOrEditPrimerDialog", "filteredPrimers", "primers"],
     ["AddOrEditPartDialog", "filteredParts", "parts"]
   ].forEach(([n, type, annotationTypePlural]) => {
     const vals = getFormValues(n)(state);
@@ -869,7 +869,8 @@ function jsonToJson(incomingJson) {
         "cutsites",
         "orfs",
         "filteredParts",
-        "filteredFeatures"
+        "filteredFeatures",
+        "filteredPrimers"
       ]
     )
   );
@@ -912,6 +913,7 @@ const getSequenceDataToUse = createSelector(
   (ed, cutsites) => cutsites,
   s.translationsSelector,
   s.filteredFeaturesSelector,
+  s.filteredPrimersSelector,
   s.filteredPartsSelector,
   s.orfsSelector,
   (
@@ -920,6 +922,7 @@ const getSequenceDataToUse = createSelector(
     cutsites,
     translations,
     filteredFeatures,
+    filteredPrimers,
     filteredParts,
     orfs
   ) => {
@@ -931,6 +934,7 @@ const getSequenceDataToUse = createSelector(
       ),
       filteredParts,
       filteredFeatures,
+      filteredPrimers,
       cutsites,
       orfs,
       translations

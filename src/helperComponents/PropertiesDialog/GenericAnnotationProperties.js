@@ -2,13 +2,21 @@ import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  CmdCheckbox,
   CmdButton,
   getTagProps,
-  getKeyedTagsAndTagOptions
+  getKeyedTagsAndTagOptions,
+  DropdownButton,
+  createCommandMenu
 } from "teselagen-react-components";
-import { map, upperFirst, pick } from "lodash";
-import { Button, Tag } from "@blueprintjs/core";
+import { map, upperFirst, pick, startCase, isFunction } from "lodash";
+import {
+  AnchorButton,
+  Button,
+  ButtonGroup,
+  Icon,
+  Menu,
+  Tag
+} from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 // import { Popover } from "@blueprintjs/core";
 // import ColorPicker from "./ColorPicker";
@@ -24,6 +32,7 @@ import { getReverseComplementSequenceString } from "ve-sequence-utils";
 const genericAnnotationProperties = ({
   annotationType,
   noType,
+  visSubmenu,
   withTags,
   withBases,
   additionalFooterEls
@@ -35,7 +44,43 @@ const genericAnnotationProperties = ({
       this.commands = commands(this);
       this.schema = {
         fields: [
-          { path: "name", type: "string" },
+          {
+            path: "name",
+            type: "string",
+
+            render: (name, ann, row, props) => {
+              const checked =
+                !props.annotationVisibility[
+                  `${annotationType}IndividualToHide`
+                ][ann.id];
+
+              return (
+                <>
+                  <Icon
+                    data-tip="Hide/Show"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const upperType = startCase(annotationType);
+                      if (checked) {
+                        props[`hide${upperType}Individual`]([ann.id]);
+                      } else {
+                        props[`show${upperType}Individual`]([ann.id]);
+                      }
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      marginRight: 4,
+                      marginTop: 3,
+                      color: "darkgray"
+                    }}
+                    icon={`eye-${checked ? "open" : "off"}`}
+                  ></Icon>
+                  {name}
+                </>
+              );
+            }
+          },
+
           ...(!withBases
             ? []
             : [
@@ -152,10 +197,107 @@ const genericAnnotationProperties = ({
         <React.Fragment>
           <DataTable
             topLeftItems={
-              <CmdCheckbox
-                prefix="Show "
-                cmd={this.commands[`toggle${annotationTypeUpper + "s"}`]}
-              />
+              <DropdownButton
+                style={{ marginTop: 3 }}
+                icon="eye-open"
+                data-tip="Visibility Filter"
+                menu={
+                  <Menu>
+                    {createCommandMenu(
+                      isFunction(visSubmenu)
+                        ? visSubmenu(this.props)
+                        : visSubmenu,
+                      this.commands,
+                      {
+                        useTicks: true
+                      }
+                    )}
+                  </Menu>
+                }
+              ></DropdownButton>
+            }
+            leftOfSearchBarItems={
+              <>
+                {!readOnly && (
+                  <ButtonGroup style={{ marginTop: 3, marginRight: 4 }}>
+                    <Button
+                      data-tip="New"
+                      disabled={!sequenceLength}
+                      icon="plus"
+                      onClick={() => {
+                        showAddOrEditAnnotationDialog({
+                          type: annotationType,
+                          annotation: pick(
+                            selectionLayer,
+                            "start",
+                            "end",
+                            "forward"
+                          )
+                        });
+                      }}
+                    ></Button>
+                    <AnchorButton
+                      onClick={() => {
+                        showAddOrEditAnnotationDialog({
+                          type: annotationType,
+                          annotation: annotationPropertiesSelectedEntities[0]
+                        });
+                      }}
+                      disabled={
+                        annotationPropertiesSelectedEntities.length !== 1
+                      }
+                      data-tip="Edit"
+                      icon="edit"
+                    ></AnchorButton>
+
+                    {["feature"].includes(annotationType) && (
+                      <CmdButton
+                        cmd={this.commands.onConfigureFeatureTypesClick}
+                      />
+                    )}
+                    {["part", "primer", "feature"].includes(annotationType) && (
+                      <CmdButton
+                        text=""
+                        icon="clean"
+                        data-tip="Remove Duplicates"
+                        cmd={
+                          this.commands[
+                            `showRemoveDuplicatesDialog${
+                              annotationTypeUpper + "s"
+                            }`
+                          ]
+                        }
+                      />
+                    )}
+
+                    {additionalFooterEls && additionalFooterEls(this.props)}
+                    <Button
+                      onClick={() => {
+                        deleteAnnotation(annotationPropertiesSelectedEntities);
+                      }}
+                      intent="danger"
+                      disabled={!annotationPropertiesSelectedEntities.length}
+                      data-tip="Delete"
+                      icon="trash"
+                    ></Button>
+                  </ButtonGroup>
+                )}
+                {/* {createCommandMenu(
+                  {
+                    cmd: "featureFilterIndividualCmd",
+                    // text: 'hahah',
+                    shouldDismissPopover: false
+                  },
+                  this.commands,
+                  {
+                    useTicks: true
+                  }
+                )} */}
+                {/* <CmdCheckbox
+                  prefix="Show "
+                  cmd={this.commands.featureFilterIndividualCmd}
+                /> */}
+              </>
             }
             onDoubleClick={(annotation) => {
               showAddOrEditAnnotationDialog({
@@ -163,7 +305,17 @@ const genericAnnotationProperties = ({
                 annotation
               });
             }}
+            withCheckboxes
+            showFeatureIndividual={this.props.showFeatureIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            hideFeatureIndividual={this.props.hideFeatureIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            showPartIndividual={this.props.showPartIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            hidePartIndividual={this.props.hidePartIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            showPrimerIndividual={this.props.showPrimerIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            hidePrimerIndividual={this.props.hidePrimerIndividual} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            featureLengthsToHide={this.props.featureLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            primerLengthsToHide={this.props.primerLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
+            partLengthsToHide={this.props.partLengthsToHide} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             sequence={sequence} //we need to pass this in order to force the DT to rerenderannotationVisibility={annotationVisibility}
             noPadding
             noFullscreenButton
@@ -178,61 +330,6 @@ const genericAnnotationProperties = ({
             schema={this.schema}
             entities={annotationsToUse}
           />
-          {!readOnly && (
-            <div className="vePropertiesFooter">
-              <Button
-                disabled={!sequenceLength}
-                style={{ marginRight: 15 }}
-                onClick={() => {
-                  showAddOrEditAnnotationDialog({
-                    type: annotationType,
-                    annotation: pick(selectionLayer, "start", "end", "forward")
-                  });
-                }}
-              >
-                New
-              </Button>
-              <Button
-                onClick={() => {
-                  showAddOrEditAnnotationDialog({
-                    type: annotationType,
-                    annotation: annotationPropertiesSelectedEntities[0]
-                  });
-                }}
-                style={{ marginRight: 15 }}
-                disabled={annotationPropertiesSelectedEntities.length !== 1}
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={() => {
-                  deleteAnnotation(annotationPropertiesSelectedEntities);
-                }}
-                style={{ marginRight: 15 }}
-                disabled={!annotationPropertiesSelectedEntities.length}
-              >
-                Delete
-              </Button>
-              {["feature"].includes(annotationType) && (
-                <CmdButton
-                  cmd={this.commands.onConfigureFeatureTypesClick}
-                  style={{ marginRight: 15 }}
-                />
-              )}
-              {["part", "primer", "feature"].includes(annotationType) && (
-                <CmdButton
-                  cmd={
-                    this.commands[
-                      `showRemoveDuplicatesDialog${annotationTypeUpper + "s"}`
-                    ]
-                  }
-                  style={{ marginRight: 15 }}
-                />
-              )}
-
-              {additionalFooterEls && additionalFooterEls(this.props)}
-            </div>
-          )}
         </React.Fragment>
       );
     }
@@ -244,12 +341,19 @@ const genericAnnotationProperties = ({
         readOnly,
         annotationVisibility = {},
         sequenceData,
-        selectionLayer
+        selectionLayer,
+        featureLengthsToHide,
+        primerLengthsToHide,
+        partLengthsToHide
       }) => {
         return {
           annotationVisibility,
           selectionLayer,
           readOnly,
+          featureLengthsToHide,
+          primerLengthsToHide,
+          partLengthsToHide,
+          sequenceData,
           sequence: sequenceData.sequence,
           annotations: sequenceData[annotationType + "s"],
           [annotationType + "s"]: sequenceData[annotationType + "s"],
@@ -257,6 +361,7 @@ const genericAnnotationProperties = ({
         };
       }
     ),
+    // withEditorProps,
     withSelectedEntities("annotationProperties")
   )(AnnotationProperties);
 };

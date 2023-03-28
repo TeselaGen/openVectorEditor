@@ -546,6 +546,7 @@ const getRowData = defaultMemoize((sequenceData, bpsPerRow) => {
   return prepareRowData(
     {
       ...sequenceData,
+      primers: sequenceData.filteredPrimers || sequenceData.primers,
       features: sequenceData.filteredFeatures || sequenceData.features,
       parts: sequenceData.filteredParts || sequenceData.parts
     },
