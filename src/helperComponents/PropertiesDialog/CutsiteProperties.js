@@ -1,13 +1,12 @@
 import React from "react";
 import {
   DataTable,
-  DropdownButton,
   withSelectedEntities,
   createCommandMenu
 } from "teselagen-react-components";
 import { map, get } from "lodash";
 import CutsiteFilter from "../../CutsiteFilter";
-import { Button, ButtonGroup, Menu } from "@blueprintjs/core";
+import { Button, ButtonGroup } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
@@ -17,6 +16,7 @@ import { pick } from "lodash";
 import SingleEnzymeCutsiteInfo from "./SingleEnzymeCutsiteInfo";
 import { withRestrictionEnzymes } from "../../CutsiteFilter/withRestrictionEnzymes";
 import { cutsitesSubmenu } from "../../MenuBar/viewSubmenu";
+import { getVisFilter } from "./GenericAnnotationProperties";
 
 class CutsiteProperties extends React.Component {
   constructor(props) {
@@ -101,18 +101,11 @@ class CutsiteProperties extends React.Component {
             minimal
             icon="filter"
           /> */}
-          <DropdownButton
-            // style={{ marginTop: 3 }}
-            icon="eye-open"
-            data-tip="Visibility Filter"
-            menu={
-              <Menu>
-                {createCommandMenu(cutsitesSubmenu, this.commands, {
-                  useTicks: true
-                })}
-              </Menu>
-            }
-          ></DropdownButton>
+          {getVisFilter(
+            createCommandMenu(cutsitesSubmenu, this.commands, {
+              useTicks: true
+            })
+          )}
           <ButtonGroup>
             <Button
               intent="success"

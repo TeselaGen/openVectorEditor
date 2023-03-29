@@ -2,7 +2,6 @@ import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  DropdownButton,
   createCommandMenu
 } from "teselagen-react-components";
 import { map } from "lodash";
@@ -15,8 +14,8 @@ import selectors from "../../selectors";
 
 import getCommands from "../../commands";
 import { sizeSchema } from "./utils";
-import { Menu } from "@blueprintjs/core";
 import { orfsSubmenu } from "../../MenuBar/viewSubmenu";
+import { getVisFilter } from "./GenericAnnotationProperties";
 
 class OrfProperties extends React.Component {
   constructor(props) {
@@ -51,20 +50,11 @@ class OrfProperties extends React.Component {
     return (
       <React.Fragment>
         <DataTable
-          topLeftItems={
-            <DropdownButton
-              style={{ marginTop: 3 }}
-              icon="eye-open"
-              data-tip="Visibility Filter"
-              menu={
-                <Menu>
-                  {createCommandMenu(orfsSubmenu, this.commands, {
-                    useTicks: true
-                  })}
-                </Menu>
-              }
-            ></DropdownButton>
-          }
+          topLeftItems={getVisFilter(
+            createCommandMenu(orfsSubmenu, this.commands, {
+              useTicks: true
+            })
+          )}
           annotationVisibility={annotationVisibility} //we need to pass this in order to force the DT to rerender
           noPadding
           noFullscreenButton

@@ -1,9 +1,8 @@
-import { Tooltip, AnchorButton, Menu } from "@blueprintjs/core";
+import { Tooltip, AnchorButton } from "@blueprintjs/core";
 import React from "react";
 import {
   DataTable,
   withSelectedEntities,
-  DropdownButton,
   createCommandMenu
 } from "teselagen-react-components";
 import getCommands from "../../commands";
@@ -14,6 +13,7 @@ import { compose } from "recompose";
 import selectors from "../../selectors";
 import { getMassOfAaString } from "ve-sequence-utils";
 import { translationsSubmenu } from "../../MenuBar/viewSubmenu";
+import { getVisFilter } from "./GenericAnnotationProperties";
 
 class TranslationProperties extends React.Component {
   constructor(props) {
@@ -69,20 +69,11 @@ class TranslationProperties extends React.Component {
           formName="translationProperties"
           noRouter
           compact
-          topLeftItems={
-            <DropdownButton
-              style={{ marginTop: 3 }}
-              icon="eye-open"
-              data-tip="Visibility Filter"
-              menu={
-                <Menu>
-                  {createCommandMenu(translationsSubmenu, this.commands, {
-                    useTicks: true
-                  })}
-                </Menu>
-              }
-            ></DropdownButton>
-          }
+          topLeftItems={getVisFilter(
+            createCommandMenu(translationsSubmenu, this.commands, {
+              useTicks: true
+            })
+          )}
           leftOfSearchBarItems={
             !readOnly && (
               <Tooltip

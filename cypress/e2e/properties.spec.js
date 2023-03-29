@@ -6,7 +6,7 @@ describe("properties", function () {
     cy.selectRange(10, 20);
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="primers"]`).click();
-    cy.contains(".vePropertiesFooter button", "New").click();
+    cy.get(".tgNewAnnBtn").click();
     cy.get(`input[value="10"]`); //by default we should be selecting from 10 to 20
     cy.get(`input[value="20"]`);
     cy.focused().type("fakeprimer");
@@ -26,34 +26,20 @@ describe("properties", function () {
    -not be able to create a new feature if sequenceLength === 0`, () => {
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="features"]`).click();
-    cy.contains(".data-table-title-and-buttons", "Show Features");
-    cy.contains(".data-table-title-and-buttons", "22");
-    cy.contains(".ve-propertiesPanel button", "Delete").should(
-      "have.class",
-      "bp3-disabled"
-    );
+    cy.get(".propertiesVisFilter").click();
+    cy.get(".bp3-menu-item:contains(Features):contains(22)");
+    cy.get(`.tgDeleteAnnsBtn`).should("have.class", "bp3-disabled");
     cy.contains(".ReactTable", "araC").click();
-    cy.contains(".ve-propertiesPanel button", "Delete")
-      .should("not.have.class", "bp3-disabled")
-      .click();
+    cy.get(`.tgDeleteAnnsBtn`).should("not.have.class", "bp3-disabled").click();
 
-    cy.contains(".ve-propertiesPanel button", "Delete").should(
-      "have.class",
-      "bp3-disabled"
-    );
+    cy.get(`.tgDeleteAnnsBtn`).should("have.class", "bp3-disabled");
 
-    cy.contains(".vePropertiesFooter button", "New").should(
-      "not.have.class",
-      "bp3-disabled"
-    );
+    cy.get(".tgNewAnnBtn").should("not.have.class", "bp3-disabled");
     cy.get(".tg-menu-bar").contains("Edit").click();
     cy.get(".tg-menu-bar-popover").contains("Select All").click();
     cy.get(".veSelectionLayer").first().trigger("contextmenu", { force: true });
     cy.get(".bp3-menu-item").contains("Cut").click();
-    cy.contains(".vePropertiesFooter button", "New").should(
-      "have.class",
-      "bp3-disabled"
-    );
+    cy.get(".tgNewAnnBtn").should("have.class", "bp3-disabled");
   });
   it(`a custom properties tab should be able to be added`, () => {
     cy.tgToggle("propertiesOverridesExample");
@@ -121,6 +107,7 @@ describe("properties", function () {
   it("can click into the orf properties tab and change the minimum orf size and trigger a warning in the editor", function () {
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="orfs"]`).click();
+    cy.get(".propertiesVisFilter").click();
     cy.get(`[data-test="min-orf-size"]`).find("input").type("{selectall}30");
     cy.get(`[data-test="ve-warning-maxOrfsToDisplay"]`);
   });
@@ -128,6 +115,7 @@ describe("properties", function () {
     cy.viewport(1000, 500);
     cy.get(".veTabProperties").click();
     cy.get(`[data-tab-id="orfs"]`).click();
+    cy.get(`.propertiesVisFilter`).click();
     cy.contains("Use GTG And CTG As Start Codons")
       .scrollIntoView()
       .should("be.visible");

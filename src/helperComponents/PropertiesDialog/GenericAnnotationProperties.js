@@ -11,11 +11,11 @@ import {
 import { map, upperFirst, pick, startCase, isFunction } from "lodash";
 import {
   AnchorButton,
-  Button,
   ButtonGroup,
   Icon,
   Menu,
-  Tag
+  Tag,
+  Tooltip
 } from "@blueprintjs/core";
 import { getRangeLength } from "ve-range-utils";
 // import { Popover } from "@blueprintjs/core";
@@ -196,62 +196,57 @@ const genericAnnotationProperties = ({
       return (
         <React.Fragment>
           <DataTable
-            topLeftItems={
-              <DropdownButton
-                style={{ marginTop: 3 }}
-                icon="eye-open"
-                data-tip="Visibility Filter"
-                menu={
-                  <Menu>
-                    {createCommandMenu(
-                      isFunction(visSubmenu)
-                        ? visSubmenu(this.props)
-                        : visSubmenu,
-                      this.commands,
-                      {
-                        useTicks: true
-                      }
-                    )}
-                  </Menu>
+            topLeftItems={getVisFilter(
+              createCommandMenu(
+                isFunction(visSubmenu) ? visSubmenu(this.props) : visSubmenu,
+                this.commands,
+                {
+                  useTicks: true
                 }
-              ></DropdownButton>
-            }
+              )
+            )}
             leftOfSearchBarItems={
               <>
                 {!readOnly && (
                   <ButtonGroup style={{ marginTop: 3, marginRight: 4 }}>
-                    <Button
-                      data-tip="New"
-                      disabled={!sequenceLength}
-                      icon="plus"
-                      onClick={() => {
-                        showAddOrEditAnnotationDialog({
-                          type: annotationType,
-                          annotation: pick(
-                            selectionLayer,
-                            "start",
-                            "end",
-                            "forward"
-                          )
-                        });
-                      }}
-                    ></Button>
-                    <AnchorButton
-                      onClick={() => {
-                        showAddOrEditAnnotationDialog({
-                          type: annotationType,
-                          annotation: annotationPropertiesSelectedEntities[0]
-                        });
-                      }}
-                      disabled={
-                        annotationPropertiesSelectedEntities.length !== 1
-                      }
-                      data-tip="Edit"
-                      icon="edit"
-                    ></AnchorButton>
+                    <Tooltip position="top" content="New">
+                      <AnchorButton
+                        disabled={!sequenceLength}
+                        icon="plus"
+                        className="tgNewAnnBtn"
+                        onClick={() => {
+                          showAddOrEditAnnotationDialog({
+                            type: annotationType,
+                            annotation: pick(
+                              selectionLayer,
+                              "start",
+                              "end",
+                              "forward"
+                            )
+                          });
+                        }}
+                      ></AnchorButton>
+                    </Tooltip>
+                    <Tooltip position="top" content="Edit">
+                      <AnchorButton
+                        onClick={() => {
+                          showAddOrEditAnnotationDialog({
+                            type: annotationType,
+                            annotation: annotationPropertiesSelectedEntities[0]
+                          });
+                        }}
+                        disabled={
+                          annotationPropertiesSelectedEntities.length !== 1
+                        }
+                        icon="edit"
+                      ></AnchorButton>
+                    </Tooltip>
 
                     {["feature"].includes(annotationType) && (
                       <CmdButton
+                        text=""
+                        icon="cog"
+                        data-tip="Remove Duplicates"
                         cmd={this.commands.onConfigureFeatureTypesClick}
                       />
                     )}
@@ -271,15 +266,19 @@ const genericAnnotationProperties = ({
                     )}
 
                     {additionalFooterEls && additionalFooterEls(this.props)}
-                    <Button
-                      onClick={() => {
-                        deleteAnnotation(annotationPropertiesSelectedEntities);
-                      }}
-                      intent="danger"
-                      disabled={!annotationPropertiesSelectedEntities.length}
-                      data-tip="Delete"
-                      icon="trash"
-                    ></Button>
+                    <Tooltip position="top" content="Delete">
+                      <AnchorButton
+                        onClick={() => {
+                          deleteAnnotation(
+                            annotationPropertiesSelectedEntities
+                          );
+                        }}
+                        className="tgDeleteAnnsBtn"
+                        intent="danger"
+                        disabled={!annotationPropertiesSelectedEntities.length}
+                        icon="trash"
+                      ></AnchorButton>
+                    </Tooltip>
                   </ButtonGroup>
                 )}
                 {/* {createCommandMenu(
@@ -378,3 +377,15 @@ export default genericAnnotationProperties;
 //     </Popover>
 //   );
 // };
+
+export function getVisFilter(submenu) {
+  return (
+    <DropdownButton
+      style={{ marginTop: 3 }}
+      icon="eye-open"
+      className="propertiesVisFilter"
+      data-tip="Visibility Filter"
+      menu={<Menu>{submenu}</Menu>}
+    ></DropdownButton>
+  );
+}

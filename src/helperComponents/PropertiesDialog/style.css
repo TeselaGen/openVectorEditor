@@ -41,12 +41,6 @@
   flex-shrink: 0;
 } */
 
-.vePropertiesFooter {
-  display: flex;
-  justify-content: right;
-  flex-wrap: wrap;
-}
-
 .ve-propertiesPanel .bp3-popover-wrapper {
   width: fit-content;
 }
