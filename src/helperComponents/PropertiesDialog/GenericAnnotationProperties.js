@@ -6,7 +6,8 @@ import {
   getTagProps,
   getKeyedTagsAndTagOptions,
   DropdownButton,
-  createCommandMenu
+  createCommandMenu,
+  popoverOverflowModifiers
 } from "teselagen-react-components";
 import { map, upperFirst, pick, startCase, isFunction } from "lodash";
 import {
@@ -209,7 +210,11 @@ const genericAnnotationProperties = ({
               <>
                 {!readOnly && (
                   <ButtonGroup style={{ marginTop: 3, marginRight: 4 }}>
-                    <Tooltip position="top" content="New">
+                    <Tooltip
+                      position="top"
+                      modifiers={popoverOverflowModifiers}
+                      content="New"
+                    >
                       <AnchorButton
                         disabled={!sequenceLength}
                         icon="plus"
@@ -227,7 +232,11 @@ const genericAnnotationProperties = ({
                         }}
                       ></AnchorButton>
                     </Tooltip>
-                    <Tooltip position="top" content="Edit">
+                    <Tooltip
+                      position="top"
+                      modifiers={popoverOverflowModifiers}
+                      content="Edit"
+                    >
                       <AnchorButton
                         onClick={() => {
                           showAddOrEditAnnotationDialog({
@@ -266,7 +275,11 @@ const genericAnnotationProperties = ({
                     )}
 
                     {additionalFooterEls && additionalFooterEls(this.props)}
-                    <Tooltip position="top" content="Delete">
+                    <Tooltip
+                      position="top"
+                      modifiers={popoverOverflowModifiers}
+                      content="Delete"
+                    >
                       <AnchorButton
                         onClick={() => {
                           deleteAnnotation(
