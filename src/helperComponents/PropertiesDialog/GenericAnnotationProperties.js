@@ -7,7 +7,8 @@ import {
   getKeyedTagsAndTagOptions,
   DropdownButton,
   createCommandMenu,
-  popoverOverflowModifiers
+  popoverOverflowModifiers,
+  removeDuplicatesIcon
 } from "teselagen-react-components";
 import { map, upperFirst, pick, startCase, isFunction } from "lodash";
 import {
@@ -255,14 +256,14 @@ const genericAnnotationProperties = ({
                       <CmdButton
                         text=""
                         icon="cog"
-                        data-tip="Remove Duplicates"
+                        data-tip="Configure Feature Types"
                         cmd={this.commands.onConfigureFeatureTypesClick}
                       />
                     )}
                     {["part", "primer", "feature"].includes(annotationType) && (
                       <CmdButton
                         text=""
-                        icon="clean"
+                        icon={removeDuplicatesIcon}
                         data-tip="Remove Duplicates"
                         cmd={
                           this.commands[
