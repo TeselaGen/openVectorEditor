@@ -1408,7 +1408,7 @@ sequenceData: {
                     updateEditor(store, "DemoEditor", {
                       justPassingPartialSeqData: true,
                       sequenceData: {
-                        name: `LALALALA I'm a really Long Sequence Name gahhahaghaghaghahg hagahghah lorem ipsum stacato lorem ipsum stacato`
+                        name: `LALALALAaaaaaaaaaaa I'm a really Long Sequence Name gahhahaghaghaghahg hagahghah lorem ipsum stacato lorem ipsum stacato`
                       }
                     });
                 }

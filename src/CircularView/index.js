@@ -684,6 +684,7 @@ export function CircularView(props) {
             WebkitLineClamp: "3",
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
+            wordBreak: "break-all",
             textOverflow: "ellipsis",
             width: isZoomedIn || smallZoom < 1 ? undefined : innerRadius,
             maxHeight: innerRadius - 15,
