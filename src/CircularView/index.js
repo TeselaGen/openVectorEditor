@@ -886,6 +886,7 @@ export function CircularView(props) {
                         WebkitLineClamp: "3",
                         WebkitBoxOrient: "vertical",
                         overflow: "hidden",
+                        wordBreak: "break-all",
                         textOverflow: "ellipsis",
                         width: 72.5,
                         maxHeight: 72.5 - 15,
