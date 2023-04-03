@@ -1,17 +1,10 @@
-.veLinearView {
-  overflow-y: auto !important;
-  overflow-x: visible !important;
-}
-
 .veLinearView .veRowItemWrapper {
   display: flex;
   justify-content: center;
+  overflow: auto;
 }
 
 /*# sourceMappingURL=style.css.map */
-.veLinearView.isLinViewZoomed .veRowItemWrapper {
-  overflow-x: auto;
-}
 /* .tg-pinch-helper {
   touch-action: none;
   -moz-user-select: none;

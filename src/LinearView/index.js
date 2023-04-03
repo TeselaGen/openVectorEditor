@@ -27,6 +27,7 @@ import {
   editorDragStarted,
   editorDragStopped
 } from "../withEditorInteractions/clickAndDragUtils";
+import { store } from "@risingstack/react-easy-state";
 
 const defaultMarginWidth = 10;
 
@@ -144,6 +145,10 @@ class _LinearView extends React.Component {
   updateLabelsForInViewFeaturesDebounced = debounce(() => {
     updateLabelsForInViewFeatures();
   }, 20);
+  easyStore = store({
+    percentScrolled: 0,
+    viewportWidth: 400
+  });
 
   render() {
     const {
@@ -155,7 +160,7 @@ class _LinearView extends React.Component {
       width = 400,
       className,
       tickSpacing,
-      scrollData,
+      scrollDataPassed,
       caretPosition,
       backgroundRightClicked = noop,
       RowItemProps = {},
@@ -173,7 +178,7 @@ class _LinearView extends React.Component {
     } = this.props;
 
     const bpsPerRow = this.getMaxLength();
-    let innerWidth = Math.max(width - marginWidth, 0);
+    let innerWidth = Math.max(width - marginWidth - 20, 0);
     if (isNaN(innerWidth)) {
       innerWidth = 0;
     }
@@ -185,8 +190,7 @@ class _LinearView extends React.Component {
     const isLinViewZoomed = this.charWidth !== initialCharWidth;
     const sequenceName = hideName ? "" : sequenceData.name || "";
     const rowData = this.getRowData();
-    const linearZoomEnabled =
-      bpsPerRow >= 50 && bpsPerRow < 30000 && withZoomLinearView;
+    const linearZoomEnabled = bpsPerRow >= 50 && withZoomLinearView;
     const minCharWidth = initialCharWidth;
     const PinchHelperToUse = linearZoomEnabled ? PinchHelper : React.Fragment;
     const pinchHandler = {
@@ -295,18 +299,28 @@ class _LinearView extends React.Component {
                 ...rest,
                 editorName,
                 onScroll: () => {
+                  this.easyStore.viewportWidth = width;
+                  const row =
+                    this.linearView.querySelector(".veRowItemWrapper");
+                  const scrollPercentage =
+                    row.scrollLeft / (row.scrollWidth - row.clientWidth);
+                  this.easyStore.percentScrolled = scrollPercentage;
                   updateLabelsForInViewFeatures();
                 },
-                rowContainerStyle: isLinViewZoomed
-                  ? { paddingBottom: 15 }
-                  : undefined,
+                rowContainerStyle: {
+                  height: height - 36,
+                  width: innerWidth + 26,
+                  paddingRight: marginWidth / 2,
+                  ...(isLinViewZoomed && { paddingBottom: 15 })
+                },
                 charWidth: this.charWidth,
-                scrollData,
+                scrollData:
+                  scrollDataPassed ||
+                  (isLinViewZoomed ? this.easyStore : undefined),
                 caretPosition,
                 isProtein: sequenceData.isProtein,
                 alignmentData,
                 sequenceLength: this.getMaxLength(),
-                width: innerWidth,
                 bpsPerRow,
                 fullSequence: sequenceData.sequence,
                 emptyText: getEmptyText({ sequenceData, caretPosition }),

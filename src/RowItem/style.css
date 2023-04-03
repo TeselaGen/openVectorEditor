@@ -4,6 +4,7 @@
 
 .veRowItem {
   overflow-x: visible;
+  height: fit-content;
 }
 
 .bp3-dark .cutsiteLabelSelectionLayer {

@@ -131,7 +131,6 @@ const Axis = function (props) {
   return (
     <svg
       className="veRowViewAxis veAxis"
-      width="100%"
       height={annotationHeight}
       style={{ marginTop, overflow: "visible", display: "block", ...style }}
     >

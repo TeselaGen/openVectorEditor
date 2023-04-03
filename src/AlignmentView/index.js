@@ -946,7 +946,7 @@ export class AlignmentView extends React.Component {
             },
             width: linearViewWidth,
             paddingBottom: 5,
-            scrollData: this.easyStore
+            scrollDataPassed: this.easyStore
           }}
         />
       </div>

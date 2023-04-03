@@ -1,8 +1,8 @@
 .veRowViewCaret {
-  height: 102%;
+  height: 100%;
   /* background: black; */
   position: absolute;
-  top: -5px;
+  top: -2px;
   width: 2px;
   /* cursor: ew-resize; */
 }

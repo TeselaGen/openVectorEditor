@@ -134,7 +134,8 @@ export default function RowItem(props) {
     dnaColors: showDnaColors,
     fivePrimeThreePrimeHints,
     reverseSequence: showReverseSequence,
-    sequence: showSequence
+    sequence: showSequence,
+    height
   } = annotationVisibility;
 
   const { sequence = "", cutsites = [] } = row;
@@ -184,6 +185,7 @@ export default function RowItem(props) {
   const rowStyle = {
     position: "relative",
     minHeight,
+    height,
     width: width + "px"
   };
 
@@ -443,6 +445,7 @@ export default function RowItem(props) {
 
           {showReverseSequence && (
             <Sequence
+              scrollData={scrollData}
               sequenceLength={sequenceLength}
               fivePrimeThreePrimeHints={fivePrimeThreePrimeHints}
               isReverse
