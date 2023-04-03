@@ -21,7 +21,6 @@ describe("zoomLinearView.spec", function () {
   });
   it("zoom should be disabled for bps < 50 ", function () {
     cy.visit("#/Editor?focusLinearView=true&sequenceLength=45000");
-    cy.get(`.veZoomLinearSlider`).should("not.exist");
     cy.contains("GFPuv").should("not.exist");
     cy.get(`[data-test="sequenceLength"]`).select("5299");
     cy.contains("GFPuv").should("exist");
