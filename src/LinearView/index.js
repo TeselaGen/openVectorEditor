@@ -166,6 +166,7 @@ class _LinearView extends React.Component {
       RowItemProps = {},
       marginWidth = defaultMarginWidth,
       height,
+      isInAlignment,
       withZoomLinearView = false,
       editorName,
       smallSlider,
@@ -311,7 +312,8 @@ class _LinearView extends React.Component {
                   height: height - 36,
                   width: innerWidth + 26,
                   paddingRight: marginWidth / 2,
-                  ...(isLinViewZoomed && { paddingBottom: 15 })
+                  ...(isLinViewZoomed &&
+                    !isInAlignment && { paddingBottom: 15 })
                 },
                 charWidth: this.charWidth,
                 scrollData:

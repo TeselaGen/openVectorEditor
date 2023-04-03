@@ -895,6 +895,7 @@ export class AlignmentView extends React.Component {
             ...rest,
             caretPosition: this.state[`tempTrimmingCaret${i}`] || -1,
             selectionLayer,
+            isInAlignment: true,
             // : { start: -1, end: -1 },
             annotationVisibilityOverrides:
               alignmentVisibilityToolOptions.alignmentAnnotationVisibility,

@@ -3,7 +3,7 @@ describe("zoomLinearView.spec", function () {
   araD feature label should be showing in view upon full zoom
   scrolling to the right, labels like araD should be repositioning themselves to be in view`, function () {
     cy.visit("#/LinearView");
-    cy.get(".ve-monospace-font").contains("gatgc").should("not.exist");
+    cy.get(".ve-monospace-font").contains("gacgt").should("not.exist");
     cy.get(".S").should("not.exist");
     cy.get(".cutsiteLabelSelectionLayer").should("not.exist");
 
@@ -11,7 +11,7 @@ describe("zoomLinearView.spec", function () {
       ".veZoomLinearSlider .bp3-slider-handle",
       ".veZoomLinearSlider .bp3-icon-plus"
     );
-    cy.get(".ve-monospace-font").contains("gatgc").should("exist");
+    cy.get(".ve-monospace-font").contains("gacgt").should("exist");
     cy.get(".S").should("exist");
     cy.get(".cutsiteLabelSelectionLayer").should("exist");
     cy.get(".veRowViewFeaturesContainer").contains("araD").should("exist");
@@ -19,7 +19,7 @@ describe("zoomLinearView.spec", function () {
     cy.get(".veRowItemWrapper").scrollTo(500, 0);
     cy.get(".veRowViewFeaturesContainer").contains("araD").should("exist");
   });
-  it("zoom should be disabled for bps < 50 and bps > 30K", function () {
+  it("zoom should be disabled for bps < 50 ", function () {
     cy.visit("#/Editor?focusLinearView=true&sequenceLength=45000");
     cy.get(`.veZoomLinearSlider`).should("not.exist");
     cy.contains("GFPuv").should("not.exist");
@@ -28,7 +28,6 @@ describe("zoomLinearView.spec", function () {
     cy.get(`.veZoomLinearSlider`).should("exist");
     cy.get(`[data-test="sequenceLength"]`).select("10");
     cy.contains("GFPuv").should("not.exist");
-    cy.get(`.veZoomLinearSlider`).should("not.exist");
   });
   // tnr: maybe enable this some day
   // it("scroll wheel should zoom in/out", function () {

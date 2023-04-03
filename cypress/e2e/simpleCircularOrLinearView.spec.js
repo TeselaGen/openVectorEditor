@@ -29,7 +29,7 @@ describe("simpleCircularOrLinearView", function () {
   it(`withZoomLinearView should work`, () => {
     cy.visit("/#/SimpleCircularOrLinearView");
     cy.get(`.veZoomLinearSlider`).should("not.exist");
-    cy.get(".ve-monospace-font").contains("gatgc").should("not.exist");
+    cy.get(".ve-monospace-font").contains("gacgt").should("not.exist");
     cy.tgToggle("withZoomLinearView");
     cy.dragBetween(
       ".veZoomLinearSlider .bp3-slider-handle",
