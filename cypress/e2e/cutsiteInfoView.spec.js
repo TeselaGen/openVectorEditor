@@ -9,6 +9,12 @@ describe("cutsiteInfoView", function () {
 
   it(`filtering for a hidden enzyme should bring up a 'These Hidden enzymes match' message`, () => {
     cy.get(`[data-test="cutsiteToolDropdown"]`).click();
+    cy.get(`.veToolbarCutsiteFilterHolder input`).type("AlwNI");
+    cy.contains(`These Hidden enzymes match`);
+    cy.contains("AlwNI (1 cut)").click();
+    cy.contains("AlwNI (1 cut) hidden");
+
+    cy.get(`[data-test="cutsiteToolDropdown"]`).click();
     cy.get(`.veToolbarCutsiteFilterHolder input`).type("esp3i");
     cy.contains(`These Hidden enzymes match`);
     cy.contains("Esp3I (2 cuts)").click();
