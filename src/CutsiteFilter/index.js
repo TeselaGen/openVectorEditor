@@ -18,10 +18,15 @@ import {
   getUserGroupLabel
 } from "./AdditionalCutsiteInfoDialog";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
-import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
+import {
+  aliasedEnzymesByName,
+  cutSequenceByRestrictionEnzyme,
+  defaultEnzymesByName
+} from "ve-sequence-utils";
 
 const NoResults = withRestrictionEnzymes((props) => {
   const {
+    inputSequenceToTestAgainst,
     cutsitesByName,
     cutsitesByNameActive,
     closeDropDown,
@@ -82,6 +87,11 @@ const NoResults = withRestrictionEnzymes((props) => {
         <br></br>
         <div style={{ display: "flex" }}>
           {flatMap(hiddenEnzymesByNameThatMatch, (e, i) => {
+            const res = cutSequenceByRestrictionEnzyme(
+              inputSequenceToTestAgainst,
+              true,
+              e
+            );
             if (i > 3) return [];
             return (
               <CutsiteTag
@@ -95,7 +105,10 @@ const NoResults = withRestrictionEnzymes((props) => {
                 allRestrictionEnzymes={allRestrictionEnzymes}
                 forceOpenCutsiteInfo={!onHiddenEnzymeAdd}
                 name={e.name}
-                cutsitesByName={cutsitesByName}
+                cutsitesByName={{
+                  ...cutsitesByName,
+                  [e.name.toLowerCase()]: res
+                }}
                 cutsitesByNameActive={cutsitesByNameActive}
                 key={i}
               ></CutsiteTag>
@@ -333,6 +346,7 @@ export function CutsiteFilter(props) {
           noResultsText={
             <NoResults
               {...{
+                inputSequenceToTestAgainst: sequenceData.sequence,
                 manageEnzymesLink,
                 closeDropDown,
                 onHiddenEnzymeAdd,

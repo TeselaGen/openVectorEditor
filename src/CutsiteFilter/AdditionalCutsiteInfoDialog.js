@@ -16,7 +16,11 @@ import {
 import SingleEnzymeCutsiteInfo from "../helperComponents/PropertiesDialog/SingleEnzymeCutsiteInfo";
 import { showDialog } from "../GlobalDialogUtils";
 
-import { aliasedEnzymesByName, defaultEnzymesByName } from "ve-sequence-utils";
+import {
+  aliasedEnzymesByName,
+  cutSequenceByRestrictionEnzyme,
+  defaultEnzymesByName
+} from "ve-sequence-utils";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { getEnzymeAliases } from "../utils/editorUtils";
 
@@ -47,6 +51,19 @@ export const AdditionalCutsiteInfoDialog = compose(
           )
         };
       } else {
+        let c = props.allCutsites.cutsitesByName;
+        const name = props.cutsiteOrGroupKey.toLowerCase();
+        if (!c[name]) {
+          const e = aliasedEnzymesByName[name];
+          if (e) {
+            const res = cutSequenceByRestrictionEnzyme(
+              props.sequenceData.sequence,
+              true,
+              e
+            );
+            c = { ...c, [name]: res };
+          }
+        }
         return {
           title: (
             <div style={{ display: "flex" }}>
@@ -56,7 +73,7 @@ export const AdditionalCutsiteInfoDialog = compose(
                 showActiveText
                 allRestrictionEnzymes={props.allRestrictionEnzymes}
                 cutsitesByNameActive={props.filteredCutsites.cutsitesByName}
-                cutsitesByName={props.allCutsites.cutsitesByName}
+                cutsitesByName={c}
                 name={props.cutsiteOrGroupKey}
               ></CutsiteTag>
             </div>
