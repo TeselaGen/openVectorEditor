@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button, Intent, Classes } from "@blueprintjs/core";
+import { Icon, Button, Intent, Classes, Callout } from "@blueprintjs/core";
 import {
   FileUploadField,
   TextareaField,
@@ -72,6 +72,12 @@ class AlignmentToolDropdown extends React.Component {
         >
           Create New Alignment
         </Button>
+        <br></br>
+        <br></br>
+        <Callout intent="warning">
+          Note: This tool requires an alignment server to be hooked up for it to
+          work properly. It will NOT work in the OVE demo page.
+        </Callout>
         <div className="vespacer" />
         {hasSavedAlignments && (
           <div>
