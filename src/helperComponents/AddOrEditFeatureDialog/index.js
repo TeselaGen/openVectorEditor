@@ -1,5 +1,8 @@
 import React from "react";
-import { getFeatureToColorMap, getFeatureTypes } from "ve-sequence-utils";
+import {
+  getFeatureToColorMap,
+  getFeatureTypes
+} from "@teselagen/sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
 import { ReactSelectField } from "teselagen-react-components";

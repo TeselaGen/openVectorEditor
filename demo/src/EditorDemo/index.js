@@ -1,7 +1,10 @@
 import { Button, Icon, InputGroup } from "@blueprintjs/core";
-import { generateSequenceData, tidyUpSequenceData } from "ve-sequence-utils";
+import {
+  generateSequenceData,
+  tidyUpSequenceData
+} from "@teselagen/sequence-utils";
 import React from "react";
-import { isRangeOrPositionWithinRange } from "ve-range-utils";
+import { isRangeOrPositionWithinRange } from "@teselagen/range-utils";
 import isMobile from "is-mobile";
 
 import store from "./../store";
@@ -24,7 +27,7 @@ import { startCase } from "lodash";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 import _chromData from "../../../scratch/ab1ParsedGFPvv50.json";
-import { convertBasePosTraceToPerBpTrace } from "bio-parsers";
+import { convertBasePosTraceToPerBpTrace } from "@teselagen/bio-parsers";
 // import AddOrEditPrimerDialog from "../../../src/helperComponents/AddOrEditPrimerDialog";
 // import _chromData from "../../../scratch/B_reverse.json";
 // import example1Ab1 from "../../../scratch/example1.ab1.json";
@@ -557,7 +560,7 @@ the protein sequenceData object should look like so
 	proteinSequence: "mmhlrlfcillaavs...etc"
 	sequence: "gtagagagagcca...etc" //optional!
 	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices .
-	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
+	//You can use the helper util from @teselagen/sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
 	//features/parts coming in as AA-indexed
 	features: [{name: "testFeature1",
 		start: 3, //start on AA 1

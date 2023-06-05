@@ -1,13 +1,13 @@
 import { render, unmountComponentAtNode, findDOMNode } from "react-dom";
 
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 // import Tether from "tether";
 import Popper from "popper.js";
 
 import {
   getInsertBetweenVals,
   convertDnaCaretPositionOrRangeToAA
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import React from "react";
 import { divideBy3 } from "../utils/proteinUtils";
 import "./createSequenceInputPopupStyle.css";

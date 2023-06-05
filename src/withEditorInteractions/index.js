@@ -2,19 +2,19 @@ import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
   getAminoAcidStringFromSequenceString
-} from "ve-sequence-utils";
-import { getSequenceWithinRange } from "ve-range-utils";
+} from "@teselagen/sequence-utils";
+import { getSequenceWithinRange } from "@teselagen/range-utils";
 import Clipboard from "clipboard";
 import { compose } from "redux";
 import {
   getReverseComplementSequenceAndAnnotations,
   getComplementSequenceAndAnnotations
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import { some, map } from "lodash";
 import { Menu } from "@blueprintjs/core";
 import { branch } from "recompose";
 
-import { normalizePositionByRangeLength } from "ve-range-utils";
+import { normalizePositionByRangeLength } from "@teselagen/range-utils";
 import React from "react";
 
 import Combokeys from "combokeys";
@@ -24,7 +24,7 @@ import {
   commandMenuEnhancer,
   withStore
 } from "teselagen-react-components";
-import { jsonToGenbank } from "bio-parsers";
+import { jsonToGenbank } from "@teselagen/bio-parsers";
 import withEditorProps from "../withEditorProps";
 import getCommands from "../commands";
 import moveCaret from "./moveCaret";

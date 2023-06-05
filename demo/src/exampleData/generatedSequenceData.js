@@ -1,4 +1,4 @@
-import { generateRandomRange } from "ve-range-utils";
+import { generateRandomRange } from "@teselagen/range-utils";
 import shortid from "shortid";
 
 const seqLen = 1000000;

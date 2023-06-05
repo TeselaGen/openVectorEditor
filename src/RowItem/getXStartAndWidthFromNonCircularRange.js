@@ -1,4 +1,4 @@
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 
 export default function getXStartAndWidthFromNonCircularRange(
   range,

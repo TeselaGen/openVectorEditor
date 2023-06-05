@@ -5,7 +5,7 @@ import {
   trimNumberToFitWithin0ToAnotherNumber,
   normalizePositionByRangeLength,
   expandOrContractRangeToPosition
-} from "ve-range-utils";
+} from "@teselagen/range-utils";
 
 let dragInProgress = false;
 let selectionStartOrEndGrabbed;

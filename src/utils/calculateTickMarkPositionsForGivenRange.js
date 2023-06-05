@@ -1,5 +1,5 @@
-import { normalizePositionByRangeLength as norm } from "ve-range-utils";
-import { getRangeLength } from "ve-range-utils";
+import { normalizePositionByRangeLength as norm } from "@teselagen/range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 
 export default function calculateTickMarkPositionsForGivenRange({
   tickSpacing: _tickSpacing = 10,

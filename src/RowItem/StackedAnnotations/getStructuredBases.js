@@ -1,7 +1,7 @@
 import { clone } from "lodash";
-import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
-import { getComplementSequenceString } from "ve-sequence-utils";
-import { bioData } from "ve-sequence-utils";
+import { getRangeLength, getSequenceWithinRange } from "@teselagen/range-utils";
+import { getComplementSequenceString } from "@teselagen/sequence-utils";
+import { bioData } from "@teselagen/sequence-utils";
 const { ambiguous_dna_values } = bioData;
 export function getStructuredBases({
   annotationRange,

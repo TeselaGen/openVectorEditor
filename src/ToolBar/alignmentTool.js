@@ -8,7 +8,7 @@ import {
   wrapDialog
 } from "teselagen-react-components";
 import { reduxForm, FieldArray } from "redux-form";
-import { anyToJson } from "bio-parsers";
+import { anyToJson } from "@teselagen/bio-parsers";
 import { flatMap } from "lodash";
 import uniqid from "shortid";
 import { cloneDeep } from "lodash";

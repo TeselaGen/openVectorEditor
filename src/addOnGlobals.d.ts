@@ -27,7 +27,7 @@ import shortid from "shortid";
 import {
   getReverseComplementSequenceString, bioData, convertApELikeRegexToRegex,
   autoAnnotate,
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 
 type AddOnGlobals = {
   wrapDialog: wrapDialog,

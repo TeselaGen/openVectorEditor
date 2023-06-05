@@ -27,8 +27,11 @@ import {
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap,
   getRangeLength
-} from "ve-range-utils";
-import { tidyUpAnnotation, getFeatureToColorMap } from "ve-sequence-utils";
+} from "@teselagen/range-utils";
+import {
+  tidyUpAnnotation,
+  getFeatureToColorMap
+} from "@teselagen/sequence-utils";
 import classNames from "classnames";
 import { store, view } from "@risingstack/react-easy-state";
 

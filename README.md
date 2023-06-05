@@ -485,7 +485,7 @@ the protein sequenceData object should look like so
 	proteinSequence: "mmhlrlfcillaavs...etc"
 	sequence: "gtagagagagcca...etc" //optional!
 	//if features or parts are provided to the editor, it is assumed that they will indexed to the underlying DNA sequence (0-based inclusive) , not to the AA indices .
-	//You can use the helper util from ve-sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
+	//You can use the helper util from @teselagen/sequence-utils tidyUpSequenceData to convertAnnotationsFromAAIndices if your protein data has
 	//features/parts coming in as AA-indexed
 	features: [{name: "testFeature1",
 		start: 3, //start on AA 1
@@ -742,7 +742,7 @@ this using webpack aliases. Here's how:
 
 ```
 open ./nwb.config.js
-comment in whatever module you want to have linked locally (ve-range-utils, ve-sequence-utils, bio-parsers, teselagen-react-components)
+comment in whatever module you want to have linked locally (@teselagen/range-utils, @teselagen/sequence-utils, @teselagen/bio-parsers, teselagen-react-components)
 you'll need to have that module cloned down from github on your machine's file system for this to work
 ```
 

@@ -15,8 +15,8 @@ import "./style.css";
 import { InfoHelper } from "teselagen-react-components";
 import { searchableTypes } from "../selectors/annotationSearchSelector";
 import { getSingular } from "../utils/annotationTypes";
-import { getFeatureToColorMap } from "ve-sequence-utils";
-import { getReverseComplementSequenceString } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "@teselagen/sequence-utils";
+import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
 import isMobile from "is-mobile";
 
 const opts = [

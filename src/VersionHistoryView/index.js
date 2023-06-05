@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Intent } from "@blueprintjs/core";
-import { tidyUpSequenceData } from "ve-sequence-utils";
+import { tidyUpSequenceData } from "@teselagen/sequence-utils";
 import { DataTable } from "teselagen-react-components";
 
 import Editor from "../Editor";

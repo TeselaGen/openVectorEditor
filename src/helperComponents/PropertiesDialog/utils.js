@@ -1,6 +1,6 @@
 import React from "react";
-import { convertDnaCaretPositionOrRangeToAA } from "ve-sequence-utils";
-import { convertRangeTo1Based } from "ve-range-utils";
+import { convertDnaCaretPositionOrRangeToAA } from "@teselagen/sequence-utils";
+import { convertRangeTo1Based } from "@teselagen/range-utils";
 
 export const sizeSchema = {
   path: "size",

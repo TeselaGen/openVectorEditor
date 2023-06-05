@@ -2,7 +2,7 @@ import { Icon } from "@blueprintjs/core";
 // import { Checkbox, Button } from "@blueprintjs/core";
 import React from "react";
 // import { connect } from "react-redux";
-// import { convertRangeTo1Based } from "ve-range-utils";
+// import { convertRangeTo1Based } from "@teselagen/range-utils";
 import { featureIcon } from "teselagen-react-components";
 import ToolbarItem from "./ToolbarItem";
 import { connectToEditor } from "../withEditorProps";

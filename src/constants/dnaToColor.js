@@ -1,4 +1,4 @@
-import { DNAComplementMap } from "ve-sequence-utils";
+import { DNAComplementMap } from "@teselagen/sequence-utils";
 
 const dnaToColor = {
   a: "lightgreen",

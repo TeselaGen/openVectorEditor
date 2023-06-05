@@ -7,11 +7,11 @@ import {
 } from "teselagen-react-components";
 import getCommands from "../../commands";
 import { map } from "lodash";
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";
 import selectors from "../../selectors";
-import { getMassOfAaString } from "ve-sequence-utils";
+import { getMassOfAaString } from "@teselagen/sequence-utils";
 import { translationsSubmenu } from "../../MenuBar/viewSubmenu";
 import { getVisFilter } from "./GenericAnnotationProperties";
 

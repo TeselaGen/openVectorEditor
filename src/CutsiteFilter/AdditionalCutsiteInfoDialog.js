@@ -20,7 +20,7 @@ import {
   aliasedEnzymesByName,
   cutSequenceByRestrictionEnzyme,
   defaultEnzymesByName
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import { withRestrictionEnzymes } from "./withRestrictionEnzymes";
 import { getEnzymeAliases } from "../utils/editorUtils";
 

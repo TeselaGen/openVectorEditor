@@ -13,7 +13,7 @@ import { divideBy3 } from "../utils/proteinUtils";
 import { getSelectionMessage } from "../utils/editorUtils";
 import useMeltingTemp from "../utils/useMeltingTemp";
 import MeltingTemp from "./MeltingTemp";
-import { getSequenceWithinRange } from "ve-range-utils";
+import { getSequenceWithinRange } from "@teselagen/range-utils";
 
 const EditReadOnlyItem = connectToEditor(({ readOnly }) => ({
   readOnly

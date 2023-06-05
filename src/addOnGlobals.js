@@ -28,7 +28,7 @@ import {
   convertApELikeRegexToRegex,
   autoAnnotate,
   tidyUpAnnotation
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import shortid from "shortid";
 
 window.addOnGlobals = {

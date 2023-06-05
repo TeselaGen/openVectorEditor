@@ -5,7 +5,7 @@ import getXStartAndWidthOfRowAnnotation from "./getXStartAndWidthOfRowAnnotation
 import IntervalTree from "node-interval-tree";
 import getYOffset from "../CircularView/getYOffset";
 import { reduce, values, startCase, filter, clamp } from "lodash";
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import { doesLabelFitInAnnotation } from "./utils";
 import getAnnotationNameAndStartStopString from "../utils/getAnnotationNameAndStartStopString";
 

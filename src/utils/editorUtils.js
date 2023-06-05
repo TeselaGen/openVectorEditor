@@ -1,4 +1,4 @@
-import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
+import { getRangeLength, getSequenceWithinRange } from "@teselagen/range-utils";
 import React from "react";
 import { divideBy3 } from "./proteinUtils";
 import {
@@ -6,10 +6,10 @@ import {
   calculatePercentGC,
   bioData,
   aliasedEnzymesByName
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import { get, sortBy } from "lodash";
 import VeWarning from "../helperComponents/VeWarning";
-import { normalizePositionByRangeLength } from "ve-range-utils";
+import { normalizePositionByRangeLength } from "@teselagen/range-utils";
 import { filter } from "lodash";
 
 export function getSelectionMessage({

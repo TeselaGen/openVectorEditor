@@ -6,14 +6,14 @@ import {
   generateField,
   RadioGroupField
 } from "teselagen-react-components";
-import { getReverseComplementSequenceString } from "ve-sequence-utils";
+import { getReverseComplementSequenceString } from "@teselagen/sequence-utils";
 
 import AddOrEditAnnotationDialog from "../AddOrEditAnnotationDialog";
-import { convertRangeTo0Based } from "ve-range-utils";
+import { convertRangeTo0Based } from "@teselagen/range-utils";
 import { getAcceptedChars } from "../../utils/editorUtils";
 import classNames from "classnames";
 import "./style.css";
-import { getSequenceWithinRange } from "ve-range-utils";
+import { getSequenceWithinRange } from "@teselagen/range-utils";
 import { flatMap } from "lodash";
 import CaretPositioning, {
   selectionSaveCaretPosition

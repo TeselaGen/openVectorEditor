@@ -24,15 +24,15 @@ module.exports = {
     aliases: {
       // **** You can comment one or more of these in to override an npm module with a local module. *****
       // **** Just be sure to comment them back out before committing! *****
-      // "ve-range-utils":
+      // "@teselagen/range-utils":
       //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../ve-range-utils/src/"),
-      // "ve-sequence-utils":
+      //   path.resolve(__dirname, "../tg-oss/packages/@teselagen/range-utils/src/"),
+      // "@teselagen/sequence-utils":
       //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../ve-sequence-utils/src/"),
-      // "bio-parsers":
+      //   path.resolve(__dirname, "../tg-oss/packages/@teselagen/sequence-utils/src/"),
+      // "@teselagen/bio-parsers":
       //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../ve-sequence-parsers/src/parsers/"),
+      //   path.resolve(__dirname, "../tg-oss/packages/@teselagen/bio-parsers/src/parsers/"),
       //downgrade to nwb @ 0.24.5 to get this to work for now
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||

@@ -33,9 +33,11 @@
     "@fontsource/ubuntu-mono": "^4.5.11",
     "@hello-pangea/dnd": "^16.2.0",
     "@risingstack/react-easy-state": "^6.3.0",
+    "@teselagen/bio-parsers": "^0.1.1",
+    "@teselagen/range-utils": "^0.0.2",
     "@teselagen/react-list": "^0.8.18",
+    "@teselagen/sequence-utils": "^0.1.1",
     "@use-gesture/react": "^10.2.23",
-    "bio-parsers": "^9.3.2",
     "classnames": "^2.3.2",
     "clipboard": "2.0.8",
     "color": "^3.2.1",
@@ -67,13 +69,11 @@
     "redux-thunk": "2.4.1",
     "reselect": "^4.1.7",
     "shortid": "^2.2.16",
-    "teselagen-react-components": "30.13.41",
+    "teselagen-react-components": "30.14.19",
     "tg-use-local-storage-state": "^16.0.3",
     "use-debounce": "^8.0.4",
     "use-local-storage-state": "^13.0.0",
-    "validate.io-nonnegative-integer-array": "^1.0.1",
-    "ve-range-utils": "^2.6.6",
-    "ve-sequence-utils": "^5.2.16"
+    "validate.io-nonnegative-integer-array": "^1.0.1"
   },
   "peerDependencies": {
     "react": "^16.10.2",

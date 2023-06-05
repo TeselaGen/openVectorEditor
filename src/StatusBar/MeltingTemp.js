@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Icon, Popover, RadioGroup } from "@blueprintjs/core";
 
-import { calculateTm, calculateNebTm } from "ve-sequence-utils";
+import { calculateTm, calculateNebTm } from "@teselagen/sequence-utils";
 
 import { isString } from "lodash";
 import { popoverOverflowModifiers } from "teselagen-react-components";
@@ -34,7 +34,7 @@ export default function MeltingTemp({
             <a
               rel="noopener noreferrer"
               target="_blank"
-              href="https://github.com/TeselaGen/ve-sequence-utils"
+              href="https://github.com/TeselaGen/@teselagen/sequence-utils"
             >
               algorithms
             </a>

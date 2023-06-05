@@ -36,7 +36,7 @@ import {
   unset,
   omit
 } from "lodash";
-import { getSequenceDataBetweenRange } from "ve-sequence-utils";
+import { getSequenceDataBetweenRange } from "@teselagen/sequence-utils";
 import ReactList from "@teselagen/react-list";
 import ReactDOM from "react-dom";
 

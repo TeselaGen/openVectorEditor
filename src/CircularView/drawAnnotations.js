@@ -1,7 +1,7 @@
 import React from "react";
 import IntervalTree from "node-interval-tree";
 import { sortBy, noop } from "lodash";
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import getRangeAngles from "./getRangeAnglesSpecial";
 import getYOffset from "./getYOffset";
 import withHover from "../helperComponents/withHover";

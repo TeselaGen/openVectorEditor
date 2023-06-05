@@ -1,5 +1,5 @@
 import React from "react";
-import { getFeatureToColorMap } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "@teselagen/sequence-utils";
 
 export const typeField = {
   path: "type",

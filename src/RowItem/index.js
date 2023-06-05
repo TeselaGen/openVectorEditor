@@ -2,9 +2,9 @@ import {
   normalizePositionByRangeLength,
   getSequenceWithinRange,
   getOverlapsOfPotentiallyCircularRanges
-} from "ve-range-utils";
+} from "@teselagen/range-utils";
 import { map, camelCase, startCase, startsWith, flatMap, assign } from "lodash";
-import { getComplementSequenceString } from "ve-sequence-utils";
+import { getComplementSequenceString } from "@teselagen/sequence-utils";
 import React, { useMemo } from "react";
 import pluralize from "pluralize";
 import SelectionLayer from "./SelectionLayer";

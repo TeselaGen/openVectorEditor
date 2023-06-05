@@ -18,7 +18,7 @@ import {
   getMiddleOfRange,
   getSequenceWithinRange,
   trimRangeByAnotherRange
-} from "ve-range-utils";
+} from "@teselagen/range-utils";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import withEditorInteractions from "../withEditorInteractions";

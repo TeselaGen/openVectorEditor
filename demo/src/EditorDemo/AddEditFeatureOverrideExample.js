@@ -16,12 +16,12 @@ import {
   convertRangeTo0Based,
   isRangeWithinRange,
   checkIfPotentiallyCircularRangesOverlap
-} from "ve-range-utils";
+} from "@teselagen/range-utils";
 import {
   getFeatureToColorMap,
   getFeatureTypes,
   tidyUpAnnotation
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import classNames from "classnames";
 
 import { withEditorProps } from "../../../src";

@@ -4,7 +4,7 @@ import {
   jsonToGenbank,
   jsonToFasta,
   cleanUpTeselagenJsonForExport
-} from "bio-parsers";
+} from "@teselagen/bio-parsers";
 import { HTMLSelect } from "@blueprintjs/core";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";

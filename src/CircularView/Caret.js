@@ -1,5 +1,5 @@
 import isNumber from "lodash/isNumber";
-import { getRangeAngles } from "ve-range-utils";
+import { getRangeAngles } from "@teselagen/range-utils";
 import PositionAnnotationOnCircle from "./PositionAnnotationOnCircle";
 import React from "react";
 import draggableClassnames from "../constants/draggableClassnames";

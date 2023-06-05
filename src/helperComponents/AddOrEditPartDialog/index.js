@@ -6,7 +6,7 @@ import {
   CheckboxField,
   InfoHelper
 } from "teselagen-react-components";
-import { getFeatureTypes } from "ve-sequence-utils";
+import { getFeatureTypes } from "@teselagen/sequence-utils";
 import { get } from "lodash";
 
 const renderTypes = ({ readOnly }) => (

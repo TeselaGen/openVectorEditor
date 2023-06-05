@@ -5,7 +5,7 @@ import { Button, Callout, Card } from "@blueprintjs/core";
 import { hideDialog } from "../GlobalDialogUtils";
 import SimpleCircularOrLinearView from "../SimpleCircularOrLinearView";
 import React, { useState } from "react";
-import { tidyUpSequenceData } from "ve-sequence-utils";
+import { tidyUpSequenceData } from "@teselagen/sequence-utils";
 
 export const MultipleSeqsDetectedOnImportDialog = wrapDialog({
   title: "Multiple Sequences Detected"

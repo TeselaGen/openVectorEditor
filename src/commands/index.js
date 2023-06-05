@@ -1,6 +1,9 @@
 import React from "react";
 import { Tag, Classes, NumericInput, Slider } from "@blueprintjs/core";
-import { convertRangeTo0Based, getSequenceWithinRange } from "ve-range-utils";
+import {
+  convertRangeTo0Based,
+  getSequenceWithinRange
+} from "@teselagen/range-utils";
 import classnames from "classnames";
 import pluralize from "pluralize";
 import { showConfirmationDialog } from "teselagen-react-components";
@@ -8,7 +11,7 @@ import {
   adjustBpsToReplaceOrInsert,
   annotationTypes,
   getSequenceDataBetweenRange
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import { oveCommandFactory } from "../utils/commandUtils";
 import {
   upperFirst,

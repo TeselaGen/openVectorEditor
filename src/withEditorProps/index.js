@@ -1,10 +1,10 @@
-import { getFeatureToColorMap } from "ve-sequence-utils";
+import { getFeatureToColorMap } from "@teselagen/sequence-utils";
 import {
   anyToJson,
   jsonToGenbank,
   jsonToFasta,
   cleanUpTeselagenJsonForExport
-} from "bio-parsers";
+} from "@teselagen/bio-parsers";
 import FileSaver from "file-saver";
 
 import { bindActionCreators } from "redux";
@@ -19,14 +19,14 @@ import {
   insertSequenceDataAtPositionOrRange,
   getReverseComplementSequenceAndAnnotations,
   rotateSequenceDataToPosition
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import { Intent } from "@blueprintjs/core";
 import {
   convertRangeTo0Based,
   getRangeLength,
   invertRange,
   normalizeRange
-} from "ve-range-utils";
+} from "@teselagen/range-utils";
 import shortid from "shortid";
 
 import addMetaToActionCreators from "../redux/utils/addMetaToActionCreators";

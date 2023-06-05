@@ -2,7 +2,7 @@ import React from "react";
 import { map } from "lodash";
 import { fudge2, realCharWidth } from "../constants";
 import getYOffset from "../../CircularView/getYOffset";
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import { getStructuredBases } from "./getStructuredBases";
 
 export function getBasesToShow({

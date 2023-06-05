@@ -11,7 +11,7 @@ import {
   validateCSVRow
 } from "./fileUtils";
 import downloadjs from "downloadjs";
-import { convertProteinSeqToDNAIupac } from "ve-sequence-utils";
+import { convertProteinSeqToDNAIupac } from "@teselagen/sequence-utils";
 
 const {
   shortid,

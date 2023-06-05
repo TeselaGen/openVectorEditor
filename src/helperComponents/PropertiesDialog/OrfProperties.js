@@ -6,7 +6,7 @@ import {
 } from "teselagen-react-components";
 import { map } from "lodash";
 // import { Button } from "@blueprintjs/core";
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import { getOrfColor } from "../../constants/orfFrameToColorMap";
 import { connectToEditor } from "../../withEditorProps";
 import { compose } from "recompose";

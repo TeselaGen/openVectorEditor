@@ -1,6 +1,6 @@
 import { set } from "lodash";
-import { tidyUpSequenceData } from "ve-sequence-utils";
-import { annotationTypes } from "ve-sequence-utils";
+import { tidyUpSequenceData } from "@teselagen/sequence-utils";
+import { annotationTypes } from "@teselagen/sequence-utils";
 
 export default function updateEditor(
   store,

@@ -5,9 +5,9 @@ import { getVisibleStartEnd } from "../utils/getVisibleStartEnd";
 import { fudge2, realCharWidth } from "./constants";
 import dnaToColor, { getDnaColor } from "../constants/dnaToColor";
 import { hoveredAnnEasyStore } from "../helperComponents/withHover";
-import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
 import { partOverhangs } from "./partOverhangs";
-import { isPositionWithinRange } from "ve-range-utils";
+import { isPositionWithinRange } from "@teselagen/range-utils";
 
 const getChunk = (sequence, chunkSize, chunkNumber) =>
   sequence.slice(chunkSize * chunkNumber, chunkSize * (chunkNumber + 1));

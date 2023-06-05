@@ -1,4 +1,4 @@
-import { convertRangeTo0Based } from "ve-range-utils";
+import { convertRangeTo0Based } from "@teselagen/range-utils";
 import classNames from "classnames";
 import React from "react";
 
@@ -9,7 +9,7 @@ import { Button, Intent, Classes } from "@blueprintjs/core";
 
 import { NumericInputField } from "teselagen-react-components";
 import { get } from "lodash";
-import { getRangeLength } from "ve-range-utils";
+import { getRangeLength } from "@teselagen/range-utils";
 import { tryToRefocusEditor } from "../utils/editorUtils";
 import tgFormValues from "../utils/tgFormValues";
 

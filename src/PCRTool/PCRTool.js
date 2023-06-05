@@ -11,8 +11,8 @@ import {
   getSequenceDataBetweenRange,
   tidyUpSequenceData,
   shiftAnnotationsByLen
-} from "ve-sequence-utils";
-import { getRangeLength, getSequenceWithinRange } from "ve-range-utils";
+} from "@teselagen/sequence-utils";
+import { getRangeLength, getSequenceWithinRange } from "@teselagen/range-utils";
 
 function PCRTool(props) {
   const {

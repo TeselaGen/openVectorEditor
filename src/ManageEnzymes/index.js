@@ -4,12 +4,12 @@ import React from "react";
 import { DialogFooter, InfoHelper } from "teselagen-react-components";
 
 // import './style.css';
-import { cutSequenceByRestrictionEnzyme } from "ve-sequence-utils";
+import { cutSequenceByRestrictionEnzyme } from "@teselagen/sequence-utils";
 // import QuestionTooltip from '../../components/QuestionTooltip';
 import {
   defaultEnzymesByName,
   getReverseComplementSequenceString
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import EnzymeViewer from "../EnzymeViewer";
 import "./style.css";
 import { connectToEditor } from "../withEditorProps";

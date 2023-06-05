@@ -31,7 +31,7 @@ import {
   aliasedEnzymesByName,
   defaultEnzymesByName,
   getCutsitesFromSequence
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 import { store, view } from "@risingstack/react-easy-state";
 import { showDialog } from "../../GlobalDialogUtils";
 

@@ -7,7 +7,7 @@ import pureNoFunc from "../../utils/pureNoFunc";
 import "./style.css";
 
 import getXStartAndWidthOfRangeWrtRow from "../getXStartAndWidthOfRangeWrtRow";
-import { getOverlapsOfPotentiallyCircularRanges } from "ve-range-utils";
+import { getOverlapsOfPotentiallyCircularRanges } from "@teselagen/range-utils";
 import {
   getSelectionMessage,
   preventDefaultStopPropagation

@@ -1,7 +1,7 @@
 import shortid from "shortid";
 
 import { cloneDeep, startCase } from "lodash";
-import { convertRangeTo1Based } from "ve-range-utils";
+import { convertRangeTo1Based } from "@teselagen/range-utils";
 
 export const dialogHolder = {};
 //if an overrideName is passed, then that dialog can be overridden if an overriding dialog is passed as a prop to the <Editor/>

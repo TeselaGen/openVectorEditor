@@ -4,7 +4,7 @@ import { compose, withProps } from "recompose";
 // import selectionLayer from "../redux/selectionLayer";
 import React from "react";
 import { DataTable } from "teselagen-react-components";
-import { getCutsiteType, getVirtualDigest } from "ve-sequence-utils";
+import { getCutsiteType, getVirtualDigest } from "@teselagen/sequence-utils";
 import CutsiteFilter from "../CutsiteFilter";
 import Ladder from "./Ladder";
 // import getCutsiteType from "./getCutsiteType";

@@ -1,6 +1,8 @@
 const { isString } = require("lodash");
 const toRegexRange = require("to-regex-range");
-const { insertSequenceDataAtPositionOrRange } = require("ve-sequence-utils");
+const {
+  insertSequenceDataAtPositionOrRange
+} = require("@teselagen/sequence-utils");
 
 // ***********************************************
 // This example commands.js shows you how to

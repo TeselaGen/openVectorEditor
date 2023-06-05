@@ -22,7 +22,7 @@ import {
   aliasedEnzymesByName,
   cutSequenceByRestrictionEnzyme,
   defaultEnzymesByName
-} from "ve-sequence-utils";
+} from "@teselagen/sequence-utils";
 
 const NoResults = withRestrictionEnzymes((props) => {
   const {

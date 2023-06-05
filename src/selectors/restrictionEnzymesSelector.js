@@ -1,6 +1,9 @@
 import { forEach } from "lodash";
 import { createSelector } from "reselect";
-import { defaultEnzymesByName, aliasedEnzymesByName } from "ve-sequence-utils";
+import {
+  defaultEnzymesByName,
+  aliasedEnzymesByName
+} from "@teselagen/sequence-utils";
 
 export default createSelector(
   () => defaultEnzymesByName,
