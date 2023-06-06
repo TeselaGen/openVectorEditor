@@ -29,6 +29,7 @@ export const config = {
       name: 'openVectorEditor',
       // the proper extensions will be added
       fileName: 'index',
+      formats: ['es', 'cjs', 'umd'],
     },
     rollupOptions: {
       plugins: [

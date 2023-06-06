@@ -2,11 +2,10 @@
   "name": "open-vector-editor",
   "version": "18.2.34",
   "description": "Teselagen's Open Source Vector Editor",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "module": "es/index.js",
   "exports": {
-    "import": "./es/index.js",
-    "require": "./lib/index.js"
+    "import": "./dist/index.mjs"
   },
   "files": [
     "css",
@@ -15,11 +14,15 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component --copy-files --no-demo",
-    "buildWithDemo": "nwb build-react-component --copy-files",
+    "start": "vite --port 3344",
+    "build": "vite build",
+    "preview": "vite preview",
+    "buildWithDemo": "vite build -c vite.config.demo.js",
     "build-watch": "nodemon  --watch src --exec \"rm .babelrc; yarn build\" ",
     "clean": "nwb clean-module && npm clean-demo",
-    "start": "nwb serve-react-demo --port 3344",
+    "OLD_buildWithDemo": "nwb build-react-component --copy-files",
+    "OLD_build": "nwb build-react-component --copy-files --no-demo",
+    "OLD_start": "nwb serve-react-demo --port 3344",
     "localj5": "AMQP=localhost:5672 REMOTE_J5=http://localhost:10000 nwb serve-react-demo --port 3344",
     "c": "yarn cypress open --e2e --browser chrome",
     "test-e2e": "yarn cypress run --record --key 373658d4-4931-4ffd-9263-8eb78a838ab9",
@@ -36,7 +39,7 @@
     "@teselagen/bio-parsers": "^0.1.1",
     "@teselagen/range-utils": "^0.0.2",
     "@teselagen/react-list": "^0.8.18",
-    "@teselagen/sequence-utils": "^0.1.1",
+    "@teselagen/sequence-utils": "^0.1.5",
     "@use-gesture/react": "^10.2.23",
     "classnames": "^2.3.2",
     "clipboard": "2.0.8",
@@ -84,6 +87,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
+    "@vitejs/plugin-react": "^4.0.0",
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.1.1",
     "copy-to-clipboard": "^3.3.3",
@@ -100,7 +104,8 @@
     "react-addons-perf": "^15.4.2",
     "react-dom": "^17.0.2",
     "react-markdown": "4.0.6",
-    "to-regex-range": "^5.0.1"
+    "to-regex-range": "^5.0.1",
+    "vite": "^4.3.9"
   },
   "resolutions": {
     "listr": "0.14.3"

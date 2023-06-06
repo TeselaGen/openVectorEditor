@@ -3,6 +3,8 @@ es
 lib
 node_modules
 umd
+/dist 
+dist
 demo/dist/
 /es
 /demo/dist/
