@@ -5,7 +5,7 @@ import React from "react";
 import { store } from "@risingstack/react-easy-state";
 import * as hoveredAnnotationActions from "../redux/hoveredAnnotation";
 import { withHandlers, branch } from "recompose";
-import { annotationTypes } from "@teselagen/sequence-utils";
+import { modifiableTypes } from "@teselagen/sequence-utils";
 
 export const HoveredIdContext = React.createContext({
   hoveredId: "" // default value
@@ -70,9 +70,7 @@ export default compose(
       const isIdHashmap = typeof id === "object";
       const idToPass = isIdHashmap ? Object.keys(id)[0] : id;
       const annot = props?.annotation || props?.label?.annotation;
-      if (
-        annotationTypes.modifiableTypes.includes(annot?.annotationTypePlural)
-      ) {
+      if (modifiableTypes.includes(annot?.annotationTypePlural)) {
         hoveredAnnEasyStore.hoveredAnn = annot;
       }
       //because the calling onHover can slow things down, we disable it if dragging or scrolling

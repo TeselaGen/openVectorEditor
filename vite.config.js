@@ -15,7 +15,9 @@ const rollupPlugin = (matchers) => ({
     }
   }
 });
-export const config = {
+
+
+export default defineConfig({
   plugins: [
     react()
   ],
@@ -23,6 +25,7 @@ export const config = {
     'process.platform': {}
   },
   build: {
+    target: "es2015",
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/index.js'),
@@ -30,6 +33,7 @@ export const config = {
       // the proper extensions will be added
       fileName: 'index',
       formats: ['es', 'cjs', 'umd'],
+      
     },
     rollupOptions: {
       plugins: [
@@ -52,6 +56,4 @@ export const config = {
     include: [sourceJSPattern],
     exclude: [],
   },
-}
-
-export default defineConfig(config);
+});
