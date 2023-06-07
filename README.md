@@ -23,11 +23,12 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 ## OVE out in the wild (Who's using OVE):
 
 - Teselagen - https://teselagen.com/ (Combinatorial DNA design + Lab management + Ordering + Biohub)
-- ove-electron - https://github.com/teselagen/ove-electron (A simple desktop plasmid editor a la ApE)
-- JBEI - https://bioparts.org/ (an auto annotation and blast tool)
-- JBEI - https://public-registry.jbei.org/ (a lab management and design tool)
-- Labii - https://docs.labii.com/widgets/biology/open-vector-editor (lab management tool)
-- eLabFTW - https://www.elabftw.net/ (A free and open source electronic lab notebook) [Live demo](https://demo.elabftw.net/login.php)
+- ove-electron - https://github.com/teselagen/ove-electron (Simple desktop plasmid editor a la ApE)
+- JBEI - https://bioparts.org/ (Auto annotation and blast tool)
+- JBEI - https://public-registry.jbei.org/ (Lab management and design)
+- Labii - https://docs.labii.com/widgets/biology/open-vector-editor (Lab management)
+- eLabFTW - https://www.elabftw.net/ (Open source ELN)
+- Colabra - https://www.colabra.ai/ (Lab management, ELN, and R&D AI Copilot) [Docs](https://docs.colabra.ai/guide/reference/run-your-experiments/slash-commands/dna-sequences)
 
 # Table of Contents
 
