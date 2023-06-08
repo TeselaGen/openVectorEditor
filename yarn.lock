@@ -1800,10 +1800,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@teselagen/bio-parsers@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@teselagen/bio-parsers/-/bio-parsers-0.1.6.tgz#65283511e7e863c17ef9f8d386aabfb84e41f0b9"
-  integrity sha512-R78iOT21XpAOAinar2eTLSIiWK6AYoJiVen2HDcOeRtM4Aby8utl6qLbwIzs6fsxfH7HyH7L0lDCyJuSJhfRgw==
+"@teselagen/bio-parsers@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@teselagen/bio-parsers/-/bio-parsers-0.1.13.tgz#17cc45a4818cc208e5944d31de4dc931537bf318"
+  integrity sha512-AWuB0MpQWDvgXOxp1YbFopdYD6UWxFArQwJpYpLvSm4+zYQzijJsogp/9aO4vY5YUZ7CgnitRqXdk55D+YB5Bg==
   dependencies:
     "@gmod/gff" "^1.2.1"
     buffer "^6.0.3"
@@ -1825,10 +1825,10 @@
     lodash "^4.17.21"
     papaparse "^5.4.1"
 
-"@teselagen/range-utils@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@teselagen/range-utils/-/range-utils-0.1.6.tgz#52544aa91f6edeafe3405c0ad03ea3aa4538e69d"
-  integrity sha512-pRU9P6m9VKP6/oUxYfrJZX5lMkZT3g3Qn4JSdYL32QX5/B53t2k4u2Oz3UmJh/lBEZNXlyoQ8B5FloNRxBSIKw==
+"@teselagen/range-utils@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@teselagen/range-utils/-/range-utils-0.1.12.tgz#346e1dc89b517154474ca1771bc80b3e31c6137b"
+  integrity sha512-V1xGchCowzXdKlvntsif5r3jx4squvlM542sjaj5uSV/UWOj0NBuzcD/ylX6pKHTXTip6CXt3aMbyCp6cL7YtA==
   dependencies:
     lodash "^4.17.21"
 
@@ -1847,10 +1847,10 @@
     "@teselagen/react-list" "0.8.18"
     classnames "^2.2.5"
 
-"@teselagen/sequence-utils@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@teselagen/sequence-utils/-/sequence-utils-0.1.6.tgz#6a3edd295c2c451b56020ce32e8dd0e00e97c738"
-  integrity sha512-U2z+/kr1X4x5gZzNvJtQ5R935KybN/yzpnE02QMM8JqmEuhGuz7EAnRFvmJeJK5f7wdjqkYDy+1iGW6J80SYfg==
+"@teselagen/sequence-utils@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@teselagen/sequence-utils/-/sequence-utils-0.1.12.tgz#d7c9c27c4aba61e9b8d455e38a5bb0550e9f11e8"
+  integrity sha512-llIW7K3mSZG1o9O5brj1IMadtynzSgJb8DjNBBmMXLHL7R14w8yObgEiIRNInNOYWO8dUn81r8qENII/1mY6GA==
   dependencies:
     bson-objectid "^1.1.1"
     escape-string-regexp "^1.0.5"
@@ -12179,10 +12179,10 @@ terser@^4.1.2, terser@^4.6.13, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-teselagen-react-components@30.14.19:
-  version "30.14.19"
-  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.14.19.tgz#be6f453afe0569ed3b4fef4c5e35e80b3aebb28b"
-  integrity sha512-0eV2hIy4YmWdxXjR1uUgPRB0YZbpqGv5v87BOgWB9w4IMRG3rLVCB/tvbstxNg3APci7uy5A6SGqZJl/yz42RA==
+teselagen-react-components@30.14.24:
+  version "30.14.24"
+  resolved "https://registry.yarnpkg.com/teselagen-react-components/-/teselagen-react-components-30.14.24.tgz#dcce03ac29853d23db876922975e664766d2686f"
+  integrity sha512-uqiZJfnM7817hGfUMVZHirykc3ZPSMbJKUcj++a9UeFTk4qjmCDYz1NU6sUk1FNpUspoQEvdcIG/6q5YzJRckA==
   dependencies:
     "@blueprintjs/core" "3.52.0"
     "@blueprintjs/datetime" "3.23.19"

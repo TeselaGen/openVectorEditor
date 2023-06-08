@@ -26,13 +26,13 @@ module.exports = {
       // **** Just be sure to comment them back out before committing! *****
       // "@teselagen/range-utils":
       //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../tg-oss/packages/@teselagen/range-utils/src/"),
+      //   path.resolve(__dirname, "../tg-oss/packages/range-utils/src/"),
       // "@teselagen/sequence-utils":
       //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../tg-oss/packages/@teselagen/sequence-utils/src/"),
+      //   path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src/"),
       // "@teselagen/bio-parsers":
       //   console.log("comment me back out!") ||
-      //   path.resolve(__dirname, "../tg-oss/packages/@teselagen/bio-parsers/src/parsers/"),
+      //   path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src/"),
       //downgrade to nwb @ 0.24.5 to get this to work for now
       // "teselagen-react-components":
       //   console.log("comment me back out!") ||
