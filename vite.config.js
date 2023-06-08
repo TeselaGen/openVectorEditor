@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import * as esbuild from "esbuild";
-import { resolve } from "node:path";
+import path, { resolve } from "node:path";
 
 const sourceJSPattern = /\/src\/.*\.js$/;
 const rollupPlugin = (matchers) => ({
@@ -50,6 +50,13 @@ export default defineConfig({
         ".js": "jsx",
       },
     },
+  },
+  resolve: {
+    alias: {
+      // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
+      // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
+      // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
+    }
   },
   esbuild: {
     loader: "jsx",
