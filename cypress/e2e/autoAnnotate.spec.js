@@ -83,8 +83,6 @@ describe("autoAnnotate", function () {
       "text/csv"
     );
 
-    cy.contains("Review and Edit Data").click();
-    cy.contains("Add File").click();
     cy.contains(".bp3-dialog button", "Annotate").click();
     cy.contains("10 Selected");
 
