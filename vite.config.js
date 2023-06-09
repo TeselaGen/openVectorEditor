@@ -53,7 +53,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "teselagen-react-components": path.resolve(__dirname, "../teselagen-react-components/src"),
+      // "teselagen-react-components": console.log(`comment me out!`) || path.resolve(__dirname, "../teselagen-react-components/src"),
       react: path.join(__dirname, "node_modules/react"),
       "@blueprintjs/core": path.join(
         __dirname,
