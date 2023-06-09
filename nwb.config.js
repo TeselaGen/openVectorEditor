@@ -42,11 +42,11 @@ module.exports = {
       //   path.resolve(__dirname, "../react-draggable"),
 
       //don't comment this out!
-      react: path.join(__dirname, "node_modules/react"),
       // "../teselagen-react-components/node_modules/@blueprintjs/core/": path.join(
       //   __dirname,
       //   "node_modules/@blueprintjs/core"
       // ),
+      react: path.join(__dirname, "node_modules/react"),
       "@blueprintjs/core": path.join(
         __dirname,
         "node_modules/@blueprintjs/core"
@@ -55,14 +55,14 @@ module.exports = {
         __dirname,
         "node_modules/@blueprintjs/datetime"
       ),
-      // "@blueprintjs/core/lib": path.join(
-      //   __dirname,
-      //   "node_modules/@blueprintjs/core/lib"
-      // ),
       "react-dom": path.join(__dirname, "node_modules/react-dom"),
       "react-redux": path.join(__dirname, "node_modules/react-redux"),
       "redux-form": path.join(__dirname, "node_modules/redux-form"),
       redux: path.join(__dirname, "node_modules/redux")
+      // "@blueprintjs/core/lib": path.join(
+      //   __dirname,
+      //   "node_modules/@blueprintjs/core/lib"
+      // ),
     },
     extra: {
       devtool: "source-map"
