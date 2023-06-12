@@ -178,7 +178,7 @@ function ShowInfo({ description, info, type }) {
           style={{ maxWidth: 600, overflow: "auto" }}
           className="bp3-dialog-body"
         >
-          <ReactMarkdown source={description || info} />
+          <ReactMarkdown children={description || info} />
         </div>
       </Dialog>
 
