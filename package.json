@@ -14,7 +14,7 @@
     "umd"
   ],
   "scripts": {
-    "start": "vite --port 3344",
+    "start": "vite --open --port 3344",
     "build": "vite build",
     "buildWithDemo": "vite build -c vite.config.demo.js",
     "NWB_start": "nwb serve-react-demo --port 3344",
