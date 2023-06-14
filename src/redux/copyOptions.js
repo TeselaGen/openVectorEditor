@@ -9,9 +9,9 @@ export const toggleCopyOption = createAction("TOGGLE_COPY_OPTION"); //NOTE!!:: s
 
 export const defaultCopyOptions = {
   features: true,
-  partialFeatures: true,
+  partialFeatures: false,
   parts: true,
-  partialParts: true
+  partialParts: false
 };
 
 // ------------------------------------
