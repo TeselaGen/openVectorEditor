@@ -3623,7 +3623,7 @@ chokidar@^2.0.4, chokidar@^2.1.8:
   optionalDependencies:
     fsevents "^1.2.7"
 
-chokidar@^3.0.0, chokidar@^3.4.1, chokidar@^3.5.2:
+chokidar@^3.0.0, chokidar@^3.4.1, chokidar@^3.5.2, chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -4457,6 +4457,14 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha512-NJGVKPS81XejHcLhaLJS7plab0fK3slPh11mESeeDq2W4ZI5kUKK/LRRdVDvjJseojbPB7ZwjnyOybg3Igea/A==
+
+cypress-vite@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/cypress-vite/-/cypress-vite-1.4.0.tgz#4d2889d62c11aed7188b1082af16210240aac2e6"
+  integrity sha512-BHmOku8q6nRtDGPiBcE7zcAZs56/OsiX5SFoldHEMSQ+I6nnPUU2tcrRNeRsCArONQAvwTu2Da7R/rFGA/DSEg==
+  dependencies:
+    chokidar "^3.5.3"
+    debug "^4.3.4"
 
 cypress@12.9.0:
   version "12.9.0"

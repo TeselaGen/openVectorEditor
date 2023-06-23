@@ -1,9 +1,6 @@
-const { isString } = require("lodash");
-const toRegexRange = require("to-regex-range");
-const {
-  insertSequenceDataAtPositionOrRange
-} = require("@teselagen/sequence-utils");
-
+import { isString } from "lodash";
+import toRegexRange from "to-regex-range";
+import { insertSequenceDataAtPositionOrRange } from "@teselagen/sequence-utils";
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite

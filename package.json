@@ -91,6 +91,7 @@
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.1.1",
     "copy-to-clipboard": "^3.3.3",
+    "cypress-vite": "^1.4.0",
     "eslint": "^8.35.0",
     "eslint-config-teselagen": "6.0.17",
     "gh-pages": "^4.0.0",
