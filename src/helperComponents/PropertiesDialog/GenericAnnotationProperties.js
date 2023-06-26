@@ -207,6 +207,9 @@ const genericAnnotationProperties = ({
                 }
               )
             )}
+            annotationPropertiesSelectedEntities={
+              annotationPropertiesSelectedEntities
+            }
             leftOfSearchBarItems={
               <>
                 {!readOnly && (
