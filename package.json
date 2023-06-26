@@ -1,6 +1,6 @@
 {
   "name": "open-vector-editor",
-  "version": "18.2.36",
+  "version": "18.3.0",
   "description": "Teselagen's Open Source Vector Editor",
   "main": "dist/index.js",
   "module": "es/index.js",
@@ -90,6 +90,7 @@
     "auto-changelog": "^2.4.0",
     "babel-plugin-istanbul": "^6.1.1",
     "copy-to-clipboard": "^3.3.3",
+    "cypress-vite": "^1.4.0",
     "eslint": "^8.35.0",
     "eslint-config-teselagen": "6.0.17",
     "gh-pages": "^4.0.0",
