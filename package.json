@@ -1,11 +1,12 @@
 {
   "name": "open-vector-editor",
-  "version": "18.3.1",
+  "version": "18.3.2",
   "description": "Teselagen's Open Source Vector Editor",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "module": "es/index.js",
   "exports": {
-    "import": "./dist/index.mjs"
+    "import": "./es/index.js",
+    "require": "./lib/index.js"
   },
   "files": [
     "css",
