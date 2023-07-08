@@ -13,6 +13,9 @@ class GenbankView extends React.Component {
   state = {
     fileTypeToView: "genbank"
   };
+
+  select = () => this._input?.select();
+
   render() {
     const { sequenceData = {} } = this.props;
     let filestring;
@@ -48,7 +51,7 @@ class GenbankView extends React.Component {
         <textarea
           data-test="ve-genbank-text"
           readOnly
-          onclick="this.select()"
+          onClick={this.select}
           style={{
             whiteSpace: "pre",
             overflowWrap: "normal",
@@ -57,6 +60,7 @@ class GenbankView extends React.Component {
             fontFamily: "monospace",
             height: 350
           }}
+          ref={(ref) => (this._input = ref)}
           value={filestring}
         />
       </>
