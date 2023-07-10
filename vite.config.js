@@ -54,6 +54,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // "teselagen-react-components": console.log(`comment me out!`) || path.resolve(__dirname, "../teselagen-react-components/src"),
+      // "teselagen-react-components": "@teselagen/ui",
       react: path.join(__dirname, "node_modules/react"),
       "@blueprintjs/core": path.join(
         __dirname,
@@ -66,7 +67,10 @@ export default defineConfig({
       "react-dom": path.join(__dirname, "node_modules/react-dom"),
       "react-redux": path.join(__dirname, "node_modules/react-redux"),
       "redux-form": path.join(__dirname, "node_modules/redux-form"),
-      redux: path.join(__dirname, "node_modules/redux")
+      redux: path.join(__dirname, "node_modules/redux"),
+      // "teselagen-react-components": path.resolve(__dirname, "../tg-oss/packages/ui/src"),
+      // "@teselagen/bounce-loader": path.resolve(__dirname, "../tg-oss/packages/bounce-loader/src"),
+      // "@teselagen/file-utils": path.resolve(__dirname, "../tg-oss/packages/file-utils/src"),
       // "@teselagen/range-utils": path.resolve(__dirname, "../tg-oss/packages/range-utils/src"),
       // "@teselagen/sequence-utils": path.resolve(__dirname, "../tg-oss/packages/sequence-utils/src"),
       // "@teselagen/bio-parsers": path.resolve(__dirname, "../tg-oss/packages/bio-parsers/src"),
