@@ -111,7 +111,8 @@ class AlignmentTool extends React.Component {
       hideModal,
       /* onAlignmentSuccess, */ createNewAlignment,
       // createNewMismatchesList,
-      upsertAlignmentRun
+      upsertAlignmentRun,
+      handleAlignment
     } = this.props;
     const { templateSeqIndex } = this.state;
     const addedSequencesToUse = array_move(addedSequences, templateSeqIndex, 0);
@@ -187,22 +188,26 @@ class AlignmentTool extends React.Component {
       };
     });
 
+    const alignmentDataToSend = {
+      //only send over the bear necessities :)
+      sequencesToAlign: seqInfoToSend,
+      isPairwiseAlignment,
+      isAlignToRefSeq
+    };
+
     const {
       alignedSequences: _alignedSequences,
       pairwiseAlignments,
       alignmentsToRefSeq
-    } = await (
-      await fetch({
-        url: replaceProtocol("http://j5server.teselagen.com/alignment/run"),
-        method: "post",
-        body: JSON.stringify({
-          //only send over the bear necessities :)
-          sequencesToAlign: seqInfoToSend,
-          isPairwiseAlignment,
-          isAlignToRefSeq
-        })
-      })
-    ).json();
+    } = (await handleAlignment)
+      ? handleAlignment(alignmentDataToSend)
+      : await (
+          await fetch({
+            url: replaceProtocol("http://j5server.teselagen.com/alignment/run"),
+            method: "post",
+            body: JSON.stringify(alignmentDataToSend)
+          })
+        ).json();
 
     // alignmentsToRefSeq set to alignedSequences for now
     let alignedSequences = _alignedSequences;

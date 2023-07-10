@@ -1,4 +1,5 @@
 export const userDefinedHandlersAndOpts = [
+  "handleAlignment",
   "defaultLinkedOligoMessage",
   "allowMultipleFeatureDirections",
   "getAdditionalEditAnnotationComps",
