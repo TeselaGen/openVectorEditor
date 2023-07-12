@@ -143,10 +143,10 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
-            sequence: true,
-            translations: false,
             ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
+            sequence: true,
             reverseSequence: !sequenceData?.isSingleStrandedDNA,
+            translations: false,
             aminoAcidNumbers: false,
             primaryProteinSequence: false
           },
