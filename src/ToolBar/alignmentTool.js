@@ -180,17 +180,9 @@ class AlignmentTool extends React.Component {
       return url.replace("http://", window.location.protocol + "//");
     };
 
-    const seqInfoToSend = seqsToAlign.map(({ sequence, name, id }) => {
-      return {
-        sequence,
-        name,
-        id
-      };
-    });
-
     const alignmentDataToSend = {
       //only send over the bear necessities :)
-      sequencesToAlign: seqInfoToSend,
+      sequencesToAlign: seqsToAlign,
       isPairwiseAlignment,
       isAlignToRefSeq
     };
