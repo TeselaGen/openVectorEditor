@@ -60,13 +60,13 @@ export default function updateEditor(
 
           annotationVisibility: {
             caret: true,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: false,
             reverseSequence: false,
             cutsites: false,
             translations: false,
             aminoAcidNumbers: false,
-            primaryProteinSequence: true
+            primaryProteinSequence: true,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
           },
           annotationsToSupport: {
             features: true,
@@ -87,13 +87,13 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
             cutsites: false,
             reverseSequence: false,
             translations: false,
             aminoAcidNumbers: false,
-            primaryProteinSequence: false
+            primaryProteinSequence: false,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
           },
           annotationsToSupport: {
             features: true,
@@ -114,13 +114,13 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
             cutsites: false,
             reverseSequence: false,
             translations: false,
             aminoAcidNumbers: false,
-            primaryProteinSequence: false
+            primaryProteinSequence: false,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
           },
           annotationsToSupport: {
             features: true,
@@ -143,12 +143,12 @@ export default function updateEditor(
           },
           annotationVisibility: {
             caret: true,
-            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
             sequence: true,
             reverseSequence: !sequenceData?.isSingleStrandedDNA,
             translations: false,
             aminoAcidNumbers: false,
-            primaryProteinSequence: false
+            primaryProteinSequence: false,
+            ...annotationVisibility, //we spread this here to allow the user to override this .. if they must!
           },
           annotationsToSupport: {
             features: true,
