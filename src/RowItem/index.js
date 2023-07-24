@@ -74,6 +74,7 @@ export default function RowItem(props) {
     rowTopComp,
     rowBottomComp,
     isProtein,
+    isRna,
     tickSpacing,
     truncateLabelsThatDoNotFit = true,
     aminoAcidNumbersHeight = rowHeights.aminoAcidNumbers.height,
@@ -141,7 +142,8 @@ export default function RowItem(props) {
   const { sequence = "", cutsites = [] } = row;
 
   const reverseSequence = getComplementSequenceString(
-    (alignmentData && alignmentData.sequence) || sequence
+    (alignmentData && alignmentData.sequence) || sequence,
+    isRna
   );
   const getGaps = useMemo(() => {
     if (alignmentData) {
