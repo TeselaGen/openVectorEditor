@@ -1,3 +1,20 @@
+# THIS REPO HAS MOVED! 
+
+https://github.com/TeselaGen/tg-oss/tree/main/packages/ove
+
+🙏🙏 PLEASE MAKE ALL ISSUES/PRs there! 🙏🙏
+
+
+# THIS REPO HAS MOVED! 
+# THIS REPO HAS MOVED! 
+# THIS REPO HAS MOVED! 
+
+
+
+
+
+
+
 [![openVectorEditor](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/mp89gp/&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/mp89gp/runs)
 
 Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor Component
@@ -34,6 +51,10 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
 
 <!-- TOC -->
 
+- [THIS REPO HAS MOVED!](#this-repo-has-moved)
+- [THIS REPO HAS MOVED!](#this-repo-has-moved-1)
+- [THIS REPO HAS MOVED!](#this-repo-has-moved-2)
+- [THIS REPO HAS MOVED!](#this-repo-has-moved-3)
   - [[CHANGELOG](CHANGELOG.md)](#changelogchangelogmd)
   - [Issue Tracking Board: https://github.com/orgs/TeselaGen/projects/10](#issue-tracking-board-httpsgithubcomorgsteselagenprojects10)
   - [Demo: http://teselagen.github.io/openVectorEditor/](#demo-httpteselagengithubioopenvectoreditor)
@@ -85,6 +106,9 @@ Congrats, you've made it to the repo for Teselagen's Open Source Vector Editor C
   - [Prerequisites](#prerequisites)
   - [Outside Developer Set Up Steps](#outside-developer-set-up-steps)
   - [(advanced) Working with locally linked modules](#advanced-working-with-locally-linked-modules)
+- [THIS REPO HAS MOVED!](#this-repo-has-moved-4)
+- [THIS REPO HAS MOVED!](#this-repo-has-moved-5)
+- [THIS REPO HAS MOVED!](#this-repo-has-moved-6)
 
 <!-- /TOC -->
 
@@ -747,3 +771,7 @@ comment in whatever module you want to have linked locally (@teselagen/range-uti
 you'll need to have that module cloned down from github on your machine's file system for this to work
 ```
 
+
+# THIS REPO HAS MOVED! 
+# THIS REPO HAS MOVED! 
+# THIS REPO HAS MOVED! 
