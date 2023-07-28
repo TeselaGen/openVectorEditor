@@ -19,7 +19,7 @@ export default createReducer(
     [updateReadOnlyMode]: (state, payload) => {
       return payload;
     },
-    [toggleReadOnlyMode]: state => {
+    [toggleReadOnlyMode]: (state) => {
       return !state;
     }
   },
