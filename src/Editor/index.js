@@ -342,46 +342,46 @@ export class Editor extends React.Component {
     const { previewModeFullscreen: uncontrolledPreviewModeFullscreen } =
       this.state;
     const {
-      ToolBarProps = {},
-      StatusBarProps = {},
-      extraRightSidePanel,
-      editorName,
-      height: _height,
-      showCircularity,
-      hideSingleImport,
-      minHeight = 400,
-      showMenuBar,
+      allowPanelTabDraggable = true,
       annotationsToSupport,
-      withRotateCircularView = true,
-      withZoomCircularView = true,
-      withZoomLinearView = true,
-      displayMenuBarAboveTools = true,
-      updateSequenceData,
-      readOnly,
-      setPanelAsActive,
-      style = {},
-      maxAnnotationsToDisplay,
-      togglePanelFullScreen,
-      collapseSplitScreen,
-      expandTabToSplitScreen,
-      closePanel,
-      onSave,
-      hideStatusBar,
       caretPositionUpdate,
+      closePanel,
+      collapseSplitScreen,
+      displayMenuBarAboveTools = true,
+      editorName,
+      expandTabToSplitScreen,
+      extraRightSidePanel,
+      fullScreenOffsets,
       getVersionList,
       getSequenceAtVersion,
-      selectionLayer,
-      VersionHistoryViewProps,
-      sequenceData = {},
-      fullScreenOffsets,
-      withPreviewMode,
-      isFullscreen,
-      hoveredId,
       handleFullscreenClose,
+      height: _height,
+      hideSingleImport,
+      hideStatusBar,
+      hoveredId,
+      isFullscreen,
+      maxAnnotationsToDisplay,
+      minHeight = 400,
       onlyShowLabelsThatDoNotFit = true,
+      onSave,
       previewModeFullscreen: controlledPreviewModeFullscreen,
       previewModeButtonMenu,
-      allowPanelTabDraggable = true
+      readOnly,
+      selectionLayer,
+      sequenceData = {},
+      setPanelAsActive,
+      showCircularity,
+      showMenuBar,
+      style = {},
+      StatusBarProps = {},
+      togglePanelFullScreen,
+      ToolBarProps = {},
+      updateSequenceData,
+      VersionHistoryViewProps,
+      withPreviewMode,
+      withRotateCircularView = true,
+      withZoomCircularView = true,
+      withZoomLinearView = true
     } = this.props;
     if (
       !this.props.noVersionHistory &&
@@ -904,6 +904,7 @@ export class Editor extends React.Component {
               editorName
             }}
             withDigestTool
+            onChangeEditLock={this.props.onChangeEditLock}
             {...ToolBarProps}
           />
 
